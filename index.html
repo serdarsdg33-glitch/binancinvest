@@ -9,7 +9,6 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% -10%,#493a08 0,#10130f 18%,#05070b 55%);color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}
 header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between;padding:0 22px}.brand{font-weight:900;font-size:18px;display:flex;gap:12px;align-items:center}.head{display:flex;gap:8px;align-items:center}.btn,select,input{background:#0d1218;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 13px}.btn:hover{border-color:#ffffff3d;transform:translateY(-1px)}.gold{background:linear-gradient(135deg,#ffe15b,#e3a700);color:#111;border-color:#f0b90b;font-weight:800}
 
-/* Floating Original Binance Logo */
 .binance-floating-logo {width: 38px;height: 38px;animation: floatLogo 3s ease-in-out infinite;display: flex;align-items: center;}
 .binance-floating-logo svg {width: 100%;height: 100%;}
 @keyframes floatLogo {0%, 100% { transform: translateY(0); }50% { transform: translateY(-6px); }}
@@ -21,7 +20,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .coins{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.coinTop{display:flex;justify-content:space-between;align-items:center}.coin{display:flex;gap:9px;align-items:center}.icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#8993a0 25%,#242b34 70%);color:#111;font-weight:900}.price{font-size:20px;font-weight:900;margin-top:15px}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.plan{position:relative;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}.plan:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 25px 40px rgba(0,0,0,0.6), 0 10px 15px rgba(0,0,0,0.4);border-color:var(--gold)}.tag{position:absolute;right:13px;top:13px;color:#111;background:var(--gold);padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900}.apy{font-size:36px;font-weight:900;color:var(--gold);margin:15px 0}.plan ul{color:var(--muted);line-height:1.9;padding-left:18px}.plan .btn{width:100%;margin-top:8px}
 
-/* --- 3D Stats Section --- */
 .stats-3d-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; perspective: 1000px; margin-bottom: 20px; }
 .stat-3d-card { background: linear-gradient(135deg, #111820, #080b0f); border: 1px solid rgba(240,185,11,0.15); border-radius: 20px; padding: 30px 15px; text-align: center; transform: rotateX(15deg) translateZ(0); box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 3px 15px rgba(255,255,255,0.03); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
 .stat-3d-card:hover { transform: rotateX(0deg) translateY(-10px) translateZ(30px); border-color: var(--gold); box-shadow: 0 30px 60px rgba(240,185,11,0.15), inset 0 0 20px rgba(240,185,11,0.05); }
@@ -29,7 +27,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .stat-3d-value { font-size: 28px; font-weight: 900; color: var(--gold); margin: 5px 0; transform: translateZ(30px); text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
 .stat-3d-label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transform: translateZ(15px); }
 
-/* --- Live Withdrawals Section --- */
 .live-withdrawals-container { background: #0c1117e8; border: 1px solid #ffffff10; border-radius: 16px; padding: 10px; height: 280px; overflow: hidden; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
 .live-withdraw { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #ffffff08; background: rgba(255,255,255,0.01); border-radius: 10px; margin-bottom: 6px; animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(-20px); }
 @keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
@@ -92,41 +89,20 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets')" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
 
-<!-- 3D Platform Statistics Section -->
 <div class="title"><h2 data-t="platformStatsTitle">Platform Statistics</h2></div>
 <div class="stats-3d-grid">
-    <div class="stat-3d-card">
-        <div class="stat-3d-icon">🌍</div>
-        <div class="stat-3d-value" id="statUsersVal">1,284,901</div>
-        <div class="stat-3d-label" data-t="statUsers">Platform Users</div>
-    </div>
-    <div class="stat-3d-card">
-        <div class="stat-3d-icon">👥</div>
-        <div class="stat-3d-value" id="statInvestorsVal">450,231</div>
-        <div class="stat-3d-label" data-t="statInvestors">Active Investors</div>
-    </div>
-    <div class="stat-3d-card">
-        <div class="stat-3d-icon">💸</div>
-        <div class="stat-3d-value" style="color:var(--green)">$8,452,000+</div>
-        <div class="stat-3d-label" data-t="statPaid">Total Profit Paid</div>
-    </div>
-    <div class="stat-3d-card">
-        <div class="stat-3d-icon">🏦</div>
-        <div class="stat-3d-value">$1,250,000+</div>
-        <div class="stat-3d-label" data-t="statCapital">Platform Capital</div>
-    </div>
+    <div class="stat-3d-card"><div class="stat-3d-icon">🌍</div><div class="stat-3d-value" id="statUsersVal">1,284,901</div><div class="stat-3d-label" data-t="statUsers">Platform Users</div></div>
+    <div class="stat-3d-card"><div class="stat-3d-icon">👥</div><div class="stat-3d-value" id="statInvestorsVal">450,231</div><div class="stat-3d-label" data-t="statInvestors">Active Investors</div></div>
+    <div class="stat-3d-card"><div class="stat-3d-icon">💸</div><div class="stat-3d-value" style="color:var(--green)">$8,452,000+</div><div class="stat-3d-label" data-t="statPaid">Total Profit Paid</div></div>
+    <div class="stat-3d-card"><div class="stat-3d-icon">🏦</div><div class="stat-3d-value">$1,250,000+</div><div class="stat-3d-label" data-t="statCapital">Platform Capital</div></div>
 </div>
 
-<!-- Live Withdrawals Section -->
 <div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
-<div class="live-withdrawals-container" id="liveWithdrawalsList">
-    <div class="fade-overlay"></div>
-</div>
+<div class="live-withdrawals-container" id="liveWithdrawalsList"><div class="fade-overlay"></div></div>
 
 <div class="footer-section">
     <h3 data-t="footerTitle">Why Binance Invest?</h3>
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
-    
     <div style="margin-top: 35px;">
         <h4 class="muted" data-t="securityPartners" style="margin-bottom:15px;">Security Partners & Protection</h4>
         <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
@@ -135,13 +111,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
             <div class="security-badge" style="color:#ea3943;"><span style="font-size:20px;">✓</span> McAfee Secured</div>
         </div>
     </div>
-
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
         <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
         <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
-        <a href="mailto:binancinvest11@gmail.com" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px; transition:0.3s;">binancinvest11@gmail.com</a>
+        <a href="mailto:binancinvest11@gmail.com" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">binancinvest11@gmail.com</a>
     </div>
-
     <div style="margin-top: 30px; font-size: 0.8rem;" data-t="footerCopy">&copy; 2026 Binance Invest Global. All rights reserved.</div>
 </div>
 </section>
@@ -171,7 +145,14 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 
 <div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" value="1000" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$1,000.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
 
-<section id="portfolio" class="view"><div class="title"><h2 data-t="portfolio">Portfolio</h2><button class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div><div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div><div class="two"><div class="card"><h2 data-t="deposit">Deposit</h2><p class="muted" data-t="depositDesc">Add simulated balance instantly.</p><input id="depositAmount" type="number" placeholder="100"><button class="btn gold" style="width:100%;margin-top:10px" onclick="deposit()" data-t="add">Add Balance</button></div><div class="card"><h2 data-t="withdraw">Withdraw</h2><p class="muted" data-t="withdrawDesc">Request withdrawal instantly.</p><input id="withdrawAmount" type="number" placeholder="50"><button class="btn" style="width:100%;margin-top:10px" onclick="withdraw()" data-t="request">Request Withdrawal</button></div></div></section>
+<section id="portfolio" class="view">
+  <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
+  <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div class="two">
+    <div class="card"><h2 data-t="deposit">Deposit</h2><p class="muted" data-t="depositDesc">Add simulated balance instantly.</p><input id="depositAmount" type="number" placeholder="100"><button class="btn gold" style="width:100%;margin-top:10px" onclick="deposit()" data-t="add">Add Balance</button></div>
+    <div class="card"><h2 data-t="withdraw">Withdraw</h2><p class="muted" data-t="withdrawDesc">Request withdrawal instantly.</p><input id="withdrawAmount" type="number" placeholder="50"><button class="btn" style="width:100%;margin-top:10px" onclick="withdraw()" data-t="request">Request Withdrawal</button></div>
+  </div>
+</section>
 
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
 
@@ -191,7 +172,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 </section>
 </div>
 
-<!-- Dynamic Modal -->
 <div class="modal" id="auth">
   <div class="modalbox">
     <button class="close" onclick="closeAuth()">×</button>
@@ -271,7 +251,7 @@ const demo={bitcoin:[116842,2.2,232e10,54e9],ethereum:[4421,3.1,533e9,26e9],bina
 
 const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
 
-let live={},stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"),currentUser=null,authMode="login";
+let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
 
 const fakeNames = ["Ali R.", "Sarah M.", "David K.", "Mohammad J.", "Elena T.", "Reza S.", "Alex B.", "Maria P.", "Aykhan M.", "Zahra F."];
@@ -342,6 +322,7 @@ function updateAuthModalUI(){
   let lang = localStorage.getItem("bi_lang")||"en"; let d = T[lang]||T.en;
   let regFields=document.getElementById("registerFields"), regCodeFields=document.getElementById("registerCodeFields"), loginFields=document.getElementById("loginFields"), forgotFields=document.getElementById("forgotFields"), passContainer=document.getElementById("passwordContainer"), submitBtn=document.getElementById("authSubmitBtn"), forgotLink=document.getElementById("forgotLink"), switchLink=document.getElementById("switchAuthLink"), titleEl=document.getElementById("authTitle");
   regFields.style.display="none"; regCodeFields.style.display="none"; loginFields.style.display="none"; forgotFields.style.display="none"; passContainer.style.display="block"; forgotLink.style.display="block"; switchLink.style.display="block";
+  
   if(authMode==="login"){ titleEl.textContent=d.login; loginFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.needAccountText; } 
   else if(authMode==="register"){ titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none"; } 
   else if(authMode==="verifying"){ titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none"; } 
@@ -356,6 +337,9 @@ function submitAuth(){
     if(!email.includes("@")) return toast("Please enter a valid email");
     if(p.length<6) return toast("Password must be at least 6 characters");
     
+    let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
+    if(users.some(x => x.username.toLowerCase() === u.toLowerCase())) return toast("Username already taken!");
+
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
     tempRegData = {u, fullName, email, password: p, balance: 0, invested: 0, profit: 0, phone: ""};
@@ -378,12 +362,12 @@ function submitAuth(){
   else if(authMode==="login"){
     let identifier = authUser.value.trim().toLowerCase(), p = authPass.value;
     let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-    let found = users.find(x => (x.username.toLowerCase() === identifier || x.email.toLowerCase() === identifier) && x.password === p);
+    let found = users.find(x => (x.u.toLowerCase() === identifier || x.email.toLowerCase() === identifier) && x.password === p);
     
     if(!found) return toast("Incorrect username or password");
     currentUser = found;
     localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullname || currentUser.username));
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullName || currentUser.u));
   }
 }
 
@@ -397,21 +381,24 @@ function logout(){
 
 function updateHeaderAuthUI(){
   let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
+  let portAuthBtn = document.getElementById("portfolioAuthBtn");
   if(currentUser){
     headerDisp.style.display = "flex"; 
     authGroup.style.display = "none"; 
-    document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
-    document.getElementById("headerUsername").textContent = "@" + currentUser.username;
+    if(portAuthBtn) portAuthBtn.style.display = "none";
+    document.getElementById("headerFullName").textContent = currentUser.fullName || currentUser.u; 
+    document.getElementById("headerUsername").textContent = "@" + currentUser.u;
   } else {
     headerDisp.style.display = "none"; 
     authGroup.style.display = "flex";
+    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
   }
 }
 
 function saveUserData(){
   if(!currentUser) return;
   let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-  users = users.map(u => u.username === currentUser.username ? currentUser : u);
+  users = users.map(u => u.u === currentUser.u ? currentUser : u);
   localStorage.setItem("bi_users_db", JSON.stringify(users));
   localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
 }
@@ -419,12 +406,12 @@ function saveUserData(){
 function saveTx(type, amount, status){
   if(!currentUser) return;
   let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]");
-  txs.unshift({ username: currentUser.username, type, amount, status, date: new Date().toLocaleString() });
+  txs.unshift({ username: currentUser.u, type, amount, status, date: new Date().toLocaleString() });
   localStorage.setItem("bi_transactions_db", JSON.stringify(txs));
 }
 
 function deposit(){
-  let a = +depositAmount.value;
+  let a = +document.getElementById("depositAmount").value;
   if(!currentUser) return openAuth("login");
   if(a <= 0) return toast("Enter a valid amount");
   
@@ -435,7 +422,7 @@ function deposit(){
 }
 
 function withdraw(){
-  let a = +withdrawAmount.value;
+  let a = +document.getElementById("withdrawAmount").value;
   if(!currentUser) return openAuth("login");
   if(a <= 0 || a > currentUser.balance) return toast("Insufficient balance");
   
@@ -538,14 +525,14 @@ async function prices(){
 
 function loadTransactions(){
   if(!currentUser){ txList.innerHTML = '<p class="muted">Please sign in to view your transactions.</p>'; return; }
-  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username === currentUser.username);
+  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username === currentUser.u);
   if(txs.length === 0){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
   txList.innerHTML = txs.map(x=>`<div class="row"><span><b>${x.type}</b><br><small class="muted">${x.date}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
 }
 
 function clearTx(){
   if(!currentUser) return;
-  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username !== currentUser.username);
+  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username !== currentUser.u);
   localStorage.setItem("bi_transactions_db", JSON.stringify(txs));
   loadTransactions(); toast("History cleared");
 }
@@ -553,18 +540,18 @@ function clearTx(){
 function loadProfile(){
   let u = currentUser;
   if(u){
-    username.value = u.username;
+    username.value = u.u;
     emailInput.value = u.email || "";
-    fullNameInput.value = u.fullname || "";
+    fullNameInput.value = u.fullName || "";
     phone.value = u.phone || "";
-    refCode.textContent = "BI-" + u.username.slice(0,5).toUpperCase();
+    refCode.textContent = "BI-" + u.u.slice(0,5).toUpperCase();
   }
 }
 
 function saveProfile(){
   if(!currentUser) return openAuth("login");
   currentUser.phone = phone.value;
-  currentUser.fullname = fullNameInput.value;
+  currentUser.fullName = fullNameInput.value;
   saveUserData();
   updateHeaderAuthUI();
   toast("Profile saved successfully");
@@ -582,10 +569,9 @@ function setLang(l){
   });
   let lockEl = document.getElementById("lockNotice");
   if(lockEl) lockEl.textContent = d.lockNoticeText || T.en.lockNoticeText;
-  renderPlans(); calc(); calcCustom(); toast("Language changed");
+  renderPlans(); calc(); calcCustom();
 }
 
-// Session Initialization
 let savedUser = localStorage.getItem("bi_current_user");
 if(savedUser){
   try{ currentUser = JSON.parse(savedUser); }catch(e){ currentUser = null; }
