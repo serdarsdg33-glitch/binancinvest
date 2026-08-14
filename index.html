@@ -44,7 +44,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section h3{color:#fff;margin-bottom:15px}
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
-@media(max-width:900px){.cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}.plans,.two{grid-template-columns:1fr}.orb{right:-60px;opacity:.35}}@media(max-width:600px){header{padding:0 10px}.head .login{display:none}.wrap{padding:12px 10px 70px}.hero{padding:30px 22px;min-height:455px}.hero h1{font-size:44px}.orb{width:135px;height:135px;right:5px;top:305px}.cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}.card,.stat-3d-card{padding:14px}.brand{font-size:14px}}
+@media(max-width:900px){.cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}.plans,.two{grid-template-columns:1fr}.orb{right:-60px;opacity:.35}}@media(max-width:600px){header{padding:0 10px}.head .login{display:inline-block}.wrap{padding:12px 10px 70px}.hero{padding:30px 22px;min-height:455px}.hero h1{font-size:44px}.orb{width:135px;height:135px;right:5px;top:305px}.cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}.card,.stat-3d-card{padding:14px}.brand{font-size:14px}}
 </style>
 </head>
 <body>
@@ -338,7 +338,7 @@ function submitAuth(){
     if(p.length<6) return toast("Password must be at least 6 characters");
     
     let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-    if(users.some(x => x.username.toLowerCase() === u.toLowerCase())) return toast("Username already taken!");
+    if(users.some(x => x.username.toLowerCase() === u.toLowerCase() || x.u.toLowerCase() === u.toLowerCase())) return toast("Username already taken!");
 
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
@@ -362,7 +362,7 @@ function submitAuth(){
   else if(authMode==="login"){
     let identifier = authUser.value.trim().toLowerCase(), p = authPass.value;
     let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-    let found = users.find(x => (x.u.toLowerCase() === identifier || x.email.toLowerCase() === identifier) && x.password === p);
+    let found = users.find(x => (x.u.toLowerCase() === identifier || (x.email && x.email.toLowerCase() === identifier)) && x.password === p);
     
     if(!found) return toast("Incorrect username or password");
     currentUser = found;
