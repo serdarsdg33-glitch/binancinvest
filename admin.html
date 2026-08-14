@@ -2,163 +2,54 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پنل مدیریت ادمین - Binance Invest</title>
+    <title>عیب‌یابی پنل ادمین</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * { box-sizing: border-box; font-family: Tahoma, sans-serif; }
-        body { background-color: #121318; color: #fff; margin: 0; padding: 15px; }
-        .container { max-width: 100%; margin: 0 auto; }
-        h1, h2 { color: #f0b90b; font-size: 18px; }
-        .card { background: #1e2329; border-radius: 8px; padding: 12px; margin-bottom: 15px; border: 1px solid #2b313a; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; overflow-x: auto; display: block; }
-        th, td { padding: 8px; text-align: right; border-bottom: 1px solid #2b313a; font-size: 12px; }
-        th { color: #848e9c; }
-        .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 4px; }
-        .btn-approve { background: #0ecb81; color: #fff; }
-        .btn-reject { background: #f6465d; color: #fff; }
-        .btn-update { background: #f0b90b; color: #000; }
-        input { background: #2b313a; border: 1px solid #474d57; color: #fff; padding: 5px; border-radius: 4px; width: 80px; }
-        .badge-pending { color: #f0b90b; font-weight: bold; }
+        body { background: #121318; color: #fff; font-family: Tahoma; padding: 20px; }
+        .box { background: #1e2329; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        pre { color: #f0b90b; white-space: pre-wrap; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🛡️ پنل مدیریت Binance Invest</h1>
+    <h2>🔍 عیب‌یابی اتصال به دیتابیس</h2>
     
-    <div class="card">
-        <h2>📥 درخواست‌های واریز و برداشت</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>کاربر</th>
-                    <th>نوع</th>
-                    <th>مبلغ</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody id="tx-list">
-                <tr><td colspan="4">در حال دریافت...</td></tr>
-            </tbody>
-        </table>
+    <div class="box">
+        <h3>وضعیت جدول Users:</h3>
+        <pre id="users-debug">در حال بررسی...</pre>
     </div>
 
-    <div class="card">
-        <h2>👥 مدیریت موجودی کاربران</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>نام کاربری</th>
-                    <th>موجودی</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody id="user-list">
-                <tr><td colspan="3">در حال دریافت...</td></tr>
-            </tbody>
-        </table>
+    <div class="box">
+        <h3>وضعیت جدول Transactions:</h3>
+        <pre id="tx-debug">در حال بررسی...</pre>
     </div>
-</div>
 
 <script>
     const SUPABASE_URL = "https://zpwxvngrowhquwpovuf.supabase.co";
     const SUPABASE_KEY = "sb_publishable_JBx4FIY0wgu8D91RMYnMEQ_K7uDL5Hf"; 
     const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function loadTransactions() {
-        const { data, error } = await db.from('transactions').select('*');
-        const list = document.getElementById('tx-list');
-        list.innerHTML = '';
-
-        if (error || !data) {
-            list.innerHTML = '<tr><td colspan="4">خطا در دریافت اطلاعات.</td></tr>';
-            return;
+    async function checkData() {
+        // تست جدول کاربران
+        const usersRes = await db.from('users').select('*');
+        const usersBox = document.getElementById('users-debug');
+        if (usersRes.error) {
+            usersBox.innerText = "خطا در جدول users:\n" + JSON.stringify(usersRes.error, null, 2);
+        } else {
+            usersBox.innerText = "تعداد کاربران ثبت‌شده: " + usersRes.data.length + "\n\n" + JSON.stringify(usersRes.data, null, 2);
         }
 
-        const pendingTxs = data.filter(tx => tx.status && tx.status.toLowerCase() === 'pending');
-
-        if (pendingTxs.length === 0) {
-            list.innerHTML = '<tr><td colspan="4">هیچ درخواستی نیست.</td></tr>';
-            return;
+        // تست جدول تراکنش‌ها
+        const txRes = await db.from('transactions').select('*');
+        const txBox = document.getElementById('tx-debug');
+        if (txRes.error) {
+            txBox.innerText = "خطا در جدول transactions:\n" + JSON.stringify(txRes.error, null, 2);
+        } else {
+            txBox.innerText = "تعداد تراکنش‌ها: " + txRes.data.length + "\n\n" + JSON.stringify(txRes.data, null, 2);
         }
-
-        pendingTxs.forEach(tx => {
-            const uname = tx.username || 'کاربر';
-            const typeText = tx.type === 'deposit' ? '🟢 واریز' : '🔴 برداشت';
-            list.innerHTML += `
-                <tr>
-                    <td>${uname}</td>
-                    <td>${typeText}</td>
-                    <td>$${tx.amount}</td>
-                    <td>
-                        <button class="btn btn-approve" onclick="approveTx('${tx.id}', '${uname}', ${tx.amount}, '${tx.type}')">تایید</button>
-                        <button class="btn btn-reject" onclick="rejectTx('${tx.id}')">رد</button>
-                    </td>
-                </tr>
-            `;
-        });
     }
 
-    async function loadUsers() {
-        const { data, error } = await db.from('users').select('*');
-        const list = document.getElementById('user-list');
-        list.innerHTML = '';
-
-        if (error || !data || data.length === 0) {
-            list.innerHTML = '<tr><td colspan="3">کاربری یافت نشد.</td></tr>';
-            return;
-        }
-
-        data.forEach(u => {
-            list.innerHTML += `
-                <tr>
-                    <td>${u.username || 'بدون نام'}</td>
-                    <td>$${u.balance || 0}</td>
-                    <td>
-                        <input type="number" id="bal-${u.id}" value="${u.balance || 0}">
-                        <button class="btn btn-update" onclick="updateBalance('${u.id}')">ثبت</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    async function approveTx(txId, username, amount, type) {
-        if (!confirm('تایید شود؟')) return;
-        await db.from('transactions').update({ status: 'Approved' }).eq('id', txId);
-
-        const { data: user } = await db.from('users').select('balance').eq('username', username).single();
-        let currentBalance = user ? Number(user.balance) : 0;
-        
-        if (type === 'deposit') currentBalance += Number(amount);
-        else if (type === 'withdraw' || type === 'withdrawal') currentBalance -= Number(amount);
-
-        await db.from('users').update({ balance: currentBalance }).eq('username', username);
-        alert('انجام شد.');
-        refreshAll();
-    }
-
-    async function rejectTx(txId) {
-        if (!confirm('رد شود؟')) return;
-        await db.from('transactions').update({ status: 'Rejected' }).eq('id', txId);
-        alert('رد شد.');
-        refreshAll();
-    }
-
-    async function updateBalance(userId) {
-        const newBal = document.getElementById(`bal-${userId}`).value;
-        await db.from('users').update({ balance: newBal }).eq('id', userId);
-        alert('بروز شد.');
-        refreshAll();
-    }
-
-    function refreshAll() {
-        loadTransactions();
-        loadUsers();
-    }
-
-    refreshAll();
+    checkData();
 </script>
 
 </body>
