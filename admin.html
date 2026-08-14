@@ -44,17 +44,19 @@
     </div>
 
     <div class="card">
-        <h2>👥 مدیریت موجودی کاربران</h2>
+        <h2>👥 مدیریت کاربران (اطلاعات و موجودی)</h2>
         <table>
             <thead>
                 <tr>
                     <th>نام کاربری</th>
-                    <th>موجودی</th>
+                    <th>ایمیل</th>
+                    <th>رمز عبور</th>
+                    <th>موجودی ($)</th>
                     <th>عملیات</th>
                 </tr>
             </thead>
             <tbody id="user-list">
-                <tr><td colspan="3">در حال دریافت...</td></tr>
+                <tr><td colspan="5">در حال دریافت...</td></tr>
             </tbody>
         </table>
     </div>
@@ -106,7 +108,7 @@
         list.innerHTML = '';
 
         if (error || !data || data.length === 0) {
-            list.innerHTML = '<tr><td colspan="3">کاربری یافت نشد.</td></tr>';
+            list.innerHTML = '<tr><td colspan="5">کاربری یافت نشد.</td></tr>';
             return;
         }
 
@@ -114,6 +116,8 @@
             list.innerHTML += `
                 <tr>
                     <td>${u.username || 'بدون نام'}</td>
+                    <td>${u.email || 'ثبت نشده'}</td>
+                    <td>${u.password || 'ثبت نشده'}</td>
                     <td>$${u.balance || 0}</td>
                     <td>
                         <input type="number" id="bal-${u.id}" value="${u.balance || 0}">
