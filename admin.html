@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت ادمین</title>
+    <!-- کتابخانه رسمی Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; font-family: Tahoma, sans-serif; }
+        body { background-color: #121318; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1, h2 { color: #f0b90b; }
+        .card { background: #1e2329; border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid #2b313a; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: right; border-bottom: 1px solid #2b313a; font-size: 14px; }
+        th { color: #848e9c; }
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 5px; }
+        .btn-approve { background: #0ecb81; color: #fff; }
+        .btn-reject { background: #f6465d; color: #fff; }
+        .btn-update { background: #f0b90b; color: #000; }
+        input { background: #2b313a; border: 1px solid #474d57; color: #fff; padding: 6px; border-radius: 4px; width: 100px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🛡️ پنل مدیریت Binance Invest</h1>
+    
+    <!-- بخش درخواست‌های معلق -->
+    <div class="card">
+        <h2>📥 درخواست‌های واریز و برداشت در انتظار تایید</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>کاربر</th>
+                    <th>نوع</th>
+                    <th>مبلغ ($)</th>
+                    <th>وضعیت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody id="tx-list">
+                <tr><td colspan="5">در حال دریافت اطلاعات...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- بخش مدیریت کاربران -->
+    <div class="card">
+        <h2>👥 مدیریت موجودی کاربران</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>نام کاربری</th>
+                    <th>ایمیل</th>
+                    <th>موجودی فعلی ($)</th>
+                    <th>تغییر موجودی</th>
+                </tr>
+            </thead>
+            <tbody id="user-list">
+                <tr><td colspan="4">در حال دریافت اطلاعات...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // ⚠️ آدرس و کلید Publishable خود را دقیقاً جایگزین مقادیر زیر کنید
+    const SUPABASE_URL = "https://zpwxvngrowhquwpovuf.supabase.co";
+    const SUPABASE_KEY = "کپی_کلید_PUBLISHABLE_شما_اینجا"; 
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ۱. دریافت لیست تراکنش‌ها
+    async function loadTransactions() {
+        const { data, error } = await db.from('transactions').select('*').eq('status', 'Pending');
+        const list = document.getElementById('tx-list');
+        list.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            list.innerHTML = '<tr><td colspan="5">هیچ درخواستی در انتظار نیست.</td></tr>';
+            return;
+        }
+
+        data.forEach(tx => {
+            list.innerHTML += `
+                <tr>
+                    <td>${tx.username}</td>
+                    <td>${tx.type === 'deposit' ? '🟢 واریز' : '🔴 برداشت'}</td>
+                    <td>$${tx.amount}</td>
+                    <td><span style="color:#f0b90b">${tx.status}</span></td>
+                    <td>
+                        <button class="btn btn-approve" onclick="approveTx('${tx.id}', '${tx.username}', ${tx.amount}, '${tx.type}')">تایید</button>
+                        <button class="btn btn-reject" onclick="rejectTx('${tx.id}')">رد</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // ۲. دریافت لیست کاربران
+    async function loadUsers() {
+        const { data, error } = await db.from('users').select('*');
+        const list = document.getElementById('user-list');
+        list.innerHTML = '';
+
+        if (!data) return;
+
+        data.forEach(u => {
+            list.innerHTML += `
+                <tr>
+                    <td>${u.username}</td>
+                    <td>${u.email}</td>
+                    <td>$${u.balance}</td>
+                    <td>
+                        <input type="number" id="bal-${u.id}" value="${u.balance}">
+                        <button class="btn btn-update" onclick="updateBalance('${u.id}')">ثبت</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    // ۳. تایید تراکنش و به‌روزرسانی خودکار موجودی کاربر
+    async function approveTx(txId, username, amount, type) {
+        // تغییر وضعیت تراکنش به Approved
+        await db.from('transactions').update({ status: 'Approved' }).eq('id', txId);
+
+        // گرفتن موجودی فعلی کاربر
+        const { data: user } = await db.from('users').select('balance').eq('username', username).single();
+        let newBalance = user ? Number(user.balance) : 0;
+        
+        if (type === 'deposit') newBalance += Number(amount);
+        else if (type === 'withdraw') newBalance -= Number(amount);
+
+        // آپدیت موجودی در جدول users
+        await db.from('users').update({ balance: newBalance }).eq('username', username);
+
+        alert('تراکنش تایید شد و موجودی کاربر به‌روز گردید.');
+        refreshAll();
+    }
+
+    // ۴. رد تراکنش
+    async function rejectTx(txId) {
+        await db.from('transactions').update({ status: 'Rejected' }).eq('id', txId);
+        alert('تراکنش رد شد.');
+        refreshAll();
+    }
+
+    // ۵. تغییر دستی موجودی کاربر
+    async function updateBalance(userId) {
+        const newBal = document.getElementById(`bal-${userId}`).value;
+        await db.from('users').update({ balance: newBal }).eq('id', userId);
+        alert('موجودی جدید ذخیره شد.');
+        refreshAll();
+    }
+
+    function refreshAll() {
+        loadTransactions();
+        loadUsers();
+    }
+
+    refreshAll();
+</script>
+
+</body>
+</html>
