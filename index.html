@@ -198,7 +198,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
   <div class="modalbox">
     <button class="close" onclick="closeAuth()">×</button>
     <h2 id="authTitle">Sign In</h2>
-    <p class="muted" data-t="local">Account data is stored locally in this browser.</p>
+    <p class="muted" data-t="local">Account data is connected via Supabase.</p>
     <div class="form">
       <div id="registerFields"><label data-t="fullname">Full Name / Name</label><input id="authFullName" placeholder="e.g. John Doe"><label data-t="username">Username</label><input id="authUsernameReg" placeholder="e.g. johndoe99"><label data-t="email">Email Address</label><input id="authEmailReg" type="email" placeholder="name@example.com"></div>
       <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
@@ -224,8 +224,8 @@ brand:"Binance Invest",login:"Sign In",register:"Create Account",logout:"Logout"
 hero:"Build your future with intelligent investing.",heroDesc:"Explore digital assets, investment plans and portfolio tools in one premium interface.",exploreInvest:"Explore Investments",exploreMarkets:"Explore Markets",
 users:"Platform users",tracked:"Assets tracked",assets:"Digital assets",live:"Live markets",uptime:"Platform uptime",top:"Top Markets",viewAll:"View all",featured:"Featured Investments",
 plans:"Investment Plans",illustrative:"Illustrative returns",calculator:"Investment Calculator",amount:"Amount",plan:"Plan",estimated:"Estimated value",
-balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add a simulated balance for testing the local workflow.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Create a local withdrawal request.",request:"Request Withdrawal",
-clear:"Clear local history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"Phone",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Account data is stored locally in this browser.",
+balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add balance synced to Supabase.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Create a withdrawal request.",request:"Request Withdrawal",
+clear:"Clear history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"Phone",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Account data is stored securely.",
 eyebrowText:"PREMIUM DIGITAL ASSET PLATFORM",footerTitle:"Why Binance Invest?",footerDesc:"We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.",footerCopy:"© 2026 Binance Invest Global. All rights reserved.",
 thAsset:"Asset",thPrice:"Price",th24h:"24h",thCap:"Market Cap",thVol:"Volume",
 customTitle:"Custom Investment Plan",customDesc:"Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.",customAmountLabel:"Custom Amount ($1 - $100,000)",customTermLabel:"Term (Days)",investCustomBtn:"Invest Custom Amount",
@@ -241,8 +241,8 @@ brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",
 hero:"آینده خود را هوشمندانه بسازید.",heroDesc:"رمزارزها، پلن‌های سرمایه‌گذاری و ابزارهای مدیریت سبد را در یک محیط حرفه‌ای بررسی کنید.",exploreInvest:"مشاهده سرمایه‌گذاری‌ها",exploreMarkets:"مشاهده بازارها",
 users:"کاربران پلتفرم",tracked:"دارایی‌های تحت پوشش",assets:"رمزارزها",live:"بازار زنده",uptime:"آپ‌تایم",top:"بازارهای برتر",viewAll:"مشاهده همه",featured:"سرمایه‌گذاری‌های ویژه",
 plans:"پلن‌های سرمایه‌گذاری",illustrative:"بازدهی نمایشی",calculator:"محاسبه‌گر سرمایه‌گذاری",amount:"مبلغ",plan:"پلن",estimated:"ارزش تخمینی",
-balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"برای تست جریان سایت، موجودی شبیه‌سازی‌شده اضافه کنید.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"یک درخواست برداشت محلی ایجاد کنید.",request:"درخواست برداشت",
-clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"تلفن",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب فقط در مرورگر ذخیره می‌شود.",
+balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"افزایش موجودی هماهنگ با دیتابیس.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"ثبت درخواست برداشت آنلاین.",request:"درخواست برداشت",
+clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"تلفن",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب امن و آنلاین ذخیره می‌شود.",
 eyebrowText:"پلتفرم پیشرفته دارایی دیجیتال",footerTitle:"چرا بایننس اینوست؟",footerDesc:"ما قابلیت اطمینان در سطح حرفه‌ای با سرعت بالا، ابزارهای هوشمند سبد سرمایه و پروتکل‌های امنیتی پیشرفته را برای رشد امن دارایی‌های شما فراهم می‌کنیم.",footerCopy:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",
 thAsset:"دارایی",thPrice:"قیمت",th24h:"۲۴ ساعته",thCap:"ارزش بازار",thVol:"حجم معاملات",
 customTitle:"پلن سرمایه‌گذاری کاستوم (سفارشی)",customDesc:"مبلغ دلخواه خود را از ۱ دلار تا ۱۰۰,۰۰۰ دلار سرمایه‌گذاری کنید. سود مستقیماً بر اساس مبلغ واریزی و نرخ‌های روزانه شما محاسبه می‌شود.",customAmountLabel:"مبلغ سفارشی (۱ تا ۱۰۰,۰۰۰ دلار)",customTermLabel:"مدت (روز)",investCustomBtn:"سرمایه‌گذاری با مبلغ سفارشی",
@@ -258,8 +258,8 @@ brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxı�
 hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyutaları və investisiya alətlərini peşəkar interfeysdə kəşf edin.",exploreInvest:"İnvestisiyalara bax",exploreMarkets:"Bazara bax",
 users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
 plans:"İnvestisiya planları",illustrative:"Nümunə gəlir",calculator:"İnvestisiya kalkulyatoru",amount:"Məbləğ",plan:"Plan",estimated:"Təxmini dəyər",
-balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Sınaq üçün lokal balans əlavə et.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Lokal çıxarış sorğusu yaradın.",request:"Sorğu göndər",
-clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"Telefon",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatları bu brauzerdə saxlanılır.",
+balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Supabase ilə sinxronlaşdırılmış balans.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Çıxarış sorğusu yarat.",request:"Sorğu göndər",
+clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"Telefon",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatları təhlükəsiz saxlanılır.",
 eyebrowText:"PREMİUM RƏqəmsal AKTİV PLATFORMASI",footerTitle:"Niyə Binance İnvest?",footerDesc:"Aktivlərinizin təhlükəsiz böyüməsi üçün peşəkar səviyyədə etibarlılıq və ağıllı portfel alətləri təqdim edirik.",footerCopy:"© 2026 Binance Invest Global. Bütün hüquqlar qorunur.",
 thAsset:"Aktiv",thPrice:"Qiymət",th24h:"24s",thCap:"Bazar Dəyəri",thVol:"Həcm",
 customTitle:"Xüsusi İnvestisiya Planı",customDesc:"1$-dan 100,000$-dək istənilən məbləği investisiya edin. Gəlir birbaşa depozit məbləğinə və gündəlik dərəcələrə əsasən hesablanır.",customAmountLabel:"Xüsusi Məbləş (1$ - 100,000$)",customTermLabel:"Müddət (Gün)",investCustomBtn:"Xüsusi Məbləğlə İnvestisiya Et",
@@ -278,7 +278,7 @@ const demo={bitcoin:[116842,2.2,232e10,54e9],ethereum:[4421,3.1,533e9,26e9],bina
 
 const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
 
-let live={},stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"),db=JSON.parse(localStorage.getItem("bi_db")||"{}"),current=localStorage.getItem("bi_current"),authMode="login",tx=JSON.parse(localStorage.getItem("bi_tx")||"[]");
+let live={},stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"),currentUserData=null,authMode="login";
 let tempRegData = null; let generatedEmailCode = "";
 
 const fakeNames = [
@@ -354,7 +354,7 @@ displayCounters();
 setTimeout(updateCounters, 5000);
 
 function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
-function page(id,b){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(id==="portfolio")updatePortfolio();if(id==="transactions")renderTx();scrollTo(0,0)}
+function page(id,b){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(id==="portfolio")updatePortfolio();if(id==="transactions")loadTransactionsFromSupabase();scrollTo(0,0)}
 
 function openAuth(m){authMode=m;updateAuthModalUI();document.getElementById("auth").style.display="flex";}
 function closeAuth(){document.getElementById("auth").style.display="none"}
@@ -369,12 +369,10 @@ function updateAuthModalUI(){
   else if(authMode==="register"){titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none";} 
   else if(authMode==="verifying"){titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none";} 
   else if(authMode==="forgot"){titleEl.textContent=d.resetPasswordTitle || "Reset Password"; forgotFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.sendResetCode; forgotLink.style.display="none";} 
-  else if(authMode==="resetNew"){titleEl.textContent=d.resetPasswordTitle; forgotFields.style.display="block"; passContainer.style.display="block"; document.querySelector('#passwordContainer label').textContent=d.newPasswordLabel; submitBtn.textContent=d.resetBtn; forgotLink.style.display="none"; switchLink.style.display="none";}
 }
 
-/* --- CONNECTED TO SUPABASE --- */
+/* --- SUPABASE AUTH & DATA INTEGRATION --- */
 async function submitAuth(){
-  let lang = localStorage.getItem("bi_lang")||"en";
   if(authMode==="register"){
     let fullName=authFullName.value.trim(), u=authUsernameReg.value.trim(), email=authEmailReg.value.trim(), p=authPass.value;
     if(fullName.length<2)return toast("Please enter a valid full name");
@@ -382,7 +380,6 @@ async function submitAuth(){
     if(!email.includes("@")||!email.includes("."))return toast("Please enter a valid email address");
     if(p.length<6)return toast("Password must be at least 6 characters");
     
-    // Check Supabase if user already exists
     let { data: existingUser } = await supabase.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
     if(existingUser && existingUser.length > 0) {
       return toast("Username or Email already exists!");
@@ -390,86 +387,136 @@ async function submitAuth(){
 
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
-    tempRegData = {u, fullName, email, password: p}; authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
+    tempRegData = {u, fullName, email, password: p}; authMode="verifying"; updateAuthModalUI(); toast("Verification code sent!");
   } 
   else if(authMode==="verifying"){
     let enteredCode = authEmailCode.value.trim();
     if(enteredCode!==generatedEmailCode)return toast("Invalid verification code!");
-    let u = tempRegData.u;
+    let t = tempRegData;
     
-    // Save User directly into Supabase DB
     const { data, error } = await supabase.from('users').insert([
-      { username: u, email: tempRegData.email, balance: 0 }
-    ]);
+      { username: t.u, email: t.email, fullname: t.fullName, password: t.password, balance: 0, invested: 0, profit: 0, phone: "" }
+    ]).select();
 
     if (error) {
       console.error(error);
-      return toast("Database Error: Could not save user.");
+      return toast("Database Error during registration.");
     }
 
-    db[u]={password: tempRegData.password, fullName: tempRegData.fullName, email: tempRegData.email, balance:0, invested:0, phone:"", profit:0};
-    tx.push({u,type:"Account Created",amount:0,time:new Date().toLocaleString()}); 
-    current=u; localStorage.setItem("bi_current",current); save(); closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); 
-    toast("Account created & synced to Supabase!");
+    currentUserData = { username: t.u, email: t.email, fullname: t.fullName, balance: 0, invested: 0, profit: 0, phone: "" };
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+    
+    await supabase.from('transactions').insert([{ username: t.u, type: 'Account Created', amount: 0, status: 'Completed' }]);
+    
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); 
+    toast("Account successfully created!");
   }
   else if(authMode==="login"){
-    let identifier=authUser.value.trim().toLowerCase(), p=authPass.value, matchedUser = null;
-    for(let key in db){if(key.toLowerCase()===identifier || (db[key].email && db[key].email.toLowerCase()===identifier)){matchedUser = key; break;}}
-    if(!matchedUser || db[matchedUser].password!==p)return toast("Incorrect username/email or password");
-    current=matchedUser; localStorage.setItem("bi_current",current); save(); closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (user()?.fullName || current));
+    let identifier = authUser.value.trim().toLowerCase(), p = authPass.value;
+    let { data: users, error } = await supabase.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`);
+    
+    if(error || !users || users.length === 0 || users[0].password !== p) {
+      return toast("Incorrect username/email or password");
+    }
+    
+    currentUserData = users[0];
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUserData.fullname || currentUserData.username));
   }
 }
 
-function logout(){current=null;localStorage.removeItem("bi_current");updateHeaderAuthUI();updatePortfolio();toast("Logged out successfully")}
-function updateHeaderAuthUI(){let u=user(), headerDisp=document.getElementById("userHeaderDisplay"), authGroup=document.getElementById("authButtonsGroup"); if(u){headerDisp.style.display="flex"; authGroup.style.display="none"; document.getElementById("headerFullName").textContent=u.fullName || current; document.getElementById("headerUsername").textContent="@"+current;} else {headerDisp.style.display="none"; authGroup.style.display="flex";}}
-function save(){localStorage.setItem("bi_db",JSON.stringify(db));localStorage.setItem("bi_tx",JSON.stringify(tx))}
-function user(){return current&&db[current]?db[current]:null}
+function logout(){
+  currentUserData = null;
+  localStorage.removeItem("bi_current_user");
+  updateHeaderAuthUI();
+  updatePortfolio();
+  toast("Logged out successfully");
+}
+
+function updateHeaderAuthUI(){
+  let headerDisp=document.getElementById("userHeaderDisplay"), authGroup=document.getElementById("authButtonsGroup"); 
+  if(currentUserData){
+    headerDisp.style.display="flex"; 
+    authGroup.style.display="none"; 
+    document.getElementById("headerFullName").textContent=currentUserData.fullname || currentUserData.username; 
+    document.getElementById("headerUsername").textContent="@"+currentUserData.username;
+  } else {
+    headerDisp.style.display="none"; 
+    authGroup.style.display="flex";
+  }
+}
 
 async function deposit(){
   let a=+depositAmount.value;
-  if(!user())return openAuth("login");
+  if(!currentUserData)return openAuth("login");
   if(a<=0)return toast("Enter a valid amount");
   
-  db[current].balance+=a;
-  tx.unshift({u:current,type:"Deposit",amount:a,time:new Date().toLocaleString()});
+  currentUserData.balance += a;
   
-  // Update Supabase
-  await supabase.from('users').update({ balance: db[current].balance }).eq('username', current);
-  await supabase.from('transactions').insert([{ username: current, type: 'Deposit', amount: a, status: 'Completed' }]);
+  let { error } = await supabase.from('users').update({ balance: currentUserData.balance }).eq('username', currentUserData.username);
+  if(error) return toast("Error updating balance");
+
+  await supabase.from('transactions').insert([{ username: currentUserData.username, type: 'Deposit', amount: a, status: 'Completed' }]);
   
-  save();updatePortfolio();renderTx();toast("Deposit processed!");
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+  updatePortfolio(); loadTransactionsFromSupabase(); toast("Deposit processed successfully!");
 }
 
 async function withdraw(){
   let a=+withdrawAmount.value;
-  if(!user())return openAuth("login");
-  if(a<=0||a>db[current].balance)return toast("Insufficient balance");
+  if(!currentUserData)return openAuth("login");
+  if(a<=0 || a > currentUserData.balance)return toast("Insufficient balance");
   
-  db[current].balance-=a;
-  tx.unshift({u:current,type:"Withdrawal",amount:a,time:new Date().toLocaleString()});
+  currentUserData.balance -= a;
   
-  // Update Supabase
-  await supabase.from('users').update({ balance: db[current].balance }).eq('username', current);
-  await supabase.from('transactions').insert([{ username: current, type: 'Withdrawal', amount: a, status: 'Pending' }]);
+  let { error } = await supabase.from('users').update({ balance: currentUserData.balance }).eq('username', currentUserData.username);
+  if(error) return toast("Error updating balance");
 
-  save();updatePortfolio();renderTx();toast("Withdrawal requested!");
+  await supabase.from('transactions').insert([{ username: currentUserData.username, type: 'Withdrawal', amount: a, status: 'Pending' }]);
+
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+  updatePortfolio(); loadTransactionsFromSupabase(); toast("Withdrawal requested successfully!");
 }
 
-function invest(i){
-  if(!user())return openAuth("login");
+async function invest(i){
+  if(!currentUserData)return openAuth("login");
   let min=plans[i][1], max=plans[i][2]; let a=+prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
   if(!a||a<min||a>max)return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
-  if(a>db[current].balance)return toast("Insufficient balance");
-  db[current].balance-=a; db[current].invested+=a; tx.unshift({u:current,type:"Investment: "+plans[i][0],amount:a,time:new Date().toLocaleString()}); save();updatePortfolio();renderTx();toast("Investment recorded locally");
+  if(a>currentUserData.balance)return toast("Insufficient balance");
+  
+  currentUserData.balance -= a;
+  currentUserData.invested += a;
+  
+  await supabase.from('users').update({ balance: currentUserData.balance, invested: currentUserData.invested }).eq('username', currentUserData.username);
+  await supabase.from('transactions').insert([{ username: currentUserData.username, type: 'Investment: ' + plans[i][0], amount: a, status: 'Active' }]);
+
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+  updatePortfolio(); loadTransactionsFromSupabase(); toast("Investment successfully activated!");
 }
 
-function investCustom(){
-  if(!user())return openAuth("login"); let a=+customAmount.value, term=+customTerm.value;
-  if(!a||a<1||a>100000)return toast("Custom amount must be between $1 and $100,000"); if(a>db[current].balance)return toast("Insufficient balance");
-  db[current].balance-=a; db[current].invested+=a; tx.unshift({u:current,type:"Custom Investment ("+term+"d)",amount:a,time:new Date().toLocaleString()}); save();updatePortfolio();renderTx();toast("Custom investment recorded locally");
+async function investCustom(){
+  if(!currentUserData)return openAuth("login"); 
+  let a=+customAmount.value, term=+customTerm.value;
+  if(!a||a<1||a>100000)return toast("Custom amount must be between $1 and $100,000"); 
+  if(a>currentUserData.balance)return toast("Insufficient balance");
+  
+  currentUserData.balance -= a;
+  currentUserData.invested += a;
+
+  await supabase.from('users').update({ balance: currentUserData.balance, invested: currentUserData.invested }).eq('username', currentUserData.username);
+  await supabase.from('transactions').insert([{ username: currentUserData.username, type: 'Custom Investment ('+term+'d)', amount: a, status: 'Active' }]);
+
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+  updatePortfolio(); loadTransactionsFromSupabase(); toast("Custom investment successfully created!");
 }
 
-function updatePortfolio(){let u=user();balance.textContent="$"+(u?u.balance:0).toLocaleString(undefined,{minimumFractionDigits:2});invested.textContent="$"+(u?u.invested:0).toLocaleString(undefined,{minimumFractionDigits:2});profitTotal.textContent="$"+(u?u.profit:0).toFixed(2);level.textContent=u?(u.invested>=5000?"Premium":u.invested>=1000?"Silver":"Basic"):"Basic"}
+function updatePortfolio(){
+  let u = currentUserData;
+  balance.textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  invested.textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  profitTotal.textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
+  level.textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+}
 
 function planCard(p,i){
   let lang=localStorage.getItem("bi_lang")||"en";
@@ -525,10 +572,42 @@ function renderTable(){let q=(search.value||"").toLowerCase();marketTable.innerH
 function renderTop(){topCoins.innerHTML=coins.slice(0,8).map(c=>{let d=live[c[2]]||demo[c[2]];return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div><div class="muted">${fmt(d[2])} market cap</div></div>`}).join("")}
 function toggleStar(s){stars=stars.includes(s)?stars.filter(x=>x!==s):[...stars,s];localStorage.setItem("bi_stars",JSON.stringify(stars));renderTable();renderTop()}
 async function prices(){try{let ids=coins.map(c=>c[2]).join(","),r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+ids+"&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true");if(!r.ok)throw 0;let d=await r.json();coins.forEach(c=>{let x=d[c[2]];if(x)live[c[2]]=[x.usd,x.usd_24h_change||0,x.usd_market_cap||0,x.usd_24h_vol||0]})}catch(e){}renderTop();renderTable()}
-function renderTx(){let u=current?tx.filter(x=>x.u===current):[];txList.innerHTML=u.length?u.map(x=>`<div class="row"><span><b>${x.type}</b><br><small class="muted">${x.time}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+x.amount.toLocaleString():"—"}</b></div>`).join(""):'<p class="muted">No local transactions yet.</p>'}
-function clearTx(){tx=tx.filter(x=>x.u!==current);save();renderTx();toast("History cleared")}
-function loadProfile(){let u=user();if(u){username.value=current;emailInput.value=u.email||"";fullNameInput.value=u.fullName||"";phone.value=u.phone||"";refCode.textContent="BI-"+current.slice(0,5).toUpperCase()}}
-function saveProfile(){if(!user())return openAuth("login");db[current].phone=phone.value;db[current].fullName=fullNameInput.value;save();updateHeaderAuthUI();toast("Profile saved")}
+
+async function loadTransactionsFromSupabase(){
+  if(!currentUserData){
+    txList.innerHTML='<p class="muted">Please sign in to view your transactions.</p>';
+    return;
+  }
+  let { data, error } = await supabase.from('transactions').select('*').eq('username', currentUserData.username).order('created_at', { ascending: false });
+  if(error || !data || data.length === 0){
+    txList.innerHTML='<p class="muted">No transactions found.</p>';
+    return;
+  }
+  txList.innerHTML = data.map(x=>`<div class="row"><span><b>${x.type}</b><br><small class="muted">${new Date(x.created_at || Date.now()).toLocaleString()}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
+}
+
+function loadProfile(){
+  let u = currentUserData;
+  if(u){
+    username.value = u.username;
+    emailInput.value = u.email || "";
+    fullNameInput.value = u.fullname || "";
+    phone.value = u.phone || "";
+    refCode.textContent = "BI-" + u.username.slice(0,5).toUpperCase();
+  }
+}
+
+async function saveProfile(){
+  if(!currentUserData)return openAuth("login");
+  currentUserData.phone = phone.value;
+  currentUserData.fullname = fullNameInput.value;
+  
+  await supabase.from('users').update({ phone: currentUserData.phone, fullname: currentUserData.fullname }).eq('username', currentUserData.username);
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUserData));
+  updateHeaderAuthUI();
+  toast("Profile saved successfully");
+}
+
 function copyRef(){navigator.clipboard?.writeText(refCode.textContent);toast("Referral code copied")}
 
 function setLang(l){
@@ -543,7 +622,13 @@ function setLang(l){
   renderPlans(); calc(); calcCustom(); toast("Language changed");
 }
 
-renderPlans();renderTop();renderTable();prices();loadProfile();updatePortfolio();updateHeaderAuthUI();renderTx();setInterval(prices,30000);document.getElementById("lang").value=localStorage.getItem("bi_lang")||"en";setLang(document.getElementById("lang").value);
+// Initialize session check
+let savedUser = localStorage.getItem("bi_current_user");
+if(savedUser){
+  try{ currentUserData = JSON.parse(savedUser); }catch(e){ currentUserData = null; }
+}
+
+renderPlans();renderTop();renderTable();prices();loadProfile();updatePortfolio();updateHeaderAuthUI();loadTransactionsFromSupabase();setInterval(prices,30000);document.getElementById("lang").value=localStorage.getItem("bi_lang")||"en";setLang(document.getElementById("lang").value);
 </script>
 </body>
 </html>
