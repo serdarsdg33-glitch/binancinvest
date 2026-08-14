@@ -338,11 +338,11 @@ function submitAuth(){
     if(p.length<6) return toast("Password must be at least 6 characters");
     
     let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-    if(users.some(x => x.username.toLowerCase() === u.toLowerCase() || x.u.toLowerCase() === u.toLowerCase())) return toast("Username already taken!");
+    if(users.some(x => (x.username && x.username.toLowerCase() === u.toLowerCase()) || (x.u && x.u.toLowerCase() === u.toLowerCase()))) return toast("Username already taken!");
 
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
-    tempRegData = {u, fullName, email, password: p, balance: 0, invested: 0, profit: 0, phone: ""};
+    tempRegData = {u, username: u, fullName, email, password: p, balance: 0, invested: 0, profit: 0, phone: ""};
     authMode="verifying"; updateAuthModalUI(); toast("Verification code sent!");
   } 
   else if(authMode==="verifying"){
@@ -362,12 +362,12 @@ function submitAuth(){
   else if(authMode==="login"){
     let identifier = authUser.value.trim().toLowerCase(), p = authPass.value;
     let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-    let found = users.find(x => (x.u.toLowerCase() === identifier || (x.email && x.email.toLowerCase() === identifier)) && x.password === p);
+    let found = users.find(x => ((x.u && x.u.toLowerCase() === identifier) || (x.username && x.username.toLowerCase() === identifier) || (x.email && x.email.toLowerCase() === identifier)) && x.password === p);
     
     if(!found) return toast("Incorrect username or password");
     currentUser = found;
     localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullName || currentUser.u));
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullName || currentUser.u || currentUser.username));
   }
 }
 
@@ -386,8 +386,8 @@ function updateHeaderAuthUI(){
     headerDisp.style.display = "flex"; 
     authGroup.style.display = "none"; 
     if(portAuthBtn) portAuthBtn.style.display = "none";
-    document.getElementById("headerFullName").textContent = currentUser.fullName || currentUser.u; 
-    document.getElementById("headerUsername").textContent = "@" + currentUser.u;
+    document.getElementById("headerFullName").textContent = currentUser.fullName || currentUser.u || currentUser.username; 
+    document.getElementById("headerUsername").textContent = "@" + (currentUser.u || currentUser.username);
   } else {
     headerDisp.style.display = "none"; 
     authGroup.style.display = "flex";
@@ -398,7 +398,8 @@ function updateHeaderAuthUI(){
 function saveUserData(){
   if(!currentUser) return;
   let users = JSON.parse(localStorage.getItem("bi_users_db")||"[]");
-  users = users.map(u => u.u === currentUser.u ? currentUser : u);
+  let targetName = currentUser.u || currentUser.username;
+  users = users.map(u => (u.u === targetName || u.username === targetName) ? currentUser : u);
   localStorage.setItem("bi_users_db", JSON.stringify(users));
   localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
 }
@@ -406,7 +407,7 @@ function saveUserData(){
 function saveTx(type, amount, status){
   if(!currentUser) return;
   let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]");
-  txs.unshift({ username: currentUser.u, type, amount, status, date: new Date().toLocaleString() });
+  txs.unshift({ username: currentUser.u || currentUser.username, type, amount, status, date: new Date().toLocaleString() });
   localStorage.setItem("bi_transactions_db", JSON.stringify(txs));
 }
 
@@ -525,14 +526,16 @@ async function prices(){
 
 function loadTransactions(){
   if(!currentUser){ txList.innerHTML = '<p class="muted">Please sign in to view your transactions.</p>'; return; }
-  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username === currentUser.u);
+  let targetUser = currentUser.u || currentUser.username;
+  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username === targetUser);
   if(txs.length === 0){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
   txList.innerHTML = txs.map(x=>`<div class="row"><span><b>${x.type}</b><br><small class="muted">${x.date}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
 }
 
 function clearTx(){
   if(!currentUser) return;
-  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username !== currentUser.u);
+  let targetUser = currentUser.u || currentUser.username;
+  let txs = JSON.parse(localStorage.getItem("bi_transactions_db")||"[]").filter(x => x.username !== targetUser);
   localStorage.setItem("bi_transactions_db", JSON.stringify(txs));
   loadTransactions(); toast("History cleared");
 }
@@ -540,11 +543,11 @@ function clearTx(){
 function loadProfile(){
   let u = currentUser;
   if(u){
-    username.value = u.u;
+    username.value = u.u || u.username;
     emailInput.value = u.email || "";
     fullNameInput.value = u.fullName || "";
     phone.value = u.phone || "";
-    refCode.textContent = "BI-" + u.u.slice(0,5).toUpperCase();
+    refCode.textContent = "BI-" + (u.u || u.username).slice(0,5).toUpperCase();
   }
 }
 
