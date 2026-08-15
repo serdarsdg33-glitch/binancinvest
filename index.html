@@ -290,7 +290,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
       <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
       <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
-      <div id="passwordContainer"><label data-t="password">Password</label><input id="authPass" type="password" placeholder="******"></div>
+      <div id="passwordContainer"><label data-t="password">Password (Min 8 chars: Upper, Lower, Number)</label><input id="authPass" type="password" placeholder="******"></div>
       <button class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" onclick="submitAuth()" data-t="continue">Continue</button>
       <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
     </div>
@@ -600,7 +600,7 @@ async function submitDepositRequest() {
     }
 }
 
-// 100 Realistic Names (No trailing dots, full realistic names)
+// 100 Realistic Names
 const fakeNames = [
     "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
     "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
@@ -629,7 +629,7 @@ function addLiveWithdrawal() {
     let list = document.getElementById("liveWithdrawalsList");
     if(!list) return;
     let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    let amount = (Math.random() * 990 + 10).toFixed(2); // Between $10 and $1,000
+    let amount = (Math.random() * 990 + 10).toFixed(2);
     let initial = name.charAt(0);
     let lang = localStorage.getItem("bi_lang") || "en";
     let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
@@ -650,11 +650,9 @@ function addLiveWithdrawal() {
     if(list.children.length > 5) list.removeChild(list.lastChild);
 }
 
-// Exactly every 5 seconds
 setInterval(addLiveWithdrawal, 5000);
 setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
 
-// Live updating and saving counters every 5 seconds
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
 
@@ -706,8 +704,13 @@ async function submitAuth(){
     let fullName = authFullName.value.trim(), u = authUsernameReg.value.trim(), email = authEmailReg.value.trim(), p = authPass.value;
     if(fullName.length<2) return toast("Please enter a valid full name");
     if(u.length<3) return toast("Username must be at least 3 characters");
-    if(!email.includes("@")) return toast("Please enter a valid email");
-    if(p.length<6) return toast("Password must be at least 6 characters");
+    if(!email.includes("@")) return toast("Please enter a valid email address");
+    
+    // Password validation: minimum 8 characters, containing lowercase, uppercase, and numbers
+    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if(!pwdRegex.test(p)){
+      return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
+    }
     
     let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
     if(existing && existing.length > 0) return toast("Username or email already taken!");
@@ -715,11 +718,11 @@ async function submitAuth(){
     generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
     document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
     tempRegData = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
-    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent!");
+    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
   } 
   else if(authMode==="verifying"){
     let enteredCode = authEmailCode.value.trim();
-    if(enteredCode !== generatedEmailCode) return toast("Invalid code!");
+    if(enteredCode !== generatedEmailCode) return toast("Invalid verification code!");
     
     let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
     if(error){
@@ -969,22 +972,27 @@ function copyRef(){ navigator.clipboard?.writeText(refCode.textContent); toast("
 
 function setLang(l){
   localStorage.setItem("bi_lang", l);
-  let d = T[l] || T.en;
-  document.documentElement.dir = (l === "fa" || l === "ar") ? "rtl" : "ltr";
-  document.querySelectorAll("[data-t]").forEach(e=>{
-    let k = e.dataset.t;
-    if(d[k]) e.textContent = d[k];
-  });
+  document.documentElement.dir = (l === 'fa' || l === 'ar') ? 'rtl' : 'ltr';
+  location.reload();
 }
 
-prices();
-renderPlans();
-renderTable();
-renderTop();
-setInterval(prices, 30000);
-if(localStorage.getItem("bi_current_user")){
-  try{ currentUser = JSON.parse(localStorage.getItem("bi_current_user")); updateHeaderAuthUI(); loadProfile(); }catch(e){}
-}
+window.addEventListener("DOMContentLoaded", () => {
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  document.documentElement.dir = (savedLang === 'fa' || savedLang === 'ar') ? 'rtl' : 'ltr';
+  
+  let savedUser = localStorage.getItem("bi_current_user");
+  if(savedUser){
+    try{ currentUser = JSON.parse(savedUser); }catch(e){}
+  }
+  
+  updateHeaderAuthUI();
+  renderPlans();
+  renderTable();
+  renderTop();
+  prices();
+  setInterval(prices, 15000);
+});
 </script>
 </body>
 </html>
