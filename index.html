@@ -444,7 +444,7 @@ thAsset:"Asset",thPrice:"Preis",th24h:"24h",thCap:"Marktkapitalisierung",thVol:"
 customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie einen beliebigen Betrag von 1 $ bis 100.000 $.",customAmountLabel:"Benutzerdefinierter Betrag ($1 - $100,000)",customTermLabel:"Laufzeit (Tage)",investCustomBtn:"Investieren",
 dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
 lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
-pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktiv",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktiv",
+pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktif",
 forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet (Vorschau:",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
 contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
 platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
@@ -747,8 +747,8 @@ function updatePortfolio(){
   level.textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
 }
 
-function planCard(p,i){
-  let lang = localStorage.getItem("bi_lang")||"en";
+function planCard(p, i) {
+  let lang = localStorage.getItem("bi_lang") || "en";
   let planNames = {
     en: [["Starter", "Starter Plan"], ["Growth", "Growth Plan"], ["Premium", "Premium Plan"]],
     fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
@@ -759,13 +759,31 @@ function planCard(p,i){
     zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
     es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
     fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
-    de: [["Starter", "Starter-Plan"], ["Growth", "Wststums-Plan"], ["Premium", "Premium-Plan"]]
+    de: [["Starter", "Starter-Plan"], ["Growth", "Wachstums-Plan"], ["Premium", "Premium-Plan"]]
   };
-  let lKey = planNames[lang] || planNames.en; let name = lKey[i][1]; let tagHtml = i===1 ? '<span class="tag">POPULAR</span>' : '';
-  let minTxt = lang==="fa" ? `مبلغ: از $${p[1].toLocaleString()} تا $${p[2].toLocaleString()}` : `Amount: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}`;
-  let termTxt = lang==="fa" ? `مدت زمان: ${p[4]} روز` : `Term: ${p[4]} days`;
+  
+  let uiTexts = {
+    en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
+    fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
+    az: { daily: "Gündəlik", dailyProfit: "Gündəlik gəlir", monthlyProfit: "Aylıq gəlir", investNow: "İndi İnvestisiya Et", popular: "POPÜLYAR", amount: "Məbləğ", term: "Müddət", days: "gün" },
+    tr: { daily: "Günlük", dailyProfit: "Günlük kâr", monthlyProfit: "Aylık kâr", investNow: "Şimdi Yatırım Yap", popular: "POPÜLER", amount: "Miktar", term: "Süre", days: "gün" },
+    ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" },
+    ar: { daily: "يومي", dailyProfit: "الربح اليومي", monthlyProfit: "الربح الشهري", investNow: "استثمر الآن", popular: "شائع", amount: "المبلغ", term: "المدة", days: "أيام" },
+    zh: { daily: "每日", dailyProfit: "每日利润", monthlyProfit: "每月利润", investNow: "立即投资", popular: "热门", amount: "金额", term: "期限", days: "天" },
+    es: { daily: "Diario", dailyProfit: "Beneficio diario", monthlyProfit: "Beneficio mensual", investNow: "Invertir ahora", popular: "POPULAR", amount: "Cantidad", term: "Plazo", days: "días" },
+    fr: { daily: "Quotidien", dailyProfit: "Profit journalier", monthlyProfit: "Profit mensuel", investNow: "Investir", popular: "POPULAIRE", amount: "Montant", term: "Durée", days: "jours" },
+    de: { daily: "Täglich", dailyProfit: "Täglicher Gewinn", monthlyProfit: "Monatlicher Gewinn", investNow: "Jetzt investieren", popular: "BELIEBT", amount: "Betrag", term: "Laufzeit", days: "Tage" }
+  };
+
+  let lKey = planNames[lang] || planNames.en;
+  let t = uiTexts[lang] || uiTexts.en;
+  let name = lKey[i][1]; 
+  let tagHtml = i === 1 ? `<span class="tag">${t.popular}</span>` : '';
+  let minTxt = `${t.amount}: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}`;
+  let termTxt = `${t.term}: ${p[4]} ${t.days}`;
   let dailyRate = p[3], monthlyRate = (dailyRate * 30).toFixed(1);
-  return `<div class="card plan">${tagHtml}<span class="muted">${p[0]}</span><h2>${name}</h2><div class="apy" style="font-size:28px">${dailyRate}% <small style="font-size:12px; color:var(--muted)">Daily</small></div><ul><li>${minTxt}</li><li>${termTxt}</li><li class="green">Daily profit: ${dailyRate}%</li><li class="green">Monthly profit: ${monthlyRate}%</li></ul><button class="btn gold" onclick="invest(${i})">Invest Now</button></div>`;
+  
+  return `<div class="card plan">${tagHtml}<span class="muted">${p[0]}</span><h2>${name}</h2><div class="apy" style="font-size:28px">${dailyRate}% <small style="font-size:12px; color:var(--muted)">${t.daily}</small></div><ul><li>${minTxt}</li><li>${termTxt}</li><li class="green">${t.dailyProfit}: ${dailyRate}%</li><li class="green">${t.monthlyProfit}: ${monthlyRate}%</li></ul><button class="btn gold" onclick="invest(${i})">${t.investNow}</button></div>`;
 }
 
 function renderPlans(){
