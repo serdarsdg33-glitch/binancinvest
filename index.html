@@ -155,7 +155,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <h2 data-t="deposit">Deposit</h2>
       <p class="muted" data-t="depositDesc">Add balance securely via wallet or gateway.</p>
       
-      <!-- فرم جدید واریز وجه -->
+      <!-- فرم جدید واریز وجه با ۳ روش پرداخت -->
       <div style="margin-top: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">مبلغ (دلار / USD):</label>
           <input type="number" id="deposit-amount" placeholder="مثلا 100" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px; margin-bottom:10px;">
@@ -164,9 +164,9 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <div style="margin-bottom: 10px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">انتخاب روش پرداخت:</label>
           <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
-              <option value="wallet">پرداخت مستقیم به ولت شما (ارز دیجیتال)</option>
-              <option value="paymentio">درگاه پرداخت Payment.io</option>
-              <option value="leemon">کارت به کارت / درگاه Leemon</option>
+              <option value="wallet">1. پرداخت مستقیم به ولت شما (ارز دیجیتال)</option>
+              <option value="paymentio">2. پرداخت از طریق درگاه Payment.io</option>
+              <option value="leemon">3. پرداخت از طریق کارت (درگاه Lemon Squeezy)</option>
           </select>
       </div>
 
@@ -231,7 +231,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="toast" id="toast"></div>
 
 <script>
-// اتصال به Supabase با اطلاعات شما
+// اتصال به Supabase با اطلاعات پروژه شما
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -299,7 +299,7 @@ const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",110
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
 
-// آدرس ولت‌های شخصی شما
+// آدرس‌های ولت شخصی شما
 const WALLETS = {
     trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
     bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
@@ -317,13 +317,13 @@ function togglePaymentDetails() {
         const selectedCrypto = document.getElementById('crypto-currency').value;
         const address = WALLETS[selectedCrypto];
         
-        infoBox.innerHTML = `<b>آدرس ولت شما برای این شبکه:</b><br><span style="color:#0ecb81; user-select: all;">${address}</span><br><small style="color:#aaa;">لطفاً مبلغ را به این آدرس واریز کرده و سپس هش تراکنش را وارد کنید.</small>`;
+        infoBox.innerHTML = `<b>آدرس ولت شما برای این شبکه:</b><br><span style="color:#0ecb81; user-select: all;">${address}</span><br><small style="color:#aaa;">لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>`;
     } else {
         cryptoContainer.style.display = 'none';
         if (method === 'paymentio') {
-            infoBox.innerHTML = `درگاه پرداخت <b>Payment.io</b> انتخاب شد. پس از ثبت، منتظر تایید بمانید.`;
+            infoBox.innerHTML = `درگاه پرداخت <b>Payment.io</b> انتخاب شد. پس از انتقال، شماره فاکتور یا کد پیگیری را وارد کنید.`;
         } else if (method === 'leemon') {
-            infoBox.innerHTML = `درگاه کارت به کارت <b>Leemon</b> انتخاب شد. پس از واریز، کد پیگیری را ثبت کنید.`;
+            infoBox.innerHTML = `درگاه کارت به کارت / <b>Lemon Squeezy</b> انتخاب شد. پس از واریز، کد پیگیری را جهت تأیید نهایی ثبت کنید.`;
         }
     }
 }
@@ -348,7 +348,7 @@ async function submitDepositRequest() {
 
     let paymentDetailsInfo = method === 'wallet' ? `[Wallet - ${cryptoType}] ${gatewayRef}` : `[${method.toUpperCase()}] ${gatewayRef}`;
 
-    // ثبت درخواست در جدول transactions با وضعیت Pending برای تایید توسط ادمین
+    // ثبت درخواست در جدول transactions با وضعیت Pending برای تایید توسط شما (مدیر سایت)
     const { error } = await supabaseClient.from('transactions').insert([
         {
             username: currentUser.username,
@@ -363,7 +363,7 @@ async function submitDepositRequest() {
     if (error) {
         alert('خطا در ثبت درخواست: ' + error.message);
     } else {
-        alert('درخواست واریز شما با موفقیت ثبت شد و پس از بررسی و تایید شما در پنل ادمین، به موجودی اضافه خواهد شد.');
+        alert('درخواست واریز شما با موفقیت ثبت شد و پس از بررسی و تایید شما در پنل، به موجودی اضافه خواهد شد.');
         document.getElementById('deposit-amount').value = '';
         document.getElementById('tx-ref').value = '';
         loadTransactions();
