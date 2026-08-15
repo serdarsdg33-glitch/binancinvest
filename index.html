@@ -155,23 +155,23 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <h2 data-t="deposit">Deposit</h2>
       <p class="muted" data-t="depositDesc">Add balance securely via wallet or gateway.</p>
       
-      <!-- فرم جدید واریز وجه با ۳ روش پرداخت -->
+      <!-- فرم واریز وجه با پشتیبانی کامل از تغییر زبان -->
       <div style="margin-top: 15px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">مبلغ (دلار / USD):</label>
-          <input type="number" id="deposit-amount" placeholder="مثلا 100" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px; margin-bottom:10px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
+          <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px; margin-bottom:10px;">
       </div>
 
       <div style="margin-bottom: 10px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">انتخاب روش پرداخت:</label>
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depMethodLabel">Select Payment Method:</label>
           <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
-              <option value="wallet">1. پرداخت مستقیم به ولت شما (ارز دیجیتال)</option>
-              <option value="paymentio">2. پرداخت از طریق درگاه Payment.io</option>
-              <option value="leemon">3. پرداخت از طریق کارت (درگاه Lemon Squeezy)</option>
+              <option value="wallet" id="opt-direct-payment">1. Direct Payment</option>
+              <option value="paymentio" id="opt-paymentio">2. Payment via Payment.io Gateway</option>
+              <option value="leemon" id="opt-leemon">3. Card Payment (Lemon Squeezy)</option>
           </select>
       </div>
 
       <div id="crypto-options-container" style="margin-bottom: 10px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">انتخاب نوع ارز و شبکه:</label>
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
           <select id="crypto-currency" onchange="togglePaymentDetails()" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
               <option value="trx_usdt_trc20">TRX / Tether (TRC20)</option>
               <option value="bnb_usdt_bep20">BNB / Tether (BEP20)</option>
@@ -183,11 +183,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <div id="payment-info-box" style="background:#121318; padding:10px; border-radius:4px; margin-bottom:10px; font-size:11px; border:1px dashed #f0b90b; word-break:break-all;"></div>
 
       <div style="margin-bottom: 15px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">شماره پیگیری / هش تراکنش (TXID):</label>
-          <input type="text" id="tx-ref" placeholder="کد پیگیری یا هش واریز را وارد کنید" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
+          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px;">
       </div>
 
-      <button class="btn gold" style="width:100%;" onclick="submitDepositRequest()">ثبت درخواست واریز و انتظار تایید</button>
+      <button class="btn gold" style="width:100%;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
     <div class="card"><h2 data-t="withdraw">Withdraw</h2><p class="muted" data-t="withdrawDesc">Request withdrawal instantly.</p><input id="withdrawAmount" type="number" placeholder="50"><button class="btn" style="width:100%;margin-top:10px" onclick="withdraw()" data-t="request">Request Withdrawal</button></div>
@@ -231,7 +231,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="toast" id="toast"></div>
 
 <script>
-// اتصال به Supabase با اطلاعات پروژه شما
+// اتصال به Supabase
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -252,7 +252,12 @@ lockNoticeText:"If you lock your money for 60 days or more, your daily profit ra
 pointsTitle:"Points",pointsSub:"+50 weekly",refTitle:"Referral",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Streak",streakSub:"Active",sec2fa:"2FA",secLogin:"Login protection",secWith:"Withdrawal confirmation",enabled:"Enabled",active:"Active",
 forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"A verification code has been sent to your email. (Simulated code preview:",enterCode:"Enter 6-digit Email Code",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
-platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvestors:"Active Investors", statPaid:"Total Profit Paid", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now"
+platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvestors:"Active Investors", statPaid:"Total Profit Paid", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
+depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
+optDirect:"1. Direct Payment", optPaymentio:"2. Payment via Payment.io Gateway", optLeemon:"3. Card Payment (Lemon Squeezy)",
+walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for admin approval.</small>",
+paymentioMsg:"<b>Payment.io Gateway selected.</b> Please proceed and enter your invoice or transaction ref code below.",
+leemonMsg:"<b>Lemon Squeezy / Card Payment selected.</b> Please complete payment and enter reference code below for verification."
 },
 fa:{
 brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
@@ -269,7 +274,12 @@ lockNoticeText:"اگر شما پول خودتان را به مدت ۶۰ روز �
 pointsTitle:"امتیاز",pointsSub:"+۵۰ هفتگی",refTitle:"دعوت دوستان",vipTitle:"وی‌آی‌پی",vipSub:"۱۲۵۰ امتیاز",streakTitle:"مداومت",streakSub:"فعال",sec2fa:"تأیید دو مرحله‌ای",secLogin:"محافظت از ورود",secWith:"تأیید برداشت",enabled:"فعال",active:"فعال",
 forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد تأیید به ایمیل شما ارسال شد. (پیش‌نمایش کد شبیه‌سازی‌شده:",enterCode:"کد ۶ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
-platformStatsTitle:"آمارهای پلتفرم", statUsers:"کاربران استفاده‌کننده", statInvestors:"سرمایه‌گذاران فعال", statPaid:"سود پرداخت شده", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان"
+platformStatsTitle:"آمارهای پلتفرم", statUsers:"کاربران استفاده‌کننده", statInvestors:"سرمایه‌گذاران فعال", statPaid:"سود پرداخت شده", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
+depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
+optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io", optLeemon:"۳. پرداخت از طریق کارت (درگاه Lemon Squeezy)",
+walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>",
+paymentioMsg:"درگاه پرداخت <b>Payment.io</b> انتخاب شد. پس از انتقال، شماره فاکتور یا کد پیگیری را وارد کنید.",
+leemonMsg:"درگاه کارت به کارت / <b>Lemon Squeezy</b> انتخاب شد. پس از واریز، کد پیگیری را جهت تأیید نهایی ثبت کنید."
 },
 az:{
 brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profile:"Profil",
@@ -286,20 +296,72 @@ lockNoticeText:"Əgər pulunuzu 60 gün və ya daha çox müddətə qapatsanız,
 pointsTitle:"Xallar",pointsSub:"+50 həftəlik",refTitle:"Referal",vipTitle:"VIP",vipSub:"1,250 xal",streakTitle:"Seriya",streakSub:"Aktiv",sec2fa:"2FA",secLogin:"Giriş qorunması",secWith:"Çıxarış təsdiqi",enabled:"Aktivdir",active:"Aktivdir",
 forgotPasswordText:"Şifrəni unutmusunuz?",needAccountText:"Hesabınız yoxdur? Qeydiyyatdan keçin",haveAccountText:"Artıq hesabınız var? Daxil olun",usernameOrEmail:"İstifadəçi adı və ya E-poçt",enterEmailOrUser:"İstifadəçi adı və ya qeydiyyatdakı e-poçtunuzu daxil edin",codeSentNotice:"Təsdiq kodu e-poçtunuza göndərildi. (Simulyasiya kodu:",enterCode:"6 rəqəmli təsdiq kodunu daxil edin",sendResetCode:"Sıfırlama kodu göndər",resetPasswordTitle:"Şifrənin Sıfırlanması",newPasswordLabel:"Yeni Şifrə",resetBtn:"Şifrəni Yenilə",
 contactUs:"Bizimlə Əlaqə", supportEmail:"Dəstək E-poçtu", securityPartners:"Təhlükəsizlik Tərəfdaşları",
-platformStatsTitle:"Platforma Statistikası", statUsers:"İstifadəçilər", statInvestors:"Aktiv İnvestorlar", statPaid:"Ödənilən Gəlir", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi"
+platformStatsTitle:"Platforma Statistikası", statUsers:"İstifadəçilər", statInvestors:"Aktiv İnvestorlar", statPaid:"Ödənilən Gəlir", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi",
+depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
+optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io Vasitəsilə Ödəniş", optLeemon:"3. Kartla Ödəniş (Lemon Squeezy)",
+walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
+paymentioMsg:"<b>Payment.io seçildi.</b> Ödənişdən sonra qəbz və ya əməliyyat kodunu aşağıya daxil edin.",
+leemonMsg:"<b>Lemon Squeezy / Kart ödənişi seçildi.</b> Ödənişdən sonra təsdiq kodunu daxil edin."
+},
+tr:{
+brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çıkış Yap",overview:"Genel Bakış",markets:"Piyasalar",invest:"Yatırım",portfolio:"Portföy",transactions:"İşlemler",rewards:"Ödüller",profile:"Profil",
+hero:"Geleceğinizi akıllı yatırımlarla inşa edin.",heroDesc:"Dijital varlıkları ve yatırım planlarını profesyonel arayüzde keşfedin.",exploreInvest:"Yatırımları İncele",exploreMarkets:"Piyasaları İncele",
+top:"Popüler Piyasalar",viewAll:"Tümünü Gör",featured:"Öne Çıkan Yatırımlar",plans:"Yatırım Planları",illustrative:"Tahmini Getiri",calculator:"Yatırım Hesaplayıcı",amount:"Miktar",plan:"Plan",estimated:"Tahmini Değer",
+balance:"Bakiye",invested:"Yatırılan",profitTotal:"Toplam Kâr",level:"Hesap Seviyesi",deposit:"Para Yatır",depositDesc:"Güvenli bir şekilde bakiye yükleyin.",withdraw:"Para Çek",withdrawDesc:"Anında çekim talebi oluşturun.",request:"Çekim Talebi Gönder",
+clear:"Geçmişi Temizle",copy:"Kodu Kopyala",account:"Hesap",username:"Kullanıcı Adı",email:"E-posta",fullname:"Ad Soyad",phone:"Telefon",save:"Profili Kaydet",security:"Güvenlik",password:"Şifre",continue:"Devam Et",local:"Hesap verileriniz Supabase veritabanında güvenle saklanır.",
+eyebrowText:"PREMİUM DİJİTAL VARLIK PLATFORMU",footerTitle:"Neden Binance Invest?",footerDesc:"Varlıklarınızın güvenle büyümesi için profesyonel düzeyde güvenilirlik sunuyoruz.",footerCopy:"© 2026 Binance Invest Global. Tüm hakları saklıdır.",
+thAsset:"Varlık",thPrice:"Fiyat",th24h:"24s",thCap:"Piyasa Değeri",thVol:"Hacim",
+customTitle:"Özel Yatırım Planı",customDesc:"1$ ile 100.000$ arasında dilediğiniz miktarda yatırım yapın.",customAmountLabel:"Özel Miktar ($1 - $100,000)",customTermLabel:"Süre (Gün)",investCustomBtn:"Özel Miktar İle Yatırım Yap",
+dailyProfitLabel:"Günlük Kâr",monthlyProfitLabel:"Aylık Kâr",
+lockNoticeText:"Paranızı 60 gün veya daha uzun süre kilitlerseniz, günlük kâr oranınız %7.5 üzerine çıkar.",
+pointsTitle:"Puan",pointsSub:"+50 haftalık",refTitle:"Referans",vipTitle:"VIP",vipSub:"1,250 Puan",streakTitle:"Seri",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Giriş Koruması",secWith:"Çekim Onayı",enabled:"Etkin",active:"Aktif",
+forgotPasswordText:"Şifremi Unuttum?",needAccountText:"Hesabınız yok mu? Kayıt olun",haveAccountText:"Zaten hesabınız var mı? Giriş yapın",usernameOrEmail:"Kullanıcı Adı veya E-posta",enterEmailOrUser:"Kullanıcı adınızı veya e-postanızı girin",codeSentNotice:"Doğrulama kodu e-postanıza gönderildi:",enterCode:"6 Haneli Kodu Girin",sendResetCode:"Sıfırlama Kodu Gönder",resetPasswordTitle:"Şifre Sıfırlama",newPasswordLabel:"Yeni Şifre",resetBtn:"Şifreyi Güncelle",
+contactUs:"İletişim", supportEmail:"Destek E-postası", securityPartners:"Güvenlik Ortakları",
+platformStatsTitle:"Platform İstatistikleri", statUsers:"Kullanıcılar", statInvestors:"Aktif Yatırımcılar", statPaid:"Ödenen Kâr", statCapital:"Platform Sermayesi", liveWithdrawalsTitle:"Canlı Çekimler", justNow:"Az önce",
+depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCryptoLabel:"Para Birimi ve Ağ Seçin:", depTxLabel:"İşlem Kodu / TXID:", depSubmitBtn:"Yatırma Talebi Gönder",
+optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io İle Ödeme", optLeemon:"3. Kart İle Ödeme (Lemon Squeezy)",
+walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Lütfen tutarı bu adrese gönderin ve onay için TXID kodunu girin.</small>",
+paymentioMsg:"<b>Payment.io seçildi.</b> Ödeme yaptıktan sonra işlem kodunu girin.",
+leemonMsg:"<b>Lemon Squeezy / Kart ödemesi seçildi.</b> Ödeme sonrası referans kodunu girin."
+},
+ru:{
+brand:"Binance Invest",login:"Войти",register:"Регистрация",logout:"Выйти",overview:"Обзор",markets:"Рынки",invest:"Инвестиции",portfolio:"Портфель",transactions:"Транзакции",rewards:"Награды",profile:"Профиль",
+hero:"Стройте свое будущее с умными инвестициями.",heroDesc:"Изучайте цифровые активы и инвестиционные планы в премиум-интерфейсе.",exploreInvest:"Инвестиции",exploreMarkets:"Рынки",
+top:"Популярные рынки",viewAll:"Все рынки",featured:"Рекомендуемые планы",plans:"Инвестиционные планы",illustrative:"Примерная доходность",calculator:"Калькулятор",amount:"Сумма",plan:"План",estimated:"Оценочная стоимость",
+balance:"Баланс",invested:"Инвестировано",profitTotal:"Общая прибыль",level:"Уровень счета",deposit:"Депозит",depositDesc:"Пополняйте баланс безопасно.",withdraw:"Вывод",withdrawDesc:"Запросить мгновенный вывод.",request:"Запросить вывод",
+clear:"Очистить историю",copy:"Копировать",account:"Аккаунт",username:"Имя пользователя",email:"Email",fullname:"ФИО",phone:"Телефон",save:"Сохранить",security:"Безопасность",password:"Пароль",continue:"Продолжить",local:"Данные хранятся в базе Supabase.",
+eyebrowText:"ПРЕМИАЛЬНАЯ ПЛАТФОРМА ЦИФРОВЫХ АКТИВОВ",footerTitle:"Почему Binance Invest?",footerDesc:"Надежность профессионального уровня и умные инструменты для роста ваших активов.",footerCopy:"© 2026 Binance Invest Global. Все права защищены.",
+thAsset:"Актив",thPrice:"Цена",th24h:"24ч",thCap:"Капитализация",thVol:"Объем",
+customTitle:"Персональный план",customDesc:"Инвестируйте любую сумму от $1 до $100,000.",customAmountLabel:"Сумма ($1 - $100,000)",customTermLabel:"Срок (Дней)",investCustomBtn:"Инвестировать",
+dailyProfitLabel:"Дневная прибыль",monthlyProfitLabel:"Месячная прибыль",
+lockNoticeText:"При заморозке средств на 60 дней и более ежедневная ставка превышает 7.5%.",
+pointsTitle:"Баллы",pointsSub:"+50 еженедельно",refTitle:"Рефералы",vipTitle:"VIP",vipSub:"1,250 баллов",streakTitle:"Серия",streakSub:"Активно",sec2fa:"2FA",secLogin:"Защита входа",secWith:"Подтверждение вывода",enabled:"Включено",active:"Активно",
+forgotPasswordText:"Забыли пароль?",needAccountText:"Нет аккаунта? Зарегистрируйтесь",haveAccountText:"Уже есть аккаунт? Войти",usernameOrEmail:"Имя пользователя или Email",enterEmailOrUser:"Введите имя пользователя или Email",codeSentNotice:"Код подтверждения отправлен на Email:",enterCode:"Введите 6-значный код",sendResetCode:"Отправить код",resetPasswordTitle:"Сброс пароля",newPasswordLabel:"Новый пароль",resetBtn:"Обновить пароль",
+contactUs:"Контакты", supportEmail:"Email поддержки", securityPartners:"Партнеры по безопасности",
+platformStatsTitle:"Статистика платформы", statUsers:"Пользователи", statInvestors:"Активные инвесторы", statPaid:"Выплачено прибыли", statCapital:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
+depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
+optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io", optLeemon:"3. Оплата картой (Lemon Squeezy)",
+walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
+paymentioMsg:"<b>Выбран шлюз Payment.io.</b> Введите номер счета или код транзакции ниже.",
+leemonMsg:"<b>Выбрана оплата картой / Lemon Squeezy.</b> Введите код подтверждения ниже."
 }
 };
-T.tr=T.az; T.ru=T.en; T.ar=T.fa; T.zh=T.en; T.es=T.en; T.fr=T.en; T.de=T.en;
+
+// پشتیبانی و شبیه‌سازی کامل برای سایر زبان‌های منو
+T.ar = T.fa;
+T.zh = T.en;
+T.es = T.en;
+T.fr = T.en;
+T.de = T.en;
 
 const coins=[["BTC","Bitcoin","bitcoin","₿"],["ETH","Ethereum","ethereum","Ξ"],["BNB","BNB","binancecoin","B"],["SOL","Solana","solana","S"],["XRP","XRP","ripple","X"],["ADA","Cardano","cardano","A"],["DOGE","Dogecoin","dogecoin","Ð"],["TRX","TRON","tron","T"],["AVAX","Avalanche","avalanche-2","A"],["LINK","Chainlink","chainlink","L"],["DOT","Polkadot","polkadot","D"],["LTC","Litecoin","litecoin","Ł"]];
 const demo={bitcoin:[116842,2.2,232e10,54e9],ethereum:[4421,3.1,533e9,26e9],binancecoin:[812,.8,118e9,2.4e9],solana:[182,-1.1,87e9,4.2e9],ripple:[3.12,1.8,178e9,6.2e9],cardano:[.88,-.7,32e9,.69e9],dogecoin:[.23,2.4,34e9,1.5e9],tron:[.36,.9,34e9,.72e9],"avalanche-2":[24.4,-.3,10.5e9,.32e9],chainlink:[24.8,1.7,16e9,.7e9],polkadot:[4.2,-.4,6.5e9,.18e9],litecoin:[122,1.1,9.2e9,.52e9]};
-
 const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
 
-// آدرس‌های ولت شخصی شما
+// آدرس‌های ولت اختصاصی شما
 const WALLETS = {
     trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
     bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
@@ -311,19 +373,20 @@ function togglePaymentDetails() {
     const method = document.getElementById('payment-method').value;
     const cryptoContainer = document.getElementById('crypto-options-container');
     const infoBox = document.getElementById('payment-info-box');
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let dict = T[lang] || T.en;
 
     if (method === 'wallet') {
         cryptoContainer.style.display = 'block';
         const selectedCrypto = document.getElementById('crypto-currency').value;
         const address = WALLETS[selectedCrypto];
-        
-        infoBox.innerHTML = `<b>آدرس ولت شما برای این شبکه:</b><br><span style="color:#0ecb81; user-select: all;">${address}</span><br><small style="color:#aaa;">لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>`;
+        infoBox.innerHTML = (dict.walletMsg || T.en.walletMsg).replace("{ADDR}", address);
     } else {
         cryptoContainer.style.display = 'none';
         if (method === 'paymentio') {
-            infoBox.innerHTML = `درگاه پرداخت <b>Payment.io</b> انتخاب شد. پس از انتقال، شماره فاکتور یا کد پیگیری را وارد کنید.`;
+            infoBox.innerHTML = dict.paymentioMsg || T.en.paymentioMsg;
         } else if (method === 'leemon') {
-            infoBox.innerHTML = `درگاه کارت به کارت / <b>Lemon Squeezy</b> انتخاب شد. پس از واریز، کد پیگیری را جهت تأیید نهایی ثبت کنید.`;
+            infoBox.innerHTML = dict.leemonMsg || T.en.leemonMsg;
         }
     }
 }
@@ -337,18 +400,17 @@ async function submitDepositRequest() {
     if(!currentUser) return openAuth("login");
 
     if (!amount || amount <= 0) {
-        alert('لطفا مبلغ معتبری وارد کنید.');
+        alert('Please enter a valid amount.');
         return;
     }
 
     if (!gatewayRef) {
-        alert('لطفا شماره پیگیری یا هش تراکنش را وارد کنید.');
+        alert('Please enter the reference code / TXID.');
         return;
     }
 
-    let paymentDetailsInfo = method === 'wallet' ? `[Wallet - ${cryptoType}] ${gatewayRef}` : `[${method.toUpperCase()}] ${gatewayRef}`;
+    let paymentDetailsInfo = method === 'wallet' ? `[Direct Payment - ${cryptoType}] ${gatewayRef}` : `[${method.toUpperCase()}] ${gatewayRef}`;
 
-    // ثبت درخواست در جدول transactions با وضعیت Pending برای تایید توسط شما (مدیر سایت)
     const { error } = await supabaseClient.from('transactions').insert([
         {
             username: currentUser.username,
@@ -361,9 +423,9 @@ async function submitDepositRequest() {
     ]);
 
     if (error) {
-        alert('خطا در ثبت درخواست: ' + error.message);
+        alert('Error: ' + error.message);
     } else {
-        alert('درخواست واریز شما با موفقیت ثبت شد و پس از بررسی و تایید شما در پنل، به موجودی اضافه خواهد شد.');
+        alert('Deposit request submitted! It will reflect in your balance after admin approval.');
         document.getElementById('deposit-amount').value = '';
         document.getElementById('tx-ref').value = '';
         loadTransactions();
@@ -683,9 +745,19 @@ function setLang(l){
     let k = e.dataset.t;
     if(d[k]) e.textContent = d[k];
   });
+  
+  // به‌روزرسانی متن گزینه‌های پرداخت
+  let optDirect = document.getElementById("opt-direct-payment");
+  let optPaymentio = document.getElementById("opt-paymentio");
+  let optLeemon = document.getElementById("opt-leemon");
+  if(optDirect) optDirect.textContent = d.optDirect || T.en.optDirect;
+  if(optPaymentio) optPaymentio.textContent = d.optPaymentio || T.en.optPaymentio;
+  if(optLeemon) optLeemon.textContent = d.optLeemon || T.en.optLeemon;
+
   let lockEl = document.getElementById("lockNotice");
   if(lockEl) lockEl.textContent = d.lockNoticeText || T.en.lockNoticeText;
-  renderPlans(); calc(); calcCustom();
+  
+  renderPlans(); calc(); calcCustom(); togglePaymentDetails();
 }
 
 let savedUser = localStorage.getItem("bi_current_user");
