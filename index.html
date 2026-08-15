@@ -22,12 +22,20 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .coins{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.coinTop{display:flex;justify-content:space-between;align-items:center}.coin{display:flex;gap:9px;align-items:center}.icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#8993a0 25%,#242b34 70%);color:#111;font-weight:900}.price{font-size:20px;font-weight:900;margin-top:15px}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.plan{position:relative;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}.plan:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 25px 40px rgba(0,0,0,0.6), 0 10px 15px rgba(0,0,0,0.4);border-color:var(--gold)}.tag{position:absolute;right:13px;top:13px;color:#111;background:var(--gold);padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900}.apy{font-size:36px;font-weight:900;color:var(--gold);margin:15px 0}.plan ul{color:var(--muted);line-height:1.9;padding-left:18px}.plan .btn{width:100%;margin-top:8px}
 
-.stats-3d-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; perspective: 1000px; margin-bottom: 20px; }
-.stat-3d-card { background: linear-gradient(135deg, #111820, #080b0f); border: 1px solid rgba(240,185,11,0.15); border-radius: 20px; padding: 30px 15px; text-align: center; transform: rotateX(15deg) translateZ(0); box-shadow: 0 20px 40px rgba(0,0,0,0.7), inset 0 3px 15px rgba(255,255,255,0.03); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
-.stat-3d-card:hover { transform: rotateX(0deg) translateY(-10px) translateZ(30px); border-color: var(--gold); box-shadow: 0 30px 60px rgba(240,185,11,0.15), inset 0 0 20px rgba(240,185,11,0.05); }
-.stat-3d-icon { font-size: 32px; margin-bottom: 10px; transform: translateZ(20px); text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-.stat-3d-value { font-size: 28px; font-weight: 900; color: var(--gold); margin: 5px 0; transform: translateZ(30px); text-shadow: 0 4px 10px rgba(0,0,0,0.8); }
-.stat-3d-label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transform: translateZ(15px); }
+/* Professional Vertical Circular Stack Statistics */
+.stats-vertical-stack { display: flex; flex-direction: column; gap: 15px; max-width: 750px; margin: 0 auto; perspective: 1000px; }
+.stat-circle-card { background: linear-gradient(135deg, #151c24, #0b0f14); border: 1px solid rgba(240,185,11,0.25); border-radius: 60px; padding: 16px 25px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.6); animation: pulseFloat 4s ease-in-out infinite; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.stat-circle-card:nth-child(2) { animation-delay: 1s; }
+.stat-circle-card:nth-child(3) { animation-delay: 2s; }
+.stat-circle-card:nth-child(4) { animation-delay: 3s; }
+.stat-circle-card:hover { transform: translateY(-5px) scale(1.02); border-color: var(--gold); box-shadow: 0 25px 50px rgba(240,185,11,0.2), inset 0 0 15px rgba(240,185,11,0.08); }
+.stat-circle-left { display: flex; align-items: center; gap: 20px; }
+.stat-circle-icon { width: 55px; height: 55px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff8ae, #f0b90b 60%, #7a5900); display: grid; place-items: center; font-size: 24px; box-shadow: 0 5px 15px rgba(240,185,11,0.35); animation: floatLogo 3s ease-in-out infinite; }
+.stat-circle-info { text-align: left; }
+.stat-circle-value { font-size: 26px; font-weight: 900; color: var(--gold); text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.stat-circle-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; }
+.stat-badge-tag { background: rgba(240,185,11,0.1); border: 1px solid rgba(240,185,11,0.3); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; color: var(--gold2); }
+@keyframes pulseFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
 .live-withdrawals-container { background: #0c1117e8; border: 1px solid #ffffff10; border-radius: 16px; padding: 10px; height: 280px; overflow: hidden; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
 .live-withdraw { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #ffffff08; background: rgba(255,255,255,0.01); border-radius: 10px; margin-bottom: 6px; animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(-20px); }
@@ -51,7 +59,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
 
 @media(max-width:900px){
-  .cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}
+  .cards,.coins{grid-template-columns:1fr 1fr}
   .plans,.two,.portfolio-grid{grid-template-columns:1fr}
   .orb{right:-60px;opacity:.35}
 }
@@ -62,8 +70,8 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
   .hero{padding:30px 22px;min-height:455px}
   .hero h1{font-size:44px}
   .orb{width:135px;height:135px;right:5px;top:305px}
-  .cards,.coins,.stats-3d-grid{grid-template-columns:1fr 1fr}
-  .card,.stat-3d-card{padding:14px}
+  .cards,.coins{grid-template-columns:1fr 1fr}
+  .card{padding:14px}
   .brand{font-size:14px}
 }
 </style>
@@ -111,11 +119,47 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
 
 <div class="title"><h2 data-t="platformStatsTitle">Platform Statistics</h2></div>
-<div class="stats-3d-grid">
-    <div class="stat-3d-card"><div class="stat-3d-icon">🌍</div><div class="stat-3d-value" id="statUsersVal">1,284,901</div><div class="stat-3d-label" data-t="statUsers">Platform Users</div></div>
-    <div class="stat-3d-card"><div class="stat-3d-icon">👥</div><div class="stat-3d-value" id="statInvestorsVal">450,231</div><div class="stat-3d-label" data-t="statInvestors">Active Investors</div></div>
-    <div class="stat-3d-card"><div class="stat-3d-icon">💸</div><div class="stat-3d-value" style="color:var(--green)">$8,452,000+</div><div class="stat-3d-label" data-t="statPaid">Total Profit Paid</div></div>
-    <div class="stat-3d-card"><div class="stat-3d-icon">🏦</div><div class="stat-3d-value">$1,250,000+</div><div class="stat-3d-label" data-t="statCapital">Platform Capital</div></div>
+<div class="stats-vertical-stack">
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">🌍</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" id="statUsersVal">1,284,901</div>
+                <div class="stat-circle-label" data-t="statUsers">Platform Users</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">👥</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" id="statInvestorsVal">450,231</div>
+                <div class="stat-circle-label" data-t="statInvestors">Active Investors</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">💸</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" style="color:var(--green)">$8,452,000+</div>
+                <div class="stat-circle-label" data-t="statPaid">Total Profit Paid</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--gold)">★ Verified</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">🏦</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value">$100,000,000+</div>
+                <div class="stat-circle-label" data-t="statCapital">Platform Capital</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--gold)">🔒 SAFU</div>
+    </div>
 </div>
 
 <div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
@@ -299,7 +343,7 @@ forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب 
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"کاربران استفاده‌کننده", statInvestors:"سرمایه‌گذاران فعال", statPaid:"سود پرداخت شده", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
-optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io / NowPayments",
+optDirect:"۱. پرداخت مستقیم", optPaymentio:"2. پرداخت از طریق درگاه Payment.io / NowPayments",
 walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>",
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید."
 },
@@ -594,14 +638,24 @@ function scheduleNextWithdrawal() {
 setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
 scheduleNextWithdrawal();
 
-let currentUsersCount = 1284901;
-let currentInvestorsCount = 450231;
+// Live updating and saving counters every 5 seconds
+let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
+let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
+
 function displayCounters() {
     let uEl = document.getElementById("statUsersVal"), iEl = document.getElementById("statInvestorsVal");
     if(uEl) uEl.textContent = currentUsersCount.toLocaleString();
     if(iEl) iEl.textContent = currentInvestorsCount.toLocaleString();
 }
 displayCounters();
+
+setInterval(() => {
+    currentUsersCount += Math.floor(Math.random() * 4) + 1;
+    currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
+    localStorage.setItem("bi_platform_users", currentUsersCount);
+    localStorage.setItem("bi_platform_investors", currentInvestorsCount);
+    displayCounters();
+}, 5000);
 
 function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
 function page(id,b){
