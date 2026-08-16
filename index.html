@@ -47,14 +47,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .live-amount { font-weight: 900; font-size: 16px; color: var(--green); text-align: right; }
 .fade-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, #0c1117e8); pointer-events: none; }
 
-/* Custom Professional Crypto Dropdown Styles */
-.custom-crypto-select { position: relative; width: 100%; margin-bottom: 15px; font-family: inherit; }
-.crypto-select-trigger { width: 100%; padding: 11px 14px; background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
-.crypto-select-trigger:hover { border-color: var(--gold); }
-.crypto-dropdown-options { position: absolute; top: calc(100% + 5px); left: 0; right: 0; background: #151c25; border: 1px solid #29313d; border-radius: 10px; max-height: 250px; overflow-y: auto; z-index: 99; box-shadow: 0 15px 40px rgba(0,0,0,0.7); }
-.crypto-option-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid rgba(255,255,255,0.03); color: #f4f7fb; }
-.crypto-option-item:hover { background: rgba(240,185,11,0.12); color: var(--gold2); }
-
 .tablebox{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:700px}.table th,.table td{padding:14px 10px;border-bottom:1px solid #ffffff0b;text-align:left}.table th{font-size:11px;color:var(--muted);text-transform:uppercase}.star{background:none;border:0;color:#58616e;font-size:19px}.star.on{color:var(--gold)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form label{display:block;color:#aeb7c3;font-size:12px;margin:13px 0 6px}.form input,.form select{width:100%;outline:none}.form input:focus,.form select:focus{border-color:var(--gold)}
 .row{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid #ffffff0b}.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:15px;z-index:100}.modalbox{width:min(500px,100%);background:#11171f;border:1px solid #ffffff16;border-radius:20px;padding:24px;box-shadow:0 30px 100px #000}.close{float:right;background:none;border:0;color:#9ca7b4;font-size:26px}.toast{position:fixed;right:18px;bottom:18px;background:#19212a;border:1px solid #3b4652;padding:13px 17px;border-radius:11px;display:none;z-index:200}
@@ -260,65 +252,25 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
-    <!-- بخش برداشت با لوگوهای رسمی رمزارزها (طراحی حرفه‌ای بدون ایموجی) -->
+    <!-- بخش برداشت با سه کادر درخواستی (نوع ارز با لوگو، آدرس ولت، مبلغ) -->
     <div class="card form" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
-      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگوی رسمی SVG -->
+      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگو -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
-      <div class="custom-crypto-select" id="customCryptoSelect">
-          <div class="crypto-select-trigger" onclick="toggleCryptoDropdown(event)">
-              <span id="selectedCryptoDisplay" style="display:flex; align-items:center; gap:10px;">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.92 14.82v-2.93h4.16V9.1H9.92v2.79h4.16v2.93c-4.48.24-7.84 1.4-7.84 2.8 0 1.4 3.36 2.57 7.84 2.81v5.5h3.84v-5.5c4.48-.24 7.84-1.4 7.84-2.81 0-1.4-3.36-2.56-7.84-2.8zm0 4.14c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07zm0-4.83c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07z" fill="#fff"/></svg>
-                  <span>USDT (TRC20)</span>
-              </span>
-              <span style="color:var(--muted); font-size:12px;">▼</span>
-          </div>
-          <div class="crypto-dropdown-options" id="cryptoDropdownOptions" style="display:none;">
-              <div class="crypto-option-item" onclick="selectCryptoOption('USDT (TRC20)', 'USDT (TRC20)', 'usdt_trc20')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.92 14.82v-2.93h4.16V9.1H9.92v2.79h4.16v2.93c-4.48.24-7.84 1.4-7.84 2.8 0 1.4 3.36 2.57 7.84 2.81v5.5h3.84v-5.5c4.48-.24 7.84-1.4 7.84-2.81 0-1.4-3.36-2.56-7.84-2.8zm0 4.14c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07zm0-4.83c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07z" fill="#fff"/></svg>
-                  <span>USDT (TRC20)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('USDT (BEP20)', 'USDT (BEP20)', 'usdt_bep20')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.92 14.82v-2.93h4.16V9.1H9.92v2.79h4.16v2.93c-4.48.24-7.84 1.4-7.84 2.8 0 1.4 3.36 2.57 7.84 2.81v5.5h3.84v-5.5c4.48-.24 7.84-1.4 7.84-2.81 0-1.4-3.36-2.56-7.84-2.8zm0 4.14c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07zm0-4.83c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07z" fill="#fff"/></svg>
-                  <span>USDT (BEP20)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('USDT (ERC20)', 'USDT (ERC20)', 'usdt_erc20')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.92 14.82v-2.93h4.16V9.1H9.92v2.79h4.16v2.93c-4.48.24-7.84 1.4-7.84 2.8 0 1.4 3.36 2.57 7.84 2.81v5.5h3.84v-5.5c4.48-.24 7.84-1.4 7.84-2.81 0-1.4-3.36-2.56-7.84-2.8zm0 4.14c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07zm0-4.83c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07z" fill="#fff"/></svg>
-                  <span>USDT (ERC20)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('Bitcoin (BTC)', 'Bitcoin (BTC)', 'btc')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M21.9 14.48c.28-1.87-1.15-2.88-3.1-3.55l.63-2.53-1.53-.38-.61 2.45c-.4-.1-.82-.2-1.23-.29l.62-2.47-1.53-.38-.63 2.53c-.33-.08-.65-.15-.97-.22l-2.12-.53-.41 1.64s1.14.26 1.12.28c.63.16.74.58.72.91l-.73 2.92c.04.01.09.03.14.05l-.14-.04-1.02 4.1c-.08.19-.28.48-.72.37.02.04-1.12-.28-1.12-.28l-.77 1.77 2 .5c.37.09.74.19 1.11.28l-.64 2.58 1.53.38.63-2.54c.42.11.84.22 1.25.32l-.63 2.53 1.53.38.64-2.57c2.63.5 4.6.3 5.43-2.05.67-1.86-.03-2.94-1.38-3.64 1-.23 1.75-.89 1.95-2.24zm-3.48 4.88c-.47 1.9-3.66.88-4.69.63l.84-3.37c1.03.25 4.33.74 3.85 2.74zm.47-4.91c-.43 1.74-3.08.85-3.94.64l.76-3.05c.86.21 3.6 1.01 3.18 2.41z" fill="#fff"/></svg>
-                  <span>Bitcoin (BTC)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('Ethereum (ETH)', 'Ethereum (ETH)', 'eth')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.49 4v8.94l7.55 3.38L16.49 4z" fill="#C0CBF5"/><path d="M16.49 4L8.94 16.32l7.55-3.38V4z" fill="#fff"/><path d="M16.49 21.05v6.95l7.58-10.51-7.58 3.56z" fill="#C0CBF5"/><path d="M16.49 28v-6.95l-7.58-3.56L16.49 28z" fill="#fff"/><path d="M16.49 19.64l7.55-4.41-7.55-3.52v7.93z" fill="#8A92B2"/><path d="M8.94 15.23l7.55 4.41v-7.93l-7.55 3.52z" fill="#fff"/></svg>
-                  <span>Ethereum (ETH)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('BNB (BEP20)', 'BNB (BEP20)', 'bnb')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M12.16 13.91L16 10.07l3.84 3.84 2.27-2.27L16 5.53l-6.11 6.11 2.27 2.27zm9.75 3.58l-2.27 2.27L16 21.93l-3.64-3.64-2.27 2.27L16 26.47l6.11-6.11-.19-.19zM6.92 16l2.27-2.27L11.46 16l-2.27 2.27L6.92 16zm18.16 0l-2.27-2.27L20.54 16l2.27 2.27L25.08 16zm-7.15 1.13l-1.93 1.93-1.93-1.93 1.93-1.93 1.93 1.93z" fill="#fff"/></svg>
-                  <span>BNB (BEP20)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('TRON (TRX)', 'TRON (TRX)', 'trx')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#EB0029"/><path d="M8 10.5l16 2.5L14.5 21 8 10.5z" fill="#fff"/><path d="M11 12.5l9 1.5-5.5 5.5-3.5-7z" fill="#EB0029"/></svg>
-                  <span>TRON (TRX)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('Solana (SOL)', 'Solana (SOL)', 'sol')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#9945FF"/><path d="M10.13 11.23h13.25c.34 0 .51.41.27.65l-2.6 2.6c-.16.16-.42.16-.58 0l-10.34-10.34c-.16-.16-.42-.16-.58 0l-2.6 2.6c-.24.24-.07.65.27.65h3.45z" fill="#fff"/><path d="M21.87 20.77H8.62c-.34 0-.51-.41-.27-.65l2.6-2.6c.16-.16.42-.16.58 0l10.34 10.34c.16.16.42.16.58 0l2.6-2.6c.24-.24.07-.65-.27-.65h-3.45z" fill="#fff"/><path d="M21.87 14.5H8.62c-.34 0-.51.41-.27.65l2.6 2.6c.16.16.42.16.58 0l10.34-10.34c.16-.16.42-.16.58 0l2.6-2.6c.24-.24.07-.65-.27-.65h-3.45z" fill="#fff"/></svg>
-                  <span>Solana (SOL)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('Litecoin (LTC)', 'Litecoin (LTC)', 'ltc')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#345D9D"/><path d="M11.4 20.8l1.3-5.5-2.1.8.6-2.4 2.1-.8 1.8-7.7h4.1l-1.6 6.8 2.6-1-.6 2.5-2.6 1-1.3 5.4c-.2.9.2 1.3 1.1 1.1l2.1-.8.6 2.5-2.8 1.1c-2.3.9-3.8.3-4.4-2.5z" fill="#fff"/></svg>
-                  <span>Litecoin (LTC)</span>
-              </div>
-              <div class="crypto-option-item" onclick="selectCryptoOption('Dogecoin (DOGE)', 'Dogecoin (DOGE)', 'doge')">
-                  <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#C2A633"/><path d="M11.22 9.5h4.17c3.96 0 6.64 2.39 6.64 6.5s-2.68 6.5-6.64 6.5h-4.17V9.5zm3.93 10.1c2.16 0 3.54-1.22 3.54-3.6s-1.38-3.6-3.54-3.6h-1.2v7.2h1.2z" fill="#fff"/></svg>
-                  <span>Dogecoin (DOGE)</span>
-              </div>
-          </div>
-      </div>
-      <input type="hidden" id="withdrawCrypto" value="USDT (TRC20)">
+      <select id="withdrawCrypto" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+          <option value="USDT (TRC20)">🪙 USDT (TRC20)</option>
+          <option value="USDT (BEP20)">💎 USDT (BEP20)</option>
+          <option value="USDT (ERC20)">🔷 USDT (ERC20)</option>
+          <option value="Bitcoin (BTC)">₿ Bitcoin (BTC)</option>
+          <option value="Ethereum (ETH)">Ξ Ethereum (ETH)</option>
+          <option value="BNB (BEP20)">🟡 BNB (Smart Chain)</option>
+          <option value="TRON (TRX)">🔴 TRON (TRX)</option>
+          <option value="Solana (SOL)">🟣 Solana (SOL)</option>
+          <option value="Litecoin (LTC)">Ł Litecoin (LTC)</option>
+          <option value="Dogecoin (DOGE)">Ð Dogecoin (DOGE)</option>
+      </select>
 
       <!-- کادر دوم: آدرس ولت -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
@@ -609,54 +561,6 @@ const WALLETS = {
     eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
-
-// توابع مدیریت درگاه برداشت سفارشی با لوگوهای SVG
-function toggleCryptoDropdown(e) {
-    e.stopPropagation();
-    const opts = document.getElementById('cryptoDropdownOptions');
-    if (opts) {
-        opts.style.display = opts.style.display === 'block' ? 'none' : 'block';
-    }
-}
-
-function selectCryptoOption(value, labelText, type) {
-    document.getElementById('withdrawCrypto').value = value;
-    document.getElementById('selectedCryptoDisplay').innerHTML = getCryptoIconSvg(type) + `<span>${labelText}</span>`;
-    document.getElementById('cryptoDropdownOptions').style.display = 'none';
-}
-
-window.addEventListener('click', function(e) {
-    const sel = document.getElementById('customCryptoSelect');
-    if (sel && !sel.contains(e.target)) {
-        const opts = document.getElementById('cryptoDropdownOptions');
-        if (opts) opts.style.display = 'none';
-    }
-});
-
-function getCryptoIconSvg(type) {
-    switch(type) {
-        case 'usdt_trc20':
-        case 'usdt_bep20':
-        case 'usdt_erc20':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.92 14.82v-2.93h4.16V9.1H9.92v2.79h4.16v2.93c-4.48.24-7.84 1.4-7.84 2.8 0 1.4 3.36 2.57 7.84 2.81v5.5h3.84v-5.5c4.48-.24 7.84-1.4 7.84-2.81 0-1.4-3.36-2.56-7.84-2.8zm0 4.14c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07zm0-4.83c-1.22.1-3.2.2-5.92 0v-2.07c2.72-.2 4.7-.1 5.92 0v2.07z" fill="#fff"/></svg>`;
-        case 'btc':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M21.9 14.48c.28-1.87-1.15-2.88-3.1-3.55l.63-2.53-1.53-.38-.61 2.45c-.4-.1-.82-.2-1.23-.29l.62-2.47-1.53-.38-.63 2.53c-.33-.08-.65-.15-.97-.22l-2.12-.53-.41 1.64s1.14.26 1.12.28c.63.16.74.58.72.91l-.73 2.92c.04.01.09.03.14.05l-.14-.04-1.02 4.1c-.08.19-.28.48-.72.37.02.04-1.12-.28-1.12-.28l-.77 1.77 2 .5c.37.09.74.19 1.11.28l-.64 2.58 1.53.38.63-2.54c.42.11.84.22 1.25.32l-.63 2.53 1.53.38.64-2.57c2.63.5 4.6.3 5.43-2.05.67-1.86-.03-2.94-1.38-3.64 1-.23 1.75-.89 1.95-2.24zm-3.48 4.88c-.47 1.9-3.66.88-4.69.63l.84-3.37c1.03.25 4.33.74 3.85 2.74zm.47-4.91c-.43 1.74-3.08.85-3.94.64l.76-3.05c.86.21 3.6 1.01 3.18 2.41z" fill="#fff"/></svg>`;
-        case 'eth':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.49 4v8.94l7.55 3.38L16.49 4z" fill="#C0CBF5"/><path d="M16.49 4L8.94 16.32l7.55-3.38V4z" fill="#fff"/><path d="M16.49 21.05v6.95l7.58-10.51-7.58 3.56z" fill="#C0CBF5"/><path d="M16.49 28v-6.95l-7.58-3.56L16.49 28z" fill="#fff"/><path d="M16.49 19.64l7.55-4.41-7.55-3.52v7.93z" fill="#8A92B2"/><path d="M8.94 15.23l7.55 4.41v-7.93l-7.55 3.52z" fill="#fff"/></svg>`;
-        case 'bnb':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M12.16 13.91L16 10.07l3.84 3.84 2.27-2.27L16 5.53l-6.11 6.11 2.27 2.27zm9.75 3.58l-2.27 2.27L16 21.93l-3.64-3.64-2.27 2.27L16 26.47l6.11-6.11-.19-.19zM6.92 16l2.27-2.27L11.46 16l-2.27 2.27L6.92 16zm18.16 0l-2.27-2.27L20.54 16l2.27 2.27L25.08 16zm-7.15 1.13l-1.93 1.93-1.93-1.93 1.93-1.93 1.93 1.93z" fill="#fff"/></svg>`;
-        case 'trx':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#EB0029"/><path d="M8 10.5l16 2.5L14.5 21 8 10.5z" fill="#fff"/><path d="M11 12.5l9 1.5-5.5 5.5-3.5-7z" fill="#EB0029"/></svg>`;
-        case 'sol':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#9945FF"/><path d="M10.13 11.23h13.25c.34 0 .51.41.27.65l-2.6 2.6c-.16.16-.42.16-.58 0l-10.34-10.34c-.16-.16-.42-.16-.58 0l-2.6 2.6c-.24.24-.07.65.27.65h3.45z" fill="#fff"/><path d="M21.87 20.77H8.62c-.34 0-.51-.41-.27-.65l2.6-2.6c.16-.16.42-.16.58 0l10.34 10.34c.16.16.42.16.58 0l2.6-2.6c.24-.24.07-.65-.27-.65h-3.45z" fill="#fff"/><path d="M21.87 14.5H8.62c-.34 0-.51.41-.27.65l2.6 2.6c.16.16.42.16.58 0l10.34-10.34c.16-.16.42-.16.58 0l2.6-2.6c.24-.24.07-.65-.27-.65h-3.45z" fill="#fff"/></svg>`;
-        case 'ltc':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#345D9D"/><path d="M11.4 20.8l1.3-5.5-2.1.8.6-2.4 2.1-.8 1.8-7.7h4.1l-1.6 6.8 2.6-1-.6 2.5-2.6 1-1.3 5.4c-.2.9.2 1.3 1.1 1.1l2.1-.8.6 2.5-2.8 1.1c-2.3.9-3.8.3-4.4-2.5z" fill="#fff"/></svg>`;
-        case 'doge':
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#C2A633"/><path d="M11.22 9.5h4.17c3.96 0 6.64 2.39 6.64 6.5s-2.68 6.5-6.64 6.5h-4.17V9.5zm3.93 10.1c2.16 0 3.54-1.22 3.54-3.6s-1.38-3.6-3.54-3.6h-1.2v7.2h1.2z" fill="#fff"/></svg>`;
-        default:
-            return `<svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/></svg>`;
-    }
-}
 
 function togglePaymentDetails() {
     const method = document.getElementById('payment-method').value;
@@ -1048,15 +952,33 @@ function calc(){
 
 function calcCustom(){
   let a = +customAmount.value||0, term = +customTerm.value||30;
-  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5; else if(a > 10000) rate = 5.5;
-  if(term >= 60) rate += 1.5;
-  let profit = a * (rate / 100) * term;
-  customResult.textContent = "$" + (a + profit).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  customDaily.textContent = "$" + (a * (rate / 100)).toFixed(2);
-  customMonthly.textContent = "$" + (a * (rate / 100) * 30).toFixed(2);
-  customProfit.textContent = "$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+rate+"% daily)";
-  let lang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lockNotice").textContent = T[lang] ? T[lang].lockNoticeText : T.en.lockNoticeText;
+  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5; else if(a > 10000) rate = 5.0;
+  if(term >= 60) rate = 7.5;
+  let totalProfit = a * (rate / 100) * term, dailyP = a * (rate / 100), monthlyP = dailyP * 30;
+  customResult.textContent = "$" + (a + totalProfit).toFixed(2); 
+  customDaily.textContent = "$" + dailyP.toFixed(2) + ` (${rate}%)`; 
+  customMonthly.textContent = "$" + monthlyP.toFixed(2) + ` (${(rate*30).toFixed(1)}%)`;
+  customProfit.textContent = "$" + totalProfit.toFixed(2) + ` total profit (${rate}% daily)`;
+}
+
+function fmt(n){ return n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":Number(n).toLocaleString(); }
+function row(c){ let d = live[c[2]]||demo[c[2]], on = stars.includes(c[0]); return `<tr><td><button class="star ${on?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td class="${d[1]>=0?"green":"red"}">${d[1]>=0?"+":""}${d[1].toFixed(2)}%</td><td>$${fmt(d[2])}</td><td>$${fmt(d[3])}</td></tr>`; }
+function renderTable(){ let q = (search.value||"").toLowerCase(); marketTable.innerHTML = coins.filter(c=>(c[0]+" "+c[1]).toLowerCase().includes(q)).map(row).join(""); }
+function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div></div>`; }).join(""); }
+
+async function loadMarket(){
+  try{
+    let res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false");
+    let data = await res.json();
+    data.forEach(x => { live[x.id] = [x.current_price, x.price_change_percentage_24h_in_currency||x.price_change_percentage_24h||0, x.market_cap, x.total_volume]; });
+  }catch(e){console.log(e);}
+  renderTop(); renderTable();
+}
+
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s); else stars.push(s);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
 }
 
 async function loadTransactions(){
@@ -1064,108 +986,67 @@ async function loadTransactions(){
   let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
   let list = document.getElementById("txList");
   if(!list) return;
-  if(!data || data.length === 0){
-    list.innerHTML = `<p class="muted" style="padding:20px; text-align:center;">No transactions found.</p>`;
-    return;
-  }
-  list.innerHTML = data.map(tx => `
-    <div class="row" style="padding:12px 15px; align-items:center;">
-      <div>
-        <b style="color:#fff;">${tx.type}</b>
-        <div style="font-size:11px; color:var(--muted);">${tx.date}</div>
-        ${tx.gateway_ref ? `<div style="font-size:11px; color:var(--gold2);">${tx.gateway_ref}</div>` : ''}
-      </div>
-      <div style="text-align:right;">
-        <span style="font-weight:900; font-size:15px; color:${tx.status === 'Completed' ? 'var(--green)' : 'var(--gold)'};">$${tx.amount.toLocaleString()}</span>
-        <div style="font-size:11px; color:var(--muted);">${tx.status}</div>
-      </div>
-    </div>
-  `).join("");
+  if(!data || data.length === 0){ list.innerHTML = `<p class="muted" style="padding:15px;">No transactions found.</p>`; return; }
+  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>` +
+    data.map(t=>`<tr><td>${t.date||''}</td><td><b>${t.type}</b></td><td class="green">+$${t.amount}</td><td><span style="color:${t.status==='Completed'||t.status==='Active'?'var(--green)':'var(--gold)'}">${t.status}</span></td></tr>`).join("") +
+    `</tbody></table></div>`;
 }
 
 async function clearTx(){
   if(!currentUser) return;
   await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions();
-  toast("Transaction history cleared");
+  loadTransactions(); toast("History cleared");
 }
 
-function copyRef(){
-  navigator.clipboard.writeText("https://binanceinvest.global/ref/" + (currentUser ? currentUser.username : "new"));
-  toast("Referral link copied!");
-}
-
-async function loadProfile(){
-  if(!currentUser) return;
-  document.getElementById("username").value = currentUser.username;
-  document.getElementById("emailInput").value = currentUser.email || "";
-  document.getElementById("fullNameInput").value = currentUser.fullname || "";
-  document.getElementById("phone").value = currentUser.phone || "";
-}
+function copyRef(){ navigator.clipboard.writeText("https://binanceinvest.com/?ref=" + (currentUser?currentUser.username:"BI")); toast("Referral link copied!"); }
 
 async function saveProfile(){
-  if(!currentUser) return;
-  currentUser.fullname = document.getElementById("fullNameInput").value.trim();
-  currentUser.phone = document.getElementById("phone").value.trim();
+  if(!currentUser) return openAuth("login");
+  currentUser.fullname = fullNameInput.value;
+  currentUser.phone = phone.value;
   await saveUserData();
   updateHeaderAuthUI();
   toast("Profile saved successfully!");
 }
 
+function loadProfile(){
+  if(!currentUser) return;
+  username.value = currentUser.username;
+  emailInput.value = currentUser.email || "";
+  fullNameInput.value = currentUser.fullname || "";
+  phone.value = currentUser.phone || "";
+}
+
 function setLang(l){
   localStorage.setItem("bi_lang", l);
   let d = T[l] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el => {
+  document.querySelectorAll("[data-t]").forEach(el=>{
     let k = el.getAttribute("data-t");
     if(d[k]) el.textContent = d[k];
   });
   renderPlans();
 }
 
-// Initial setup on load
-window.addEventListener("DOMContentLoaded", () => {
+window.onload = async function(){
   let savedUser = localStorage.getItem("bi_current_user");
   if(savedUser){
-    try { currentUser = JSON.parse(savedUser); } catch(e){ currentUser = null; }
+    try {
+      currentUser = JSON.parse(savedUser);
+      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
+      if(data && data.length > 0) currentUser = data[0];
+    } catch(e){ console.log(e); }
   }
-  updateHeaderAuthUI();
+  
   let savedLang = localStorage.getItem("bi_lang") || "en";
   document.getElementById("lang").value = savedLang;
   setLang(savedLang);
-  renderPlans();
   
-  // Render Top Coins Table
-  let marketTable = document.getElementById("marketTable");
-  let topCoins = document.getElementById("topCoins");
-  if(marketTable){
-    marketTable.innerHTML = coins.map(([sym, name, key, icon]) => {
-      let d = demo[key] || [100, 1, 1e9, 1e8];
-      let on = stars.includes(sym) ? "on" : "";
-      return `<tr><td><button class="star ${on}" onclick="toggleStar('${sym}',this)">★</button></td><td><div class="coin"><div class="icon">${icon}</div><div><b>${sym}</b><div class="muted">${name}</div></div></div></td><td>$${d[0].toLocaleString()}</td><td class="${d[1]>=0?'green':'red'}">${d[1]>=0?'+':''}${d[1]}%</td><td>$${(d[2]/1e9).toFixed(2)}B</td><td>$${(d[3]/1e9).toFixed(2)}B</td></tr>`;
-    }).join("");
-  }
-  if(topCoins){
-    topCoins.innerHTML = coins.slice(0, 4).map(([sym, name, key, icon]) => {
-      let d = demo[key] || [100, 1, 1e9, 1e8];
-      return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${icon}</div><b>${sym}</b></div><span class="${d[1]>=0?'green':'red'}">${d[1]>=0?'+':''}${d[1]}%</span></div><div class="price">$${d[0].toLocaleString()}</div><div class="muted">${name}</div></div>`;
-    }).join("");
-  }
-});
-
-function toggleStar(sym, el){
-  if(stars.includes(sym)) stars = stars.filter(x=>x!==sym); else stars.push(sym);
-  localStorage.setItem("bi_stars", JSON.stringify(stars));
-  el.classList.toggle("on");
-}
-
-function renderTable(){
-  let q = search.value.toLowerCase();
-  marketTable.innerHTML = coins.filter(([s,n])=>s.toLowerCase().includes(q)||n.toLowerCase().includes(q)).map(([sym, name, key, icon]) => {
-    let d = demo[key] || [100, 1, 1e9, 1e8];
-    let on = stars.includes(sym) ? "on" : "";
-    return `<tr><td><button class="star ${on}" onclick="toggleStar('${sym}',this)">★</button></td><td><div class="coin"><div class="icon">${icon}</div><div><b>${sym}</b><div class="muted">${name}</div></div></div></td><td>$${d[0].toLocaleString()}</td><td class="${d[1]>=0?'green':'red'}">${d[1]>=0?'+':''}${d[1]}%</td><td>$${(d[2]/1e9).toFixed(2)}B</td><td>$${(d[3]/1e9).toFixed(2)}B</td></tr>`;
-  }).join("");
-}
+  updateHeaderAuthUI();
+  renderPlans();
+  loadMarket();
+  setInterval(loadMarket, 30000);
+  if(currentUser) { loadProfile(); updatePortfolio(); }
+};
 </script>
 </body>
 </html>
