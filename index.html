@@ -58,6 +58,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 /* Portfolio & Deposit Section Grid Layout */
 .portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
 
+/* Scrollbar styling for custom dropdown */
+.custom-select-options::-webkit-scrollbar { width: 6px; }
+.custom-select-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
+.custom-select-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
+
 @media(max-width:900px){
   .cards,.coins{grid-template-columns:1fr 1fr}
   .plans,.two,.portfolio-grid{grid-template-columns:1fr}
@@ -234,11 +239,12 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 
       <div id="crypto-options-container" style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
+          <!-- اینجا دیتا لوگو جایگزین ایموجی شده است -->
           <select id="crypto-currency" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
-              <option value="trx_usdt_trc20">🪙 TRX / Tether (TRC20)</option>
-              <option value="bnb_usdt_bep20">🟡 BNB / Tether (BEP20)</option>
-              <option value="eth_usdt_erc20">🔷 Ethereum / Tether (ERC20)</option>
-              <option value="btc">₿ Bitcoin (BTC)</option>
+              <option value="trx_usdt_trc20" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT / Tether (TRC20)</option>
+              <option value="bnb_usdt_bep20" data-logo="https://cryptologos.cc/logos/bnb-bnb-logo.svg">BNB / Tether (BEP20)</option>
+              <option value="eth_usdt_erc20" data-logo="https://cryptologos.cc/logos/ethereum-eth-logo.svg">Ethereum / Tether (ERC20)</option>
+              <option value="btc" data-logo="https://cryptologos.cc/logos/bitcoin-btc-logo.svg">Bitcoin (BTC)</option>
           </select>
       </div>
 
@@ -257,26 +263,24 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
-      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگو -->
+      <!-- اینجا دیتا لوگو جایگزین ایموجی شده است -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
       <select id="withdrawCrypto" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
-          <option value="USDT (TRC20)">🪙 USDT (TRC20)</option>
-          <option value="USDT (BEP20)">💎 USDT (BEP20)</option>
-          <option value="USDT (ERC20)">🔷 USDT (ERC20)</option>
-          <option value="Bitcoin (BTC)">₿ Bitcoin (BTC)</option>
-          <option value="Ethereum (ETH)">Ξ Ethereum (ETH)</option>
-          <option value="BNB (BEP20)">🟡 BNB (Smart Chain)</option>
-          <option value="TRON (TRX)">🔴 TRON (TRX)</option>
-          <option value="Solana (SOL)">🟣 Solana (SOL)</option>
-          <option value="Litecoin (LTC)">Ł Litecoin (LTC)</option>
-          <option value="Dogecoin (DOGE)">Ð Dogecoin (DOGE)</option>
+          <option value="USDT (TRC20)" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT (TRC20)</option>
+          <option value="USDT (BEP20)" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT (BEP20)</option>
+          <option value="USDT (ERC20)" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT (ERC20)</option>
+          <option value="Bitcoin (BTC)" data-logo="https://cryptologos.cc/logos/bitcoin-btc-logo.svg">Bitcoin (BTC)</option>
+          <option value="Ethereum (ETH)" data-logo="https://cryptologos.cc/logos/ethereum-eth-logo.svg">Ethereum (ETH)</option>
+          <option value="BNB (BEP20)" data-logo="https://cryptologos.cc/logos/bnb-bnb-logo.svg">BNB (Smart Chain)</option>
+          <option value="TRON (TRX)" data-logo="https://cryptologos.cc/logos/tron-trx-logo.svg">TRON (TRX)</option>
+          <option value="Solana (SOL)" data-logo="https://cryptologos.cc/logos/solana-sol-logo.svg">Solana (SOL)</option>
+          <option value="Litecoin (LTC)" data-logo="https://cryptologos.cc/logos/litecoin-ltc-logo.svg">Litecoin (LTC)</option>
+          <option value="Dogecoin (DOGE)" data-logo="https://cryptologos.cc/logos/dogecoin-doge-logo.svg">Dogecoin (DOGE)</option>
       </select>
 
-      <!-- کادر دوم: آدرس ولت -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
       <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
 
-      <!-- کادر سوم: مبلغ برداشت -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
       <input id="withdrawAmount" type="number" placeholder="50" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
       
@@ -574,7 +578,7 @@ function togglePaymentDetails() {
         cryptoContainer.style.display = 'block';
         if (txContainer) txContainer.style.display = 'block';
         const selectedCrypto = document.getElementById('crypto-currency').value;
-        const address = WALLETS[selectedCrypto];
+        const address = WALLETS[selectedCrypto] || WALLETS["trx_usdt_trc20"];
         infoBox.innerHTML = (dict.walletMsg || T.en.walletMsg).replace("{ADDR}", address);
     } else if (method === 'paymentio') {
         cryptoContainer.style.display = 'none';
@@ -922,8 +926,18 @@ function planCard(p, i) {
   return `<div class="card plan">${tagHtml}<span class="muted">${p[0]}</span><h2>${name}</h2><div class="apy" style="font-size:28px">${dailyRate}% <small style="font-size:12px; color:var(--muted)">${t.daily}</small></div><ul><li>${minTxt}</li><li>${termTxt}</li><li class="green">${t.dailyProfit}: ${dailyRate}%</li><li class="green">${t.monthlyProfit}: ${monthlyRate}%</li></ul><button class="btn gold" onclick="invest(${i})">${t.investNow}</button></div>`;
 }
 
+function plansEl(id, data) {
+    let container = document.getElementById(id);
+    if(!container) return;
+    container.innerHTML = "";
+    data.forEach((p, i) => {
+        container.innerHTML += planCard(p, i);
+    });
+}
+
 function renderPlans(){
-  plansEl("plans", plans); plansEl("homePlans", plans);
+  plansEl("plans", plans); 
+  plansEl("homePlans", plans);
   let lang = localStorage.getItem("bi_lang")||"en";
   let planNames = {
     en: ["Starter", "Growth", "Premium"],
@@ -937,115 +951,240 @@ function renderPlans(){
     fr: ["Débutant", "Croissance", "Premium"],
     de: ["Starter", "Wachstum", "Premium"]
   };
-  let names = planNames[lang] || planNames.en;
-  planSelect.innerHTML = plans.map((p,i)=>`<option value="${i}">${names[i]} — ${p[3]}% Daily</option>`).join("");
-  calc(); calcCustom();
-}
 
-function plansEl(id,a){ document.getElementById(id).innerHTML = a.map((p,i)=>planCard(p,i)).join(""); }
-
-function calc(){
-  let a = +amount.value||0, p = plans[+planSelect.value||0], profit = a * (p[3]/100) * p[4];
-  calcResult.textContent = "$" + (a + profit).toFixed(2);
-  calcProfit.textContent = "$" + profit.toFixed(2) + " estimated total profit";
-}
-
-function calcCustom(){
-  let a = +customAmount.value||0, term = +customTerm.value||30;
-  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5; else if(a > 10000) rate = 5.0;
-  if(term >= 60) rate = 7.5;
-  let totalProfit = a * (rate / 100) * term, dailyP = a * (rate / 100), monthlyP = dailyP * 30;
-  customResult.textContent = "$" + (a + totalProfit).toFixed(2); 
-  customDaily.textContent = "$" + dailyP.toFixed(2) + ` (${rate}%)`; 
-  customMonthly.textContent = "$" + monthlyP.toFixed(2) + ` (${(rate*30).toFixed(1)}%)`;
-  customProfit.textContent = "$" + totalProfit.toFixed(2) + ` total profit (${rate}% daily)`;
-}
-
-function fmt(n){ return n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":Number(n).toLocaleString(); }
-function row(c){ let d = live[c[2]]||demo[c[2]], on = stars.includes(c[0]); return `<tr><td><button class="star ${on?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td class="${d[1]>=0?"green":"red"}">${d[1]>=0?"+":""}${d[1].toFixed(2)}%</td><td>$${fmt(d[2])}</td><td>$${fmt(d[3])}</td></tr>`; }
-function renderTable(){ let q = (search.value||"").toLowerCase(); marketTable.innerHTML = coins.filter(c=>(c[0]+" "+c[1]).toLowerCase().includes(q)).map(row).join(""); }
-function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div></div>`; }).join(""); }
-
-async function loadMarket(){
-  try{
-    let res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false");
-    let data = await res.json();
-    data.forEach(x => { live[x.id] = [x.current_price, x.price_change_percentage_24h_in_currency||x.price_change_percentage_24h||0, x.market_cap, x.total_volume]; });
-  }catch(e){console.log(e);}
-  renderTop(); renderTable();
-}
-
-function toggleStar(s){
-  if(stars.includes(s)) stars = stars.filter(x=>x!==s); else stars.push(s);
-  localStorage.setItem("bi_stars", JSON.stringify(stars));
-  renderTable();
-}
-
-async function loadTransactions(){
-  if(!currentUser) return;
-  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  let list = document.getElementById("txList");
-  if(!list) return;
-  if(!data || data.length === 0){ list.innerHTML = `<p class="muted" style="padding:15px;">No transactions found.</p>`; return; }
-  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>` +
-    data.map(t=>`<tr><td>${t.date||''}</td><td><b>${t.type}</b></td><td class="green">+$${t.amount}</td><td><span style="color:${t.status==='Completed'||t.status==='Active'?'var(--green)':'var(--gold)'}">${t.status}</span></td></tr>`).join("") +
-    `</tbody></table></div>`;
-}
-
-async function clearTx(){
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast("History cleared");
-}
-
-function copyRef(){ navigator.clipboard.writeText("https://binanceinvest.com/?ref=" + (currentUser?currentUser.username:"BI")); toast("Referral link copied!"); }
-
-async function saveProfile(){
-  if(!currentUser) return openAuth("login");
-  currentUser.fullname = fullNameInput.value;
-  currentUser.phone = phone.value;
-  await saveUserData();
-  updateHeaderAuthUI();
-  toast("Profile saved successfully!");
-}
-
-function loadProfile(){
-  if(!currentUser) return;
-  username.value = currentUser.username;
-  emailInput.value = currentUser.email || "";
-  fullNameInput.value = currentUser.fullname || "";
-  phone.value = currentUser.phone || "";
-}
-
-function setLang(l){
-  localStorage.setItem("bi_lang", l);
-  let d = T[l] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el=>{
-    let k = el.getAttribute("data-t");
-    if(d[k]) el.textContent = d[k];
-  });
-  renderPlans();
-}
-
-window.onload = async function(){
-  let savedUser = localStorage.getItem("bi_current_user");
-  if(savedUser){
-    try {
-      currentUser = JSON.parse(savedUser);
-      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
-      if(data && data.length > 0) currentUser = data[0];
-    } catch(e){ console.log(e); }
+  let pName = planNames[lang] || planNames.en;
+  let pSelect = document.getElementById("planSelect");
+  if(pSelect) {
+      pSelect.innerHTML = "";
+      plans.forEach((p, i) => {
+          pSelect.innerHTML += `<option value="${i}">${pName[i]} (${p[3]}%)</option>`;
+      });
   }
-  
-  let savedLang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lang").value = savedLang;
-  setLang(savedLang);
-  
-  updateHeaderAuthUI();
-  renderPlans();
-  loadMarket();
-  setInterval(loadMarket, 30000);
-  if(currentUser) { loadProfile(); updatePortfolio(); }
+}
+
+function calc() {
+    let a = +document.getElementById("amount").value;
+    let pIdx = document.getElementById("planSelect").value;
+    if(!a || !plans[pIdx]) return;
+    let p = plans[pIdx];
+    let daily = p[3];
+    let days = p[4];
+    let profit = (a * daily / 100) * days;
+    document.getElementById("calcResult").textContent = "$" + (a + profit).toLocaleString(undefined, {minimumFractionDigits:2});
+    document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2}) + " profit";
+}
+
+function calcCustom() {
+    let a = +document.getElementById("customAmount").value;
+    let days = +document.getElementById("customTerm").value;
+    if(!a || !days) return;
+    let dailyRate = days >= 60 ? 7.5 : (days >= 30 ? 5.5 : 3.5);
+    let profit = (a * dailyRate / 100) * days;
+    document.getElementById("customResult").textContent = "$" + (a + profit).toLocaleString(undefined, {minimumFractionDigits:2});
+    document.getElementById("customDaily").textContent = "$" + (a * dailyRate / 100).toLocaleString(undefined, {minimumFractionDigits:2});
+    document.getElementById("customMonthly").textContent = "$" + ((a * dailyRate / 100) * 30).toLocaleString(undefined, {minimumFractionDigits:2});
+    document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2}) + " total profit";
+    
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let dict = T[lang] || T.en;
+    let lockNotice = document.getElementById("lockNotice");
+    if(days >= 60) {
+        lockNotice.textContent = dict.lockNoticeText || T.en.lockNoticeText;
+        lockNotice.style.display = "block";
+    } else {
+        lockNotice.style.display = "none";
+    }
+}
+
+function renderTable() {
+    let tbody = document.getElementById("marketTable");
+    let topCoins = document.getElementById("topCoins");
+    let s = (document.getElementById("search")?.value || "").toLowerCase();
+    
+    if(tbody) tbody.innerHTML = "";
+    if(topCoins) topCoins.innerHTML = "";
+    
+    let i = 0;
+    for(let key in demo) {
+        let coinData = demo[key];
+        let coinMeta = coins.find(c => c[2] === key);
+        if(!coinMeta) continue;
+        let [sym, name, id, symbol] = coinMeta;
+        
+        if(s && !sym.toLowerCase().includes(s) && !name.toLowerCase().includes(s)) continue;
+        
+        let price = coinData[0];
+        let change = coinData[1];
+        let cap = coinData[2];
+        let vol = coinData[3];
+        let color = change >= 0 ? "green" : "red";
+        let sign = change >= 0 ? "+" : "";
+        
+        if(tbody) {
+            tbody.innerHTML += `<tr>
+                <td><button class="star ${stars.includes(sym) ? 'on' : ''}" onclick="toggleStar('${sym}')">★</button></td>
+                <td><div style="display:flex;align-items:center;gap:8px;"><img src="https://cryptologos.cc/logos/${id}-${sym.toLowerCase()}-logo.svg" style="width:24px;height:24px;border-radius:50%;background:#fff;padding:1px;"> <b>${sym}</b> <span class="muted">${name}</span></div></td>
+                <td>$${price.toLocaleString()}</td>
+                <td class="${color}">${sign}${change}%</td>
+                <td>$${(cap/1e9).toFixed(2)}B</td>
+                <td>$${(vol/1e9).toFixed(2)}B</td>
+            </tr>`;
+        }
+        
+        if(topCoins && i < 4 && !s) {
+            topCoins.innerHTML += `<div class="card stat" style="cursor:pointer;" onclick="page('markets')">
+                <div class="coinTop"><span class="muted">${sym}</span><span class="${color}">${sign}${change}%</span></div>
+                <div class="price">$${price.toLocaleString()}</div>
+            </div>`;
+            i++;
+        }
+    }
+}
+
+function toggleStar(sym) {
+    if(stars.includes(sym)) stars = stars.filter(s => s !== sym);
+    else stars.push(sym);
+    localStorage.setItem("bi_stars", JSON.stringify(stars));
+    renderTable();
+}
+
+function loadTransactions() {
+    let list = document.getElementById("txList");
+    if(!list) return;
+    list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--muted);">No transactions found.</div>`;
+}
+
+function clearTx() { toast("History cleared."); }
+function copyRef() { navigator.clipboard.writeText(document.getElementById("refCode").textContent); toast("Copied!"); }
+function saveProfile() { toast("Profile Saved"); }
+
+function loadProfile() {
+    if(currentUser) {
+        document.getElementById("username").value = currentUser.username || "";
+        document.getElementById("emailInput").value = currentUser.email || "";
+        document.getElementById("fullNameInput").value = currentUser.fullname || "";
+        document.getElementById("phone").value = currentUser.phone || "";
+    }
+}
+
+function setLang(l) {
+    localStorage.setItem("bi_lang", l);
+    location.reload();
+}
+
+function applyLang() {
+    let l = localStorage.getItem("bi_lang") || "en";
+    let dict = T[l] || T.en;
+    document.getElementById("lang").value = l;
+    document.querySelectorAll("[data-t]").forEach(el => {
+        let key = el.getAttribute("data-t");
+        if(dict[key]) {
+            if(el.tagName === "INPUT" && el.hasAttribute("placeholder")) el.placeholder = dict[key];
+            else el.textContent = dict[key];
+        }
+    });
+}
+
+// اسکریپت سفارشی ساختن باکس‌های انتخاب گرافیکی بدون حذف کدهای اصلی
+function initCustomSelects() {
+    const selects = document.querySelectorAll('#crypto-currency, #withdrawCrypto');
+    selects.forEach(select => {
+        // پنهان کردن سلکت اصلی
+        select.style.display = 'none';
+
+        // ساخت نگهدارنده
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        wrapper.style.position = 'relative';
+        if(select.id === 'withdrawCrypto') wrapper.style.marginBottom = '15px';
+
+        // ساخت باکس نمایشی (تریگر)
+        const trigger = document.createElement('div');
+        trigger.style.cssText = 'width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; cursor:pointer; display:flex; align-items:center; position:relative;';
+        
+        const img = document.createElement('img');
+        img.style.cssText = 'width:24px; height:24px; margin-right:10px; border-radius:50%; background:#fff; padding:2px;';
+        
+        const text = document.createElement('span');
+        text.style.flex = '1';
+        text.style.fontSize = '13px';
+        
+        const arrow = document.createElement('span');
+        arrow.innerHTML = '▼';
+        arrow.style.fontSize = '10px';
+        arrow.style.color = '#aeb7c3';
+        
+        trigger.appendChild(img);
+        trigger.appendChild(text);
+        trigger.appendChild(arrow);
+        
+        // ساخت منوی کشویی گزینه‌ها
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'custom-select-options';
+        optionsDiv.style.cssText = 'position:absolute; top:100%; left:0; right:0; background:#1a222c; border:1px solid #474d57; border-radius:8px; z-index:99; display:none; max-height:220px; overflow-y:auto; margin-top:5px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);';
+        
+        Array.from(select.options).forEach(opt => {
+            const imgSrc = opt.getAttribute('data-logo');
+            const optionEl = document.createElement('div');
+            optionEl.style.cssText = 'padding:10px 15px; display:flex; align-items:center; cursor:pointer; border-bottom:1px solid #ffffff08; transition:background 0.2s;';
+            optionEl.onmouseover = () => optionEl.style.background = '#2a3441';
+            optionEl.onmouseout = () => optionEl.style.background = 'transparent';
+            
+            optionEl.innerHTML = `<img src="${imgSrc}" style="width:24px; height:24px; margin-right:12px; border-radius:50%; background:#fff; padding:2px;"> <span style="font-size:13px; color:#fff;">${opt.textContent}</span>`;
+            
+            optionEl.onclick = (e) => {
+                e.stopPropagation();
+                select.value = opt.value;
+                img.src = imgSrc;
+                text.textContent = opt.textContent;
+                optionsDiv.style.display = 'none';
+                
+                // شبیه‌سازی تغییر روی سلکت اصلی برای اجرای توابع شما
+                select.dispatchEvent(new Event('change'));
+            };
+            optionsDiv.appendChild(optionEl);
+            
+            // تنظیم مقدار اولیه
+            if (opt.selected) {
+                img.src = imgSrc;
+                text.textContent = opt.textContent;
+            }
+        });
+        
+        // باز و بسته شدن کشو با کلیک
+        trigger.onclick = (e) => {
+            e.stopPropagation();
+            const isVisible = optionsDiv.style.display === 'block';
+            document.querySelectorAll('.custom-select-wrapper > div:nth-child(2)').forEach(el => el.style.display = 'none');
+            optionsDiv.style.display = isVisible ? 'none' : 'block';
+        };
+        
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(optionsDiv);
+        select.parentNode.insertBefore(wrapper, select.nextSibling);
+    });
+
+    // بسته شدن کشو در صورت کلیک روی صفحه
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select-wrapper > div:nth-child(2)').forEach(el => el.style.display = 'none');
+    });
+}
+
+// تنظیمات لود شدن صفحه
+window.onload = () => {
+    applyLang();
+    let savedUser = localStorage.getItem("bi_current_user");
+    if(savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateHeaderAuthUI();
+        loadProfile();
+        updatePortfolio();
+    }
+    renderPlans();
+    calc();
+    calcCustom();
+    renderTable();
+    initCustomSelects();
 };
 </script>
 </body>
