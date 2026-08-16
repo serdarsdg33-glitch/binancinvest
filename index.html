@@ -255,8 +255,13 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
     <div class="card" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
-      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;">Amount (USD):</label>
+      
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address / Network:</label>
+      <input id="withdrawAddress" type="text" placeholder="e.g. TRC20 / BEP20 Wallet Address" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
       <input id="withdrawAmount" type="number" placeholder="50" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+      
       <button class="btn" style="width:100%; padding: 12px;" onclick="withdraw()" data-t="request">Request Withdrawal</button>
     </div>
   </div>
@@ -324,7 +329,8 @@ platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvest
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
 optDirect:"1. Direct Payment", optPaymentio:"2. Payment via Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for admin approval.</small>",
-paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment."
+paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment.",
+withdrawWalletLabel:"Destination Wallet Address / Network:"
 },
 fa:{
 brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
@@ -345,7 +351,8 @@ platformStatsTitle:"آمارهای پلتفرم", statUsers:"کاربران اس
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
 optDirect:"۱. پرداخت مستقیم", optPaymentio:"2. پرداخت از طریق درگاه Payment.io / NowPayments",
 walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>",
-paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید."
+paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
+withdrawWalletLabel:"آدرس ولت مقصد (شبکه / آدرس):"
 },
 az:{
 brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profil:"Profil",
@@ -366,7 +373,8 @@ platformStatsTitle:"Platforma Statistikası", statUsers:"İstifadəçilər", sta
 depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
 optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
 walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
-paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin."
+paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
+withdrawWalletLabel:"Təyinat Cüzdan Ünvanı / Şəbəkə:"
 },
 tr:{
 brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çıkış Yap",overview:"Genel Bakış",markets:"Piyasalar",invest:"Yatırım",portfolio:"Portföy",transactions:"İşlemler",rewards:"Ödüller",profile:"Profil",
@@ -386,7 +394,8 @@ platformStatsTitle:"Platform İstatistikleri", statUsers:"Kullanıcılar", statI
 depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCryptoLabel:"Para Birimi ve Ağ Seçin:", depTxLabel:"İşlem Kodu / TXID:", depSubmitBtn:"Yatırma Talebi Gönder",
 optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme",
 walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Lütfen tutarı bu adrese gönderin ve onay için TXID kodunu girin.</small>",
-paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın."
+paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın.",
+withdrawWalletLabel:"Hedef Cüzdan Adresi / Ağ:"
 },
 ru:{
 brand:"Binance Invest",login:"Войти",register:"Регистрация",logout:"Выйти",overview:"Обзор",markets:"Рынки",invest:"Инвестиции",portfolio:"Портфель",transactions:"Транзакции",rewards:"Награды",profile:"Профиль",
@@ -406,7 +415,8 @@ platformStatsTitle:"Статистика платформы", statUsers:"Пол�
 depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
 optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
-paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты."
+paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
+withdrawWalletLabel:"Адрес кошелька назначения / Сеть:"
 },
 ar:{
 brand:"بایننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
@@ -427,7 +437,8 @@ platformStatsTitle:"إحصائيات المنصة", statUsers:"مستخدمو ا
 depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
 optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
 walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة المشرف.</small>",
-paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع."
+paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
+withdrawWalletLabel:"عنوان محفظة الوجهة / الشبكة:"
 },
 zh:{
 brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
@@ -448,7 +459,8 @@ platformStatsTitle:"平台统计", statUsers:"平台用户", statInvestors:"活�
 depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
 optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
 walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供管理员批准。</small>",
-paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。"
+paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
+withdrawWalletLabel:"目标钱包地址 / 网络："
 },
 es:{
 brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
@@ -469,7 +481,8 @@ platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Usuarios", statI
 depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
 optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
 walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
-paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar."
+paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
+withdrawWalletLabel:"Dirección de billetera de destino / Red:"
 },
 fr:{
 brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
@@ -490,7 +503,8 @@ platformStatsTitle:"Statistiques de la plateforme", statUsers:"Utilisateurs", st
 depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
 optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
 walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
-paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous."
+paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
+withdrawWalletLabel:"Adresse du portefeuille de destination / Réseau :"
 },
 de:{
 brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
@@ -511,7 +525,8 @@ platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:
 depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
 optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch den Administrator.</small>",
-paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten."
+paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
+withdrawWalletLabel:"Ziel-Wallet-Adresse / Netzwerk:"
 }
 };
 
@@ -799,13 +814,20 @@ async function saveTx(type, amount, status){
 
 async function withdraw(){
   let a = +document.getElementById("withdrawAmount").value;
+  let address = document.getElementById("withdrawAddress").value.trim();
+  
   if(!currentUser) return openAuth("login");
-  if(a <= 0 || a > currentUser.balance) return toast("Insufficient balance");
+  if(!address) return toast("Please enter your destination wallet address");
+  if(a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
   
   currentUser.balance -= a;
   await saveUserData();
-  await saveTx('Withdrawal', a, 'Pending');
-  updatePortfolio(); loadTransactions(); toast("Withdrawal requested!");
+  await saveTx('Withdrawal to ' + address, a, 'Pending');
+  updatePortfolio(); loadTransactions(); 
+  toast("Withdrawal requested successfully!");
+  
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAddress").value = "";
 }
 
 async function invest(i){
@@ -938,61 +960,47 @@ async function prices(){
 async function loadTransactions(){
   if(!currentUser){ txList.innerHTML = '<p class="muted">Please sign in to view your transactions.</p>'; return; }
   let { data: txs, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  if(error || !txs || txs.length === 0){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
-  txList.innerHTML = txs.map(x=>`<div class="row"><span><b>${x.type}</b> <small style="color:var(--gold)">[${x.status||'Completed'}]</small><br><small class="muted">${x.date || ''} ${x.gateway_ref ? ' | ' + x.gateway_ref : ''}</small></span><b class="${x.type.includes("Withdrawal")?"red":"green"}">${x.amount?"$"+Number(x.amount).toLocaleString():"—"}</b></div>`).join("");
+  if(error || !txs){ txList.innerHTML = '<p class="muted">No transactions found.</p>'; return; }
+  
+  txList.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>` + 
+    txs.map(t => `<tr><td>${t.type}</td><td class="${t.type.includes('Deposit')?'green':'red'}">$${t.amount}</td><td>${t.status}</td><td>${t.date}</td></tr>`).join("") +
+    `</tbody></table></div>`;
 }
 
-async function clearTx(){
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast("History cleared");
+function clearTx(){
+  txList.innerHTML = '<p class="muted">No transactions.</p>';
 }
-
-function loadProfile(){
-  let u = currentUser;
-  if(u){
-    username.value = u.username;
-    emailInput.value = u.email || "";
-    fullNameInput.value = u.fullname || "";
-    phone.value = u.phone || "";
-    refCode.textContent = "BI-" + u.username.slice(0,5).toUpperCase();
-  }
-}
-
-async function saveProfile(){
-  if(!currentUser) return openAuth("login");
-  currentUser.phone = phone.value;
-  currentUser.fullname = fullNameInput.value;
-  await saveUserData();
-  updateHeaderAuthUI();
-  toast("Profile saved successfully");
-}
-
-function copyRef(){ navigator.clipboard?.writeText(refCode.textContent); toast("Referral code copied"); }
 
 function setLang(l){
   localStorage.setItem("bi_lang", l);
+  document.documentElement.lang = l;
   document.documentElement.dir = (l === 'fa' || l === 'ar') ? 'rtl' : 'ltr';
-  location.reload();
+  let dict = T[l] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    let k = el.getAttribute("data-t");
+    if(dict[k]) el.innerHTML = dict[k];
+  });
+  renderPlans();
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.onload = function(){
   let savedLang = localStorage.getItem("bi_lang") || "en";
   document.getElementById("lang").value = savedLang;
-  document.documentElement.dir = (savedLang === 'fa' || savedLang === 'ar') ? 'rtl' : 'ltr';
+  setLang(savedLang);
   
   let savedUser = localStorage.getItem("bi_current_user");
   if(savedUser){
-    try{ currentUser = JSON.parse(savedUser); }catch(e){}
+    try {
+      currentUser = JSON.parse(savedUser);
+      updateHeaderAuthUI();
+      updatePortfolio();
+    } catch(e){ localStorage.removeItem("bi_current_user"); }
   }
   
-  updateHeaderAuthUI();
-  renderPlans();
-  renderTable();
-  renderTop();
   prices();
-  setInterval(prices, 15000);
-});
+  setInterval(prices, 30000);
+  renderPlans();
+}
 </script>
 </body>
 </html>
