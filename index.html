@@ -112,7 +112,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
 </nav>
 
-<section id="home" class="view active">
+<section id="home" class="view">
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest')" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets')" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
 
 <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets')" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
@@ -495,7 +495,7 @@ lockNoticeText:"Si bloqueas tu dinero durante 60 días o más, tu tasa de benefi
 pointsTitle:"Puntos",pointsSub:"+50 semanal",refTitle:"Referidos",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Racha",streakSub:"Activa",sec2fa:"2FA",secLogin:"Protección de inicio de sesión",secWith:"Confirmación de retiro",enabled:"Habilitado",active:"Activo",
 forgotPasswordText:"¿Olvidaste tu contraseña?",needAccountText:"¿No tienes cuenta? Regístrate",haveAccountText:"¿Ya tienes cuenta? Inicia sesión",usernameOrEmail:"Usuario o correo electrónico",enterEmailOrUser:"Ingresa tu usuario o correo electrónico",codeSentNotice:"Se ha enviado un código de verificación a tu correo.",enterCode:"Ingresa el código de 6 dígitos",sendResetCode:"Enviar código",resetPasswordTitle:"Restablecer contraseña",newPasswordLabel:"Nueva contraseña",resetBtn:"Restablecer contraseña",
 contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"Socios de seguridad y protección",
-platformStatsTitle:"Estadísticas de la plataforma", statUsuarios:"Usuarios", statInvestors:"Inversores activos", statPaid:"Beneficio total pagado", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
+platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Usuarios", statInvestors:"Inversores activos", statPaid:"Beneficio total pagado", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
 depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
 optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
 walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
@@ -952,149 +952,100 @@ function calc(){
 
 function calcCustom(){
   let a = +customAmount.value||0, term = +customTerm.value||30;
-  let rate = 2.5; 
-  if(a >= 1100 && a <= 10000) rate = 4.5; 
-  else if(a >= 110 && a < 1100) rate = 3.5; 
-  else if(a > 10000) rate = 5.0;
+  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5; else if(a > 10000) rate = 5.0;
   if(term >= 60) rate = 7.5;
-  
   let totalProfit = a * (rate / 100) * term, dailyP = a * (rate / 100), monthlyP = dailyP * 30;
-  customResult.textContent = "$" + (a + totalProfit).toFixed(2);
-  customDaily.textContent = "$" + dailyP.toFixed(2);
-  customMonthly.textContent = "$" + monthlyP.toFixed(2);
-  customProfit.textContent = "$" + totalProfit.toFixed(2) + " total profit (" + rate + "% daily)";
-  
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let dict = T[lang] || T.en;
-  let noticeEl = document.getElementById("lockNotice");
-  if(noticeEl) noticeEl.textContent = dict.lockNoticeText || T.en.lockNoticeText;
+  customResult.textContent = "$" + (a + totalProfit).toFixed(2); 
+  customDaily.textContent = "$" + dailyP.toFixed(2) + ` (${rate}%)`; 
+  customMonthly.textContent = "$" + monthlyP.toFixed(2) + ` (${(rate*30).toFixed(1)}%)`;
+  customProfit.textContent = "$" + totalProfit.toFixed(2) + ` total profit (${rate}% daily)`;
 }
 
-async function loadTransactions() {
-  if(!currentUser) {
-    document.getElementById("txList").innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transactions.</div>`;
-    return;
-  }
-  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', { ascending: false });
-  if(error || !data || data.length === 0) {
-    document.getElementById("txList").innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
-    return;
-  }
-  let html = `<table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th><th>Gateway Ref</th></tr></thead><tbody>`;
-  data.forEach(tx => {
-    let color = tx.status === 'Completed' || tx.status === 'Active' ? 'var(--green)' : tx.status === 'Pending' ? 'var(--gold)' : 'var(--red)';
-    html += `<tr><td>${tx.type}</td><td>$${tx.amount.toFixed(2)}</td><td style="color:${color}; font-weight:bold;">${tx.status}</td><td>${tx.date}</td><td style="font-size:11px; color:var(--muted);">${tx.gateway_ref || '-'}</td></tr>`;
-  });
-  html += `</tbody></table>`;
-  document.getElementById("txList").innerHTML = html;
+function fmt(n){ return n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":Number(n).toLocaleString(); }
+function row(c){ let d = live[c[2]]||demo[c[2]], on = stars.includes(c[0]); return `<tr><td><button class="star ${on?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td class="${d[1]>=0?"green":"red"}">${d[1]>=0?"+":""}${d[1].toFixed(2)}%</td><td>$${fmt(d[2])}</td><td>$${fmt(d[3])}</td></tr>`; }
+function renderTable(){ let q = (search.value||"").toLowerCase(); marketTable.innerHTML = coins.filter(c=>(c[0]+" "+c[1]).toLowerCase().includes(q)).map(row).join(""); }
+function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div></div>`; }).join(""); }
+
+async function loadMarket(){
+  try{
+    let res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false");
+    let data = await res.json();
+    data.forEach(x => { live[x.id] = [x.current_price, x.price_change_percentage_24h_in_currency||x.price_change_percentage_24h||0, x.market_cap, x.total_volume]; });
+  }catch(e){console.log(e);}
+  renderTop(); renderTable();
 }
 
-async function clearTx() {
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions();
-  toast("Transaction history cleared");
-}
-
-function loadProfile() {
-  if(!currentUser) return;
-  document.getElementById("username").value = currentUser.username || "";
-  document.getElementById("emailInput").value = currentUser.email || "";
-  document.getElementById("fullNameInput").value = currentUser.fullname || "";
-  document.getElementById("phone").value = currentUser.phone || "";
-}
-
-async function saveProfile() {
-  if(!currentUser) return openAuth("login");
-  currentUser.fullname = document.getElementById("fullNameInput").value.trim();
-  currentUser.phone = document.getElementById("phone").value.trim();
-  await saveUserData();
-  updateHeaderAuthUI();
-  toast("Profile updated successfully!");
-}
-
-function copyRef() {
-  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username.toUpperCase() : "NEW"));
-  toast("Referral code copied to clipboard!");
-}
-
-function renderTable() {
-  let search = (document.getElementById("search") ? document.getElementById("search").value : "").toLowerCase();
-  let tbody = document.getElementById("marketTable");
-  if(!tbody) return;
-  let html = "";
-  coins.forEach(c => {
-    let [sym, name, id, icon] = c;
-    if(search && !sym.toLowerCase().includes(search) && !name.toLowerCase().includes(search)) return;
-    let d = demo[id] || [100, 1, 1e9, 1e8];
-    let isStar = stars.includes(sym);
-    let changeClass = d[1] >= 0 ? "green" : "red";
-    let changeSign = d[1] >= 0 ? "+" : "";
-    html += `<tr>
-      <td><button class="star ${isStar ? 'on' : ''}" onclick="toggleStar('${sym}')">★</button></td>
-      <td><div style="display:flex; align-items:center; gap:8px;"><div class="icon" style="font-size:14px;">${icon}</div><div><b>${sym}</b><br><span class="muted" style="font-size:11px;">${name}</span></div></div></td>
-      <td style="font-weight:900;">$${d[0].toLocaleString()}</td>
-      <td class="${changeClass}" style="font-weight:bold;">${changeSign}${d[1]}%</td>
-      <td>$${(d[2]/1e9).toFixed(2)}B</td>
-      <td>$${(d[3]/1e6).toFixed(2)}M</td>
-    </tr>`;
-  });
-  tbody.innerHTML = html;
-}
-
-function toggleStar(sym) {
-  if(stars.includes(sym)) stars = stars.filter(x => x !== sym);
-  else stars.push(sym);
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s); else stars.push(s);
   localStorage.setItem("bi_stars", JSON.stringify(stars));
   renderTable();
 }
 
-function setLang(lang) {
-  localStorage.setItem("bi_lang", lang);
-  let dict = T[lang] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el => {
-    let key = el.getAttribute("data-t");
-    if(dict[key]) {
-      if(el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-        el.placeholder = dict[key];
-      } else {
-        el.textContent = dict[key];
-      }
-    }
-  });
-  document.documentElement.setAttribute("dir", lang === "fa" || lang === "ar" ? "rtl" : "ltr");
-  document.getElementById("lang").value = lang;
-  renderPlans();
-  renderTable();
-  togglePaymentDetails();
+async function loadTransactions(){
+  if(!currentUser) return;
+  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
+  let list = document.getElementById("txList");
+  if(!list) return;
+  if(!data || data.length === 0){ list.innerHTML = `<p class="muted" style="padding:15px;">No transactions found.</p>`; return; }
+  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>` +
+    data.map(t=>`<tr><td>${t.date||''}</td><td><b>${t.type}</b></td><td class="green">+$${t.amount}</td><td><span style="color:${t.status==='Completed'||t.status==='Active'?'var(--green)':'var(--gold)'}">${t.status}</span></td></tr>`).join("") +
+    `</tbody></table></div>`;
 }
 
-window.onload = function() {
-  let savedLang = localStorage.getItem("bi_lang") || "en";
-  setLang(savedLang);
-  
+async function clearTx(){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+  loadTransactions(); toast("History cleared");
+}
+
+function copyRef(){ navigator.clipboard.writeText("https://binanceinvest.com/?ref=" + (currentUser?currentUser.username:"BI")); toast("Referral link copied!"); }
+
+async function saveProfile(){
+  if(!currentUser) return openAuth("login");
+  currentUser.fullname = fullNameInput.value;
+  currentUser.phone = phone.value;
+  await saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile saved successfully!");
+}
+
+function loadProfile(){
+  if(!currentUser) return;
+  username.value = currentUser.username;
+  emailInput.value = currentUser.email || "";
+  fullNameInput.value = currentUser.fullname || "";
+  phone.value = currentUser.phone || "";
+}
+
+function setLang(l){
+  localStorage.setItem("bi_lang", l);
+  let d = T[l] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    let k = el.getAttribute("data-t");
+    if(d[k]) el.textContent = d[k];
+  });
+  renderPlans();
+}
+
+window.onload = async function(){
   let savedUser = localStorage.getItem("bi_current_user");
-  if(savedUser) {
+  if(savedUser){
     try {
       currentUser = JSON.parse(savedUser);
-    } catch(e) { currentUser = null; }
+      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
+      if(data && data.length > 0) currentUser = data[0];
+    } catch(e){ console.log(e); }
   }
-  updateHeaderAuthUI();
-  updatePortfolio();
   
-  let topCoinsEl = document.getElementById("topCoins");
-  if(topCoinsEl) {
-    let topHtml = "";
-    coins.slice(0, 4).forEach(c => {
-      let [sym, name, id, icon] = c;
-      let d = demo[id] || [100, 1, 1e9, 1e8];
-      let changeClass = d[1] >= 0 ? "green" : "red";
-      let changeSign = d[1] >= 0 ? "+" : "";
-      topHtml += `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${icon}</div><b>${sym}</b></div><span class="${changeClass}">${changeSign}${d[1]}%</span></div><div class="price">$${d[0].toLocaleString()}</div><span class="muted" style="font-size:12px;">${name}</span></div>`;
-    });
-    topCoinsEl.innerHTML = topHtml;
-  }
-  renderTable();
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  setLang(savedLang);
+  
+  updateHeaderAuthUI();
+  renderPlans();
+  loadMarket();
+  setInterval(loadMarket, 30000);
+  if(currentUser) { loadProfile(); updatePortfolio(); }
 };
 </script>
 </body>
