@@ -47,6 +47,21 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .live-amount { font-weight: 900; font-size: 16px; color: var(--green); text-align: right; }
 .fade-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, #0c1117e8); pointer-events: none; }
 
+/* Professional Custom Crypto Dropdown Styles */
+.crypto-dropdown { position: relative; width: 100%; margin-bottom: 15px; user-select: none; }
+.crypto-dropdown-selected { display: flex; align-items: center; justify-content: space-between; background: #1a222c; border: 1px solid #474d57; border-radius: 8px; padding: 11px 13px; cursor: pointer; color: #fff; transition: border-color 0.2s; }
+.crypto-dropdown-selected:hover { border-color: var(--gold); }
+.crypto-option-content { display: flex; align-items: center; gap: 12px; }
+.crypto-logo { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+.crypto-logo svg { width: 100%; height: 100%; }
+.crypto-dropdown-list { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #151c25; border: 1px solid #29313d; border-radius: 12px; max-height: 260px; overflow-y: auto; z-index: 99; display: none; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
+.crypto-dropdown-list.open { display: block; }
+.crypto-dropdown-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #ffffff08; }
+.crypto-dropdown-item:hover { background: #1f2a37; }
+.crypto-dropdown-item:last-child { border-bottom: none; }
+.crypto-info b { display: block; font-size: 13px; color: #fff; font-weight: 700; }
+.crypto-info span { font-size: 11px; color: var(--muted); }
+
 .tablebox{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:700px}.table th,.table td{padding:14px 10px;border-bottom:1px solid #ffffff0b;text-align:left}.table th{font-size:11px;color:var(--muted);text-transform:uppercase}.star{background:none;border:0;color:#58616e;font-size:19px}.star.on{color:var(--gold)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form label{display:block;color:#aeb7c3;font-size:12px;margin:13px 0 6px}.form input,.form select{width:100%;outline:none}.form input:focus,.form select:focus{border-color:var(--gold)}
 .row{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid #ffffff0b}.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:15px;z-index:100}.modalbox{width:min(500px,100%);background:#11171f;border:1px solid #ffffff16;border-radius:20px;padding:24px;box-shadow:0 30px 100px #000}.close{float:right;background:none;border:0;color:#9ca7b4;font-size:26px}.toast{position:fixed;right:18px;bottom:18px;background:#19212a;border:1px solid #3b4652;padding:13px 17px;border-radius:11px;display:none;z-index:200}
@@ -252,25 +267,69 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
-    <!-- بخش برداشت با سه کادر درخواستی (نوع ارز با لوگو، آدرس ولت، مبلغ) -->
+    <!-- بخش برداشت با منوی کشویی حرفه‌ای لوگودار -->
     <div class="card form" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
-      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگو -->
+      <!-- کادر اول: انتخاب نوع ارز و شبکه با لوگوهای اصلی SVG -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
-      <select id="withdrawCrypto" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
-          <option value="USDT (TRC20)">🪙 USDT (TRC20)</option>
-          <option value="USDT (BEP20)">💎 USDT (BEP20)</option>
-          <option value="USDT (ERC20)">🔷 USDT (ERC20)</option>
-          <option value="Bitcoin (BTC)">₿ Bitcoin (BTC)</option>
-          <option value="Ethereum (ETH)">Ξ Ethereum (ETH)</option>
-          <option value="BNB (BEP20)">🟡 BNB (Smart Chain)</option>
-          <option value="TRON (TRX)">🔴 TRON (TRX)</option>
-          <option value="Solana (SOL)">🟣 Solana (SOL)</option>
-          <option value="Litecoin (LTC)">Ł Litecoin (LTC)</option>
-          <option value="Dogecoin (DOGE)">Ð Dogecoin (DOGE)</option>
-      </select>
+      <div class="crypto-dropdown" id="withdrawCryptoDropdown">
+          <div class="crypto-dropdown-selected" onclick="toggleCryptoDropdown()">
+              <div class="crypto-option-content" id="selectedCryptoDisplay">
+                  <div class="crypto-logo" style="background:#26A17B;">
+                      <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.8 19.3V16.8H21V13.8H17.8V12.1H21.9V9.1H10.1V12.1H14.2V13.8H11V16.8H14.2V19.3C10.7 19.5 8 20.3 8 21.3C8 22.3 10.7 23.1 14.2 23.3V26.2H17.8V23.3C21.3 23.1 24 22.3 24 21.3C24 20.3 21.3 19.5 17.8 19.3ZM16 21.4C12.8 21.4 10.2 20.8 10.2 20.1C10.2 19.4 12.8 18.8 16 18.8C19.2 18.8 21.8 19.4 21.8 20.1C21.8 20.8 19.2 21.4 16 21.4Z" fill="white"/></svg>
+                  </div>
+                  <div class="crypto-info">
+                      <b>USDT (TRC20)</b>
+                      <span>Tether Network</span>
+                  </div>
+              </div>
+              <span style="color:var(--muted); font-size:12px;">▼</span>
+          </div>
+          <div class="crypto-dropdown-list" id="cryptoDropdownList">
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('USDT (TRC20)', 'Tether Network', '#26A17B', 'tether')">
+                  <div class="crypto-logo" style="background:#26A17B;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.8 19.3V16.8H21V13.8H17.8V12.1H21.9V9.1H10.1V12.1H14.2V13.8H11V16.8H14.2V19.3C10.7 19.5 8 20.3 8 21.3C8 22.3 10.7 23.1 14.2 23.3V26.2H17.8V23.3C21.3 23.1 24 22.3 24 21.3C24 20.3 21.3 19.5 17.8 19.3ZM16 21.4C12.8 21.4 10.2 20.8 10.2 20.1C10.2 19.4 12.8 18.8 16 18.8C19.2 18.8 21.8 19.4 21.8 20.1C21.8 20.8 19.2 21.4 16 21.4Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>USDT (TRC20)</b><span>Tether Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('USDT (BEP20)', 'BEP20 (Smart Chain)', '#26A17B', 'tether')">
+                  <div class="crypto-logo" style="background:#26A17B;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.8 19.3V16.8H21V13.8H17.8V12.1H21.9V9.1H10.1V12.1H14.2V13.8H11V16.8H14.2V19.3C10.7 19.5 8 20.3 8 21.3C8 22.3 10.7 23.1 14.2 23.3V26.2H17.8V23.3C21.3 23.1 24 22.3 24 21.3C24 20.3 21.3 19.5 17.8 19.3ZM16 21.4C12.8 21.4 10.2 20.8 10.2 20.1C10.2 19.4 12.8 18.8 16 18.8C19.2 18.8 21.8 19.4 21.8 20.1C21.8 20.8 19.2 21.4 16 21.4Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>USDT (BEP20)</b><span>BEP20 (Smart Chain)</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('USDT (ERC20)', 'ERC20 (Ethereum)', '#26A17B', 'tether')">
+                  <div class="crypto-logo" style="background:#26A17B;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.8 19.3V16.8H21V13.8H17.8V12.1H21.9V9.1H10.1V12.1H14.2V13.8H11V16.8H14.2V19.3C10.7 19.5 8 20.3 8 21.3C8 22.3 10.7 23.1 14.2 23.3V26.2H17.8V23.3C21.3 23.1 24 22.3 24 21.3C24 20.3 21.3 19.5 17.8 19.3ZM16 21.4C12.8 21.4 10.2 20.8 10.2 20.1C10.2 19.4 12.8 18.8 16 18.8C19.2 18.8 21.8 19.4 21.8 20.1C21.8 20.8 19.2 21.4 16 21.4Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>USDT (ERC20)</b><span>ERC20 (Ethereum)</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('Bitcoin (BTC)', 'Bitcoin Network', '#F7931A', 'btc')">
+                  <div class="crypto-logo" style="background:#F7931A;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M21.2 14.1C21.5 12.8 21 11.8 19.5 11.4L20.4 7.8L19.2 7.5L18.4 11.1C17.9 11 17.3 10.9 16.8 10.8L17.6 7.2L16.4 6.9L15.5 10.5C15.1 10.4 14.7 10.3 14.3 10.2L15.1 6.6L13.9 6.3L13 9.9C12.4 9.8 11.8 9.6 11.2 9.5L10 9.8L10.3 11.1C10.3 11.1 11 11.3 11 11.3C11.4 11.4 11.5 11.7 11.5 12L10.6 15.9C10.6 16 10.5 16 10.5 16.1C10.5 16.2 10.4 16.2 10.3 16.2C10.3 16.2 9.6 16 9.6 16L9 17.5C9.6 17.7 10.2 17.9 10.8 18.1L10 21.7L11.2 22L12 18.4C12.6 18.6 13.1 18.8 13.7 18.9L12.9 22.5L14.1 22.8L15 19.2C15.5 19.3 16 19.4 16.5 19.5L15.7 23.1L16.9 23.4L17.8 19.8C18.6 19.6 19.3 19.4 19.9 19.1L20.8 22.7L22 22.4L21.1 18.8C22.3 18.1 22.8 16.9 22.5 15.4C22.3 14.6 21.8 14.2 21.2 14.1ZM18.2 17.1C17.7 19.1 13.7 18 12.5 17.7L13.5 13.5C14.7 13.8 18.7 15.1 18.2 17.1ZM18.5 12.8C18.1 14.4 14.6 13.4 13.6 13.1L14.5 9.4C15.5 9.7 19 11.1 18.5 12.8Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>Bitcoin (BTC)</b><span>Bitcoin Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('Ethereum (ETH)', 'ERC20 Network', '#627EEA', 'eth')">
+                  <div class="crypto-logo" style="background:#627EEA;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.2 5V12.7L22.5 15.6L16.2 5Z" fill="white" fill-opacity="0.602"/><path d="M16.2 5L9.8 15.6L16.2 12.7V5Z" fill="white"/><path d="M16.2 21.8V27L22.6 17.1L16.2 21.8Z" fill="white" fill-opacity="0.602"/><path d="M16.2 27V21.8L9.8 17.1L16.2 27Z" fill="white"/><path d="M16.2 20.6L22.5 16.8L16.2 13.5V20.6Z" fill="white" fill-opacity="0.2"/><path d="M16.2 13.5V20.6L9.8 16.8L16.2 13.5Z" fill="white" fill-opacity="0.602"/></svg></div>
+                  <div class="crypto-info"><b>Ethereum (ETH)</b><span>ERC20 Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('BNB (BEP20)', 'Smart Chain (BEP20)', '#F3BA2F', 'bnb')">
+                  <div class="crypto-logo" style="background:#F3BA2F;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 9.8L19.2 13L16 16.2L12.8 13L16 9.8ZM9.8 16L13 19.2L11 21.2L7.8 18L9.8 16ZM22.2 16L24.2 18L21 21.2L19 19.2L22.2 16ZM16 19.4L18.2 21.6L16 23.8L13.8 21.6L16 19.4ZM19.2 16.2L22.4 19.4L19.2 22.6L16 19.4L19.2 16.2ZM12.8 16.2L16 19.4L12.8 22.6L9.6 19.4L12.8 16.2ZM16 5.5L20.5 10L19 11.5L16 8.5L13 11.5L11.5 10L16 5.5Z" fill="#111"/></svg></div>
+                  <div class="crypto-info"><b>BNB (BEP20)</b><span>Smart Chain (BEP20)</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('TRON (TRX)', 'TRC20 Network', '#EB0029', 'trx')">
+                  <div class="crypto-logo" style="background:#EB0029;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#EB0029"/><path d="M7 11.5L22.5 8L16 24.5L7 11.5ZM23.5 9.5L12 23.5L23.5 9.5ZM10.5 12.5L21.5 10L16 21.5L10.5 12.5Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>TRON (TRX)</b><span>TRC20 Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('Solana (SOL)', 'Solana Network', '#14F195', 'sol')">
+                  <div class="crypto-logo" style="background:#14F195;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#14F195"/><path d="M10.2 19.8H23.2C23.6 19.8 23.8 19.5 23.6 19.2L21.8 16.8C21.6 16.5 21.3 16.5 21 16.8H8C7.6 16.8 7.4 17.1 7.6 17.4L9.4 19.8C9.6 20.1 9.9 20.1 10.2 19.8ZM21 10.2H8C7.6 10.2 7.4 10.5 7.6 10.8L9.4 13.2C9.6 13.5 9.9 13.5 10.2 13.2H23.2C23.6 13.2 23.8 12.9 23.6 12.6L21.8 10.2C21.6 9.9 21.3 9.9 21 10.2ZM21.8 23.4L23.6 25.8C23.8 26.1 23.6 26.4 23.2 26.4H10.2C9.9 26.4 9.6 26.4 9.4 26.1L7.6 23.7C7.4 23.4 7.6 23.1 8 23.1H21C21.3 23.1 21.6 23.1 21.8 23.4Z" fill="#000"/></svg></div>
+                  <div class="crypto-info"><b>Solana (SOL)</b><span>Solana Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('Litecoin (LTC)', 'Litecoin Network', '#345D9D', 'ltc')">
+                  <div class="crypto-logo" style="background:#345D9D;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#345D9D"/><path d="M12.5 21L14.2 13.8H11.8L12.5 11.2H14.9L16.2 6H19.5L18.2 11.2H21.2L20.5 13.8H17.5L15.8 21H12.5Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>Litecoin (LTC)</b><span>Litecoin Network</span></div>
+              </div>
+              <div class="crypto-dropdown-item" onclick="selectWithdrawCrypto('Dogecoin (DOGE)', 'Dogecoin Network', '#C2A633', 'doge')">
+                  <div class="crypto-logo" style="background:#C2A633;"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#C2A633"/><path d="M12 9H17.5C21.2 9 23.5 11.2 23.5 16C23.5 20.8 21.2 23 17.5 23H12V9ZM15 11.5V20.5H17.2C19.5 20.5 20.8 19.3 20.8 16C20.8 12.7 19.5 11.5 17.2 11.5H15Z" fill="white"/></svg></div>
+                  <div class="crypto-info"><b>Dogecoin (DOGE)</b><span>Dogecoin Network</span></div>
+              </div>
+          </div>
+      </div>
 
       <!-- کادر دوم: آدرس ولت -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
@@ -554,6 +613,7 @@ const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",110
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
+let selectedWithdrawCryptoValue = "USDT (TRC20)";
 
 const WALLETS = {
     trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
@@ -561,6 +621,50 @@ const WALLETS = {
     eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
+
+// Custom Crypto Dropdown Functions
+function toggleCryptoDropdown() {
+    document.getElementById('cryptoDropdownList').classList.toggle('open');
+}
+
+function selectWithdrawCrypto(val, network, color, type) {
+    selectedWithdrawCryptoValue = val;
+    let svgHtml = '';
+    if(type === 'tether') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.8 19.3V16.8H21V13.8H17.8V12.1H21.9V9.1H10.1V12.1H14.2V13.8H11V16.8H14.2V19.3C10.7 19.5 8 20.3 8 21.3C8 22.3 10.7 23.1 14.2 23.3V26.2H17.8V23.3C21.3 23.1 24 22.3 24 21.3C24 20.3 21.3 19.5 17.8 19.3ZM16 21.4C12.8 21.4 10.2 20.8 10.2 20.1C10.2 19.4 12.8 18.8 16 18.8C19.2 18.8 21.8 19.4 21.8 20.1C21.8 20.8 19.2 21.4 16 21.4Z" fill="white"/></svg>`;
+    } else if(type === 'btc') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F7931A"/><path d="M21.2 14.1C21.5 12.8 21 11.8 19.5 11.4L20.4 7.8L19.2 7.5L18.4 11.1C17.9 11 17.3 10.9 16.8 10.8L17.6 7.2L16.4 6.9L15.5 10.5C15.1 10.4 14.7 10.3 14.3 10.2L15.1 6.6L13.9 6.3L13 9.9C12.4 9.8 11.8 9.6 11.2 9.5L10 9.8L10.3 11.1C10.3 11.1 11 11.3 11 11.3C11.4 11.4 11.5 11.7 11.5 12L10.6 15.9C10.6 16 10.5 16 10.5 16.1C10.5 16.2 10.4 16.2 10.3 16.2C10.3 16.2 9.6 16 9.6 16L9 17.5C9.6 17.7 10.2 17.9 10.8 18.1L10 21.7L11.2 22L12 18.4C12.6 18.6 13.1 18.8 13.7 18.9L12.9 22.5L14.1 22.8L15 19.2C15.5 19.3 16 19.4 16.5 19.5L15.7 23.1L16.9 23.4L17.8 19.8C18.6 19.6 19.3 19.4 19.9 19.1L20.8 22.7L22 22.4L21.1 18.8C22.3 18.1 22.8 16.9 22.5 15.4C22.3 14.6 21.8 14.2 21.2 14.1ZM18.2 17.1C17.7 19.1 13.7 18 12.5 17.7L13.5 13.5C14.7 13.8 18.7 15.1 18.2 17.1ZM18.5 12.8C18.1 14.4 14.6 13.4 13.6 13.1L14.5 9.4C15.5 9.7 19 11.1 18.5 12.8Z" fill="white"/></svg>`;
+    } else if(type === 'eth') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#627EEA"/><path d="M16.2 5V12.7L22.5 15.6L16.2 5Z" fill="white" fill-opacity="0.602"/><path d="M16.2 5L9.8 15.6L16.2 12.7V5Z" fill="white"/><path d="M16.2 21.8V27L22.6 17.1L16.2 21.8Z" fill="white" fill-opacity="0.602"/><path d="M16.2 27V21.8L9.8 17.1L16.2 27Z" fill="white"/><path d="M16.2 20.6L22.5 16.8L16.2 13.5V20.6Z" fill="white" fill-opacity="0.2"/><path d="M16.2 13.5V20.6L9.8 16.8L16.2 13.5Z" fill="white" fill-opacity="0.602"/></svg>`;
+    } else if(type === 'bnb') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 9.8L19.2 13L16 16.2L12.8 13L16 9.8ZM9.8 16L13 19.2L11 21.2L7.8 18L9.8 16ZM22.2 16L24.2 18L21 21.2L19 19.2L22.2 16ZM16 19.4L18.2 21.6L16 23.8L13.8 21.6L16 19.4ZM19.2 16.2L22.4 19.4L19.2 22.6L16 19.4L19.2 16.2ZM12.8 16.2L16 19.4L12.8 22.6L9.6 19.4L12.8 16.2ZM16 5.5L20.5 10L19 11.5L16 8.5L13 11.5L11.5 10L16 5.5Z" fill="#111"/></svg>`;
+    } else if(type === 'trx') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#EB0029"/><path d="M7 11.5L22.5 8L16 24.5L7 11.5ZM23.5 9.5L12 23.5L23.5 9.5ZM10.5 12.5L21.5 10L16 21.5L10.5 12.5Z" fill="white"/></svg>`;
+    } else if(type === 'sol') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#14F195"/><path d="M10.2 19.8H23.2C23.6 19.8 23.8 19.5 23.6 19.2L21.8 16.8C21.6 16.5 21.3 16.5 21 16.8H8C7.6 16.8 7.4 17.1 7.6 17.4L9.4 19.8C9.6 20.1 9.9 20.1 10.2 19.8ZM21 10.2H8C7.6 10.2 7.4 10.5 7.6 10.8L9.4 13.2C9.6 13.5 9.9 13.5 10.2 13.2H23.2C23.6 13.2 23.8 12.9 23.6 12.6L21.8 10.2C21.6 9.9 21.3 9.9 21 10.2ZM21.8 23.4L23.6 25.8C23.8 26.1 23.6 26.4 23.2 26.4H10.2C9.9 26.4 9.6 26.4 9.4 26.1L7.6 23.7C7.4 23.4 7.6 23.1 8 23.1H21C21.3 23.1 21.6 23.1 21.8 23.4Z" fill="#000"/></svg>`;
+    } else if(type === 'ltc') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#345D9D"/><path d="M12.5 21L14.2 13.8H11.8L12.5 11.2H14.9L16.2 6H19.5L18.2 11.2H21.2L20.5 13.8H17.5L15.8 21H12.5Z" fill="white"/></svg>`;
+    } else if(type === 'doge') {
+        svgHtml = `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#C2A633"/><path d="M12 9H17.5C21.2 9 23.5 11.2 23.5 16C23.5 20.8 21.2 23 17.5 23H12V9ZM15 11.5V20.5H17.2C19.5 20.5 20.8 19.3 20.8 16C20.8 12.7 19.5 11.5 17.2 11.5H15Z" fill="white"/></svg>`;
+    }
+    
+    document.getElementById('selectedCryptoDisplay').innerHTML = `
+        <div class="crypto-logo" style="background:${color};">${svgHtml}</div>
+        <div class="crypto-info">
+            <b>${val}</b>
+            <span>${network}</span>
+        </div>
+    `;
+    document.getElementById('cryptoDropdownList').classList.remove('open');
+}
+
+// Close dropdown when clicking outside
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('#withdrawCryptoDropdown')) {
+        let list = document.getElementById('cryptoDropdownList');
+        if(list) list.classList.remove('open');
+    }
+});
 
 function togglePaymentDetails() {
     const method = document.getElementById('payment-method').value;
@@ -832,7 +936,7 @@ async function saveTx(type, amount, status){
 async function withdraw(){
   let a = +document.getElementById("withdrawAmount").value;
   let address = document.getElementById("withdrawAddress").value.trim();
-  let crypto = document.getElementById("withdrawCrypto").value;
+  let crypto = selectedWithdrawCryptoValue;
   
   if(!currentUser) return openAuth("login");
   if(!address) return toast("Please enter your destination wallet address");
@@ -928,7 +1032,7 @@ function renderPlans(){
   let planNames = {
     en: ["Starter", "Growth", "Premium"],
     fa: ["استارتر", "رشد", "پریمیوم"],
-    az: ["Başlanğıc", "Böyümə", "Premium"],
+    az: ["Başlangıç", "Böyümə", "Premium"],
     tr: ["Başlangıç", "Büyüme", "Premium"],
     ru: ["Стартовый", "Рост", "Премиум"],
     ar: ["المبتدئين", "النمو", "الممتازة"],
@@ -952,33 +1056,22 @@ function calc(){
 
 function calcCustom(){
   let a = +customAmount.value||0, term = +customTerm.value||30;
-  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5; else if(a > 10000) rate = 5.0;
-  if(term >= 60) rate = 7.5;
-  let totalProfit = a * (rate / 100) * term, dailyP = a * (rate / 100), monthlyP = dailyP * 30;
-  customResult.textContent = "$" + (a + totalProfit).toFixed(2); 
-  customDaily.textContent = "$" + dailyP.toFixed(2) + ` (${rate}%)`; 
-  customMonthly.textContent = "$" + monthlyP.toFixed(2) + ` (${(rate*30).toFixed(1)}%)`;
-  customProfit.textContent = "$" + totalProfit.toFixed(2) + ` total profit (${rate}% daily)`;
-}
-
-function fmt(n){ return n>=1e12?(n/1e12).toFixed(2)+"T":n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(2)+"M":Number(n).toLocaleString(); }
-function row(c){ let d = live[c[2]]||demo[c[2]], on = stars.includes(c[0]); return `<tr><td><button class="star ${on?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</td><td class="${d[1]>=0?"green":"red"}">${d[1]>=0?"+":""}${d[1].toFixed(2)}%</td><td>$${fmt(d[2])}</td><td>$${fmt(d[3])}</td></tr>`; }
-function renderTable(){ let q = (search.value||"").toLowerCase(); marketTable.innerHTML = coins.filter(c=>(c[0]+" "+c[1]).toLowerCase().includes(q)).map(row).join(""); }
-function renderTop(){ topCoins.innerHTML = coins.slice(0,8).map(c=>{ let d = live[c[2]]||demo[c[2]]; return `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[3]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><span class="${d[1]>=0?"green":"red"}">${d[1].toFixed(2)}%</span></div><div class="price">$${Number(d[0]).toLocaleString(undefined,{maximumFractionDigits:4})}</div></div>`; }).join(""); }
-
-async function loadMarket(){
-  try{
-    let res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false");
-    let data = await res.json();
-    data.forEach(x => { live[x.id] = [x.current_price, x.price_change_percentage_24h_in_currency||x.price_change_percentage_24h||0, x.market_cap, x.total_volume]; });
-  }catch(e){console.log(e);}
-  renderTop(); renderTable();
-}
-
-function toggleStar(s){
-  if(stars.includes(s)) stars = stars.filter(x=>x!==s); else stars.push(s);
-  localStorage.setItem("bi_stars", JSON.stringify(stars));
-  renderTable();
+  let rate = 2.5; if(a >= 1100 && a <= 10000) rate = 4.5; else if(a >= 110 && a < 1100) rate = 3.5;
+  let profit = a * (rate / 100) * term;
+  customResult.textContent = "$" + (a + profit).toFixed(2);
+  customDaily.textContent = "$" + (a * (rate / 100)).toFixed(2);
+  customMonthly.textContent = "$" + (a * (rate / 100) * 30).toFixed(2);
+  customProfit.textContent = "$" + profit.toFixed(2) + " total profit ("+rate+"% daily)";
+  
+  let noticeEl = document.getElementById("lockNotice");
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let dict = T[lang] || T.en;
+  if(term >= 60) {
+    noticeEl.style.display = "block";
+    noticeEl.textContent = dict.lockNoticeText || T.en.lockNoticeText;
+  } else {
+    noticeEl.style.display = "none";
+  }
 }
 
 async function loadTransactions(){
@@ -986,27 +1079,28 @@ async function loadTransactions(){
   let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
   let list = document.getElementById("txList");
   if(!list) return;
-  if(!data || data.length === 0){ list.innerHTML = `<p class="muted" style="padding:15px;">No transactions found.</p>`; return; }
-  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>` +
-    data.map(t=>`<tr><td>${t.date||''}</td><td><b>${t.type}</b></td><td class="green">+$${t.amount}</td><td><span style="color:${t.status==='Completed'||t.status==='Active'?'var(--green)':'var(--gold)'}">${t.status}</span></td></tr>`).join("") +
+  if(!data || data.length === 0){
+    list.innerHTML = `<p class="muted" style="padding:15px; text-align:center;">No transactions found.</p>`;
+    return;
+  }
+  list.innerHTML = `<div class="tablebox"><table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date / Ref</th></tr></thead><tbody>` +
+    data.map(tx => `<tr><td><b>${tx.type}</b></td><td class="green">$${tx.amount.toLocaleString()}</td><td><span style="color:${tx.status==='Completed'?'var(--green)':'var(--gold)'}">${tx.status}</span></td><td class="muted" style="font-size:12px;">${tx.date} ${tx.gateway_ref ? '<br><small>Ref: '+tx.gateway_ref+'</small>':''}</td></tr>`).join("") +
     `</tbody></table></div>`;
 }
 
 async function clearTx(){
   if(!currentUser) return;
   await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast("History cleared");
+  loadTransactions(); toast("Transaction history cleared");
 }
 
-function copyRef(){ navigator.clipboard.writeText("https://binanceinvest.com/?ref=" + (currentUser?currentUser.username:"BI")); toast("Referral link copied!"); }
-
 async function saveProfile(){
-  if(!currentUser) return openAuth("login");
-  currentUser.fullname = fullNameInput.value;
-  currentUser.phone = phone.value;
+  if(!currentUser) return;
+  currentUser.fullname = fullNameInput.value.trim();
+  currentUser.phone = phone.value.trim();
   await saveUserData();
   updateHeaderAuthUI();
-  toast("Profile saved successfully!");
+  toast("Profile saved successfully");
 }
 
 function loadProfile(){
@@ -1017,36 +1111,38 @@ function loadProfile(){
   phone.value = currentUser.phone || "";
 }
 
+function copyRef(){
+  navigator.clipboard.writeText("https://binanceinvest.global/ref/BI-" + (currentUser ? currentUser.username : "NEW"));
+  toast("Referral link copied to clipboard!");
+}
+
 function setLang(l){
   localStorage.setItem("bi_lang", l);
   let d = T[l] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el=>{
+  document.querySelectorAll("[data-t]").forEach(el => {
     let k = el.getAttribute("data-t");
     if(d[k]) el.textContent = d[k];
   });
-  renderPlans();
 }
 
-window.onload = async function(){
+// Initial load
+document.addEventListener("DOMContentLoaded", async () => {
   let savedUser = localStorage.getItem("bi_current_user");
   if(savedUser){
     try {
       currentUser = JSON.parse(savedUser);
-      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
-      if(data && data.length > 0) currentUser = data[0];
-    } catch(e){ console.log(e); }
+      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).single();
+      if(data) currentUser = data;
+    } catch(e) { console.error(e); }
   }
-  
+  updateHeaderAuthUI();
+  updatePortfolio();
+  renderPlans();
   let savedLang = localStorage.getItem("bi_lang") || "en";
   document.getElementById("lang").value = savedLang;
   setLang(savedLang);
-  
-  updateHeaderAuthUI();
-  renderPlans();
-  loadMarket();
-  setInterval(loadMarket, 30000);
-  if(currentUser) { loadProfile(); updatePortfolio(); }
-};
+  if(currentUser) loadProfile();
+});
 </script>
 </body>
 </html>
