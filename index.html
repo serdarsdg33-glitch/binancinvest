@@ -339,6 +339,85 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
     0 0 28px rgba(240,185,11,.2),
     0 20px 42px rgba(0,0,0,.58) !important;
 }
+
+.plan {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(240,185,11,.72) !important;
+  background:
+    linear-gradient(145deg,rgba(21,28,36,.94),rgba(12,17,23,.96)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 0 18px rgba(240,185,11,.025),
+    0 0 9px rgba(240,185,11,.13),
+    0 18px 45px rgba(0,0,0,.48) !important;
+}
+
+.plan > * {
+  position: relative;
+  z-index: 2;
+}
+
+.plan::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -80%;
+  left: -55%;
+  width: 30%;
+  height: 270%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,225,91,.20),
+    rgba(255,255,255,.32),
+    rgba(255,225,91,.20),
+    transparent
+  );
+  transform: rotate(24deg);
+  animation: planBorderShine 5.5s ease-in-out infinite;
+}
+
+.plan:nth-child(2)::before {
+  animation-delay: 1.2s;
+}
+
+.plan:nth-child(3)::before {
+  animation-delay: 2.4s;
+}
+
+.plan:hover {
+  border-color: #ffe15b !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 22px rgba(240,185,11,.055),
+    0 0 14px rgba(240,185,11,.38),
+    0 0 30px rgba(240,185,11,.13),
+    0 25px 45px rgba(0,0,0,.58) !important;
+}
+
+.plan-profit {
+  color: #16c784 !important;
+  font-weight: 850;
+  text-shadow: 0 0 8px rgba(22,199,132,.22);
+}
+
+@keyframes planBorderShine {
+  0%, 34% {
+    left: -55%;
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  63%, 100% {
+    left: 135%;
+    opacity: 0;
+  }
+}
 </style>
 </head>
 <body>
@@ -1407,7 +1486,8 @@ function renderPlans(){
         <ul>
           <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
           <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
-          <li>${uDict.dailyProfit}: ~${p[3]}%</li>
+          <li class="plan-profit">${uDict.dailyProfit}: ~${p[3]}%</li>
+<li class="plan-profit">${uDict.monthlyProfit}: ~${(p[3] * 30).toFixed(1)}%</li>
         </ul>
         <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
       </div>
@@ -1416,7 +1496,7 @@ function renderPlans(){
   pContainer.innerHTML = html;
   if(homePlans) homePlans.innerHTML = html;
   
-  const select = document.getElementById("planSelect");
+ const select = document.getElementById("planSelect");
   if(select){
     select.innerHTML = "";
     plans.forEach((p, i)=>{
