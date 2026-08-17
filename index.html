@@ -478,6 +478,224 @@ html[dir="rtl"] .plan > .tag {
   right: auto !important;
   left: 11px !important;
 }
+/* Support Ticket System */
+.support-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.support-compose,
+.support-tickets,
+.support-chat {
+  border: 1px solid rgba(240,185,11,.22);
+}
+
+.support-compose textarea,
+.support-chat textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  outline: none;
+  color: #fff;
+  background: #0d1218;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  font: inherit;
+}
+
+.support-compose textarea:focus,
+.support-chat textarea:focus {
+  border-color: var(--gold);
+}
+
+.support-ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.support-ticket-item {
+  width: 100%;
+  padding: 13px;
+  text-align: initial;
+  color: #fff;
+  background: #0d1218;
+  border: 1px solid #29313d;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.support-ticket-item:hover,
+.support-ticket-item.active {
+  border-color: rgba(240,185,11,.65);
+  background: rgba(240,185,11,.07);
+}
+
+.support-ticket-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.support-ticket-subject {
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.support-ticket-meta {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.support-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.support-status.open {
+  color: var(--gold2);
+  background: rgba(240,185,11,.10);
+  border: 1px solid rgba(240,185,11,.30);
+}
+
+.support-status.answered {
+  color: var(--green);
+  background: rgba(22,199,132,.10);
+  border: 1px solid rgba(22,199,132,.30);
+}
+
+.support-status.closed {
+  color: var(--muted);
+  background: rgba(139,151,167,.10);
+  border: 1px solid rgba(139,151,167,.25);
+}
+
+.support-unread {
+  min-width: 19px;
+  height: 19px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 5px;
+  color: #111;
+  background: var(--gold);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.support-chat {
+  display: none;
+}
+
+.support-chat.open {
+  display: block;
+}
+
+.support-chat-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ffffff0d;
+}
+
+.support-messages {
+  height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 5px 3px 15px;
+}
+
+.support-message {
+  width: fit-content;
+  max-width: 82%;
+  padding: 11px 13px;
+  border-radius: 14px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.support-message.user {
+  align-self: flex-end;
+  color: #171100;
+  background: linear-gradient(135deg,#ffe15b,#e3a700);
+  border-bottom-right-radius: 4px;
+}
+
+.support-message.admin {
+  align-self: flex-start;
+  color: #fff;
+  background: #19212a;
+  border: 1px solid #34404d;
+  border-bottom-left-radius: 4px;
+}
+
+.support-message-time {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  opacity: .65;
+}
+
+.support-reply-box {
+  padding-top: 14px;
+  border-top: 1px solid #ffffff0d;
+}
+
+.support-empty {
+  padding: 30px 15px;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media(max-width:800px) {
+  .support-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .support-messages {
+    height: 360px;
+  }
+}
+@media (max-width:600px) {
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .nav button {
+    width: 100%;
+    min-width: 0;
+    padding: 9px 3px;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
@@ -507,13 +725,28 @@ html[dir="rtl"] .plan > .tag {
 </header>
 <div class="wrap">
 <nav class="nav">
-<button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
-<button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
-<button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
-<button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
-<button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
-<button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
-<button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
+  <button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
+
+  <button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
+
+  <button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
+
+  <button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
+
+  <button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
+
+  <button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
+
+  <button
+    data-page="support"
+    onclick="page('support',this)"
+    data-t="support"
+    style="color:#f0b90b;font-weight:900;"
+  >
+    Support
+  </button>
+
+  <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
 </nav>
 
 <section id="home" class="view active">
@@ -752,6 +985,123 @@ html[dir="rtl"] .plan > .tag {
 
 <section id="rewards" class="view"><div class="title"><h2 data-t="rewards">Rewards</h2></div><div class="cards"><div class="card stat"><span class="muted" data-t="pointsTitle">Points</span><b id="points">0</b><span class="green" data-t="pointsSub">+50 weekly</span></div><div class="card stat"><span class="muted" data-t="refTitle">Referral</span><b id="refCode">BI-NEW</b><button class="btn" onclick="copyRef()" data-t="copy">Copy code</button></div><div class="card stat"><span class="muted" data-t="vipTitle">VIP</span><b>Silver</b><span class="muted" data-t="vipSub">1,250 pts</span></div><div class="card stat"><span class="muted" data-t="streakTitle">Streak</span><b>7 days</b><span class="green" data-t="streakSub">Active</span></div></div></section>
 
+<section id="support" class="view">
+  <div class="title">
+    <h2 data-t="supportTitle">Support Center</h2>
+
+    <button
+      id="supportLoginBtn"
+      class="btn gold"
+      onclick="openAuth('login')"
+      data-t="login"
+    >
+      Sign In
+    </button>
+  </div>
+
+  <div id="supportGuestNotice" class="card support-empty">
+    Please sign in to create and manage your support tickets.
+  </div>
+
+  <div id="supportUserArea" style="display:none;">
+    <div class="support-layout">
+
+      <div>
+        <div class="card form support-compose">
+          <h2 data-t="newTicket">Create New Ticket</h2>
+
+          <label for="ticketSubject">Subject</label>
+          <input
+            id="ticketSubject"
+            type="text"
+            maxlength="150"
+            placeholder="Briefly explain your issue"
+          >
+
+          <label for="ticketCategory">Category</label>
+          <select id="ticketCategory">
+            <option value="general">General Support</option>
+            <option value="deposit">Deposit</option>
+            <option value="withdrawal">Withdrawal</option>
+            <option value="investment">Investment</option>
+            <option value="account">Account</option>
+            <option value="technical">Technical Problem</option>
+          </select>
+
+          <label for="ticketMessage">Message</label>
+          <textarea
+            id="ticketMessage"
+            maxlength="4000"
+            placeholder="Write your message..."
+          ></textarea>
+
+          <button
+            id="createTicketBtn"
+            class="btn gold"
+            style="width:100%;margin-top:12px;"
+            onclick="createSupportTicket()"
+            data-t="submitTicket"
+          >
+            Submit Ticket
+          </button>
+        </div>
+
+        <div class="card support-tickets">
+          <h2 data-t="myTickets">My Tickets</h2>
+
+          <div id="supportTicketList" class="support-ticket-list">
+            <div class="support-empty">
+              No tickets found.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div id="supportChatPlaceholder" class="card support-empty">
+          Select a ticket to view the conversation.
+        </div>
+
+        <div id="supportChatBox" class="card support-chat">
+          <div class="support-chat-header">
+            <div>
+              <h2 id="supportChatSubject" style="margin:0 0 6px;"></h2>
+              <div id="supportChatMeta" class="muted"></div>
+            </div>
+
+            <button
+              id="closeTicketBtn"
+              class="btn"
+              onclick="closeSupportTicket()"
+            >
+              Close Ticket
+            </button>
+          </div>
+
+          <div id="supportMessages" class="support-messages"></div>
+
+          <div id="supportReplyBox" class="support-reply-box">
+            <textarea
+              id="supportReply"
+              maxlength="4000"
+              placeholder="Write your reply..."
+            ></textarea>
+
+            <button
+              id="sendSupportReplyBtn"
+              class="btn gold"
+              style="width:100%;margin-top:9px;"
+              onclick="sendSupportReply()"
+            >
+              Send Reply
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 <section id="profile" class="view"><div class="title"><h2 data-t="profile">Profile & Security</h2></div>
   <div class="two">
     <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
@@ -1010,7 +1360,371 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen 
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
 };
+const SUPPORT_I18N = {
+  en: {
+    support: "Support",
+    title: "Support Center",
+    guest: "Please sign in to create and manage your support tickets.",
+    newTicket: "Create New Ticket",
+    subject: "Subject",
+    subjectPlaceholder: "Briefly explain your issue",
+    category: "Category",
+    general: "General Support",
+    deposit: "Deposit",
+    withdrawal: "Withdrawal",
+    investment: "Investment",
+    account: "Account",
+    technical: "Technical Problem",
+    message: "Message",
+    messagePlaceholder: "Write your message...",
+    submit: "Submit Ticket",
+    myTickets: "My Tickets",
+    noTickets: "No tickets found.",
+    selectTicket: "Select a ticket to view the conversation.",
+    closeTicket: "Close Ticket",
+    replyPlaceholder: "Write your reply...",
+    sendReply: "Send Reply",
+    open: "Open",
+    answered: "Answered",
+    closed: "Closed",
+    loadingTickets: "Loading tickets...",
+    loadingConversation: "Loading conversation..."
+  },
 
+  fa: {
+    support: "پشتیبانی",
+    title: "مرکز پشتیبانی",
+    guest: "برای ایجاد و مدیریت تیکت‌های پشتیبانی وارد حساب خود شوید.",
+    newTicket: "ایجاد تیکت جدید",
+    subject: "موضوع",
+    subjectPlaceholder: "مشکل خود را به‌طور خلاصه توضیح دهید",
+    category: "دسته‌بندی",
+    general: "پشتیبانی عمومی",
+    deposit: "واریز",
+    withdrawal: "برداشت",
+    investment: "سرمایه‌گذاری",
+    account: "حساب کاربری",
+    technical: "مشکل فنی",
+    message: "پیام",
+    messagePlaceholder: "پیام خود را بنویسید...",
+    submit: "ارسال تیکت",
+    myTickets: "تیکت‌های من",
+    noTickets: "تیکتی وجود ندارد.",
+    selectTicket: "برای مشاهده گفتگو یک تیکت را انتخاب کنید.",
+    closeTicket: "بستن تیکت",
+    replyPlaceholder: "پاسخ خود را بنویسید...",
+    sendReply: "ارسال پاسخ",
+    open: "باز",
+    answered: "پاسخ داده‌شده",
+    closed: "بسته‌شده",
+    loadingTickets: "در حال بارگذاری تیکت‌ها...",
+    loadingConversation: "در حال بارگذاری گفتگو..."
+  },
+
+  az: {
+    support: "Dəstək",
+    title: "Dəstək Mərkəzi",
+    guest: "Dəstək biletlərini yaratmaq və idarə etmək üçün daxil olun.",
+    newTicket: "Yeni Bilet Yarat",
+    subject: "Mövzu",
+    subjectPlaceholder: "Probleminizi qısaca izah edin",
+    category: "Kateqoriya",
+    general: "Ümumi Dəstək",
+    deposit: "Depozit",
+    withdrawal: "Çıxarış",
+    investment: "İnvestisiya",
+    account: "Hesab",
+    technical: "Texniki Problem",
+    message: "Mesaj",
+    messagePlaceholder: "Mesajınızı yazın...",
+    submit: "Bilet Göndər",
+    myTickets: "Biletlərim",
+    noTickets: "Bilet tapılmadı.",
+    selectTicket: "Söhbəti görmək üçün bilet seçin.",
+    closeTicket: "Bileti Bağla",
+    replyPlaceholder: "Cavabınızı yazın...",
+    sendReply: "Cavab Göndər",
+    open: "Açıq",
+    answered: "Cavablandırılıb",
+    closed: "Bağlı",
+    loadingTickets: "Biletlər yüklənir...",
+    loadingConversation: "Söhbət yüklənir..."
+  },
+
+  tr: {
+    support: "Destek",
+    title: "Destek Merkezi",
+    guest: "Destek taleplerinizi oluşturmak ve yönetmek için giriş yapın.",
+    newTicket: "Yeni Destek Talebi",
+    subject: "Konu",
+    subjectPlaceholder: "Sorununuzu kısaca açıklayın",
+    category: "Kategori",
+    general: "Genel Destek",
+    deposit: "Para Yatırma",
+    withdrawal: "Para Çekme",
+    investment: "Yatırım",
+    account: "Hesap",
+    technical: "Teknik Sorun",
+    message: "Mesaj",
+    messagePlaceholder: "Mesajınızı yazın...",
+    submit: "Talebi Gönder",
+    myTickets: "Destek Taleplerim",
+    noTickets: "Destek talebi bulunamadı.",
+    selectTicket: "Konuşmayı görüntülemek için bir talep seçin.",
+    closeTicket: "Talebi Kapat",
+    replyPlaceholder: "Yanıtınızı yazın...",
+    sendReply: "Yanıt Gönder",
+    open: "Açık",
+    answered: "Yanıtlandı",
+    closed: "Kapalı",
+    loadingTickets: "Talepler yükleniyor...",
+    loadingConversation: "Konuşma yükleniyor..."
+  },
+
+  ru: {
+    support: "Поддержка",
+    title: "Центр поддержки",
+    guest: "Войдите, чтобы создавать и управлять обращениями.",
+    newTicket: "Новое обращение",
+    subject: "Тема",
+    subjectPlaceholder: "Кратко опишите проблему",
+    category: "Категория",
+    general: "Общая поддержка",
+    deposit: "Депозит",
+    withdrawal: "Вывод средств",
+    investment: "Инвестиции",
+    account: "Аккаунт",
+    technical: "Техническая проблема",
+    message: "Сообщение",
+    messagePlaceholder: "Напишите сообщение...",
+    submit: "Отправить обращение",
+    myTickets: "Мои обращения",
+    noTickets: "Обращений нет.",
+    selectTicket: "Выберите обращение, чтобы открыть разговор.",
+    closeTicket: "Закрыть обращение",
+    replyPlaceholder: "Напишите ответ...",
+    sendReply: "Отправить ответ",
+    open: "Открыто",
+    answered: "Есть ответ",
+    closed: "Закрыто",
+    loadingTickets: "Загрузка обращений...",
+    loadingConversation: "Загрузка разговора..."
+  },
+
+  ar: {
+    support: "الدعم",
+    title: "مركز الدعم",
+    guest: "يرجى تسجيل الدخول لإنشاء وإدارة تذاكر الدعم.",
+    newTicket: "إنشاء تذكرة جديدة",
+    subject: "الموضوع",
+    subjectPlaceholder: "اشرح مشكلتك باختصار",
+    category: "الفئة",
+    general: "الدعم العام",
+    deposit: "الإيداع",
+    withdrawal: "السحب",
+    investment: "الاستثمار",
+    account: "الحساب",
+    technical: "مشكلة تقنية",
+    message: "الرسالة",
+    messagePlaceholder: "اكتب رسالتك...",
+    submit: "إرسال التذكرة",
+    myTickets: "تذاكري",
+    noTickets: "لا توجد تذاكر.",
+    selectTicket: "اختر تذكرة لعرض المحادثة.",
+    closeTicket: "إغلاق التذكرة",
+    replyPlaceholder: "اكتب ردك...",
+    sendReply: "إرسال الرد",
+    open: "مفتوحة",
+    answered: "تم الرد",
+    closed: "مغلقة",
+    loadingTickets: "جارٍ تحميل التذاكر...",
+    loadingConversation: "جارٍ تحميل المحادثة..."
+  },
+
+  zh: {
+    support: "支持",
+    title: "支持中心",
+    guest: "请登录以创建和管理支持工单。",
+    newTicket: "创建新工单",
+    subject: "主题",
+    subjectPlaceholder: "请简要说明您的问题",
+    category: "类别",
+    general: "一般支持",
+    deposit: "充值",
+    withdrawal: "提现",
+    investment: "投资",
+    account: "账户",
+    technical: "技术问题",
+    message: "消息",
+    messagePlaceholder: "请输入您的消息...",
+    submit: "提交工单",
+    myTickets: "我的工单",
+    noTickets: "暂无工单。",
+    selectTicket: "请选择一个工单以查看对话。",
+    closeTicket: "关闭工单",
+    replyPlaceholder: "请输入回复...",
+    sendReply: "发送回复",
+    open: "开放",
+    answered: "已回复",
+    closed: "已关闭",
+    loadingTickets: "正在加载工单...",
+    loadingConversation: "正在加载对话..."
+  },
+
+  es: {
+    support: "Soporte",
+    title: "Centro de soporte",
+    guest: "Inicia sesión para crear y administrar tus solicitudes.",
+    newTicket: "Crear nueva solicitud",
+    subject: "Asunto",
+    subjectPlaceholder: "Explica brevemente tu problema",
+    category: "Categoría",
+    general: "Soporte general",
+    deposit: "Depósito",
+    withdrawal: "Retiro",
+    investment: "Inversión",
+    account: "Cuenta",
+    technical: "Problema técnico",
+    message: "Mensaje",
+    messagePlaceholder: "Escribe tu mensaje...",
+    submit: "Enviar solicitud",
+    myTickets: "Mis solicitudes",
+    noTickets: "No se encontraron solicitudes.",
+    selectTicket: "Selecciona una solicitud para ver la conversación.",
+    closeTicket: "Cerrar solicitud",
+    replyPlaceholder: "Escribe tu respuesta...",
+    sendReply: "Enviar respuesta",
+    open: "Abierta",
+    answered: "Respondida",
+    closed: "Cerrada",
+    loadingTickets: "Cargando solicitudes...",
+    loadingConversation: "Cargando conversación..."
+  },
+
+  fr: {
+    support: "Assistance",
+    title: "Centre d’assistance",
+    guest: "Connectez-vous pour créer et gérer vos demandes d’assistance.",
+    newTicket: "Créer une demande",
+    subject: "Sujet",
+    subjectPlaceholder: "Décrivez brièvement votre problème",
+    category: "Catégorie",
+    general: "Assistance générale",
+    deposit: "Dépôt",
+    withdrawal: "Retrait",
+    investment: "Investissement",
+    account: "Compte",
+    technical: "Problème technique",
+    message: "Message",
+    messagePlaceholder: "Écrivez votre message...",
+    submit: "Envoyer la demande",
+    myTickets: "Mes demandes",
+    noTickets: "Aucune demande trouvée.",
+    selectTicket: "Sélectionnez une demande pour afficher la conversation.",
+    closeTicket: "Fermer la demande",
+    replyPlaceholder: "Écrivez votre réponse...",
+    sendReply: "Envoyer la réponse",
+    open: "Ouverte",
+    answered: "Répondue",
+    closed: "Fermée",
+    loadingTickets: "Chargement des demandes...",
+    loadingConversation: "Chargement de la conversation..."
+  },
+
+  de: {
+    support: "Support",
+    title: "Support-Center",
+    guest: "Melden Sie sich an, um Support-Anfragen zu erstellen und zu verwalten.",
+    newTicket: "Neue Anfrage erstellen",
+    subject: "Betreff",
+    subjectPlaceholder: "Beschreiben Sie kurz Ihr Problem",
+    category: "Kategorie",
+    general: "Allgemeiner Support",
+    deposit: "Einzahlung",
+    withdrawal: "Auszahlung",
+    investment: "Investition",
+    account: "Konto",
+    technical: "Technisches Problem",
+    message: "Nachricht",
+    messagePlaceholder: "Schreiben Sie Ihre Nachricht...",
+    submit: "Anfrage senden",
+    myTickets: "Meine Anfragen",
+    noTickets: "Keine Anfragen gefunden.",
+    selectTicket: "Wählen Sie eine Anfrage aus, um den Verlauf anzuzeigen.",
+    closeTicket: "Anfrage schließen",
+    replyPlaceholder: "Schreiben Sie Ihre Antwort...",
+    sendReply: "Antwort senden",
+    open: "Offen",
+    answered: "Beantwortet",
+    closed: "Geschlossen",
+    loadingTickets: "Anfragen werden geladen...",
+    loadingConversation: "Unterhaltung wird geladen..."
+  }
+};
+
+function getSupportText(key) {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return SUPPORT_I18N[lang]?.[key] || SUPPORT_I18N.en[key] || key;
+}
+
+function applySupportLanguage() {
+  const s = SUPPORT_I18N[
+    localStorage.getItem("bi_lang") || "en"
+  ] || SUPPORT_I18N.en;
+
+  const setText = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  };
+
+  setText('[data-page="support"]', s.support);
+  setText('#support .title h2', s.title);
+  setText('#supportGuestNotice', s.guest);
+  setText('.support-compose h2', s.newTicket);
+  setText('label[for="ticketSubject"]', s.subject);
+  setText('label[for="ticketCategory"]', s.category);
+  setText('label[for="ticketMessage"]', s.message);
+  setText('.support-tickets h2', s.myTickets);
+  setText('#supportChatPlaceholder', s.selectTicket);
+  setText('#closeTicketBtn', s.closeTicket);
+  setText('#sendSupportReplyBtn', s.sendReply);
+
+  const subject = document.getElementById("ticketSubject");
+  const message = document.getElementById("ticketMessage");
+  const reply = document.getElementById("supportReply");
+  const submit = document.getElementById("createTicketBtn");
+  const category = document.getElementById("ticketCategory");
+
+  if (subject) subject.placeholder = s.subjectPlaceholder;
+  if (message) message.placeholder = s.messagePlaceholder;
+  if (reply) reply.placeholder = s.replyPlaceholder;
+  if (submit && !submit.disabled) submit.textContent = s.submit;
+
+  if (category) {
+    const labels = [
+      s.general,
+      s.deposit,
+      s.withdrawal,
+      s.investment,
+      s.account,
+      s.technical
+    ];
+
+    [...category.options].forEach((option, index) => {
+      if (labels[index]) option.textContent = labels[index];
+    });
+  }
+
+  const ticketList = document.getElementById("supportTicketList");
+
+  if (
+    ticketList &&
+    ticketList.querySelector(".support-empty") &&
+    !ticketList.querySelector(".support-ticket-item")
+  ) {
+    ticketList.querySelector(".support-empty").textContent = s.noTickets;
+  }
+}
 const uiTexts = {
   en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
   fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
@@ -1287,114 +2001,321 @@ setInterval(() => {
 }, 5000);
 
 function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
-function page(id,b){
-  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
-  let target = document.getElementById(id);
-  if(target) target.classList.add("active");
-  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
-  if(b)b.classList.add("active");
-  if(id==="portfolio") { updatePortfolio(); togglePaymentDetails(); }
-  if(id==="transactions") loadTransactions();
-  scrollTo(0,0);
-}
+function page(id, button) {
+  document.querySelectorAll(".view").forEach(view => {
+    view.classList.remove("active");
+  });
 
-function openAuth(m){ authMode=m; updateAuthModalUI(); document.getElementById("auth").style.display="flex"; }
-function closeAuth(){ document.getElementById("auth").style.display="none"; }
-function switchAuthMode(m){ authMode=m; updateAuthModalUI(); }
-function toggleAuthMode(){ if(authMode==="login") authMode="register"; else if(authMode==="register") authMode="login"; updateAuthModalUI(); }
+  const target = document.getElementById(id);
 
-function updateAuthModalUI(){
-  let lang = localStorage.getItem("bi_lang")||"en"; let d = T[lang]||T.en;
-  let regFields=document.getElementById("registerFields"), regCodeFields=document.getElementById("registerCodeFields"), loginFields=document.getElementById("loginFields"), forgotFields=document.getElementById("forgotFields"), passContainer=document.getElementById("passwordContainer"), submitBtn=document.getElementById("authSubmitBtn"), forgotLink=document.getElementById("forgotLink"), switchLink=document.getElementById("switchAuthLink"), titleEl=document.getElementById("authTitle");
-  regFields.style.display="none"; regCodeFields.style.display="none"; loginFields.style.display="none"; forgotFields.style.display="none"; passContainer.style.display="block"; forgotLink.style.display="block"; switchLink.style.display="block";
-  
-  if(authMode==="login"){ titleEl.textContent=d.login; loginFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.needAccountText; } 
-  else if(authMode==="register"){ titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none"; } 
-  else if(authMode==="verifying"){ titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none"; } 
-  else if(authMode==="forgot"){ titleEl.textContent=d.resetPasswordTitle||"Reset Password"; forgotFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.sendResetCode; forgotLink.style.display="none"; } 
-}
-
-async function submitAuth(){
-  if(authMode==="register"){
-    let fullName = authFullName.value.trim(), u = authUsernameReg.value.trim(), email = authEmailReg.value.trim(), p = authPass.value;
-    if(fullName.length<2) return toast("Please enter a valid full name");
-    if(u.length<3) return toast("Username must be at least 3 characters");
-    if(!email.includes("@")) return toast("Please enter a valid email address");
-    
-    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    if(!pwdRegex.test(p)){
-      return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
-    }
-    
-    let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
-    if(existing && existing.length > 0) return toast("Username or email already taken!");
-
-    generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
-    document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
-    tempRegData = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
-    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
-  } 
-  else if(authMode==="verifying"){
-    let enteredCode = authEmailCode.value.trim();
-    if(enteredCode !== generatedEmailCode) return toast("Invalid verification code!");
-    
-    let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
-    if(error){
-      console.error(error);
-      return toast("Database error: " + error.message);
-    }
-    
-    currentUser = data && data[0] ? data[0] : tempRegData;
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    
-    saveTx('Account Created', 0, 'Completed');
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account created successfully!");
+  if (!target) {
+    console.error("Page not found:", id);
+    return;
   }
-  else if(authMode==="login"){
-    let identifier = authUser.value.trim(), p = authPass.value;
-    let { data, error } = await supabaseClient.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`).eq('password', p).limit(1);
-    if(error || !data || data.length === 0) return toast("Incorrect username or password");
-    
-    currentUser = data[0];
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullname || currentUser.username));
+
+  target.classList.add("active");
+
+  document.querySelectorAll(".nav button").forEach(navButton => {
+    navButton.classList.remove("active");
+  });
+
+  if (button) {
+    button.classList.add("active");
+  }
+
+  if (id === "portfolio") {
+    updatePortfolio();
+    togglePaymentDetails();
+  }
+
+  if (id === "transactions") {
+    loadTransactions();
+  }
+
+  if (id === "support") {
+    updateSupportAuthUI();
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function openAuth(mode = "login") {
+  authMode = mode;
+  updateAuthModalUI();
+  document.getElementById("auth").style.display = "flex";
+}
+
+function closeAuth() {
+  document.getElementById("auth").style.display = "none";
+}
+
+function switchAuthMode(mode) {
+  authMode = mode;
+  updateAuthModalUI();
+}
+
+function toggleAuthMode() {
+  authMode = authMode === "login" ? "register" : "login";
+  updateAuthModalUI();
+}
+
+function updateAuthModalUI() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const d = T[lang] || T.en;
+
+  const registerFields = document.getElementById("registerFields");
+  const registerCodeFields = document.getElementById("registerCodeFields");
+  const loginFields = document.getElementById("loginFields");
+  const forgotFields = document.getElementById("forgotFields");
+  const passwordContainer = document.getElementById("passwordContainer");
+  const submitButton = document.getElementById("authSubmitBtn");
+  const forgotLink = document.getElementById("forgotLink");
+  const switchLink = document.getElementById("switchAuthLink");
+  const title = document.getElementById("authTitle");
+
+  registerFields.style.display = "none";
+  registerCodeFields.style.display = "none";
+  loginFields.style.display = "none";
+  forgotFields.style.display = "none";
+  passwordContainer.style.display = "block";
+  forgotLink.style.display = "none";
+  switchLink.style.display = "block";
+
+  if (authMode === "register") {
+    title.textContent = d.register || "Create Account";
+    registerFields.style.display = "block";
+    submitButton.textContent = d.register || "Create Account";
+    switchLink.textContent = d.haveAccountText || "Already have an account? Sign in";
+  } else if (authMode === "forgot") {
+    title.textContent = d.resetPasswordTitle || "Reset Password";
+    forgotFields.style.display = "block";
+    passwordContainer.style.display = "none";
+    submitButton.textContent = d.sendResetCode || "Send Reset Link";
+    switchLink.textContent = d.haveAccountText || "Back to Sign In";
+  } else {
+    authMode = "login";
+    title.textContent = d.login || "Sign In";
+    loginFields.style.display = "block";
+    submitButton.textContent = d.login || "Sign In";
+    forgotLink.style.display = "block";
+    switchLink.textContent = d.needAccountText || "Don't have an account? Sign up";
   }
 }
 
-function logout(){
+async function submitAuth() {
+  const submitButton = document.getElementById("authSubmitBtn");
+  submitButton.disabled = true;
+
+  try {
+    if (authMode === "register") {
+      const fullName = document.getElementById("authFullName").value.trim();
+      const usernameValue = document.getElementById("authUsernameReg").value.trim();
+      const email = document.getElementById("authEmailReg").value.trim().toLowerCase();
+      const password = document.getElementById("authPass").value;
+
+      if (fullName.length < 2) {
+        return toast("Please enter your full name");
+      }
+
+      if (!/^[a-zA-Z0-9_]{3,30}$/.test(usernameValue)) {
+        return toast("Username must contain 3–30 English letters, numbers or _");
+      }
+
+      if (!email.includes("@")) {
+        return toast("Please enter a valid email");
+      }
+
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+        return toast("Password needs uppercase, lowercase, number and 8 characters");
+      }
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username: usernameValue,
+            full_name: fullName
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      if (!data.session) {
+        closeAuth();
+        toast("Account created. Check your email and confirm your account.");
+        return;
+      }
+
+      await loadAuthenticatedUser(data.session.user);
+      closeAuth();
+      toast("Account created successfully");
+    }
+
+    else if (authMode === "login") {
+      const email = document.getElementById("authUser").value.trim().toLowerCase();
+      const password = document.getElementById("authPass").value;
+
+      if (!email.includes("@")) {
+        return toast("Enter your registered email address");
+      }
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({ email, password });
+
+      if (error) throw error;
+
+      await loadAuthenticatedUser(data.user);
+      closeAuth();
+      toast("Signed in successfully");
+    }
+
+    else if (authMode === "forgot") {
+      const email = document.getElementById("forgotInput").value.trim().toLowerCase();
+
+      if (!email.includes("@")) {
+        return toast("Enter your registered email address");
+      }
+
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+      });
+
+      if (error) throw error;
+
+      closeAuth();
+      toast("Password reset link sent to your email");
+    }
+  } catch (error) {
+    console.error(error);
+    toast(error.message || "Authentication failed");
+  } finally {
+    submitButton.disabled = false;
+  }
+}
+
+async function loadAuthenticatedUser(authUser) {
+  if (!authUser) {
+    currentUser = null;
+    updateHeaderAuthUI();
+    return;
+  }
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", authUser.id)
+    .single();
+
+  if (error) {
+    console.error("Profile error:", error);
+    currentUser = null;
+    updateHeaderAuthUI();
+    return;
+  }
+
+  currentUser = {
+    ...profile,
+    id: authUser.id,
+    email: authUser.email,
+    fullname: profile.full_name || "",
+    balance: Number(profile.balance || 0),
+    invested: Number(profile.invested || 0),
+    profit: Number(profile.profit || 0)
+  };
+
+  loadProfile();
+  updatePortfolio();
+  updateHeaderAuthUI();
+
+  if (typeof updateSupportAuthUI === "function") {
+    updateSupportAuthUI();
+  }
+}
+
+async function restoreAuthSession() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (data.session?.user) {
+    await loadAuthenticatedUser(data.session.user);
+  } else {
+    currentUser = null;
+    updateHeaderAuthUI();
+
+    if (typeof updateSupportAuthUI === "function") {
+      updateSupportAuthUI();
+    }
+  }
+}
+
+async function logout() {
+  await supabaseClient.auth.signOut();
   currentUser = null;
-  localStorage.removeItem("bi_current_user");
   updateHeaderAuthUI();
   updatePortfolio();
+
+  if (typeof updateSupportAuthUI === "function") {
+    updateSupportAuthUI();
+  }
+
   toast("Logged out successfully");
 }
 
-function updateHeaderAuthUI(){
-  let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
-  let portAuthBtn = document.getElementById("portfolioAuthBtn");
-  if(currentUser){
-    headerDisp.style.display = "flex"; 
-    authGroup.style.display = "none"; 
-    if(portAuthBtn) portAuthBtn.style.display = "none";
-    document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
-    document.getElementById("headerUsername").textContent = "@" + currentUser.username;
+function updateHeaderAuthUI() {
+  const headerDisplay = document.getElementById("userHeaderDisplay");
+  const authGroup = document.getElementById("authButtonsGroup");
+  const portfolioAuthButton = document.getElementById("portfolioAuthBtn");
+
+  if (currentUser) {
+    headerDisplay.style.display = "flex";
+    authGroup.style.display = "none";
+
+    if (portfolioAuthButton) {
+      portfolioAuthButton.style.display = "none";
+    }
+
+    document.getElementById("headerFullName").textContent =
+      currentUser.fullname || currentUser.username || "User";
+
+    document.getElementById("headerUsername").textContent =
+      currentUser.username ? "@" + currentUser.username : "";
   } else {
-    headerDisp.style.display = "none"; 
+    headerDisplay.style.display = "none";
     authGroup.style.display = "flex";
-    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
+
+    if (portfolioAuthButton) {
+      portfolioAuthButton.style.display = "inline-block";
+    }
   }
 }
 
-async function saveUserData(){
-  if(!currentUser) return;
-  await supabaseClient.from('users').update({
-    phone: currentUser.phone,
-    fullname: currentUser.fullname,
-    balance: currentUser.balance,
-    invested: currentUser.invested,
-    profit: currentUser.profit
-  }).eq('username', currentUser.username);
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+async function saveUserData() {
+  if (!currentUser?.id) {
+    toast("Please sign in first");
+    return false;
+  }
+
+  const { error } = await supabaseClient
+    .from("profiles")
+    .update({
+      full_name: currentUser.fullname || "",
+      phone: currentUser.phone || ""
+    })
+    .eq("id", currentUser.id);
+
+  if (error) {
+    console.error("Profile update error:", error);
+    toast(error.message || "Profile update failed");
+    return false;
+  }
+
+  return true;
 }
 
 async function saveTx(type, amount, status){
@@ -1643,7 +2564,513 @@ async function saveProfile(){
   updateHeaderAuthUI();
   toast("Profile updated successfully!");
 }
+// ==============================
+// SUPPORT TICKET SYSTEM
+// ==============================
 
+let activeSupportTicketId = null;
+let supportRealtimeChannel = null;
+
+function updateSupportAuthUI() {
+  const loginButton = document.getElementById("supportLoginBtn");
+  const guestNotice = document.getElementById("supportGuestNotice");
+  const userArea = document.getElementById("supportUserArea");
+
+  if (!loginButton || !guestNotice || !userArea) return;
+
+  if (currentUser?.id) {
+    loginButton.style.display = "none";
+    guestNotice.style.display = "none";
+    userArea.style.display = "block";
+
+    loadSupportTickets();
+    startSupportRealtime();
+  } else {
+    loginButton.style.display = "inline-block";
+    guestNotice.style.display = "block";
+    userArea.style.display = "none";
+
+    activeSupportTicketId = null;
+    stopSupportRealtime();
+    resetSupportChat();
+  }
+}
+
+async function createSupportTicket() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const subjectInput = document.getElementById("ticketSubject");
+  const categoryInput = document.getElementById("ticketCategory");
+  const messageInput = document.getElementById("ticketMessage");
+  const submitButton = document.getElementById("createTicketBtn");
+
+  const subject = subjectInput.value.trim();
+  const category = categoryInput.value;
+  const message = messageInput.value.trim();
+
+  if (subject.length < 3) {
+    toast("Subject must contain at least 3 characters");
+    return;
+  }
+
+  if (message.length < 2) {
+    toast("Please write your message");
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Sending...";
+
+  try {
+    const { data: ticket, error: ticketError } = await supabaseClient
+      .from("support_tickets")
+      .insert({
+        user_id: currentUser.id,
+        subject,
+        category,
+        status: "open"
+      })
+      .select()
+      .single();
+
+    if (ticketError) throw ticketError;
+
+    const { error: messageError } = await supabaseClient
+      .from("support_messages")
+      .insert({
+        ticket_id: ticket.id,
+        sender_id: currentUser.id,
+        sender_role: "user",
+        message
+      });
+
+    if (messageError) {
+      await supabaseClient
+        .from("support_tickets")
+        .delete()
+        .eq("id", ticket.id);
+
+      throw messageError;
+    }
+
+    subjectInput.value = "";
+    messageInput.value = "";
+    categoryInput.value = "general";
+
+    toast("Ticket submitted successfully");
+
+    await loadSupportTickets();
+    await openSupportTicket(ticket.id);
+  } catch (error) {
+    console.error("Create ticket error:", error);
+    toast(error.message || "Ticket could not be submitted");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Ticket";
+  }
+}
+
+async function loadSupportTickets() {
+  const list = document.getElementById("supportTicketList");
+
+  if (!list) return;
+
+  if (!currentUser?.id) {
+    list.innerHTML =
+      '<div class="support-empty">Please sign in first.</div>';
+    return;
+  }
+
+list.innerHTML =
+  `<div class="support-empty">${getSupportText("loadingTickets")}</div>`;
+
+  try {
+    const { data: tickets, error } = await supabaseClient
+      .from("support_tickets")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .order("updated_at", { ascending: false });
+
+    if (error) throw error;
+
+    list.innerHTML = "";
+
+    if (!tickets || tickets.length === 0) {
+   list.innerHTML =
+  `<div class="support-empty">${getSupportText("noTickets")}</div>`;
+
+      resetSupportChat();
+      return;
+    }
+
+    tickets.forEach(ticket => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "support-ticket-item";
+
+      if (ticket.id === activeSupportTicketId) {
+        button.classList.add("active");
+      }
+
+      button.addEventListener("click", () => {
+        openSupportTicket(ticket.id);
+      });
+
+      const top = document.createElement("div");
+      top.className = "support-ticket-top";
+
+      const subject = document.createElement("span");
+      subject.className = "support-ticket-subject";
+      subject.textContent = ticket.subject || "Support Ticket";
+
+      const status = document.createElement("span");
+      const statusValue = ticket.status || "open";
+      status.className = `support-status ${statusValue}`;
+      status.textContent = formatSupportStatus(statusValue);
+
+      top.appendChild(subject);
+      top.appendChild(status);
+
+      const meta = document.createElement("div");
+      meta.className = "support-ticket-meta";
+
+      const category = ticket.category || "general";
+      const date = formatSupportDate(
+        ticket.updated_at || ticket.created_at
+      );
+
+      meta.textContent = `${category} • ${date}`;
+
+      button.appendChild(top);
+      button.appendChild(meta);
+      list.appendChild(button);
+    });
+  } catch (error) {
+    console.error("Load tickets error:", error);
+
+list.innerHTML =
+  '<div class="support-empty">Tickets could not be loaded.</div>';
+
+    toast(error.message || "Could not load support tickets");
+  }
+}
+
+async function openSupportTicket(ticketId) {
+  if (!currentUser?.id || !ticketId) return;
+
+  activeSupportTicketId = ticketId;
+
+  const placeholder = document.getElementById(
+    "supportChatPlaceholder"
+  );
+
+  const chatBox = document.getElementById("supportChatBox");
+  const subjectElement = document.getElementById(
+    "supportChatSubject"
+  );
+
+  const metaElement = document.getElementById("supportChatMeta");
+  const replyBox = document.getElementById("supportReplyBox");
+  const closeButton = document.getElementById("closeTicketBtn");
+
+  try {
+    const { data: ticket, error } = await supabaseClient
+      .from("support_tickets")
+      .select("*")
+      .eq("id", ticketId)
+      .eq("user_id", currentUser.id)
+      .single();
+
+    if (error) throw error;
+
+    placeholder.style.display = "none";
+    chatBox.classList.add("open");
+
+    subjectElement.textContent = ticket.subject || "Support Ticket";
+
+    metaElement.textContent =
+      `${ticket.category || "general"} • ` +
+      `${formatSupportDate(ticket.created_at)} • ` +
+      `${formatSupportStatus(ticket.status)}`;
+
+    const isClosed = ticket.status === "closed";
+
+    replyBox.style.display = isClosed ? "none" : "block";
+    closeButton.style.display = isClosed ? "none" : "inline-block";
+
+    await loadSupportMessages(ticketId);
+    await loadSupportTickets();
+  } catch (error) {
+    console.error("Open ticket error:", error);
+    toast(error.message || "Ticket could not be opened");
+    resetSupportChat();
+  }
+}
+
+async function loadSupportMessages(ticketId) {
+  const messagesBox = document.getElementById("supportMessages");
+
+  if (!messagesBox || !ticketId) return;
+
+messagesBox.innerHTML =
+  `<div class="support-empty">${getSupportText("loadingConversation")}</div>`;
+
+  try {
+    const { data: messages, error } = await supabaseClient
+      .from("support_messages")
+      .select("*")
+      .eq("ticket_id", ticketId)
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+
+    messagesBox.innerHTML = "";
+
+    if (!messages || messages.length === 0) {
+      messagesBox.innerHTML =
+        '<div class="support-empty">No messages found.</div>';
+      return;
+    }
+
+    messages.forEach(item => {
+      const messageElement = document.createElement("div");
+
+      const senderRole =
+        item.sender_role === "admin" ? "admin" : "user";
+
+      messageElement.className =
+        `support-message ${senderRole}`;
+
+      const messageText = document.createElement("div");
+      messageText.textContent = item.message || "";
+
+      const messageTime = document.createElement("span");
+      messageTime.className = "support-message-time";
+      messageTime.textContent = formatSupportDate(item.created_at);
+
+      messageElement.appendChild(messageText);
+      messageElement.appendChild(messageTime);
+      messagesBox.appendChild(messageElement);
+    });
+
+    requestAnimationFrame(() => {
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    });
+  } catch (error) {
+    console.error("Load messages error:", error);
+
+    messagesBox.innerHTML =
+      '<div class="support-empty">Conversation could not be loaded.</div>';
+  }
+}
+
+async function sendSupportReply() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  if (!activeSupportTicketId) {
+    toast("Please select a ticket");
+    return;
+  }
+
+  const replyInput = document.getElementById("supportReply");
+  const sendButton = document.getElementById(
+    "sendSupportReplyBtn"
+  );
+
+  const message = replyInput.value.trim();
+
+  if (!message) {
+    toast("Please write your reply");
+    return;
+  }
+
+  sendButton.disabled = true;
+  sendButton.textContent = "Sending...";
+
+  try {
+    const { data: ticket, error: ticketError } =
+      await supabaseClient
+        .from("support_tickets")
+        .select("id,status")
+        .eq("id", activeSupportTicketId)
+        .eq("user_id", currentUser.id)
+        .single();
+
+    if (ticketError) throw ticketError;
+
+    if (ticket.status === "closed") {
+      toast("This ticket is closed");
+      await openSupportTicket(activeSupportTicketId);
+      return;
+    }
+
+    const { error: messageError } = await supabaseClient
+      .from("support_messages")
+      .insert({
+        ticket_id: activeSupportTicketId,
+        sender_id: currentUser.id,
+        sender_role: "user",
+        message
+      });
+
+    if (messageError) throw messageError;
+
+    replyInput.value = "";
+
+    await loadSupportMessages(activeSupportTicketId);
+    await loadSupportTickets();
+  } catch (error) {
+    console.error("Reply error:", error);
+    toast(error.message || "Reply could not be sent");
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Send Reply";
+  }
+}
+
+async function closeSupportTicket() {
+  if (!currentUser?.id || !activeSupportTicketId) return;
+
+  const confirmed = window.confirm(
+    "Are you sure you want to close this ticket?"
+  );
+
+  if (!confirmed) return;
+
+  const closeButton = document.getElementById("closeTicketBtn");
+  closeButton.disabled = true;
+
+  try {
+    const { error } = await supabaseClient
+      .from("support_tickets")
+      .update({
+        status: "closed"
+      })
+      .eq("id", activeSupportTicketId)
+      .eq("user_id", currentUser.id);
+
+    if (error) throw error;
+
+    toast("Ticket closed successfully");
+
+    await openSupportTicket(activeSupportTicketId);
+  } catch (error) {
+    console.error("Close ticket error:", error);
+    toast(error.message || "Ticket could not be closed");
+  } finally {
+    closeButton.disabled = false;
+  }
+}
+
+function resetSupportChat() {
+  const placeholder = document.getElementById(
+    "supportChatPlaceholder"
+  );
+
+  const chatBox = document.getElementById("supportChatBox");
+  const messagesBox = document.getElementById("supportMessages");
+  const replyInput = document.getElementById("supportReply");
+
+  if (placeholder) {
+    placeholder.style.display = "block";
+  }
+
+  if (chatBox) {
+    chatBox.classList.remove("open");
+  }
+
+  if (messagesBox) {
+    messagesBox.innerHTML = "";
+  }
+
+  if (replyInput) {
+    replyInput.value = "";
+  }
+}
+
+function startSupportRealtime() {
+  if (!currentUser?.id || supportRealtimeChannel) return;
+
+  supportRealtimeChannel = supabaseClient
+    .channel(`support-user-${currentUser.id}`)
+
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "support_tickets",
+        filter: `user_id=eq.${currentUser.id}`
+      },
+      async payload => {
+        await loadSupportTickets();
+
+        if (
+          activeSupportTicketId &&
+          payload.new?.id === activeSupportTicketId
+        ) {
+          await openSupportTicket(activeSupportTicketId);
+        }
+      }
+    )
+
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "support_messages"
+      },
+      async payload => {
+        if (
+          activeSupportTicketId &&
+          (
+            payload.new?.ticket_id === activeSupportTicketId ||
+            payload.old?.ticket_id === activeSupportTicketId
+          )
+        ) {
+          await loadSupportMessages(activeSupportTicketId);
+          await loadSupportTickets();
+        }
+      }
+    )
+
+    .subscribe(status => {
+      console.log("Support realtime:", status);
+    });
+}
+
+function stopSupportRealtime() {
+  if (!supportRealtimeChannel) return;
+
+  supabaseClient.removeChannel(supportRealtimeChannel);
+  supportRealtimeChannel = null;
+}
+function formatSupportStatus(status) {
+  const key = ["open", "answered", "closed"].includes(status)
+    ? status
+    : "open";
+
+  return getSupportText(key);
+}
+
+function formatSupportDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toLocaleString();
+}
 function setLang(lang){
   localStorage.setItem("bi_lang", lang);
   document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
@@ -1655,18 +3082,17 @@ function setLang(lang){
   renderPlans();
   calcCustom();
   togglePaymentDetails();
+  applySupportLanguage();
 }
 
-window.onload = function(){
+window.onload = async function(){
   let savedLang = localStorage.getItem("bi_lang") || "en";
+
   document.getElementById("lang").value = savedLang;
   setLang(savedLang);
-  
-  let savedUser = localStorage.getItem("bi_current_user");
-  if(savedUser){
-    try { currentUser = JSON.parse(savedUser); } catch(e){}
-  }
-  
+
+  await restoreAuthSession();
+
   updateHeaderAuthUI();
   renderCoins();
   renderTable();
@@ -1674,9 +3100,14 @@ window.onload = function(){
   calc();
   calcCustom();
   fetchRealPrices();
+
   setInterval(fetchRealPrices, 15000);
-  
-  if(currentUser) loadProfile();
+
+  if (currentUser) {
+    loadProfile();
+  }
+
+  updateSupportAuthUI();
 };
 </script>
 </body>
