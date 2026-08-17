@@ -22,7 +22,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .coins{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.coinTop{display:flex;justify-content:space-between;align-items:center}.coin{display:flex;gap:9px;align-items:center}.icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#8993a0 25%,#242b34 70%);color:#111;font-weight:900}.price{font-size:20px;font-weight:900;margin-top:15px}
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.plan{position:relative;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}.plan:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 25px 40px rgba(0,0,0,0.6), 0 10px 15px rgba(0,0,0,0.4);border-color:var(--gold)}.tag{position:absolute;right:13px;top:13px;color:#111;background:var(--gold);padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900}.apy{font-size:36px;font-weight:900;color:var(--gold);margin:15px 0}.plan ul{color:var(--muted);line-height:1.9;padding-left:18px}.plan .btn{width:100%;margin-top:8px}
 
-/* Professional Vertical Circular Stack Statistics */
 .stats-vertical-stack { display: flex; flex-direction: column; gap: 15px; max-width: 750px; margin: 0 auto; perspective: 1000px; }
 .stat-circle-card { background: linear-gradient(135deg, #151c24, #0b0f14); border: 1px solid rgba(240,185,11,0.25); border-radius: 60px; padding: 16px 25px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.6); animation: pulseFloat 4s ease-in-out infinite; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .stat-circle-card:nth-child(2) { animation-delay: 1s; }
@@ -55,10 +54,8 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
 
-/* Portfolio & Deposit Section Grid Layout */
 .portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
 
-/* Custom Select Dropdown with Icons Styling */
 .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
 .custom-select-trigger { background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; padding: 11px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
 .custom-select-trigger img { width: 20px; height: 20px; margin-right: 8px; margin-left: 4px; }
@@ -68,7 +65,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .custom-option:hover { background: #222c38; }
 .custom-option img { width: 22px; height: 22px; }
 
-/* Scrollbar styling for custom dropdown */
 .custom-options::-webkit-scrollbar { width: 6px; }
 .custom-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
 .custom-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
@@ -284,7 +280,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
-    <!-- بخش برداشت -->
     <div class="card form" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
@@ -360,7 +355,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <div class="toast" id="toast"></div>
 
 <script>
-// اتصال به Supabase
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -426,7 +420,7 @@ pointsTitle:"Xallar",pointsSub:"+50 həftəlik",refTitle:"Referal",vipTitle:"VIP
 forgotPasswordText:"Şifrəni unutmusunuz?",needAccountText:"Hesabınız yoxdur? Qeydiyyatdan keçin",haveAccountText:"Artıq hesabınız var? Daxil olun",usernameOrEmail:"İstifadəçi adı və ya E-poçt",enterEmailOrUser:"İstifadəçi adı və ya qeydiyyatdakı e-poçtunuzu daxil edin",codeSentNotice:"Təsdiq kodu e-poçtunuza göndərildi.",enterCode:"6 rəqəmli təsdiq kodunu daxil edin",sendResetCode:"Sıfırlama kodu göndər",resetPasswordTitle:"Şifrənin Sıfırlanması",newPasswordLabel:"Yeni Şifrə",resetBtn:"Şifrəni Yenilə",
 contactUs:"Bizimlə Əlaqə", supportEmail:"Dəstək E-poçtu", securityPartners:"Təhlükəsizlik Tərəfdaşları",
 platformStatsTitle:"Platforma Statistikası", statUsers:"İstifadəçilər", statInvestors:"Aktiv İnvestorlar", statPaid:"Ödənilən Gəlir", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi",
-depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
+depAmountLabel:"Məbləş (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
 optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
 walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
@@ -575,7 +569,7 @@ customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie e
 dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
 lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
 pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktif",
-forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
+forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Passwort zurücksetzen",resetBtn:"Passwort zurücksetzen",
 contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
 platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
 depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
@@ -654,7 +648,6 @@ const WALLETS = {
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
 
-// کنترل باز و بسته شدن لیست های سفارشی رمزارز
 function toggleCustomSelect(type) {
     const depositOptions = document.getElementById('depositCustomOptions');
     const withdrawOptions = document.getElementById('withdrawCustomOptions');
@@ -680,7 +673,6 @@ function selectWithdrawCrypto(text, logoUrl) {
     document.getElementById('withdrawCustomOptions').classList.remove('open');
 }
 
-// بستن منوهای کشویی با کلیک خارج از آن‌ها
 window.addEventListener('click', function(e) {
     if (!e.target.closest('#depositCryptoCustomSelect')) {
         let el = document.getElementById('depositCustomOptions');
@@ -692,7 +684,6 @@ window.addEventListener('click', function(e) {
     }
 });
 
-// دریافت زنده قیمت ها از بایننس
 async function fetchRealPrices() {
     try {
         const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
@@ -738,7 +729,7 @@ function togglePaymentDetails() {
         if (txContainer) txContainer.style.display = 'none';
         infoBox.innerHTML = `
             <div style="margin-bottom:8px;">${dict.paymentioMsg || T.en.paymentioMsg}</div>
-            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="450" frameborder="0" scrolling="no" style="overflow-y: hidden; border-radius: 8px;">
+            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="580" frameborder="0" scrolling="yes" style="overflow-y: auto; border-radius: 8px; min-height: 580px;">
                 Can't load widget
             </iframe>
         `;
@@ -790,7 +781,6 @@ async function submitDepositRequest() {
     }
 }
 
-// 100 Realistic Names
 const fakeNames = [
     "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
     "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
@@ -936,321 +926,316 @@ async function submitAuth(){
   }
 }
 
-function logout(){
-  currentUser = null;
-  localStorage.removeItem("bi_current_user");
-  updateHeaderAuthUI();
-  updatePortfolio();
-  toast("Logged out successfully");
+async function saveTx(type, amount, status = 'Completed', ref = '') {
+    if(!currentUser) return;
+    await supabaseClient.from('transactions').insert([
+        {
+            username: currentUser.username,
+            type: type,
+            amount: amount,
+            status: status,
+            gateway_ref: ref,
+            date: new Date().toLocaleString()
+        }
+    ]);
 }
 
-function updateHeaderAuthUI(){
-  let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
-  let portAuthBtn = document.getElementById("portfolioAuthBtn");
-  if(currentUser){
-    headerDisp.style.display = "flex"; 
-    authGroup.style.display = "none"; 
-    if(portAuthBtn) portAuthBtn.style.display = "none";
-    document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
-    document.getElementById("headerUsername").textContent = "@" + currentUser.username;
-  } else {
-    headerDisp.style.display = "none"; 
-    authGroup.style.display = "flex";
-    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
-  }
+async function loadTransactions() {
+    if(!currentUser) {
+        document.getElementById("txList").innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transactions.</div>`;
+        return;
+    }
+    let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', { ascending: false });
+    if(error || !data || data.length === 0) {
+        document.getElementById("txList").innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
+        return;
+    }
+    let html = `<table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th><th>Ref / Details</th></tr></thead><tbody>`;
+    data.forEach(tx => {
+        let colorClass = tx.status === 'completed' || tx.status === 'Completed' ? 'green' : 'gold';
+        html += `<tr><td><b>${tx.type}</b></td><td>$${tx.amount}</td><td class="${colorClass}">${tx.status}</td><td>${tx.date}</td><td class="muted">${tx.gateway_ref || '-'}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    document.getElementById("txList").innerHTML = html;
 }
 
-async function saveUserData(){
-  if(!currentUser) return;
-  await supabaseClient.from('users').update({
-    phone: currentUser.phone,
-    fullname: currentUser.fullname,
-    balance: currentUser.balance,
-    invested: currentUser.invested,
-    profit: currentUser.profit
-  }).eq('username', currentUser.username);
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+async function clearTx() {
+    if(!currentUser) return;
+    await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+    loadTransactions();
+    toast("History cleared");
 }
 
-async function saveTx(type, amount, status){
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').insert([{
-    username: currentUser.username,
-    type: type,
-    amount: amount,
-    status: status,
-    date: new Date().toLocaleString()
-  }]);
+function updatePortfolio() {
+    if(!currentUser) {
+        document.getElementById("balance").textContent = "$0.00";
+        document.getElementById("invested").textContent = "$0.00";
+        document.getElementById("profitTotal").textContent = "$0.00";
+        document.getElementById("level").textContent = "Guest";
+        document.getElementById("portfolioAuthBtn").style.display = "inline-block";
+        return;
+    }
+    document.getElementById("portfolioAuthBtn").style.display = "none";
+    document.getElementById("balance").textContent = `$${(currentUser.balance || 0).toLocaleString()}`;
+    document.getElementById("invested").textContent = `$${(currentUser.invested || 0).toLocaleString()}`;
+    document.getElementById("profitTotal").textContent = `$${(currentUser.profit || 0).toLocaleString()}`;
+    let lvl = "Basic";
+    if((currentUser.invested || 0) >= 1000) lvl = "Silver";
+    if((currentUser.invested || 0) >= 5000) lvl = "Gold";
+    if((currentUser.invested || 0) >= 20000) lvl = "VIP Diamond";
+    document.getElementById("level").textContent = lvl;
 }
 
-async function withdraw(){
-  let a = +document.getElementById("withdrawAmount").value;
-  let address = document.getElementById("withdrawAddress").value.trim();
-  let crypto = document.getElementById("withdrawCrypto").value;
-  
-  if(!currentUser) return openAuth("login");
-  if(!address) return toast("Please enter your destination wallet address");
-  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
-  
-  currentUser.balance -= a;
-  await saveUserData();
-  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
-  updatePortfolio(); loadTransactions(); 
-  toast("Withdrawal requested successfully!");
-  
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawAddress").value = "";
+function updateHeaderAuthUI() {
+    if(currentUser) {
+        document.getElementById("authButtonsGroup").style.display = "none";
+        let disp = document.getElementById("userHeaderDisplay");
+        disp.style.display = "flex";
+        document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username;
+        document.getElementById("headerUsername").textContent = "@" + currentUser.username;
+    } else {
+        document.getElementById("authButtonsGroup").style.display = "flex";
+        document.getElementById("userHeaderDisplay").style.display = "none";
+    }
 }
 
-async function invest(i){
-  if(!currentUser) return openAuth("login");
-  let min = plans[i][1], max = plans[i][2]; 
-  let a = +prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
-  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
-  if(a > currentUser.balance) return toast("Insufficient balance");
-  
-  currentUser.balance -= a;
-  currentUser.invested += a;
-  await saveUserData();
-  await saveTx('Investment: ' + plans[i][0], a, 'Active');
-  updatePortfolio(); loadTransactions(); toast("Investment activated!");
+function logout() {
+    currentUser = null;
+    localStorage.removeItem("bi_current_user");
+    updateHeaderAuthUI();
+    updatePortfolio();
+    toast("Logged out successfully");
+    page('home', document.querySelector('[data-page=home]'));
 }
 
-async function investCustom(){
-  if(!currentUser) return openAuth("login"); 
-  let a = +document.getElementById("customAmount").value;
-  let term = +document.getElementById("customTerm").value;
-  if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
-  if(a > currentUser.balance) return toast("Insufficient balance");
-  
-  currentUser.balance -= a;
-  currentUser.invested += a;
-  await saveUserData();
-  await saveTx('Custom Investment ('+term+'d)', a, 'Active');
-  updatePortfolio(); loadTransactions(); toast("Custom investment created!");
+async function withdraw() {
+    if(!currentUser) return openAuth("login");
+    let amt = parseFloat(document.getElementById("withdrawAmount").value);
+    let addr = document.getElementById("withdrawAddress").value.trim();
+    let crypto = document.getElementById("withdrawCrypto").value;
+
+    if(!amt || amt <= 0) return toast("Enter a valid withdrawal amount");
+    if(!addr) return toast("Enter destination wallet address");
+    if(amt > (currentUser.balance || 0)) return toast("Insufficient balance");
+
+    currentUser.balance -= amt;
+    await supabaseClient.from('users').update({ balance: currentUser.balance }).eq('username', currentUser.username);
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+
+    await saveTx(`Withdrawal (${crypto})`, amt, 'Completed', addr);
+    updatePortfolio();
+    toast("Withdrawal successful!");
+    document.getElementById("withdrawAmount").value = "";
+    document.getElementById("withdrawAddress").value = "";
 }
 
-function updatePortfolio(){
-  let u = currentUser;
-  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
-  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+async function saveProfile() {
+    if(!currentUser) return openAuth("login");
+    let fn = document.getElementById("fullNameInput").value;
+    let ph = document.getElementById("phone").value;
+
+    currentUser.fullname = fn;
+    currentUser.phone = ph;
+
+    await supabaseClient.from('users').update({ fullname: fn, phone: ph }).eq('username', currentUser.username);
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+    updateHeaderAuthUI();
+    toast("Profile saved successfully");
+}
+
+function loadProfile() {
+    if(!currentUser) return;
+    document.getElementById("username").value = currentUser.username || "";
+    document.getElementById("emailInput").value = currentUser.email || "";
+    document.getElementById("fullNameInput").value = currentUser.fullname || "";
+    document.getElementById("phone").value = currentUser.phone || "";
 }
 
 function renderCoins() {
-  const topCoins = document.getElementById("topCoins");
-  if(!topCoins) return;
-  topCoins.innerHTML = "";
-  for(let i=0; i<4; i++) {
-    let c = coins[i];
-    let d = demo[c[2]] || [0,0,0,0];
-    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
-    let change = d[1].toFixed(2);
-    let colorClass = change >= 0 ? "green" : "red";
-    let sign = change >= 0 ? "+" : "";
-    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
-    
-    topCoins.innerHTML += `
-      <div class="card coin">
-        <img src="${iconUrl}" width="38" height="38" style="border-radius:50%">
-        <div style="flex:1">
-          <div class="coinTop"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div>
-          <div class="price">$${price}</div>
-          <div class="${colorClass}" style="font-size:12px;margin-top:4px">${sign}${change}%</div>
-        </div>
-      </div>
-    `;
-  }
+    let html = "";
+    coins.forEach(([s, name, id]) => {
+        let [p, c, cap, vol] = demo[id];
+        let cls = c >= 0 ? "green" : "red";
+        html += `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${s.charAt(0)}</div><div><b>${s}</b><div class="muted" style="font-size:11px">${name}</div></div></div></div><div class="price">$${p.toLocaleString()}</div><div class="${cls}" style="font-size:12px;margin-top:5px">${c >= 0 ? "+" + c : c}%</div></div>`;
+    });
+    let topEl = document.getElementById("topCoins");
+    if(topEl) topEl.innerHTML = html.split('</div></div></div>').slice(0, 4).join('</div></div></div>') + '</div></div></div>';
 }
 
 function renderTable() {
-  const table = document.getElementById("marketTable");
-  if(!table) return;
-  let q = (document.getElementById("search")?.value || "").toLowerCase();
-  table.innerHTML = "";
-  coins.forEach(c => {
-    if(!c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
-    let d = demo[c[2]] || [0,0,0,0];
-    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
-    let change = d[1].toFixed(2);
-    let cap = (d[2]/1e9).toFixed(2);
-    let vol = (d[3]/1e9).toFixed(2);
-    let colorClass = change >= 0 ? "green" : "red";
-    let sign = change >= 0 ? "+" : "";
-    let isStar = stars.includes(c[0]);
-    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
-    
-    table.innerHTML += `
-      <tr>
-        <td><button class="star ${isStar?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td>
-        <td><div style="display:flex;align-items:center;gap:10px"><img src="${iconUrl}" width="28" height="28" style="border-radius:50%"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div></td>
-        <td>$${price}</td>
-        <td class="${colorClass}">${sign}${change}%</td>
-        <td>$${cap}B</td>
-        <td>$${vol}B</td>
-      </tr>
-    `;
-  });
-}
-
-function toggleStar(s){
-  if(stars.includes(s)) stars = stars.filter(x=>x!==s);
-  else stars.push(s);
-  localStorage.setItem("bi_stars", JSON.stringify(stars));
-  renderTable();
-}
-
-function renderPlans(){
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let uDict = uiTexts[lang] || uiTexts.en;
-  let pList = planNames[lang] || planNames.en;
-  const pContainer = document.getElementById("plans");
-  const homePlans = document.getElementById("homePlans");
-  if(!pContainer) return;
-  
-  let html = "";
-  plans.forEach((p, i) => {
-    let name = pList[i] ? pList[i][1] : p[0];
-    let badge = i === 1 ? `<div class="tag">${uDict.popular}</div>` : "";
-    html += `
-      <div class="card plan">
-        ${badge}
-        <h3>${name}</h3>
-        <div class="apy">${p[3]}% <span style="font-size:14px;color:var(--muted)">/ ${uDict.daily}</span></div>
-        <ul>
-          <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
-          <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
-          <li>${uDict.dailyProfit}: ~${p[3]}%</li>
-        </ul>
-        <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
-      </div>
-    `;
-  });
-  pContainer.innerHTML = html;
-  if(homePlans) homePlans.innerHTML = html;
-  
-  const select = document.getElementById("planSelect");
-  if(select){
-    select.innerHTML = "";
-    plans.forEach((p, i)=>{
-      let name = pList[i] ? pList[i][1] : p[0];
-      select.innerHTML += `<option value="${i}">${name} (${p[3]}% daily)</option>`;
+    let q = (document.getElementById("search")?.value || "").toLowerCase();
+    let html = "";
+    coins.forEach(([s, name, id]) => {
+        if(s.toLowerCase().includes(q) || name.toLowerCase().includes(q)) {
+            let [p, c, cap, vol] = demo[id];
+            let cls = c >= 0 ? "green" : "red";
+            let starred = stars.includes(id) ? "on" : "";
+            html += `<tr><td><button class="star ${starred}" onclick="toggleStar('${id}')">★</button></td><td><b>${s}</b> <span class="muted">${name}</span></td><td>$${p.toLocaleString()}</td><td class="${cls}">${c >= 0 ? "+" + c : c}%</td><td class="muted">$${(cap/1e9).toFixed(2)}B</td><td class="muted">$${(vol/1e6).toFixed(2)}M</td></tr>`;
+        }
     });
-  }
+    let mTable = document.getElementById("marketTable");
+    if(mTable) mTable.innerHTML = html;
 }
 
-function calc(){
-  let a = +document.getElementById("amount").value;
-  let idx = +document.getElementById("planSelect").value;
-  let p = plans[idx];
-  let total = a * (1 + (p[3]/100)*p[4]);
-  let profit = total - a;
-  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
+function toggleStar(id) {
+    if(stars.includes(id)) stars = stars.filter(x => x !== id);
+    else stars.push(id);
+    localStorage.setItem("bi_stars", JSON.stringify(stars));
+    renderTable();
 }
 
-function calcCustom(){
-  let a = +document.getElementById("customAmount").value;
-  let term = +document.getElementById("customTerm").value;
-  let dailyRate = term >= 60 ? 0.082 : term >= 30 ? 0.055 : 0.038;
-  let total = a * Math.pow(1 + dailyRate, term);
-  let profit = total - a;
-  let daily = a * dailyRate;
-  let monthly = daily * 30;
-  
-  document.getElementById("customResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById("customDaily").textContent = "+$" + daily.toFixed(2);
-  document.getElementById("customMonthly").textContent = "+$" + monthly.toFixed(2);
-  document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+(dailyRate*100).toFixed(1)+"% daily est.)";
-  
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let d = T[lang] || T.en;
-  document.getElementById("lockNotice").textContent = d.lockNoticeText || T.en.lockNoticeText;
+function renderPlans() {
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let dict = uiTexts[lang] || uiTexts.en;
+    let namesArr = planNames[lang] || planNames.en;
+
+    let h = "", hp = "", sel = "";
+    plans.forEach(([nameKey, min, max, apy, days], index) => {
+        let pName = namesArr[index] ? namesArr[index][1] : nameKey;
+        let isPopular = (index === 1);
+        let tagHtml = isPopular ? `<div class="tag">${dict.popular}</div>` : "";
+
+        h += `<div class="card plan">${tagHtml}<h3>${pName}</h3><div class="apy">${apy}%</div><div class="muted">${dict.dailyProfit}</div><ul><li>${dict.amount}: $${min} - $${max.toLocaleString()}</li><li>${dict.term}: ${days} ${dict.days}</li></ul><button class="btn gold" onclick="investPlan('${nameKey}', ${min}, ${apy}, ${days})">${dict.investNow}</button></div>`;
+        if(index < 2) hp += `<div class="card plan">${tagHtml}<h3>${pName}</h3><div class="apy">${apy}%</div><div class="muted">${dict.dailyProfit}</div><ul><li>${dict.amount}: $${min} - $${max.toLocaleString()}</li><li>${dict.term}: ${days} ${dict.days}</li></ul><button class="btn gold" onclick="investPlan('${nameKey}', ${min}, ${apy}, ${days})">${dict.investNow}</button></div>`;
+        sel += `<option value="${apy},${days}">${pName} (${apy}% - ${days} ${dict.days})</option>`;
+    });
+
+    let pEl = document.getElementById("plans"), hpEl = document.getElementById("homePlans"), pSel = document.getElementById("planSelect");
+    if(pEl) pEl.innerHTML = h;
+    if(hpEl) hpEl.innerHTML = hp;
+    if(pSel) { pSel.innerHTML = sel; calc(); }
 }
 
-async function loadTransactions(){
-  const tList = document.getElementById("txList");
-  if(!tList) return;
-  if(!currentUser){
-    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transaction history.</div>`;
-    return;
-  }
-  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  if(error || !data || data.length === 0){
-    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
-    return;
-  }
-  let html = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
-  data.forEach(tx => {
-    let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
-    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
-  });
-  html += `</tbody></table></div>`;
-  tList.innerHTML = html;
+function calc() {
+    let amt = parseFloat(document.getElementById("amount")?.value) || 0;
+    let val = document.getElementById("planSelect")?.value.split(",") || [2.5, 30];
+    let apy = parseFloat(val[0]), days = parseFloat(val[1]);
+    let profit = amt * (apy / 100) * (days / 30);
+    let total = amt + profit;
+    if(document.getElementById("calcResult")) document.getElementById("calcResult").textContent = `$${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    if(document.getElementById("calcProfit")) document.getElementById("calcProfit").textContent = `+$${profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} total profit`;
 }
 
-async function clearTx(){
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast("History cleared");
+function calcCustom() {
+    let amt = parseFloat(document.getElementById("customAmount")?.value) || 0;
+    let days = parseFloat(document.getElementById("customTerm")?.value) || 30;
+    
+    let dailyRate = 2.0;
+    if(days >= 15) dailyRate = 3.5;
+    if(days >= 30) dailyRate = 5.0;
+    if(days >= 60) dailyRate = 7.5;
+    if(days >= 90) dailyRate = 9.2;
+
+    let totalProfit = amt * (dailyRate / 100) * days;
+    let dailyProfit = amt * (dailyRate / 100);
+    let monthlyProfit = dailyProfit * 30;
+    let finalVal = amt + totalProfit;
+
+    if(document.getElementById("customResult")) document.getElementById("customResult").textContent = `$${finalVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    if(document.getElementById("customDaily")) document.getElementById("customDaily").textContent = `+$${dailyProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    if(document.getElementById("customMonthly")) document.getElementById("customMonthly").textContent = `+$${monthlyProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    if(document.getElementById("customProfit")) document.getElementById("customProfit").textContent = `Estimated Daily Rate: ${dailyRate}% | Total Profit: +$${totalProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let dict = T[lang] || T.en;
+    if(document.getElementById("lockNotice")) {
+        document.getElementById("lockNotice").innerHTML = dict.lockNoticeText || T.en.lockNoticeText;
+    }
 }
 
-function copyRef(){
-  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username : "NEW"));
-  toast("Referral code copied!");
+async function investPlan(name, min, apy, days) {
+    if(!currentUser) return openAuth("login");
+    let amt = prompt(`Enter investment amount for ${name} (Min $${min}):`, min);
+    if(!amt) return;
+    amt = parseFloat(amt);
+    if(isNaN(amt) || amt < min) return toast(`Minimum amount is $${min}`);
+    if(amt > (currentUser.balance || 0)) return toast("Insufficient balance! Please deposit first.");
+
+    currentUser.balance -= amt;
+    currentUser.invested = (currentUser.invested || 0) + amt;
+    let estProfit = amt * (apy / 100) * (days / 30);
+    currentUser.profit = (currentUser.profit || 0) + estProfit;
+
+    await supabaseClient.from('users').update({ balance: currentUser.balance, invested: currentUser.invested, profit: currentUser.profit }).eq('username', currentUser.username);
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+
+    await saveTx(`Invested in ${name} Plan`, amt, 'Active');
+    updatePortfolio();
+    toast("Investment successful!");
+    page('portfolio', document.querySelector('[data-page=portfolio]'));
 }
 
-async function loadProfile(){
-  if(!currentUser) return;
-  document.getElementById("username").value = currentUser.username;
-  document.getElementById("emailInput").value = currentUser.email || "";
-  document.getElementById("fullNameInput").value = currentUser.fullname || "";
-  document.getElementById("phone").value = currentUser.phone || "";
+async function investCustom() {
+    if(!currentUser) return openAuth("login");
+    let amt = parseFloat(document.getElementById("customAmount").value);
+    let days = parseInt(document.getElementById("customTerm").value);
+    if(!amt || amt <= 0) return toast("Enter a valid amount");
+    if(amt > (currentUser.balance || 0)) return toast("Insufficient balance! Please deposit first.");
+
+    let dailyRate = 2.0;
+    if(days >= 15) dailyRate = 3.5;
+    if(days >= 30) dailyRate = 5.0;
+    if(days >= 60) dailyRate = 7.5;
+    if(days >= 90) dailyRate = 9.2;
+
+    let estProfit = amt * (dailyRate / 100) * days;
+
+    currentUser.balance -= amt;
+    currentUser.invested = (currentUser.invested || 0) + amt;
+    currentUser.profit = (currentUser.profit || 0) + estProfit;
+
+    await supabaseClient.from('users').update({ balance: currentUser.balance, invested: currentUser.invested, profit: currentUser.profit }).eq('username', currentUser.username);
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+
+    await saveTx(`Custom Investment (${days} Days)`, amt, 'Active');
+    updatePortfolio();
+    toast("Custom investment successful!");
+    page('portfolio', document.querySelector('[data-page=portfolio]'));
 }
 
-async function saveProfile(){
-  if(!currentUser) return;
-  currentUser.fullname = document.getElementById("fullNameInput").value;
-  currentUser.phone = document.getElementById("phone").value;
-  await saveUserData();
-  updateHeaderAuthUI();
-  toast("Profile updated successfully!");
+function copyRef() {
+    navigator.clipboard.writeText("https://binanceinvest.global/ref/BI-NEW");
+    toast("Referral link copied!");
 }
 
-function setLang(lang){
-  localStorage.setItem("bi_lang", lang);
-  document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
-  let d = T[lang] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el => {
-    let key = el.getAttribute("data-t");
-    if(d[key]) el.textContent = d[key];
-  });
-  renderPlans();
-  calcCustom();
-  togglePaymentDetails();
+function setLang(lang) {
+    localStorage.setItem("bi_lang", lang);
+    let dict = T[lang] || T.en;
+    document.querySelectorAll("[data-t]").forEach(el => {
+        let key = el.getAttribute("data-t");
+        if(dict[key]) el.textContent = dict[key];
+    });
+    renderPlans();
+    togglePaymentDetails();
 }
 
-window.onload = function(){
-  let savedLang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lang").value = savedLang;
-  setLang(savedLang);
-  
-  let savedUser = localStorage.getItem("bi_current_user");
-  if(savedUser){
-    try { currentUser = JSON.parse(savedUser); } catch(e){}
-  }
-  
-  updateHeaderAuthUI();
-  renderCoins();
-  renderTable();
-  renderPlans();
-  calc();
-  calcCustom();
-  fetchRealPrices();
-  setInterval(fetchRealPrices, 15000);
-  
-  if(currentUser) loadProfile();
+window.onload = async () => {
+    let savedUser = localStorage.getItem("bi_current_user");
+    if(savedUser) {
+        try {
+            currentUser = JSON.parse(savedUser);
+            let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).limit(1);
+            if(data && data[0]) {
+                currentUser = data[0];
+                localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+            }
+        } catch(e) { currentUser = null; }
+    }
+    updateHeaderAuthUI();
+    loadProfile();
+    updatePortfolio();
+    renderCoins();
+    renderTable();
+    renderPlans();
+    calcCustom();
+    
+    let savedLang = localStorage.getItem("bi_lang") || "en";
+    let langSelect = document.getElementById("lang");
+    if(langSelect) langSelect.value = savedLang;
+    setLang(savedLang);
+
+    fetchRealPrices();
+    setInterval(fetchRealPrices, 15000);
 };
 </script>
 </body>
