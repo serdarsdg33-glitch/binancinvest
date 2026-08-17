@@ -183,6 +183,98 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .custom-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
 .custom-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
 
+/* Professional header authentication buttons */
+#authButtonsGroup {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+#authButtonsGroup .btn {
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: .15px;
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease,
+    background .22s ease;
+}
+
+/* Sign In */
+#authButtonsGroup .login {
+  color: #e9edf3;
+  background: linear-gradient(145deg, #151b23, #0c1117);
+  border: 1px solid #343d49;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 5px 14px rgba(0,0,0,.28);
+}
+
+#authButtonsGroup .login:hover {
+  color: #fff;
+  border-color: rgba(240,185,11,.6);
+  background: linear-gradient(145deg, #1b222c, #10161e);
+  box-shadow:
+    0 0 0 2px rgba(240,185,11,.08),
+    0 7px 18px rgba(0,0,0,.4);
+  transform: translateY(-2px);
+}
+
+/* Create Account */
+#authButtonsGroup .gold {
+  color: #151000;
+  background: linear-gradient(
+    135deg,
+    #fff09a 0%,
+    #ffd83d 24%,
+    #f0b90b 62%,
+    #d99a00 100%
+  );
+  border: 1px solid #ffd83d;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    inset 0 -2px 3px rgba(116,73,0,.18),
+    0 5px 15px rgba(240,185,11,.24);
+}
+
+#authButtonsGroup .gold:hover {
+  background: linear-gradient(
+    135deg,
+    #fff5bd,
+    #ffe15b,
+    #f0b90b
+  );
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.7),
+    0 0 12px rgba(240,185,11,.45),
+    0 8px 20px rgba(0,0,0,.35);
+  transform: translateY(-2px);
+}
+
+#authButtonsGroup .btn:active {
+  transform: translateY(0) scale(.97);
+}
+
+‎/* اندازه مناسب برای موبایل */
+@media(max-width:600px) {
+  #authButtonsGroup {
+    gap: 5px;
+  }
+
+  #authButtonsGroup .btn {
+    min-height: 33px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    font-size: 10.5px;
+  }
+}
+
 @media(max-width:900px){
   .cards,.coins{grid-template-columns:1fr 1fr}
   .plans,.two,.portfolio-grid{grid-template-columns:1fr}
