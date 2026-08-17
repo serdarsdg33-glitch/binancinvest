@@ -274,8 +274,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
           <input type="hidden" id="crypto-currency" value="trx_usdt_trc20">
       </div>
 
-      <!-- اصلاح ارتفاع و حالت نمایش ویجت در این باکس -->
-      <div id="payment-info-box" style="background:#0f141d; padding:15px; border-radius:10px; margin-bottom:15px; font-size:12px; border:1px dashed #f0b90b; word-break:break-all; overflow:visible;"></div>
+      <div id="payment-info-box" style="background:#0f141d; padding:15px; border-radius:10px; margin-bottom:15px; font-size:12px; border:1px dashed #f0b90b; word-break:break-all;"></div>
 
       <div id="tx-container" style="margin-bottom: 20px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
@@ -739,7 +738,7 @@ function togglePaymentDetails() {
         if (txContainer) txContainer.style.display = 'none';
         infoBox.innerHTML = `
             <div style="margin-bottom:8px;">${dict.paymentioMsg || T.en.paymentioMsg}</div>
-            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="450" frameborder="0" scrolling="yes" style="border-radius: 8px; border: none;">
+            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="450" frameborder="0" scrolling="no" style="overflow-y: hidden; border-radius: 8px;">
                 Can't load widget
             </iframe>
         `;
@@ -937,293 +936,321 @@ async function submitAuth(){
   }
 }
 
-function updateHeaderAuthUI(){
-  let hDisp = document.getElementById("userHeaderDisplay"), aGrp = document.getElementById("authButtonsGroup"), pAuthBtn = document.getElementById("portfolioAuthBtn");
-  if(currentUser){
-    if(hDisp){ hDisp.style.display="flex"; document.getElementById("headerFullName").textContent=currentUser.fullname || currentUser.username; document.getElementById("headerUsername").textContent="@"+currentUser.username; }
-    if(aGrp) aGrp.style.display="none";
-    if(pAuthBtn) pAuthBtn.style.display="none";
-  } else {
-    if(hDisp) hDisp.style.display="none";
-    if(aGrp) aGrp.style.display="flex";
-    if(pAuthBtn) pAuthBtn.style.display="inline-block";
-  }
-}
-
 function logout(){
-  currentUser=null; localStorage.removeItem("bi_current_user"); updateHeaderAuthUI(); updatePortfolio(); toast("Logged out successfully"); page('home', document.querySelector('[data-page=home]'));
+  currentUser = null;
+  localStorage.removeItem("bi_current_user");
+  updateHeaderAuthUI();
+  updatePortfolio();
+  toast("Logged out successfully");
 }
 
-async function updatePortfolio(){
-  if(!currentUser){
-    document.getElementById("balance").textContent="$0.00";
-    document.getElementById("invested").textContent="$0.00";
-    document.getElementById("profitTotal").textContent="$0.00";
-    document.getElementById("level").textContent="Basic";
-    return;
+function updateHeaderAuthUI(){
+  let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
+  let portAuthBtn = document.getElementById("portfolioAuthBtn");
+  if(currentUser){
+    headerDisp.style.display = "flex"; 
+    authGroup.style.display = "none"; 
+    if(portAuthBtn) portAuthBtn.style.display = "none";
+    document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
+    document.getElementById("headerUsername").textContent = "@" + currentUser.username;
+  } else {
+    headerDisp.style.display = "none"; 
+    authGroup.style.display = "flex";
+    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
   }
-  let { data, error } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).single();
-  if(data){
-    currentUser = data;
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    document.getElementById("balance").textContent = "$" + Number(currentUser.balance || 0).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("invested").textContent = "$" + Number(currentUser.invested || 0).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("profitTotal").textContent = "$" + Number(currentUser.profit || 0).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("level").textContent = (currentUser.balance > 5000) ? "VIP" : ((currentUser.balance > 1000) ? "Advanced" : "Basic");
+}
+
+async function saveUserData(){
+  if(!currentUser) return;
+  await supabaseClient.from('users').update({
+    phone: currentUser.phone,
+    fullname: currentUser.fullname,
+    balance: currentUser.balance,
+    invested: currentUser.invested,
+    profit: currentUser.profit
+  }).eq('username', currentUser.username);
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+}
+
+async function saveTx(type, amount, status){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').insert([{
+    username: currentUser.username,
+    type: type,
+    amount: amount,
+    status: status,
+    date: new Date().toLocaleString()
+  }]);
+}
+
+async function withdraw(){
+  let a = +document.getElementById("withdrawAmount").value;
+  let address = document.getElementById("withdrawAddress").value.trim();
+  let crypto = document.getElementById("withdrawCrypto").value;
+  
+  if(!currentUser) return openAuth("login");
+  if(!address) return toast("Please enter your destination wallet address");
+  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
+  
+  currentUser.balance -= a;
+  await saveUserData();
+  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
+  updatePortfolio(); loadTransactions(); 
+  toast("Withdrawal requested successfully!");
+  
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAddress").value = "";
+}
+
+async function invest(i){
+  if(!currentUser) return openAuth("login");
+  let min = plans[i][1], max = plans[i][2]; 
+  let a = +prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
+  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
+  if(a > currentUser.balance) return toast("Insufficient balance");
+  
+  currentUser.balance -= a;
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Investment: ' + plans[i][0], a, 'Active');
+  updatePortfolio(); loadTransactions(); toast("Investment activated!");
+}
+
+async function investCustom(){
+  if(!currentUser) return openAuth("login"); 
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
+  if(a > currentUser.balance) return toast("Insufficient balance");
+  
+  currentUser.balance -= a;
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Custom Investment ('+term+'d)', a, 'Active');
+  updatePortfolio(); loadTransactions(); toast("Custom investment created!");
+}
+
+function updatePortfolio(){
+  let u = currentUser;
+  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
+  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+}
+
+function renderCoins() {
+  const topCoins = document.getElementById("topCoins");
+  if(!topCoins) return;
+  topCoins.innerHTML = "";
+  for(let i=0; i<4; i++) {
+    let c = coins[i];
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+    
+    topCoins.innerHTML += `
+      <div class="card coin">
+        <img src="${iconUrl}" width="38" height="38" style="border-radius:50%">
+        <div style="flex:1">
+          <div class="coinTop"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div>
+          <div class="price">$${price}</div>
+          <div class="${colorClass}" style="font-size:12px;margin-top:4px">${sign}${change}%</div>
+        </div>
+      </div>
+    `;
   }
+}
+
+function renderTable() {
+  const table = document.getElementById("marketTable");
+  if(!table) return;
+  let q = (document.getElementById("search")?.value || "").toLowerCase();
+  table.innerHTML = "";
+  coins.forEach(c => {
+    if(!c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let cap = (d[2]/1e9).toFixed(2);
+    let vol = (d[3]/1e9).toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let isStar = stars.includes(c[0]);
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+    
+    table.innerHTML += `
+      <tr>
+        <td><button class="star ${isStar?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td>
+        <td><div style="display:flex;align-items:center;gap:10px"><img src="${iconUrl}" width="28" height="28" style="border-radius:50%"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div></td>
+        <td>$${price}</td>
+        <td class="${colorClass}">${sign}${change}%</td>
+        <td>$${cap}B</td>
+        <td>$${vol}B</td>
+      </tr>
+    `;
+  });
+}
+
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s);
+  else stars.push(s);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
+}
+
+function renderPlans(){
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let uDict = uiTexts[lang] || uiTexts.en;
+  let pList = planNames[lang] || planNames.en;
+  const pContainer = document.getElementById("plans");
+  const homePlans = document.getElementById("homePlans");
+  if(!pContainer) return;
+  
+  let html = "";
+  plans.forEach((p, i) => {
+    let name = pList[i] ? pList[i][1] : p[0];
+    let badge = i === 1 ? `<div class="tag">${uDict.popular}</div>` : "";
+    html += `
+      <div class="card plan">
+        ${badge}
+        <h3>${name}</h3>
+        <div class="apy">${p[3]}% <span style="font-size:14px;color:var(--muted)">/ ${uDict.daily}</span></div>
+        <ul>
+          <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
+          <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
+          <li>${uDict.dailyProfit}: ~${p[3]}%</li>
+        </ul>
+        <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
+      </div>
+    `;
+  });
+  pContainer.innerHTML = html;
+  if(homePlans) homePlans.innerHTML = html;
+  
+  const select = document.getElementById("planSelect");
+  if(select){
+    select.innerHTML = "";
+    plans.forEach((p, i)=>{
+      let name = pList[i] ? pList[i][1] : p[0];
+      select.innerHTML += `<option value="${i}">${name} (${p[3]}% daily)</option>`;
+    });
+  }
+}
+
+function calc(){
+  let a = +document.getElementById("amount").value;
+  let idx = +document.getElementById("planSelect").value;
+  let p = plans[idx];
+  let total = a * (1 + (p[3]/100)*p[4]);
+  let profit = total - a;
+  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
+}
+
+function calcCustom(){
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  let dailyRate = term >= 60 ? 0.082 : term >= 30 ? 0.055 : 0.038;
+  let total = a * Math.pow(1 + dailyRate, term);
+  let profit = total - a;
+  let daily = a * dailyRate;
+  let monthly = daily * 30;
+  
+  document.getElementById("customResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("customDaily").textContent = "+$" + daily.toFixed(2);
+  document.getElementById("customMonthly").textContent = "+$" + monthly.toFixed(2);
+  document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+(dailyRate*100).toFixed(1)+"% daily est.)";
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let d = T[lang] || T.en;
+  document.getElementById("lockNotice").textContent = d.lockNoticeText || T.en.lockNoticeText;
 }
 
 async function loadTransactions(){
+  const tList = document.getElementById("txList");
+  if(!tList) return;
   if(!currentUser){
-    document.getElementById("txList").innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transactions.</div>`;
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transaction history.</div>`;
     return;
   }
   let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  let box = document.getElementById("txList");
-  if(!data || data.length === 0){
-    box.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
+  if(error || !data || data.length === 0){
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
     return;
   }
-  let html = `<table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status / Ref</th><th>Date</th></tr></thead><tbody>`;
+  let html = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
   data.forEach(tx => {
-    let color = tx.status === 'completed' || tx.status === 'Approved' ? 'var(--green)' : 'var(--gold)';
-    html += `<tr><td><b>${tx.type}</b></td><td class="green">+$${tx.amount}</td><td><span style="color:${color}">${tx.status}</span><br><small class="muted">${tx.gateway_ref || ''}</small></td><td class="muted">${tx.date}</td></tr>`;
+    let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
+    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
   });
-  html += `</tbody></table>`;
-  box.innerHTML = html;
+  html += `</tbody></table></div>`;
+  tList.innerHTML = html;
 }
 
 async function clearTx(){
   if(!currentUser) return;
   await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions();
-  toast("Transaction history cleared");
+  loadTransactions(); toast("History cleared");
 }
 
-function loadProfile(){
+function copyRef(){
+  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username : "NEW"));
+  toast("Referral code copied!");
+}
+
+async function loadProfile(){
   if(!currentUser) return;
-  document.getElementById("username").value = currentUser.username || "";
+  document.getElementById("username").value = currentUser.username;
   document.getElementById("emailInput").value = currentUser.email || "";
   document.getElementById("fullNameInput").value = currentUser.fullname || "";
   document.getElementById("phone").value = currentUser.phone || "";
 }
 
 async function saveProfile(){
-  if(!currentUser) return openAuth("login");
-  let fn = document.getElementById("fullNameInput").value.trim();
-  let ph = document.getElementById("phone").value.trim();
-  
-  let { error } = await supabaseClient.from('users').update({ fullname: fn, phone: ph }).eq('username', currentUser.username);
-  if(error) return toast("Error saving profile");
-  
-  currentUser.fullname = fn; currentUser.phone = ph;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  updateHeaderAuthUI();
-  toast("Profile saved successfully!");
-}
-
-async function saveTx(type, amount, status, ref=''){
   if(!currentUser) return;
-  await supabaseClient.from('transactions').insert([{ username: currentUser.username, type: type, amount: amount, status: status, gateway_ref: ref, date: new Date().toLocaleString() }]);
-}
-
-function renderCoins(){
-  let box = document.getElementById("topCoins");
-  if(!box) return;
-  let html="";
-  coins.slice(0,4).forEach(([sym,name,id])=>{
-    let info = demo[id]||[100,1,1000,1000];
-    let ch = info[1];
-    let col = ch >= 0 ? "green" : "red";
-    let sign = ch >= 0 ? "+" : "";
-    html+=`<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${sym[0]}</div><div><b>${sym}</b><div class="muted" style="font-size:11px">${name}</div></div></div><button class="star ${stars.includes(id)?'on':''}" onclick="toggleStar('${id}')">★</button></div><div class="price">$${info[0].toLocaleString()}</div><div class="${col}" style="font-size:12px;margin-top:4px">${sign}${ch}%</div></div>`;
-  });
-  box.innerHTML=html;
-}
-
-function renderTable(){
-  let tb = document.getElementById("marketTable");
-  if(!tb) return;
-  let q = (document.getElementById("search")?.value || "").toLowerCase();
-  let html="";
-  coins.forEach(([sym,name,id])=>{
-    if(q && !sym.toLowerCase().includes(q) && !name.toLowerCase().includes(q)) return;
-    let info = demo[id]||[100,1,1000,1000];
-    let ch = info[1];
-    let col = ch >= 0 ? "green" : "red";
-    let sign = ch >= 0 ? "+" : "";
-    html+=`<tr><td><button class="star ${stars.includes(id)?'on':''}" onclick="toggleStar('${id}')">★</button></td><td><b>${sym}</b> <span class="muted">${name}</span></td><td>$${info[0].toLocaleString()}</td><td class="${col}">${sign}${ch}%</td><td class="muted">$${(info[2]/1e9).toFixed(2)}B</td><td class="muted">$${(info[3]/1e6).toFixed(1)}M</td></tr>`;
-  });
-  tb.innerHTML=html;
-}
-
-function toggleStar(id){
-  if(stars.includes(id)) stars=stars.filter(x=>x!==id); else stars.push(id);
-  localStorage.setItem("bi_stars",JSON.stringify(stars));
-  renderCoins(); renderTable();
-}
-
-function renderPlans(){
-  let lang = localStorage.getItem("bi_lang")||"en";
-  let d = uiTexts[lang]||uiTexts.en;
-  let pNames = planNames[lang]||planNames.en;
-  
-  let box = document.getElementById("plans");
-  if(!box) return;
-  let html="";
-  plans.forEach(([name,min,max,rate,days], i)=>{
-    let realName = pNames[i] ? pNames[i][1] : name;
-    html+=`<div class="card plan"><div class="tag">${d.popular}</div><h3>${realName}</h3><div class="apy">+${rate}% ${d.daily}</div><ul><li>${d.amount}: $${min} - $${max.toLocaleString()}</li><li>${d.term}: ${days} ${d.days}</li><li>24/7 Support</li></ul><button class="btn gold" onclick="investPlan('${name}',${min},${rate},${days})">${d.investNow}</button></div>`;
-  });
-  box.innerHTML=html;
-  
-  let sel = document.getElementById("planSelect");
-  if(sel){
-    let opts="";
-    plans.forEach(([name,min,max,rate,days], i)=>{
-      let realName = pNames[i] ? pNames[i][1] : name;
-      opts+=`<option value="${rate}">${realName} (+${rate}% daily)</option>`;
-    });
-    sel.innerHTML=opts;
-    calc();
-  }
-  
-  let homeBox = document.getElementById("homePlans");
-  if(homeBox){
-    let hHtml="";
-    plans.slice(0,3).forEach(([name,min,max,rate,days], i)=>{
-      let realName = pNames[i] ? pNames[i][1] : name;
-      hHtml+=`<div class="card plan"><h3>${realName}</h3><div class="apy">+${rate}% ${d.daily}</div><ul><li>${d.amount}: $${min} - $${max.toLocaleString()}</li><li>${d.term}: ${days} ${d.days}</li></ul><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))">${d.investNow}</button></div>`;
-    });
-    homeBox.innerHTML=hHtml;
-  }
-}
-
-function calc(){
-  let amt = parseFloat(document.getElementById("amount")?.value)||0;
-  let rate = parseFloat(document.getElementById("planSelect")?.value)||2.5;
-  let res = amt + (amt * (rate/100) * 30);
-  let profit = res - amt;
-  if(document.getElementById("calcResult")) document.getElementById("calcResult").textContent="$"+res.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(document.getElementById("calcProfit")) document.getElementById("calcProfit").textContent="+$"+profit.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+" estimated profit";
-}
-
-function calcCustom(){
-  let amt = parseFloat(document.getElementById("customAmount")?.value)||0;
-  let days = parseInt(document.getElementById("customTerm")?.value)||1;
-  let rate = days >= 60 ? 7.8 : (days >= 30 ? 5.2 : 3.5);
-  let totalProfit = amt * (rate / 100) * days;
-  let totalVal = amt + totalProfit;
-  let dailyProfit = amt * (rate / 100);
-  let monthlyProfit = dailyProfit * 30;
-  
-  if(document.getElementById("customResult")) document.getElementById("customResult").textContent="$"+totalVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(document.getElementById("customDaily")) document.getElementById("customDaily").textContent="+$"+dailyProfit.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(document.getElementById("customMonthly")) document.getElementById("customMonthly").textContent="+$"+monthlyProfit.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(document.getElementById("customProfit")) document.getElementById("customProfit").textContent="+$"+totalProfit.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}+" total estimated profit ("+rate+"% daily rate)");
-  
-  let lang = localStorage.getItem("bi_lang")||"en";
-  let d = T[lang]||T.en;
-  let noticeEl = document.getElementById("lockNotice");
-  if(noticeEl) noticeEl.textContent = d.lockNoticeText || T.en.lockNoticeText;
-}
-
-async function investPlan(name, min, rate, days){
-  if(!currentUser) return openAuth("login");
-  if(currentUser.balance < min) return toast("Insufficient balance! Please deposit first.");
-  
-  let newBal = currentUser.balance - min;
-  let newInv = (currentUser.invested || 0) + min;
-  
-  let { error } = await supabaseClient.from('users').update({ balance: newBal, invested: newInv }).eq('username', currentUser.username);
-  if(error) return toast("Investment error");
-  
-  currentUser.balance = newBal; currentUser.invested = newInv;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  
-  await saveTx("Invested ("+name+")", min, "Active");
-  updatePortfolio();
-  toast("Successfully invested $" + min + " in " + name + " Plan!");
-}
-
-async function investCustom(){
-  if(!currentUser) return openAuth("login");
-  let amt = parseFloat(document.getElementById("customAmount")?.value)||0;
-  let days = parseInt(document.getElementById("customTerm")?.value)||1;
-  if(amt <= 0) return toast("Please enter a valid amount");
-  if(currentUser.balance < amt) return toast("Insufficient balance! Please deposit first.");
-  
-  let newBal = currentUser.balance - amt;
-  let newInv = (currentUser.invested || 0) + amt;
-  
-  let { error } = await supabaseClient.from('users').update({ balance: newBal, invested: newInv }).eq('username', currentUser.username);
-  if(error) return toast("Investment error");
-  
-  currentUser.balance = newBal; currentUser.invested = newInv;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  
-  await saveTx("Custom Investment ("+days+" Days)", amt, "Active");
-  updatePortfolio();
-  toast("Successfully invested $" + amt + " in Custom Plan!");
-}
-
-async function withdraw(){
-  if(!currentUser) return openAuth("login");
-  let amt = parseFloat(document.getElementById("withdrawAmount")?.value)||0;
-  let addr = document.getElementById("withdrawAddress").value.trim();
-  let crypto = document.getElementById("withdrawCrypto").value;
-  
-  if(amt <= 0) return toast("Please enter a valid withdrawal amount");
-  if(!addr) return toast("Please enter a destination wallet address");
-  if(currentUser.balance < amt) return toast("Insufficient balance for withdrawal");
-  
-  let newBal = currentUser.balance - amt;
-  let { error } = await supabaseClient.from('users').update({ balance: newBal }).eq('username', currentUser.username);
-  if(error) return toast("Withdrawal error");
-  
-  currentUser.balance = newBal;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  
-  await saveTx("Withdrawal ("+crypto+")", amt, "Pending", addr);
-  updatePortfolio();
-  loadTransactions();
-  toast("Withdrawal request submitted successfully!");
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawAddress").value = "";
-}
-
-function copyRef(){
-  navigator.clipboard.writeText("https://binanceinvest.global/ref/BI-NEW");
-  toast("Referral link copied to clipboard!");
+  currentUser.fullname = document.getElementById("fullNameInput").value;
+  currentUser.phone = document.getElementById("phone").value;
+  await saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile updated successfully!");
 }
 
 function setLang(lang){
   localStorage.setItem("bi_lang", lang);
-  let dict = T[lang]||T.en;
-  document.querySelectorAll("[data-t]").forEach(el=>{
-    let k = el.getAttribute("data-t");
-    if(dict[k]) el.textContent = dict[k];
+  document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
+  let d = T[lang] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    let key = el.getAttribute("data-t");
+    if(d[key]) el.textContent = d[key];
   });
   renderPlans();
+  calcCustom();
   togglePaymentDetails();
 }
 
-window.onload = async () => {
+window.onload = function(){
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  setLang(savedLang);
+  
   let savedUser = localStorage.getItem("bi_current_user");
   if(savedUser){
-    try {
-      let uData = JSON.parse(savedUser);
-      let { data, error } = await supabaseClient.from('users').select('*').eq('username', uData.username).single();
-      if(data) { currentUser = data; } else { currentUser = uData; }
-    } catch(e) { currentUser = null; }
+    try { currentUser = JSON.parse(savedUser); } catch(e){}
   }
+  
   updateHeaderAuthUI();
-  let lang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lang").value = lang;
-  setLang(lang);
+  renderCoins();
+  renderTable();
+  renderPlans();
+  calc();
+  calcCustom();
   fetchRealPrices();
   setInterval(fetchRealPrices, 15000);
-  calcCustom();
+  
+  if(currentUser) loadProfile();
 };
 </script>
 </body>
