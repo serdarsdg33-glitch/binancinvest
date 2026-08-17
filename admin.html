@@ -1,169 +1,1999 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!doctype html> 
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پنل مدیریت ادمین - Binance Invest</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * { box-sizing: border-box; font-family: Tahoma, sans-serif; }
-        body { background-color: #121318; color: #fff; margin: 0; padding: 15px; }
-        .container { max-width: 100%; margin: 0 auto; }
-        h1, h2 { color: #f0b90b; font-size: 18px; }
-        .card { background: #1e2329; border-radius: 8px; padding: 12px; margin-bottom: 15px; border: 1px solid #2b313a; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; overflow-x: auto; display: block; }
-        th, td { padding: 8px; text-align: right; border-bottom: 1px solid #2b313a; font-size: 12px; }
-        th { color: #848e9c; }
-        .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 4px; }
-        .btn-approve { background: #0ecb81; color: #fff; }
-        .btn-reject { background: #f6465d; color: #fff; }
-        .btn-update { background: #f0b90b; color: #000; }
-        input { background: #2b313a; border: 1px solid #474d57; color: #fff; padding: 5px; border-radius: 4px; width: 80px; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Binance Invest</title>
+<!-- بارگذاری کتابخانه Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#05070b;--p:#10151c;--p2:#151c25;--line:#29313d;--text:#f4f7fb;--muted:#8b97a7;--gold:#f0b90b;--gold2:#ffe58a;--green:#16c784;--red:#ea3943;--blue:#5577ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% -10%,#493a08 0,#10130f 18%,#05070b 55%);color:var(--text);font:14px Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}
+header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdrop-filter:blur(18px);border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between;padding:0 22px}.brand{font-weight:900;font-size:18px;display:flex;gap:12px;align-items:center}.head{display:flex;gap:8px;align-items:center}.btn,select,input{background:#0d1218;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 13px}.btn:hover{border-color:#ffffff3d;transform:translateY(-1px)}.gold{background:linear-gradient(135deg,#ffe15b,#e3a700);color:#111;border-color:#f0b90b;font-weight:800}
+
+.binance-floating-logo {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 500px;
+  flex-shrink: 0;
+}
+
+.binance-floating-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  animation: binanceRealSpin 4s linear infinite;
+  filter:
+    saturate(1.6)
+    brightness(1.18)
+    drop-shadow(0 0 4px rgba(240,185,11,.8))
+    drop-shadow(0 0 9px rgba(240,185,11,.45));
+}
+
+@keyframes binanceRealSpin {
+  0% {
+    transform: perspective(500px) rotateY(0deg);
+  }
+
+  20% {
+    transform: perspective(500px) rotateY(72deg);
+    filter:
+      saturate(1.8)
+      brightness(1.4)
+      drop-shadow(0 0 7px rgba(255,225,91,.95));
+  }
+
+  40% {
+    transform: perspective(500px) rotateY(144deg);
+  }
+
+  60% {
+    transform: perspective(500px) rotateY(216deg);
+  }
+
+  80% {
+    transform: perspective(500px) rotateY(288deg);
+    filter:
+      saturate(1.8)
+      brightness(1.4)
+      drop-shadow(0 0 7px rgba(255,225,91,.95));
+  }
+
+  100% {
+    transform: perspective(500px) rotateY(360deg);
+  }
+}
+
+.brand > span {
+  font-size: 17px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: .2px;
+  white-space: nowrap;
+  color: #f0b90b;
+  background: linear-gradient(
+    105deg,
+    #d89d00 0%,
+    #f0b90b 25%,
+    #fff1a0 48%,
+    #f0b90b 70%,
+    #d89d00 100%
+  );
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 4px rgba(240,185,11,.45),
+    0 0 9px rgba(240,185,11,.25);
+  animation: brandTextShine 3s linear infinite;
+}
+
+@keyframes brandTextShine {
+  0% {
+    background-position: 200% center;
+  }
+
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes floatLogo {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media(max-width:600px) {
+  .binance-floating-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand > span {
+    font-size: 15px;
+  }
+}
+.wrap{max-width:1250px;margin:auto;padding:20px 15px 80px}.nav{display:flex;gap:4px;overflow:auto;margin-bottom:18px}.nav button{background:transparent;border:0;color:var(--muted);padding:11px 14px;border-bottom:2px solid transparent;white-space:nowrap}.nav button.active{color:#fff;border-color:var(--gold)}
+.view{display:none}.view.active{display:block}.hero{position:relative;overflow:hidden;border:1px solid #ffffff13;border-radius:26px;padding:50px 42px;min-height:390px;background:linear-gradient(130deg,#111820,#0b0f14 60%,#171205);box-shadow:0 30px 90px #0008}.hero h1{font-size:clamp(38px,6vw,72px);line-height:.98;max-width:720px;letter-spacing:-3px;margin:12px 0}.hero p{max-width:680px;color:#aab4c0;line-height:1.8}.orb{position:absolute;right:90px;top:90px;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle at 28% 22%,#fff8ae,#f0b90b 20%,#7a5900 62%,#090a08 70%);box-shadow:inset -35px -25px 65px #0009,0 30px 100px #f0b90b40;animation:float 4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-15px) rotate(5deg)}}.eyebrow{color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:25px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.card{background:linear-gradient(145deg,#151c24dd,#0c1117e8);border:1px solid #ffffff10;border-radius:17px;padding:18px;box-shadow:0 18px 55px #0006;transition:.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)}.card:hover{transform:translateY(-6px) perspective(700px) rotateX(3deg);box-shadow:0 25px 65px #000a;border-color:#ffffff25}.stat b{font-size:24px;display:block;margin:7px 0}.muted{color:var(--muted)}.green{color:var(--green)}.red{color:var(--red)}
+.title{display:flex;justify-content:space-between;align-items:center;margin:35px 0 15px}.title h2{margin:0;font-size:23px}
+.coins{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.coinTop{display:flex;justify-content:space-between;align-items:center}.coin{display:flex;gap:9px;align-items:center}.icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#fff,#8993a0 25%,#242b34 70%);color:#111;font-weight:900}.price{font-size:20px;font-weight:900;margin-top:15px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.plan{position:relative;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)}.plan:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 25px 40px rgba(0,0,0,0.6), 0 10px 15px rgba(0,0,0,0.4);border-color:var(--gold)}.tag{position:absolute;right:13px;top:13px;color:#111;background:var(--gold);padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900}.apy{font-size:36px;font-weight:900;color:var(--gold);margin:15px 0}.plan ul{color:var(--muted);line-height:1.9;padding-left:18px}.plan .btn{width:100%;margin-top:8px}
+
+/* Professional Vertical Circular Stack Statistics */
+.stats-vertical-stack { display: flex; flex-direction: column; gap: 15px; max-width: 750px; margin: 0 auto; perspective: 1000px; }
+.stat-circle-card { background: linear-gradient(135deg, #151c24, #0b0f14); border: 1px solid rgba(240,185,11,0.25); border-radius: 60px; padding: 16px 25px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 35px rgba(0,0,0,0.6); animation: pulseFloat 4s ease-in-out infinite; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.stat-circle-card:nth-child(2) { animation-delay: 1s; }
+.stat-circle-card:nth-child(3) { animation-delay: 2s; }
+.stat-circle-card:nth-child(4) { animation-delay: 3s; }
+.stat-circle-card:hover { transform: translateY(-5px) scale(1.02); border-color: var(--gold); box-shadow: 0 25px 50px rgba(240,185,11,0.2), inset 0 0 15px rgba(240,185,11,0.08); }
+.stat-circle-left { display: flex; align-items: center; gap: 20px; }
+.stat-circle-icon { width: 55px; height: 55px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fff8ae, #f0b90b 60%, #7a5900); display: grid; place-items: center; font-size: 24px; box-shadow: 0 5px 15px rgba(240,185,11,0.35); animation: floatLogo 3s ease-in-out infinite; }
+.stat-circle-info { text-align: left; }
+.stat-circle-value { font-size: 26px; font-weight: 900; color: var(--gold); text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+.stat-circle-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; }
+.stat-badge-tag { background: rgba(240,185,11,0.1); border: 1px solid rgba(240,185,11,0.3); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; color: var(--gold2); }
+@keyframes pulseFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+.live-withdrawals-container { background: #0c1117e8; border: 1px solid #ffffff10; border-radius: 16px; padding: 10px; height: 280px; overflow: hidden; position: relative; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+.live-withdraw { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #ffffff08; background: rgba(255,255,255,0.01); border-radius: 10px; margin-bottom: 6px; animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(-20px); }
+@keyframes slideDown { to { opacity: 1; transform: translateY(0); } }
+.live-avatar { width: 36px; height: 36px; background: linear-gradient(45deg, var(--gold), #d68b00); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #111; font-size: 14px; }
+.live-info { flex: 1; margin: 0 12px; }
+.live-info b { display: block; font-size: 14px; color: #fff; }
+.live-info span { font-size: 11px; color: var(--muted); }
+.live-amount { font-weight: 900; font-size: 16px; color: var(--green); text-align: right; }
+.fade-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, #0c1117e8); pointer-events: none; }
+
+.tablebox{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:700px}.table th,.table td{padding:14px 10px;border-bottom:1px solid #ffffff0b;text-align:left}.table th{font-size:11px;color:var(--muted);text-transform:uppercase}.star{background:none;border:0;color:#58616e;font-size:19px}.star.on{color:var(--gold)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form label{display:block;color:#aeb7c3;font-size:12px;margin:13px 0 6px}.form input,.form select{width:100%;outline:none}.form input:focus,.form select:focus{border-color:var(--gold)}
+.row{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid #ffffff0b}.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:15px;z-index:100}.modalbox{width:min(500px,100%);background:#11171f;border:1px solid #ffffff16;border-radius:20px;padding:24px;box-shadow:0 30px 100px #000}.close{float:right;background:none;border:0;color:#9ca7b4;font-size:26px}.toast{position:fixed;right:18px;bottom:18px;background:#19212a;border:1px solid #3b4652;padding:13px 17px;border-radius:11px;display:none;z-index:200}
+.footer-section{margin-top:60px;padding:50px 20px;background:#06080a;border-top:1px solid #ffffff10;text-align:center;color:var(--muted)}
+.footer-section h3{color:#fff;margin-bottom:15px}
+.footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
+.security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
+
+/* Portfolio & Deposit Section Grid Layout */
+.portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
+
+/* Custom Select Dropdown with Icons Styling */
+.custom-select-wrapper { position: relative; user-select: none; width: 100%; }
+.custom-select-trigger { background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; padding: 11px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+.custom-select-trigger img { width: 20px; height: 20px; margin-right: 8px; margin-left: 4px; }
+.custom-options { position: absolute; top: 100%; left: 0; right: 0; background: #151c25; border: 1px solid #474d57; border-radius: 8px; margin-top: 4px; display: none; z-index: 99; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.custom-options.open { display: block; }
+.custom-option { padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s; color: #fff; }
+.custom-option:hover { background: #222c38; }
+.custom-option img { width: 22px; height: 22px; }
+
+/* Scrollbar styling for custom dropdown */
+.custom-options::-webkit-scrollbar { width: 6px; }
+.custom-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
+.custom-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
+
+/* Professional header authentication buttons */
+#authButtonsGroup {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+#authButtonsGroup .btn {
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: .15px;
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease,
+    background .22s ease;
+}
+
+/* Sign In */
+#authButtonsGroup .login {
+  color: #e9edf3;
+  background: linear-gradient(145deg, #151b23, #0c1117);
+  border: 1px solid #343d49;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 5px 14px rgba(0,0,0,.28);
+}
+
+#authButtonsGroup .login:hover {
+  color: #fff;
+  border-color: rgba(240,185,11,.6);
+  background: linear-gradient(145deg, #1b222c, #10161e);
+  box-shadow:
+    0 0 0 2px rgba(240,185,11,.08),
+    0 7px 18px rgba(0,0,0,.4);
+  transform: translateY(-2px);
+}
+
+/* Create Account */
+#authButtonsGroup .gold {
+  color: #151000;
+  background: linear-gradient(
+    135deg,
+    #fff09a 0%,
+    #ffd83d 24%,
+    #f0b90b 62%,
+    #d99a00 100%
+  );
+  border: 1px solid #ffd83d;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.6),
+    inset 0 -2px 3px rgba(116,73,0,.18),
+    0 5px 15px rgba(240,185,11,.24);
+}
+
+#authButtonsGroup .gold:hover {
+  background: linear-gradient(
+    135deg,
+    #fff5bd,
+    #ffe15b,
+    #f0b90b
+  );
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.7),
+    0 0 12px rgba(240,185,11,.45),
+    0 8px 20px rgba(0,0,0,.35);
+  transform: translateY(-2px);
+}
+
+#authButtonsGroup .btn:active {
+  transform: translateY(0) scale(.97);
+}
+
+‎/* اندازه مناسب برای موبایل */
+@media(max-width:600px) {
+  #authButtonsGroup {
+    gap: 5px;
+  }
+
+  #authButtonsGroup .btn {
+    min-height: 33px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    font-size: 10.5px;
+  }
+}
+
+@media(max-width:900px){
+  .cards,.coins{grid-template-columns:1fr 1fr}
+  .plans,.two,.portfolio-grid{grid-template-columns:1fr}
+  .orb{right:-60px;opacity:.35}
+}
+@media(max-width:600px){
+  header{padding:0 10px}
+  .head .login{display:inline-block}
+  .wrap{padding:12px 10px 70px}
+  .hero{padding:30px 22px;min-height:455px}
+  .hero h1{font-size:44px}
+  .orb{width:135px;height:135px;right:5px;top:305px}
+  .cards,.coins{grid-template-columns:1fr 1fr}
+  .card{padding:14px}
+  .brand{font-size:14px}
+}
+
+‎/* اندازه متعادل دکمه‌های Sign In و Create Account */
+#authButtonsGroup {
+  gap: 5px !important;
+}
+
+#authButtonsGroup .btn {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 5px 10px !important;
+  border-radius: 8px !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+@media(max-width:600px) {
+  #authButtonsGroup {
+    gap: 4px !important;
+  }
+
+  #authButtonsGroup .btn {
+    min-height: 30px !important;
+    height: 30px !important;
+    padding: 4px 8px !important;
+    border-radius: 7px !important;
+    font-size: 9.5px !important;
+  }
+}
+#topCoins > .card.coin {
+  border: 2px solid #f0b90b !important;
+  background: linear-gradient(145deg,#151c24dd,#0c1117e8) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,229,138,.08),
+    0 0 9px rgba(240,185,11,.22),
+    0 14px 32px rgba(0,0,0,.5) !important;
+}
+
+#topCoins > .card.coin:hover {
+  border-color: #ffe15b !important;
+  background: linear-gradient(145deg,#151c24dd,#0c1117e8) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,242,174,.16),
+    0 0 14px rgba(240,185,11,.48),
+    0 0 28px rgba(240,185,11,.2),
+    0 20px 42px rgba(0,0,0,.58) !important;
+}
+
+.plan {
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgba(240,185,11,.72) !important;
+  background:
+    linear-gradient(145deg,rgba(21,28,36,.94),rgba(12,17,23,.96)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    inset 0 0 18px rgba(240,185,11,.025),
+    0 0 9px rgba(240,185,11,.13),
+    0 18px 45px rgba(0,0,0,.48) !important;
+}
+
+.plan > * {
+  position: relative;
+  z-index: 2;
+}
+
+.plan::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -80%;
+  left: -55%;
+  width: 30%;
+  height: 270%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,225,91,.20),
+    rgba(255,255,255,.32),
+    rgba(255,225,91,.20),
+    transparent
+  );
+  transform: rotate(24deg);
+  animation: planBorderShine 5.5s ease-in-out infinite;
+}
+
+.plan:nth-child(2)::before {
+  animation-delay: 1.2s;
+}
+
+.plan:nth-child(3)::before {
+  animation-delay: 2.4s;
+}
+
+.plan:hover {
+  border-color: #ffe15b !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    inset 0 0 22px rgba(240,185,11,.055),
+    0 0 14px rgba(240,185,11,.38),
+    0 0 30px rgba(240,185,11,.13),
+    0 25px 45px rgba(0,0,0,.58) !important;
+}
+
+.plan-profit {
+  color: #16c784 !important;
+  font-weight: 850;
+  text-shadow: 0 0 8px rgba(22,199,132,.22);
+}
+
+@keyframes planBorderShine {
+  0%, 34% {
+    left: -55%;
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  63%, 100% {
+    left: 135%;
+    opacity: 0;
+  }
+}
+.plan,
+#topCoins > .card.coin {
+  border: 1px solid rgba(240,185,11,.25) !important;
+  background: linear-gradient(
+    145deg,
+    rgba(21,28,36,.94),
+    rgba(12,17,23,.96)
+  ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 12px 32px rgba(0,0,0,.42) !important;
+}
+
+.plan:hover,
+#topCoins > .card.coin:hover {
+  border-color: rgba(240,185,11,.55) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 0 12px rgba(240,185,11,.16),
+    0 18px 40px rgba(0,0,0,.5) !important;
+}
+.plan > .tag {
+  position: absolute !important;
+  top: 11px !important;
+  right: 11px !important;
+  left: auto !important;
+
+  width: fit-content !important;
+  min-width: 0 !important;
+  height: 24px !important;
+  padding: 0 11px !important;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  color: #f7c928 !important;
+  background: rgba(240,185,11,.075) !important;
+  border: 1px solid rgba(240,185,11,.30) !important;
+  border-radius: 999px !important;
+
+  font-size: 9.5px !important;
+  line-height: 1 !important;
+  font-weight: 850 !important;
+  letter-spacing: .65px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 0 7px rgba(240,185,11,.08) !important;
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  z-index: 5 !important;
+}
+
+html[dir="rtl"] .plan > .tag {
+  right: auto !important;
+  left: 11px !important;
+}
+/* Support Ticket System */
+.support-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.support-compose,
+.support-tickets,
+.support-chat {
+  border: 1px solid rgba(240,185,11,.22);
+}
+
+.support-compose textarea,
+.support-chat textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  outline: none;
+  color: #fff;
+  background: #0d1218;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  font: inherit;
+}
+
+.support-compose textarea:focus,
+.support-chat textarea:focus {
+  border-color: var(--gold);
+}
+
+.support-ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.support-ticket-item {
+  width: 100%;
+  padding: 13px;
+  text-align: initial;
+  color: #fff;
+  background: #0d1218;
+  border: 1px solid #29313d;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.support-ticket-item:hover,
+.support-ticket-item.active {
+  border-color: rgba(240,185,11,.65);
+  background: rgba(240,185,11,.07);
+}
+
+.support-ticket-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.support-ticket-subject {
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.support-ticket-meta {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.support-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.support-status.open {
+  color: var(--gold2);
+  background: rgba(240,185,11,.10);
+  border: 1px solid rgba(240,185,11,.30);
+}
+
+.support-status.answered {
+  color: var(--green);
+  background: rgba(22,199,132,.10);
+  border: 1px solid rgba(22,199,132,.30);
+}
+
+.support-status.closed {
+  color: var(--muted);
+  background: rgba(139,151,167,.10);
+  border: 1px solid rgba(139,151,167,.25);
+}
+
+.support-unread {
+  min-width: 19px;
+  height: 19px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 5px;
+  color: #111;
+  background: var(--gold);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.support-chat {
+  display: none;
+}
+
+.support-chat.open {
+  display: block;
+}
+
+.support-chat-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ffffff0d;
+}
+
+.support-messages {
+  height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 5px 3px 15px;
+}
+
+.support-message {
+  width: fit-content;
+  max-width: 82%;
+  padding: 11px 13px;
+  border-radius: 14px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.support-message.user {
+  align-self: flex-end;
+  color: #171100;
+  background: linear-gradient(135deg,#ffe15b,#e3a700);
+  border-bottom-right-radius: 4px;
+}
+
+.support-message.admin {
+  align-self: flex-start;
+  color: #fff;
+  background: #19212a;
+  border: 1px solid #34404d;
+  border-bottom-left-radius: 4px;
+}
+
+.support-message-time {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  opacity: .65;
+}
+
+.support-reply-box {
+  padding-top: 14px;
+  border-top: 1px solid #ffffff0d;
+}
+
+.support-empty {
+  padding: 30px 15px;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media(max-width:800px) {
+  .support-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .support-messages {
+    height: 360px;
+  }
+}
+</style>
 </head>
 <body>
-
-<div class="container">
-    <h1>🛡️ پنل مدیریت Binance Invest</h1>
-    
-    <div class="card">
-        <h2>📥 درخواست‌های واریز و برداشت</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>کاربر</th>
-                    <th>نوع</th>
-                    <th>مبلغ</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody id="tx-list">
-                <tr><td colspan="4">در حال دریافت...</td></tr>
-            </tbody>
-        </table>
+<header>
+  <div class="brand">
+    <div class="binance-floating-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#F0B90B">
+        <path d="M11.996 9.845L14.15 12l-2.154 2.155L9.84 12l2.155-2.155zM11.996 4.79L15.938 8.73l2.155-2.155L11.996.48 5.903 6.575l2.155 2.154 3.938-3.94zM19.897 12l-2.155-2.155 2.155-2.154L23.99 12l-4.093 4.093-2.155-2.154L19.897 12zM4.103 12l2.155 2.155-2.155 2.154L0 12l4.093-4.093 2.155 2.154L4.103 12zM11.996 19.21L8.054 15.27l-2.155 2.155 6.097 6.095 6.097-6.096-2.155-2.154-3.938 3.94z"/>
+      </svg>
     </div>
+    <span data-t="brand">Binance Invest</span>
+  </div>
+  <div class="head">
+    <select id="lang" onchange="setLang(this.value)">
+      <option value="en">EN</option><option value="fa">FA</option><option value="az">AZ</option><option value="tr">TR</option><option value="ru">RU</option><option value="ar">AR</option><option value="zh">中文</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option>
+    </select>
+    <div id="userHeaderDisplay" style="display:none; align-items:center; gap:8px; font-weight:700; color:var(--gold);">
+      <span id="headerFullName" style="font-size:13px;"></span>
+      <span id="headerUsername" style="font-size:11px; background:#1a222c; padding:4px 8px; border-radius:6px; color:var(--muted);"></span>
+      <button class="btn" style="padding:5px 10px; font-size:11px;" onclick="logout()" data-t="logout">Logout</button>
+    </div>
+    <div id="authButtonsGroup" style="display:flex; gap:8px;">
+      <button class="btn login" onclick="openAuth('login')" data-t="login">Sign In</button>
+      <button class="btn gold" onclick="openAuth('register')" data-t="register">Create Account</button>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+<nav class="nav">
+<button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
+<button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
+<button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
+<button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
+<button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
+<button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
+<button data-page="support" onclick="page('support',this)" data-t="support">Support</button>
+<button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
+</nav>
 
-    <div class="card">
-        <h2>👥 مدیریت کاربران (اطلاعات و موجودی)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>نام کاربری</th>
-                    <th>ایمیل</th>
-                    <th>رمز عبور</th>
-                    <th>موجودی ($)</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody id="user-list">
-                <tr><td colspan="5">در حال دریافت...</td></tr>
-            </tbody>
-        </table>
+<section id="home" class="view active">
+<div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
+
+<div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
+<div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
+
+<div class="title"><h2 data-t="platformStatsTitle">Platform Statistics</h2></div>
+<div class="stats-vertical-stack">
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">
+  <svg viewBox="0 0 24 24" width="29" height="29" fill="none" stroke="#171100" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"></circle>
+    <path d="M3 12h18"></path>
+    <path d="M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21"></path>
+    <path d="M12 3C9.5 5.5 8.2 8.5 8.2 12S9.5 18.5 12 21"></path>
+    <path d="M5.5 7.5h13"></path>
+    <path d="M5.5 16.5h13"></path>
+  </svg>
+</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" id="statUsersVal">1,284,901</div>
+                <div class="stat-circle-label" data-t="statUsers">Platform Users</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">
+  <svg viewBox="0 0 24 24" width="29" height="29" fill="none" stroke="#171100" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="3"></circle>
+    <path d="M3.5 19c.5-3.5 2.4-5.3 5.5-5.3s5 1.8 5.5 5.3"></path>
+    <circle cx="17" cy="9" r="2.3"></circle>
+    <path d="M15.5 14.3c3.1-.8 5.1.8 5.5 3.7"></path>
+    <path d="m16.5 18 1.3 1.3 2.7-3"></path>
+  </svg>
+</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" id="statInvestorsVal">450,231</div>
+                <div class="stat-circle-label" data-t="statInvestors">Active Investors</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+            <div class="stat-circle-icon">
+  <svg viewBox="0 0 24 24" width="29" height="29" fill="none" stroke="#171100" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="14" r="6"></circle>
+    <path d="M9 10.5v7"></path>
+    <path d="M11 11.5H8.2a1.3 1.3 0 0 0 0 2.6h1.6a1.3 1.3 0 0 1 0 2.6H7"></path>
+    <path d="m14 8 3-3 3 3"></path>
+    <path d="M17 5v8"></path>
+  </svg>
+</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value" style="color:var(--green)">$8,452,000+</div>
+                <div class="stat-circle-label" data-t="statPaid">Total Profit Paid</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--gold)">★ Verified</div>
+    </div>
+    <div class="stat-circle-card">
+        <div class="stat-circle-left">
+           <div class="stat-circle-icon">
+  <svg viewBox="0 0 24 24" width="29" height="29" fill="none" stroke="#171100" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2.5"></rect>
+    <circle cx="12" cy="12" r="3.2"></circle>
+    <path d="M12 8.8v2"></path>
+    <path d="M15.2 12h-2"></path>
+    <path d="M12 15.2v-2"></path>
+    <path d="M8.8 12h2"></path>
+    <path d="M6 20v1"></path>
+    <path d="M18 20v1"></path>
+  </svg>
+</div>
+            <div class="stat-circle-info">
+                <div class="stat-circle-value">$100,000,000+</div>
+                <div class="stat-circle-label" data-t="statCapital">Platform Capital</div>
+            </div>
+        </div>
+        <div class="stat-badge-tag" style="color:var(--gold)">🔒 SAFU</div>
     </div>
 </div>
 
+<div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
+<div class="live-withdrawals-container" id="liveWithdrawalsList"><div class="fade-overlay"></div></div>
+
+<div class="footer-section">
+    <h3 data-t="footerTitle">Why Binance Invest?</h3>
+    <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
+    <div style="margin-top: 35px;">
+        <h4 class="muted" data-t="securityPartners" style="margin-bottom:15px;">Security Partners & Protection</h4>
+        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <div class="security-badge" style="color:#16c784;"><span style="font-size:20px;">🛡️</span> 256-bit SSL</div>
+            <div class="security-badge" style="color:#f0b90b;"><span style="font-size:20px;">🔒</span> Binance SAFU</div>
+            <div class="security-badge" style="color:#ea3943;"><span style="font-size:20px;">✓</span> McAfee Secured</div>
+        </div>
+    </div>
+    <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
+        <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
+        <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
+        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">binancinvest@zohomail.eu</a>
+    </div>
+    <div style="margin-top: 30px; font-size: 0.8rem;" data-t="footerCopy">&copy; 2026 Binance Invest Global. All rights reserved.</div>
+</div>
+</section>
+
+<section id="markets" class="view"><div class="title"><h2 data-t="markets">Markets</h2><input id="search" placeholder="Search BTC, ETH..." oninput="renderTable()"></div><div class="card tablebox"><table class="table"><thead><tr><th>★</th><th data-t="thAsset">Asset</th><th data-t="thPrice">Price</th><th data-t="th24h">24h</th><th data-t="thCap">Market Cap</th><th data-t="thVol">Volume</th></tr></thead><tbody id="marketTable"></tbody></table></div></section>
+
+<section id="invest" class="view">
+<div class="title"><h2 data-t="plans">Investment Plans</h2><span class="muted" data-t="illustrative">Illustrative returns</span></div>
+<div class="plans" id="plans"></div>
+
+<div class="card form" style="margin-top:20px">
+    <h2 data-t="customTitle">Custom Investment Plan</h2>
+    <p class="muted" data-t="customDesc">Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.</p>
+    <div class="two">
+        <div><label data-t="customAmountLabel">Custom Amount ($1 - $100,000)</label><input id="customAmount" type="number" value="500" min="1" max="100000" oninput="calcCustom()"></div>
+        <div><label data-t="customTermLabel">Term (Days)</label><input id="customTerm" type="number" value="45" min="1" max="365" oninput="calcCustom()"></div>
+    </div>
+    <div style="margin-top:20px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <div><span class="muted" data-t="estimated">Estimated value</span><div id="customResult" style="font-size:26px;font-weight:900">$0.00</div></div>
+        <div><span class="muted" data-t="dailyProfitLabel">Daily Profit</span><div id="customDaily" class="green" style="font-size:20px;font-weight:700">$0.00</div></div>
+        <div><span class="muted" data-t="monthlyProfitLabel">Monthly Profit</span><div id="customMonthly" class="green" style="font-size:20px;font-weight:700">$0.00</div></div>
+    </div>
+    <div style="margin-top:10px"><span id="customProfit" class="green" style="font-size:13px">$0.00 total profit</span></div>
+    <div id="lockNotice" style="margin-top:12px; font-size:12px; color:var(--gold2); background:rgba(240,185,11,0.1); padding:10px; border-radius:8px; border:1px solid rgba(240,185,11,0.2);"></div>
+    <button class="btn gold" style="width:100%;margin-top:15px" onclick="investCustom()" data-t="investCustomBtn">Invest Custom Amount</button>
+</div>
+
+<div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" value="1000" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$1,000.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
+
+<section id="portfolio" class="view">
+  <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
+  <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  
+  <div class="portfolio-grid" id="portfolioGrid">
+    <div class="card form" style="padding: 25px; border: 1px solid rgba(240,185,11,0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+      <h2 data-t="deposit" style="font-size: 22px; color: var(--gold); margin-bottom: 8px;">Deposit</h2>
+      <p class="muted" data-t="depositDesc" style="margin-bottom: 20px;">Add balance securely via wallet or gateway.</p>
+      
+      <div style="margin-bottom: 15px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
+          <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depMethodLabel">Select Payment Method:</label>
+          <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+              <option value="wallet" id="opt-direct-payment">1. Direct Payment</option>
+              <option value="paymentio" id="opt-paymentio">2. Payment via Payment.io Gateway</option>
+          </select>
+      </div>
+
+      <div id="crypto-options-container" style="margin-bottom: 15px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
+          <div class="custom-select-wrapper" id="depositCryptoCustomSelect">
+              <div class="custom-select-trigger" onclick="toggleCustomSelect('deposit')">
+                  <span id="depositSelectedText" style="display:flex; align-items:center;">
+    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
+</span>
+                  <span>▼</span>
+              </div>
+              <div class="custom-options" id="depositCustomOptions">
+               <div class="custom-option" onclick="selectDepositCrypto('trx_usdt_trc20', 'TRX / Tether (TRC20)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')">
+    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
+</div>
+                  <div class="custom-option" onclick="selectDepositCrypto('bnb_usdt_bep20', 'BNB / Tether (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB / Tether (BEP20)
+                  </div>
+                  <div class="custom-option" onclick="selectDepositCrypto('eth_usdt_erc20', 'Ethereum / Tether (ERC20)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum / Tether (ERC20)
+                  </div>
+                  <div class="custom-option" onclick="selectDepositCrypto('btc', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)
+                  </div>
+              </div>
+          </div>
+          <input type="hidden" id="crypto-currency" value="trx_usdt_trc20">
+      </div>
+
+      <div id="payment-info-box" style="background:#0f141d; padding:15px; border-radius:10px; margin-bottom:15px; font-size:12px; border:1px dashed #f0b90b; word-break:break-all;"></div>
+
+      <div id="tx-container" style="margin-bottom: 20px;">
+          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
+          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+      </div>
+
+      <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
+    </div>
+
+    <!-- بخش برداشت -->
+    <div class="card form" style="padding: 25px;">
+      <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
+      <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
+      
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
+      <div class="custom-select-wrapper" id="withdrawCryptoCustomSelect" style="margin-bottom:15px;">
+          <div class="custom-select-trigger" onclick="toggleCustomSelect('withdraw')">
+              <span id="withdrawSelectedText" style="display:flex; align-items:center;">
+                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)
+              </span>
+              <span>▼</span>
+          </div>
+          <div class="custom-options" id="withdrawCustomOptions">
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (BEP20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (ERC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (ERC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum (ETH)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('BNB (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB (Smart Chain)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')"><img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRON (TRX)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Solana (SOL)', 'https://cryptologos.cc/logos/solana-sol-logo.svg')"><img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="SOL"> Solana (SOL)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Litecoin (LTC)', 'https://cryptologos.cc/logos/litecoin-ltc-logo.svg')"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg" alt="LTC"> Litecoin (LTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Dogecoin (DOGE)', 'https://cryptologos.cc/logos/dogecoin-doge-logo.svg')"><img src="https://cryptologos.cc/logos/dogecoin-doge-logo.svg" alt="DOGE"> Dogecoin (DOGE)</div>
+          </div>
+      </div>
+      <input type="hidden" id="withdrawCrypto" value="USDT (TRC20)">
+
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
+      <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+
+      <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
+      <input id="withdrawAmount" type="number" placeholder="50" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+      
+      <button class="btn" style="width:100%; padding: 12px;" onclick="withdraw()" data-t="request">Request Withdrawal</button>
+    </div>
+  </div>
+</section>
+
+<section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
+
+<section id="rewards" class="view"><div class="title"><h2 data-t="rewards">Rewards</h2></div><div class="cards"><div class="card stat"><span class="muted" data-t="pointsTitle">Points</span><b id="points">0</b><span class="green" data-t="pointsSub">+50 weekly</span></div><div class="card stat"><span class="muted" data-t="refTitle">Referral</span><b id="refCode">BI-NEW</b><button class="btn" onclick="copyRef()" data-t="copy">Copy code</button></div><div class="card stat"><span class="muted" data-t="vipTitle">VIP</span><b>Silver</b><span class="muted" data-t="vipSub">1,250 pts</span></div><div class="card stat"><span class="muted" data-t="streakTitle">Streak</span><b>7 days</b><span class="green" data-t="streakSub">Active</span></div></div></section>
+‏<section id="support" class="view">
+‏  <div class="title">
+‏    <h2 data-t="supportTitle">Support Center</h2>
+
+‏    <button
+‏      id="supportLoginBtn"
+‏      class="btn gold"
+‏      onclick="openAuth('login')"
+‏      data-t="login"
+    >
+‏      Sign In
+‏    </button>
+‏  </div>
+
+‏  <div id="supportGuestNotice" class="card support-empty">
+‏    Please sign in to create and manage your support tickets.
+‏  </div>
+
+‏  <div id="supportUserArea" style="display:none;">
+‏    <div class="support-layout">
+
+‏      <div>
+‏        <div class="card form support-compose">
+‏          <h2 data-t="newTicket">Create New Ticket</h2>
+
+‏          <label data-t="ticketSubject">Subject</label>
+‏          <input
+‏            id="ticketSubject"
+‏            type="text"
+‏            maxlength="150"
+‏            placeholder="Briefly explain your issue"
+          >
+
+‏          <label data-t="ticketCategory">Category</label>
+‏          <select id="ticketCategory">
+‏            <option value="general">General Support</option>
+‏            <option value="deposit">Deposit</option>
+‏            <option value="withdrawal">Withdrawal</option>
+‏            <option value="investment">Investment</option>
+‏            <option value="account">Account</option>
+‏            <option value="technical">Technical Problem</option>
+‏          </select>
+
+‏          <label data-t="ticketMessage">Message</label>
+‏          <textarea
+‏            id="ticketMessage"
+‏            maxlength="4000"
+‏            placeholder="Write your message..."
+‏          ></textarea>
+
+‏          <button
+‏            id="createTicketBtn"
+‏            class="btn gold"
+‏            style="width:100%;margin-top:12px;"
+‏            onclick="createSupportTicket()"
+‏            data-t="submitTicket"
+          >
+‏            Submit Ticket
+‏          </button>
+‏        </div>
+
+‏        <div class="card support-tickets">
+‏          <h2 data-t="myTickets">My Tickets</h2>
+
+‏          <div id="supportTicketList" class="support-ticket-list">
+‏            <div class="support-empty">
+‏              No tickets found.
+‏            </div>
+‏          </div>
+‏        </div>
+‏      </div>
+
+‏      <div>
+‏        <div id="supportChatPlaceholder" class="card support-empty">
+‏          Select a ticket to view the conversation.
+‏        </div>
+
+‏        <div id="supportChatBox" class="card support-chat">
+‏          <div class="support-chat-header">
+‏            <div>
+‏              <h2 id="supportChatSubject" style="margin:0 0 6px;"></h2>
+‏              <div id="supportChatMeta" class="muted"></div>
+‏            </div>
+
+‏            <button
+‏              id="closeTicketBtn"
+‏              class="btn"
+‏              onclick="closeSupportTicket()"
+            >
+‏              Close Ticket
+‏            </button>
+‏          </div>
+
+‏          <div id="supportMessages" class="support-messages"></div>
+
+‏          <div id="supportReplyBox" class="support-reply-box">
+‏            <textarea
+‏              id="supportReply"
+‏              maxlength="4000"
+‏              placeholder="Write your reply..."
+‏            ></textarea>
+
+‏            <button
+‏              id="sendSupportReplyBtn"
+‏              class="btn gold"
+‏              style="width:100%;margin-top:9px;"
+‏              onclick="sendSupportReply()"
+            >
+‏              Send Reply
+‏            </button>
+‏          </div>
+‏        </div>
+‏      </div>
+
+‏    </div>
+‏  </div>
+‏</section>
+<section id="profile" class="view"><div class="title"><h2 data-t="profile">Profile & Security</h2></div>
+  <div class="two">
+    <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
+    <div class="card"><h2 data-t="security">Security</h2><div class="row"><span data-t="sec2fa">2FA</span><span class="green" data-t="enabled">Enabled</span></div><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+      <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
+        <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
+        <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
+        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest@zohomail.eu</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="modal" id="auth">
+  <div class="modalbox">
+    <button class="close" onclick="closeAuth()">×</button>
+    <h2 id="authTitle">Sign In</h2>
+    <p class="muted" data-t="local">Account data is stored securely in Supabase database.</p>
+    <div class="form">
+      <div id="registerFields"><label data-t="fullname">Full Name / Name</label><input id="authFullName" placeholder="e.g. John Doe"><label data-t="username">Username</label><input id="authUsernameReg" placeholder="e.g. johndoe99"><label data-t="email">Email Address</label><input id="authEmailReg" type="email" placeholder="name@example.com"></div>
+      <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
+      <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
+      <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
+      <div id="passwordContainer"><label data-t="password">Password (Min 8 chars: Upper, Lower, Number)</label><input id="authPass" type="password" placeholder="******"></div>
+      <button class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" onclick="submitAuth()" data-t="continue">Continue</button>
+      <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
 <script>
-    const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8"; 
+// اتصال به Supabase
+const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const T={
+en:{
+brand:"Binance Invest",login:"Sign In",register:"Create Account",logout:"Logout",overview:"Overview",markets:"Markets",invest:"Invest",portfolio:"Portfolio",transactions:"Transactions",rewards:"Rewards",profile:"Profile",
+hero:"Build your future with intelligent investing.",heroDesc:"Explore digital assets, investment plans and portfolio tools in one premium interface.",exploreInvest:"Explore Investments",exploreMarkets:"Explore Markets",
+users:"Platform users",tracked:"Assets tracked",assets:"Digital assets",live:"Live markets",uptime:"Platform uptime",top:"Top Markets",viewAll:"View all",featured:"Featured Investments",
+plans:"Investment Plans",illustrative:"Illustrative returns",calculator:"Investment Calculator",amount:"Amount",plan:"Plan",estimated:"Estimated value",
+balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add balance securely via wallet or gateway.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Request withdrawal instantly.",request:"Request Withdrawal",
+clear:"Clear history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"Phone",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Account data is stored securely in Supabase database.",
+eyebrowText:"PREMIUM DIGITAL ASSET PLATFORM",footerTitle:"Why Binance Invest?",footerDesc:"We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.",footerCopy:"© 2026 Binance Invest Global. All rights reserved.",
+thAsset:"Asset",thPrice:"Price",th24h:"24h",thCap:"Market Cap",thVol:"Volume",
+customTitle:"Custom Investment Plan",customDesc:"Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.",customAmountLabel:"Custom Amount ($1 - $100,000)",customTermLabel:"Term (Days)",investCustomBtn:"Invest Custom Amount",
+dailyProfitLabel:"Daily Profit",monthlyProfitLabel:"Monthly Profit",
+lockNoticeText:"If you lock your money for 60 days or more, your daily profit rate reaches over 7.5% according to the contract agreement.",
+pointsTitle:"Points",pointsSub:"+50 weekly",refTitle:"Referral",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Streak",streakSub:"Active",sec2fa:"2FA",secLogin:"Login protection",secWith:"Withdrawal confirmation",enabled:"Enabled",active:"Active",
+forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"A verification code has been sent to your email. (Simulated code preview:",enterCode:"Enter 6-digit Email Code",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
+contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
+platformStatsTitle:"Platform Statistics", statUsers:"Platform Users", statInvestors:"Active Investors", statPaid:"Total Profit Paid", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
+depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
+optDirect:"1. Direct Payment", optPaymentio:"2. Payment.io / NowPayments Gateway",
+walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for admin approval.</small>",
+paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment.",
+withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
+},
+fa:{
+brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
+hero:"آینده خود را هوشمندانه بسازید.",heroDesc:"رمزارزها، پلن‌های سرمایه‌گذاری و ابزارهای مدیریت سبد را در یک محیط حرفه‌ای بررسی کنید.",exploreInvest:"مشاهده سرمایه‌گذاری‌ها",exploreMarkets:"مشاهده بازارها",
+users:"کاربران پلتفرم",tracked:"دارایی‌های تحت پوشش",assets:"رمزارزها",live:"بازار زنده",uptime:"آپ‌تایم",top:"بازارهای برتر",viewAll:"مشاهده همه",featured:"سرمایه‌گذاری‌های ویژه",
+plans:"پلن‌های سرمایه‌گذاری",illustrative:"بازدهی نمایشی",calculator:"محاسبه‌گر سرمایه‌گذاری",amount:"مبلغ",plan:"پلن",estimated:"ارزش تخمینی",
+balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"شارژ امن حساب از طریق ولت یا درگاه.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"ثبت درخواست برداشتی آنی.",request:"درخواست برداشت",
+clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"تلفن",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب شما به صورت امن در دیتابیس Supabase ذخیره می‌شود.",
+eyebrowText:"پلتفرم پیشرفته دارایی دیجیتال",footerTitle:"چرا بایننس اینوست؟",footerDesc:"ما قابلیت اطمینان در سطح حرفه‌ای با سرعت بالا، ابزارهای هوشمند سبد سرمایه و پروتکل‌های امنیتی پیشرفته را برای رشد امن دارایی‌های شما فراهم می‌کنیم.",footerCopy:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",
+thAsset:"دارایی",thPrice:"قیمت",th24h:"۲۴ ساعته",thCap:"ارزش بازار",thVol:"حجم معاملات",
+customTitle:"پلن سرمایه‌گذاری کاستوم (سفارشی)",customDesc:"مبلغ دلخواه خود را از ۱ دلار تا ۱۰۰,۰۰۰ دلار سرمایه‌گذاری کنید. سود مستقیماً بر اساس مبلغ واریزی و نرخ‌های روزانه شما محاسبه می‌شود.",customAmountLabel:"مبلغ سفارشی (۱ تا ۱۰۰,۰۰۰ دلار)",customTermLabel:"مدت (روز)",investCustomBtn:"سرمایه‌گذاری با مبلغ سفارشی",
+dailyProfitLabel:"سود روزانه",monthlyProfitLabel:"سود ماهانه",
+lockNoticeText:"اگر شما پول خودتان را به مدت ۶۰ روز یا بیشتر قفل کنید، سود شما طبق قرارداد به بالای ۷.۵ درصد روزانه می‌رسد.",
+pointsTitle:"امتیاز",pointsSub:"+۵۰ هفتگی",refTitle:"دعوت دوستان",vipTitle:"وی‌آی‌پی",vipSub:"۱۲۵۰ امتیاز",streakTitle:"مداومت",streakSub:"فعال",sec2fa:"تأیید دو مرحله‌ای",secLogin:"محافظت از ورود",secWith:"تأیید برداشت",enabled:"فعال",active:"فعال",
+forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد تأیید به ایمیل شما ارسال شد. (پیش‌نمایش کد شبیه‌سازی‌شده:",enterCode:"کد ۶ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
+contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
+platformStatsTitle:"آمارهای پلتفرم", statUsers:"کاربران استفاده‌کننده", statInvestors:"سرمایه‌گذاران فعال", statPaid:"سود پرداخت شده", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
+depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
+optDirect:"۱. پرداخت مستقیم", optPaymentio:"2. پرداخت از طریق درگاه Payment.io / NowPayments",
+walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی مدیر به موجودی شما اضافه گردد.</small>",
+paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
+withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
+},
+az:{
+brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profil:"Profil",
+hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyutaları və investisiya alətlərini peşəkar interfeysdə kəşf edin.",exploreInvest:"İnvestisiyalara bax",exploreMarkets:"Bazara bax",
+users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
+plans:"İnvestisiya planları",illustrative:"Nümunə gəlir",calculator:"İnvestisiya kalkulyatoru",amount:"Məbləğ",plan:"Plan",estimated:"Təxmini dəyər",
+balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Balansı cüzdan və ya şlüz vasitəsilə artırın.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Ani çıxarış sorğusu.",request:"Sorğu göndər",
+clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"Telefon",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatlarınız Supabase bazasında təhlükəsiz saxlanılır.",
+eyebrowText:"PREMİUM RƏqəmsal AKTİV PLATFORMASI",footerTitle:"Niyə Binance İnvest?",footerDesc:"Aktivlərinizin təhlükəsiz böyüməsi üçün peşəkar səviyyədə etibarlılıq və ağıllı portfel alətləri təqdim edirik.",footerCopy:"© 2026 Binance Invest Global. Bütün hüquqlar qorunur.",
+thAsset:"Aktiv",thPrice:"Qiymət",th24h:"24s",thCap:"Bazar Dəyəri",thVol:"Həcm",
+customTitle:"Xüsusi İnvestisiya Planı",customDesc:"1$-dan 100,000$-dək istənilən məbləği investisiya edin. Gəlir birbaşa depozit məbləğinə və gündəlik dərəcələrə əsasən hesablanır.",customAmountLabel:"Xüsusi Məbləş (1$ - 100,000$)",customTermLabel:"Müddət (Gün)",investCustomBtn:"Xüsusi Məbləğlə İnvestisiya Et",
+dailyProfitLabel:"Gündəlik Gəlir",monthlyProfitLabel:"Aylıq Gəlir",
+lockNoticeText:"Əgər pulunuzu 60 gün və ya daha çox müddətə qapatsanız, müqaviləyə əsasən gündəlik gəliriniz 7.5%-dən çox olacaqdır.",
+pointsTitle:"Xallar",pointsSub:"+50 həftəlik",refTitle:"Referal",vipTitle:"VIP",vipSub:"1,250 xal",streakTitle:"Seriya",streakSub:"Aktiv",sec2fa:"2FA",secLogin:"Giriş qorunması",secWith:"Çıxarış təsdiqi",enabled:"Aktivdir",active:"Aktivdir",
+forgotPasswordText:"Şifrəni unutmusunuz?",needAccountText:"Hesabınız yoxdur? Qeydiyyatdan keçin",haveAccountText:"Artıq hesabınız var? Daxil olun",usernameOrEmail:"İstifadəçi adı və ya E-poçt",enterEmailOrUser:"İstifadəçi adı və ya qeydiyyatdakı e-poçtunuzu daxil edin",codeSentNotice:"Təsdiq kodu e-poçtunuza göndərildi.",enterCode:"6 rəqəmli təsdiq kodunu daxil edin",sendResetCode:"Sıfırlama kodu göndər",resetPasswordTitle:"Şifrənin Sıfırlanması",newPasswordLabel:"Yeni Şifrə",resetBtn:"Şifrəni Yenilə",
+contactUs:"Bizimlə Əlaqə", supportEmail:"Dəstək E-poçtu", securityPartners:"Təhlükəsizlik Tərəfdaşları",
+platformStatsTitle:"Platforma Statistikası", statUsers:"İstifadəçilər", statInvestors:"Aktiv İnvestorlar", statPaid:"Ödənilən Gəlir", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi",
+depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
+optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
+walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
+paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
+withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
+},
+tr:{
+brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çıkış Yap",overview:"Genel Bakış",markets:"Piyasalar",invest:"Yatırım",portfolio:"Portföy",transactions:"İşlemler",rewards:"Ödüller",profile:"Profil",
+hero:"Geleceğinizi akıllı yatırımlarla inşa edin.",heroDesc:"Dijital varlıkları ve yatırım planlarını profesyonel arayüzde keşfedin.",exploreInvest:"Yatırımları İncele",exploreMarkets:"Piyasaları İncele",
+top:"Popüler Piyasalar",viewAll:"Tümünü Gör",featured:"Öne Çıkan Yatırımlar",plans:"Yatırım Planları",illustrative:"Tahmini Getiri",calculator:"Yatırım Hesaplayıcı",amount:"Miktar",plan:"Plan",estimated:"Tahmini Değer",
+balance:"Bakiye",invested:"Yatırılan",profitTotal:"Toplam Kâr",level:"Hesap Seviyesi",deposit:"Para Yatır",depositDesc:"Güvenli bir şekilde bakiye yükleyin.",withdraw:"Para Çek",withdrawDesc:"Anında çekim talebi oluşturun.",request:"Çekim Talebi Gönder",
+clear:"Geçmişi Temizle",copy:"Kodu Kopyala",account:"Hesap",username:"Kullanıcı Adı",email:"E-posta",fullname:"Ad Soyad",phone:"Telefon",save:"Profili Kaydet",security:"Güvenlik",password:"Şifre",continue:"Devam Et",local:"Hesap verileriniz Supabase veritabanında güvenle saklanır.",
+eyebrowText:"PREMİUM DİJİTAL VARLIK PLATFORMU",footerTitle:"Neden Binance Invest?",footerDesc:"Varlıklarınızın güvenle büyümesi için profesyonel düzeyde güvenilirlik sunuyoruz.",footerCopy:"© 2026 Binance Invest Global. Tüm hakları saklıdır.",
+thAsset:"Varlık",thPrice:"Fiyat",th24h:"24s",thCap:"Piyasa Değeri",thVol:"Hacim",
+customTitle:"Özel Yatırım Planı",customDesc:"1$ ile 100.000$ arasında dilediğiniz miktarda yatırım yapın.",customAmountLabel:"Özel Miktar ($1 - $100,000)",customTermLabel:"Süre (Gün)",investCustomBtn:"Özel Miktar İle Yatırım Yap",
+dailyProfitLabel:"Günlük Kâr",monthlyProfitLabel:"Aylık Kâr",
+lockNoticeText:"Paranızı 60 gün veya daha uzun süre kilitlerseniz, günlük kâr oranınız %7.5 üzerine çıkar.",
+pointsTitle:"Puan",pointsSub:"+50 haftalık",refTitle:"Referans",vipTitle:"VIP",vipSub:"1,250 Puan",streakTitle:"Seri",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Giriş Koruması",secWith:"Çekim Onayı",enabled:"Etkin",active:"Aktif",
+forgotPasswordText:"Şifremi Unuttum?",needAccountText:"Hesabınız yok mu? Kayıt olun",haveAccountText:"Zaten hesabınız var mı? Giriş yapın",usernameOrEmail:"Kullanıcı Adı veya E-posta",enterEmailOrUser:"Kullanıcı adınızı veya e-postanızı girin",codeSentNotice:"Doğrulama kodu e-postanıza gönderildi:",enterCode:"6 Haneli Kodu Girin",sendResetCode:"Sıfırlama Kodu Gönder",resetPasswordTitle:"Şifre Sıfırlama",newPasswordLabel:"Yeni Şifre",resetBtn:"Şifreyi Güncelle",
+contactUs:"İletişim", supportEmail:"Destek E-postası", securityPartners:"Güvenlik Ortakları",
+platformStatsTitle:"Platform İstatistikleri", statUsers:"Kullanıcılar", statInvestors:"Aktif Yatırımcılar", statPaid:"Ödenen Kâr", statCapital:"Platform Sermayesi", liveWithdrawalsTitle:"Canlı Çekimler", justNow:"Az önce",
+depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCryptoLabel:"Para Birimi ve Ağ Seçin:", depTxLabel:"İşlem Kodu / TXID:", depSubmitBtn:"Yatırma Talebi Gönder",
+optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme",
+walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Lütfen tutarı bu adrese gönderin ve onay için TXID kodunu girin.</small>",
+paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın.",
+withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
+},
+ru:{
+brand:"Binance Invest",login:"Войти",register:"Регистрация",logout:"Выйти",overview:"Обзор",markets:"Рынки",invest:"Инвестиции",portfolio:"Портфель",transactions:"Транзакции",rewards:"Награды",profile:"Профиль",
+hero:"Стройте свое будущее с умными инвестициями.",heroDesc:"Изучайте цифровые активы и инвестиционные планы в премиум-интерфейсе.",exploreInvest:"Инвестиции",exploreMarkets:"Рынки",
+top:"Популярные рынки",viewAll:"Все рынки",featured:"Рекомендуемые планы",plans:"Инвестиционные планы",illustrative:"Примерная доходность",calculator:"Калькулятор",amount:"Сумма",plan:"План",estimated:"Оценочная стоимость",
+balance:"Баланс",invested:"Инвестировано",profitTotal:"Общая прибыль",level:"Уровень счета",deposit:"Депозит",depositDesc:"Пополняйте баланс безопасно.",withdraw:"Вывод",withdrawDesc:"Запросить мгновенный вывод.",request:"Запросить вывод",
+clear:"Очистить историю",copy:"Копировать",account:"Аккаунт",username:"Имя пользователя",email:"Email",fullname:"ФИО",phone:"Телефон",save:"Сохранить",security:"Безопасность",password:"Пароль",continue:"Продолжить",local:"Данные хранятся в базе Supabase.",
+eyebrowText:"ПРЕМИАЛЬНАЯ ПЛАТФОРМА ЦИФРОВЫХ АКТИВОВ",footerTitle:"Почему Binance Invest?",footerDesc:"Надежность профессионального уровня и умные инструменты для роста ваших активов.",footerCopy:"© 2026 Binance Invest Global. Все права защищены.",
+thAsset:"Актив",thPrice:"Цена",th24h:"24ч",thCap:"Капитализация",thVol:"Объем",
+customTitle:"Персональный план",customDesc:"Инвестируйте любую сумму от $1 до $100,000.",customAmountLabel:"Сумма ($1 - $100,000)",customTermLabel:"Срок (Дней)",investCustomBtn:"Инвестировать",
+dailyProfitLabel:"Дневная прибыль",monthlyProfitLabel:"Месячная прибыль",
+lockNoticeText:"При заморозке средств на 60 дней и более ежедневная ставка превышает 7.5%.",
+pointsTitle:"Баллы",pointsSub:"+50 еженедельно",refTitle:"Рефералы",vipTitle:"VIP",vipSub:"1,250 баллов",streakTitle:"Серия",streakSub:"Активно",sec2fa:"2FA",secLogin:"Защита входа",secWith:"Подтверждение вывода",enabled:"Включено",active:"Активно",
+forgotPasswordText:"Забыли пароль?",needAccountText:"Нет аккаунта? Зарегистрируйтесь",haveAccountText:"Уже есть аккаунт? Войти",usernameOrEmail:"Имя пользователя или Email",enterEmailOrUser:"Введите имя пользователя или Email",codeSentNotice:"Код подтверждения отправлен на Email:",enterCode:"Введите 6-значный код",sendResetCode:"Отправить код",resetPasswordTitle:"Сброс пароля",newPasswordLabel:"Новый пароль",resetBtn:"Обновить пароль",
+contactUs:"Контакты", supportEmail:"Email поддержки", securityPartners:"Партнеры по безопасности",
+platformStatsTitle:"Статистика платформы", statUsers:"Пользователи", statInvestors:"Активные инвесторы", statPaid:"Выплачено прибыли", statCapital:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
+depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
+optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
+walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
+paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
+withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
+},
+ar:{
+brand:"بایننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
+hero:"ابنِ مستقبلك من خلال الاستثمار الذكي.",heroDesc:"استكشف الأصول الرقمية، وخطط الاستثمار، وأدوات المحفظة في واجهة واحدة متميزة.",exploreInvest:"استكشاف الاستثمارات",exploreMarkets:"استكشاف الأسواق",
+users:"مستخدمو المنصة",tracked:"الأصول المتتبعة",assets:"الأصول الرقمية",live:"الأسواق الحية",uptime:"وقت تشغيل المنصة",top:"أفضل الأسواق",viewAll:"عرض الكل",featured:"استثمارات مميزة",
+plans:"خطط الاستثمار",illustrative:"عوائد توضيحية",calculator:"حاسبة الاستثمار",amount:"المبلغ",plan:"الخطة",estimated:"القيمة المقدرة",
+balance:"الرصيد",invested:"المستثمر",profitTotal:"إجمالي الربح",level:"مستوى الحساب",deposit:"إيداع",depositDesc:"أضف رصيداً بأمان عبر المحفظة أو البوابة.",add:"إضافة رصيد",withdraw:"سحب",withdrawDesc:"اطلب السحب فوراً.",request:"طلب سحب",
+clear:"مسح السجل",copy:"نسخ الرمز",account:"الحساب",username:"اسم المستخدم",email:"البريد الإلكتروني",fullname:"الاسم الكامل",phone:"الهاتف",save:"حفظ الملف الشخصي",security:"الأمان",password:"كلمة المرور",continue:"متابعة",local:"يتم تخزين بيانات الحساب بأمان في قاعدة بيانات Supabase.",
+eyebrowText:"منصة الأصول الرقمية المميزة",footerTitle:"لماذا بايننس إنفست؟",footerDesc:"نحن نقدم موثوقية احترافية مع تنفيذ تداول منخفض الكمون للغاية، وأدوات محفظة ذكية، وبروتوكولات أمان متقدمة.",footerCopy:"© 2026 Binance Invest Global. جميع الحقوق محفوظة.",
+thAsset:"الأصل",thPrice:"السعر",th24h:"24س",thCap:"القيمة السوقية",thVol:"الحجم",
+customTitle:"خطة استثمار مخصصة",customDesc:"استثمر أي مبلغ مخصص من 1 دولار إلى 100,000 دولار.",customAmountLabel:"مبلغ مخصص (1$ - 100,000$)",customTermLabel:"المدة (أيام)",investCustomBtn:"استثمار بمبلغ مخصص",
+dailyProfitLabel:"الربح اليومي",monthlyProfitLabel:"الربح الشهري",
+lockNoticeText:"إذا قمت بقفل أموالك لمدة 60 يوماً أو أكثر، يصل معدل الربح اليومي الخاص بك إلى أكثر من 7.5% وفقاً لاتفاقية العقد.",
+pointsTitle:"النقاط",pointsSub:"+50 أسبوعياً",refTitle:"الإحالة",vipTitle:"VIP",vipSub:"1,250 نقطة",streakTitle:"التتابع",streakSub:"نشط",sec2fa:"التحقق الثنائي",secLogin:"حماية تسجيل الدخول",secWith:"تأكيد السحب",enabled:"مفعل",active:"نشط",
+forgotPasswordText:"هل نسيت كلمة المرور؟",needAccountText:"ليس لديك حساب؟ سجل الآن",haveAccountText:"لديك حساب بالفعل؟ سجل دخولك",usernameOrEmail:"اسم المستخدم أو البريد الإلكتروني",enterEmailOrUser:"أدخل اسم المستخدم أو البريد الإلكتروني المسجل",codeSentNotice:"تم إرسال رمز التحقق إلى بريدك الإلكتروني.",enterCode:"أدخل رمز التحقق المكون من 6 أرقام",sendResetCode:"إرسال رمز إعادة التعيين",resetPasswordTitle:"إعادة تعيين كلمة المرور",newPasswordLabel:"كلمة المرور الجديدة",resetBtn:"إعادة تعيين كلمة المرور",
+contactUs:"اتصل بنا", supportEmail:"البريد الإلكتروني للدعم", securityPartners:"شركاء الحماية والأمان",
+platformStatsTitle:"إحصائيات المنصة", statUsers:"مستخدمو المنصة", statInvestors:"المستثمرون النشطون", statPaid:"إجمالي الأرباح المدفوعة", statCapital:"رأس مال المنصة", liveWithdrawalsTitle:"عمليات السحب المباشرة", justNow:"الآن",
+depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
+optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
+walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة المشرف.</small>",
+paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
+withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
+},
+zh:{
+brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
+hero:"通过智能投资构建您的未来。",heroDesc:"在一个高端界面中探索数字资产、投资计划和资产组合工具。",exploreInvest:"探索投资",exploreMarkets:"探索市场",
+users:"平台用户",tracked:"跟踪资产",assets:"数字资产",live:"实时市场",uptime:"正常运行时间",top:"热门市场",viewAll:"查看全部",featured:"精选投资",
+plans:"投资计划",illustrative:"演示收益",calculator:"投资计算器",amount:"金额",plan:"计划",estimated:"预计价值",
+balance:"余额",invested:"已投资",profitTotal:"总利润",level:"账户等级",deposit:"充值",depositDesc:"通过钱包或网关安全充值。",withdraw:"提现",withdrawDesc:"立即申请提现。",request:"申请提现",
+clear:"清除历史",copy:"复制代码",account:"账户",username:"用户名",email:"电子邮箱",fullname:"全名",phone:"电话",save:"保存资料",security:"安全",password:"密码",continue:"继续",local:"账户数据安全存储在 Supabase 数据库中。",
+eyebrowText:"高端数字资产平台",footerTitle:"为什么选择 Binance Invest？",footerDesc:"我们提供专业级可靠性、超低延迟交易执行和高级安全协议。",footerCopy:"© 2026 Binance Invest Global. 保留所有权利。",
+thAsset:"资产",thPrice:"价格",th24h:"24小时",thCap:"市值",thVol:"交易量",
+customTitle:"自定义投资计划",customDesc:"投资 1 美元到 100,000 美元之间的任意自定义金额。",customAmountLabel:"自定义金额 ($1 - $100,000)",customTermLabel:"期限（天）",investCustomBtn:"以自定义金额投资",
+dailyProfitLabel:"每日利润",monthlyProfitLabel:"每月利润",
+lockNoticeText:"如果您将资金锁仓 60 天或更长时间，根据合约协议，您的日利润率将达到 7.5% 以上。",
+pointsTitle:"积分",pointsSub:"每周 +50",refTitle:"推荐",vipTitle:"VIP",vipSub:"1,250 积分",streakTitle:"连续",streakSub:"活跃",sec2fa:"双重认证",secLogin:"登录保护",secWith:"提现确认",enabled:"已启用",active:"活跃",
+forgotPasswordText:"忘记密码？",needAccountText:"没有账户？立即注册",haveAccountText:"已有账户？去登录",usernameOrEmail:"用户名或邮箱",enterEmailOrUser:"输入您的用户名或注册邮箱",codeSentNotice:"验证码已发送至您的邮箱。",enterCode:"输入 6 位邮箱验证码",sendResetCode:"发送重置验证码",resetPasswordTitle:"重置密码",newPasswordLabel:"新密码",resetBtn:"重置密码",
+contactUs:"联系我们", supportEmail:"支持邮箱", securityPartners:"安全合作伙伴与保护",
+platformStatsTitle:"平台统计", statUsers:"平台用户", statInvestors:"活跃投资者", statPaid:"总支付利润", statCapital:"平台资本", liveWithdrawalsTitle:"实时提现", justNow:"刚刚",
+depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
+optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
+walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供管理员批准。</small>",
+paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
+withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
+},
+es:{
+brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
+hero:"Construye tu futuro con una inversión inteligente.",heroDesc:"Explora activos digitales, planes de inversión y herramientas de portafolio en una interfaz premium.",exploreInvest:"Explorar inversiones",exploreMarkets:"Explorar mercados",
+users:"Usuarios de la plataforma",tracked:"Activos rastreados",assets:"Activos digitales",live:"Mercados en vivo",uptime:"Tiempo de actividad",top:"Principales mercados",viewAll:"Ver todo",featured:"Inversiones destacadas",
+plans:"Planes de inversión",illustrative:"Rendimientos ilustrativos",calculator:"Calculadora de inversión",amount:"Cantidad",plan:"Plan",estimated:"Valor estimado",
+balance:"Saldo",invested:"Invertido",profitTotal:"Beneficio total",level:"Nivel de cuenta",deposit:"Depósito",depositDesc:"Agrega saldo de forma segura mediante billetera o pasarela.",add:"Añadir saldo",withdraw:"Retirar",withdrawDesc:"Solicita un retiro al instante.",request:"Solicitar retiro",
+clear:"Borrar historial",copy:"Copiar código",account:"Cuenta",username:"Nombre de usuario",email:"Correo electrónico",fullname:"Nombre completo",phone:"Teléfono",save:"Guardar perfil",security:"Seguridad",password:"Contraseña",continue:"Continuar",local:"Los datos de la cuenta se almacenan de forma segura en la base de datos de Supabase.",
+eyebrowText:"PLATAFORMA DE ACTIVOS DIGITALES PREMIUM",footerTitle:"¿Por qué Binance Invest?",footerDesc:"Ofrecemos confiabilidad de nivel profesional con ejecución comercial de latencia ultrabaja.",footerCopy:"© 2026 Binance Invest Global. Todos los derechos reservados.",
+thAsset:"Activo",thPrice:"Precio",th24h:"24h",thCap:"Capitalización",thVol:"Volumen",
+customTitle:"Plan de inversión personalizado",customDesc:"Invierte cualquier cantidad personalizada de $1 a $100,000.",customAmountLabel:"Cantidad personalizada ($1 - $100,000)",customTermLabel:"Plazo (Días)",investCustomBtn:"Invertir cantidad personalizada",
+dailyProfitLabel:"Beneficio diario",monthlyProfitLabel:"Beneficio mensual",
+lockNoticeText:"Si bloqueas tu dinero durante 60 días o más, tu tasa de beneficio diario alcanza más del 7.5%.",
+pointsTitle:"Puntos",pointsSub:"+50 semanal",refTitle:"Referidos",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Racha",streakSub:"Activa",sec2fa:"2FA",secLogin:"Protección de inicio de sesión",secWith:"Confirmación de retiro",enabled:"Habilitado",active:"Activo",
+forgotPasswordText:"¿Olvidaste tu contraseña?",needAccountText:"¿No tienes cuenta? Regístrate",haveAccountText:"¿Ya tienes cuenta? Inicia sesión",usernameOrEmail:"Usuario o correo electrónico",enterEmailOrUser:"Ingresa tu usuario o correo electrónico",codeSentNotice:"Se ha enviado un código de verificación a tu correo.",enterCode:"Ingresa el código de 6 dígitos",sendResetCode:"Enviar código",resetPasswordTitle:"Restablecer contraseña",newPasswordLabel:"Nueva contraseña",resetBtn:"Restablecer contraseña",
+contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"Socios de seguridad y protección",
+platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Usuarios", statInvestors:"Inversores activos", statPaid:"Beneficio total pagado", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
+depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
+optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
+walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
+paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
+withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
+},
+fr:{
+brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
+hero:"Construisez votre avenir grâce à l'investissement intelligent.",heroDesc:"Explorez les actifs numériques, les plans d'investissement et les outils de portefeuille.",exploreInvest:"Explorer les investissements",exploreMarkets:"Explorer les marchés",
+users:"Utilisateurs",tracked:"Actifs suivis",assets:"Actifs numériques",live:"Marchés en direct",uptime:"Disponibilité",top:"Principaux marchés",viewAll:"Voir tout",featured:"Investissements en vedette",
+plans:"Plans d'investissement",illustrative:"Rendements indicatifs",calculator:"Calculateur d'investissement",amount:"Montant",plan:"Plan",estimated:"Valeur estimée",
+balance:"Solde",invested:"Investi",profitTotal:"Profit total",level:"Niveau de compte",deposit:"Dépôt",depositDesc:"Ajoutez des fonds en toute sécurité.",withdraw:"Retirer",withdrawDesc:"Demandez un retrait instantané.",request:"Demander un retrait",
+clear:"Effacer l'historique",copy:"Copier le code",account:"Compte",username:"Nom d'utilisateur",email:"E-mail",fullname:"Nom complet",phone:"Téléphone",save:"Enregistrer",security:"Sécurité",password:"Mot de passe",continue:"Continuer",local:"Les données du compte sont stockées en toute sécurité dans Supabase.",
+eyebrowText:"PLATEFORME D'ACTIFS NUMÉRIQUES PREMIUM",footerTitle:"Pourquoi Binance Invest ?",footerDesc:"Nous offrons une fiabilité de niveau professionnel et une exécution à ultra-faible latence.",footerCopy:"© 2026 Binance Invest Global. Tous droits réservés.",
+thAsset:"Actif",thPrice:"Prix",th24h:"24h",thCap:"Capitalisation",thVol:"Volume",
+customTitle:"Plan d'investissement personnalisé",customDesc:"Investissez n'importe quel montant de 1 $ à 100 000 $.",customAmountLabel:"Montant personnalisé (1$ - 100 000$)",customTermLabel:"Durée (Jours)",investCustomBtn:"Investir",
+dailyProfitLabel:"Profit journalier",monthlyProfitLabel:"Profit mensuel",
+lockNoticeText:"Si vous bloquez vos fonds pendant 60 jours ou plus, votre taux de profit journalier dépasse 7.5%.",
+pointsTitle:"Points",pointsSub:"+50 par semaine",refTitle:"Parrainage",vipTitle:"VIP",vipSub:"1 250 pts",streakTitle:"Série",streakSub:"Actif",sec2fa:"2FA",secLogin:"Protection de connexion",secWith:"Confirmation de retrait",enabled:"Activé",active:"Actif",
+forgotPasswordText:"Mot de passe oublié ?",needAccountText:"Pas de compte ? Inscrivez-vous",haveAccountText:"Déjà un compte ? Connectez-vous",usernameOrEmail:"Nom d'utilisateur ou e-mail",enterEmailOrUser:"Entrez votre nom d'utilisateur ou e-mail",codeSentNotice:"Un code de vérification a été envoyé à votre e-mail.",enterCode:"Entrez le code à 6 chiffres",sendResetCode:"Envoyer le code",resetPasswordTitle:"Réinitialiser le mot de passe",newPasswordLabel:"Nouveau mot de passe",resetBtn:"Mettre à jour",
+contactUs:"Contactez-nous", supportEmail:"E-mail de support", securityPartners:"Partenaires de sécurité",
+platformStatsTitle:"Statistiques de la plateforme", statUsers:"Utilisateurs", statInvestors:"Investisseurs actifs", statPaid:"Profits versés", statCapital:"Capital de la plateforme", liveWithdrawalsTitle:"Retraits en direct", justNow:"À l'instant",
+depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
+optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
+walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
+paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
+withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
+},
+de:{
+brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
+hero:"Bauen Sie Ihre Zukunft durch intelligenten Investieren auf.",heroDesc:"Entdecken Sie digitale Assets, Investitionspläne und Portfolio-Tools in einer Premium-Oberfläche.",exploreInvest:"Investitionen erkunden",exploreMarkets:"Märkte erkunden",
+users:"Benutzer",tracked:"Verfolgte Assets",assets:"Digitale Assets",live:"Live-Märkte",uptime:"Betriebszeit",top:"Top-Märkte",viewAll:"Alle anzeigen",featured:"Empfohlene Investitionen",
+plans:"Investitionspläne",illustrative:"Beispielhafte Renditen",calculator:"Investitionsrechner",amount:"Betrag",plan:"Plan",estimated:"Geschätzter Wert",
+balance:"Guthaben",invested:"Investiert",profitTotal:"Gesamtgewinn",level:"Konto-Stufe",deposit:"Einzahlen",depositDesc:"Guthaben sicher per Wallet oder Gateway aufladen.",withdraw:"Abheben",withdrawDesc:"Auszahlung sofort anfordern.",request:"Auszahlung anfordern",
+clear:"Verlauf löschen",copy:"Code kopieren",account:"Konto",username:"Benutzername",email:"E-Mail",fullname:"Vollständiger Name",phone:"Telefon",save:"Profil speichern",security:"Sicherheit",password:"Passwort",continue:"Weiter",local:"Kontodaten werden sicher in der Supabase-Datenbank gespeichert.",
+eyebrowText:"PREMIUM DIGITALE ASSET-PLATFORM",footerTitle:"Warum Binance Invest?",footerDesc:"Wir bieten professionelle Zuverlässigkeit mit ultraschneller Handelsausführung.",footerCopy:"© 2026 Binance Invest Global. Alle Rechte vorbehalten.",
+thAsset:"Asset",thPrice:"Preis",th24h:"24h",thCap:"Marktkapitalisierung",thVol:"Volumen",
+customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie einen beliebigen Betrag von 1 $ bis 100.000 $.",customAmountLabel:"Benutzerdefinierter Betrag ($1 - $100,000)",customTermLabel:"Laufzeit (Tage)",investCustomBtn:"Investieren",
+dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
+lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
+pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktif",
+forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
+contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
+platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
+depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
+optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
+walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch den Administrator.</small>",
+paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
+withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
+}
+};
+
+const uiTexts = {
+  en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
+  fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
+  az: { daily: "Gündəlik", dailyProfit: "Gündəlik gəlir", monthlyProfit: "Aylıq gəlir", investNow: "İndi İnvestisiya Et", popular: "POPÜLYAR", amount: "Məbləğ", term: "Müddət", days: "gün" },
+  tr: { daily: "Günlük", dailyProfit: "Günlük kâr", monthlyProfit: "Aylık kâr", investNow: "Şimdi Yatırım Yap", popular: "POPÜLER", amount: "Miktar", term: "Süre", days: "gün" },
+  ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" },
+  ar: { daily: "يومي", dailyProfit: "الربح اليومي", monthlyProfit: "الربح الشهري", investNow: "استثمر الآن", popular: "شائع", amount: "المبلغ", term: "المدة", days: "أيام" },
+  zh: { daily: "每日", dailyProfit: "每日利润", monthlyProfit: "每月利润", investNow: "立即投资", popular: "热门", amount: "金额", term: "期限", days: "天" },
+  es: { daily: "Diario", dailyProfit: "Beneficio diario", monthlyProfit: "Beneficio mensual", investNow: "Invertir ahora", popular: "POPULAR", amount: "Cantidad", term: "Plazo", days: "días" },
+  fr: { daily: "Quotidien", dailyProfit: "Profit journalier", monthlyProfit: "Profit mensuel", investNow: "Investir", popular: "POPULAIRE", amount: "Montant", term: "Durée", days: "jours" },
+  de: { daily: "Täglich", dailyProfit: "Täglicher Gewinn", monthlyProfit: "Monatlicher Gewinn", investNow: "Jetzt investieren", popular: "BELIEBT", amount: "Betrag", term: "Laufzeit", days: "Tage" }
+};
+
+const planNames = {
+  en: [["Starter", "Starter Plan"], ["Growth", "Growth Plan"], ["Premium", "Premium Plan"]],
+  fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
+  az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]],
+  tr: [["Starter", "Başlangıç Planı"], ["Growth", "Büyüme Planı"], ["Premium", "Premium Planı"]],
+  ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]],
+  ar: [["Starter", "خطة المبتدئين"], ["Growth", "خطة النمو"], ["Premium", "الخطة الممتازة"]],
+  zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
+  es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
+  fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
+  de: [["Starter", "Starter-Plan"], ["Growth", "Wachstums-Plan"], ["Premium", "Premium-Plan"]]
+};
+
+const coins=[
+  ["BTC","Bitcoin","btc"],
+  ["ETH","Ethereum","eth"],
+  ["BNB","BNB","bnb"],
+  ["SOL","Solana","sol"],
+  ["XRP","XRP","xrp"],
+  ["ADA","Cardano","ada"],
+  ["DOGE","Dogecoin","doge"],
+  ["TRX","TRON","trx"],
+  ["AVAX","Avalanche","avax"],
+  ["LINK","Chainlink","link"],
+  ["DOT","Polkadot","dot"],
+  ["LTC","Litecoin","ltc"]
+];
+
+const demo={
+  btc: [116842, 2.2, 232e10, 54e9],
+  eth: [4421, 3.1, 533e9, 26e9],
+  bnb: [812, 0.8, 118e9, 2.4e9],
+  sol: [182, -1.1, 87e9, 4.2e9],
+  xrp: [3.12, 1.8, 178e9, 6.2e9],
+  ada: [0.88, -0.7, 32e9, 0.69e9],
+  doge: [0.23, 2.4, 34e9, 1.5e9],
+  trx: [0.36, 0.9, 34e9, 0.72e9],
+  avax: [24.4, -0.3, 10.5e9, 0.32e9],
+  link: [24.8, 1.7, 16e9, 0.7e9],
+  dot: [4.2, -0.4, 6.5e9, 0.18e9],
+  ltc: [122, 1.1, 9.2e9, 0.52e9]
+};
+
+const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
+
+let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
+let tempRegData=null, generatedEmailCode="";
+
+const WALLETS = {
+    trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
+    bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
+};
+
+// کنترل باز و بسته شدن لیست های سفارشی رمزارز
+function toggleCustomSelect(type) {
+    const depositOptions = document.getElementById('depositCustomOptions');
+    const withdrawOptions = document.getElementById('withdrawCustomOptions');
+    if(type === 'deposit') {
+        depositOptions.classList.toggle('open');
+        withdrawOptions.classList.remove('open');
+    } else {
+        withdrawOptions.classList.toggle('open');
+        depositOptions.classList.remove('open');
+    }
+}
+
+function selectDepositCrypto(value, text, logoUrl) {
+    document.getElementById('crypto-currency').value = value;
+    document.getElementById('depositSelectedText').innerHTML = `<img src="${logoUrl}" alt=""> ${text}`;
+    document.getElementById('depositCustomOptions').classList.remove('open');
+    togglePaymentDetails();
+}
+
+function selectWithdrawCrypto(text, logoUrl) {
+    document.getElementById('withdrawCrypto').value = text;
+    document.getElementById('withdrawSelectedText').innerHTML = `<img src="${logoUrl}" alt=""> ${text}`;
+    document.getElementById('withdrawCustomOptions').classList.remove('open');
+}
+
+// بستن منوهای کشویی با کلیک خارج از آن‌ها
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('#depositCryptoCustomSelect')) {
+        let el = document.getElementById('depositCustomOptions');
+        if(el) el.classList.remove('open');
+    }
+    if (!e.target.closest('#withdrawCryptoCustomSelect')) {
+        let el = document.getElementById('withdrawCustomOptions');
+        if(el) el.classList.remove('open');
+    }
+});
+
+// دریافت زنده قیمت ها از بایننس
+async function fetchRealPrices() {
+    try {
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const data = await res.json();
+        const symbolMap = {
+            'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
+            'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
+            'AVAXUSDT': 'avax', 'LINKUSDT': 'link', 'DOTUSDT': 'dot', 'LTCUSDT': 'ltc'
+        };
+        data.forEach(item => {
+            if(symbolMap[item.symbol]) {
+                const id = symbolMap[item.symbol];
+                if(demo[id]) {
+                    demo[id][0] = parseFloat(item.lastPrice);
+                    demo[id][1] = parseFloat(item.priceChangePercent);
+                    demo[id][3] = parseFloat(item.quoteVolume);
+                }
+            }
+        });
+        renderCoins();
+        renderTable();
+    } catch(e) {
+        console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
+    }
+}
+
+function togglePaymentDetails() {
+    const method = document.getElementById('payment-method').value;
+    const cryptoContainer = document.getElementById('crypto-options-container');
+    const infoBox = document.getElementById('payment-info-box');
+    const txContainer = document.getElementById('tx-container');
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let dict = T[lang] || T.en;
+
+    if (method === 'wallet') {
+        cryptoContainer.style.display = 'block';
+        if (txContainer) txContainer.style.display = 'block';
+        const selectedCrypto = document.getElementById('crypto-currency').value;
+        const address = WALLETS[selectedCrypto] || WALLETS["trx_usdt_trc20"];
+        infoBox.innerHTML = (dict.walletMsg || T.en.walletMsg).replace("{ADDR}", address);
+    } else if (method === 'paymentio') {
+        cryptoContainer.style.display = 'none';
+        if (txContainer) txContainer.style.display = 'none';
+        infoBox.innerHTML = `
+            <div style="margin-bottom:8px;">${dict.paymentioMsg || T.en.paymentioMsg}</div>
+            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="650" frameborder="0" scrolling="auto" style="overflow-y:auto; border-radius:8px;">
+                Can't load widget
+            </iframe>
+        `;
+    }
+}
+
+async function submitDepositRequest() {
+    const amount = document.getElementById('deposit-amount').value;
+    const method = document.getElementById('payment-method').value;
+    const cryptoType = document.getElementById('crypto-currency').value;
+    const gatewayRef = document.getElementById('tx-ref').value;
     
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if(!currentUser) return openAuth("login");
 
-    async function loadTransactions() {
-        const { data, error } = await db.from('transactions').select('*');
-        const list = document.getElementById('tx-list');
-        list.innerHTML = '';
+    if (!amount || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
 
-        if (error || !data) {
-            list.innerHTML = '<tr><td colspan="4">خطا در دریافت اطلاعات.</td></tr>';
+    let paymentDetailsInfo = '';
+    if (method === 'wallet') {
+        if (!gatewayRef) {
+            alert('Please enter the reference code / TXID.');
             return;
         }
+        paymentDetailsInfo = `[Direct Payment - ${cryptoType}] ${gatewayRef}`;
+    } else if (method === 'paymentio') {
+        paymentDetailsInfo = `[Payment.io / NowPayments Widget]`;
+    }
 
-        const pendingTxs = data.filter(tx => tx.status && tx.status.toLowerCase() === 'pending');
-
-        if (pendingTxs.length === 0) {
-            list.innerHTML = '<tr><td colspan="4">هیچ درخواستی نیست.</td></tr>';
-            return;
+    const { error } = await supabaseClient.from('transactions').insert([
+        {
+            username: currentUser.username,
+            type: 'Deposit (Pending)',
+            amount: Number(amount),
+            status: 'pending',
+            gateway_ref: paymentDetailsInfo,
+            date: new Date().toLocaleString()
         }
+    ]);
 
-        pendingTxs.forEach(tx => {
-            const uname = tx.username || 'کاربر';
-            const typeText = tx.type === 'deposit' ? '🟢 واریز' : '🔴 برداشت';
-            list.innerHTML += `
-                <tr>
-                    <td>${uname}</td>
-                    <td>${typeText}</td>
-                    <td>$${tx.amount}</td>
-                    <td>
-                        <button class="btn btn-approve" onclick="approveTx('${tx.id}', '${uname}', ${tx.amount}, '${tx.type}')">تایید</button>
-                        <button class="btn btn-reject" onclick="rejectTx('${tx.id}')">رد</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    async function loadUsers() {
-        const { data, error } = await db.from('users').select('*');
-        const list = document.getElementById('user-list');
-        list.innerHTML = '';
-
-        if (error || !data || data.length === 0) {
-            list.innerHTML = '<tr><td colspan="5">کاربری یافت نشد.</td></tr>';
-            return;
-        }
-
-        data.forEach(u => {
-            list.innerHTML += `
-                <tr>
-                    <td>${u.username || 'بدون نام'}</td>
-                    <td>${u.email || 'ثبت نشده'}</td>
-                    <td>${u.password || 'ثبت نشده'}</td>
-                    <td>$${u.balance || 0}</td>
-                    <td>
-                        <input type="number" id="bal-${u.id}" value="${u.balance || 0}">
-                        <button class="btn btn-update" onclick="updateBalance('${u.id}')">ثبت</button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    async function approveTx(txId, username, amount, type) {
-        if (!confirm('تایید شود؟')) return;
-        await db.from('transactions').update({ status: 'Approved' }).eq('id', txId);
-
-        const { data: user } = await db.from('users').select('balance').eq('username', username).single();
-        let currentBalance = user ? Number(user.balance) : 0;
-        
-        if (type === 'deposit') currentBalance += Number(amount);
-        else if (type === 'withdraw' || type === 'withdrawal') currentBalance -= Number(amount);
-
-        await db.from('users').update({ balance: currentBalance }).eq('username', username);
-        alert('انجام شد.');
-        refreshAll();
-    }
-
-    async function rejectTx(txId) {
-        if (!confirm('رد شود؟')) return;
-        await db.from('transactions').update({ status: 'Rejected' }).eq('id', txId);
-        alert('رد شد.');
-        refreshAll();
-    }
-
-    async function updateBalance(userId) {
-        const newBal = document.getElementById(`bal-${userId}`).value;
-        await db.from('users').update({ balance: newBal }).eq('id', userId);
-        alert('بروز شد.');
-        refreshAll();
-    }
-
-    function refreshAll() {
+    if (error) {
+        alert('Error: ' + error.message);
+    } else {
+        alert('Deposit request submitted! It will reflect in your balance after admin approval.');
+        document.getElementById('deposit-amount').value = '';
+        if(document.getElementById('tx-ref')) document.getElementById('tx-ref').value = '';
         loadTransactions();
-        loadUsers();
     }
+}
 
-    refreshAll();
+// 100 Realistic Names
+const fakeNames = [
+    "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
+    "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
+    "Benjamin Moore", "Lucas Taylor", "Henry Anderson", "Ethan Thomas", "Alexander Jackson",
+    "Sebastian White", "Jack Harris", "Aiden Martin", "Matthew Thompson", "Samuel Garcia",
+    "David Martinez", "Joseph Robinson", "Carter Clark", "Owen Rodriguez", "Wyatt Lewis",
+    "John Lee", "Luke Walker", "Gabriel Hall", "Anthony Allen", "Isaac Young",
+    "Grayson Hernandez", "Julian King", "Mateo Wright", "Lincoln Lopez", "Jaxon Hill",
+    "Liam Scott", "Noah Green", "Oliver Adams", "Elijah Baker", "Logan Gonzalez",
+    "Caleb Nelson", "Christian Carter", "Landon Mitchell", "Jonathan Perez", "Nolan Roberts",
+    "Hunter Turner", "Jeremiah Phillips", "Elias Campbell", "Aaron Parker", "Eli Evans",
+    "Connor Edwards", "Ezekiel Collins", "Addison Stewart", "Easton Sanchez", "Miles Morris",
+    "Santiago Rogers", "Leo Reed", "Cooper Cook", "Landen Morgan", "Hudson Bell",
+    "Asher Murphy", "Carson Bailey", "Leo Rivera", "Ezra Cooper", "Kingston Richardson",
+    "Tristan Cox", "Jordan Howard", "Ian Ward", "Cole Torres", "Axel Peterson",
+    "Theodore Gray", "Leonardo Ramirez", "Dominic James", "Josiah Watson", "Everett Brooks",
+    "Easton Kelly", "Roman Sanders", "Miles Price", "Greyson Bennett", "Sawyer Wood",
+    "Aria Smith", "Sophia Johnson", "Emma Williams", "Olivia Brown", "Ava Jones",
+    "Isabella Miller", "Mia Davis", "Harper Garcia", "Evelyn Rodriguez", "Abigail Wilson",
+    "Emily Moore", "Elizabeth Taylor", "Mila Anderson", "Ella Thomas", "Avery Jackson",
+    "Sofia White", "Camila Harris", "Aria Martin", "Scarlett Thompson", "Victoria Garcia",
+    "Reza Ahmadi", "Ali Karimi", "Sara Mohammadi", "Mohammad Jafari", "Fatemeh Zarei"
+];
+
+function addLiveWithdrawal() {
+    let list = document.getElementById("liveWithdrawalsList");
+    if(!list) return;
+    let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+    let amount = (Math.random() * 990 + 10).toFixed(2);
+    let initial = name.charAt(0);
+    let lang = localStorage.getItem("bi_lang") || "en";
+    let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
+    
+    let div = document.createElement("div");
+    div.className = "live-withdraw";
+    div.innerHTML = `
+        <div style="display:flex; align-items:center; flex:1;">
+            <div class="live-avatar">${initial}</div>
+            <div class="live-info">
+                <b>${name}</b>
+                <span>${justNowText}</span>
+            </div>
+        </div>
+        <div class="live-amount">+$${amount} USD</div>
+    `;
+    list.prepend(div);
+    if(list.children.length > 5) list.removeChild(list.lastChild);
+}
+
+setInterval(addLiveWithdrawal, 5000);
+setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
+
+let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
+let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
+
+function displayCounters() {
+    let uEl = document.getElementById("statUsersVal"), iEl = document.getElementById("statInvestorsVal");
+    if(uEl) uEl.textContent = currentUsersCount.toLocaleString();
+    if(iEl) iEl.textContent = currentInvestorsCount.toLocaleString();
+}
+displayCounters();
+
+setInterval(() => {
+    currentUsersCount += Math.floor(Math.random() * 4) + 1;
+    currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
+    localStorage.setItem("bi_platform_users", currentUsersCount);
+    localStorage.setItem("bi_platform_investors", currentInvestorsCount);
+    displayCounters();
+}, 5000);
+
+function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
+function page(id,b){
+  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+  let target = document.getElementById(id);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+  if(b)b.classList.add("active");
+  if(id==="portfolio") { updatePortfolio(); togglePaymentDetails(); }
+  if(id==="transactions") loadTransactions();
+  scrollTo(0,0);
+}
+
+function openAuth(m){ authMode=m; updateAuthModalUI(); document.getElementById("auth").style.display="flex"; }
+function closeAuth(){ document.getElementById("auth").style.display="none"; }
+function switchAuthMode(m){ authMode=m; updateAuthModalUI(); }
+function toggleAuthMode(){ if(authMode==="login") authMode="register"; else if(authMode==="register") authMode="login"; updateAuthModalUI(); }
+
+function updateAuthModalUI(){
+  let lang = localStorage.getItem("bi_lang")||"en"; let d = T[lang]||T.en;
+  let regFields=document.getElementById("registerFields"), regCodeFields=document.getElementById("registerCodeFields"), loginFields=document.getElementById("loginFields"), forgotFields=document.getElementById("forgotFields"), passContainer=document.getElementById("passwordContainer"), submitBtn=document.getElementById("authSubmitBtn"), forgotLink=document.getElementById("forgotLink"), switchLink=document.getElementById("switchAuthLink"), titleEl=document.getElementById("authTitle");
+  regFields.style.display="none"; regCodeFields.style.display="none"; loginFields.style.display="none"; forgotFields.style.display="none"; passContainer.style.display="block"; forgotLink.style.display="block"; switchLink.style.display="block";
+  
+  if(authMode==="login"){ titleEl.textContent=d.login; loginFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.needAccountText; } 
+  else if(authMode==="register"){ titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none"; } 
+  else if(authMode==="verifying"){ titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none"; } 
+  else if(authMode==="forgot"){ titleEl.textContent=d.resetPasswordTitle||"Reset Password"; forgotFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.sendResetCode; forgotLink.style.display="none"; } 
+}
+
+async function submitAuth(){
+  if(authMode==="register"){
+    let fullName = authFullName.value.trim(), u = authUsernameReg.value.trim(), email = authEmailReg.value.trim(), p = authPass.value;
+    if(fullName.length<2) return toast("Please enter a valid full name");
+    if(u.length<3) return toast("Username must be at least 3 characters");
+    if(!email.includes("@")) return toast("Please enter a valid email address");
+    
+    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if(!pwdRegex.test(p)){
+      return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
+    }
+    
+    let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
+    if(existing && existing.length > 0) return toast("Username or email already taken!");
+
+    generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
+    document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
+    tempRegData = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
+    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
+  } 
+  else if(authMode==="verifying"){
+    let enteredCode = authEmailCode.value.trim();
+    if(enteredCode !== generatedEmailCode) return toast("Invalid verification code!");
+    
+    let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
+    if(error){
+      console.error(error);
+      return toast("Database error: " + error.message);
+    }
+    
+    currentUser = data && data[0] ? data[0] : tempRegData;
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+    
+    saveTx('Account Created', 0, 'Completed');
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account created successfully!");
+  }
+  else if(authMode==="login"){
+    let identifier = authUser.value.trim(), p = authPass.value;
+    let { data, error } = await supabaseClient.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`).eq('password', p).limit(1);
+    if(error || !data || data.length === 0) return toast("Incorrect username or password");
+    
+    currentUser = data[0];
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullname || currentUser.username));
+  }
+}
+
+function logout(){
+  currentUser = null;
+  localStorage.removeItem("bi_current_user");
+  updateHeaderAuthUI();
+  updatePortfolio();
+  toast("Logged out successfully");
+}
+
+function updateHeaderAuthUI(){
+  let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
+  let portAuthBtn = document.getElementById("portfolioAuthBtn");
+  if(currentUser){
+    headerDisp.style.display = "flex"; 
+    authGroup.style.display = "none"; 
+    if(portAuthBtn) portAuthBtn.style.display = "none";
+    document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
+    document.getElementById("headerUsername").textContent = "@" + currentUser.username;
+  } else {
+    headerDisp.style.display = "none"; 
+    authGroup.style.display = "flex";
+    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
+  }
+}
+
+async function saveUserData(){
+  if(!currentUser) return;
+  await supabaseClient.from('users').update({
+    phone: currentUser.phone,
+    fullname: currentUser.fullname,
+    balance: currentUser.balance,
+    invested: currentUser.invested,
+    profit: currentUser.profit
+  }).eq('username', currentUser.username);
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+}
+
+async function saveTx(type, amount, status){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').insert([{
+    username: currentUser.username,
+    type: type,
+    amount: amount,
+    status: status,
+    date: new Date().toLocaleString()
+  }]);
+}
+
+async function withdraw(){
+  let a = +document.getElementById("withdrawAmount").value;
+  let address = document.getElementById("withdrawAddress").value.trim();
+  let crypto = document.getElementById("withdrawCrypto").value;
+  
+  if(!currentUser) return openAuth("login");
+  if(!address) return toast("Please enter your destination wallet address");
+  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
+  
+  currentUser.balance -= a;
+  await saveUserData();
+  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
+  updatePortfolio(); loadTransactions(); 
+  toast("Withdrawal requested successfully!");
+  
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAddress").value = "";
+}
+
+async function invest(i){
+  if(!currentUser) return openAuth("login");
+  let min = plans[i][1], max = plans[i][2]; 
+  let a = +prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
+  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
+  if(a > currentUser.balance) return toast("Insufficient balance");
+  
+  currentUser.balance -= a;
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Investment: ' + plans[i][0], a, 'Active');
+  updatePortfolio(); loadTransactions(); toast("Investment activated!");
+}
+
+async function investCustom(){
+  if(!currentUser) return openAuth("login"); 
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
+  if(a > currentUser.balance) return toast("Insufficient balance");
+  
+  currentUser.balance -= a;
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Custom Investment ('+term+'d)', a, 'Active');
+  updatePortfolio(); loadTransactions(); toast("Custom investment created!");
+}
+
+function updatePortfolio(){
+  let u = currentUser;
+  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
+  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+}
+
+function renderCoins() {
+  const topCoins = document.getElementById("topCoins");
+  if(!topCoins) return;
+  topCoins.innerHTML = "";
+  for(let i=0; i<4; i++) {
+    let c = coins[i];
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+    
+    topCoins.innerHTML += `
+      <div class="card coin">
+        <img src="${iconUrl}" width="38" height="38" style="border-radius:50%">
+        <div style="flex:1">
+          <div class="coinTop"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div>
+          <div class="price">$${price}</div>
+          <div class="${colorClass}" style="font-size:12px;margin-top:4px">${sign}${change}%</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderTable() {
+  const table = document.getElementById("marketTable");
+  if(!table) return;
+  let q = (document.getElementById("search")?.value || "").toLowerCase();
+  table.innerHTML = "";
+  coins.forEach(c => {
+    if(!c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let cap = (d[2]/1e9).toFixed(2);
+    let vol = (d[3]/1e9).toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let isStar = stars.includes(c[0]);
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+    
+    table.innerHTML += `
+      <tr>
+        <td><button class="star ${isStar?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td>
+        <td><div style="display:flex;align-items:center;gap:10px"><img src="${iconUrl}" width="28" height="28" style="border-radius:50%"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div></td>
+        <td>$${price}</td>
+        <td class="${colorClass}">${sign}${change}%</td>
+        <td>$${cap}B</td>
+        <td>$${vol}B</td>
+      </tr>
+    `;
+  });
+}
+
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s);
+  else stars.push(s);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
+}
+
+function renderPlans(){
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let uDict = uiTexts[lang] || uiTexts.en;
+  let pList = planNames[lang] || planNames.en;
+  const pContainer = document.getElementById("plans");
+  const homePlans = document.getElementById("homePlans");
+  if(!pContainer) return;
+  
+  let html = "";
+  plans.forEach((p, i) => {
+    let name = pList[i] ? pList[i][1] : p[0];
+    let badge = i === 1 ? `<div class="tag">${uDict.popular}</div>` : "";
+    html += `
+      <div class="card plan">
+        ${badge}
+        <h3>${name}</h3>
+        <div class="apy">${p[3]}% <span style="font-size:14px;color:var(--muted)">/ ${uDict.daily}</span></div>
+        <ul>
+          <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
+          <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
+          <li class="plan-profit">${uDict.dailyProfit}: ~${p[3]}%</li>
+<li class="plan-profit">${uDict.monthlyProfit}: ~${(p[3] * 30).toFixed(1)}%</li>
+        </ul>
+        <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
+      </div>
+    `;
+  });
+  pContainer.innerHTML = html;
+  if(homePlans) homePlans.innerHTML = html;
+  
+ const select = document.getElementById("planSelect");
+  if(select){
+    select.innerHTML = "";
+    plans.forEach((p, i)=>{
+      let name = pList[i] ? pList[i][1] : p[0];
+      select.innerHTML += `<option value="${i}">${name} (${p[3]}% daily)</option>`;
+    });
+  }
+}
+
+function calc(){
+  let a = +document.getElementById("amount").value;
+  let idx = +document.getElementById("planSelect").value;
+  let p = plans[idx];
+  let total = a * (1 + (p[3]/100)*p[4]);
+  let profit = total - a;
+  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
+}
+
+function calcCustom(){
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  let dailyRate = term >= 60 ? 0.082 : term >= 30 ? 0.055 : 0.038;
+  let total = a * Math.pow(1 + dailyRate, term);
+  let profit = total - a;
+  let daily = a * dailyRate;
+  let monthly = daily * 30;
+  
+  document.getElementById("customResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("customDaily").textContent = "+$" + daily.toFixed(2);
+  document.getElementById("customMonthly").textContent = "+$" + monthly.toFixed(2);
+  document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+(dailyRate*100).toFixed(1)+"% daily est.)";
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let d = T[lang] || T.en;
+  document.getElementById("lockNotice").textContent = d.lockNoticeText || T.en.lockNoticeText;
+}
+
+async function loadTransactions(){
+  const tList = document.getElementById("txList");
+  if(!tList) return;
+  if(!currentUser){
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transaction history.</div>`;
+    return;
+  }
+  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
+  if(error || !data || data.length === 0){
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
+    return;
+  }
+  let html = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+  data.forEach(tx => {
+    let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
+    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  tList.innerHTML = html;
+}
+
+async function clearTx(){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+  loadTransactions(); toast("History cleared");
+}
+
+function copyRef(){
+  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username : "NEW"));
+  toast("Referral code copied!");
+}
+
+async function loadProfile(){
+  if(!currentUser) return;
+  document.getElementById("username").value = currentUser.username;
+  document.getElementById("emailInput").value = currentUser.email || "";
+  document.getElementById("fullNameInput").value = currentUser.fullname || "";
+  document.getElementById("phone").value = currentUser.phone || "";
+}
+
+async function saveProfile(){
+  if(!currentUser) return;
+  currentUser.fullname = document.getElementById("fullNameInput").value;
+  currentUser.phone = document.getElementById("phone").value;
+  await saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile updated successfully!");
+}
+
+function setLang(lang){
+  localStorage.setItem("bi_lang", lang);
+  document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
+  let d = T[lang] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    let key = el.getAttribute("data-t");
+    if(d[key]) el.textContent = d[key];
+  });
+  renderPlans();
+  calcCustom();
+  togglePaymentDetails();
+}
+
+window.onload = function(){
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  setLang(savedLang);
+  
+  let savedUser = localStorage.getItem("bi_current_user");
+  if(savedUser){
+    try { currentUser = JSON.parse(savedUser); } catch(e){}
+  }
+  
+  updateHeaderAuthUI();
+  renderCoins();
+  renderTable();
+  renderPlans();
+  calc();
+  calcCustom();
+  fetchRealPrices();
+  setInterval(fetchRealPrices, 15000);
+  
+  if(currentUser) loadProfile();
+};
 </script>
-
 </body>
 </html>
