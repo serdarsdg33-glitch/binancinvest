@@ -725,14 +725,28 @@ html[dir="rtl"] .plan > .tag {
 </header>
 <div class="wrap">
 <nav class="nav">
-<button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
-<button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
-<button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
-<button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
-<button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
-<button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
-<button data-page="support" onclick="page('support',this)" data-t="support">Support</button>
-<button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
+  <button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
+
+  <button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
+
+  <button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
+
+  <button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
+
+  <button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
+
+  <button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
+
+  <button
+    data-page="support"
+    onclick="page('support',this)"
+    data-t="support"
+    style="color:#f0b90b;font-weight:900;"
+  >
+    Support
+  </button>
+
+  <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
 </nav>
 
 <section id="home" class="view active">
@@ -2670,8 +2684,8 @@ async function loadSupportTickets() {
     return;
   }
 
-  list.innerHTML =
-    '<div class="support-empty">Loading tickets...</div>';
+list.innerHTML =
+  `<div class="support-empty">${getSupportText("loadingTickets")}</div>`;
 
   try {
     const { data: tickets, error } = await supabaseClient
@@ -2738,7 +2752,7 @@ async function loadSupportTickets() {
     console.error("Load tickets error:", error);
 
 list.innerHTML =
-  `<div class="support-empty">${getSupportText("loadingTickets")}</div>`;
+  '<div class="support-empty">Tickets could not be loaded.</div>';
 
     toast(error.message || "Could not load support tickets");
   }
@@ -3044,8 +3058,6 @@ function formatSupportStatus(status) {
     : "open";
 
   return getSupportText(key);
-}
-  return labels[status] || status || "Open";
 }
 
 function formatSupportDate(value) {
