@@ -117,10 +117,10 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
 </nav>
 
-<section id="home" class="view">
-<div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest')" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets')" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
+<section id="home" class="view active">
+<div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
 
-<div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets')" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
+<div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
 
 <div class="title"><h2 data-t="platformStatsTitle">Platform Statistics</h2></div>
@@ -239,7 +239,6 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 
       <div id="crypto-options-container" style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
-          <!-- اینجا دیتا لوگو جایگزین ایموجی شده است -->
           <select id="crypto-currency" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
               <option value="trx_usdt_trc20" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT / Tether (TRC20)</option>
               <option value="bnb_usdt_bep20" data-logo="https://cryptologos.cc/logos/bnb-bnb-logo.svg">BNB / Tether (BEP20)</option>
@@ -258,12 +257,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
-    <!-- بخش برداشت با سه کادر درخواستی (نوع ارز با لوگو، آدرس ولت، مبلغ) -->
+    <!-- بخش برداشت -->
     <div class="card form" style="padding: 25px;">
       <h2 data-t="withdraw" style="font-size: 20px; margin-bottom: 8px;">Withdraw</h2>
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
-      <!-- اینجا دیتا لوگو جایگزین ایموجی شده است -->
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
       <select id="withdrawCrypto" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
           <option value="USDT (TRC20)" data-logo="https://cryptologos.cc/logos/tether-usdt-logo.svg">USDT (TRC20)</option>
@@ -552,8 +550,62 @@ withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netz
 }
 };
 
-const coins=[["BTC","Bitcoin","bitcoin","₿"],["ETH","Ethereum","ethereum","Ξ"],["BNB","BNB","binancecoin","B"],["SOL","Solana","solana","S"],["XRP","XRP","ripple","X"],["ADA","Cardano","cardano","A"],["DOGE","Dogecoin","dogecoin","Ð"],["TRX","TRON","tron","T"],["AVAX","Avalanche","avalanche-2","A"],["LINK","Chainlink","chainlink","L"],["DOT","Polkadot","polkadot","D"],["LTC","Litecoin","litecoin","Ł"]];
-const demo={bitcoin:[116842,2.2,232e10,54e9],ethereum:[4421,3.1,533e9,26e9],binancecoin:[812,.8,118e9,2.4e9],solana:[182,-1.1,87e9,4.2e9],ripple:[3.12,1.8,178e9,6.2e9],cardano:[.88,-.7,32e9,.69e9],dogecoin:[.23,2.4,34e9,1.5e9],tron:[.36,.9,34e9,.72e9],"avalanche-2":[24.4,-.3,10.5e9,.32e9],chainlink:[24.8,1.7,16e9,.7e9],polkadot:[4.2,-.4,6.5e9,.18e9],litecoin:[122,1.1,9.2e9,.52e9]};
+const uiTexts = {
+  en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
+  fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
+  az: { daily: "Gündəlik", dailyProfit: "Gündəlik gəlir", monthlyProfit: "Aylıq gəlir", investNow: "İndi İnvestisiya Et", popular: "POPÜLYAR", amount: "Məbləğ", term: "Müddət", days: "gün" },
+  tr: { daily: "Günlük", dailyProfit: "Günlük kâr", monthlyProfit: "Aylık kâr", investNow: "Şimdi Yatırım Yap", popular: "POPÜLER", amount: "Miktar", term: "Süre", days: "gün" },
+  ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" },
+  ar: { daily: "يومي", dailyProfit: "الربح اليومي", monthlyProfit: "الربح الشهري", investNow: "استثمر الآن", popular: "شائع", amount: "المبلغ", term: "المدة", days: "أيام" },
+  zh: { daily: "每日", dailyProfit: "每日利润", monthlyProfit: "每月利润", investNow: "立即投资", popular: "热门", amount: "金额", term: "期限", days: "天" },
+  es: { daily: "Diario", dailyProfit: "Beneficio diario", monthlyProfit: "Beneficio mensual", investNow: "Invertir ahora", popular: "POPULAR", amount: "Cantidad", term: "Plazo", days: "días" },
+  fr: { daily: "Quotidien", dailyProfit: "Profit journalier", monthlyProfit: "Profit mensuel", investNow: "Investir", popular: "POPULAIRE", amount: "Montant", term: "Durée", days: "jours" },
+  de: { daily: "Täglich", dailyProfit: "Täglicher Gewinn", monthlyProfit: "Monatlicher Gewinn", investNow: "Jetzt investieren", popular: "BELIEBT", amount: "Betrag", term: "Laufzeit", days: "Tage" }
+};
+
+const planNames = {
+  en: [["Starter", "Starter Plan"], ["Growth", "Growth Plan"], ["Premium", "Premium Plan"]],
+  fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
+  az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]],
+  tr: [["Starter", "Başlangıç Planı"], ["Growth", "Büyüme Planı"], ["Premium", "Premium Planı"]],
+  ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]],
+  ar: [["Starter", "خطة المبتدئين"], ["Growth", "خطة النمو"], ["Premium", "الخطة الممتازة"]],
+  zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
+  es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
+  fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
+  de: [["Starter", "Starter-Plan"], ["Growth", "Wachstums-Plan"], ["Premium", "Premium-Plan"]]
+};
+
+const coins=[
+  ["BTC","Bitcoin","btc"],
+  ["ETH","Ethereum","eth"],
+  ["BNB","BNB","bnb"],
+  ["SOL","Solana","sol"],
+  ["XRP","XRP","xrp"],
+  ["ADA","Cardano","ada"],
+  ["DOGE","Dogecoin","doge"],
+  ["TRX","TRON","trx"],
+  ["AVAX","Avalanche","avax"],
+  ["LINK","Chainlink","link"],
+  ["DOT","Polkadot","dot"],
+  ["LTC","Litecoin","ltc"]
+];
+
+const demo={
+  btc: [116842, 2.2, 232e10, 54e9],
+  eth: [4421, 3.1, 533e9, 26e9],
+  bnb: [812, 0.8, 118e9, 2.4e9],
+  sol: [182, -1.1, 87e9, 4.2e9],
+  xrp: [3.12, 1.8, 178e9, 6.2e9],
+  ada: [0.88, -0.7, 32e9, 0.69e9],
+  doge: [0.23, 2.4, 34e9, 1.5e9],
+  trx: [0.36, 0.9, 34e9, 0.72e9],
+  avax: [24.4, -0.3, 10.5e9, 0.32e9],
+  link: [24.8, 1.7, 16e9, 0.7e9],
+  dot: [4.2, -0.4, 6.5e9, 0.18e9],
+  ltc: [122, 1.1, 9.2e9, 0.52e9]
+};
+
 const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
@@ -565,6 +617,33 @@ const WALLETS = {
     eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
+
+// دریافت زنده قیمت ها از بایننس
+async function fetchRealPrices() {
+    try {
+        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const data = await res.json();
+        const symbolMap = {
+            'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
+            'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
+            'AVAXUSDT': 'avax', 'LINKUSDT': 'link', 'DOTUSDT': 'dot', 'LTCUSDT': 'ltc'
+        };
+        data.forEach(item => {
+            if(symbolMap[item.symbol]) {
+                const id = symbolMap[item.symbol];
+                if(demo[id]) {
+                    demo[id][0] = parseFloat(item.lastPrice);
+                    demo[id][1] = parseFloat(item.priceChangePercent);
+                    demo[id][3] = parseFloat(item.quoteVolume);
+                }
+            }
+        });
+        renderCoins();
+        renderTable();
+    } catch(e) {
+        console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
+    }
+}
 
 function togglePaymentDetails() {
     const method = document.getElementById('payment-method').value;
@@ -774,9 +853,7 @@ async function submitAuth(){
   }
   else if(authMode==="login"){
     let identifier = authUser.value.trim(), p = authPass.value;
-    
     let { data, error } = await supabaseClient.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`).eq('password', p).limit(1);
-    
     if(error || !data || data.length === 0) return toast("Incorrect username or password");
     
     currentUser = data[0];
@@ -818,7 +895,6 @@ async function saveUserData(){
     invested: currentUser.invested,
     profit: currentUser.profit
   }).eq('username', currentUser.username);
-  
   localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
 }
 
@@ -868,7 +944,8 @@ async function invest(i){
 
 async function investCustom(){
   if(!currentUser) return openAuth("login"); 
-  let a = +customAmount.value, term = +customTerm.value;
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
   if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
   if(a > currentUser.balance) return toast("Insufficient balance");
   
@@ -881,310 +958,229 @@ async function investCustom(){
 
 function updatePortfolio(){
   let u = currentUser;
-  balance.textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  invested.textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  profitTotal.textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
-  level.textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
+  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
 }
 
-function planCard(p, i) {
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let planNames = {
-    en: [["Starter", "Starter Plan"], ["Growth", "Growth Plan"], ["Premium", "Premium Plan"]],
-    fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
-    az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]],
-    tr: [["Starter", "Başlangıç Planı"], ["Growth", "Büyüme Planı"], ["Premium", "Premium Planı"]],
-    ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]],
-    ar: [["Starter", "خطة المبتدئين"], ["Growth", "خطة النمو"], ["Premium", "الخطة الممتازة"]],
-    zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
-    es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
-    fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
-    de: [["Starter", "Starter-Plan"], ["Growth", "Wachstums-Plan"], ["Premium", "Premium-Plan"]]
-  };
-  
-  let uiTexts = {
-    en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
-    fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
-    az: { daily: "Gündəlik", dailyProfit: "Gündəlik gəlir", monthlyProfit: "Aylıq gəlir", investNow: "İndi İnvestisiya Et", popular: "POPÜLYAR", amount: "Məbləğ", term: "Müddət", days: "gün" },
-    tr: { daily: "Günlük", dailyProfit: "Günlük kâr", monthlyProfit: "Aylık kâr", investNow: "Şimdi Yatırım Yap", popular: "POPÜLER", amount: "Miktar", term: "Süre", days: "gün" },
-    ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" },
-    ar: { daily: "يومي", dailyProfit: "الربح اليومي", monthlyProfit: "الربح الشهري", investNow: "استثمر الآن", popular: "شائع", amount: "المبلغ", term: "المدة", days: "أيام" },
-    zh: { daily: "每日", dailyProfit: "每日利润", monthlyProfit: "每月利润", investNow: "立即投资", popular: "热门", amount: "金额", term: "期限", days: "天" },
-    es: { daily: "Diario", dailyProfit: "Beneficio diario", monthlyProfit: "Beneficio mensual", investNow: "Invertir ahora", popular: "POPULAR", amount: "Cantidad", term: "Plazo", days: "días" },
-    fr: { daily: "Quotidien", dailyProfit: "Profit journalier", monthlyProfit: "Profit mensuel", investNow: "Investir", popular: "POPULAIRE", amount: "Montant", term: "Durée", days: "jours" },
-    de: { daily: "Täglich", dailyProfit: "Täglicher Gewinn", monthlyProfit: "Monatlicher Gewinn", investNow: "Jetzt investieren", popular: "BELIEBT", amount: "Betrag", term: "Laufzeit", days: "Tage" }
-  };
-
-  let lKey = planNames[lang] || planNames.en;
-  let t = uiTexts[lang] || uiTexts.en;
-  let name = lKey[i][1]; 
-  let tagHtml = i === 1 ? `<span class="tag">${t.popular}</span>` : '';
-  let minTxt = `${t.amount}: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}`;
-  let termTxt = `${t.term}: ${p[4]} ${t.days}`;
-  let dailyRate = p[3], monthlyRate = (dailyRate * 30).toFixed(1);
-  
-  return `<div class="card plan">${tagHtml}<span class="muted">${p[0]}</span><h2>${name}</h2><div class="apy" style="font-size:28px">${dailyRate}% <small style="font-size:12px; color:var(--muted)">${t.daily}</small></div><ul><li>${minTxt}</li><li>${termTxt}</li><li class="green">${t.dailyProfit}: ${dailyRate}%</li><li class="green">${t.monthlyProfit}: ${monthlyRate}%</li></ul><button class="btn gold" onclick="invest(${i})">${t.investNow}</button></div>`;
-}
-
-function plansEl(id, data) {
-    let container = document.getElementById(id);
-    if(!container) return;
-    container.innerHTML = "";
-    data.forEach((p, i) => {
-        container.innerHTML += planCard(p, i);
-    });
-}
-
-function renderPlans(){
-  plansEl("plans", plans); 
-  plansEl("homePlans", plans);
-  let lang = localStorage.getItem("bi_lang")||"en";
-  let planNames = {
-    en: ["Starter", "Growth", "Premium"],
-    fa: ["استارتر", "رشد", "پریمیوم"],
-    az: ["Başlanğıc", "Böyümə", "Premium"],
-    tr: ["Başlangıç", "Büyüme", "Premium"],
-    ru: ["Стартовый", "Рост", "Премиум"],
-    ar: ["المبتدئين", "النمو", "الممتازة"],
-    zh: ["新手", "成长", "高级"],
-    es: ["Inicial", "Crecimiento", "Premium"],
-    fr: ["Débutant", "Croissance", "Premium"],
-    de: ["Starter", "Wachstum", "Premium"]
-  };
-
-  let pName = planNames[lang] || planNames.en;
-  let pSelect = document.getElementById("planSelect");
-  if(pSelect) {
-      pSelect.innerHTML = "";
-      plans.forEach((p, i) => {
-          pSelect.innerHTML += `<option value="${i}">${pName[i]} (${p[3]}%)</option>`;
-      });
+function renderCoins() {
+  const topCoins = document.getElementById("topCoins");
+  if(!topCoins) return;
+  topCoins.innerHTML = "";
+  for(let i=0; i<4; i++) {
+    let c = coins[i];
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+    
+    topCoins.innerHTML += `
+      <div class="card coin">
+        <img src="${iconUrl}" width="38" height="38" style="border-radius:50%">
+        <div style="flex:1">
+          <div class="coinTop"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div>
+          <div class="price">$${price}</div>
+          <div class="${colorClass}" style="font-size:12px; margin-top:5px">${sign}${change}%</div>
+        </div>
+      </div>
+    `;
   }
 }
 
+function renderTable() {
+  const tbody = document.getElementById("marketTable");
+  const searchEl = document.getElementById("search");
+  const search = searchEl ? searchEl.value.toLowerCase() : "";
+  if(!tbody) return;
+  tbody.innerHTML = "";
+  coins.forEach((c, index) => {
+    if(c[0].toLowerCase().includes(search) || c[1].toLowerCase().includes(search)) {
+      let d = demo[c[2]] || [0,0,0,0];
+      let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+      let change = d[1].toFixed(2);
+      let colorClass = change >= 0 ? "green" : "red";
+      let sign = change >= 0 ? "+" : "";
+      let isStar = stars.includes(c[0]) ? "on" : "";
+      let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
+
+      tbody.innerHTML += `
+        <tr>
+          <td><button class="star ${isStar}" onclick="toggleStar('${c[0]}')">★</button></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:10px">
+              <img src="${iconUrl}" width="24" height="24" style="border-radius:50%">
+              <b>${c[0]}</b> <span class="muted">${c[1]}</span>
+            </div>
+          </td>
+          <td>$${price}</td>
+          <td class="${colorClass}">${sign}${change}%</td>
+          <td>$${(d[2] ? (d[2]/1e9).toFixed(2) + 'B' : 'N/A')}</td>
+          <td>$${(d[3] ? (d[3]/1e6).toFixed(2) + 'M' : 'N/A')}</td>
+        </tr>
+      `;
+    }
+  });
+}
+
+function renderPlans() {
+  const container = document.getElementById("homePlans");
+  const plansContainer = document.getElementById("plans");
+  const select = document.getElementById("planSelect");
+  
+  if(container) container.innerHTML = "";
+  if(plansContainer) plansContainer.innerHTML = "";
+  if(select) select.innerHTML = "";
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let ui = uiTexts[lang] || uiTexts.en;
+
+  plans.forEach((p, i) => {
+    let title = (planNames[lang] && planNames[lang][i]) ? planNames[lang][i][1] : p[0];
+    let tag = i === 1 ? `<div class="tag">${ui.popular}</div>` : "";
+    let html = `
+      <div class="card plan">
+        ${tag}
+        <h3>${title}</h3>
+        <div class="apy">${p[3]}% <span style="font-size:12px; color:var(--muted)">/ ${ui.daily}</span></div>
+        <ul>
+          <li>${ui.amount}: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}</li>
+          <li>${ui.term}: ${p[4]} ${ui.days}</li>
+          <li>${ui.dailyProfit}: ${p[3]}%</li>
+        </ul>
+        <button class="btn gold" onclick="invest(${i})">${ui.investNow}</button>
+      </div>
+    `;
+    if(container && i < 3) container.innerHTML += html;
+    if(plansContainer) plansContainer.innerHTML += html;
+    if(select) select.innerHTML += `<option value="${i}">${title} (${p[3]}% ${ui.daily})</option>`;
+  });
+  calc();
+}
+
 function calc() {
-    let a = +document.getElementById("amount").value;
-    let pIdx = document.getElementById("planSelect").value;
-    if(!a || !plans[pIdx]) return;
-    let p = plans[pIdx];
-    let daily = p[3];
-    let days = p[4];
-    let profit = (a * daily / 100) * days;
-    document.getElementById("calcResult").textContent = "$" + (a + profit).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2}) + " profit";
+  let amount = parseFloat(document.getElementById("amount").value) || 0;
+  let planIndex = document.getElementById("planSelect").value;
+  if(plans[planIndex]) {
+    let dailyRate = plans[planIndex][3];
+    let days = plans[planIndex][4];
+    let profit = amount * (dailyRate/100) * days;
+    document.getElementById("calcResult").innerText = "$" + (amount + profit).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById("calcProfit").innerText = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " profit";
+  }
 }
 
 function calcCustom() {
-    let a = +document.getElementById("customAmount").value;
-    let days = +document.getElementById("customTerm").value;
-    if(!a || !days) return;
-    let dailyRate = days >= 60 ? 7.5 : (days >= 30 ? 5.5 : 3.5);
-    let profit = (a * dailyRate / 100) * days;
-    document.getElementById("customResult").textContent = "$" + (a + profit).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("customDaily").textContent = "$" + (a * dailyRate / 100).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("customMonthly").textContent = "$" + ((a * dailyRate / 100) * 30).toLocaleString(undefined, {minimumFractionDigits:2});
-    document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2}) + " total profit";
-    
-    let lang = localStorage.getItem("bi_lang") || "en";
-    let dict = T[lang] || T.en;
-    let lockNotice = document.getElementById("lockNotice");
-    if(days >= 60) {
-        lockNotice.textContent = dict.lockNoticeText || T.en.lockNoticeText;
-        lockNotice.style.display = "block";
-    } else {
-        lockNotice.style.display = "none";
-    }
+  let amount = parseFloat(document.getElementById("customAmount").value) || 0;
+  let term = parseFloat(document.getElementById("customTerm").value) || 0;
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let lockNotice = document.getElementById("lockNotice");
+  let dict = T[lang] || T.en;
+  
+  let dailyRate = 0;
+  if (term >= 60) {
+      dailyRate = 7.5;
+      if(lockNotice) {
+          lockNotice.style.display = "block";
+          lockNotice.innerText = dict.lockNoticeText || T.en.lockNoticeText;
+      }
+  } else {
+      dailyRate = term >= 30 ? 4.5 : term >= 15 ? 3.5 : 2.5;
+      if(lockNotice) lockNotice.style.display = "none";
+  }
+  
+  let dailyProfit = amount * (dailyRate / 100);
+  let totalProfit = dailyProfit * term;
+  let monthlyProfit = dailyProfit * 30;
+
+  document.getElementById("customDaily").innerText = "$" + dailyProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById("customMonthly").innerText = "$" + monthlyProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById("customResult").innerText = "$" + (amount + totalProfit).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById("customProfit").innerText = "+$" + totalProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " total profit";
 }
 
-function renderTable() {
-    let tbody = document.getElementById("marketTable");
-    let topCoins = document.getElementById("topCoins");
-    let s = (document.getElementById("search")?.value || "").toLowerCase();
-    
-    if(tbody) tbody.innerHTML = "";
-    if(topCoins) topCoins.innerHTML = "";
-    
-    let i = 0;
-    for(let key in demo) {
-        let coinData = demo[key];
-        let coinMeta = coins.find(c => c[2] === key);
-        if(!coinMeta) continue;
-        let [sym, name, id, symbol] = coinMeta;
-        
-        if(s && !sym.toLowerCase().includes(s) && !name.toLowerCase().includes(s)) continue;
-        
-        let price = coinData[0];
-        let change = coinData[1];
-        let cap = coinData[2];
-        let vol = coinData[3];
-        let color = change >= 0 ? "green" : "red";
-        let sign = change >= 0 ? "+" : "";
-        
-        if(tbody) {
-            tbody.innerHTML += `<tr>
-                <td><button class="star ${stars.includes(sym) ? 'on' : ''}" onclick="toggleStar('${sym}')">★</button></td>
-                <td><div style="display:flex;align-items:center;gap:8px;"><img src="https://cryptologos.cc/logos/${id}-${sym.toLowerCase()}-logo.svg" style="width:24px;height:24px;border-radius:50%;background:#fff;padding:1px;"> <b>${sym}</b> <span class="muted">${name}</span></div></td>
-                <td>$${price.toLocaleString()}</td>
-                <td class="${color}">${sign}${change}%</td>
-                <td>$${(cap/1e9).toFixed(2)}B</td>
-                <td>$${(vol/1e9).toFixed(2)}B</td>
-            </tr>`;
-        }
-        
-        if(topCoins && i < 4 && !s) {
-            topCoins.innerHTML += `<div class="card stat" style="cursor:pointer;" onclick="page('markets')">
-                <div class="coinTop"><span class="muted">${sym}</span><span class="${color}">${sign}${change}%</span></div>
-                <div class="price">$${price.toLocaleString()}</div>
-            </div>`;
-            i++;
-        }
-    }
+function setLang(lang) {
+  localStorage.setItem("bi_lang", lang);
+  let dict = T[lang] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el => {
+      let key = el.getAttribute("data-t");
+      if (dict[key]) el.innerHTML = dict[key];
+  });
+  renderPlans();
+  calcCustom();
+  togglePaymentDetails();
 }
 
-function toggleStar(sym) {
-    if(stars.includes(sym)) stars = stars.filter(s => s !== sym);
-    else stars.push(sym);
-    localStorage.setItem("bi_stars", JSON.stringify(stars));
-    renderTable();
+function toggleStar(coin) {
+  let idx = stars.indexOf(coin);
+  if(idx > -1) stars.splice(idx, 1);
+  else stars.push(coin);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
+}
+
+function copyRef() {
+  navigator.clipboard.writeText(document.getElementById("refCode").innerText);
+  toast("Referral code copied!");
 }
 
 function loadTransactions() {
-    let list = document.getElementById("txList");
-    if(!list) return;
-    list.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--muted);">No transactions found.</div>`;
+  const txList = document.getElementById("txList");
+  if(!txList) return;
+  if(!currentUser) {
+      txList.innerHTML = "<div class='muted' style='padding:20px'>Please log in to view transactions.</div>";
+      return;
+  }
+  txList.innerHTML = "<div class='muted' style='padding:20px'>No recent transactions found.</div>";
 }
 
-function clearTx() { toast("History cleared."); }
-function copyRef() { navigator.clipboard.writeText(document.getElementById("refCode").textContent); toast("Copied!"); }
-function saveProfile() { toast("Profile Saved"); }
+function clearTx() {
+  if(confirm("Are you sure you want to clear transaction history?")) {
+      toast("History cleared");
+      loadTransactions();
+  }
+}
 
 function loadProfile() {
-    if(currentUser) {
-        document.getElementById("username").value = currentUser.username || "";
-        document.getElementById("emailInput").value = currentUser.email || "";
-        document.getElementById("fullNameInput").value = currentUser.fullname || "";
-        document.getElementById("phone").value = currentUser.phone || "";
-    }
+  if(currentUser) {
+      document.getElementById("username").value = currentUser.username || "";
+      document.getElementById("emailInput").value = currentUser.email || "";
+      document.getElementById("fullNameInput").value = currentUser.fullname || "";
+      document.getElementById("phone").value = currentUser.phone || "";
+  }
 }
 
-function setLang(l) {
-    localStorage.setItem("bi_lang", l);
-    location.reload();
+function saveProfile() {
+  if(!currentUser) return;
+  currentUser.fullname = document.getElementById("fullNameInput").value;
+  currentUser.phone = document.getElementById("phone").value;
+  saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile saved successfully!");
 }
 
-function applyLang() {
-    let l = localStorage.getItem("bi_lang") || "en";
-    let dict = T[l] || T.en;
-    document.getElementById("lang").value = l;
-    document.querySelectorAll("[data-t]").forEach(el => {
-        let key = el.getAttribute("data-t");
-        if(dict[key]) {
-            if(el.tagName === "INPUT" && el.hasAttribute("placeholder")) el.placeholder = dict[key];
-            else el.textContent = dict[key];
-        }
-    });
-}
-
-// اسکریپت سفارشی ساختن باکس‌های انتخاب گرافیکی بدون حذف کدهای اصلی
-function initCustomSelects() {
-    const selects = document.querySelectorAll('#crypto-currency, #withdrawCrypto');
-    selects.forEach(select => {
-        // پنهان کردن سلکت اصلی
-        select.style.display = 'none';
-
-        // ساخت نگهدارنده
-        const wrapper = document.createElement('div');
-        wrapper.className = 'custom-select-wrapper';
-        wrapper.style.position = 'relative';
-        if(select.id === 'withdrawCrypto') wrapper.style.marginBottom = '15px';
-
-        // ساخت باکس نمایشی (تریگر)
-        const trigger = document.createElement('div');
-        trigger.style.cssText = 'width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; cursor:pointer; display:flex; align-items:center; position:relative;';
-        
-        const img = document.createElement('img');
-        img.style.cssText = 'width:24px; height:24px; margin-right:10px; border-radius:50%; background:#fff; padding:2px;';
-        
-        const text = document.createElement('span');
-        text.style.flex = '1';
-        text.style.fontSize = '13px';
-        
-        const arrow = document.createElement('span');
-        arrow.innerHTML = '▼';
-        arrow.style.fontSize = '10px';
-        arrow.style.color = '#aeb7c3';
-        
-        trigger.appendChild(img);
-        trigger.appendChild(text);
-        trigger.appendChild(arrow);
-        
-        // ساخت منوی کشویی گزینه‌ها
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'custom-select-options';
-        optionsDiv.style.cssText = 'position:absolute; top:100%; left:0; right:0; background:#1a222c; border:1px solid #474d57; border-radius:8px; z-index:99; display:none; max-height:220px; overflow-y:auto; margin-top:5px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);';
-        
-        Array.from(select.options).forEach(opt => {
-            const imgSrc = opt.getAttribute('data-logo');
-            const optionEl = document.createElement('div');
-            optionEl.style.cssText = 'padding:10px 15px; display:flex; align-items:center; cursor:pointer; border-bottom:1px solid #ffffff08; transition:background 0.2s;';
-            optionEl.onmouseover = () => optionEl.style.background = '#2a3441';
-            optionEl.onmouseout = () => optionEl.style.background = 'transparent';
-            
-            optionEl.innerHTML = `<img src="${imgSrc}" style="width:24px; height:24px; margin-right:12px; border-radius:50%; background:#fff; padding:2px;"> <span style="font-size:13px; color:#fff;">${opt.textContent}</span>`;
-            
-            optionEl.onclick = (e) => {
-                e.stopPropagation();
-                select.value = opt.value;
-                img.src = imgSrc;
-                text.textContent = opt.textContent;
-                optionsDiv.style.display = 'none';
-                
-                // شبیه‌سازی تغییر روی سلکت اصلی برای اجرای توابع شما
-                select.dispatchEvent(new Event('change'));
-            };
-            optionsDiv.appendChild(optionEl);
-            
-            // تنظیم مقدار اولیه
-            if (opt.selected) {
-                img.src = imgSrc;
-                text.textContent = opt.textContent;
-            }
-        });
-        
-        // باز و بسته شدن کشو با کلیک
-        trigger.onclick = (e) => {
-            e.stopPropagation();
-            const isVisible = optionsDiv.style.display === 'block';
-            document.querySelectorAll('.custom-select-wrapper > div:nth-child(2)').forEach(el => el.style.display = 'none');
-            optionsDiv.style.display = isVisible ? 'none' : 'block';
-        };
-        
-        wrapper.appendChild(trigger);
-        wrapper.appendChild(optionsDiv);
-        select.parentNode.insertBefore(wrapper, select.nextSibling);
-    });
-
-    // بسته شدن کشو در صورت کلیک روی صفحه
-    document.addEventListener('click', () => {
-        document.querySelectorAll('.custom-select-wrapper > div:nth-child(2)').forEach(el => el.style.display = 'none');
-    });
-}
-
-// تنظیمات لود شدن صفحه
 window.onload = () => {
-    applyLang();
-    let savedUser = localStorage.getItem("bi_current_user");
-    if(savedUser) {
-        currentUser = JSON.parse(savedUser);
-        updateHeaderAuthUI();
-        loadProfile();
-        updatePortfolio();
-    }
-    renderPlans();
-    calc();
-    calcCustom();
-    renderTable();
-    initCustomSelects();
+  let savedUser = localStorage.getItem("bi_current_user");
+  if(savedUser) currentUser = JSON.parse(savedUser);
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = lang;
+  
+  // لود سریع با دیتا آفلاین
+  renderCoins();
+  renderTable();
+  setLang(lang);
+  
+  updateHeaderAuthUI();
+  updatePortfolio();
+  loadProfile();
+
+  // آپدیت دیتا با API بایننس بدون معطل کردن کاربر
+  fetchRealPrices();
+  setInterval(fetchRealPrices, 30000); // آپدیت هر 30 ثانیه
 };
 </script>
 </body>
