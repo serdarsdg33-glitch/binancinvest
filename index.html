@@ -321,27 +321,23 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
     font-size: 9.5px !important;
   }
 }
-‎/* حاشیه طلایی حرفه‌ای کادرهای Top Markets */
-#topCoins .card.coin {
-  position: relative;
-  background: linear-gradient(145deg,#151c24dd,#0c1117e8);
-  border: 1px solid rgba(240,185,11,.65);
+#topCoins > .card.coin {
+  border: 2px solid #f0b90b !important;
+  background: linear-gradient(145deg,#151c24dd,#0c1117e8) !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,229,138,.04),
-    0 0 8px rgba(240,185,11,.12),
-    0 12px 30px rgba(0,0,0,.45);
+    inset 0 0 0 1px rgba(255,229,138,.08),
+    0 0 9px rgba(240,185,11,.22),
+    0 14px 32px rgba(0,0,0,.5) !important;
 }
 
-‎/* درخشش ملایم حاشیه هنگام حرکت موس */
-#topCoins .card.coin:hover {
-  border-color: #ffe15b;
-  background: linear-gradient(145deg,#151c24dd,#0c1117e8);
+#topCoins > .card.coin:hover {
+  border-color: #ffe15b !important;
+  background: linear-gradient(145deg,#151c24dd,#0c1117e8) !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,229,138,.1),
-    0 0 12px rgba(240,185,11,.35),
-    0 0 25px rgba(240,185,11,.14),
-    0 18px 40px rgba(0,0,0,.55);
-  transform: translateY(-6px) perspective(700px) rotateX(3deg);
+    inset 0 0 0 1px rgba(255,242,174,.16),
+    0 0 14px rgba(240,185,11,.48),
+    0 0 28px rgba(240,185,11,.2),
+    0 20px 42px rgba(0,0,0,.58) !important;
 }
 </style>
 </head>
