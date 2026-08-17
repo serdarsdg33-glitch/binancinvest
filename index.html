@@ -2664,7 +2664,7 @@ function renderCoins() {
   const topCoins = document.getElementById("topCoins");
   if(!topCoins) return;
   topCoins.innerHTML = "";
-  for(let i=0; i<4; i++) {
+  for(let i=0; i<8; i++) {
     let c = coins[i];
     let d = demo[c[2]] || [0,0,0,0];
     let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
