@@ -882,6 +882,97 @@ html[dir="rtl"] .plan > .tag {
   backdrop-filter: blur(9px) saturate(1.25) !important;
   -webkit-backdrop-filter: blur(9px) saturate(1.25) !important;
 }
+/* Glossy 3D Live Withdrawal Avatars */
+.live-avatar {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px;
+  border-radius: 50%;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #181100 !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+
+  background:
+    radial-gradient(
+      circle at 30% 22%,
+      #fff7b0 0%,
+      #ffe15b 13%,
+      #f6c514 34%,
+      #e6a400 66%,
+      #805500 100%
+    ) !important;
+
+  border: 1px solid rgba(255,229,138,.85);
+
+  box-shadow:
+    inset 3px 3px 7px rgba(255,255,255,.48),
+    inset -5px -7px 11px rgba(103,62,0,.42),
+    inset 0 0 2px rgba(255,255,255,.9),
+    0 2px 3px rgba(0,0,0,.55),
+    0 7px 15px rgba(0,0,0,.40),
+    0 0 11px rgba(240,185,11,.30) !important;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.30),
+    0 -1px 1px rgba(0,0,0,.18);
+
+  transform: translateZ(0);
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+‎/* بازتاب نور روی دایره */
+.live-avatar::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 5px;
+  left: 8px;
+  width: 18px;
+  height: 10px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.75),
+    rgba(255,255,255,.08)
+  );
+
+  filter: blur(.4px);
+  transform: rotate(-20deg);
+}
+
+‎/* حلقه براق دور دایره */
+.live-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.20);
+  pointer-events: none;
+}
+
+.live-withdraw:hover .live-avatar {
+  transform: translateY(-2px) scale(1.07);
+
+  box-shadow:
+    inset 3px 3px 8px rgba(255,255,255,.58),
+    inset -5px -7px 12px rgba(103,62,0,.48),
+    0 4px 5px rgba(0,0,0,.50),
+    0 9px 18px rgba(0,0,0,.42),
+    0 0 17px rgba(240,185,11,.52) !important;
+}
 </style>
 </head>
 <body>
