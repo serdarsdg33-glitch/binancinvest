@@ -13,7 +13,77 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 
 .binance-floating-logo {width: 38px;height: 38px;animation: floatLogo 3s ease-in-out infinite;display: flex;align-items: center;}
 .binance-floating-logo svg {width: 100%;height: 100%;}
-@keyframes floatLogo {0%, 100% { transform: translateY(0); }50% { transform: translateY(-6px); }}
+.binance-floating-logo {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: binanceLogoMotion 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(240,185,11,.55))
+          drop-shadow(0 0 14px rgba(240,185,11,.25));
+  will-change: transform, filter;
+}
+
+.binance-floating-logo svg {
+  width: 88%;
+  height: 88%;
+  position: relative;
+  z-index: 1;
+}
+
+.binance-floating-logo::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -75%;
+  width: 32%;
+  height: 180%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.9),
+    transparent
+  );
+  transform: rotate(22deg);
+  animation: binanceLogoShine 2.8s ease-in-out infinite;
+}
+
+@keyframes binanceLogoMotion {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateX(6px) rotate(8deg) scale(1.05);
+  }
+  50% {
+    transform: translateX(12px) rotate(0deg) scale(1.08);
+    filter: drop-shadow(0 0 10px rgba(255,225,91,.85))
+            drop-shadow(0 0 22px rgba(240,185,11,.45));
+  }
+  75% {
+    transform: translateX(6px) rotate(-8deg) scale(1.05);
+  }
+}
+
+@keyframes binanceLogoShine {
+  0%, 35% {
+    left: -75%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  70%, 100% {
+    left: 135%;
+    opacity: 0;
+  }
+}
 
 .wrap{max-width:1250px;margin:auto;padding:20px 15px 80px}.nav{display:flex;gap:4px;overflow:auto;margin-bottom:18px}.nav button{background:transparent;border:0;color:var(--muted);padding:11px 14px;border-bottom:2px solid transparent;white-space:nowrap}.nav button.active{color:#fff;border-color:var(--gold)}
 .view{display:none}.view.active{display:block}.hero{position:relative;overflow:hidden;border:1px solid #ffffff13;border-radius:26px;padding:50px 42px;min-height:390px;background:linear-gradient(130deg,#111820,#0b0f14 60%,#171205);box-shadow:0 30px 90px #0008}.hero h1{font-size:clamp(38px,6vw,72px);line-height:.98;max-width:720px;letter-spacing:-3px;margin:12px 0}.hero p{max-width:680px;color:#aab4c0;line-height:1.8}.orb{position:absolute;right:90px;top:90px;width:210px;height:210px;border-radius:50%;background:radial-gradient(circle at 28% 22%,#fff8ae,#f0b90b 20%,#7a5900 62%,#090a08 70%);box-shadow:inset -35px -25px 65px #0009,0 30px 100px #f0b90b40;animation:float 4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-15px) rotate(5deg)}}.eyebrow{color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:25px}
