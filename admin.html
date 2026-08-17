@@ -677,6 +677,25 @@ html[dir="rtl"] .plan > .tag {
     height: 360px;
   }
 }
+@media (max-width:600px) {
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .nav button {
+    width: 100%;
+    min-width: 0;
+    padding: 9px 3px;
+    font-size: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
@@ -977,7 +996,7 @@ html[dir="rtl"] .plan > .tag {
         <div class="card form support-compose">
           <h2 data-t="newTicket">Create New Ticket</h2>
 
-          <label data-t="ticketSubject">Subject</label>
+          <label for="ticketSubject">Subject</label>
           <input
             id="ticketSubject"
             type="text"
@@ -985,7 +1004,7 @@ html[dir="rtl"] .plan > .tag {
             placeholder="Briefly explain your issue"
           >
 
-          <label data-t="ticketCategory">Category</label>
+          <label for="ticketCategory">Category</label>
           <select id="ticketCategory">
             <option value="general">General Support</option>
             <option value="deposit">Deposit</option>
@@ -995,7 +1014,7 @@ html[dir="rtl"] .plan > .tag {
             <option value="technical">Technical Problem</option>
           </select>
 
-          <label data-t="ticketMessage">Message</label>
+          <label for="ticketMessage">Message</label>
           <textarea
             id="ticketMessage"
             maxlength="4000"
@@ -1327,7 +1346,371 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen 
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
 };
+const SUPPORT_I18N = {
+  en: {
+    support: "Support",
+    title: "Support Center",
+    guest: "Please sign in to create and manage your support tickets.",
+    newTicket: "Create New Ticket",
+    subject: "Subject",
+    subjectPlaceholder: "Briefly explain your issue",
+    category: "Category",
+    general: "General Support",
+    deposit: "Deposit",
+    withdrawal: "Withdrawal",
+    investment: "Investment",
+    account: "Account",
+    technical: "Technical Problem",
+    message: "Message",
+    messagePlaceholder: "Write your message...",
+    submit: "Submit Ticket",
+    myTickets: "My Tickets",
+    noTickets: "No tickets found.",
+    selectTicket: "Select a ticket to view the conversation.",
+    closeTicket: "Close Ticket",
+    replyPlaceholder: "Write your reply...",
+    sendReply: "Send Reply",
+    open: "Open",
+    answered: "Answered",
+    closed: "Closed",
+    loadingTickets: "Loading tickets...",
+    loadingConversation: "Loading conversation..."
+  },
 
+  fa: {
+    support: "پشتیبانی",
+    title: "مرکز پشتیبانی",
+    guest: "برای ایجاد و مدیریت تیکت‌های پشتیبانی وارد حساب خود شوید.",
+    newTicket: "ایجاد تیکت جدید",
+    subject: "موضوع",
+    subjectPlaceholder: "مشکل خود را به‌طور خلاصه توضیح دهید",
+    category: "دسته‌بندی",
+    general: "پشتیبانی عمومی",
+    deposit: "واریز",
+    withdrawal: "برداشت",
+    investment: "سرمایه‌گذاری",
+    account: "حساب کاربری",
+    technical: "مشکل فنی",
+    message: "پیام",
+    messagePlaceholder: "پیام خود را بنویسید...",
+    submit: "ارسال تیکت",
+    myTickets: "تیکت‌های من",
+    noTickets: "تیکتی وجود ندارد.",
+    selectTicket: "برای مشاهده گفتگو یک تیکت را انتخاب کنید.",
+    closeTicket: "بستن تیکت",
+    replyPlaceholder: "پاسخ خود را بنویسید...",
+    sendReply: "ارسال پاسخ",
+    open: "باز",
+    answered: "پاسخ داده‌شده",
+    closed: "بسته‌شده",
+    loadingTickets: "در حال بارگذاری تیکت‌ها...",
+    loadingConversation: "در حال بارگذاری گفتگو..."
+  },
+
+  az: {
+    support: "Dəstək",
+    title: "Dəstək Mərkəzi",
+    guest: "Dəstək biletlərini yaratmaq və idarə etmək üçün daxil olun.",
+    newTicket: "Yeni Bilet Yarat",
+    subject: "Mövzu",
+    subjectPlaceholder: "Probleminizi qısaca izah edin",
+    category: "Kateqoriya",
+    general: "Ümumi Dəstək",
+    deposit: "Depozit",
+    withdrawal: "Çıxarış",
+    investment: "İnvestisiya",
+    account: "Hesab",
+    technical: "Texniki Problem",
+    message: "Mesaj",
+    messagePlaceholder: "Mesajınızı yazın...",
+    submit: "Bilet Göndər",
+    myTickets: "Biletlərim",
+    noTickets: "Bilet tapılmadı.",
+    selectTicket: "Söhbəti görmək üçün bilet seçin.",
+    closeTicket: "Bileti Bağla",
+    replyPlaceholder: "Cavabınızı yazın...",
+    sendReply: "Cavab Göndər",
+    open: "Açıq",
+    answered: "Cavablandırılıb",
+    closed: "Bağlı",
+    loadingTickets: "Biletlər yüklənir...",
+    loadingConversation: "Söhbət yüklənir..."
+  },
+
+  tr: {
+    support: "Destek",
+    title: "Destek Merkezi",
+    guest: "Destek taleplerinizi oluşturmak ve yönetmek için giriş yapın.",
+    newTicket: "Yeni Destek Talebi",
+    subject: "Konu",
+    subjectPlaceholder: "Sorununuzu kısaca açıklayın",
+    category: "Kategori",
+    general: "Genel Destek",
+    deposit: "Para Yatırma",
+    withdrawal: "Para Çekme",
+    investment: "Yatırım",
+    account: "Hesap",
+    technical: "Teknik Sorun",
+    message: "Mesaj",
+    messagePlaceholder: "Mesajınızı yazın...",
+    submit: "Talebi Gönder",
+    myTickets: "Destek Taleplerim",
+    noTickets: "Destek talebi bulunamadı.",
+    selectTicket: "Konuşmayı görüntülemek için bir talep seçin.",
+    closeTicket: "Talebi Kapat",
+    replyPlaceholder: "Yanıtınızı yazın...",
+    sendReply: "Yanıt Gönder",
+    open: "Açık",
+    answered: "Yanıtlandı",
+    closed: "Kapalı",
+    loadingTickets: "Talepler yükleniyor...",
+    loadingConversation: "Konuşma yükleniyor..."
+  },
+
+  ru: {
+    support: "Поддержка",
+    title: "Центр поддержки",
+    guest: "Войдите, чтобы создавать и управлять обращениями.",
+    newTicket: "Новое обращение",
+    subject: "Тема",
+    subjectPlaceholder: "Кратко опишите проблему",
+    category: "Категория",
+    general: "Общая поддержка",
+    deposit: "Депозит",
+    withdrawal: "Вывод средств",
+    investment: "Инвестиции",
+    account: "Аккаунт",
+    technical: "Техническая проблема",
+    message: "Сообщение",
+    messagePlaceholder: "Напишите сообщение...",
+    submit: "Отправить обращение",
+    myTickets: "Мои обращения",
+    noTickets: "Обращений нет.",
+    selectTicket: "Выберите обращение, чтобы открыть разговор.",
+    closeTicket: "Закрыть обращение",
+    replyPlaceholder: "Напишите ответ...",
+    sendReply: "Отправить ответ",
+    open: "Открыто",
+    answered: "Есть ответ",
+    closed: "Закрыто",
+    loadingTickets: "Загрузка обращений...",
+    loadingConversation: "Загрузка разговора..."
+  },
+
+  ar: {
+    support: "الدعم",
+    title: "مركز الدعم",
+    guest: "يرجى تسجيل الدخول لإنشاء وإدارة تذاكر الدعم.",
+    newTicket: "إنشاء تذكرة جديدة",
+    subject: "الموضوع",
+    subjectPlaceholder: "اشرح مشكلتك باختصار",
+    category: "الفئة",
+    general: "الدعم العام",
+    deposit: "الإيداع",
+    withdrawal: "السحب",
+    investment: "الاستثمار",
+    account: "الحساب",
+    technical: "مشكلة تقنية",
+    message: "الرسالة",
+    messagePlaceholder: "اكتب رسالتك...",
+    submit: "إرسال التذكرة",
+    myTickets: "تذاكري",
+    noTickets: "لا توجد تذاكر.",
+    selectTicket: "اختر تذكرة لعرض المحادثة.",
+    closeTicket: "إغلاق التذكرة",
+    replyPlaceholder: "اكتب ردك...",
+    sendReply: "إرسال الرد",
+    open: "مفتوحة",
+    answered: "تم الرد",
+    closed: "مغلقة",
+    loadingTickets: "جارٍ تحميل التذاكر...",
+    loadingConversation: "جارٍ تحميل المحادثة..."
+  },
+
+  zh: {
+    support: "支持",
+    title: "支持中心",
+    guest: "请登录以创建和管理支持工单。",
+    newTicket: "创建新工单",
+    subject: "主题",
+    subjectPlaceholder: "请简要说明您的问题",
+    category: "类别",
+    general: "一般支持",
+    deposit: "充值",
+    withdrawal: "提现",
+    investment: "投资",
+    account: "账户",
+    technical: "技术问题",
+    message: "消息",
+    messagePlaceholder: "请输入您的消息...",
+    submit: "提交工单",
+    myTickets: "我的工单",
+    noTickets: "暂无工单。",
+    selectTicket: "请选择一个工单以查看对话。",
+    closeTicket: "关闭工单",
+    replyPlaceholder: "请输入回复...",
+    sendReply: "发送回复",
+    open: "开放",
+    answered: "已回复",
+    closed: "已关闭",
+    loadingTickets: "正在加载工单...",
+    loadingConversation: "正在加载对话..."
+  },
+
+  es: {
+    support: "Soporte",
+    title: "Centro de soporte",
+    guest: "Inicia sesión para crear y administrar tus solicitudes.",
+    newTicket: "Crear nueva solicitud",
+    subject: "Asunto",
+    subjectPlaceholder: "Explica brevemente tu problema",
+    category: "Categoría",
+    general: "Soporte general",
+    deposit: "Depósito",
+    withdrawal: "Retiro",
+    investment: "Inversión",
+    account: "Cuenta",
+    technical: "Problema técnico",
+    message: "Mensaje",
+    messagePlaceholder: "Escribe tu mensaje...",
+    submit: "Enviar solicitud",
+    myTickets: "Mis solicitudes",
+    noTickets: "No se encontraron solicitudes.",
+    selectTicket: "Selecciona una solicitud para ver la conversación.",
+    closeTicket: "Cerrar solicitud",
+    replyPlaceholder: "Escribe tu respuesta...",
+    sendReply: "Enviar respuesta",
+    open: "Abierta",
+    answered: "Respondida",
+    closed: "Cerrada",
+    loadingTickets: "Cargando solicitudes...",
+    loadingConversation: "Cargando conversación..."
+  },
+
+  fr: {
+    support: "Assistance",
+    title: "Centre d’assistance",
+    guest: "Connectez-vous pour créer et gérer vos demandes d’assistance.",
+    newTicket: "Créer une demande",
+    subject: "Sujet",
+    subjectPlaceholder: "Décrivez brièvement votre problème",
+    category: "Catégorie",
+    general: "Assistance générale",
+    deposit: "Dépôt",
+    withdrawal: "Retrait",
+    investment: "Investissement",
+    account: "Compte",
+    technical: "Problème technique",
+    message: "Message",
+    messagePlaceholder: "Écrivez votre message...",
+    submit: "Envoyer la demande",
+    myTickets: "Mes demandes",
+    noTickets: "Aucune demande trouvée.",
+    selectTicket: "Sélectionnez une demande pour afficher la conversation.",
+    closeTicket: "Fermer la demande",
+    replyPlaceholder: "Écrivez votre réponse...",
+    sendReply: "Envoyer la réponse",
+    open: "Ouverte",
+    answered: "Répondue",
+    closed: "Fermée",
+    loadingTickets: "Chargement des demandes...",
+    loadingConversation: "Chargement de la conversation..."
+  },
+
+  de: {
+    support: "Support",
+    title: "Support-Center",
+    guest: "Melden Sie sich an, um Support-Anfragen zu erstellen und zu verwalten.",
+    newTicket: "Neue Anfrage erstellen",
+    subject: "Betreff",
+    subjectPlaceholder: "Beschreiben Sie kurz Ihr Problem",
+    category: "Kategorie",
+    general: "Allgemeiner Support",
+    deposit: "Einzahlung",
+    withdrawal: "Auszahlung",
+    investment: "Investition",
+    account: "Konto",
+    technical: "Technisches Problem",
+    message: "Nachricht",
+    messagePlaceholder: "Schreiben Sie Ihre Nachricht...",
+    submit: "Anfrage senden",
+    myTickets: "Meine Anfragen",
+    noTickets: "Keine Anfragen gefunden.",
+    selectTicket: "Wählen Sie eine Anfrage aus, um den Verlauf anzuzeigen.",
+    closeTicket: "Anfrage schließen",
+    replyPlaceholder: "Schreiben Sie Ihre Antwort...",
+    sendReply: "Antwort senden",
+    open: "Offen",
+    answered: "Beantwortet",
+    closed: "Geschlossen",
+    loadingTickets: "Anfragen werden geladen...",
+    loadingConversation: "Unterhaltung wird geladen..."
+  }
+};
+
+function getSupportText(key) {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return SUPPORT_I18N[lang]?.[key] || SUPPORT_I18N.en[key] || key;
+}
+
+function applySupportLanguage() {
+  const s = SUPPORT_I18N[
+    localStorage.getItem("bi_lang") || "en"
+  ] || SUPPORT_I18N.en;
+
+  const setText = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = value;
+  };
+
+  setText('[data-page="support"]', s.support);
+  setText('#support .title h2', s.title);
+  setText('#supportGuestNotice', s.guest);
+  setText('.support-compose h2', s.newTicket);
+  setText('label[for="ticketSubject"]', s.subject);
+  setText('label[for="ticketCategory"]', s.category);
+  setText('label[for="ticketMessage"]', s.message);
+  setText('.support-tickets h2', s.myTickets);
+  setText('#supportChatPlaceholder', s.selectTicket);
+  setText('#closeTicketBtn', s.closeTicket);
+  setText('#sendSupportReplyBtn', s.sendReply);
+
+  const subject = document.getElementById("ticketSubject");
+  const message = document.getElementById("ticketMessage");
+  const reply = document.getElementById("supportReply");
+  const submit = document.getElementById("createTicketBtn");
+  const category = document.getElementById("ticketCategory");
+
+  if (subject) subject.placeholder = s.subjectPlaceholder;
+  if (message) message.placeholder = s.messagePlaceholder;
+  if (reply) reply.placeholder = s.replyPlaceholder;
+  if (submit && !submit.disabled) submit.textContent = s.submit;
+
+  if (category) {
+    const labels = [
+      s.general,
+      s.deposit,
+      s.withdrawal,
+      s.investment,
+      s.account,
+      s.technical
+    ];
+
+    [...category.options].forEach((option, index) => {
+      if (labels[index]) option.textContent = labels[index];
+    });
+  }
+
+  const ticketList = document.getElementById("supportTicketList");
+
+  if (
+    ticketList &&
+    ticketList.querySelector(".support-empty") &&
+    !ticketList.querySelector(".support-ticket-item")
+  ) {
+    ticketList.querySelector(".support-empty").textContent = s.noTickets;
+  }
+}
 const uiTexts = {
   en: { daily: "Daily", dailyProfit: "Daily profit", monthlyProfit: "Monthly profit", investNow: "Invest Now", popular: "POPULAR", amount: "Amount", term: "Term", days: "days" },
   fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
@@ -2302,8 +2685,8 @@ async function loadSupportTickets() {
     list.innerHTML = "";
 
     if (!tickets || tickets.length === 0) {
-      list.innerHTML =
-        '<div class="support-empty">No tickets found.</div>';
+   list.innerHTML =
+  `<div class="support-empty">${getSupportText("noTickets")}</div>`;
 
       resetSupportChat();
       return;
@@ -2354,8 +2737,8 @@ async function loadSupportTickets() {
   } catch (error) {
     console.error("Load tickets error:", error);
 
-    list.innerHTML =
-      '<div class="support-empty">Tickets could not be loaded.</div>';
+list.innerHTML =
+  `<div class="support-empty">${getSupportText("loadingTickets")}</div>`;
 
     toast(error.message || "Could not load support tickets");
   }
@@ -2418,8 +2801,8 @@ async function loadSupportMessages(ticketId) {
 
   if (!messagesBox || !ticketId) return;
 
-  messagesBox.innerHTML =
-    '<div class="support-empty">Loading conversation...</div>';
+messagesBox.innerHTML =
+  `<div class="support-empty">${getSupportText("loadingConversation")}</div>`;
 
   try {
     const { data: messages, error } = await supabaseClient
@@ -2655,14 +3038,13 @@ function stopSupportRealtime() {
   supabaseClient.removeChannel(supportRealtimeChannel);
   supportRealtimeChannel = null;
 }
-
 function formatSupportStatus(status) {
-  const labels = {
-    open: "Open",
-    answered: "Answered",
-    closed: "Closed"
-  };
+  const key = ["open", "answered", "closed"].includes(status)
+    ? status
+    : "open";
 
+  return getSupportText(key);
+}
   return labels[status] || status || "Open";
 }
 
@@ -2688,6 +3070,7 @@ function setLang(lang){
   renderPlans();
   calcCustom();
   togglePaymentDetails();
+  applySupportLanguage();
 }
 
 window.onload = async function(){
