@@ -55,18 +55,18 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
 
-/* Portfolio & Deposit Section Grid Layout */
-.portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
+/* Portfolio & Deposit Section Grid Layout - اصلاح نسبت ستون‌ها برای بزرگ‌تر شدن کادر دپوزیت */
+.portfolio-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; margin-top: 15px; align-items: start; }
 
 /* Custom Select Dropdown with Icons Styling */
 .custom-select-wrapper { position: relative; user-select: none; width: 100%; }
-.custom-select-trigger { background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; padding: 11px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-.custom-select-trigger img { width: 20px; height: 20px; margin-right: 8px; margin-left: 4px; }
-.custom-options { position: absolute; top: 100%; left: 0; right: 0; background: #151c25; border: 1px solid #474d57; border-radius: 8px; margin-top: 4px; display: none; z-index: 99; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.custom-select-trigger { background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; padding: 13px 15px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 14px; }
+.custom-select-trigger img { width: 22px; height: 22px; margin-right: 8px; margin-left: 4px; }
+.custom-options { position: absolute; top: 100%; left: 0; right: 0; background: #151c25; border: 1px solid #474d57; border-radius: 8px; margin-top: 4px; display: none; z-index: 99; max-height: 250px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .custom-options.open { display: block; }
-.custom-option { padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s; color: #fff; }
+.custom-option { padding: 12px 15px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s; color: #fff; font-size: 14px; }
 .custom-option:hover { background: #222c38; }
-.custom-option img { width: 22px; height: 22px; }
+.custom-option img { width: 24px; height: 24px; }
 
 /* Scrollbar styling for custom dropdown */
 .custom-options::-webkit-scrollbar { width: 6px; }
@@ -230,25 +230,25 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
   <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   
   <div class="portfolio-grid" id="portfolioGrid">
-    <div class="card form" style="padding: 25px; border: 1px solid rgba(240,185,11,0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-      <h2 data-t="deposit" style="font-size: 22px; color: var(--gold); margin-bottom: 8px;">Deposit</h2>
-      <p class="muted" data-t="depositDesc" style="margin-bottom: 20px;">Add balance securely via wallet or gateway.</p>
+    <div class="card form" style="padding: 30px; border: 1px solid rgba(240,185,11,0.35); box-shadow: 0 15px 45px rgba(0,0,0,0.6);">
+      <h2 data-t="deposit" style="font-size: 24px; color: var(--gold); margin-bottom: 8px;">Deposit</h2>
+      <p class="muted" data-t="depositDesc" style="margin-bottom: 22px;">Add balance securely via wallet or gateway.</p>
       
-      <div style="margin-bottom: 15px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
-          <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+      <div style="margin-bottom: 16px;">
+          <label style="display:block; color:#aeb7c3; font-size:13px; margin-bottom:6px;" data-t="depAmountLabel">Amount (USD):</label>
+          <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:13px 15px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; font-size:14px;">
       </div>
 
-      <div style="margin-bottom: 15px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depMethodLabel">Select Payment Method:</label>
-          <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+      <div style="margin-bottom: 16px;">
+          <label style="display:block; color:#aeb7c3; font-size:13px; margin-bottom:6px;" data-t="depMethodLabel">Select Payment Method:</label>
+          <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:13px 15px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; font-size:14px;">
               <option value="wallet" id="opt-direct-payment">1. Direct Payment</option>
               <option value="paymentio" id="opt-paymentio">2. Payment via Payment.io Gateway</option>
           </select>
       </div>
 
-      <div id="crypto-options-container" style="margin-bottom: 15px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
+      <div id="crypto-options-container" style="margin-bottom: 16px;">
+          <label style="display:block; color:#aeb7c3; font-size:13px; margin-bottom:6px;" data-t="depCryptoLabel">Select Currency & Network:</label>
           <div class="custom-select-wrapper" id="depositCryptoCustomSelect">
               <div class="custom-select-trigger" onclick="toggleCustomSelect('deposit')">
                   <span id="depositSelectedText" style="display:flex; align-items:center;">
@@ -274,14 +274,14 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
           <input type="hidden" id="crypto-currency" value="trx_usdt_trc20">
       </div>
 
-      <div id="payment-info-box" style="background:#0f141d; padding:15px; border-radius:10px; margin-bottom:15px; font-size:12px; border:1px dashed #f0b90b; word-break:break-all;"></div>
+      <div id="payment-info-box" style="background:#0f141d; padding:16px; border-radius:10px; margin-bottom:16px; font-size:13px; border:1px dashed #f0b90b; word-break:break-all; line-height:1.6;"></div>
 
       <div id="tx-container" style="margin-bottom: 20px;">
-          <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
-          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <label style="display:block; color:#aeb7c3; font-size:13px; margin-bottom:6px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
+          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" style="width:100%; padding:13px 15px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; font-size:14px;">
       </div>
 
-      <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
+      <button class="btn gold" style="width:100%; padding: 14px; font-size: 16px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
     <!-- بخش برداشت -->
@@ -467,7 +467,7 @@ lockNoticeText:"При заморозке средств на 60 дней и б�
 pointsTitle:"Баллы",pointsSub:"+50 еженедельно",refTitle:"Рефералы",vipTitle:"VIP",vipSub:"1,250 баллов",streakTitle:"Серия",streakSub:"Активно",sec2fa:"2FA",secLogin:"Защита входа",secWith:"Подтверждение вывода",enabled:"Включено",active:"Активно",
 forgotPasswordText:"Забыли пароль?",needAccountText:"Нет аккаунта? Зарегистрируйтесь",haveAccountText:"Уже есть аккаунт? Войти",usernameOrEmail:"Имя пользователя или Email",enterEmailOrUser:"Введите имя пользователя или Email",codeSentNotice:"Код подтверждения отправлен на Email:",enterCode:"Введите 6-значный код",sendResetCode:"Отправить код",resetPasswordTitle:"Сброс пароля",newPasswordLabel:"Новый пароль",resetBtn:"Обновить пароль",
 contactUs:"Контакты", supportEmail:"Email поддержки", securityPartners:"Партнеры по безопасности",
-platformStatsTitle:"Статистика платформы", statUsers:"Пользователи", statInvestors:"Активные инвесторы", statPaid:"Выплачено прибыли", stat капитала:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
+platformStatsTitle:"Статистика платформы", statUsers:"Пользователи", statInvestors:"Активные инвесторы", statPaid:"Выплачено прибыли", statCapital:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
 depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
 optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
@@ -575,7 +575,7 @@ customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie e
 dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
 lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
 pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktif",
-forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
+forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"New Password",resetBtn:"Passwort zurücksetzen",
 contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
 platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
 depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
@@ -695,545 +695,740 @@ window.addEventListener('click', function(e) {
 // دریافت زنده قیمت ها از بایننس
 async function fetchRealPrices() {
     try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const res = await fetch("https://api.binance.com/api/v3/ticker/24hr");
         const data = await res.json();
-        const symbolMap = {
-            'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
-            'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
-            'AVAXUSDT': 'avax', 'LINKUSDT': 'link', 'DOTUSDT': 'dot', 'LTCUSDT': 'ltc'
-        };
         data.forEach(item => {
-            if(symbolMap[item.symbol]) {
-                const id = symbolMap[item.symbol];
-                if(demo[id]) {
-                    demo[id][0] = parseFloat(item.lastPrice);
-                    demo[id][1] = parseFloat(item.priceChangePercent);
-                    demo[id][3] = parseFloat(item.quoteVolume);
-                }
-            }
+            let symbol = item.symbol.replace("USDT","");
+            live[symbol] = [parseFloat(item.lastPrice), parseFloat(item.priceChangePercent), parseFloat(item.quoteVolume), parseFloat(item.highPrice)];
         });
-        renderCoins();
-        renderTable();
+        render();
     } catch(e) {
-        console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
+        live = demo;
+        render();
+    }
+}
+
+function render() {
+    let topCoinsHtml = "";
+    coins.slice(0, 4).forEach(([sym, name, iconKey]) => {
+        let p = live[sym] || demo[sym] || [0,0,0,0];
+        let color = p[1] >= 0 ? "green" : "red";
+        let sign = p[1] >= 0 ? "+" : "";
+        topCoinsHtml += `
+        <div class="card">
+            <div class="coinTop">
+                <div class="coin">
+                    <div class="icon">${sym[0]}</div>
+                    <div><b>${sym}</b><div class="muted" style="font-size:12px">${name}</div></div>
+                </div>
+                <span class="${color}">${sign}${p[1].toFixed(2)}%</span>
+            </div>
+            <div class="price">$${p[0].toLocaleString(undefined, {minimumFractionDigits: p[0] < 1 ? 4 : 2})}</div>
+        </div>`;
+    });
+    let topEl = document.getElementById("topCoins");
+    if(topEl) topEl.innerHTML = topCoinsHtml;
+
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let pNames = planNames[currentLang] || planNames.en;
+    let uTexts = uiTexts[currentLang] || uiTexts.en;
+
+    let homePlansHtml = "";
+    plans.forEach(([name, min, max, daily, days], index) => {
+        let localizedName = pNames[index] ? pNames[index][1] : name;
+        homePlansHtml += `
+        <div class="card plan">
+            <div class="tag">${uTexts.popular}</div>
+            <div class="muted">${localizedName}</div>
+            <div class="apy">${daily}% <span style="font-size:14px;color:var(--muted)">/ ${uTexts.daily}</span></div>
+            <ul>
+                <li>${uTexts.amount}: $${min} - $${max.toLocaleString()}</li>
+                <li>${uTexts.term}: ${days} ${uTexts.days}</li>
+                <li>${uTexts.dailyProfit}: ${daily}%</li>
+            </ul>
+            <button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))">${uTexts.investNow}</button>
+        </div>`;
+    });
+    let homePlansEl = document.getElementById("homePlans");
+    if(homePlansEl) homePlansEl.innerHTML = homePlansHtml;
+
+    let plansEl = document.getElementById("plans");
+    if(plansEl) plansEl.innerHTML = homePlansHtml;
+
+    renderTable();
+    calc();
+    calcCustom();
+}
+
+function renderTable() {
+    let q = document.getElementById("search") ? document.getElementById("search").value.toLowerCase() : "";
+    let html = "";
+    coins.forEach(([sym, name, iconKey]) => {
+        if(sym.toLowerCase().includes(q) || name.toLowerCase().includes(q)) {
+            let p = live[sym] || demo[sym] || [0,0,0,0];
+            let color = p[1] >= 0 ? "green" : "red";
+            let sign = p[1] >= 0 ? "+" : "";
+            let isStarred = stars.includes(sym) ? "on" : "";
+            html += `
+            <tr>
+                <td><button class="star ${isStarred}" onclick="toggleStar('${sym}')">★</button></td>
+                <td><div class="coin"><div class="icon">${sym[0]}</div><div><b>${sym}</b><div class="muted">${name}</div></div></div></td>
+                <td><b>$${p[0].toLocaleString(undefined, {minimumFractionDigits: p[0] < 1 ? 4 : 2})}</b></td>
+                <td class="${color}">${sign}${p[1].toFixed(2)}%</td>
+                <td>$${(p[2] || 1000000000).toLocaleString()}</td>
+                <td>$${(p[3] || 50000000).toLocaleString()}</td>
+            </tr>`;
+        }
+    });
+    let marketTable = document.getElementById("marketTable");
+    if(marketTable) marketTable.innerHTML = html;
+}
+
+function toggleStar(sym) {
+    if(stars.includes(sym)) {
+        stars = stars.filter(s => s !== sym);
+    } else {
+        stars.push(sym);
+    }
+    localStorage.setItem("bi_stars", JSON.stringify(stars));
+    renderTable();
+}
+
+function page(name, btn) {
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    let targetView = document.getElementById(name);
+    if(targetView) targetView.classList.add("active");
+    if(btn) btn.classList.add("active");
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function calc() {
+    let amt = parseFloat(document.getElementById("amount").value) || 0;
+    let planIdx = parseInt(document.getElementById("planSelect").value) || 0;
+    let selectedPlan = plans[planIdx] || plans[0];
+    let daily = selectedPlan[3];
+    let days = selectedPlan[4];
+    let total = amt + (amt * (daily / 100) * days);
+    let profit = total - amt;
+    let resEl = document.getElementById("calcResult");
+    let profEl = document.getElementById("calcProfit");
+    if(resEl) resEl.innerText = "$" + total.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    if(profEl) profEl.innerText = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " total profit";
+}
+
+function calcCustom() {
+    let amt = parseFloat(document.getElementById("customAmount").value) || 0;
+    let term = parseInt(document.getElementById("customTerm").value) || 1;
+    let rate = term >= 60 ? 7.5 : (term >= 30 ? 4.5 : 3.0);
+    let total = amt + (amt * (rate / 100) * term);
+    let profit = total - amt;
+    let dailyVal = amt * (rate / 100);
+    let monthlyVal = dailyVal * 30;
+
+    let resEl = document.getElementById("customResult");
+    let dailyEl = document.getElementById("customDaily");
+    let monthlyEl = document.getElementById("customMonthly");
+    let profEl = document.getElementById("customProfit");
+    let lockEl = document.getElementById("lockNotice");
+
+    if(resEl) resEl.innerText = "$" + total.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    if(dailyEl) dailyEl.innerText = "$" + dailyVal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    if(monthlyEl) monthlyEl.innerText = "$" + monthlyVal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    if(profEl) profEl.innerText = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " total profit ("+rate+"% daily)";
+    
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let uTexts = uiTexts[currentLang] || uiTexts.en;
+    let tObj = T[currentLang] || T.en;
+    if(lockEl) lockEl.innerText = tObj.lockNoticeText || "";
+}
+
+function populateCalculatorSelect() {
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let pNames = planNames[currentLang] || planNames.en;
+    let sel = document.getElementById("planSelect");
+    if(!sel) return;
+    let html = "";
+    plans.forEach(([name, min, max, daily, days], index) => {
+        let localizedName = pNames[index] ? pNames[index][1] : name;
+        html += `<option value="${index}">${localizedName} (${daily}% daily, ${days} days)</option>`;
+    });
+    sel.innerHTML = html;
+    calc();
+}
+
+function setLang(lang) {
+    let t = T[lang] || T.en;
+    document.querySelectorAll("[data-t]").forEach(el => {
+        let key = el.getAttribute("data-t");
+        if(t[key]) {
+            el.innerText = t[key];
+        }
+    });
+    populateCalculatorSelect();
+    render();
+    togglePaymentDetails();
+}
+
+function showToast(msg) {
+    let t = document.getElementById("toast");
+    if(!t) return;
+    t.innerText = msg;
+    t.style.display = "block";
+    setTimeout(() => { t.style.display = "none"; }, 3500);
+}
+
+function openAuth(mode) {
+    authMode = mode;
+    let modal = document.getElementById("auth");
+    if(modal) modal.style.display = "flex";
+    updateAuthModalUI();
+}
+
+function closeAuth() {
+    let modal = document.getElementById("auth");
+    if(modal) modal.style.display = "none";
+}
+
+function toggleAuthMode() {
+    authMode = authMode === "login" ? "register" : "login";
+    updateAuthModalUI();
+}
+
+function switchAuthMode(mode) {
+    authMode = mode;
+    updateAuthModalUI();
+}
+
+function updateAuthModalUI() {
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let t = T[currentLang] || T.en;
+
+    let title = document.getElementById("authTitle");
+    let regFields = document.getElementById("registerFields");
+    let regCodeFields = document.getElementById("registerCodeFields");
+    let loginFields = document.getElementById("loginFields");
+    let forgotFields = document.getElementById("forgotFields");
+    let passContainer = document.getElementById("passwordContainer");
+    let submitBtn = document.getElementById("authSubmitBtn");
+    let switchLink = document.getElementById("switchAuthLink");
+    let forgotLink = document.getElementById("forgotLink");
+
+    if(!title) return;
+
+    if(authMode === "login") {
+        title.innerText = t.login;
+        regFields.style.display = "none";
+        regCodeFields.style.display = "none";
+        loginFields.style.display = "block";
+        forgotFields.style.display = "none";
+        passContainer.style.display = "block";
+        submitBtn.innerText = t.continue;
+        switchLink.innerText = t.needAccountText;
+        forgotLink.style.display = "inline";
+    } else if(authMode === "register") {
+        title.innerText = t.register;
+        regFields.style.display = "block";
+        regCodeFields.style.display = "none";
+        loginFields.style.display = "none";
+        forgotFields.style.display = "none";
+        passContainer.style.display = "block";
+        submitBtn.innerText = t.continue;
+        switchLink.innerText = t.haveAccountText;
+        forgotLink.style.display = "inline";
+    } else if(authMode === "verify") {
+        title.innerText = "Email Verification";
+        regFields.style.display = "none";
+        regCodeFields.style.display = "block";
+        loginFields.style.display = "none";
+        forgotFields.style.display = "none";
+        passContainer.style.display = "none";
+        submitBtn.innerText = "Verify & Register";
+        switchLink.innerText = "";
+        forgotLink.style.display = "none";
+    } else if(authMode === "forgot") {
+        title.innerText = t.resetPasswordTitle;
+        regFields.style.display = "none";
+        regCodeFields.style.display = "none";
+        loginFields.style.display = "none";
+        forgotFields.style.display = "block";
+        passContainer.style.display = "none";
+        submitBtn.innerText = t.sendResetCode;
+        switchLink.innerText = t.haveAccountText;
+        forgotLink.style.display = "none";
+    }
+}
+
+async function submitAuth() {
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let t = T[currentLang] || T.en;
+
+    if(authMode === "register") {
+        let fullName = document.getElementById("authFullName").value.trim();
+        let username = document.getElementById("authUsernameReg").value.trim();
+        let email = document.getElementById("authEmailReg").value.trim();
+        let pass = document.getElementById("authPass").value;
+
+        if(!fullName || !username || !email || !pass) {
+            showToast("Please fill in all fields.");
+            return;
+        }
+        if(pass.length < 8) {
+            showToast("Password must be at least 8 characters.");
+            return;
+        }
+
+        // بررسی یکتایی نام کاربری یا ایمیل در Supabase
+        try {
+            let { data: existing, error } = await supabaseClient
+                .from("profiles")
+                .select("username, email")
+                .or(`username.eq.${username},email.eq.${email}`);
+
+            if(existing && existing.length > 0) {
+                showToast("Username or Email already exists!");
+                return;
+            }
+        } catch(err) {
+            console.error(err);
+        }
+
+        tempRegData = { fullName, username, email, pass, balance: 0, invested: 0, profitTotal: 0, level: "Basic", points: 50 };
+        generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
+        let codeBox = document.getElementById("simulatedCodeBox");
+        if(codeBox) codeBox.innerText = generatedEmailCode;
+
+        authMode = "verify";
+        updateAuthModalUI();
+        showToast("Verification code generated!");
+
+    } else if(authMode === "verify") {
+        let enteredCode = document.getElementById("authEmailCode").value.trim();
+        if(enteredCode !== generatedEmailCode) {
+            showToast("Invalid verification code!");
+            return;
+        }
+
+        try {
+            let { data, error } = await supabaseClient
+                .from("profiles")
+                .insert([
+                    {
+                        username: tempRegData.username,
+                        email: tempRegData.email,
+                        full_name: tempRegData.fullName,
+                        password: tempRegData.pass,
+                        balance: 0,
+                        invested: 0,
+                        profit_total: 0,
+                        account_level: "Basic",
+                        points: 50,
+                        phone: ""
+                    }
+                ]);
+
+            if(error) {
+                showToast("Registration error: " + error.message);
+                return;
+            }
+
+            currentUser = tempRegData;
+            localStorage.setItem("bi_user", JSON.stringify(currentUser));
+            closeAuth();
+            updateUIAfterAuth();
+            showToast("Account created successfully!");
+        } catch(err) {
+            showToast("Connection error!");
+        }
+
+    } else if(authMode === "login") {
+        let identifier = document.getElementById("authUser").value.trim();
+        let pass = document.getElementById("authPass").value;
+
+        if(!identifier || !pass) {
+            showToast("Please enter username/email and password.");
+            return;
+        }
+
+        try {
+            let { data, error } = await supabaseClient
+                .from("profiles")
+                .select("*")
+                .or(`username.eq.${identifier},email.eq.${identifier}`)
+                .eq("password", pass);
+
+            if(error || !data || data.length === 0) {
+                showToast("Invalid credentials or user not found!");
+                return;
+            }
+
+            let row = data[0];
+            currentUser = {
+                fullName: row.full_name,
+                username: row.username,
+                email: row.email,
+                phone: row.phone || "",
+                balance: row.balance || 0,
+                invested: row.invested || 0,
+                profitTotal: row.profit_total || 0,
+                level: row.account_level || "Basic",
+                points: row.points || 0
+            };
+            localStorage.setItem("bi_user", JSON.stringify(currentUser));
+            closeAuth();
+            updateUIAfterAuth();
+            showToast("Logged in successfully!");
+        } catch(err) {
+            showToast("Login connection error!");
+        }
+
+    } else if(authMode === "forgot") {
+        let val = document.getElementById("forgotInput").value.trim();
+        if(!val) {
+            showToast("Please enter your username or email.");
+            return;
+        }
+        showToast("Password reset instructions sent if account exists.");
+        closeAuth();
+    }
+}
+
+function updateUIAfterAuth() {
+    let headerDisplay = document.getElementById("userHeaderDisplay");
+    let authGroup = document.getElementById("authButtonsGroup");
+    let portfolioAuthBtn = document.getElementById("portfolioAuthBtn");
+    let fullNameEl = document.getElementById("headerFullName");
+    let usernameEl = document.getElementById("headerUsername");
+
+    if(currentUser) {
+        if(headerDisplay) headerDisplay.style.display = "flex";
+        if(authGroup) authGroup.style.display = "none";
+        if(portfolioAuthBtn) portfolioAuthBtn.style.display = "none";
+        if(fullNameEl) fullNameEl.innerText = currentUser.fullName;
+        if(usernameEl) usernameEl.innerText = "@" + currentUser.username;
+
+        let uName = document.getElementById("username");
+        let uEmail = document.getElementById("emailInput");
+        let uFull = document.getElementById("fullNameInput");
+        let uPhone = document.getElementById("phone");
+        let bal = document.getElementById("balance");
+        let inv = document.getElementById("invested");
+        let prof = document.getElementById("profitTotal");
+        let lvl = document.getElementById("level");
+        let pts = document.getElementById("points");
+        let refC = document.getElementById("refCode");
+
+        if(uName) uName.value = currentUser.username;
+        if(uEmail) uEmail.value = currentUser.email;
+        if(uFull) uFull.value = currentUser.fullName;
+        if(uPhone) uPhone.value = currentUser.phone || "";
+        if(bal) bal.innerText = "$" + currentUser.balance.toLocaleString(undefined, {minimumFractionDigits:2});
+        if(inv) inv.innerText = "$" + currentUser.invested.toLocaleString(undefined, {minimumFractionDigits:2});
+        if(prof) prof.innerText = "$" + currentUser.profitTotal.toLocaleString(undefined, {minimumFractionDigits:2});
+        if(lvl) lvl.innerText = currentUser.level;
+        if(pts) pts.innerText = currentUser.points;
+        if(refC) refC.innerText = "BI-" + currentUser.username.toUpperCase();
+    } else {
+        if(headerDisplay) headerDisplay.style.display = "none";
+        if(authGroup) authGroup.style.display = "flex";
+        if(portfolioAuthBtn) portfolioAuthBtn.style.display = "inline-block";
+    }
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem("bi_user");
+    updateUIAfterAuth();
+    showToast("Logged out successfully!");
+    page('home', document.querySelector('[data-page=home]'));
+}
+
+async function saveProfile() {
+    if(!currentUser) {
+        showToast("Please sign in first.");
+        return;
+    }
+    let newFull = document.getElementById("fullNameInput").value.trim();
+    let newPhone = document.getElementById("phone").value.trim();
+
+    currentUser.fullName = newFull;
+    currentUser.phone = newPhone;
+
+    try {
+        await supabaseClient
+            .from("profiles")
+            .update({ full_name: newFull, phone: newPhone })
+            .eq("username", currentUser.username);
+
+        localStorage.setItem("bi_user", JSON.stringify(currentUser));
+        updateUIAfterAuth();
+        showToast("Profile saved successfully!");
+    } catch(err) {
+        showToast("Error updating profile.");
     }
 }
 
 function togglePaymentDetails() {
-    const method = document.getElementById('payment-method').value;
-    const cryptoContainer = document.getElementById('crypto-options-container');
-    const infoBox = document.getElementById('payment-info-box');
-    const txContainer = document.getElementById('tx-container');
-    let lang = localStorage.getItem("bi_lang") || "en";
-    let dict = T[lang] || T.en;
+    let method = document.getElementById("payment-method").value;
+    let cryptoContainer = document.getElementById("crypto-options-container");
+    let infoBox = document.getElementById("payment-info-box");
+    let txContainer = document.getElementById("tx-container");
+    let currentLang = document.getElementById("lang") ? document.getElementById("lang").value : "en";
+    let t = T[currentLang] || T.en;
 
-    if (method === 'wallet') {
-        cryptoContainer.style.display = 'block';
-        if (txContainer) txContainer.style.display = 'block';
-        const selectedCrypto = document.getElementById('crypto-currency').value;
-        const address = WALLETS[selectedCrypto] || WALLETS["trx_usdt_trc20"];
-        infoBox.innerHTML = (dict.walletMsg || T.en.walletMsg).replace("{ADDR}", address);
-        infoBox.style.height = "auto";
-    } else if (method === 'paymentio') {
-        cryptoContainer.style.display = 'none';
-        if (txContainer) txContainer.style.display = 'none';
-        infoBox.style.height = "560px";
-        infoBox.innerHTML = `
-            <div style="margin-bottom:8px;">${dict.paymentioMsg || T.en.paymentioMsg}</div>
-            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="520" frameborder="0" scrolling="yes" style="border-radius: 8px; background: #fff;">
-                Can't load widget
-            </iframe>
-        `;
+    if(method === "wallet") {
+        if(cryptoContainer) cryptoContainer.style.display = "block";
+        if(txContainer) txContainer.style.display = "block";
+        let cur = document.getElementById("crypto-currency").value;
+        let addr = WALLETS[cur] || WALLETS.trx_usdt_trc20;
+        let msgTpl = t.walletMsg || "<b>Wallet Address:</b> {ADDR}";
+        if(infoBox) {
+            infoBox.style.display = "block";
+            infoBox.innerHTML = msgTpl.replace("{ADDR}", addr);
+        }
+    } else {
+        if(cryptoContainer) cryptoContainer.style.display = "none";
+        if(txContainer) txContainer.style.display = "none";
+        if(infoBox) {
+            infoBox.style.display = "block";
+            infoBox.innerHTML = t.paymentioMsg || "Payment.io / NowPayments gateway selected.";
+        }
     }
 }
 
 async function submitDepositRequest() {
-    const amount = document.getElementById('deposit-amount').value;
-    const method = document.getElementById('payment-method').value;
-    const cryptoType = document.getElementById('crypto-currency').value;
-    const gatewayRef = document.getElementById('tx-ref').value;
-    
-    if(!currentUser) return openAuth("login");
+    if(!currentUser) {
+        openAuth('login');
+        showToast("Please sign in to submit deposit.");
+        return;
+    }
+    let amt = parseFloat(document.getElementById("deposit-amount").value);
+    if(!amt || amt <= 0) {
+        showToast("Please enter a valid deposit amount.");
+        return;
+    }
+    let method = document.getElementById("payment-method").value;
+    let tx = document.getElementById("tx-ref").value.trim();
 
-    if (!amount || amount <= 0) {
-        alert('Please enter a valid amount.');
+    if(method === "wallet" && !tx) {
+        showToast("Please enter transaction hash (TXID).");
         return;
     }
 
-    let paymentDetailsInfo = '';
-    if (method === 'wallet') {
-        if (!gatewayRef) {
-            alert('Please enter the reference code / TXID.');
+    try {
+        await supabaseClient
+            .from("transactions")
+            .insert([{
+                username: currentUser.username,
+                type: "Deposit",
+                amount: amt,
+                status: "Pending",
+                method: method,
+                txid: tx || "Gateway Payment",
+                created_at: new Date().toISOString()
+            }]);
+
+        showToast("Deposit request submitted! Awaiting approval.");
+        document.getElementById("deposit-amount").value = "";
+        if(document.getElementById("tx-ref")) document.getElementById("tx-ref").value = "";
+        loadTransactions();
+    } catch(err) {
+        showToast("Error submitting deposit request.");
+    }
+}
+
+async function loadTransactions() {
+    if(!currentUser) return;
+    try {
+        let { data, error } = await supabaseClient
+            .from("transactions")
+            .select("*")
+            .eq("username", currentUser.username)
+            .order("created_at", { ascending: false });
+
+        let txList = document.getElementById("txList");
+        if(!txList) return;
+
+        if(!data || data.length === 0) {
+            txList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
             return;
         }
-        paymentDetailsInfo = `[Direct Payment - ${cryptoType}] ${gatewayRef}`;
-    } else if (method === 'paymentio') {
-        paymentDetailsInfo = `[Payment.io / NowPayments Widget]`;
-    }
 
-    const { error } = await supabaseClient.from('transactions').insert([
-        {
-            username: currentUser.username,
-            type: 'Deposit (Pending)',
-            amount: Number(amount),
-            status: 'pending',
-            gateway_ref: paymentDetailsInfo,
-            date: new Date().toLocaleString()
-        }
-    ]);
-
-    if (error) {
-        alert('Error: ' + error.message);
-    } else {
-        alert('Deposit request submitted! It will reflect in your balance after admin approval.');
-        document.getElementById('deposit-amount').value = '';
-        if(document.getElementById('tx-ref')) document.getElementById('tx-ref').value = '';
-        loadTransactions();
+        let html = `<div class="tablebox"><table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Details</th><th>Date</th></tr></thead><tbody>`;
+        data.forEach(tx => {
+            let color = tx.status === "Approved" ? "green" : (tx.status === "Pending" ? "gold" : "red");
+            html += `<tr>
+                <td><b>${tx.type}</b></td>
+                <td class="green">$${tx.amount.toLocaleString()}</td>
+                <td><span class="${color}" style="font-weight:bold;">${tx.status}</span></td>
+                <td class="muted" style="font-size:12px;">${tx.txid || tx.method || '-'}</td>
+                <td class="muted" style="font-size:12px;">${new Date(tx.created_at).toLocaleDateString()}</td>
+            </tr>`;
+        });
+        html += `</tbody></table></div>`;
+        txList.innerHTML = html;
+    } catch(err) {
+        console.error(err);
     }
 }
 
-// 100 Realistic Names
-const fakeNames = [
-    "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
-    "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
-    "Benjamin Moore", "Lucas Taylor", "Henry Anderson", "Ethan Thomas", "Alexander Jackson",
-    "Sebastian White", "Jack Harris", "Aiden Martin", "Matthew Thompson", "Samuel Garcia",
-    "David Martinez", "Joseph Robinson", "Carter Clark", "Owen Rodriguez", "Wyatt Lewis",
-    "John Lee", "Luke Walker", "Gabriel Hall", "Anthony Allen", "Isaac Young",
-    "Grayson Hernandez", "Julian King", "Mateo Wright", "Lincoln Lopez", "Jaxon Hill",
-    "Liam Scott", "Noah Green", "Oliver Adams", "Elijah Baker", "Logan Gonzalez",
-    "Caleb Nelson", "Christian Carter", "Landon Mitchell", "Jonathan Perez", "Nolan Roberts",
-    "Hunter Turner", "Jeremiah Phillips", "Elias Campbell", "Aaron Parker", "Eli Evans",
-    "Connor Edwards", "Ezekiel Collins", "Addison Stewart", "Easton Sanchez", "Miles Morris",
-    "Santiago Rogers", "Leo Reed", "Cooper Cook", "Landen Morgan", "Hudson Bell",
-    "Asher Murphy", "Carson Bailey", "Leo Rivera", "Ezra Cooper", "Kingston Richardson",
-    "Tristan Cox", "Jordan Howard", "Ian Ward", "Cole Torres", "Axel Peterson",
-    "Theodore Gray", "Leonardo Ramirez", "Dominic James", "Josiah Watson", "Everett Brooks",
-    "Easton Kelly", "Roman Sanders", "Miles Price", "Greyson Bennett", "Sawyer Wood",
-    "Aria Smith", "Sophia Johnson", "Emma Williams", "Olivia Brown", "Ava Jones",
-    "Isabella Miller", "Mia Davis", "Harper Garcia", "Evelyn Rodriguez", "Abigail Wilson",
-    "Emily Moore", "Elizabeth Taylor", "Mila Anderson", "Ella Thomas", "Avery Jackson",
-    "Sofia White", "Camila Harris", "Aria Martin", "Scarlett Thompson", "Victoria Garcia",
-    "Reza Ahmadi", "Ali Karimi", "Sara Mohammadi", "Mohammad Jafari", "Fatemeh Zarei"
-];
-
-function addLiveWithdrawal() {
-    let list = document.getElementById("liveWithdrawalsList");
-    if(!list) return;
-    let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    let amount = (Math.random() * 990 + 10).toFixed(2);
-    let initial = name.charAt(0);
-    let lang = localStorage.getItem("bi_lang") || "en";
-    let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
-    
-    let div = document.createElement("div");
-    div.className = "live-withdraw";
-    div.innerHTML = `
-        <div style="display:flex; align-items:center; flex:1;">
-            <div class="live-avatar">${initial}</div>
-            <div class="live-info">
-                <b>${name}</b>
-                <span>${justNowText}</span>
-            </div>
-        </div>
-        <div class="live-amount">+$${amount} USD</div>
-    `;
-    list.prepend(div);
-    if(list.children.length > 5) list.removeChild(list.lastChild);
+function clearTx() {
+    let txList = document.getElementById("txList");
+    if(txList) txList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">History cleared locally.</div>`;
+    showToast("History cleared.");
 }
 
-setInterval(addLiveWithdrawal, 5000);
-setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
-
-let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
-let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
-
-function displayCounters() {
-    let uEl = document.getElementById("statUsersVal"), iEl = document.getElementById("statInvestorsVal");
-    if(uEl) uEl.textContent = currentUsersCount.toLocaleString();
-    if(iEl) iEl.textContent = currentInvestorsCount.toLocaleString();
-}
-displayCounters();
-
-setInterval(() => {
-    currentUsersCount += Math.floor(Math.random() * 4) + 1;
-    currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
-    localStorage.setItem("bi_platform_users", currentUsersCount);
-    localStorage.setItem("bi_platform_investors", currentInvestorsCount);
-    displayCounters();
-}, 5000);
-
-function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
-function page(id,b){
-  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
-  let target = document.getElementById(id);
-  if(target) target.classList.add("active");
-  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
-  if(b)b.classList.add("active");
-  if(id==="portfolio") { updatePortfolio(); togglePaymentDetails(); }
-  if(id==="transactions") loadTransactions();
-  scrollTo(0,0);
-}
-
-function openAuth(m){ authMode=m; updateAuthModalUI(); document.getElementById("auth").style.display="flex"; }
-function closeAuth(){ document.getElementById("auth").style.display="none"; }
-function switchAuthMode(m){ authMode=m; updateAuthModalUI(); }
-function toggleAuthMode(){ if(authMode==="login") authMode="register"; else if(authMode==="register") authMode="login"; updateAuthModalUI(); }
-
-function updateAuthModalUI(){
-  let lang = localStorage.getItem("bi_lang")||"en"; let d = T[lang]||T.en;
-  let regFields=document.getElementById("registerFields"), regCodeFields=document.getElementById("registerCodeFields"), loginFields=document.getElementById("loginFields"), forgotFields=document.getElementById("forgotFields"), passContainer=document.getElementById("passwordContainer"), submitBtn=document.getElementById("authSubmitBtn"), forgotLink=document.getElementById("forgotLink"), switchLink=document.getElementById("switchAuthLink"), titleEl=document.getElementById("authTitle");
-  regFields.style.display="none"; regCodeFields.style.display="none"; loginFields.style.display="none"; forgotFields.style.display="none"; passContainer.style.display="block"; forgotLink.style.display="block"; switchLink.style.display="block";
-  
-  if(authMode==="login"){ titleEl.textContent=d.login; loginFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.needAccountText; } 
-  else if(authMode==="register"){ titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none"; } 
-  else if(authMode==="verifying"){ titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none"; } 
-  else if(authMode==="forgot"){ titleEl.textContent=d.resetPasswordTitle||"Reset Password"; forgotFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.sendResetCode; forgotLink.style.display="none"; } 
-}
-
-async function submitAuth(){
-  if(authMode==="register"){
-    let fullName = authFullName.value.trim(), u = authUsernameReg.value.trim(), email = authEmailReg.value.trim(), p = authPass.value;
-    if(fullName.length<2) return toast("Please enter a valid full name");
-    if(u.length<3) return toast("Username must be at least 3 characters");
-    if(!email.includes("@")) return toast("Please enter a valid email address");
-    
-    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    if(!pwdRegex.test(p)){
-      return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
+async function investCustom() {
+    if(!currentUser) {
+        openAuth('login');
+        showToast("Please sign in to invest.");
+        return;
     }
-    
-    let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
-    if(existing && existing.length > 0) return toast("Username or email already taken!");
-
-    generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
-    document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
-    tempRegData = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
-    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
-  } 
-  else if(authMode==="verifying"){
-    let enteredCode = authEmailCode.value.trim();
-    if(enteredCode !== generatedEmailCode) return toast("Invalid verification code!");
-    
-    let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
-    if(error){
-      console.error(error);
-      return toast("Database error: " + error.message);
+    let amt = parseFloat(document.getElementById("customAmount").value) || 0;
+    if(amt <= 0) {
+        showToast("Please enter a valid investment amount.");
+        return;
     }
-    
-    currentUser = data && data[0] ? data[0] : tempRegData;
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    
-    saveTx('Account Created', 0, 'Completed');
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account created successfully!");
-  }
-  else if(authMode==="login"){
-    let identifier = authUser.value.trim(), p = authPass.value;
-    let { data, error } = await supabaseClient.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`).eq('password', p).limit(1);
-    if(error || !data || data.length === 0) return toast("Incorrect username or password");
-    
-    currentUser = data[0];
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullname || currentUser.username));
-  }
-  else if(authMode==="forgot"){
-    let val = forgotInput.value.trim();
-    if(!val) return toast("Please enter your username or email");
-    toast("Password reset instructions have been sent.");
-    closeAuth();
-  }
-}
+    if(currentUser.balance < amt) {
+        showToast("Insufficient balance! Please deposit first.");
+        page('portfolio', document.querySelector('[data-page=portfolio]'));
+        return;
+    }
 
-function updateHeaderAuthUI(){
-  let userDisplay = document.getElementById("userHeaderDisplay");
-  let authGroup = document.getElementById("authButtonsGroup");
-  let portfolioBtn = document.getElementById("portfolioAuthBtn");
-  if(currentUser){
-    if(userDisplay) { userDisplay.style.display="flex"; document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; document.getElementById("headerUsername").textContent = "@" + currentUser.username; }
-    if(authGroup) authGroup.style.display="none";
-    if(portfolioBtn) portfolioBtn.style.display="none";
-  } else {
-    if(userDisplay) userDisplay.style.display="none";
-    if(authGroup) authGroup.style.display="flex";
-    if(portfolioBtn) portfolioBtn.style.display="inline-block";
-  }
-}
+    currentUser.balance -= amt;
+    currentUser.invested += amt;
 
-function logout(){
-  currentUser = null;
-  localStorage.removeItem("bi_current_user");
-  updateHeaderAuthUI();
-  updatePortfolio();
-  page('home', document.querySelector('[data-page=home]'));
-  toast("Logged out successfully");
-}
-
-async function updatePortfolio(){
-  if(!currentUser){
-    document.getElementById("balance").textContent = "$0.00";
-    document.getElementById("invested").textContent = "$0.00";
-    document.getElementById("profitTotal").textContent = "$0.00";
-    document.getElementById("level").textContent = "Basic";
-    return;
-  }
-  let { data, error } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).single();
-  if(data){
-    currentUser = data;
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    document.getElementById("balance").textContent = "$" + Number(currentUser.balance || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-    document.getElementById("invested").textContent = "$" + Number(currentUser.invested || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-    document.getElementById("profitTotal").textContent = "$" + Number(currentUser.profit || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-    let lvl = "Basic";
-    let inv = Number(currentUser.invested || 0);
-    if(inv >= 5000) lvl = "VIP Gold";
-    else if(inv >= 1000) lvl = "VIP Silver";
-    else if(inv >= 250) lvl = "Standard";
-    document.getElementById("level").textContent = lvl;
-  }
-}
-
-async function withdraw(){
-  if(!currentUser) return openAuth("login");
-  let amt = parseFloat(document.getElementById("withdrawAmount").value);
-  let addr = document.getElementById("withdrawAddress").value.trim();
-  let crypto = document.getElementById("withdrawCrypto").value;
-  
-  if(!amt || amt <= 0) return toast("Enter valid amount");
-  if(!addr) return toast("Enter destination wallet address");
-  if(amt > (currentUser.balance || 0)) return toast("Insufficient balance");
-
-  let newBal = (currentUser.balance || 0) - amt;
-  let { error } = await supabaseClient.from('users').update({ balance: newBal }).eq('username', currentUser.username);
-  if(error) return toast("Error: " + error.message);
-
-  await saveTx(`Withdrawal (${crypto})`, amt, 'Pending');
-  currentUser.balance = newBal;
-  updatePortfolio();
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawAddress").value = "";
-  toast("Withdrawal requested successfully!");
-}
-
-async function saveTx(type, amount, status){
-  if(!currentUser) return;
-  await supabaseClient.from('transactions').insert([{
-    username: currentUser.username,
-    type: type,
-    amount: amount,
-    status: status,
-    date: new Date().toLocaleString()
-  }]);
-}
-
-async function loadTransactions(){
-  let list = document.getElementById("txList");
-  if(!list) return;
-  if(!currentUser){
-    list.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transactions.</div>`;
-    return;
-  }
-  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
-  if(!data || data.length === 0){
-    list.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
-    return;
-  }
-  let html = `<table class="table"><thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>`;
-  data.forEach(tx => {
-    let stColor = tx.status === 'Completed' ? 'green' : (tx.status === 'Pending' ? 'gold' : '');
-    html += `<tr><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>':''}</td><td>$${Number(tx.amount).toFixed(2)}</td><td class="${stColor}">${tx.status}</td><td><small class="muted">${tx.date}</small></td></tr>`;
-  });
-  html += `</tbody></table>`;
-  list.innerHTML = html;
-}
-
-function clearTx(){
-  toast("Transaction history is managed securely.");
-}
-
-async function saveProfile(){
-  if(!currentUser) return openAuth("login");
-  let fn = document.getElementById("fullNameInput").value;
-  let ph = document.getElementById("phone").value;
-  
-  let { error } = await supabaseClient.from('users').update({ fullname: fn, phone: ph }).eq('username', currentUser.username);
-  if(error) return toast("Error updating profile");
-  currentUser.fullname = fn;
-  currentUser.phone = ph;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  updateHeaderAuthUI();
-  toast("Profile updated successfully!");
-}
-
-function loadProfile(){
-  if(!currentUser) return;
-  document.getElementById("username").value = currentUser.username || "";
-  document.getElementById("emailInput").value = currentUser.email || "";
-  document.getElementById("fullNameInput").value = currentUser.fullname || "";
-  document.getElementById("phone").value = currentUser.phone || "";
-}
-
-function copyRef(){
-  navigator.clipboard.writeText("https://binanceinvest.global/ref=" + (currentUser ? currentUser.username : "BI-NEW"));
-  toast("Referral link copied to clipboard!");
-}
-
-function renderCoins(){
-  let tc = document.getElementById("topCoins");
-  if(!tc) return;
-  let h = "";
-  coins.slice(0, 4).forEach(c => {
-    let d = demo[c[2]] || [100, 1, 1e9, 1e8];
-    let col = d[1] >= 0 ? "green" : "red";
-    let sign = d[1] >= 0 ? "+" : "";
-    h += `<div class="card"><div class="coinTop"><div class="coin"><div class="icon">${c[0][0]}</div><div><b>${c[0]}</b><div class="muted">${c[1]}</div></div></div><button class="star ${stars.includes(c[2])?'on':''}" onclick="toggleStar('${c[2]}')">★</button></div><div class="price">$${d[0].toLocaleString()}</div><div class="${col}">${sign}${d[1]}%</div></div>`;
-  });
-  tc.innerHTML = h;
-}
-
-function renderTable(){
-  let mt = document.getElementById("marketTable");
-  if(!mt) return;
-  let q = (document.getElementById("search")?.value || "").toLowerCase();
-  let h = "";
-  coins.forEach(c => {
-    if(q && !c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
-    let d = demo[c[2]] || [100, 1, 1e9, 1e8];
-    let col = d[1] >= 0 ? "green" : "red";
-    let sign = d[1] >= 0 ? "+" : "";
-    h += `<tr><td><button class="star ${stars.includes(c[2])?'on':''}" onclick="toggleStar('${c[2]}')">★</button></td><td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td><td>$${d[0].toLocaleString()}</td><td class="${col}">${sign}${d[1]}%</td><td>$${(d[2]/1e9).toFixed(2)}B</td><td>$${(d[3]/1e6).toFixed(2)}M</td></tr>`;
-  });
-  mt.innerHTML = h;
-}
-
-function toggleStar(s){
-  if(stars.includes(s)) stars = stars.filter(x=>x!==s);
-  else stars.push(s);
-  localStorage.setItem("bi_stars", JSON.stringify(stars));
-  renderCoins(); renderTable();
-}
-
-function renderPlans(){
-  let lang = localStorage.getItem("bi_lang")||"en";
-  let d = uiTexts[lang]||uiTexts.en;
-  let pNames = planNames[lang]||planNames.en;
-  
-  let hp = document.getElementById("homePlans"), pl = document.getElementById("plans"), ps = document.getElementById("planSelect");
-  if(!hp || !pl || !ps) return;
-  
-  let h1 = "", h2 = "", h3 = "";
-  plans.forEach((p, i) => {
-    let name = pNames[i] ? pNames[i][1] : p[0];
-    h1 += `<div class="card plan"><div class="tag">${d.popular}</div><h3>${name}</h3><div class="apy">${p[3]}% <span style="font-size:14px">${d.daily}</span></div><ul><li>${d.amount}: $${p[1]} - $${p[2].toLocaleString()}</li><li>${d.term}: ${p[4]} ${d.days}</li><li>${d.dailyProfit}: ${p[3]}%</li></ul><button class="btn gold" onclick="page('invest',document.querySelector('[data-page=invest]'))">${d.investNow}</button></div>`;
-    h2 += `<div class="card plan"><h3>${name}</h3><div class="apy">${p[3]}% <span style="font-size:14px">${d.daily}</span></div><ul><li>${d.amount}: $${p[1]} - $${p[2].toLocaleString()}</li><li>${d.term}: ${p[4]} ${d.days}</li><li>${d.dailyProfit}: ${p[3]}%</li></ul><button class="btn gold" onclick="investPlan(${i})">${d.investNow}</button></div>`;
-    h3 += `<option value="${i}">${name} (${p[3]}% ${d.daily})</option>`;
-  });
-  hp.innerHTML = h1; pl.innerHTML = h2; ps.innerHTML = h3;
-  calc(); calcCustom();
-}
-
-async function investPlan(i){
-  if(!currentUser) return openAuth("login");
-  let p = plans[i];
-  let amt = p[1];
-  if(currentUser.balance < amt) return toast("Insufficient balance. Please deposit first.");
-  
-  let profit = amt * (p[3] / 100) * p[4];
-  let newBal = currentUser.balance - amt + amt + profit;
-  let newInv = (currentUser.invested || 0) + amt;
-  let newProf = (currentUser.profit || 0) + profit;
-
-  let { error } = await supabaseClient.from('users').update({ balance: newBal, invested: newInv, profit: newProf }).eq('username', currentUser.username);
-  if(error) return toast("Error investing: " + error.message);
-
-  await saveTx(`Invested in Plan (${p[0]})`, amt, 'Completed');
-  currentUser.balance = newBal; currentUser.invested = newInv; currentUser.profit = newProf;
-  updatePortfolio();
-  toast("Successfully invested in " + p[0] + " plan!");
-}
-
-function calc(){
-  let amt = parseFloat(document.getElementById("amount").value) || 0;
-  let idx = parseInt(document.getElementById("planSelect").value) || 0;
-  let p = plans[idx];
-  if(!p) return;
-  let total = amt + (amt * (p[3]/100) * p[4]);
-  let profit = total - amt;
-  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " total profit";
-}
-
-function calcCustom(){
-  let amt = parseFloat(document.getElementById("customAmount").value) || 0;
-  let term = parseInt(document.getElementById("customTerm").value) || 1;
-  let rate = term >= 60 ? 0.075 : (term >= 30 ? 0.05 : 0.035);
-  let dailyProfit = amt * rate;
-  let monthlyProfit = dailyProfit * 30;
-  let totalProfit = dailyProfit * term;
-  let totalVal = amt + totalProfit;
-
-  document.getElementById("customResult").textContent = "$" + totalVal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById("customDaily").textContent = "$" + dailyProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById("customMonthly").textContent = "$" + monthlyProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById("customProfit").textContent = "$" + totalProfit.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + " total profit";
-  
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let noticeText = (T[lang] && T[lang].lockNoticeText) ? T[lang].lockNoticeText : T.en.lockNoticeText;
-  document.getElementById("lockNotice").textContent = noticeText;
-}
-
-async function investCustom(){
-  if(!currentUser) return openAuth("login");
-  let amt = parseFloat(document.getElementById("customAmount").value) || 0;
-  let term = parseInt(document.getElementById("customTerm").value) || 1;
-  if(amt <= 0) return toast("Enter valid amount");
-  if(currentUser.balance < amt) return toast("Insufficient balance. Please deposit first.");
-
-  let rate = term >= 60 ? 0.075 : (term >= 30 ? 0.05 : 0.035);
-  let totalProfit = amt * rate * term;
-  let newBal = currentUser.balance + totalProfit;
-  let newInv = (currentUser.invested || 0) + amt;
-  let newProf = (currentUser.profit || 0) + totalProfit;
-
-  let { error } = await supabaseClient.from('users').update({ balance: newBal, invested: newInv, profit: newProf }).eq('username', currentUser.username);
-  if(error) return toast("Error: " + error.message);
-
-  await saveTx(`Custom Plan (${term} Days)`, amt, 'Completed');
-  currentUser.balance = newBal; currentUser.invested = newInv; currentUser.profit = newProf;
-  updatePortfolio();
-  toast("Custom investment successfully executed!");
-}
-
-function setLang(l){
-  localStorage.setItem("bi_lang", l);
-  let dict = T[l] || T.en;
-  document.querySelectorAll("[data-t]").forEach(el => {
-    let k = el.getAttribute("data-t");
-    if(dict[k]) el.textContent = dict[k];
-  });
-  renderPlans();
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-  let savedUser = localStorage.getItem("bi_current_user");
-  if(savedUser){
     try {
-      currentUser = JSON.parse(savedUser);
-      let { data } = await supabaseClient.from('users').select('*').eq('username', currentUser.username).single();
-      if(data) currentUser = data;
-      loadProfile();
-      updatePortfolio();
-    } catch(e) { currentUser = null; }
-  }
-  updateHeaderAuthUI();
-  
-  let savedLang = localStorage.getItem("bi_lang") || "en";
-  document.getElementById("lang").value = savedLang;
-  setLang(savedLang);
+        await supabaseClient
+            .from("profiles")
+            .update({ balance: currentUser.balance, invested: currentUser.invested })
+            .eq("username", currentUser.username);
 
-  await fetchRealPrices();
-  setInterval(fetchRealPrices, 15000);
-  renderPlans();
-});
+        await supabaseClient
+            .from("transactions")
+            .insert([{
+                username: currentUser.username,
+                type: "Investment",
+                amount: amt,
+                status: "Approved",
+                method: "Custom Plan",
+                txid: "Active Investment",
+                created_at: new Date().toISOString()
+            }]);
+
+        localStorage.setItem("bi_user", JSON.stringify(currentUser));
+        updateUIAfterAuth();
+        showToast("Custom investment successfully created!");
+        page('portfolio', document.querySelector('[data-page=portfolio]'));
+        loadTransactions();
+    } catch(err) {
+        showToast("Error processing investment.");
+    }
+}
+
+async function withdraw() {
+    if(!currentUser) {
+        openAuth('login');
+        showToast("Please sign in first.");
+        return;
+    }
+    let amt = parseFloat(document.getElementById("withdrawAmount").value) || 0;
+    let addr = document.getElementById("withdrawAddress").value.trim();
+    let crypto = document.getElementById("withdrawCrypto").value;
+
+    if(!amt || amt <= 0 || !addr) {
+        showToast("Please enter valid amount and destination address.");
+        return;
+    }
+    if(currentUser.balance < amt) {
+        showToast("Insufficient balance for withdrawal.");
+        return;
+    }
+
+    currentUser.balance -= amt;
+
+    try {
+        await supabaseClient
+            .from("profiles")
+            .update({ balance: currentUser.balance })
+            .eq("username", currentUser.username);
+
+        await supabaseClient
+            .from("transactions")
+            .insert([{
+                username: currentUser.username,
+                type: "Withdrawal",
+                amount: amt,
+                status: "Pending",
+                method: crypto,
+                txid: addr,
+                created_at: new Date().toISOString()
+            }]);
+
+        localStorage.setItem("bi_user", JSON.stringify(currentUser));
+        updateUIAfterAuth();
+        showToast("Withdrawal request submitted successfully!");
+        document.getElementById("withdrawAmount").value = "";
+        document.getElementById("withdrawAddress").value = "";
+        loadTransactions();
+    } catch(err) {
+        showToast("Error processing withdrawal request.");
+    }
+}
+
+function copyRef() {
+    let code = document.getElementById("refCode").innerText;
+    navigator.clipboard.writeText(code);
+    showToast("Referral code copied to clipboard!");
+}
+
+function initLiveWithdrawals() {
+    let container = document.getElementById("liveWithdrawalsList");
+    if(!container) return;
+    let names = ["Alex M.", "David K.", "Sarah W.", "Michael B.", "Elena R.", "John D.", "Satoshi N.", "Vitalik B.", "Li W.", "Omar H."];
+    let coinsList = ["USDT", "BTC", "ETH", "BNB", "SOL"];
+    
+    setInterval(() => {
+        let name = names[Math.floor(Math.random() * names.length)];
+        let coin = coinsList[Math.floor(Math.random() * coinsList.length)];
+        let amount = (Math.random() * 2500 + 50).toFixed(2);
+        
+        let item = document.createElement("div");
+        item.className = "live-withdraw";
+        item.innerHTML = `
+            <div style="display:flex; align-items:center;">
+                <div class="live-avatar">${name[0]}</div>
+                <div class="live-info">
+                    <b>${name}</b>
+                    <span>Withdrew via ${coin}</span>
+                </div>
+            </div>
+            <div class="live-amount">+$${parseFloat(amount).toLocaleString()}</div>
+        `;
+        container.insertBefore(item, container.firstChild);
+        if(container.children.length > 6) {
+            container.removeChild(container.lastChild);
+        }
+    }, 4000);
+}
+
+window.onload = function() {
+    let savedUser = localStorage.getItem("bi_user");
+    if(savedUser) {
+        try {
+            currentUser = JSON.parse(savedUser);
+            updateUIAfterAuth();
+            loadTransactions();
+        } catch(e) {
+            localStorage.removeItem("bi_user");
+        }
+    }
+    populateCalculatorSelect();
+    fetchRealPrices();
+    setInterval(fetchRealPrices, 15000);
+    initLiveWithdrawals();
+    togglePaymentDetails();
+};
 </script>
 </body>
 </html>
