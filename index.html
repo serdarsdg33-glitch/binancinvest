@@ -58,23 +58,20 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 /* Portfolio & Deposit Section Grid Layout */
 .portfolio-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-top: 15px; }
 
-/* --- Custom Dropdown Styles (Added for Logos) --- */
-.custom-select-wrapper { position: relative; width: 100%; user-select: none; }
-.custom-select-trigger { display: flex; align-items: center; justify-content: space-between; padding: 11px; background: #1a222c; border: 1px solid #474d57; border-radius: 8px; color: #fff; cursor: pointer; transition: 0.2s; }
-.custom-select-trigger:hover { border-color: var(--gold); }
-.custom-select-trigger .selected-item { display: flex; align-items: center; gap: 10px; font-weight: 500; }
-.custom-select-trigger .selected-item img { width: 24px; height: 24px; border-radius: 50%; }
-.custom-select-trigger .arrow { font-size: 12px; color: var(--muted); transition: 0.3s; }
-.custom-select-wrapper.open .custom-select-trigger .arrow { transform: rotate(180deg); }
-.custom-select-options { position: absolute; top: 100%; left: 0; right: 0; background: #151c24; border: 1px solid #474d57; border-radius: 8px; margin-top: 5px; z-index: 100; max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.6); }
-.custom-select-wrapper.open .custom-select-options { display: block; }
-.custom-select-option { display: flex; align-items: center; gap: 10px; padding: 12px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.custom-select-option:last-child { border-bottom: none; }
-.custom-select-option:hover { background: rgba(240,185,11,0.1); color: var(--gold); }
-.custom-select-option img { width: 24px; height: 24px; border-radius: 50%; }
-.custom-select-options::-webkit-scrollbar { width: 6px; }
-.custom-select-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
-.custom-select-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
+/* Custom Select Dropdown with Icons Styling */
+.custom-select-wrapper { position: relative; user-select: none; width: 100%; }
+.custom-select-trigger { background: #1a222c; border: 1px solid #474d57; color: #fff; border-radius: 8px; padding: 11px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+.custom-select-trigger img { width: 20px; height: 20px; margin-right: 8px; margin-left: 4px; }
+.custom-options { position: absolute; top: 100%; left: 0; right: 0; background: #151c25; border: 1px solid #474d57; border-radius: 8px; margin-top: 4px; display: none; z-index: 99; max-height: 220px; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.custom-options.open { display: block; }
+.custom-option { padding: 10px 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: background 0.2s; color: #fff; }
+.custom-option:hover { background: #222c38; }
+.custom-option img { width: 22px; height: 22px; }
+
+/* Scrollbar styling for custom dropdown */
+.custom-options::-webkit-scrollbar { width: 6px; }
+.custom-options::-webkit-scrollbar-track { background: #1a222c; border-radius: 8px; }
+.custom-options::-webkit-scrollbar-thumb { background: #474d57; border-radius: 8px; }
 
 @media(max-width:900px){
   .cards,.coins{grid-template-columns:1fr 1fr}
@@ -252,28 +249,25 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 
       <div id="crypto-options-container" style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depCryptoLabel">Select Currency & Network:</label>
-          
-          <!-- Custom Dropdown For Deposit -->
-          <div class="custom-select-wrapper" id="depositDropdownWrapper">
-              <div class="custom-select-trigger" onclick="toggleDropdown('depositDropdownWrapper')">
-                  <div class="selected-item" id="depositSelectedItem">
-                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT">
-                      <span>USDT / Tether (TRC20)</span>
-                  </div>
-                  <span class="arrow">▼</span>
+          <div class="custom-select-wrapper" id="depositCryptoCustomSelect">
+              <div class="custom-select-trigger" onclick="toggleCustomSelect('deposit')">
+                  <span id="depositSelectedText" style="display:flex; align-items:center;">
+                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT / Tether (TRC20)
+                  </span>
+                  <span>▼</span>
               </div>
-              <div class="custom-select-options">
-                  <div class="custom-select-option" onclick="setSelectValue('deposit', 'trx_usdt_trc20', 'USDT / Tether (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT / Tether (TRC20)</span>
+              <div class="custom-options" id="depositCustomOptions">
+                  <div class="custom-option" onclick="selectDepositCrypto('trx_usdt_trc20', 'USDT / Tether (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT / Tether (TRC20)
                   </div>
-                  <div class="custom-select-option" onclick="setSelectValue('deposit', 'bnb_usdt_bep20', 'BNB / Tether (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg"> <span>BNB / Tether (BEP20)</span>
+                  <div class="custom-option" onclick="selectDepositCrypto('bnb_usdt_bep20', 'BNB / Tether (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB / Tether (BEP20)
                   </div>
-                  <div class="custom-select-option" onclick="setSelectValue('deposit', 'eth_usdt_erc20', 'Ethereum / Tether (ERC20)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg"> <span>Ethereum / Tether (ERC20)</span>
+                  <div class="custom-option" onclick="selectDepositCrypto('eth_usdt_erc20', 'Ethereum / Tether (ERC20)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum / Tether (ERC20)
                   </div>
-                  <div class="custom-select-option" onclick="setSelectValue('deposit', 'btc', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg"> <span>Bitcoin (BTC)</span>
+                  <div class="custom-option" onclick="selectDepositCrypto('btc', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)
                   </div>
               </div>
           </div>
@@ -296,38 +290,24 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
       <p class="muted" data-t="withdrawDesc" style="margin-bottom: 20px;">Request withdrawal instantly.</p>
       
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
-      
-      <!-- Custom Dropdown For Withdraw -->
-      <div class="custom-select-wrapper" id="withdrawDropdownWrapper" style="margin-bottom: 15px;">
-          <div class="custom-select-trigger" onclick="toggleDropdown('withdrawDropdownWrapper')">
-              <div class="selected-item" id="withdrawSelectedItem">
-                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT">
-                  <span>USDT (TRC20)</span>
-              </div>
-              <span class="arrow">▼</span>
+      <div class="custom-select-wrapper" id="withdrawCryptoCustomSelect" style="margin-bottom:15px;">
+          <div class="custom-select-trigger" onclick="toggleCustomSelect('withdraw')">
+              <span id="withdrawSelectedText" style="display:flex; align-items:center;">
+                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)
+              </span>
+              <span>▼</span>
           </div>
-          <div class="custom-select-options">
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'USDT (TRC20)', 'USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT (TRC20)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'USDT (BEP20)', 'USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT (BEP20)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'Bitcoin (BTC)', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg"> <span>Bitcoin (BTC)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'Ethereum (ETH)', 'Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg"> <span>Ethereum (ETH)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'BNB (BEP20)', 'BNB (Smart Chain)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg"> <span>BNB (Smart Chain)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'TRON (TRX)', 'TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/tron-trx-logo.svg"> <span>TRON (TRX)</span>
-              </div>
-              <div class="custom-select-option" onclick="setSelectValue('withdraw', 'Solana (SOL)', 'Solana (SOL)', 'https://cryptologos.cc/logos/solana-sol-logo.svg')">
-                  <img src="https://cryptologos.cc/logos/solana-sol-logo.svg"> <span>Solana (SOL)</span>
-              </div>
+          <div class="custom-options" id="withdrawCustomOptions">
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (BEP20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (ERC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (ERC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum (ETH)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('BNB (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB (Smart Chain)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')"><img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRON (TRX)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Solana (SOL)', 'https://cryptologos.cc/logos/solana-sol-logo.svg')"><img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="SOL"> Solana (SOL)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Litecoin (LTC)', 'https://cryptologos.cc/logos/litecoin-ltc-logo.svg')"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg" alt="LTC"> Litecoin (LTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Dogecoin (DOGE)', 'https://cryptologos.cc/logos/dogecoin-doge-logo.svg')"><img src="https://cryptologos.cc/logos/dogecoin-doge-logo.svg" alt="DOGE"> Dogecoin (DOGE)</div>
           </div>
       </div>
       <input type="hidden" id="withdrawCrypto" value="USDT (TRC20)">
@@ -493,6 +473,116 @@ optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата чере
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения администратором.</small>",
 paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
+},
+ar:{
+brand:"بایننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
+hero:"ابنِ مستقبلك من خلال الاستثمار الذكي.",heroDesc:"استكشف الأصول الرقمية، وخطط الاستثمار، وأدوات المحفظة في واجهة واحدة متميزة.",exploreInvest:"استكشاف الاستثمارات",exploreMarkets:"استكشاف الأسواق",
+users:"مستخدمو المنصة",tracked:"الأصول المتتبعة",assets:"الأصول الرقمية",live:"الأسواق الحية",uptime:"وقت تشغيل المنصة",top:"أفضل الأسواق",viewAll:"عرض الكل",featured:"استثمارات مميزة",
+plans:"خطط الاستثمار",illustrative:"عوائد توضيحية",calculator:"حاسبة الاستثمار",amount:"المبلغ",plan:"الخطة",estimated:"القيمة المقدرة",
+balance:"الرصيد",invested:"المستثمر",profitTotal:"إجمالي الربح",level:"مستوى الحساب",deposit:"إيداع",depositDesc:"أضف رصيداً بأمان عبر المحفظة أو البوابة.",add:"إضافة رصيد",withdraw:"سحب",withdrawDesc:"اطلب السحب فوراً.",request:"طلب سحب",
+clear:"مسح السجل",copy:"نسخ الرمز",account:"الحساب",username:"اسم المستخدم",email:"البريد الإلكتروني",fullname:"الاسم الكامل",phone:"الهاتف",save:"حفظ الملف الشخصي",security:"الأمان",password:"كلمة المرور",continue:"متابعة",local:"يتم تخزين بيانات الحساب بأمان في قاعدة بيانات Supabase.",
+eyebrowText:"منصة الأصول الرقمية المميزة",footerTitle:"لماذا بايننس إنفست؟",footerDesc:"نحن نقدم موثوقية احترافية مع تنفيذ تداول منخفض الكمون للغاية، وأدوات محفظة ذكية، وبروتوكولات أمان متقدمة.",footerCopy:"© 2026 Binance Invest Global. جميع الحقوق محفوظة.",
+thAsset:"الأصل",thPrice:"السعر",th24h:"24س",thCap:"القيمة السوقية",thVol:"الحجم",
+customTitle:"خطة استثمار مخصصة",customDesc:"استثمر أي مبلغ مخصص من 1 دولار إلى 100,000 دولار.",customAmountLabel:"مبلغ مخصص (1$ - 100,000$)",customTermLabel:"المدة (أيام)",investCustomBtn:"استثمار بمبلغ مخصص",
+dailyProfitLabel:"الربح اليومي",monthlyProfitLabel:"الربح الشهري",
+lockNoticeText:"إذا قمت بقفل أموالك لمدة 60 يوماً أو أكثر، يصل معدل الربح اليومي الخاص بك إلى أكثر من 7.5% وفقاً لاتفاقية العقد.",
+pointsTitle:"النقاط",pointsSub:"+50 أسبوعياً",refTitle:"الإحالة",vipTitle:"VIP",vipSub:"1,250 نقطة",streakTitle:"التتابع",streakSub:"نشط",sec2fa:"التحقق الثنائي",secLogin:"حماية تسجيل الدخول",secWith:"تأكيد السحب",enabled:"مفعل",active:"نشط",
+forgotPasswordText:"هل نسيت كلمة المرور؟",needAccountText:"ليس لديك حساب؟ سجل الآن",haveAccountText:"لديك حساب بالفعل؟ سجل دخولك",usernameOrEmail:"اسم المستخدم أو البريد الإلكتروني",enterEmailOrUser:"أدخل اسم المستخدم أو البريد الإلكتروني المسجل",codeSentNotice:"تم إرسال رمز التحقق إلى بريدك الإلكتروني.",enterCode:"أدخل رمز التحقق المكون من 6 أرقام",sendResetCode:"إرسال رمز إعادة التعيين",resetPasswordTitle:"إعادة تعيين كلمة المرور",newPasswordLabel:"كلمة المرور الجديدة",resetBtn:"إعادة تعيين كلمة المرور",
+contactUs:"اتصل بنا", supportEmail:"البريد الإلكتروني للدعم", securityPartners:"شركاء الحماية والأمان",
+platformStatsTitle:"إحصائيات المنصة", statUsers:"مستخدمو المنصة", statInvestors:"المستثمرون النشطون", statPaid:"إجمالي الأرباح المدفوعة", statCapital:"رأس مال المنصة", liveWithdrawalsTitle:"عمليات السحب المباشرة", justNow:"الآن",
+depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
+optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
+walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة المشرف.</small>",
+paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
+withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
+},
+zh:{
+brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
+hero:"通过智能投资构建您的未来。",heroDesc:"在一个高端界面中探索数字资产、投资计划和资产组合工具。",exploreInvest:"探索投资",exploreMarkets:"探索市场",
+users:"平台用户",tracked:"跟踪资产",assets:"数字资产",live:"实时市场",uptime:"正常运行时间",top:"热门市场",viewAll:"查看全部",featured:"精选投资",
+plans:"投资计划",illustrative:"演示收益",calculator:"投资计算器",amount:"金额",plan:"计划",estimated:"预计价值",
+balance:"余额",invested:"已投资",profitTotal:"总利润",level:"账户等级",deposit:"充值",depositDesc:"通过钱包或网关安全充值。",withdraw:"提现",withdrawDesc:"立即申请提现。",request:"申请提现",
+clear:"清除历史",copy:"复制代码",account:"账户",username:"用户名",email:"电子邮箱",fullname:"全名",phone:"电话",save:"保存资料",security:"安全",password:"密码",continue:"继续",local:"账户数据安全存储在 Supabase 数据库中。",
+eyebrowText:"高端数字资产平台",footerTitle:"为什么选择 Binance Invest？",footerDesc:"我们提供专业级可靠性、超低延迟交易执行和高级安全协议。",footerCopy:"© 2026 Binance Invest Global. 保留所有权利。",
+thAsset:"资产",thPrice:"价格",th24h:"24小时",thCap:"市值",thVol:"交易量",
+customTitle:"自定义投资计划",customDesc:"投资 1 美元到 100,000 美元之间的任意自定义金额。",customAmountLabel:"自定义金额 ($1 - $100,000)",customTermLabel:"期限（天）",investCustomBtn:"以自定义金额投资",
+dailyProfitLabel:"每日利润",monthlyProfitLabel:"每月利润",
+lockNoticeText:"如果您将资金锁仓 60 天或更长时间，根据合约协议，您的日利润率将达到 7.5% 以上。",
+pointsTitle:"积分",pointsSub:"每周 +50",refTitle:"推荐",vipTitle:"VIP",vipSub:"1,250 积分",streakTitle:"连续",streakSub:"活跃",sec2fa:"双重认证",secLogin:"登录保护",secWith:"提现确认",enabled:"已启用",active:"活跃",
+forgotPasswordText:"忘记密码？",needAccountText:"没有账户？立即注册",haveAccountText:"已有账户？去登录",usernameOrEmail:"用户名或邮箱",enterEmailOrUser:"输入您的用户名或注册邮箱",codeSentNotice:"验证码已发送至您的邮箱。",enterCode:"输入 6 位邮箱验证码",sendResetCode:"发送重置验证码",resetPasswordTitle:"重置密码",newPasswordLabel:"新密码",resetBtn:"重置密码",
+contactUs:"联系我们", supportEmail:"支持邮箱", securityPartners:"安全合作伙伴与保护",
+platformStatsTitle:"平台统计", statUsers:"平台用户", statInvestors:"活跃投资者", statPaid:"总支付利润", statCapital:"平台资本", liveWithdrawalsTitle:"实时提现", justNow:"刚刚",
+depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
+optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
+walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供管理员批准。</small>",
+paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
+withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
+},
+es:{
+brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
+hero:"Construye tu futuro con una inversión inteligente.",heroDesc:"Explora activos digitales, planes de inversión y herramientas de portafolio en una interfaz premium.",exploreInvest:"Explorar inversiones",exploreMarkets:"Explorar mercados",
+users:"Usuarios de la plataforma",tracked:"Activos rastreados",assets:"Activos digitales",live:"Mercados en vivo",uptime:"Tiempo de actividad",top:"Principales mercados",viewAll:"Ver todo",featured:"Inversiones destacadas",
+plans:"Planes de inversión",illustrative:"Rendimientos ilustrativos",calculator:"Calculadora de inversión",amount:"Cantidad",plan:"Plan",estimated:"Valor estimado",
+balance:"Saldo",invested:"Invertido",profitTotal:"Beneficio total",level:"Nivel de cuenta",deposit:"Depósito",depositDesc:"Agrega saldo de forma segura mediante billetera o pasarela.",add:"Añadir saldo",withdraw:"Retirar",withdrawDesc:"Solicita un retiro al instante.",request:"Solicitar retiro",
+clear:"Borrar historial",copy:"Copiar código",account:"Cuenta",username:"Nombre de usuario",email:"Correo electrónico",fullname:"Nombre completo",phone:"Teléfono",save:"Guardar perfil",security:"Seguridad",password:"Contraseña",continue:"Continuar",local:"Los datos de la cuenta se almacenan de forma segura en la base de datos de Supabase.",
+eyebrowText:"PLATAFORMA DE ACTIVOS DIGITALES PREMIUM",footerTitle:"¿Por qué Binance Invest?",footerDesc:"Ofrecemos confiabilidad de nivel profesional con ejecución comercial de latencia ultrabaja.",footerCopy:"© 2026 Binance Invest Global. Todos los derechos reservados.",
+thAsset:"Activo",thPrice:"Precio",th24h:"24h",thCap:"Capitalización",thVol:"Volumen",
+customTitle:"Plan de inversión personalizado",customDesc:"Invierte cualquier cantidad personalizada de $1 a $100,000.",customAmountLabel:"Cantidad personalizada ($1 - $100,000)",customTermLabel:"Plazo (Días)",investCustomBtn:"Invertir cantidad personalizada",
+dailyProfitLabel:"Beneficio diario",monthlyProfitLabel:"Beneficio mensual",
+lockNoticeText:"Si bloqueas tu dinero durante 60 días o más, tu tasa de beneficio diario alcanza más del 7.5%.",
+pointsTitle:"Puntos",pointsSub:"+50 semanal",refTitle:"Referidos",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Racha",streakSub:"Activa",sec2fa:"2FA",secLogin:"Protección de inicio de sesión",secWith:"Confirmación de retiro",enabled:"Habilitado",active:"Activo",
+forgotPasswordText:"¿Olvidaste tu contraseña?",needAccountText:"¿No tienes cuenta? Regístrate",haveAccountText:"¿Ya tienes cuenta? Inicia sesión",usernameOrEmail:"Usuario o correo electrónico",enterEmailOrUser:"Ingresa tu usuario o correo electrónico",codeSentNotice:"Se ha enviado un código de verificación a tu correo.",enterCode:"Ingresa el código de 6 dígitos",sendResetCode:"Enviar código",resetPasswordTitle:"Restablecer contraseña",newPasswordLabel:"Nueva contraseña",resetBtn:"Restablecer contraseña",
+contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"Socios de seguridad y protección",
+platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Usuarios", statInvestors:"Inversores activos", statPaid:"Beneficio total pagado", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
+depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
+optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
+walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del administrador.</small>",
+paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
+withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
+},
+fr:{
+brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
+hero:"Construisez votre avenir grâce à l'investissement intelligent.",heroDesc:"Explorez les actifs numériques, les plans d'investissement et les outils de portefeuille.",exploreInvest:"Explorer les investissements",exploreMarkets:"Explorer les marchés",
+users:"Utilisateurs",tracked:"Actifs suivis",assets:"Actifs numériques",live:"Marchés en direct",uptime:"Disponibilité",top:"Principaux marchés",viewAll:"Voir tout",featured:"Investissements en vedette",
+plans:"Plans d'investissement",illustrative:"Rendements indicatifs",calculator:"Calculateur d'investissement",amount:"Montant",plan:"Plan",estimated:"Valeur estimée",
+balance:"Solde",invested:"Investi",profitTotal:"Profit total",level:"Niveau de compte",deposit:"Dépôt",depositDesc:"Ajoutez des fonds en toute sécurité.",withdraw:"Retirer",withdrawDesc:"Demandez un retrait instantané.",request:"Demander un retrait",
+clear:"Effacer l'historique",copy:"Copier le code",account:"Compte",username:"Nom d'utilisateur",email:"E-mail",fullname:"Nom complet",phone:"Téléphone",save:"Enregistrer",security:"Sécurité",password:"Mot de passe",continue:"Continuer",local:"Les données du compte sont stockées en toute sécurité dans Supabase.",
+eyebrowText:"PLATEFORME D'ACTIFS NUMÉRIQUES PREMIUM",footerTitle:"Pourquoi Binance Invest ?",footerDesc:"Nous offrons une fiabilité de niveau professionnel et une exécution à ultra-faible latence.",footerCopy:"© 2026 Binance Invest Global. Tous droits réservés.",
+thAsset:"Actif",thPrice:"Prix",th24h:"24h",thCap:"Capitalisation",thVol:"Volume",
+customTitle:"Plan d'investissement personnalisé",customDesc:"Investissez n'importe quel montant de 1 $ à 100 000 $.",customAmountLabel:"Montant personnalisé (1$ - 100 000$)",customTermLabel:"Durée (Jours)",investCustomBtn:"Investir",
+dailyProfitLabel:"Profit journalier",monthlyProfitLabel:"Profit mensuel",
+lockNoticeText:"Si vous bloquez vos fonds pendant 60 jours ou plus, votre taux de profit journalier dépasse 7.5%.",
+pointsTitle:"Points",pointsSub:"+50 par semaine",refTitle:"Parrainage",vipTitle:"VIP",vipSub:"1 250 pts",streakTitle:"Série",streakSub:"Actif",sec2fa:"2FA",secLogin:"Protection de connexion",secWith:"Confirmation de retrait",enabled:"Activé",active:"Actif",
+forgotPasswordText:"Mot de passe oublié ?",needAccountText:"Pas de compte ? Inscrivez-vous",haveAccountText:"Déjà un compte ? Connectez-vous",usernameOrEmail:"Nom d'utilisateur ou e-mail",enterEmailOrUser:"Entrez votre nom d'utilisateur ou e-mail",codeSentNotice:"Un code de vérification a été envoyé à votre e-mail.",enterCode:"Entrez le code à 6 chiffres",sendResetCode:"Envoyer le code",resetPasswordTitle:"Réinitialiser le mot de passe",newPasswordLabel:"Nouveau mot de passe",resetBtn:"Mettre à jour",
+contactUs:"Contactez-nous", supportEmail:"E-mail de support", securityPartners:"Partenaires de sécurité",
+platformStatsTitle:"Statistiques de la plateforme", statUsers:"Utilisateurs", statInvestors:"Investisseurs actifs", statPaid:"Profits versés", statCapital:"Capital de la plateforme", liveWithdrawalsTitle:"Retraits en direct", justNow:"À l'instant",
+depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
+optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
+walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
+paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
+withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
+},
+de:{
+brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
+hero:"Bauen Sie Ihre Zukunft durch intelligenten Investieren auf.",heroDesc:"Entdecken Sie digitale Assets, Investitionspläne und Portfolio-Tools in einer Premium-Oberfläche.",exploreInvest:"Investitionen erkunden",exploreMarkets:"Märkte erkunden",
+users:"Benutzer",tracked:"Verfolgte Assets",assets:"Digitale Assets",live:"Live-Märkte",uptime:"Betriebszeit",top:"Top-Märkte",viewAll:"Alle anzeigen",featured:"Empfohlene Investitionen",
+plans:"Investitionspläne",illustrative:"Beispielhafte Renditen",calculator:"Investitionsrechner",amount:"Betrag",plan:"Plan",estimated:"Geschätzter Wert",
+balance:"Guthaben",invested:"Investiert",profitTotal:"Gesamtgewinn",level:"Konto-Stufe",deposit:"Einzahlen",depositDesc:"Guthaben sicher per Wallet oder Gateway aufladen.",withdraw:"Abheben",withdrawDesc:"Auszahlung sofort anfordern.",request:"Auszahlung anfordern",
+clear:"Verlauf löschen",copy:"Code kopieren",account:"Konto",username:"Benutzername",email:"E-Mail",fullname:"Vollständiger Name",phone:"Telefon",save:"Profil speichern",security:"Sicherheit",password:"Passwort",continue:"Weiter",local:"Kontodaten werden sicher in der Supabase-Datenbank gespeichert.",
+eyebrowText:"PREMIUM DIGITALE ASSET-PLATFORM",footerTitle:"Warum Binance Invest?",footerDesc:"Wir bieten professionelle Zuverlässigkeit mit ultraschneller Handelsausführung.",footerCopy:"© 2026 Binance Invest Global. Alle Rechte vorbehalten.",
+thAsset:"Asset",thPrice:"Preis",th24h:"24h",thCap:"Marktkapitalisierung",thVol:"Volumen",
+customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie einen beliebigen Betrag von 1 $ bis 100.000 $.",customAmountLabel:"Benutzerdefinierter Betrag ($1 - $100,000)",customTermLabel:"Laufzeit (Tage)",investCustomBtn:"Investieren",
+dailyProfitLabel:"Täglicher Gewinn",monthlyProfitLabel:"Monatlicher Gewinn",
+lockNoticeText:"Wenn Sie Ihr Geld für 60 Tage oder länger sperren, beträgt Ihr täglicher Gewinn laut Vertrag über 7.5%.",
+pointsTitle:"Punkte",pointsSub:"+50 wöchentlich",refTitle:"Empfehlung",vipTitle:"VIP",vipSub:"1.250 Pkt",streakTitle:"Serie",streakSub:"Aktif",sec2fa:"2FA",secLogin:"Anmeldeschutz",secWith:"Auszahlungsbestätigung",enabled:"Aktiviert",active:"Aktif",
+forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrieren",haveAccountText:"Bereits ein Konto? Anmelden",usernameOrEmail:"Benutzername oder E-Mail",enterEmailOrUser:"Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",codeSentNotice:"Ein Bestätigungscode wurde gesendet.",enterCode:"6-stelligen Code eingeben",sendResetCode:"Code senden",resetPasswordTitle:"Passwort zurücksetzen",newPasswordLabel:"Neues Passwort",resetBtn:"Passwort zurücksetzen",
+contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
+platformStatsTitle:"Plattform-Statistiken", statUsers:"Benutzer", statInvestors:"Aktive Investoren", statPaid:"Gezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
+depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
+optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
+walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch den Administrator.</small>",
+paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
+withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
 };
 
@@ -501,7 +591,12 @@ const uiTexts = {
   fa: { daily: "روزانه", dailyProfit: "سود روزانه", monthlyProfit: "سود ماهانه", investNow: "سرمایه‌گذاری کن", popular: "پرفروش", amount: "مبلغ", term: "مدت زمان", days: "روز" },
   az: { daily: "Gündəlik", dailyProfit: "Gündəlik gəlir", monthlyProfit: "Aylıq gəlir", investNow: "İndi İnvestisiya Et", popular: "POPÜLYAR", amount: "Məbləğ", term: "Müddət", days: "gün" },
   tr: { daily: "Günlük", dailyProfit: "Günlük kâr", monthlyProfit: "Aylık kâr", investNow: "Şimdi Yatırım Yap", popular: "POPÜLER", amount: "Miktar", term: "Süre", days: "gün" },
-  ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" }
+  ru: { daily: "День", dailyProfit: "Дневная прибыль", monthlyProfit: "Месячная прибыль", investNow: "Инвестировать", popular: "ПОПУЛЯРНЫЙ", amount: "Сумма", term: "Срок", days: "дней" },
+  ar: { daily: "يومي", dailyProfit: "الربح اليومي", monthlyProfit: "الربح الشهري", investNow: "استثمر الآن", popular: "شائع", amount: "المبلغ", term: "المدة", days: "أيام" },
+  zh: { daily: "每日", dailyProfit: "每日利润", monthlyProfit: "每月利润", investNow: "立即投资", popular: "热门", amount: "金额", term: "期限", days: "天" },
+  es: { daily: "Diario", dailyProfit: "Beneficio diario", monthlyProfit: "Beneficio mensual", investNow: "Invertir ahora", popular: "POPULAR", amount: "Cantidad", term: "Plazo", days: "días" },
+  fr: { daily: "Quotidien", dailyProfit: "Profit journalier", monthlyProfit: "Profit mensuel", investNow: "Investir", popular: "POPULAIRE", amount: "Montant", term: "Durée", days: "jours" },
+  de: { daily: "Täglich", dailyProfit: "Täglicher Gewinn", monthlyProfit: "Monatlicher Gewinn", investNow: "Jetzt investieren", popular: "BELIEBT", amount: "Betrag", term: "Laufzeit", days: "Tage" }
 };
 
 const planNames = {
@@ -509,7 +604,12 @@ const planNames = {
   fa: [["Starter", "پلن استارتر"], ["Growth", "پلن رشد"], ["Premium", "پلن پریمیوم"]],
   az: [["Starter", "Başlanğıc Planı"], ["Growth", "Böyümə Planı"], ["Premium", "Premium Planı"]],
   tr: [["Starter", "Başlangıç Planı"], ["Growth", "Büyüme Planı"], ["Premium", "Premium Planı"]],
-  ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]]
+  ru: [["Starter", "Стартовый план"], ["Growth", "План роста"], ["Premium", "Премиум план"]],
+  ar: [["Starter", "خطة المبتدئين"], ["Growth", "خطة النمو"], ["Premium", "الخطة الممتازة"]],
+  zh: [["Starter", "新手计划"], ["Growth", "成长计划"], ["Premium", "高级计划"]],
+  es: [["Starter", "Plan Inicial"], ["Growth", "Plan de Crecimiento"], ["Premium", "Plan Premium"]],
+  fr: [["Starter", "Plan Débutant"], ["Growth", "Plan Croissance"], ["Premium", "Plan Premium"]],
+  de: [["Starter", "Starter-Plan"], ["Growth", "Wachstums-Plan"], ["Premium", "Premium-Plan"]]
 };
 
 const coins=[
@@ -520,7 +620,11 @@ const coins=[
   ["XRP","XRP","xrp"],
   ["ADA","Cardano","ada"],
   ["DOGE","Dogecoin","doge"],
-  ["TRX","TRON","trx"]
+  ["TRX","TRON","trx"],
+  ["AVAX","Avalanche","avax"],
+  ["LINK","Chainlink","link"],
+  ["DOT","Polkadot","dot"],
+  ["LTC","Litecoin","ltc"]
 ];
 
 const demo={
@@ -531,7 +635,11 @@ const demo={
   xrp: [3.12, 1.8, 178e9, 6.2e9],
   ada: [0.88, -0.7, 32e9, 0.69e9],
   doge: [0.23, 2.4, 34e9, 1.5e9],
-  trx: [0.36, 0.9, 34e9, 0.72e9]
+  trx: [0.36, 0.9, 34e9, 0.72e9],
+  avax: [24.4, -0.3, 10.5e9, 0.32e9],
+  link: [24.8, 1.7, 16e9, 0.7e9],
+  dot: [4.2, -0.4, 6.5e9, 0.18e9],
+  ltc: [122, 1.1, 9.2e9, 0.52e9]
 };
 
 const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
@@ -546,29 +654,40 @@ const WALLETS = {
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
 
-// -- Custom Dropdown Logic --
-function toggleDropdown(wrapperId) {
-    document.getElementById(wrapperId).classList.toggle('open');
-}
-function setSelectValue(type, val, text, logo) {
+// کنترل باز و بسته شدن لیست های سفارشی رمزارز
+function toggleCustomSelect(type) {
+    const depositOptions = document.getElementById('depositCustomOptions');
+    const withdrawOptions = document.getElementById('withdrawCustomOptions');
     if(type === 'deposit') {
-        document.getElementById('crypto-currency').value = val;
-        document.getElementById('depositSelectedItem').innerHTML = `<img src="${logo}"><span>${text}</span>`;
-        document.getElementById('depositDropdownWrapper').classList.remove('open');
-        togglePaymentDetails();
+        depositOptions.classList.toggle('open');
+        withdrawOptions.classList.remove('open');
     } else {
-        document.getElementById('withdrawCrypto').value = val;
-        document.getElementById('withdrawSelectedItem').innerHTML = `<img src="${logo}"><span>${text}</span>`;
-        document.getElementById('withdrawDropdownWrapper').classList.remove('open');
+        withdrawOptions.classList.toggle('open');
+        depositOptions.classList.remove('open');
     }
 }
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('#depositDropdownWrapper')) {
-        let el = document.getElementById('depositDropdownWrapper');
+
+function selectDepositCrypto(value, text, logoUrl) {
+    document.getElementById('crypto-currency').value = value;
+    document.getElementById('depositSelectedText').innerHTML = `<img src="${logoUrl}" alt=""> ${text}`;
+    document.getElementById('depositCustomOptions').classList.remove('open');
+    togglePaymentDetails();
+}
+
+function selectWithdrawCrypto(text, logoUrl) {
+    document.getElementById('withdrawCrypto').value = text;
+    document.getElementById('withdrawSelectedText').innerHTML = `<img src="${logoUrl}" alt=""> ${text}`;
+    document.getElementById('withdrawCustomOptions').classList.remove('open');
+}
+
+// بستن منوهای کشویی با کلیک خارج از آن‌ها
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('#depositCryptoCustomSelect')) {
+        let el = document.getElementById('depositCustomOptions');
         if(el) el.classList.remove('open');
     }
-    if (!e.target.closest('#withdrawDropdownWrapper')) {
-        let el = document.getElementById('withdrawDropdownWrapper');
+    if (!e.target.closest('#withdrawCryptoCustomSelect')) {
+        let el = document.getElementById('withdrawCustomOptions');
         if(el) el.classList.remove('open');
     }
 });
@@ -580,7 +699,8 @@ async function fetchRealPrices() {
         const data = await res.json();
         const symbolMap = {
             'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
-            'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx'
+            'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
+            'AVAXUSDT': 'avax', 'LINKUSDT': 'link', 'DOTUSDT': 'dot', 'LTCUSDT': 'ltc'
         };
         data.forEach(item => {
             if(symbolMap[item.symbol]) {
@@ -595,9 +715,7 @@ async function fetchRealPrices() {
         renderCoins();
         renderTable();
     } catch(e) {
-        console.log("استفاده از قیمت‌های آفلاین");
-        renderCoins();
-        renderTable();
+        console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
     }
 }
 
@@ -648,7 +766,7 @@ async function submitDepositRequest() {
         }
         paymentDetailsInfo = `[Direct Payment - ${cryptoType}] ${gatewayRef}`;
     } else if (method === 'paymentio') {
-        paymentDetailsInfo = `[Payment.io Widget]`;
+        paymentDetailsInfo = `[Payment.io / NowPayments Widget]`;
     }
 
     const { error } = await supabaseClient.from('transactions').insert([
@@ -672,110 +790,77 @@ async function submitDepositRequest() {
     }
 }
 
-// تولید پلن ها و افزودن محاسبه سود ماهانه
-function renderPlans() {
+// 100 Realistic Names
+const fakeNames = [
+    "Alexander Smith", "Michael Johnson", "David Williams", "James Brown", "Robert Jones",
+    "William Miller", "Joseph Davis", "Thomas Garcia", "Charles Rodriguez", "Daniel Wilson",
+    "Benjamin Moore", "Lucas Taylor", "Henry Anderson", "Ethan Thomas", "Alexander Jackson",
+    "Sebastian White", "Jack Harris", "Aiden Martin", "Matthew Thompson", "Samuel Garcia",
+    "David Martinez", "Joseph Robinson", "Carter Clark", "Owen Rodriguez", "Wyatt Lewis",
+    "John Lee", "Luke Walker", "Gabriel Hall", "Anthony Allen", "Isaac Young",
+    "Grayson Hernandez", "Julian King", "Mateo Wright", "Lincoln Lopez", "Jaxon Hill",
+    "Liam Scott", "Noah Green", "Oliver Adams", "Elijah Baker", "Logan Gonzalez",
+    "Caleb Nelson", "Christian Carter", "Landon Mitchell", "Jonathan Perez", "Nolan Roberts",
+    "Hunter Turner", "Jeremiah Phillips", "Elias Campbell", "Aaron Parker", "Eli Evans",
+    "Connor Edwards", "Ezekiel Collins", "Addison Stewart", "Easton Sanchez", "Miles Morris",
+    "Santiago Rogers", "Leo Reed", "Cooper Cook", "Landen Morgan", "Hudson Bell",
+    "Asher Murphy", "Carson Bailey", "Leo Rivera", "Ezra Cooper", "Kingston Richardson",
+    "Tristan Cox", "Jordan Howard", "Ian Ward", "Cole Torres", "Axel Peterson",
+    "Theodore Gray", "Leonardo Ramirez", "Dominic James", "Josiah Watson", "Everett Brooks",
+    "Easton Kelly", "Roman Sanders", "Miles Price", "Greyson Bennett", "Sawyer Wood",
+    "Aria Smith", "Sophia Johnson", "Emma Williams", "Olivia Brown", "Ava Jones",
+    "Isabella Miller", "Mia Davis", "Harper Garcia", "Evelyn Rodriguez", "Abigail Wilson",
+    "Emily Moore", "Elizabeth Taylor", "Mila Anderson", "Ella Thomas", "Avery Jackson",
+    "Sofia White", "Camila Harris", "Aria Martin", "Scarlett Thompson", "Victoria Garcia",
+    "Reza Ahmadi", "Ali Karimi", "Sara Mohammadi", "Mohammad Jafari", "Fatemeh Zarei"
+];
+
+function addLiveWithdrawal() {
+    let list = document.getElementById("liveWithdrawalsList");
+    if(!list) return;
+    let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+    let amount = (Math.random() * 990 + 10).toFixed(2);
+    let initial = name.charAt(0);
     let lang = localStorage.getItem("bi_lang") || "en";
-    let dict = uiTexts[lang] || uiTexts.en;
-    let html = "";
+    let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
     
-    plans.forEach((p, i) => {
-        let name = (planNames[lang] && planNames[lang][i]) ? planNames[lang][i][1] : p[0];
-        let dailyProfit = p[3];
-        let monthlyProfit = (dailyProfit * 30).toFixed(1); 
-        
-        html += `
-        <div class="card plan">
-            <div class="tag">${dict.popular}</div>
-            <h3 style="margin-top:0">${name}</h3>
-            <div class="apy">${dailyProfit}% <span style="font-size:14px;color:var(--muted)">/ ${dict.daily}</span></div>
-            <div style="background:rgba(22, 199, 132, 0.1); padding:8px 12px; border-radius:6px; color:var(--green); font-weight:800; font-size:13px; margin-bottom:12px; display:inline-block; border:1px solid rgba(22,199,132,0.2);">
-               ${dict.monthlyProfit}: ${monthlyProfit}%
+    let div = document.createElement("div");
+    div.className = "live-withdraw";
+    div.innerHTML = `
+        <div style="display:flex; align-items:center; flex:1;">
+            <div class="live-avatar">${initial}</div>
+            <div class="live-info">
+                <b>${name}</b>
+                <span>${justNowText}</span>
             </div>
-            <ul>
-                <li>${dict.amount}: $${p[1].toLocaleString()} - $${p[2].toLocaleString()}</li>
-                <li>${dict.term}: ${p[4]} ${dict.days}</li>
-            </ul>
-            <button class="btn gold" onclick="invest(${i})">${dict.investNow}</button>
-        </div>`;
-    });
-    
-    if(document.getElementById("homePlans")) document.getElementById("homePlans").innerHTML = html;
-    if(document.getElementById("plans")) document.getElementById("plans").innerHTML = html;
-    
-    // آپدیت منوی ماشین حساب
-    let sel = document.getElementById("planSelect");
-    if(sel) {
-        sel.innerHTML = plans.map((p,i) => `<option value="${i}">${p[0]}</option>`).join("");
-        calc();
-    }
+        </div>
+        <div class="live-amount">+$${amount} USD</div>
+    `;
+    list.prepend(div);
+    if(list.children.length > 5) list.removeChild(list.lastChild);
 }
 
-function renderCoins() {
-    let topHTML = "";
-    coins.slice(0,4).forEach(c => {
-        let d = demo[c[2]];
-        let color = d[1] >= 0 ? "green" : "red";
-        topHTML += `
-        <div class="card stat">
-            <div class="coinTop"><span class="muted">${c[0]}</span><span class="${color}">${d[1]}%</span></div>
-            <div class="price">$${d[0].toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
-        </div>`;
-    });
-    document.getElementById("topCoins").innerHTML = topHTML;
-}
+setInterval(addLiveWithdrawal, 5000);
+setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
 
-function renderTable() {
-    let query = (document.getElementById("search")?.value || "").toLowerCase();
-    let html = "";
-    coins.forEach(c => {
-        if(c[0].toLowerCase().includes(query) || c[1].toLowerCase().includes(query)) {
-            let d = demo[c[2]];
-            let color = d[1] >= 0 ? "green" : "red";
-            let isStar = stars.includes(c[2]) ? "on" : "";
-            html += `
-            <tr>
-                <td><button class="star ${isStar}" onclick="toggleStar('${c[2]}')">★</button></td>
-                <td><b>${c[0]}</b> <span class="muted">${c[1]}</span></td>
-                <td>$${d[0].toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-                <td class="${color}">${d[1]}%</td>
-                <td>$${(d[2]/1e9).toFixed(1)}B</td>
-                <td>$${(d[3]/1e9).toFixed(1)}B</td>
-            </tr>`;
-        }
-    });
-    document.getElementById("marketTable").innerHTML = html;
-}
+let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
+let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
 
-function calc() {
-    let a = parseFloat(document.getElementById("amount").value) || 0;
-    let i = parseInt(document.getElementById("planSelect").value) || 0;
-    let p = plans[i];
-    let profit = a * (p[3]/100) * p[4];
-    document.getElementById("calcResult").innerText = "$" + (a + profit).toLocaleString(undefined,{minimumFractionDigits:2});
-    document.getElementById("calcProfit").innerText = "+$" + profit.toLocaleString(undefined,{minimumFractionDigits:2}) + " profit";
+function displayCounters() {
+    let uEl = document.getElementById("statUsersVal"), iEl = document.getElementById("statInvestorsVal");
+    if(uEl) uEl.textContent = currentUsersCount.toLocaleString();
+    if(iEl) iEl.textContent = currentInvestorsCount.toLocaleString();
 }
+displayCounters();
 
-function calcCustom() {
-    let a = parseFloat(document.getElementById("customAmount").value) || 0;
-    let days = parseInt(document.getElementById("customTerm").value) || 0;
-    let dailyRate = a >= 1100 ? 4.5 : (a >= 110 ? 3.5 : 2.5);
-    if(days >= 60) dailyRate = 7.5;
-    
-    let dailyProfit = a * (dailyRate/100);
-    let totalProfit = dailyProfit * days;
-    let monthProfit = dailyProfit * 30;
-    
-    document.getElementById("customResult").innerText = "$" + (a + totalProfit).toLocaleString(undefined,{minimumFractionDigits:2});
-    document.getElementById("customDaily").innerText = "$" + dailyProfit.toLocaleString(undefined,{minimumFractionDigits:2});
-    document.getElementById("customMonthly").innerText = "$" + monthProfit.toLocaleString(undefined,{minimumFractionDigits:2});
-    document.getElementById("customProfit").innerText = "+$" + totalProfit.toLocaleString(undefined,{minimumFractionDigits:2}) + " total profit";
-    
-    let lang = localStorage.getItem("bi_lang") || "en";
-    let txt = (T[lang] && T[lang].lockNoticeText) ? T[lang].lockNoticeText : T.en.lockNoticeText;
-    document.getElementById("lockNotice").innerText = (days >= 60) ? txt : "";
-}
+setInterval(() => {
+    currentUsersCount += Math.floor(Math.random() * 4) + 1;
+    currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
+    localStorage.setItem("bi_platform_users", currentUsersCount);
+    localStorage.setItem("bi_platform_investors", currentInvestorsCount);
+    displayCounters();
+}, 5000);
 
-// بقیه توابع ضروری
 function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
 function page(id,b){
   document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
@@ -800,26 +885,54 @@ function updateAuthModalUI(){
   
   if(authMode==="login"){ titleEl.textContent=d.login; loginFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.needAccountText; } 
   else if(authMode==="register"){ titleEl.textContent=d.register; regFields.style.display="block"; submitBtn.textContent=d.continue; switchLink.textContent=d.haveAccountText; forgotLink.style.display="none"; } 
+  else if(authMode==="verifying"){ titleEl.textContent=d.register; regCodeFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.continue; forgotLink.style.display="none"; switchLink.style.display="none"; } 
+  else if(authMode==="forgot"){ titleEl.textContent=d.resetPasswordTitle||"Reset Password"; forgotFields.style.display="block"; passContainer.style.display="none"; submitBtn.textContent=d.sendResetCode; forgotLink.style.display="none"; } 
 }
 
-async function submitAuth() {
+async function submitAuth(){
   if(authMode==="register"){
-    let fullName = document.getElementById('authFullName').value.trim(), u = document.getElementById('authUsernameReg').value.trim(), email = document.getElementById('authEmailReg').value.trim(), p = document.getElementById('authPass').value;
-    if(u.length<3) return toast("Username too short");
-    currentUser = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account Created!");
-  } 
-  else if(authMode==="login"){
-    let identifier = document.getElementById('authUser').value.trim();
-    if(!identifier) return toast("Enter username");
-    let saved = JSON.parse(localStorage.getItem("bi_current_user"));
-    if(saved && (saved.username === identifier || saved.email === identifier)) {
-        currentUser = saved;
-        closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back!");
-    } else {
-        toast("User not found or incorrect password");
+    let fullName = authFullName.value.trim(), u = authUsernameReg.value.trim(), email = authEmailReg.value.trim(), p = authPass.value;
+    if(fullName.length<2) return toast("Please enter a valid full name");
+    if(u.length<3) return toast("Username must be at least 3 characters");
+    if(!email.includes("@")) return toast("Please enter a valid email address");
+    
+    const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if(!pwdRegex.test(p)){
+      return toast("Password must be at least 8 chars with uppercase, lowercase, and numbers.");
     }
+    
+    let { data: existing, error: errCheck } = await supabaseClient.from('users').select('*').or(`username.eq.${u},email.eq.${email}`);
+    if(existing && existing.length > 0) return toast("Username or email already taken!");
+
+    generatedEmailCode = Math.floor(100000 + Math.random() * 900000).toString();
+    document.getElementById("simulatedCodeBox").textContent = generatedEmailCode;
+    tempRegData = { username: u, fullname: fullName, email: email, password: p, balance: 0, invested: 0, profit: 0, phone: "" };
+    authMode="verifying"; updateAuthModalUI(); toast("Verification code sent to email!");
+  } 
+  else if(authMode==="verifying"){
+    let enteredCode = authEmailCode.value.trim();
+    if(enteredCode !== generatedEmailCode) return toast("Invalid verification code!");
+    
+    let { data, error } = await supabaseClient.from('users').insert([tempRegData]).select();
+    if(error){
+      console.error(error);
+      return toast("Database error: " + error.message);
+    }
+    
+    currentUser = data && data[0] ? data[0] : tempRegData;
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+    
+    saveTx('Account Created', 0, 'Completed');
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Account created successfully!");
+  }
+  else if(authMode==="login"){
+    let identifier = authUser.value.trim(), p = authPass.value;
+    let { data, error } = await supabaseClient.from('users').select('*').or(`username.eq.${identifier},email.eq.${identifier}`).eq('password', p).limit(1);
+    if(error || !data || data.length === 0) return toast("Incorrect username or password");
+    
+    currentUser = data[0];
+    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
+    closeAuth(); loadProfile(); updatePortfolio(); updateHeaderAuthUI(); toast("Welcome back, " + (currentUser.fullname || currentUser.username));
   }
 }
 
@@ -835,89 +948,53 @@ function updateHeaderAuthUI(){
   let headerDisp = document.getElementById("userHeaderDisplay"), authGroup = document.getElementById("authButtonsGroup"); 
   let portAuthBtn = document.getElementById("portfolioAuthBtn");
   if(currentUser){
-    headerDisp.style.display = "flex"; authGroup.style.display = "none"; if(portAuthBtn) portAuthBtn.style.display = "none";
+    headerDisp.style.display = "flex"; 
+    authGroup.style.display = "none"; 
+    if(portAuthBtn) portAuthBtn.style.display = "none";
     document.getElementById("headerFullName").textContent = currentUser.fullname || currentUser.username; 
     document.getElementById("headerUsername").textContent = "@" + currentUser.username;
   } else {
-    headerDisp.style.display = "none"; authGroup.style.display = "flex"; if(portAuthBtn) portAuthBtn.style.display = "inline-block";
+    headerDisp.style.display = "none"; 
+    authGroup.style.display = "flex";
+    if(portAuthBtn) portAuthBtn.style.display = "inline-block";
   }
 }
 
-function loadProfile() {
-    if(!currentUser) return;
-    document.getElementById("username").value = currentUser.username;
-    document.getElementById("emailInput").value = currentUser.email;
-    document.getElementById("fullNameInput").value = currentUser.fullname;
-    document.getElementById("phone").value = currentUser.phone || "";
+async function saveUserData(){
+  if(!currentUser) return;
+  await supabaseClient.from('users').update({
+    phone: currentUser.phone,
+    fullname: currentUser.fullname,
+    balance: currentUser.balance,
+    invested: currentUser.invested,
+    profit: currentUser.profit
+  }).eq('username', currentUser.username);
+  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
 }
 
-function saveProfile() {
-    if(!currentUser) return toast("Login first");
-    currentUser.fullname = document.getElementById("fullNameInput").value;
-    currentUser.phone = document.getElementById("phone").value;
-    localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-    toast("Profile saved");
-}
-
-function updatePortfolio() {
-    if(currentUser) {
-        document.getElementById("balance").innerText = "$" + (currentUser.balance||0).toLocaleString();
-        document.getElementById("invested").innerText = "$" + (currentUser.invested||0).toLocaleString();
-        document.getElementById("profitTotal").innerText = "$" + (currentUser.profit||0).toLocaleString();
-        document.getElementById("portfolioGrid").style.display = "grid";
-    } else {
-        document.getElementById("balance").innerText = "$0.00";
-        document.getElementById("invested").innerText = "$0.00";
-        document.getElementById("profitTotal").innerText = "$0.00";
-        document.getElementById("portfolioGrid").style.display = "none";
-    }
-}
-
-function loadTransactions() {
-    let txs = JSON.parse(localStorage.getItem("bi_txs") || "[]");
-    let html = "";
-    txs.forEach(t => {
-        html += `<div class="row">
-            <div><b>${t.type}</b><br><span class="muted">${t.date}</span></div>
-            <div style="text-align:right"><b class="${t.amount>0?'green':'red'}">$${Math.abs(t.amount).toLocaleString()}</b><br><span class="muted">${t.status}</span></div>
-        </div>`;
-    });
-    document.getElementById("txList").innerHTML = html || "<span class='muted'>No transactions found.</span>";
-}
-
-function saveTx(type, amount, status) {
-    let txs = JSON.parse(localStorage.getItem("bi_txs") || "[]");
-    txs.unshift({type, amount, status, date: new Date().toLocaleString()});
-    localStorage.setItem("bi_txs", JSON.stringify(txs));
-}
-
-function clearTx() { localStorage.removeItem("bi_txs"); loadTransactions(); toast("History cleared"); }
-
-function setLang(l) {
-    localStorage.setItem("bi_lang", l);
-    let dict = T[l] || T.en;
-    document.querySelectorAll("[data-t]").forEach(el => {
-        let key = el.getAttribute("data-t");
-        if(dict[key]) {
-            if(el.tagName === "INPUT" && el.placeholder) el.placeholder = dict[key];
-            else el.innerHTML = dict[key];
-        }
-    });
-    renderPlans();
-    togglePaymentDetails();
+async function saveTx(type, amount, status){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').insert([{
+    username: currentUser.username,
+    type: type,
+    amount: amount,
+    status: status,
+    date: new Date().toLocaleString()
+  }]);
 }
 
 async function withdraw(){
   let a = +document.getElementById("withdrawAmount").value;
   let address = document.getElementById("withdrawAddress").value.trim();
   let crypto = document.getElementById("withdrawCrypto").value;
+  
   if(!currentUser) return openAuth("login");
   if(!address) return toast("Please enter your destination wallet address");
-  if(!a || a <= 0 || a > (currentUser.balance||0)) return toast("Insufficient balance or invalid amount");
+  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
   
   currentUser.balance -= a;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  saveTx('Withdrawal (' + crypto + ')', -a, 'Pending');
+  await saveUserData();
+  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
   updatePortfolio(); loadTransactions(); 
   toast("Withdrawal requested successfully!");
   
@@ -929,47 +1006,251 @@ async function invest(i){
   if(!currentUser) return openAuth("login");
   let min = plans[i][1], max = plans[i][2]; 
   let a = +prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
-  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max}`);
-  if(a > (currentUser.balance||0)) return toast("Insufficient balance!");
+  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
+  if(a > currentUser.balance) return toast("Insufficient balance");
   
   currentUser.balance -= a;
-  currentUser.invested = (currentUser.invested||0) + a;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  saveTx('Investment: ' + plans[i][0], -a, 'Active');
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Investment: ' + plans[i][0], a, 'Active');
   updatePortfolio(); loadTransactions(); toast("Investment activated!");
 }
 
-async function investCustom() {
-  if(!currentUser) return openAuth("login");
-  let a = parseFloat(document.getElementById("customAmount").value) || 0;
-  if(!a || a < 1 || a > 100000) return toast("Amount must be between $1 and $100,000");
-  if(a > (currentUser.balance||0)) return toast("Insufficient balance!");
+async function investCustom(){
+  if(!currentUser) return openAuth("login"); 
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
+  if(a > currentUser.balance) return toast("Insufficient balance");
   
   currentUser.balance -= a;
-  currentUser.invested = (currentUser.invested||0) + a;
-  localStorage.setItem("bi_current_user", JSON.stringify(currentUser));
-  saveTx('Custom Investment', -a, 'Active');
-  updatePortfolio(); loadTransactions(); toast("Custom plan activated!");
+  currentUser.invested += a;
+  await saveUserData();
+  await saveTx('Custom Investment ('+term+'d)', a, 'Active');
+  updatePortfolio(); loadTransactions(); toast("Custom investment created!");
 }
 
-function copyRef() {
-    navigator.clipboard.writeText(document.getElementById("refCode").innerText);
-    toast("Referral code copied!");
+function updatePortfolio(){
+  let u = currentUser;
+  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
+  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
+  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
 }
 
-window.onload = () => {
-    let savedLang = localStorage.getItem("bi_lang");
-    if(savedLang) { document.getElementById("lang").value = savedLang; setLang(savedLang); }
-    else setLang("fa"); // پیش‌فرض برای شما
+function renderCoins() {
+  const topCoins = document.getElementById("topCoins");
+  if(!topCoins) return;
+  topCoins.innerHTML = "";
+  for(let i=0; i<4; i++) {
+    let c = coins[i];
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
     
-    let savedUser = localStorage.getItem("bi_current_user");
-    if(savedUser) { currentUser = JSON.parse(savedUser); loadProfile(); updateHeaderAuthUI(); }
+    topCoins.innerHTML += `
+      <div class="card coin">
+        <img src="${iconUrl}" width="38" height="38" style="border-radius:50%">
+        <div style="flex:1">
+          <div class="coinTop"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div>
+          <div class="price">$${price}</div>
+          <div class="${colorClass}" style="font-size:12px;margin-top:4px">${sign}${change}%</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderTable() {
+  const table = document.getElementById("marketTable");
+  if(!table) return;
+  let q = (document.getElementById("search")?.value || "").toLowerCase();
+  table.innerHTML = "";
+  coins.forEach(c => {
+    if(!c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
+    let d = demo[c[2]] || [0,0,0,0];
+    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let change = d[1].toFixed(2);
+    let cap = (d[2]/1e9).toFixed(2);
+    let vol = (d[3]/1e9).toFixed(2);
+    let colorClass = change >= 0 ? "green" : "red";
+    let sign = change >= 0 ? "+" : "";
+    let isStar = stars.includes(c[0]);
+    let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
     
-    fetchRealPrices();
-    renderPlans();
-    calcCustom();
-    updatePortfolio();
-    togglePaymentDetails();
+    table.innerHTML += `
+      <tr>
+        <td><button class="star ${isStar?"on":""}" onclick="toggleStar('${c[0]}')">★</button></td>
+        <td><div style="display:flex;align-items:center;gap:10px"><img src="${iconUrl}" width="28" height="28" style="border-radius:50%"><b>${c[0]}</b> <span class="muted">${c[1]}</span></div></td>
+        <td>$${price}</td>
+        <td class="${colorClass}">${sign}${change}%</td>
+        <td>$${cap}B</td>
+        <td>$${vol}B</td>
+      </tr>
+    `;
+  });
+}
+
+function toggleStar(s){
+  if(stars.includes(s)) stars = stars.filter(x=>x!==s);
+  else stars.push(s);
+  localStorage.setItem("bi_stars", JSON.stringify(stars));
+  renderTable();
+}
+
+function renderPlans(){
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let uDict = uiTexts[lang] || uiTexts.en;
+  let pList = planNames[lang] || planNames.en;
+  const pContainer = document.getElementById("plans");
+  const homePlans = document.getElementById("homePlans");
+  if(!pContainer) return;
+  
+  let html = "";
+  plans.forEach((p, i) => {
+    let name = pList[i] ? pList[i][1] : p[0];
+    let badge = i === 1 ? `<div class="tag">${uDict.popular}</div>` : "";
+    html += `
+      <div class="card plan">
+        ${badge}
+        <h3>${name}</h3>
+        <div class="apy">${p[3]}% <span style="font-size:14px;color:var(--muted)">/ ${uDict.daily}</span></div>
+        <ul>
+          <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
+          <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
+          <li>${uDict.dailyProfit}: ~${p[3]}%</li>
+        </ul>
+        <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
+      </div>
+    `;
+  });
+  pContainer.innerHTML = html;
+  if(homePlans) homePlans.innerHTML = html;
+  
+  const select = document.getElementById("planSelect");
+  if(select){
+    select.innerHTML = "";
+    plans.forEach((p, i)=>{
+      let name = pList[i] ? pList[i][1] : p[0];
+      select.innerHTML += `<option value="${i}">${name} (${p[3]}% daily)</option>`;
+    });
+  }
+}
+
+function calc(){
+  let a = +document.getElementById("amount").value;
+  let idx = +document.getElementById("planSelect").value;
+  let p = plans[idx];
+  let total = a * (1 + (p[3]/100)*p[4]);
+  let profit = total - a;
+  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
+}
+
+function calcCustom(){
+  let a = +document.getElementById("customAmount").value;
+  let term = +document.getElementById("customTerm").value;
+  let dailyRate = term >= 60 ? 0.082 : term >= 30 ? 0.055 : 0.038;
+  let total = a * Math.pow(1 + dailyRate, term);
+  let profit = total - a;
+  let daily = a * dailyRate;
+  let monthly = daily * 30;
+  
+  document.getElementById("customResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("customDaily").textContent = "+$" + daily.toFixed(2);
+  document.getElementById("customMonthly").textContent = "+$" + monthly.toFixed(2);
+  document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+(dailyRate*100).toFixed(1)+"% daily est.)";
+  
+  let lang = localStorage.getItem("bi_lang") || "en";
+  let d = T[lang] || T.en;
+  document.getElementById("lockNotice").textContent = d.lockNoticeText || T.en.lockNoticeText;
+}
+
+async function loadTransactions(){
+  const tList = document.getElementById("txList");
+  if(!tList) return;
+  if(!currentUser){
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transaction history.</div>`;
+    return;
+  }
+  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
+  if(error || !data || data.length === 0){
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
+    return;
+  }
+  let html = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+  data.forEach(tx => {
+    let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
+    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  tList.innerHTML = html;
+}
+
+async function clearTx(){
+  if(!currentUser) return;
+  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+  loadTransactions(); toast("History cleared");
+}
+
+function copyRef(){
+  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username : "NEW"));
+  toast("Referral code copied!");
+}
+
+async function loadProfile(){
+  if(!currentUser) return;
+  document.getElementById("username").value = currentUser.username;
+  document.getElementById("emailInput").value = currentUser.email || "";
+  document.getElementById("fullNameInput").value = currentUser.fullname || "";
+  document.getElementById("phone").value = currentUser.phone || "";
+}
+
+async function saveProfile(){
+  if(!currentUser) return;
+  currentUser.fullname = document.getElementById("fullNameInput").value;
+  currentUser.phone = document.getElementById("phone").value;
+  await saveUserData();
+  updateHeaderAuthUI();
+  toast("Profile updated successfully!");
+}
+
+function setLang(lang){
+  localStorage.setItem("bi_lang", lang);
+  document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
+  let d = T[lang] || T.en;
+  document.querySelectorAll("[data-t]").forEach(el => {
+    let key = el.getAttribute("data-t");
+    if(d[key]) el.textContent = d[key];
+  });
+  renderPlans();
+  calcCustom();
+  togglePaymentDetails();
+}
+
+window.onload = function(){
+  let savedLang = localStorage.getItem("bi_lang") || "en";
+  document.getElementById("lang").value = savedLang;
+  setLang(savedLang);
+  
+  let savedUser = localStorage.getItem("bi_current_user");
+  if(savedUser){
+    try { currentUser = JSON.parse(savedUser); } catch(e){}
+  }
+  
+  updateHeaderAuthUI();
+  renderCoins();
+  renderTable();
+  renderPlans();
+  calc();
+  calcCustom();
+  fetchRealPrices();
+  setInterval(fetchRealPrices, 15000);
+  
+  if(currentUser) loadProfile();
 };
 </script>
 </body>
