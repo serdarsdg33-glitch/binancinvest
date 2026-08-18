@@ -1327,10 +1327,29 @@ html[dir="rtl"] .plan > .tag {
 
 <div class="card form" style="margin-top:20px">
     <h2 data-t="customTitle">Custom Investment Plan</h2>
-    <p class="muted" data-t="customDesc">Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.</p>
+    <p class="muted">Enter an amount from $10 to $10,000. The appropriate investment plan, daily rate and term will be selected automatically.</p>
     <div class="two">
-        <div><label data-t="customAmountLabel">Custom Amount ($1 - $100,000)</label><input id="customAmount" type="number" value="500" min="1" max="100000" oninput="calcCustom()"></div>
-        <div><label data-t="customTermLabel">Term (Days)</label><input id="customTerm" type="number" value="45" min="1" max="365" oninput="calcCustom()"></div>
+        <div>
+  <label>Investment Amount ($10 - $10,000)</label>
+  <input
+    id="customAmount"
+    type="number"
+    value="500"
+    min="10"
+    max="10000"
+    step="0.01"
+    oninput="calcCustom()"
+  >
+</div>
+        <div>
+  <label>Term (Automatically selected)</label>
+  <input
+    id="customTerm"
+    type="number"
+    value="60"
+    readonly
+  >
+</div>
     </div>
     <div style="margin-top:20px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
         <div><span class="muted" data-t="estimated">Estimated value</span><div id="customResult" style="font-size:26px;font-weight:900">$0.00</div></div>
@@ -2717,7 +2736,14 @@ const demo={
   ltc: [122, 1.1, 9.2e9, 0.52e9]
 };
 
-const plans=[["Starter",10,100,2.5,30],["Growth",110,1000,3.5,60],["Premium",1100,10000,4.5,90]];
+const plans = [
+  ["Starter", 10, 100, 2.5, 30],
+  ["Growth", 100.01, 1000, 3.5, 60],
+  ["Premium", 1000.01, 10000, 4.5, 90]
+];
+
+let currentInvestments = [];
+let portfolioTimer = null;
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
 let tempRegData=null, generatedEmailCode="";
@@ -3282,40 +3308,349 @@ async function withdraw(){
   document.getElementById("withdrawAddress").value = "";
 }
 
-async function invest(i){
-  if(!currentUser) return openAuth("login");
-  let min = plans[i][1], max = plans[i][2]; 
-  let a = +prompt(`Investment amount ($${min} - $${max.toLocaleString()}):`, min);
-  if(!a || a < min || a > max) return toast(`Amount must be between $${min} and $${max.toLocaleString()}`);
-  if(a > currentUser.balance) return toast("Insufficient balance");
-  
-  currentUser.balance -= a;
-  currentUser.invested += a;
-  await saveUserData();
-  await saveTx('Investment: ' + plans[i][0], a, 'Active');
-  updatePortfolio(); loadTransactions(); toast("Investment activated!");
+async function invest(i) {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const selectedPlan = plans[i];
+
+  if (!selectedPlan) {
+    toast("Invalid investment plan");
+    return;
+  }
+
+  const planName = selectedPlan[0];
+  const minimum = selectedPlan[1];
+  const maximum = selectedPlan[2];
+
+  const enteredAmount = prompt(
+    `${planName} investment amount ($${minimum} - $${maximum.toLocaleString()}):`,
+    minimum
+  );
+
+  if (enteredAmount === null) return;
+
+  const amount = Number(enteredAmount);
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < minimum ||
+    amount > maximum
+  ) {
+    toast(
+      `Amount must be between $${minimum} and $${maximum.toLocaleString()}`
+    );
+    return;
+  }
+
+  if (amount > Number(currentUser.balance || 0)) {
+    toast("Insufficient available balance");
+    return;
+  }
+
+  try {
+    const { error } = await supabaseClient.rpc(
+      "create_investment",
+      {
+        p_plan_name: planName,
+        p_amount: amount
+      }
+    );
+
+    if (error) throw error;
+
+    await refreshSecureAccount();
+    await updatePortfolio();
+
+    toast(`${planName} investment activated successfully`);
+  } catch (error) {
+    console.error("Investment error:", error);
+
+    toast(
+      error.message ||
+      "Investment could not be activated"
+    );
+  }
 }
 
-async function investCustom(){
-  if(!currentUser) return openAuth("login"); 
-  let a = +document.getElementById("customAmount").value;
-  let term = +document.getElementById("customTerm").value;
-  if(!a || a < 1 || a > 100000) return toast("Custom amount must be between $1 and $100,000"); 
-  if(a > currentUser.balance) return toast("Insufficient balance");
-  
-  currentUser.balance -= a;
-  currentUser.invested += a;
-  await saveUserData();
-  await saveTx('Custom Investment ('+term+'d)', a, 'Active');
-  updatePortfolio(); loadTransactions(); toast("Custom investment created!");
+async function investCustom() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const amount = Number(
+    document.getElementById("customAmount").value
+  );
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < 10 ||
+    amount > 10000
+  ) {
+    toast(
+      "Investment amount must be between $10 and $10,000"
+    );
+    return;
+  }
+
+  let planName = "";
+
+  if (amount <= 100) {
+    planName = "Starter";
+  } else if (amount <= 1000) {
+    planName = "Growth";
+  } else {
+    planName = "Premium";
+  }
+
+  if (
+    amount >
+    Number(currentUser.balance || 0)
+  ) {
+    toast("Insufficient available balance");
+    return;
+  }
+
+  try {
+    const { error } =
+      await supabaseClient.rpc(
+        "create_investment",
+        {
+          p_plan_name: planName,
+          p_amount: amount
+        }
+      );
+
+    if (error) throw error;
+
+    await refreshSecureAccount();
+    await updatePortfolio();
+
+    toast(
+      `${planName} investment activated successfully`
+    );
+  } catch (error) {
+    console.error(
+      "Custom investment error:",
+      error
+    );
+
+    toast(
+      error.message ||
+      "Investment could not be activated"
+    );
+  }
 }
 
-function updatePortfolio(){
-  let u = currentUser;
-  document.getElementById("balance").textContent = "$" + (u ? u.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  document.getElementById("invested").textContent = "$" + (u ? u.invested : 0).toLocaleString(undefined, {minimumFractionDigits: 2});
-  document.getElementById("profitTotal").textContent = "$" + (u ? (u.profit || 0) : 0).toFixed(2);
-  document.getElementById("level").textContent = u ? (u.invested >= 5000 ? "Premium" : u.invested >= 1000 ? "Silver" : "Basic") : "Basic";
+function formatPortfolioMoney(value, live = false) {
+  const amount = Number(value || 0);
+
+  return "$" + amount.toLocaleString(
+    undefined,
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: live ? 6 : 2
+    }
+  );
+}
+
+function calculateInvestmentProfit(investment) {
+  if (
+    investment.status === "cancelled" ||
+    investment.status === "pending"
+  ) {
+    return 0;
+  }
+
+  const startedAt =
+    new Date(investment.started_at).getTime();
+
+  const endsAt =
+    new Date(investment.ends_at).getTime();
+
+  if (
+    !Number.isFinite(startedAt) ||
+    !Number.isFinite(endsAt)
+  ) {
+    return 0;
+  }
+
+  const calculationTime = Math.min(
+    Date.now(),
+    endsAt
+  );
+
+  const elapsedMilliseconds = Math.max(
+    0,
+    calculationTime - startedAt
+  );
+
+  const elapsedDays =
+    elapsedMilliseconds / 86400000;
+
+  const principal =
+    Number(investment.principal || 0);
+
+  const dailyRate =
+    Number(investment.daily_rate || 0);
+
+  return (
+    principal *
+    (dailyRate / 100) *
+    elapsedDays
+  );
+}
+
+async function loadInvestments() {
+  if (!currentUser?.id) {
+    currentInvestments = [];
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("investments")
+    .select(
+      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at"
+    )
+    .eq("user_id", currentUser.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+    console.error(
+      "Load investments error:",
+      error
+    );
+
+    currentInvestments = [];
+    return;
+  }
+
+  currentInvestments = data || [];
+}
+
+function renderPortfolioLive() {
+  const balanceElement =
+    document.getElementById("balance");
+
+  const investedElement =
+    document.getElementById("invested");
+
+  const profitElement =
+    document.getElementById("profitTotal");
+
+  const levelElement =
+    document.getElementById("level");
+
+  if (
+    !balanceElement ||
+    !investedElement ||
+    !profitElement ||
+    !levelElement
+  ) {
+    return;
+  }
+
+  if (!currentUser?.id) {
+    balanceElement.textContent = "$0.00";
+    investedElement.textContent = "$0.00";
+    profitElement.textContent = "$0.00";
+    levelElement.textContent = "Basic";
+    return;
+  }
+
+  const validInvestments =
+    currentInvestments.filter(item =>
+      item.status === "active" ||
+      item.status === "completed"
+    );
+
+  const investedPrincipal =
+    validInvestments.reduce(
+      (total, item) =>
+        total + Number(item.principal || 0),
+      0
+    );
+
+  const totalProfit =
+    validInvestments.reduce(
+      (total, item) =>
+        total +
+        calculateInvestmentProfit(item),
+      0
+    );
+
+  const availableBalance =
+    Number(currentUser.balance || 0);
+
+  const totalPortfolioBalance =
+    availableBalance +
+    investedPrincipal +
+    totalProfit;
+
+  balanceElement.textContent =
+    formatPortfolioMoney(
+      totalPortfolioBalance,
+      true
+    );
+
+  investedElement.textContent =
+    formatPortfolioMoney(
+      investedPrincipal
+    );
+
+  profitElement.textContent =
+    formatPortfolioMoney(
+      totalProfit,
+      true
+    );
+
+  const activeInvestments =
+    currentInvestments.filter(item =>
+      item.status === "active" &&
+      Date.now() <
+        new Date(item.ends_at).getTime()
+    );
+
+  if (activeInvestments.length === 0) {
+    levelElement.textContent = "Basic";
+    return;
+  }
+
+  const highestPlan =
+    activeInvestments.reduce(
+      (highest, item) => {
+        if (!highest) return item;
+
+        return Number(item.daily_rate) >
+          Number(highest.daily_rate)
+          ? item
+          : highest;
+      },
+      null
+    );
+
+  levelElement.textContent =
+    `${highestPlan.plan_name} · ` +
+    `${Number(highestPlan.daily_rate)}% Daily`;
+}
+
+async function updatePortfolio() {
+  if (portfolioTimer) {
+    clearInterval(portfolioTimer);
+    portfolioTimer = null;
+  }
+
+  await loadInvestments();
+  renderPortfolioLive();
+
+  portfolioTimer = setInterval(() => {
+    renderPortfolioLive();
+  }, 1000);
 }
 
 function renderCoins() {
@@ -3431,23 +3766,84 @@ function calc(){
   document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
 }
 
-function calcCustom(){
-  let a = +document.getElementById("customAmount").value;
-  let term = +document.getElementById("customTerm").value;
-  let dailyRate = term >= 60 ? 0.082 : term >= 30 ? 0.055 : 0.038;
-  let total = a * Math.pow(1 + dailyRate, term);
-  let profit = total - a;
-  let daily = a * dailyRate;
-  let monthly = daily * 30;
-  
-  document.getElementById("customResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById("customDaily").textContent = "+$" + daily.toFixed(2);
-  document.getElementById("customMonthly").textContent = "+$" + monthly.toFixed(2);
-  document.getElementById("customProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit ("+(dailyRate*100).toFixed(1)+"% daily est.)";
-  
-  let lang = localStorage.getItem("bi_lang") || "en";
-  let d = T[lang] || T.en;
-  document.getElementById("lockNotice").textContent = d.lockNoticeText || T.en.lockNoticeText;
+function calcCustom() {
+  const amount = Number(
+    document.getElementById("customAmount").value
+  );
+
+  let planName = "";
+  let dailyRate = 0;
+  let term = 0;
+
+  if (amount >= 10 && amount <= 100) {
+    planName = "Starter";
+    dailyRate = 2.5;
+    term = 30;
+  } else if (amount > 100 && amount <= 1000) {
+    planName = "Growth";
+    dailyRate = 3.5;
+    term = 60;
+  } else if (amount > 1000 && amount <= 10000) {
+    planName = "Premium";
+    dailyRate = 4.5;
+    term = 90;
+  }
+
+  const termInput =
+    document.getElementById("customTerm");
+
+  if (termInput) {
+    termInput.value = term || "";
+    termInput.readOnly = true;
+  }
+
+  const totalProfit =
+    amount * (dailyRate / 100) * term;
+
+  const estimatedValue =
+    amount + totalProfit;
+
+  const dailyProfit =
+    amount * (dailyRate / 100);
+
+  const monthlyProfit =
+    dailyProfit * 30;
+
+  document.getElementById(
+    "customResult"
+  ).textContent =
+    formatPortfolioMoney(estimatedValue);
+
+  document.getElementById(
+    "customDaily"
+  ).textContent =
+    "+" + formatPortfolioMoney(dailyProfit);
+
+  document.getElementById(
+    "customMonthly"
+  ).textContent =
+    "+" + formatPortfolioMoney(monthlyProfit);
+
+  document.getElementById(
+    "customProfit"
+  ).textContent =
+    planName
+      ? `${planName} · ${dailyRate}% daily · ` +
+        `${formatPortfolioMoney(totalProfit)} total profit`
+      : "Enter an amount between $10 and $10,000";
+
+  const lang =
+    localStorage.getItem("bi_lang") || "en";
+
+  const dictionary =
+    T[lang] || T.en;
+
+  document.getElementById(
+    "lockNotice"
+  ).textContent =
+    planName
+      ? `${planName}: ${dailyRate}% daily for ${term} days`
+      : : "Enter an amount between $10 and $10,000";
 }
 
 async function loadTransactions(){
