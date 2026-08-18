@@ -2283,9 +2283,12 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .referral-history-hint {display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:9px 11px;color:#c6ced8;font-size:10px;line-height:1.6;background:rgba(85,119,255,.07);border:1px solid rgba(85,119,255,.2);border-radius:9px}.referral-history-hint span {color:#8fa7ff;font-weight:900}
 .password-requirements {margin:0 0 7px;padding:8px 10px;color:#b8c1cc;font-size:10px;line-height:1.55;background:rgba(240,185,11,.06);border:1px solid rgba(240,185,11,.18);border-radius:8px}.password-requirements b {color:var(--gold2)}
 .auth-success-popup {position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.auth-success-popup.show {display:flex;animation:authSuccessBackdrop .2s ease}.auth-success-popup-box {width:min(330px,calc(100% - 20px));padding:23px 19px;text-align:center;background:linear-gradient(145deg,#151c25,#090e14);border:1px solid rgba(22,199,132,.42);border-radius:17px;box-shadow:0 25px 70px rgba(0,0,0,.72),0 0 25px rgba(22,199,132,.1);animation:authSuccessBox .28s ease}.auth-success-popup-icon {width:52px;height:52px;margin:0 auto 12px;display:grid;place-items:center;color:#07150f;font-size:26px;font-weight:950;background:linear-gradient(135deg,#8dffd2,#16c784);border-radius:50%;box-shadow:0 8px 24px rgba(22,199,132,.25)}.auth-success-popup h3 {margin:0 0 7px;font-size:19px}.auth-success-popup p {margin:0;color:#aeb7c3;font-size:11px;line-height:1.65}.auth-success-progress {height:3px;margin-top:15px;overflow:hidden;background:rgba(255,255,255,.08);border-radius:999px}.auth-success-progress::after {content:"";display:block;width:100%;height:100%;background:var(--green);transform-origin:left;animation:authSuccessProgress 1.8s linear forwards}html[dir="rtl"] .auth-success-progress::after {transform-origin:right}
+.portfolio-vip-quick {margin:14px 0;padding:17px 18px;background:radial-gradient(circle at 96% 0%,rgba(240,185,11,.13),transparent 35%),linear-gradient(145deg,#141b23,#090e14);border:1px solid rgba(240,185,11,.32);border-radius:16px;box-shadow:0 13px 35px rgba(0,0,0,.36)}.portfolio-vip-head {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}.portfolio-vip-title {display:flex;align-items:center;gap:11px}.portfolio-vip-mini-icon {width:40px;height:40px;display:grid;place-items:center;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:11px;font-size:18px}.portfolio-vip-title h3 {margin:0 0 4px;font-size:16px}.portfolio-vip-title p {margin:0;color:var(--muted);font-size:9px}.portfolio-vip-badge {padding:7px 10px;color:var(--gold2);background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.27);border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}.portfolio-vip-grid {display:grid;grid-template-columns:minmax(150px,1.35fr) repeat(3,minmax(105px,.65fr)) auto;align-items:end;gap:8px}.portfolio-vip-field label {display:block;margin-bottom:6px;color:#b9c2cd;font-size:9px}.portfolio-vip-input-row {display:grid;grid-template-columns:1fr auto;gap:6px}.portfolio-vip-input-row input {min-width:0;width:100%;padding:10px;text-align:center;font-weight:850}.portfolio-vip-metric {min-height:57px;padding:9px;text-align:center;background:rgba(255,255,255,.024);border:1px solid rgba(255,255,255,.075);border-radius:10px}.portfolio-vip-metric span,.portfolio-vip-metric strong {display:block}.portfolio-vip-metric span {margin-bottom:5px;color:var(--muted);font-size:8px}.portfolio-vip-metric strong {color:var(--green);font-size:12px}.portfolio-vip-button {min-height:57px;padding:9px 15px;white-space:nowrap}.portfolio-vip-error {display:none;margin-top:9px;padding:8px;color:#ffabb2;font-size:10px;background:rgba(234,57,67,.09);border:1px solid rgba(234,57,67,.24);border-radius:8px}.portfolio-vip-error.show {display:block}
 @keyframes authSuccessBackdrop {from{opacity:0}to{opacity:1}}@keyframes authSuccessBox {from{opacity:0;transform:translateY(9px) scale(.96)}to{opacity:1;transform:none}}@keyframes authSuccessProgress {from{transform:scaleX(1)}to{transform:scaleX(0)}}
 @media(max-width:760px){.referral-home-card{grid-template-columns:auto 1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
 @media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}}
+@media(max-width:850px){.portfolio-vip-grid{grid-template-columns:1fr 1fr}.portfolio-vip-field{grid-column:1/-1}.portfolio-vip-button{grid-column:1/-1;width:100%}}
+@media(max-width:480px){.portfolio-vip-quick{padding:14px 12px}.portfolio-vip-head{align-items:flex-start}.portfolio-vip-grid{grid-template-columns:1fr}.portfolio-vip-field,.portfolio-vip-button{grid-column:auto}.portfolio-vip-badge{font-size:8px}.portfolio-vip-metric{min-height:52px}}
 </style>
 </head>
 <body>
@@ -2739,6 +2742,45 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 
 </div>
   
+  <div class="portfolio-vip-quick">
+    <div class="portfolio-vip-head">
+      <div class="portfolio-vip-title">
+        <div class="portfolio-vip-mini-icon">🔒</div>
+        <div>
+          <h3>Quick VIP 60-Day Lock</h3>
+          <p>Lock available balance directly from your portfolio.</p>
+        </div>
+      </div>
+      <span class="portfolio-vip-badge">5.5% DAILY</span>
+    </div>
+
+    <div class="portfolio-vip-grid">
+      <div class="portfolio-vip-field">
+        <label for="portfolioVipLockAmount">Amount to lock ($10 – $10,000)</label>
+        <div class="portfolio-vip-input-row">
+          <input id="portfolioVipLockAmount" type="number" min="10" max="10000" step="1" value="500" oninput="calculatePortfolioVipLock()">
+          <button class="btn" type="button" onclick="setPortfolioVipMaximum()">MAX</button>
+        </div>
+      </div>
+
+      <div class="portfolio-vip-metric">
+        <span>Available balance</span>
+        <strong id="portfolioVipAvailable">$0.00</strong>
+      </div>
+      <div class="portfolio-vip-metric">
+        <span>Daily calculation</span>
+        <strong id="portfolioVipDaily">$27.50</strong>
+      </div>
+      <div class="portfolio-vip-metric">
+        <span>60-day calculation</span>
+        <strong id="portfolioVipTotal">$1,650.00</strong>
+      </div>
+
+      <button class="btn gold portfolio-vip-button" type="button" onclick="openPortfolioVipLockConfirmation()">Lock From Balance</button>
+    </div>
+    <div id="portfolioVipError" class="portfolio-vip-error"></div>
+  </div>
+
   <div class="portfolio-grid" id="portfolioGrid">
     <div class="card form" style="padding: 25px; border: 1px solid rgba(240,185,11,0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
       <h2 data-t="deposit" style="font-size: 22px; color: var(--gold); margin-bottom: 8px;">Deposit</h2>
@@ -4781,6 +4823,7 @@ function page(id, button) {
   if (id === "portfolio") {
     updatePortfolio();
     loadReferralDashboard();
+    calculatePortfolioVipLock();
     togglePaymentDetails();
   }
 
@@ -5228,6 +5271,105 @@ function setVipMaximumAmount() {
 
   calculateVipLock();
 }
+
+function calculatePortfolioVipLock() {
+  const input = document.getElementById("portfolioVipLockAmount");
+  const dailyElement = document.getElementById("portfolioVipDaily");
+  const totalElement = document.getElementById("portfolioVipTotal");
+  const availableElement = document.getElementById("portfolioVipAvailable");
+  const errorBox = document.getElementById("portfolioVipError");
+
+  if (!input || !dailyElement || !totalElement) return;
+
+  const amount = Number(input.value);
+  const availableBalance = Number(currentUser?.balance || 0);
+
+  if (availableElement) {
+    availableElement.textContent = formatPortfolioMoney(availableBalance);
+  }
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < VIP_LOCK_MINIMUM ||
+    amount > VIP_LOCK_MAXIMUM
+  ) {
+    dailyElement.textContent = "$0.00";
+    totalElement.textContent = "$0.00";
+    if (errorBox) {
+      errorBox.textContent = "Enter an amount between $10 and $10,000.";
+      errorBox.classList.add("show");
+    }
+    return;
+  }
+
+  dailyElement.textContent = formatPortfolioMoney(
+    amount * (VIP_LOCK_RATE / 100)
+  );
+  totalElement.textContent = formatPortfolioMoney(
+    amount * (VIP_LOCK_RATE / 100) * VIP_LOCK_TERM
+  );
+
+  if (errorBox) {
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+  }
+}
+
+function setPortfolioVipMaximum() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const input = document.getElementById("portfolioVipLockAmount");
+  if (!input) return;
+
+  input.value = Math.min(
+    VIP_LOCK_MAXIMUM,
+    Math.max(0, Number(currentUser.balance || 0))
+  );
+
+  calculatePortfolioVipLock();
+}
+
+function openPortfolioVipLockConfirmation() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const compactInput = document.getElementById("portfolioVipLockAmount");
+  const mainInput = document.getElementById("vipLockAmount");
+  const errorBox = document.getElementById("portfolioVipError");
+  const amount = Number(compactInput?.value);
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < VIP_LOCK_MINIMUM ||
+    amount > VIP_LOCK_MAXIMUM
+  ) {
+    calculatePortfolioVipLock();
+    return;
+  }
+
+  const availableBalance = Number(currentUser.balance || 0);
+  if (amount > availableBalance) {
+    if (errorBox) {
+      errorBox.textContent =
+        `Insufficient available balance. Available: ${formatPortfolioMoney(availableBalance)}.`;
+      errorBox.classList.add("show");
+    }
+    compactInput?.focus();
+    return;
+  }
+
+  if (mainInput) {
+    mainInput.value = amount;
+    calculateVipLock();
+  }
+
+  openVipLockConfirmation();
+}
 let pendingVipLockAmount = 0;
 
 function openVipLockConfirmation() {
@@ -5352,6 +5494,16 @@ document.getElementById(
 ).value = "500";
 
 calculateVipLock();
+
+const portfolioVipInput = document.getElementById(
+  "portfolioVipLockAmount"
+);
+
+if (portfolioVipInput) {
+  portfolioVipInput.value = "500";
+}
+
+calculatePortfolioVipLock();
 
 page(
   "portfolio",
@@ -7223,6 +7375,7 @@ restoreEmailConfirmationNotice();
   calc();
  calcCustom();
 calculateVipLock();
+calculatePortfolioVipLock();
 fetchRealPrices();
   setInterval(fetchRealPrices, 15000);
 
