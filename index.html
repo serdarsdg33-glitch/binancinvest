@@ -1583,156 +1583,6 @@ html[dir="rtl"] .plan-selection-label {
     height: 370px;
   }
 }
-/* Professional circular security logos */
-.security-partners {
-  width: min(850px, 100%);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.security-partner {
-  min-height: 105px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  text-align: left;
-  background:
-    linear-gradient(145deg, rgba(21,28,36,.92), rgba(10,14,20,.96));
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 18px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 14px 35px rgba(0,0,0,.38);
-  transition: transform .25s ease, border-color .25s ease;
-}
-
-.security-partner:hover {
-  transform: translateY(-4px);
-  border-color: rgba(240,185,11,.42);
-}
-
-.security-logo {
-  position: relative;
-  width: 62px;
-  height: 62px;
-  min-width: 62px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  box-shadow:
-    inset 0 1px 2px rgba(255,255,255,.5),
-    inset 0 -8px 14px rgba(0,0,0,.25),
-    0 8px 22px rgba(0,0,0,.45);
-}
-
-.security-logo::before {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 11px;
-  width: 27px;
-  height: 13px;
-  background: rgba(255,255,255,.35);
-  border-radius: 50%;
-  transform: rotate(-20deg);
-  filter: blur(1px);
-}
-
-.security-logo svg {
-  position: relative;
-  z-index: 2;
-  width: 32px;
-  height: 32px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.ssl-logo {
-  color: #062219;
-  background: radial-gradient(circle at 30% 20%, #baffdf, #16c784 55%, #08764e);
-  border: 1px solid #69e9b7;
-}
-
-.custody-logo {
-  color: #211700;
-  background: radial-gradient(circle at 30% 20%, #fff4a9, #f0b90b 55%, #9c6d00);
-  border: 1px solid #ffe15b;
-}
-
-.account-logo {
-  color: #07172b;
-  background: radial-gradient(circle at 30% 20%, #bcd1ff, #5577ff 55%, #263ca5);
-  border: 1px solid #91aaff;
-}
-
-.security-partner-text {
-  min-width: 0;
-}
-
-.security-partner-text b {
-  display: block;
-  color: #f4f7fb;
-  font-size: 15px;
-  line-height: 1.3;
-}
-
-.security-partner-text span {
-  display: block;
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-html[dir="rtl"] .security-partner {
-  text-align: right;
-}
-
-@media(max-width:700px) {
-  .security-partners {
-    grid-template-columns: 1fr;
-    max-width: 390px;
-  }
-
-  .security-partner {
-    min-height: 88px;
-    padding: 13px 15px;
-  }
-
-  .security-logo {
-    width: 55px;
-    height: 55px;
-    min-width: 55px;
-  }
-
-  .security-logo svg {
-    width: 28px;
-    height: 28px;
-  }
-}
-.security-partners .partner-logo-box {
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.security-partners .partner-logo-box:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
-    border-color: rgba(0, 123, 255, 0.2);
-}
-
-.tracking-wider {
-    letter-spacing: 1px;
-    font-size: 0.9rem;
-}
-
 </style>
 </head>
 <body>
@@ -1879,50 +1729,67 @@ html[dir="rtl"] .security-partner {
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
         <h4 class="muted" data-t="securityPartners" style="margin-bottom:15px;">Security Partners & Protection</h4>
-        <section class="security-partners py-5 bg-light border-top">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h5 class="text-muted fw-bold text-uppercase tracking-wider">امنیت و استانداردهای تایید شده</h5>
-            <p class="text-secondary small">ما از زیرساخت‌ها و استانداردهای امنیتی پیشرو در جهان بهره می‌بریم</p>
-        </div>
-        
-        <div class="row align-items-center justify-content-center g-4">
-            <!-- لوگوی McAfee -->
-            <div class="col-6 col-md-3 col-lg-2 text-center">
-                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/McAfee_Logo.svg" alt="McAfee Security" class="img-fluid" style="max-height: 40px; object-fit: contain;">
-                </div>
-            </div>
+        <div class="security-brands-grid">
 
-            <!-- لوگوی Cloudflare -->
-            <div class="col-6 col-md-3 col-lg-2 text-center">
-                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.svg" alt="Cloudflare Protected" class="img-fluid" style="max-height: 35px; object-fit: contain;">
-                </div>
-            </div>
-
-            <!-- گواهینامه DigiCert -->
-            <div class="col-6 col-md-3 col-lg-2 text-center">
-                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DigiCert_logo.svg" alt="DigiCert SSL" class="img-fluid" style="max-height: 30px; object-fit: contain;">
-                </div>
-            </div>
-
-            <!-- استاندارد ISO 27001 -->
-            <div class="col-6 col-md-3 col-lg-2 text-center">
-                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
-                    <div class="d-flex align-items-center justify-content-center text-dark fw-bold">
-                        <i class="fas fa-shield-alt text-primary fs-3 me-2"></i>
-                        <span style="font-size: 0.85rem; line-height: 1.1;">ISO/IEC<br><strong>27001</strong></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="security-brand-card security-mcafee">
+    <div class="security-brand-circle">
+      <img
+        src="https://cdn.simpleicons.org/mcafee/C01818"
+        alt="McAfee"
+        loading="lazy"
+      >
     </div>
-</section>
 
+    <div class="security-brand-info">
+      <strong>McAfee</strong>
+      <span>Security Protection</span>
+    </div>
+  </div>
 
-</div>  </div>
+  <div class="security-brand-card security-cloudflare">
+    <div class="security-brand-circle">
+      <img
+        src="https://cdn.simpleicons.org/cloudflare/F38020"
+        alt="Cloudflare"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="security-brand-info">
+      <strong>Cloudflare</strong>
+      <span>Network Protection</span>
+    </div>
+  </div>
+
+  <div class="security-brand-card security-digicert">
+    <div class="security-brand-circle">
+      <img
+        src="https://cdn.simpleicons.org/digicert/00A1E0"
+        alt="DigiCert"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="security-brand-info">
+      <strong>DigiCert</strong>
+      <span>SSL Certificate</span>
+    </div>
+  </div>
+
+  <div class="security-brand-card security-iso">
+    <div class="security-brand-circle iso-circle">
+      <div class="iso-logo">
+        <span>ISO/IEC</span>
+        <b>27001</b>
+      </div>
+    </div>
+
+    <div class="security-brand-info">
+      <strong>ISO/IEC 27001</strong>
+      <span>Security Standard</span>
+    </div>
+  </div>
+  
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
         <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
         <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
@@ -3916,7 +3783,6 @@ async function submitAuth() {
       closeAuth();
       toast("Signed in successfully");
     }
-
 
     else if (authMode === "forgot") {
       const email = document
