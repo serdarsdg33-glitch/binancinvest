@@ -4157,8 +4157,8 @@ const demo={
 
 const plans = [
   ["Starter", 10, 100, 2.5, 30],
-  ["Growth", 100, 1000, 3.5, 60],
-  ["Premium", 1000, 10000, 4.5, 90]
+  ["Growth", 101, 1000, 3.5, 60],
+  ["Premium", 1001, 10000, 4.5, 90]
 ];
 
 let currentInvestments = [];
@@ -5692,7 +5692,7 @@ balanceElement.textContent =
       true
     );
 
-  const activeRegularInvestments =
+   const activeRegularInvestments =
     regularInvestments.filter(item => {
       const endTime =
         new Date(item.ends_at).getTime();
@@ -5704,33 +5704,24 @@ balanceElement.textContent =
       );
     });
 
-  if (activeRegularInvestments.length === 0) {
+  const activeRegularPrincipal =
+    activeRegularInvestments.reduce(
+      (total, item) =>
+        total + Number(item.principal || 0),
+      0
+    );
+
+  if (activeRegularPrincipal < 10) {
     levelElement.textContent = "Basic";
-  } else {
-    const planPriority = {
-      Starter: 1,
-      Growth: 2,
-      Premium: 3
-    };
-
-    const highestPlan =
-      activeRegularInvestments.reduce(
-        (highest, item) => {
-          if (!highest) return item;
-
-          return (
-            planPriority[item.plan_name] >
-            planPriority[highest.plan_name]
-          )
-            ? item
-            : highest;
-        },
-        null
-      );
-
+  } else if (activeRegularPrincipal <= 100) {
     levelElement.textContent =
-      `${highestPlan.plan_name} · ` +
-      `${Number(highestPlan.daily_rate)}% Daily`;
+      "Starter · 2.5% Daily";
+  } else if (activeRegularPrincipal <= 1000) {
+    levelElement.textContent =
+      "Growth · 3.5% Daily";
+  } else {
+    levelElement.textContent =
+      "Premium · 4.5% Daily";
   }
 
   /*
