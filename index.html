@@ -5211,7 +5211,7 @@ function renderVipPortfolioContracts() {
 
   const vipContracts =
     currentInvestments.filter(item =>
-      item.plan_name === "VIP 60-Day Lock" &&
+      item.plan_name === "VIP_LOCK" &&
       (
         item.status === "active" ||
         item.status === "completed"
@@ -5353,13 +5353,20 @@ function renderPortfolioLive() {
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
     levelElement.textContent = "Basic";
+
     renderVipPortfolioContracts();
     return;
   }
 
+  /*
+   * فقط سه پلن عادی وارد کارت‌های اصلی سبد می‌شوند.
+   * VIP_LOCK کاملاً از این محاسبات خارج است.
+   */
   const regularInvestments =
     currentInvestments.filter(item =>
-      item.plan_name !== "VIP 60-Day Lock" &&
+      ["Starter", "Growth", "Premium"].includes(
+        String(item.plan_name || "")
+      ) &&
       (
         item.status === "active" ||
         item.status === "completed"
@@ -5380,6 +5387,10 @@ function renderPortfolioLive() {
       0
     );
 
+  /*
+   * این مقدار فقط موجودی آزاد کاربر است.
+   * اصل سرمایه VIP و سود نمایشی VIP به آن اضافه نمی‌شود.
+   */
   const availableBalance =
     Number(currentUser.balance || 0);
 
@@ -5401,22 +5412,35 @@ function renderPortfolioLive() {
     );
 
   const activeRegularInvestments =
-    regularInvestments.filter(item =>
-      item.status === "active" &&
-      Date.now() <
-        new Date(item.ends_at).getTime()
-    );
+    regularInvestments.filter(item => {
+      const endTime =
+        new Date(item.ends_at).getTime();
+
+      return (
+        item.status === "active" &&
+        Number.isFinite(endTime) &&
+        Date.now() < endTime
+      );
+    });
 
   if (activeRegularInvestments.length === 0) {
     levelElement.textContent = "Basic";
   } else {
+    const planPriority = {
+      Starter: 1,
+      Growth: 2,
+      Premium: 3
+    };
+
     const highestPlan =
       activeRegularInvestments.reduce(
         (highest, item) => {
           if (!highest) return item;
 
-          return Number(item.daily_rate) >
-            Number(highest.daily_rate)
+          return (
+            planPriority[item.plan_name] >
+            planPriority[highest.plan_name]
+          )
             ? item
             : highest;
         },
@@ -5428,6 +5452,9 @@ function renderPortfolioLive() {
       `${Number(highestPlan.daily_rate)}% Daily`;
   }
 
+  /*
+   * VIP فقط در بخش اختصاصی خودش رندر می‌شود.
+   */
   renderVipPortfolioContracts();
 }
 async function updatePortfolio() {
