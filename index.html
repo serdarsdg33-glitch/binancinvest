@@ -3093,31 +3093,18 @@ async function submitAuth() {
       toast("Signed in successfully");
     }
 
-  else if (authMode === "forgot") {
-  const email =
-    document
-      .getElementById("forgotInput")
-      .value
-      .trim()
-      .toLowerCase();
 
-  await sendPasswordRecovery(email);
-  closeAuth();
-}
+    else if (authMode === "forgot") {
+      const email = document
+        .getElementById("forgotInput")
+        .value
+        .trim()
+        .toLowerCase();
 
-const { error } =
-  await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo:
-      window.location.origin + "/reset-password.html"
-  });
-
-if (error) throw error;
-
-      if (error) throw error;
-
+      await sendPasswordRecovery(email);
       closeAuth();
-      toast("Password reset link sent to your email");
     }
+
   } catch (error) {
     console.error(error);
     toast(error.message || "Authentication failed");
