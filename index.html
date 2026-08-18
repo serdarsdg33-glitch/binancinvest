@@ -1838,7 +1838,13 @@ html[dir="rtl"] .plan-selection-label {
   </svg>
 </div>
             <div class="stat-circle-info">
-                <div class="stat-circle-value" style="color:var(--green)">$8,452,000+</div>
+                <div
+  id="total-profit"
+  class="stat-circle-value"
+  style="color:var(--green)"
+>
+  $8,452,000+
+</div>
                 <div class="stat-circle-label" data-t="statPaid">Total Profit Paid</div>
             </div>
         </div>
@@ -5346,9 +5352,40 @@ restoreEmailConfirmationNotice();
     loadProfile();
   }
 
-  updateSupportAuthUI();
+    updateSupportAuthUI();
 };
+
+/* Total Profit Counter */
+const BASE_PROFIT = 8452000;
+const START_TIME = new Date("2026-08-18T00:00:00Z").getTime();
+const INCREMENT_PER_SECOND = 1;
+
+function updateProfitCounter() {
+  const counterElement =
+    document.getElementById("total-profit");
+
+  if (!counterElement) return;
+
+  const elapsedSeconds = Math.max(
+    0,
+    Math.floor((Date.now() - START_TIME) / 1000)
+  );
+
+  const currentProfit =
+    BASE_PROFIT +
+    elapsedSeconds * INCREMENT_PER_SECOND;
+
+  counterElement.textContent =
+    "$" +
+    currentProfit.toLocaleString("en-US") +
+    "+";
+}
+
+updateProfitCounter();
+
+setInterval(updateProfitCounter, 1000);
 </script>
+
 <script>
 /* Secure Supabase financial and support patch */
 function showTransactionSuccessModal(type) {
