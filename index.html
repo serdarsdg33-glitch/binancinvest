@@ -1553,6 +1553,36 @@ html[dir="rtl"] .plan-selection-label {
   padding: 9px 7px;
   font-size: 11px;
 }
+/* Larger Live Withdrawals section */
+.live-withdrawals-container {
+  height: 390px;
+  padding: 12px;
+}
+
+@media(max-width:600px) {
+  .live-withdrawals-container {
+    height: 360px;
+    padding: 9px;
+  }
+
+  .live-withdraw {
+    min-height: 68px;
+    padding: 13px 10px;
+  }
+
+  .live-amount {
+    font-size: 14px;
+  }
+}
+.live-withdrawals-container {
+  height: 380px;
+}
+
+@media(max-width:600px) {
+  .live-withdrawals-container {
+    height: 370px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1708,7 +1738,15 @@ html[dir="rtl"] .plan-selection-label {
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
         <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
         <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
-        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">binancinvest@zohomail.eu</a>
+        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">support@binancinvest.com</a>
+        <button
+  class="btn gold"
+  type="button"
+  onclick="openOnlineSupport()"
+  style="display:block;width:100%;max-width:280px;margin:12px auto 0;padding:11px 18px;"
+>
+  ◉ Online Chat
+</button>
     </div>
     <div style="margin-top: 30px; font-size: 0.8rem;" data-t="footerCopy">&copy; 2026 Binance Invest Global. All rights reserved.</div>
 </div>
@@ -3464,7 +3502,14 @@ function addLiveWithdrawal() {
         <div class="live-amount">+$${amount} USD</div>
     `;
     list.prepend(div);
-    if(list.children.length > 5) list.removeChild(list.lastChild);
+
+const withdrawalItems =
+  list.querySelectorAll(".live-withdraw");
+
+if (withdrawalItems.length > 5) {
+  withdrawalItems[
+    withdrawalItems.length - 1
+  ].remove();
 }
 
 setInterval(addLiveWithdrawal, 5000);
@@ -5030,6 +5075,12 @@ function formatSupportDate(value) {
   }
 
   return date.toLocaleString();
+}
+function openOnlineSupport() {
+  page(
+    "support",
+    document.querySelector('[data-page="support"]')
+  );
 }
 function setLang(lang){
   localStorage.setItem("bi_lang", lang);
