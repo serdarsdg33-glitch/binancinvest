@@ -1734,10 +1734,16 @@ html[dir="rtl"] .plan > .tag {
 // اتصال به Supabase
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+const PENDING_CONFIRMATION_KEY =
+  "bi_pending_confirmation_email";
+
 const PASSWORD_RECOVERY_EMAIL_KEY =
   "bi_password_recovery_email";
-
 const IS_PASSWORD_RECOVERY_LINK =
   window.location.search.includes("password_recovery=1") ||
   window.location.hash.includes("type=recovery");
