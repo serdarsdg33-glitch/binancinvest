@@ -1736,7 +1736,15 @@ const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_ANON_KEY
+  SUPABASE_ANON_KEY,
+  {
+    auth: {
+      storageKey: "bi_customer_session",
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
 );
 
 const PENDING_CONFIRMATION_KEY =
@@ -3179,7 +3187,9 @@ async function restoreAuthSession() {
 }
 
 async function logout() {
-  await supabaseClient.auth.signOut();
+  await supabaseClient.auth.signOut({
+  scope: "local"
+});
   currentUser = null;
   updateHeaderAuthUI();
   updatePortfolio();
