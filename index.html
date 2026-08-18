@@ -2280,6 +2280,10 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .referral-status-paid {color:var(--green);background:rgba(22,199,132,.09);border:1px solid rgba(22,199,132,.28)}
 .referral-reward-detail {text-align:right}.referral-reward-detail strong {display:block;color:var(--green);font-size:14px}.referral-reward-detail span {display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}html[dir="rtl"] .referral-reward-detail{text-align:left}
 .referral-history-legend {display:flex;flex-wrap:wrap;gap:7px;margin-top:15px;padding-top:14px;border-top:1px solid #ffffff0d}.referral-history-empty {padding:28px 12px;text-align:center;color:var(--muted);background:rgba(255,255,255,.018);border:1px dashed rgba(255,255,255,.1);border-radius:12px}
+.referral-history-hint {display:flex;align-items:flex-start;gap:8px;margin-top:12px;padding:9px 11px;color:#c6ced8;font-size:10px;line-height:1.6;background:rgba(85,119,255,.07);border:1px solid rgba(85,119,255,.2);border-radius:9px}.referral-history-hint span {color:#8fa7ff;font-weight:900}
+.password-requirements {margin:0 0 7px;padding:8px 10px;color:#b8c1cc;font-size:10px;line-height:1.55;background:rgba(240,185,11,.06);border:1px solid rgba(240,185,11,.18);border-radius:8px}.password-requirements b {color:var(--gold2)}
+.auth-success-popup {position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.auth-success-popup.show {display:flex;animation:authSuccessBackdrop .2s ease}.auth-success-popup-box {width:min(330px,calc(100% - 20px));padding:23px 19px;text-align:center;background:linear-gradient(145deg,#151c25,#090e14);border:1px solid rgba(22,199,132,.42);border-radius:17px;box-shadow:0 25px 70px rgba(0,0,0,.72),0 0 25px rgba(22,199,132,.1);animation:authSuccessBox .28s ease}.auth-success-popup-icon {width:52px;height:52px;margin:0 auto 12px;display:grid;place-items:center;color:#07150f;font-size:26px;font-weight:950;background:linear-gradient(135deg,#8dffd2,#16c784);border-radius:50%;box-shadow:0 8px 24px rgba(22,199,132,.25)}.auth-success-popup h3 {margin:0 0 7px;font-size:19px}.auth-success-popup p {margin:0;color:#aeb7c3;font-size:11px;line-height:1.65}.auth-success-progress {height:3px;margin-top:15px;overflow:hidden;background:rgba(255,255,255,.08);border-radius:999px}.auth-success-progress::after {content:"";display:block;width:100%;height:100%;background:var(--green);transform-origin:left;animation:authSuccessProgress 1.8s linear forwards}html[dir="rtl"] .auth-success-progress::after {transform-origin:right}
+@keyframes authSuccessBackdrop {from{opacity:0}to{opacity:1}}@keyframes authSuccessBox {from{opacity:0;transform:translateY(9px) scale(.96)}to{opacity:1;transform:none}}@keyframes authSuccessProgress {from{transform:scaleX(1)}to{transform:scaleX(0)}}
 @media(max-width:760px){.referral-home-card{grid-template-columns:auto 1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
 @media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}}
 </style>
@@ -2866,6 +2870,10 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
         Invite friends with your personal code. You receive $10 after each
         referred friend completes their first approved investment.
       </p>
+      <div class="referral-history-hint">
+        <span>ⓘ</span>
+        <div>You can review the registration, investment and reward status of all your referrals in the Referral Activity section at the bottom of this page.</div>
+      </div>
 
       <div class="referral-code-box">
         <div class="muted" style="font-size:10px;margin-bottom:6px;">YOUR REFERRAL CODE</div>
@@ -3093,7 +3101,14 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
       <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
       <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
       <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
-      <div id="passwordContainer"><label data-t="password">Password (Min 8 chars: Upper, Lower, Number)</label><input id="authPass" type="password" placeholder="******"></div>
+      <div id="passwordContainer">
+        <label data-t="password">Password</label>
+        <div class="password-requirements">
+          Your password must contain at least <b>8 characters</b>, including an
+          <b>uppercase letter</b>, a <b>lowercase letter</b> and a <b>number</b>.
+        </div>
+        <input id="authPass" type="password" placeholder="******">
+      </div>
       <button class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" onclick="submitAuth()" data-t="continue">Continue</button>
       <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
     </div>
@@ -3377,6 +3392,14 @@ Transactions section.
         Confirm Lock
       </button>
     </div>
+  </div>
+</div>
+<div id="authSuccessPopup" class="auth-success-popup" role="status" aria-live="polite">
+  <div class="auth-success-popup-box">
+    <div class="auth-success-popup-icon">✓</div>
+    <h3 id="authSuccessTitle">Success</h3>
+    <p id="authSuccessMessage"></p>
+    <div class="auth-success-progress"></div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -4707,6 +4730,32 @@ setInterval(() => {
 }, 5000);
 
 function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
+
+function showAuthSuccessPopup(title, message, duration = 1800) {
+  return new Promise(resolve => {
+    const popup = document.getElementById("authSuccessPopup");
+    const titleElement = document.getElementById("authSuccessTitle");
+    const messageElement = document.getElementById("authSuccessMessage");
+
+    if (!popup || !titleElement || !messageElement) {
+      resolve();
+      return;
+    }
+
+    clearTimeout(window.authSuccessPopupTimer);
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+    popup.classList.remove("show");
+    void popup.offsetWidth;
+    popup.classList.add("show");
+
+    window.authSuccessPopupTimer = setTimeout(() => {
+      popup.classList.remove("show");
+      resolve();
+    }, duration);
+  });
+}
+
 function page(id, button) {
   document.querySelectorAll(".view").forEach(view => {
     view.classList.remove("active");
@@ -4890,14 +4939,24 @@ async function submitAuth() {
       if (error) throw error;
 
       if (!data.session) {
-  closeAuth();
-  showEmailConfirmation(email);
-  return;
-}
+        closeAuth();
+
+        await showAuthSuccessPopup(
+          "Registration Successful",
+          "Your account was created successfully. Please confirm your email to continue."
+        );
+
+        showEmailConfirmation(email);
+        return;
+      }
 
       await loadAuthenticatedUser(data.session.user);
       closeAuth();
-      toast("Account created successfully");
+
+      await showAuthSuccessPopup(
+        "Registration Successful",
+        "Your account has been created and you are now signed in."
+      );
     }
 
     else if (authMode === "login") {
@@ -4915,7 +4974,11 @@ async function submitAuth() {
 
       await loadAuthenticatedUser(data.user);
       closeAuth();
-      toast("Signed in successfully");
+
+      await showAuthSuccessPopup(
+        "Welcome Back",
+        "You have signed in successfully."
+      );
     }
 
     else if (authMode === "forgot") {
