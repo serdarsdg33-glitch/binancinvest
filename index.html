@@ -2300,13 +2300,24 @@ html[dir="rtl"] .plan-selection-label {
       </p>
     </div>
 
-    <button
-      class="btn gold vip-lock-button"
-      type="button"
-      onclick="continueVipLockDeposit()"
-    >
-      Continue to Deposit
-    </button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px;">
+  <button
+    id="activateVipBalanceBtn"
+    class="btn gold"
+    type="button"
+    onclick="activateVipLockFromBalance()"
+  >
+    Lock From Balance
+  </button>
+
+  <button
+    class="btn"
+    type="button"
+    onclick="continueVipLockDeposit()"
+  >
+    Make New Deposit
+  </button>
+</div>
   </div>
 </div>
 <div class="card form" style="margin-top:20px">
@@ -4557,7 +4568,92 @@ function setVipMaximumAmount() {
 
   calculateVipLock();
 }
+async function activateVipLockFromBalance() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
 
+  const amountInput =
+    document.getElementById("vipLockAmount");
+
+  const button =
+    document.getElementById("activateVipBalanceBtn");
+
+  const amount = Number(amountInput?.value);
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < VIP_LOCK_MINIMUM ||
+    amount > VIP_LOCK_MAXIMUM
+  ) {
+    calculateVipLock();
+    toast("Enter an amount between $10 and $10,000");
+    return;
+  }
+
+  const availableBalance =
+    Number(currentUser.balance || 0);
+
+  if (amount > availableBalance) {
+    toast(
+      `Insufficient available balance. Available: ` +
+      formatPortfolioMoney(availableBalance)
+    );
+    return;
+  }
+
+  const confirmed = window.confirm(
+    `Lock ${formatPortfolioMoney(amount)} from your available balance for 60 days?`
+  );
+
+  if (!confirmed) return;
+
+  button.disabled = true;
+  button.textContent = "Activating...";
+
+  try {
+    const { data: investmentId, error } =
+      await supabaseClient.rpc(
+        "create_vip_lock",
+        {
+          p_amount: amount
+        }
+      );
+
+    if (error) throw error;
+
+    await refreshSecureAccount();
+    await updatePortfolio();
+
+    amountInput.value = "500";
+    calculateVipLock();
+
+    toast(
+      `Successfully locked ${formatPortfolioMoney(amount)} for 60 days`
+    );
+
+    page(
+      "portfolio",
+      document.querySelector('[data-page="portfolio"]')
+    );
+
+    console.log(
+      "VIP investment created:",
+      investmentId
+    );
+  } catch (error) {
+    console.error("VIP lock error:", error);
+
+    toast(
+      error.message ||
+      "The VIP lock could not be activated"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Lock From Balance";
+  }
+}
 function continueVipLockDeposit() {
   const amount = Number(
     document.getElementById("vipLockAmount").value
