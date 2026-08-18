@@ -3030,7 +3030,30 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
     <h2 id="authTitle">Sign In</h2>
     <p class="muted" data-t="local">Account data is stored securely in Supabase database.</p>
     <div class="form">
-      <div id="registerFields"><label data-t="fullname">Full Name / Name</label><input id="authFullName" placeholder="e.g. John Doe"><label data-t="username">Username</label><input id="authUsernameReg" placeholder="e.g. johndoe99"><label data-t="email">Email Address</label><input id="authEmailReg" type="email" placeholder="name@example.com"></div>
+      <div id="registerFields">
+        <label data-t="fullname">Full Name / Name</label>
+        <input id="authFullName" placeholder="e.g. John Doe">
+
+        <label data-t="username">Username</label>
+        <input id="authUsernameReg" placeholder="e.g. johndoe99">
+
+        <label data-t="email">Email Address</label>
+        <input id="authEmailReg" type="email" placeholder="name@example.com">
+
+        <label for="authReferralCode">Referral Code <span class="muted">(Optional)</span></label>
+        <input
+          id="authReferralCode"
+          type="text"
+          maxlength="20"
+          autocomplete="off"
+          placeholder="BI-XXXXXXXX"
+          style="text-transform:uppercase;"
+          oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')"
+        >
+        <div style="margin-top:6px;color:var(--muted);font-size:10px;line-height:1.5;">
+          If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.
+        </div>
+      </div>
       <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
       <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
       <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
@@ -4738,6 +4761,20 @@ function updateAuthModalUI() {
     registerFields.style.display = "block";
     submitButton.textContent = d.register || "Create Account";
     switchLink.textContent = d.haveAccountText || "Already have an account? Sign in";
+
+    const referralInput =
+      document.getElementById("authReferralCode");
+
+    const pendingReferralCode =
+      localStorage.getItem(PENDING_REFERRAL_CODE_KEY) || "";
+
+    if (
+      referralInput &&
+      !referralInput.value.trim() &&
+      pendingReferralCode
+    ) {
+      referralInput.value = pendingReferralCode;
+    }
   } else if (authMode === "forgot") {
     title.textContent = d.resetPasswordTitle || "Reset Password";
     forgotFields.style.display = "block";
@@ -4764,6 +4801,9 @@ async function submitAuth() {
       const usernameValue = document.getElementById("authUsernameReg").value.trim();
       const email = document.getElementById("authEmailReg").value.trim().toLowerCase();
       const password = document.getElementById("authPass").value;
+      const referralCode = String(
+        document.getElementById("authReferralCode")?.value || ""
+      ).trim().toUpperCase();
 
       if (fullName.length < 2) {
         return toast("Please enter your full name");
@@ -4781,13 +4821,32 @@ async function submitAuth() {
         return toast("Password needs uppercase, lowercase, number and 8 characters");
       }
 
+      if (
+        referralCode &&
+        !/^BI-[A-Z0-9]{8}$/.test(referralCode)
+      ) {
+        return toast("Please enter a valid referral code");
+      }
+
+      if (referralCode) {
+        localStorage.setItem(
+          PENDING_REFERRAL_CODE_KEY,
+          referralCode
+        );
+      } else {
+        localStorage.removeItem(
+          PENDING_REFERRAL_CODE_KEY
+        );
+      }
+
       const { data, error } = await supabaseClient.auth.signUp({
         email,
         password,
         options: {
           data: {
             username: usernameValue,
-            full_name: fullName
+            full_name: fullName,
+            referral_invite_code: referralCode || null
           }
         }
       });
@@ -4867,6 +4926,8 @@ async function loadAuthenticatedUser(authUser) {
     id: authUser.id,
     email: authUser.email,
     fullname: profile.full_name || "",
+    referralInviteCode:
+      authUser.user_metadata?.referral_invite_code || "",
     balance: Number(profile.balance || 0),
     invested: Number(profile.invested || 0),
     profit: Number(profile.profit || 0)
@@ -6210,7 +6271,11 @@ function getReferralLink(code) {
 async function applyPendingReferralCode() {
   if (!currentUser?.id) return false;
 
-  const code = localStorage.getItem(PENDING_REFERRAL_CODE_KEY);
+  const code =
+    localStorage.getItem(PENDING_REFERRAL_CODE_KEY) ||
+    String(currentUser.referralInviteCode || "")
+      .trim()
+      .toUpperCase();
   if (!code) return false;
 
   const { data, error } = await supabaseClient.rpc(
