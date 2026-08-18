@@ -1299,6 +1299,260 @@ html[dir="rtl"] .transaction-success-close {
   right: auto;
   left: 15px;
 }
+/* Compact transaction success popup */
+.transaction-success-modal {
+  padding: 14px;
+}
+
+.transaction-success-box {
+  width: min(390px, calc(100% - 16px));
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 24px 18px 18px;
+  border-radius: 18px;
+}
+
+.transaction-success-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 13px;
+  font-size: 28px;
+}
+
+.transaction-success-box h2 {
+  margin-bottom: 9px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.transaction-success-box > p {
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.transaction-success-note {
+  margin-top: 13px;
+  padding: 9px 10px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.transaction-success-actions {
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.transaction-success-actions .btn {
+  min-height: 39px;
+  padding: 9px 8px;
+  font-size: 11px;
+}
+
+.transaction-success-close {
+  top: 10px;
+  right: 11px;
+  width: 31px;
+  height: 31px;
+  font-size: 21px;
+}
+
+html[dir="rtl"] .transaction-success-close {
+  right: auto;
+  left: 11px;
+}
+
+@media(max-width:380px) {
+  .transaction-success-box {
+    width: calc(100% - 8px);
+    padding: 22px 15px 15px;
+  }
+
+  .transaction-success-actions {
+    grid-template-columns: 1fr;
+  }
+}
+.plan-selection-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+}
+
+.plan-selection-modal.open {
+  display: flex;
+}
+
+.plan-selection-box {
+  position: relative;
+  width: min(400px,calc(100% - 12px));
+  padding: 25px 20px 19px;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(145deg,#151c25,#090e14);
+  border: 1px solid rgba(240,185,11,.38);
+  border-radius: 20px;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.78),
+    0 0 24px rgba(240,185,11,.09);
+}
+
+.plan-selection-close {
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #9ca7b4;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  font-size: 22px;
+}
+
+html[dir="rtl"] .plan-selection-close {
+  right: auto;
+  left: 12px;
+}
+
+.plan-selection-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  color: #171100;
+  font-size: 25px;
+  background: linear-gradient(135deg,#fff09a,#f0b90b);
+  border-radius: 50%;
+  box-shadow: 0 8px 25px rgba(240,185,11,.25);
+}
+
+.plan-selection-badge {
+  color: var(--gold2);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.plan-selection-box h2 {
+  margin: 7px 0 17px;
+  font-size: 23px;
+}
+
+.plan-selection-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-bottom: 17px;
+}
+
+.plan-selection-details div {
+  padding: 11px 8px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 11px;
+}
+
+.plan-selection-details span,
+.plan-selection-details b {
+  display: block;
+}
+
+.plan-selection-details span {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.plan-selection-details b {
+  color: var(--gold);
+  font-size: 16px;
+}
+
+.plan-selection-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #c4ccd7;
+  font-size: 12px;
+  text-align: left;
+}
+
+html[dir="rtl"] .plan-selection-label {
+  text-align: right;
+}
+
+.plan-selection-input {
+  width: 100%;
+  padding: 12px;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  background: #0d1218;
+  border: 1px solid #394452;
+  border-radius: 10px;
+  outline: none;
+}
+
+.plan-selection-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(240,185,11,.09);
+}
+
+.plan-selection-range {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.plan-selection-error {
+  display: none;
+  margin-top: 9px;
+  padding: 8px;
+  color: #ffabb2;
+  font-size: 11px;
+  background: rgba(234,57,67,.10);
+  border: 1px solid rgba(234,57,67,.25);
+  border-radius: 9px;
+}
+
+.plan-selection-error.show {
+  display: block;
+}
+
+.plan-selection-notice {
+  margin-top: 13px;
+  padding: 10px;
+  color: #b5bfca;
+  font-size: 11px;
+  line-height: 1.6;
+  background: rgba(240,185,11,.055);
+  border: 1px solid rgba(240,185,11,.17);
+  border-radius: 10px;
+}
+
+.plan-selection-actions {
+  display: grid;
+  grid-template-columns: .7fr 1.3fr;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.plan-selection-actions .btn {
+  min-height: 40px;
+  padding: 9px 7px;
+  font-size: 11px;
+}
 </style>
 </head>
 <body>
@@ -1862,9 +2116,8 @@ html[dir="rtl"] .transaction-success-close {
     <p id="transactionSuccessMessage"></p>
 
     <div class="transaction-success-note">
-      Your request is securely recorded. Please visit the Transactions
-section to view its latest status. Pending requests are currently
-under review and do not need to be submitted again.
+      You can monitor the latest status of your request from the
+Transactions section.
     </div>
 
     <div class="transaction-success-actions">
@@ -1882,6 +2135,77 @@ under review and do not need to be submitted again.
         onclick="closeTransactionSuccessModal()"
       >
         Continue
+      </button>
+    </div>
+
+  </div>
+</div>
+<div id="planSelectionModal" class="plan-selection-modal">
+  <div class="plan-selection-box">
+
+    <button
+      class="plan-selection-close"
+      type="button"
+      onclick="closePlanSelectionModal()"
+    >
+      ×
+    </button>
+
+    <div class="plan-selection-icon">◆</div>
+
+    <div id="selectedPlanBadge" class="plan-selection-badge">
+      INVESTMENT PLAN
+    </div>
+
+    <h2 id="selectedPlanTitle">Starter Plan</h2>
+
+    <div class="plan-selection-details">
+      <div>
+        <span>Daily rate</span>
+        <b id="selectedPlanRate">2.5%</b>
+      </div>
+
+      <div>
+        <span>Investment term</span>
+        <b id="selectedPlanTerm">30 Days</b>
+      </div>
+    </div>
+
+    <label class="plan-selection-label" for="selectedPlanAmount">
+      Investment amount
+    </label>
+
+    <input
+      id="selectedPlanAmount"
+      class="plan-selection-input"
+      type="number"
+      step="1"
+    >
+
+    <div id="selectedPlanRange" class="plan-selection-range"></div>
+    <div id="selectedPlanError" class="plan-selection-error"></div>
+
+    <div class="plan-selection-notice">
+      After payment confirmation and administrator approval, your
+      selected plan will be activated automatically and profit
+      calculation will begin.
+    </div>
+
+    <div class="plan-selection-actions">
+      <button
+        class="btn"
+        type="button"
+        onclick="closePlanSelectionModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="btn gold"
+        type="button"
+        onclick="continueSelectedPlan()"
+      >
+        Continue to Deposit
       </button>
     </div>
 
@@ -3509,7 +3833,111 @@ async function withdraw(){
   document.getElementById("withdrawAmount").value = "";
   document.getElementById("withdrawAddress").value = "";
 }
+let selectedPlanIndex = null;
 
+function openPlanSelectionModal(index) {
+  const selectedPlan = plans[index];
+
+  if (!selectedPlan) return;
+
+  selectedPlanIndex = index;
+
+  const planName = selectedPlan[0];
+  const minimum = selectedPlan[1];
+  const maximum = selectedPlan[2];
+  const dailyRate = selectedPlan[3];
+  const termDays = selectedPlan[4];
+
+  document.getElementById(
+    "selectedPlanTitle"
+  ).textContent = `${planName} Plan`;
+
+  document.getElementById(
+    "selectedPlanRate"
+  ).textContent = `${dailyRate}%`;
+
+  document.getElementById(
+    "selectedPlanTerm"
+  ).textContent = `${termDays} Days`;
+
+  document.getElementById(
+    "selectedPlanRange"
+  ).textContent =
+    `Allowed amount: $${minimum.toLocaleString()} – ` +
+    `$${maximum.toLocaleString()}`;
+
+  const amountInput =
+    document.getElementById("selectedPlanAmount");
+
+  amountInput.min = minimum;
+  amountInput.max = maximum;
+  amountInput.value = Math.ceil(minimum);
+
+  const errorBox =
+    document.getElementById("selectedPlanError");
+
+  errorBox.textContent = "";
+  errorBox.classList.remove("show");
+
+  document.getElementById(
+    "planSelectionModal"
+  ).classList.add("open");
+}
+
+function closePlanSelectionModal() {
+  document.getElementById(
+    "planSelectionModal"
+  ).classList.remove("open");
+}
+
+function continueSelectedPlan() {
+  const selectedPlan = plans[selectedPlanIndex];
+
+  if (!selectedPlan) return;
+
+  const amount = Number(
+    document.getElementById("selectedPlanAmount").value
+  );
+
+  const minimum = selectedPlan[1];
+  const maximum = selectedPlan[2];
+
+  const errorBox =
+    document.getElementById("selectedPlanError");
+
+  if (
+    !Number.isInteger(amount) ||
+    amount < minimum ||
+    amount > maximum
+  ) {
+    errorBox.textContent =
+      `Enter a whole amount between $${Math.ceil(minimum)} and ` +
+      `$${maximum.toLocaleString()}.`;
+
+    errorBox.classList.add("show");
+    return;
+  }
+
+  document.getElementById(
+    "deposit-amount"
+  ).value = amount;
+
+  closePlanSelectionModal();
+
+  page(
+    "portfolio",
+    document.querySelector('[data-page="portfolio"]')
+  );
+
+  setTimeout(() => {
+    document.getElementById(
+      "deposit-amount"
+    )?.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }, 200);
+}
 async function invest(i) {
   if (!currentUser?.id) {
     openAuth("login");
@@ -3941,7 +4369,7 @@ function renderPlans(){
           <li class="plan-profit">${uDict.dailyProfit}: ~${p[3]}%</li>
 <li class="plan-profit">${uDict.monthlyProfit}: ~${(p[3] * 30).toFixed(1)}%</li>
         </ul>
-        <button class="btn gold" onclick="invest(${i})">${uDict.investNow}</button>
+        <button class="btn gold" onclick="openPlanSelectionModal(${i})">${uDict.investNow}</button>
       </div>
     `;
   });
@@ -4667,18 +5095,17 @@ function showTransactionSuccessModal(type) {
 
 if (type === "deposit") {
   title.textContent =
-    "Deposit Request Successfully Submitted";
+    "Deposit Request Submitted";
 
   message.textContent =
-    "Your deposit request has been successfully received and securely registered in our system. Our financial support team will review the transaction details, selected network and submitted transaction hash. After the payment is confirmed on the blockchain and approved by our team, the verified amount will be automatically credited to your available account balance. Processing time may vary depending on network confirmations and transaction traffic. No further action is required at this time. Please do not submit the same transaction more than once. You can monitor the current status of your request at any time from the Transactions section.";
+    "Your deposit request has been securely registered and is now awaiting review. After our team verifies the transaction and its blockchain confirmations, the approved amount will be credited to your account balance. Processing time may vary depending on network activity. Please do not submit the same transaction again.";
 } else {
   title.textContent =
-    "Withdrawal Request Successfully Submitted";
+    "Withdrawal Request Submitted";
 
   message.textContent =
-    "Your withdrawal request has been successfully received and securely registered in our system. The requested amount is now awaiting verification by our financial support team. Our team will review your account information, available balance, selected network and destination wallet address before processing the payment. Once the request has been approved, the withdrawal will be sent to the wallet address you provided. Processing time may vary depending on security checks, network traffic and blockchain confirmation requirements. No further action is required unless our support team contacts you. You can monitor the current status of your request at any time from the Transactions section.";
+    "Your withdrawal request has been securely registered and is now awaiting review. After your account details and destination wallet are verified, the approved payment will be sent to the selected address. Processing time may vary depending on security checks and network activity.";
 }
-
   modal.classList.add("open");
 }
 
