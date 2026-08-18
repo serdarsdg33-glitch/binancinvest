@@ -2270,7 +2270,18 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .referral-stat {padding:15px 10px;text-align:center;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px}
 .referral-stat span,.referral-stat strong {display:block}.referral-stat span {margin-bottom:7px;color:var(--muted);font-size:10px}.referral-stat strong {font-size:20px}.referral-stat.reward strong {color:var(--green)}
 .referral-rules {padding:22px}.referral-rules ul {margin:13px 0 0;padding-left:19px;color:#aeb7c3;line-height:2}.referral-apply {margin-top:15px;padding-top:15px;border-top:1px solid #ffffff0d}.referral-apply-row {display:grid;grid-template-columns:1fr auto;gap:8px}.referral-apply-row input {min-width:0;width:100%;text-transform:uppercase}
+.referral-history-card {margin-top:14px;padding:22px;border-color:rgba(240,185,11,.2)}
+.referral-history-head {display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:16px}.referral-history-head h2 {margin:0 0 5px}.referral-history-head p {margin:0;font-size:11px;line-height:1.6}.referral-history-list {display:flex;flex-direction:column;gap:9px}
+.referral-history-item {display:grid;grid-template-columns:minmax(130px,1fr) minmax(145px,1fr) minmax(170px,1.2fr);align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.075);border-radius:12px}
+.referral-user-name {display:block;color:#fff;font-size:13px;font-weight:850}.referral-small-date {display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}.referral-status-badge {display:inline-flex;align-items:center;gap:6px;width:fit-content;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:900;white-space:nowrap}.referral-status-badge::before {content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 7px currentColor}
+.referral-status-registered {color:#aeb7c3;background:rgba(139,151,167,.08);border:1px solid rgba(139,151,167,.24)}
+.referral-status-pending {color:var(--gold2);background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.26)}
+.referral-status-confirmed {color:#8fa7ff;background:rgba(85,119,255,.09);border:1px solid rgba(85,119,255,.28)}
+.referral-status-paid {color:var(--green);background:rgba(22,199,132,.09);border:1px solid rgba(22,199,132,.28)}
+.referral-reward-detail {text-align:right}.referral-reward-detail strong {display:block;color:var(--green);font-size:14px}.referral-reward-detail span {display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}html[dir="rtl"] .referral-reward-detail{text-align:left}
+.referral-history-legend {display:flex;flex-wrap:wrap;gap:7px;margin-top:15px;padding-top:14px;border-top:1px solid #ffffff0d}.referral-history-empty {padding:28px 12px;text-align:center;color:var(--muted);background:rgba(255,255,255,.018);border:1px dashed rgba(255,255,255,.1);border-radius:12px}
 @media(max-width:760px){.referral-home-card{grid-template-columns:auto 1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
+@media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}}
 </style>
 </head>
 <body>
@@ -2836,6 +2847,7 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
       <button class="btn" style="width:100%; padding: 12px;" onclick="withdraw()" data-t="request">Request Withdrawal</button>
     </div>
   </div>
+
 </section>
 
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
@@ -2889,6 +2901,30 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
         </div>
         <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;">A referral code can only be registered before your first investment.</p>
       </div>
+    </div>
+  </div>
+
+  <div class="card referral-history-card">
+    <div class="referral-history-head">
+      <div>
+        <h2>Referral Activity</h2>
+        <p class="muted">
+          Follow every registration, investment confirmation and reward payment.
+          Usernames are partially hidden for privacy.
+        </p>
+      </div>
+      <button class="btn" type="button" onclick="loadReferralHistory()">Refresh Status</button>
+    </div>
+
+    <div id="referralHistoryList" class="referral-history-list">
+      <div class="referral-history-empty">Sign in to view referral activity.</div>
+    </div>
+
+    <div class="referral-history-legend">
+      <span class="referral-status-badge referral-status-registered">Registered</span>
+      <span class="referral-status-badge referral-status-pending">Investment pending</span>
+      <span class="referral-status-badge referral-status-confirmed">Investment confirmed</span>
+      <span class="referral-status-badge referral-status-paid">$10 reward paid</span>
     </div>
   </div>
 </section>
@@ -6348,6 +6384,9 @@ async function loadReferralDashboard() {
     if (codeElement) codeElement.textContent = "Sign in to view";
     if (linkElement) linkElement.textContent = "";
     setReferralDashboardValues(0, 0, 0);
+    renderReferralHistoryEmpty(
+      "Sign in to view referral activity."
+    );
     return;
   }
 
@@ -6379,6 +6418,130 @@ async function loadReferralDashboard() {
   if (codeElement) codeElement.textContent = referralCode || "Unavailable";
   if (linkElement) linkElement.textContent = link;
   setReferralDashboardValues(totalInvited, qualified, totalReward);
+  await loadReferralHistory();
+}
+
+function renderReferralHistoryEmpty(message) {
+  const list = document.getElementById("referralHistoryList");
+  if (!list) return;
+
+  list.replaceChildren();
+  const empty = document.createElement("div");
+  empty.className = "referral-history-empty";
+  empty.textContent = message;
+  list.appendChild(empty);
+}
+
+function formatReferralDate(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? "—"
+    : date.toLocaleString();
+}
+
+function getReferralStatusPresentation(status) {
+  const statusMap = {
+    registered: {
+      label: "Registered · No investment yet",
+      className: "referral-status-registered"
+    },
+    investment_pending: {
+      label: "Investment pending approval",
+      className: "referral-status-pending"
+    },
+    investment_confirmed: {
+      label: "Investment confirmed · Reward processing",
+      className: "referral-status-confirmed"
+    },
+    reward_paid: {
+      label: "$10 reward paid",
+      className: "referral-status-paid"
+    }
+  };
+
+  return statusMap[status] || statusMap.registered;
+}
+
+async function loadReferralHistory() {
+  if (!currentUser?.id) {
+    renderReferralHistoryEmpty(
+      "Sign in to view referral activity."
+    );
+    return;
+  }
+
+  renderReferralHistoryEmpty("Loading referral activity...");
+
+  const { data, error } = await supabaseClient.rpc(
+    "get_my_referral_history"
+  );
+
+  if (error) {
+    console.error("Referral history error:", error);
+    renderReferralHistoryEmpty(
+      "Referral activity could not be loaded."
+    );
+    return;
+  }
+
+  if (!data?.length) {
+    renderReferralHistoryEmpty(
+      "No one has registered with your referral code yet."
+    );
+    return;
+  }
+
+  const list = document.getElementById("referralHistoryList");
+  if (!list) return;
+  list.replaceChildren();
+
+  data.forEach(item => {
+    const presentation = getReferralStatusPresentation(
+      String(item.referral_status || "registered")
+    );
+
+    const row = document.createElement("div");
+    row.className = "referral-history-item";
+
+    const userColumn = document.createElement("div");
+    const userName = document.createElement("strong");
+    userName.className = "referral-user-name";
+    userName.textContent = item.invited_user || "Invited User";
+    const registeredDate = document.createElement("span");
+    registeredDate.className = "referral-small-date";
+    registeredDate.textContent =
+      `Registered: ${formatReferralDate(item.registered_at)}`;
+    userColumn.append(userName, registeredDate);
+
+    const statusColumn = document.createElement("div");
+    const badge = document.createElement("span");
+    badge.className =
+      `referral-status-badge ${presentation.className}`;
+    badge.textContent = presentation.label;
+    const investmentDate = document.createElement("span");
+    investmentDate.className = "referral-small-date";
+    investmentDate.textContent = item.invested_at
+      ? `Investment: ${formatReferralDate(item.invested_at)}`
+      : "Investment: Not completed";
+    statusColumn.append(badge, investmentDate);
+
+    const rewardColumn = document.createElement("div");
+    rewardColumn.className = "referral-reward-detail";
+    const rewardAmount = Number(item.reward_amount || 0);
+    const rewardValue = document.createElement("strong");
+    rewardValue.textContent = rewardAmount > 0
+      ? `${formatPortfolioMoney(rewardAmount)} credited`
+      : "$0.00 credited";
+    const rewardDate = document.createElement("span");
+    rewardDate.textContent = item.reward_paid_at
+      ? `Added to balance: ${formatReferralDate(item.reward_paid_at)}`
+      : "Reward will be paid after the first approved investment.";
+    rewardColumn.append(rewardValue, rewardDate);
+
+    row.append(userColumn, statusColumn, rewardColumn);
+    list.appendChild(row);
+  });
 }
 
 function setReferralDashboardValues(totalInvited, qualified, totalReward) {
