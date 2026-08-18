@@ -3659,54 +3659,43 @@ async function submitDepositRequest() {
 // 100 Realistic Names
 const maskedNames = [
     // ایرانی
-    "Ali*** Re***", "Moh**** Ahm****", "Re*** Mo****i", "Fat**** Ka****i", "Mehm**** Hos*****",
-    "Zah*** Shif***", "Amir**** Ra***i", "Par*** Na****i", "Kou**** Ja****i", "Nilo*** Mo****d",
-    "Aras**** Ta****i", "Soh**** Shro**", "Bita*** Rah***i", "Dary**** Ka****i", "Ghas*** Mo****i",
-    "Hoos**** Khos***", "Kian*** Yaz****", "Laleh*** Mok****", "Mani*** Far****", "Nima*** Zand***",
+    "A. Reza****", "M. Ahmadi***", "R. Mohamm***", "F. Karimi***", "M. Hossein***",
+    "Z. Shafi**", "A. Radfar***", "P. Nazari***", "K. Jafari***", "N. Movahed***",
+    "Aras**** T.", "Sohi**** Sh.", "Bita*** Rahimi", "Dary**** K.", "Ghasem*** M.",
+    "H. Khosravi***", "Kian*** Yazd", "Laleh*** M.", "Mani*** Faraji", "Nima*** Zand",
     
     // ترکی (ترکیه)
-    "Ahme*** Yil***", "Mmeh**** Dem**", "Elif*** Kaya***", "Ayse*** Çel***", "Must**** Şahi**",
-    "Fat*** Arsla***", "Emre*** YildI***", "Zeyn*** Öztü***", "Burak*** Koç***", "Sibel*** Aydın**",
-    "Can*** Şen***", "Deniz*** Koçak***", "Ece*** Akso**", "Firat*** Doğa***", "Gamze*** Çali**",
-    "Hakan*** Özkan***", "İrem*** Tekin***", "Kaan*** Yücel***", "Levent*** Polat***", "Melis*** Çeti**",
+    "Ahme*** Y.", "Mehmet*** D.", "Elif*** Kaya", "Ayse*** Çelik", "Mustafa*** Ş.",
+    "Fatma*** A.", "Emre*** Yıldız", "Zeynep*** Ö.", "Burak*** Koç", "Sibel*** Aydın",
+    "Can*** Şen", "Deniz*** K.", "Ece*** Aksoy", "Firat*** D.", "Gamze*** Ç.",
+    "Hakan*** Özkan", "İrem*** T.", "Kaan*** Yücel", "Levent*** P.", "Melis*** Çetin",
     
     // آذربایجانی
-    "Elmi*** Məmm****", "Nigar*** Əliy**", "Rəша*** Qasım***", "Leyla*** Həsə****", "Tural*** Quliy**",
-    "Aysel*** İsmay***", "Orxan*** Məmm****", "Günay*** Hüseyn***", "Samir*** Rzay**", "Farid*** Əhməd***",
-    "Vüsal*** Mənsim***", "Zenfira*** Qəhrəm***", "Kamran*** Bağıro**", "Sevda*** Şirino**", "Elçin*** Nəbiy**",
+    "Elmi*** M.", "Nigar*** Ə.", "Rəşad*** Q.", "Leyla*** Həsən", "Tural*** Q.",
+    "Aysel*** İ.", "Orxan*** Məmməd", "Günay*** H.", "Samir*** R.", "Farid*** Ə.",
+    "Vüsal*** M.", "Zenfira*** Q.", "Kamran*** B.", "Sevda*** Ş.", "Elçin*** N.",
     
-    // عربی (عربستان، امارات، مصر، عراق و...)
-    "Abdul**** Al-Sa***", "Mohamed*** El-M***", "Fahad*** Al-Ota**", "Fatima*** Al-Ka***", "Omar*** Al-Shami***",
-    "Khaled*** Al-Har***", "Nora*** Al-Mut***", "Ziyad*** Al-Qaht***", "Mariam*** Al-Zahr***", "Yousef*** Al-Dos***",
-    "Sultan*** Al-Mal***", "Reem*** Al-Gham***", "Tariq*** Al-Sub***", "Areej*** Al-Sheh***", "Nasser*** Al-Tam***",
-    "Rashed*** Al-Haj***", "Wanasa*** Al-Khaf***", "Hussein*** Al-Ira***", "Zainab*** Al-Mus***", "Bilal*** Al-Jaza***",
+    // عربی
+    "Abdul**** S.", "Mohamed*** M.", "Fahad*** O.", "Fatima*** K.", "Omar*** Sh.",
+    "Khaled*** H.", "Nora*** M.", "Ziyad*** Q.", "Mariam*** Z.", "Yousef*** D.",
+    "Sultan*** M.", "Reem*** G.", "Tariq*** S.", "Areej*** Sh.", "Nasser*** T.",
+    "Rashed*** H.", "Wanas*** Kh.", "Hussein*** I.", "Zainab*** M.", "Bilal*** J.",
     
-    // انگلیسی و بریتانیایی
-    "Will**** Tay***", "Char**** Smi***", "Jame*** John****", "Oli*** Brow***", "Geor*** Davi**",
-    "Harr*** Mill***", "Char*** Wils***", "Thom*** Moor***", "Jacks*** Tay***", "Luka*** Ande**",
-    "Emma*** Thom***", "Oliv*** Jone***", "Amel*** Clar***", "Mia*** Gran***", "Isab*** Willia***",
-    "Soph*** Tayl***", "Evel*** Davi***", "Aviv*** Mill***", "Chlo*** Walke***", "Lucy*** Hall***",
+    // انگلیسی و آمریکایی
+    "Will*** Taylor", "Chr*** Smith***", "Jam*** Johnson", "Oli*** Brown", "Geo*** Davis",
+    "Har*** Miller", "Cha*** Wilson", "Tho*** Moore", "Jac*** Taylor", "Luk*** Anderson",
+    "Emm*** Thomas", "Oli*** Jones", "Ame*** Clark", "Mia*** Grant", "Isa*** Williams",
+    "Sop*** Taylor", "Eve*** Davis", "Avi*** Miller", "Chl*** Walker", "Luc*** Hall",
+    "Noa*** Smith", "Lia*** Johnson", "Ben*** Williams", "Eth*** Brown", "Jam*** Jones",
+    "Ale*** Garcia", "Mic*** Rodriguez", "Wil*** Martinez", "Dan*** Hernandez", "Jos*** Lopez",
     
-    // آمریکایی
-    "Noah*** Smit***", "Liam*** Johnso***", "Benn*** Willia***", "Ethe*** Brow***", "Jame*** Jone***",
-    "Alex*** Garc***", "Mich*** Rodri***", "Will*** Martine***", "Dani*** Hernan***", "Jose*** Lopez***",
-    "Soph*** Gonzal***", "Emma*** Perez***", "Oliv*** Sanch***", "Isab*** Romer***", "Mia*** State***",
-    "Evel*** Torres***", "Harp*** Alexa***", "Cam*** Muhamm***", "Gian*** Diaz***", "Aria*** Cruz***",
-    
-    // اروپایی (آلمانی، فرانسوی، ایتالیایی، اسپانیایی و...)
-    "Hans*** Muel***", "Markus*** Schm***", "Jean*** Dupon***", "Pierre*** Bern***", "Marco*** Ross***",
-    "Giulia*** Bianc***", "Alej*** Gonzal***", "Mateo*** Fernan***", "Lars*** Lindq***", "Frede*** Johans**",
-    "Kevi*** vander***", "Sven*** De cl***", "Piotr*** Kowal***", "Jan*** Nowak***", "Dmit*** Pova**",
-    "Ivan*** Ivanov***", "Stoy*** Georgi***", "Ioan*** Papes***", "Nikol*** Andret***", "Mati*** Korho**",
-    
-    // آسیایی و سایر ملیت‌ها (ژاپنی، چینی، کره‌ای، هندی، استرالیایی و...)
-    "Hiro*** Tanak***", "Kenj*** Satoh***", "Wei*** Zhang***", "Jia*** Li***", "Min-h*** Kim***",
-    "Ji-y*** Park***", "Arav*** Pate***", "Rahu*** Sharmi***", "Vikr*** Sing***", "Anan*** Kumars**",
-    "Lach*** Mcma***", "Jack*** O'con***", "Maty*** Ryan***", "Chlo*** Patels**", "Sam*** Kerrs**",
-    "Mate*** Coova***", "Brun*** Silv***", "Thiag*** Sant***", "Gabriel*** Alme***", "Luic*** Costas**",
-    "Mohs*** Rezaie***", "Baha*** Zarei***", "Shid*** Kiani***", "Arash*** Radfar***", "Sima*** Nikookar**",
-    "Ahme*** Ozturk***", "Meh*** Yildiz***", "Salih*** Demir***", "Burc*** Kaya***", "Emi*** Celik***",
-    "Rash*** Al-Mut***", "Khal*** Al-Har***", "Nawaf*** Al-Ota***", "Sult*** Al-Gham***", "Turki*** Al-Sub***"
+    // اروپایی و بین‌المللی
+    "Han*** Mueller", "Mar*** Schmidt", "Jea*** Dupont", "Pie*** Bernard", "Mar*** Rossi",
+    "Giu*** Bianco", "Ale*** Gonzalez", "Mat*** Fernandez", "Lar*** Lindqvist", "Fre*** Johansen",
+    "Kev*** vander L.", "Sve*** De C.", "Pio*** Kowalski", "Jan*** Nowak", "Dmi*** Poval",
+    "Iva*** Ivanov", "Sto*** Georgiev", "Ioa*** Popescu", "Nik*** Andreetti", "Mat*** Korhonen",
+    "Hir*** Tanaka", "Ken*** Satoh", "Wei*** Zhang", "Jia*** Li", "Min*** Kim",
+    "Ji-*** Park", "Ara*** Patel", "Rah*** Sharma", "Vik*** Singh", "Ana*** Kumar"
 ];
 
 
