@@ -2227,6 +2227,50 @@ html[dir="rtl"] .plan-selection-label {
     transform: translateY(0);
   }
 }
+
+/* Secure referral rewards */
+.referral-home-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  background:
+    radial-gradient(circle at 92% 0%,rgba(240,185,11,.18),transparent 38%),
+    linear-gradient(145deg,#151c24,#090d12);
+  border: 1px solid rgba(240,185,11,.38);
+  border-radius: 19px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.42),0 0 20px rgba(240,185,11,.06);
+}
+.referral-home-card::after {content:"";position:absolute;inset:auto -45px -80px auto;width:180px;height:180px;border-radius:50%;background:rgba(240,185,11,.06);pointer-events:none}
+.referral-home-icon {width:58px;height:58px;display:grid;place-items:center;color:#171100;font-size:27px;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:17px;box-shadow:0 8px 25px rgba(240,185,11,.23)}
+.referral-home-content,.referral-home-action {position:relative;z-index:1}
+.referral-home-kicker {color:var(--gold2);font-size:9px;font-weight:900;letter-spacing:1.6px}
+.referral-home-content h2 {margin:5px 0 7px;font-size:21px}
+.referral-home-content p {max-width:720px;margin:0;color:#aeb7c3;font-size:12px;line-height:1.7}
+.referral-home-content strong {color:var(--gold2)}
+.referral-home-action {min-width:155px;text-align:center}
+.referral-home-reward {display:block;margin-bottom:8px;color:var(--green);font-size:24px;font-weight:950}
+
+.referral-portfolio-card {margin:14px 0 18px;padding:15px 17px;display:flex;align-items:center;justify-content:space-between;gap:14px;background:linear-gradient(135deg,rgba(22,199,132,.08),rgba(15,21,28,.95));border:1px solid rgba(22,199,132,.28);border-radius:14px}
+.referral-portfolio-card strong {display:block;margin-top:4px;color:var(--green);font-size:22px}
+.referral-portfolio-meta {text-align:right;color:#aeb7c3;font-size:11px;line-height:1.6}
+html[dir="rtl"] .referral-portfolio-meta {text-align:left}
+
+.referral-dashboard {display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+.referral-main-card {padding:24px;border-color:rgba(240,185,11,.32)}
+.referral-code-box {margin-top:18px;padding:14px;background:#0b1016;border:1px solid rgba(240,185,11,.24);border-radius:12px}
+.referral-code-value {color:var(--gold);font-size:22px;font-weight:950;letter-spacing:1.2px;word-break:break-all}
+.referral-link-value {margin-top:7px;color:#8f9baa;font-size:10px;line-height:1.5;word-break:break-all}
+.referral-actions {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+.referral-stats {display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.referral-stat {padding:15px 10px;text-align:center;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px}
+.referral-stat span,.referral-stat strong {display:block}.referral-stat span {margin-bottom:7px;color:var(--muted);font-size:10px}.referral-stat strong {font-size:20px}.referral-stat.reward strong {color:var(--green)}
+.referral-rules {padding:22px}.referral-rules ul {margin:13px 0 0;padding-left:19px;color:#aeb7c3;line-height:2}.referral-apply {margin-top:15px;padding-top:15px;border-top:1px solid #ffffff0d}.referral-apply-row {display:grid;grid-template-columns:1fr auto;gap:8px}.referral-apply-row input {min-width:0;width:100%;text-transform:uppercase}
+@media(max-width:760px){.referral-home-card{grid-template-columns:auto 1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -2284,6 +2328,25 @@ html[dir="rtl"] .plan-selection-label {
 
 <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
+
+<div class="referral-home-card">
+  <div class="referral-home-icon">🎁</div>
+  <div class="referral-home-content">
+    <span class="referral-home-kicker">FRIEND REFERRAL REWARD</span>
+    <h2>Invite Friends and Earn $10</h2>
+    <p>
+      Share your unique referral code with your friends. When a referred
+      friend registers and completes their first approved investment,
+      <strong>$10 will automatically be added to your available balance.</strong>
+    </p>
+  </div>
+  <div class="referral-home-action">
+    <span class="referral-home-reward">$10</span>
+    <button class="btn gold" type="button" onclick="openReferralRewards()">
+      View Referral Code
+    </button>
+  </div>
+</div>
 
 <div class="title"><h2 data-t="platformStatsTitle">Platform Statistics</h2></div>
 <div class="stats-vertical-stack">
@@ -2594,6 +2657,16 @@ html[dir="rtl"] .plan-selection-label {
 <section id="portfolio" class="view">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div id="referralPortfolioCard" class="referral-portfolio-card">
+    <div>
+      <span class="muted">Referral rewards added to balance</span>
+      <strong id="portfolioReferralReward">$0.00</strong>
+    </div>
+    <div class="referral-portfolio-meta">
+      <b id="portfolioQualifiedReferrals" style="color:#fff;">0 successful referrals</b><br>
+      This reward is included in your available balance and is not active invested capital.
+    </div>
+  </div>
 <div id="vipPortfolioSection" class="vip-single-card">
 
   <div class="vip-single-header">
@@ -2767,7 +2840,58 @@ html[dir="rtl"] .plan-selection-label {
 
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
 
-<section id="rewards" class="view"><div class="title"><h2 data-t="rewards">Rewards</h2></div><div class="cards"><div class="card stat"><span class="muted" data-t="pointsTitle">Points</span><b id="points">0</b><span class="green" data-t="pointsSub">+50 weekly</span></div><div class="card stat"><span class="muted" data-t="refTitle">Referral</span><b id="refCode">BI-NEW</b><button class="btn" onclick="copyRef()" data-t="copy">Copy code</button></div><div class="card stat"><span class="muted" data-t="vipTitle">VIP</span><b>Silver</b><span class="muted" data-t="vipSub">1,250 pts</span></div><div class="card stat"><span class="muted" data-t="streakTitle">Streak</span><b>7 days</b><span class="green" data-t="streakSub">Active</span></div></div></section>
+<section id="rewards" class="view">
+  <div class="title">
+    <h2 data-t="rewards">Rewards</h2>
+    <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')">Sign In</button>
+  </div>
+
+  <div class="referral-dashboard">
+    <div class="card referral-main-card">
+      <span class="referral-home-kicker">YOUR PERSONAL REFERRAL</span>
+      <h2 style="margin:7px 0 8px;">Invite Friends and Earn $10</h2>
+      <p class="muted" style="line-height:1.75;margin:0;">
+        Invite friends with your personal code. You receive $10 after each
+        referred friend completes their first approved investment.
+      </p>
+
+      <div class="referral-code-box">
+        <div class="muted" style="font-size:10px;margin-bottom:6px;">YOUR REFERRAL CODE</div>
+        <div id="refCode" class="referral-code-value">Sign in to view</div>
+        <div id="referralLink" class="referral-link-value"></div>
+        <div class="referral-actions">
+          <button class="btn gold" type="button" onclick="copyReferralCode()">Copy Code</button>
+          <button class="btn" type="button" onclick="copyReferralLink()">Copy Invitation Link</button>
+        </div>
+      </div>
+
+      <div class="referral-stats">
+        <div class="referral-stat"><span>Total registrations</span><strong id="referralTotalInvited">0</strong></div>
+        <div class="referral-stat"><span>Successful referrals</span><strong id="referralQualified">0</strong></div>
+        <div class="referral-stat reward"><span>Total rewards</span><strong id="referralTotalReward">$0.00</strong></div>
+      </div>
+    </div>
+
+    <div class="card referral-rules">
+      <h2 style="margin-top:0;">How it works</h2>
+      <ul>
+        <li>Share your personal code or invitation link.</li>
+        <li>Your friend registers using your referral code.</li>
+        <li>Your friend completes their first approved investment.</li>
+        <li>$10 is automatically added to your available balance.</li>
+      </ul>
+
+      <div class="referral-apply">
+        <label for="referralApplyInput" class="muted" style="display:block;margin-bottom:7px;font-size:11px;">Have an invitation code?</label>
+        <div class="referral-apply-row">
+          <input id="referralApplyInput" type="text" placeholder="BI-XXXXXXXX" maxlength="20">
+          <button class="btn" type="button" onclick="applyManualReferralCode()">Apply</button>
+        </div>
+        <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;">A referral code can only be registered before your first investment.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="support" class="view">
   <div class="title">
@@ -4548,11 +4672,16 @@ function page(id, button) {
 
   if (id === "portfolio") {
     updatePortfolio();
+    loadReferralDashboard();
     togglePaymentDetails();
   }
 
   if (id === "transactions") {
     loadTransactions();
+  }
+
+  if (id === "rewards") {
+    loadReferralDashboard();
   }
 
   if (id === "support") {
@@ -4743,6 +4872,9 @@ async function loadAuthenticatedUser(authUser) {
     profit: Number(profile.profit || 0)
   };
 
+  await applyPendingReferralCode();
+  await loadReferralDashboard();
+
   loadProfile();
   updatePortfolio();
   updateHeaderAuthUI();
@@ -4777,8 +4909,10 @@ async function logout() {
   scope: "local"
 });
   currentUser = null;
+  currentReferralData = null;
   updateHeaderAuthUI();
   updatePortfolio();
+  loadReferralDashboard();
 
   if (typeof updateSupportAuthUI === "function") {
     updateSupportAuthUI();
@@ -6054,9 +6188,179 @@ async function clearTx(){
   loadTransactions(); toast("History cleared");
 }
 
-function copyRef(){
-  navigator.clipboard.writeText("BI-" + (currentUser ? currentUser.username : "NEW"));
-  toast("Referral code copied!");
+const PENDING_REFERRAL_CODE_KEY = "bi_pending_referral_code";
+let currentReferralData = null;
+
+function captureReferralCodeFromUrl() {
+  const url = new URL(window.location.href);
+  const code = String(url.searchParams.get("ref") || "")
+    .trim()
+    .toUpperCase();
+
+  if (/^BI-[A-Z0-9]{8}$/.test(code)) {
+    localStorage.setItem(PENDING_REFERRAL_CODE_KEY, code);
+  }
+}
+
+function getReferralLink(code) {
+  if (!code) return "";
+  return `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(code)}`;
+}
+
+async function applyPendingReferralCode() {
+  if (!currentUser?.id) return false;
+
+  const code = localStorage.getItem(PENDING_REFERRAL_CODE_KEY);
+  if (!code) return false;
+
+  const { data, error } = await supabaseClient.rpc(
+    "apply_referral_code",
+    { p_code: code }
+  );
+
+  localStorage.removeItem(PENDING_REFERRAL_CODE_KEY);
+
+  const url = new URL(window.location.href);
+  if (url.searchParams.has("ref")) {
+    url.searchParams.delete("ref");
+    window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+  }
+
+  if (error) {
+    console.error("Apply referral error:", error);
+    return false;
+  }
+
+  if (data) toast("Referral code applied successfully");
+  return Boolean(data);
+}
+
+async function applyManualReferralCode() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const input = document.getElementById("referralApplyInput");
+  const code = String(input?.value || "").trim().toUpperCase();
+
+  if (!/^BI-[A-Z0-9]{8}$/.test(code)) {
+    toast("Please enter a valid referral code");
+    return;
+  }
+
+  const { data, error } = await supabaseClient.rpc(
+    "apply_referral_code",
+    { p_code: code }
+  );
+
+  if (error) {
+    toast(error.message || "Referral code could not be applied");
+    return;
+  }
+
+  if (!data) {
+    toast("A referral code is already registered for this account");
+    return;
+  }
+
+  input.value = "";
+  toast("Referral code applied successfully");
+  await loadReferralDashboard();
+}
+
+async function loadReferralDashboard() {
+  const authButton = document.getElementById("rewardsAuthBtn");
+  const codeElement = document.getElementById("refCode");
+  const linkElement = document.getElementById("referralLink");
+
+  if (authButton) {
+    authButton.style.display = currentUser?.id ? "none" : "inline-block";
+  }
+
+  if (!currentUser?.id) {
+    currentReferralData = null;
+    if (codeElement) codeElement.textContent = "Sign in to view";
+    if (linkElement) linkElement.textContent = "";
+    setReferralDashboardValues(0, 0, 0);
+    return;
+  }
+
+  const { data, error } = await supabaseClient.rpc(
+    "get_my_referral_dashboard"
+  );
+
+  if (error) {
+    console.error("Referral dashboard error:", error);
+    if (codeElement) codeElement.textContent = "Could not load";
+    return;
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  const referralCode = String(row?.referral_code || "");
+  const totalInvited = Number(row?.total_invited || 0);
+  const qualified = Number(row?.qualified_referrals || 0);
+  const totalReward = Number(row?.total_reward || 0);
+  const link = getReferralLink(referralCode);
+
+  currentReferralData = {
+    referralCode,
+    totalInvited,
+    qualified,
+    totalReward,
+    link
+  };
+
+  if (codeElement) codeElement.textContent = referralCode || "Unavailable";
+  if (linkElement) linkElement.textContent = link;
+  setReferralDashboardValues(totalInvited, qualified, totalReward);
+}
+
+function setReferralDashboardValues(totalInvited, qualified, totalReward) {
+  const invitedElement = document.getElementById("referralTotalInvited");
+  const qualifiedElement = document.getElementById("referralQualified");
+  const rewardElement = document.getElementById("referralTotalReward");
+  const portfolioReward = document.getElementById("portfolioReferralReward");
+  const portfolioQualified = document.getElementById("portfolioQualifiedReferrals");
+
+  if (invitedElement) invitedElement.textContent = String(totalInvited);
+  if (qualifiedElement) qualifiedElement.textContent = String(qualified);
+  if (rewardElement) rewardElement.textContent = formatPortfolioMoney(totalReward);
+  if (portfolioReward) portfolioReward.textContent = formatPortfolioMoney(totalReward);
+  if (portfolioQualified) {
+    portfolioQualified.textContent = `${qualified} successful referral${qualified === 1 ? "" : "s"}`;
+  }
+}
+
+async function copyReferralCode() {
+  if (!currentUser?.id) return openAuth("login");
+  if (!currentReferralData?.referralCode) await loadReferralDashboard();
+  const code = currentReferralData?.referralCode;
+  if (!code) return toast("Referral code is not available");
+  await navigator.clipboard.writeText(code);
+  toast("Referral code copied");
+}
+
+async function copyReferralLink() {
+  if (!currentUser?.id) return openAuth("login");
+  if (!currentReferralData?.link) await loadReferralDashboard();
+  const link = currentReferralData?.link;
+  if (!link) return toast("Invitation link is not available");
+  await navigator.clipboard.writeText(link);
+  toast("Invitation link copied");
+}
+
+function copyRef() {
+  copyReferralCode();
+}
+
+function openReferralRewards() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  page("rewards", document.querySelector('[data-page="rewards"]'));
 }
 
 async function loadProfile(){
@@ -6603,6 +6907,8 @@ function setLang(lang){
 }
 
 window.onload = async function(){
+  captureReferralCodeFromUrl();
+
   let savedLang = localStorage.getItem("bi_lang") || "en";
 
   document.getElementById("lang").value = savedLang;
