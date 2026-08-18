@@ -1191,6 +1191,114 @@ html[dir="rtl"] .email-confirm-close {
   right: auto;
   left: 15px;
 }
+.transaction-success-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.transaction-success-modal.open {
+  display: flex;
+}
+
+.transaction-success-box {
+  position: relative;
+  width: min(460px,100%);
+  padding: 30px 24px 24px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(145deg,#151c25,#0a0f16);
+  border: 1px solid rgba(22,199,132,.38);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.8),
+    0 0 30px rgba(22,199,132,.08);
+}
+
+.transaction-success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  color: #07150f;
+  font-size: 35px;
+  font-weight: 900;
+  background:
+    linear-gradient(135deg,#8dffd2,#16c784);
+  border-radius: 50%;
+  box-shadow:
+    0 10px 30px rgba(22,199,132,.27);
+}
+
+.transaction-success-box h2 {
+  margin: 0 0 12px;
+  font-size: 25px;
+}
+
+.transaction-success-box > p {
+  margin: 0;
+  color: #b3bdc9;
+  line-height: 1.8;
+}
+
+.transaction-success-note {
+  margin-top: 18px;
+  padding: 12px;
+  color: #ffe58a;
+  font-size: 12px;
+  line-height: 1.7;
+  background: rgba(240,185,11,.075);
+  border: 1px solid rgba(240,185,11,.22);
+  border-radius: 11px;
+}
+
+.transaction-success-actions {
+  display: grid;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.transaction-success-actions .btn {
+  width: 100%;
+}
+
+.transaction-success-close {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #aab4c0;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.transaction-success-close:hover {
+  color: #fff;
+  background: rgba(22,199,132,.12);
+  border-color: rgba(22,199,132,.5);
+}
+
+html[dir="rtl"] .transaction-success-close {
+  right: auto;
+  left: 15px;
+}
 </style>
 </head>
 <body>
@@ -1731,6 +1839,52 @@ html[dir="rtl"] .email-confirm-close {
       </button>
 
     </div>
+  </div>
+</div>
+<div id="transactionSuccessModal" class="transaction-success-modal">
+  <div class="transaction-success-box">
+
+    <button
+      class="transaction-success-close"
+      type="button"
+      onclick="closeTransactionSuccessModal()"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+    <div class="transaction-success-icon">✓</div>
+
+    <h2 id="transactionSuccessTitle">
+      Request Submitted
+    </h2>
+
+    <p id="transactionSuccessMessage"></p>
+
+    <div class="transaction-success-note">
+      Your request is securely recorded. Please visit the Transactions
+section to view its latest status. Pending requests are currently
+under review and do not need to be submitted again.
+    </div>
+
+    <div class="transaction-success-actions">
+      <button
+        class="btn gold"
+        type="button"
+        onclick="openTransactionHistory()"
+      >
+        View Transactions
+      </button>
+
+      <button
+        class="btn"
+        type="button"
+        onclick="closeTransactionSuccessModal()"
+      >
+        Continue
+      </button>
+    </div>
+
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -4499,7 +4653,52 @@ restoreEmailConfirmationNotice();
 </script>
 <script>
 /* Secure Supabase financial and support patch */
+function showTransactionSuccessModal(type) {
+  const modal =
+    document.getElementById("transactionSuccessModal");
 
+  const title =
+    document.getElementById("transactionSuccessTitle");
+
+  const message =
+    document.getElementById("transactionSuccessMessage");
+
+  if (!modal || !title || !message) return;
+
+if (type === "deposit") {
+  title.textContent =
+    "Deposit Request Successfully Submitted";
+
+  message.textContent =
+    "Your deposit request has been successfully received and securely registered in our system. Our financial support team will review the transaction details, selected network and submitted transaction hash. After the payment is confirmed on the blockchain and approved by our team, the verified amount will be automatically credited to your available account balance. Processing time may vary depending on network confirmations and transaction traffic. No further action is required at this time. Please do not submit the same transaction more than once. You can monitor the current status of your request at any time from the Transactions section.";
+} else {
+  title.textContent =
+    "Withdrawal Request Successfully Submitted";
+
+  message.textContent =
+    "Your withdrawal request has been successfully received and securely registered in our system. The requested amount is now awaiting verification by our financial support team. Our team will review your account information, available balance, selected network and destination wallet address before processing the payment. Once the request has been approved, the withdrawal will be sent to the wallet address you provided. Processing time may vary depending on security checks, network traffic and blockchain confirmation requirements. No further action is required unless our support team contacts you. You can monitor the current status of your request at any time from the Transactions section.";
+}
+
+  modal.classList.add("open");
+}
+
+function closeTransactionSuccessModal() {
+  const modal =
+    document.getElementById("transactionSuccessModal");
+
+  if (modal) {
+    modal.classList.remove("open");
+  }
+}
+
+function openTransactionHistory() {
+  closeTransactionSuccessModal();
+
+  page(
+    "transactions",
+    document.querySelector('[data-page="transactions"]')
+  );
+}
 function parseDepositAsset(value) {
   const map = {
     trx_usdt_trc20: { asset: "USDT", network: "TRC20" },
@@ -4617,8 +4816,8 @@ window.submitDepositRequest = async function () {
   document.getElementById("deposit-amount").value = "";
   document.getElementById("tx-ref").value = "";
 
-  toast("Deposit request submitted for admin approval");
-  await loadTransactions();
+ await loadTransactions();
+showTransactionSuccessModal("deposit");
 };
 
 /* Secure withdrawal request */
@@ -4674,7 +4873,7 @@ window.withdraw = async function () {
   await loadTransactions();
   updatePortfolio();
 
-  toast("Withdrawal request is waiting for admin approval");
+  showTransactionSuccessModal("withdrawal");
 };
 
 /* Real financial history */
