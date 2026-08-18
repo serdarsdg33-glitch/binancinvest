@@ -1994,6 +1994,167 @@ html[dir="rtl"] .plan-selection-label {
     font-size: 19px;
   }
 }
+/* Unified VIP contract card */
+.vip-single-card {
+  display: block;
+  margin-top: 18px;
+  padding: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(240,185,11,.11),
+      transparent 30%
+    ),
+    linear-gradient(145deg,#151c24,#090d12);
+  border: 1px solid rgba(240,185,11,.38);
+  border-radius: 19px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 18px 45px rgba(0,0,0,.42);
+}
+
+.vip-single-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.vip-single-header h2 {
+  margin: 6px 0;
+  font-size: 22px;
+}
+
+.vip-single-header p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.vip-single-summary {
+  display: grid;
+  grid-template-columns: repeat(3,auto);
+  gap: 8px;
+}
+
+.vip-single-summary > div {
+  min-width: 125px;
+  padding: 10px 13px;
+  text-align: center;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(240,185,11,.16);
+  border-radius: 10px;
+}
+
+.vip-single-summary span,
+.vip-single-summary strong {
+  display: block;
+}
+
+.vip-single-summary span {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.vip-single-summary strong {
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.vip-contract-tablebox {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 13px;
+}
+
+.vip-contract-table {
+  min-width: 1350px;
+}
+
+.vip-contract-table th {
+  padding: 13px 12px;
+  color: var(--muted);
+  background: rgba(255,255,255,.025);
+  white-space: nowrap;
+}
+
+.vip-contract-table td {
+  padding: 17px 12px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.vip-main-amount {
+  color: var(--green);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.vip-countdown {
+  color: var(--gold2);
+  font-weight: 850;
+}
+
+.vip-rate {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.vip-date {
+  color: #aeb7c3;
+  font-size: 11px;
+}
+
+.vip-table-status {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.vip-status-active {
+  color: var(--green);
+  background: rgba(22,199,132,.09);
+  border: 1px solid rgba(22,199,132,.28);
+}
+
+.vip-status-completed {
+  color: var(--gold2);
+  background: rgba(240,185,11,.09);
+  border: 1px solid rgba(240,185,11,.28);
+}
+
+.vip-empty-row {
+  padding: 30px !important;
+  text-align: center !important;
+}
+
+@media(max-width:800px) {
+  .vip-single-card {
+    padding: 15px 12px;
+  }
+
+  .vip-single-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .vip-single-summary {
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .vip-single-summary > div {
+    min-width: 0;
+    padding: 9px 5px;
+  }
+
+  .vip-single-summary strong {
+    font-size: 12px;
+  }
+}
 </style>
 </head>
 <body>
@@ -2361,37 +2522,61 @@ html[dir="rtl"] .plan-selection-label {
 <section id="portfolio" class="view">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
-  <div id="vipPortfolioSection" style="margin-top:18px;">
-  <div class="title" style="margin:18px 0 12px;">
+<div id="vipPortfolioSection" class="vip-single-card">
+
+  <div class="vip-single-header">
     <div>
-      <h2 style="margin:0;">VIP Locked Capital</h2>
-      <span class="muted">
-        Completely separate from regular investment plans
-      </span>
+      <span class="vip-lock-label">VIP LOCK CONTRACTS</span>
+      <h2>VIP 60-Day Locked Capital</h2>
+      <p class="muted">
+        All VIP contracts are displayed in one unified list.
+      </p>
+    </div>
+
+    <div class="vip-single-summary">
+      <div>
+        <span>Locked capital</span>
+        <strong id="vipSummaryPrincipal">$0.00</strong>
+      </div>
+
+      <div>
+        <span>Projected calculation</span>
+        <strong id="vipSummaryProfit">$0.00</strong>
+      </div>
+
+      <div>
+        <span>Active contracts</span>
+        <strong id="vipSummaryCount">0</strong>
+      </div>
     </div>
   </div>
 
-  <div id="vipPortfolioSummary" class="vip-lock-results">
-    <div>
-      <span>Total locked capital</span>
-      <strong id="vipSummaryPrincipal">$0.00</strong>
-    </div>
+  <div class="tablebox vip-contract-tablebox">
+    <table class="table vip-contract-table">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Time Remaining</th>
+          <th>Daily Rate</th>
+          <th>Daily Calculation</th>
+          <th>Total Calculation</th>
+          <th>Principal + Calculation</th>
+          <th>Status</th>
+          <th>Started</th>
+          <th>Ends</th>
+        </tr>
+      </thead>
 
-    <div>
-      <span>Total projected calculation</span>
-      <strong id="vipSummaryProfit">$0.00</strong>
-    </div>
-
-    <div>
-      <span>Active contracts</span>
-      <strong id="vipSummaryCount">0</strong>
-    </div>
+      <tbody id="vipPortfolioContracts">
+        <tr>
+          <td colspan="9" class="muted" style="text-align:center;">
+            No VIP lock contracts found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <div
-    id="vipPortfolioContracts"
-    style="display:grid;gap:12px;margin-top:14px;"
-  ></div>
 </div>
   
   <div class="portfolio-grid" id="portfolioGrid">
@@ -5251,36 +5436,32 @@ function renderVipPortfolioContracts() {
 
   section.style.display = "block";
 
-  const vipContracts =
-    currentInvestments.filter(item =>
-      item.plan_name === "VIP_LOCK" &&
-      (
-        item.status === "active" ||
-        item.status === "completed"
-      )
+  const vipContracts = currentInvestments.filter(contract =>
+    String(contract.plan_name || "") === "VIP_LOCK" &&
+    (
+      contract.status === "active" ||
+      contract.status === "completed"
+    )
+  );
+
+  const activeContracts = vipContracts.filter(contract => {
+    const endTime = new Date(contract.ends_at).getTime();
+
+    return (
+      contract.status === "active" &&
+      Number.isFinite(endTime) &&
+      Date.now() < endTime
     );
+  });
 
-  const activeContracts =
-    vipContracts.filter(contract => {
-      const endTime =
-        new Date(contract.ends_at).getTime();
+  const totalLockedPrincipal = activeContracts.reduce(
+    (total, contract) =>
+      total + Number(contract.principal || 0),
+    0
+  );
 
-      return (
-        contract.status === "active" &&
-        Number.isFinite(endTime) &&
-        Date.now() < endTime
-      );
-    });
-
-  const totalLockedPrincipal =
-    activeContracts.reduce(
-      (total, contract) =>
-        total + Number(contract.principal || 0),
-      0
-    );
-
-  const totalProjectedProfit =
-    activeContracts.reduce((total, contract) => {
+  const totalProjectedProfit = activeContracts.reduce(
+    (total, contract) => {
       const principal =
         Number(contract.principal || 0);
 
@@ -5290,13 +5471,13 @@ function renderVipPortfolioContracts() {
       const termDays =
         Number(contract.term_days ?? 60);
 
-      return (
-        total +
+      return total +
         principal *
         (dailyRate / 100) *
-        termDays
-      );
-    }, 0);
+        termDays;
+    },
+    0
+  );
 
   principalElement.textContent =
     formatPortfolioMoney(totalLockedPrincipal);
@@ -5309,172 +5490,112 @@ function renderVipPortfolioContracts() {
 
   if (vipContracts.length === 0) {
     container.innerHTML = `
-      <div
-        class="card muted"
-        style="text-align:center;"
-      >
-        No VIP lock contracts found.
-      </div>
+      <tr>
+        <td colspan="9" class="muted vip-empty-row">
+          No VIP lock contracts found.
+        </td>
+      </tr>
     `;
-
     return;
   }
 
-  container.innerHTML =
-    vipContracts.map((contract, index) => {
-      const principal =
-        Number(contract.principal || 0);
+  container.innerHTML = vipContracts.map(contract => {
+    const principal =
+      Number(contract.principal || 0);
 
-      const dailyRate =
-        Number(contract.daily_rate ?? 5.5);
+    const dailyRate =
+      Number(contract.daily_rate ?? 5.5);
 
-      const termDays =
-        Number(contract.term_days ?? 60);
+    const termDays =
+      Number(contract.term_days ?? 60);
 
-      const dailyProjection =
-        principal * (dailyRate / 100);
+    const dailyCalculation =
+      principal * (dailyRate / 100);
 
-      const totalProjection =
-        dailyProjection * termDays;
+    const totalCalculation =
+      dailyCalculation * termDays;
 
-      const finalProjection =
-        principal + totalProjection;
+    const finalCalculation =
+      principal + totalCalculation;
 
-      const startedAt =
-        new Date(contract.started_at);
+    const endTime =
+      new Date(contract.ends_at).getTime();
 
-      const endsAt =
-        new Date(contract.ends_at);
-
-      const endTime =
-        endsAt.getTime();
-
-      const isFinished =
+    const isFinished =
+      contract.status === "completed" ||
+      (
         Number.isFinite(endTime) &&
-        Date.now() >= endTime;
+        Date.now() >= endTime
+      );
 
-      const statusText =
-        isFinished
-          ? "Contract completed"
-          : "Principal locked";
+    const statusText =
+      isFinished
+        ? "Completed"
+        : "Principal locked";
 
-      const remainingTime =
-        formatVipRemainingTime(
-          contract.ends_at
-        );
+    const statusClass =
+      isFinished
+        ? "vip-status-completed"
+        : "vip-status-active";
 
-      return `
-        <div
-          class="card"
-          style="
-            border:1px solid rgba(240,185,11,.32);
-            padding:18px;
-          "
-        >
-          <div
-            style="
-              display:flex;
-              justify-content:space-between;
-              align-items:flex-start;
-              flex-wrap:wrap;
-              gap:12px;
-              margin-bottom:15px;
-            "
-          >
-            <div>
-              <span class="vip-lock-label">
-                VIP CONTRACT #${vipContracts.length - index}
-              </span>
+    const startedDate =
+      new Date(contract.started_at);
 
-              <h3 style="margin:6px 0;">
-                ${formatPortfolioMoney(principal)}
-                Locked
-              </h3>
+    const endingDate =
+      new Date(contract.ends_at);
 
-              <div
-                class="muted"
-                style="
-                  font-size:11px;
-                  line-height:1.7;
-                "
-              >
-                Started:
-                ${
-                  Number.isNaN(startedAt.getTime())
-                    ? "Unknown"
-                    : startedAt.toLocaleString()
-                }
+    const startedText =
+      Number.isNaN(startedDate.getTime())
+        ? "—"
+        : startedDate.toLocaleString();
 
-                <br>
+    const endingText =
+      Number.isNaN(endingDate.getTime())
+        ? "—"
+        : endingDate.toLocaleString();
 
-                Ends:
-                ${
-                  Number.isNaN(endsAt.getTime())
-                    ? "Unknown"
-                    : endsAt.toLocaleString()
-                }
-              </div>
-            </div>
+    return `
+      <tr>
+        <td class="vip-main-amount">
+          ${formatPortfolioMoney(principal)}
+        </td>
 
-            <div class="vip-rate-badge">
-              <strong>${dailyRate}%</strong>
-              <span>Projected daily</span>
-            </div>
-          </div>
+        <td class="vip-countdown">
+          ${formatVipRemainingTime(contract.ends_at)}
+        </td>
 
-          <div class="vip-lock-results">
-            <div>
-              <span>Locked principal</span>
+        <td class="vip-rate">
+          ${dailyRate}%
+        </td>
 
-              <strong>
-                ${formatPortfolioMoney(principal)}
-              </strong>
-            </div>
+        <td class="green">
+          ${formatPortfolioMoney(dailyCalculation)}
+        </td>
 
-            <div>
-              <span>Daily calculation</span>
+        <td class="green">
+          ${formatPortfolioMoney(totalCalculation)}
+        </td>
 
-              <strong>
-                ${formatPortfolioMoney(dailyProjection)}
-              </strong>
-            </div>
+        <td class="green">
+          ${formatPortfolioMoney(finalCalculation)}
+        </td>
 
-            <div>
-              <span>Total calculation</span>
+        <td>
+          <span class="vip-table-status ${statusClass}">
+            ${statusText}
+          </span>
+        </td>
 
-              <strong>
-                ${formatPortfolioMoney(totalProjection)}
-              </strong>
-            </div>
+        <td class="vip-date">
+          ${startedText}
+        </td>
 
-            <div>
-              <span>Principal + calculation</span>
-
-              <strong>
-                ${formatPortfolioMoney(finalProjection)}
-              </strong>
-            </div>
-
-            <div>
-              <span>Time remaining</span>
-
-              <strong>
-                ${remainingTime}
-              </strong>
-            </div>
-
-            <div>
-              <span>Status</span>
-
-              <strong>
-                ${statusText}
-              </strong>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
+        <td class="vip-date">
+          ${endingText}
+        </td>
+      </tr>
+    `;
+  }).join("");
 }
 function renderPortfolioLive() {
   const balanceElement =
