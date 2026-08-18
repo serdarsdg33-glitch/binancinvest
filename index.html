@@ -2305,7 +2305,7 @@ html[dir="rtl"] .plan-selection-label {
     id="activateVipBalanceBtn"
     class="btn gold"
     type="button"
-    onclick="activateVipLockFromBalance()"
+    onclick="openVipLockConfirmation()"
   >
     Lock From Balance
   </button>
@@ -2360,7 +2360,19 @@ html[dir="rtl"] .plan-selection-label {
 
 <section id="portfolio" class="view">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
-  <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div class="cards"><div class="card stat"><span class="muted">Available Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div id="vipPortfolioSection" style="margin-top:18px;">
+  <div class="title" style="margin:18px 0 12px;">
+    <h2>VIP 60-Day Contracts</h2>
+    <span class="muted">Separate locked capital</span>
+  </div>
+
+  <div id="vipPortfolioContracts">
+    <div class="card muted" style="text-align:center;">
+      No VIP lock contracts found.
+    </div>
+  </div>
+</div>
   
   <div class="portfolio-grid" id="portfolioGrid">
     <div class="card form" style="padding: 25px; border: 1px solid rgba(240,185,11,0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
@@ -2809,6 +2821,82 @@ Transactions section.
       </button>
     </div>
 
+  </div>
+</div>
+<div class="modal" id="vipLockConfirmModal">
+  <div class="modalbox" style="max-width:430px;">
+    <button
+      class="close"
+      type="button"
+      onclick="closeVipLockConfirmation()"
+    >
+      ×
+    </button>
+
+    <div style="text-align:center;">
+      <div class="vip-lock-icon" style="margin:0 auto 14px;">
+        🔒
+      </div>
+
+      <h2 style="margin-bottom:8px;">
+        Confirm 60-Day Lock
+      </h2>
+
+      <p class="muted" style="line-height:1.7;">
+        Review the selected amount before locking it from your
+        available balance.
+      </p>
+    </div>
+
+    <div class="vip-lock-results" style="grid-template-columns:1fr 1fr;">
+      <div>
+        <span>Amount to lock</span>
+        <strong id="vipConfirmAmount">$0.00</strong>
+      </div>
+
+      <div>
+        <span>Available after lock</span>
+        <strong id="vipConfirmRemaining">$0.00</strong>
+      </div>
+
+      <div>
+        <span>Daily calculation</span>
+        <strong id="vipConfirmDaily">$0.00</strong>
+      </div>
+
+      <div>
+        <span>60-day calculation</span>
+        <strong id="vipConfirmTotal">$0.00</strong>
+      </div>
+    </div>
+
+    <div class="vip-contract-notice">
+      <span>⚠</span>
+      <p>
+        The selected principal will remain locked for 60 days.
+        Displayed return calculations are projected values and are
+        separate from your available balance.
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px;">
+      <button
+        class="btn"
+        type="button"
+        onclick="closeVipLockConfirmation()"
+      >
+        Cancel
+      </button>
+
+      <button
+        id="confirmVipLockBtn"
+        class="btn gold"
+        type="button"
+        onclick="confirmVipLockFromBalance()"
+      >
+        Confirm Lock
+      </button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -4463,25 +4551,6 @@ async function saveTx(type, amount, status){
     date: new Date().toLocaleString()
   }]);
 }
-
-async function withdraw(){
-  let a = +document.getElementById("withdrawAmount").value;
-  let address = document.getElementById("withdrawAddress").value.trim();
-  let crypto = document.getElementById("withdrawCrypto").value;
-  
-  if(!currentUser) return openAuth("login");
-  if(!address) return toast("Please enter your destination wallet address");
-  if(!a || a <= 0 || a > currentUser.balance) return toast("Insufficient balance or invalid amount");
-  
-  currentUser.balance -= a;
-  await saveUserData();
-  await saveTx('Withdrawal (' + crypto + ') to ' + address, a, 'Pending');
-  updatePortfolio(); loadTransactions(); 
-  toast("Withdrawal requested successfully!");
-  
-  document.getElementById("withdrawAmount").value = "";
-  document.getElementById("withdrawAddress").value = "";
-}
 const VIP_LOCK_RATE = 5.5;
 const VIP_LOCK_TERM = 60;
 const VIP_LOCK_MINIMUM = 10;
@@ -4568,19 +4637,17 @@ function setVipMaximumAmount() {
 
   calculateVipLock();
 }
-async function activateVipLockFromBalance() {
+let pendingVipLockAmount = 0;
+
+function openVipLockConfirmation() {
   if (!currentUser?.id) {
     openAuth("login");
     return;
   }
 
-  const amountInput =
-    document.getElementById("vipLockAmount");
-
-  const button =
-    document.getElementById("activateVipBalanceBtn");
-
-  const amount = Number(amountInput?.value);
+  const amount = Number(
+    document.getElementById("vipLockAmount")?.value
+  );
 
   if (
     !Number.isFinite(amount) ||
@@ -4597,17 +4664,78 @@ async function activateVipLockFromBalance() {
 
   if (amount > availableBalance) {
     toast(
-      `Insufficient available balance. Available: ` +
+      "Insufficient available balance. Available: " +
       formatPortfolioMoney(availableBalance)
     );
     return;
   }
 
-  const confirmed = window.confirm(
-    `Lock ${formatPortfolioMoney(amount)} from your available balance for 60 days?`
-  );
+  pendingVipLockAmount = amount;
 
-  if (!confirmed) return;
+  const dailyCalculation =
+    amount * (VIP_LOCK_RATE / 100);
+
+  const totalCalculation =
+    dailyCalculation * VIP_LOCK_TERM;
+
+  document.getElementById(
+    "vipConfirmAmount"
+  ).textContent =
+    formatPortfolioMoney(amount);
+
+  document.getElementById(
+    "vipConfirmRemaining"
+  ).textContent =
+    formatPortfolioMoney(
+      availableBalance - amount
+    );
+
+  document.getElementById(
+    "vipConfirmDaily"
+  ).textContent =
+    formatPortfolioMoney(dailyCalculation);
+
+  document.getElementById(
+    "vipConfirmTotal"
+  ).textContent =
+    formatPortfolioMoney(totalCalculation);
+
+  document.getElementById(
+    "vipLockConfirmModal"
+  ).style.display = "flex";
+}
+
+function closeVipLockConfirmation() {
+  const modal =
+    document.getElementById("vipLockConfirmModal");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+
+  pendingVipLockAmount = 0;
+}
+
+async function confirmVipLockFromBalance() {
+  if (!currentUser?.id) {
+    closeVipLockConfirmation();
+    openAuth("login");
+    return;
+  }
+
+  const amount = Number(pendingVipLockAmount);
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < VIP_LOCK_MINIMUM ||
+    amount > VIP_LOCK_MAXIMUM
+  ) {
+    toast("Invalid VIP lock amount");
+    return;
+  }
+
+  const button =
+    document.getElementById("confirmVipLockBtn");
 
   button.disabled = true;
   button.textContent = "Activating...";
@@ -4623,23 +4751,27 @@ async function activateVipLockFromBalance() {
 
     if (error) throw error;
 
+    closeVipLockConfirmation();
+
     await refreshSecureAccount();
-    await updatePortfolio();
 
-    amountInput.value = "500";
+    document.getElementById(
+      "vipLockAmount"
+    ).value = "500";
+
     calculateVipLock();
-
-    toast(
-      `Successfully locked ${formatPortfolioMoney(amount)} for 60 days`
-    );
 
     page(
       "portfolio",
       document.querySelector('[data-page="portfolio"]')
     );
 
+    toast(
+      `${formatPortfolioMoney(amount)} locked successfully`
+    );
+
     console.log(
-      "VIP investment created:",
+      "VIP contract created:",
       investmentId
     );
   } catch (error) {
@@ -4647,11 +4779,11 @@ async function activateVipLockFromBalance() {
 
     toast(
       error.message ||
-      "The VIP lock could not be activated"
+      "VIP contract could not be activated"
     );
   } finally {
     button.disabled = false;
-    button.textContent = "Lock From Balance";
+    button.textContent = "Confirm Lock";
   }
 }
 function continueVipLockDeposit() {
@@ -5018,7 +5150,182 @@ async function loadInvestments() {
 
   currentInvestments = data || [];
 }
+function formatVipRemainingTime(endsAt) {
+  const endTime = new Date(endsAt).getTime();
 
+  if (!Number.isFinite(endTime)) {
+    return "Unknown";
+  }
+
+  const remaining =
+    Math.max(0, endTime - Date.now());
+
+  if (remaining <= 0) {
+    return "Contract period completed";
+  }
+
+  const days =
+    Math.floor(remaining / 86400000);
+
+  const hours =
+    Math.floor(
+      (remaining % 86400000) / 3600000
+    );
+
+  const minutes =
+    Math.floor(
+      (remaining % 3600000) / 60000
+    );
+
+  const seconds =
+    Math.floor(
+      (remaining % 60000) / 1000
+    );
+
+  return (
+    `${days}d ${hours}h ` +
+    `${minutes}m ${seconds}s`
+  );
+}
+
+function renderVipPortfolioContracts() {
+  const container =
+    document.getElementById(
+      "vipPortfolioContracts"
+    );
+
+  const section =
+    document.getElementById(
+      "vipPortfolioSection"
+    );
+
+  if (!container || !section) return;
+
+  if (!currentUser?.id) {
+    section.style.display = "none";
+    container.innerHTML = "";
+    return;
+  }
+
+  section.style.display = "block";
+
+  const vipContracts =
+    currentInvestments.filter(item =>
+      item.plan_name === "VIP 60-Day Lock" &&
+      (
+        item.status === "active" ||
+        item.status === "completed"
+      )
+    );
+
+  if (vipContracts.length === 0) {
+    container.innerHTML = `
+      <div class="card muted" style="text-align:center;">
+        No VIP lock contracts found.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML =
+    vipContracts.map(contract => {
+      const principal =
+        Number(contract.principal || 0);
+
+      const displayedRate =
+        Number(contract.daily_rate || 5.5);
+
+      const term =
+        Number(contract.term_days || 60);
+
+      const projectedDaily =
+        principal * (displayedRate / 100);
+
+      const projectedTotal =
+        projectedDaily * term;
+
+      const projectedFinal =
+        principal + projectedTotal;
+
+      const endTime =
+        new Date(contract.ends_at).getTime();
+
+      const isFinished =
+        Number.isFinite(endTime) &&
+        Date.now() >= endTime;
+
+      const statusText =
+        isFinished
+          ? "Period completed"
+          : "Principal locked";
+
+      return `
+        <div class="vip-lock-card" style="margin-top:0;margin-bottom:13px;">
+          <div class="vip-lock-header">
+            <div class="vip-lock-icon">🔒</div>
+
+            <div>
+              <span class="vip-lock-label">
+                VIP 60-DAY CONTRACT
+              </span>
+
+              <h2>
+                ${formatPortfolioMoney(principal)}
+                Locked Principal
+              </h2>
+
+              <p>
+                Started:
+                ${new Date(contract.started_at).toLocaleString()}
+                <br>
+                Ends:
+                ${new Date(contract.ends_at).toLocaleString()}
+              </p>
+            </div>
+
+            <div class="vip-rate-badge">
+              <strong>${displayedRate}%</strong>
+              <span>Projected daily</span>
+            </div>
+          </div>
+
+          <div class="vip-lock-results">
+            <div>
+              <span>Locked principal</span>
+              <strong>${formatPortfolioMoney(principal)}</strong>
+            </div>
+
+            <div>
+              <span>Projected daily calculation</span>
+              <strong>${formatPortfolioMoney(projectedDaily)}</strong>
+            </div>
+
+            <div>
+              <span>Projected 60-day calculation</span>
+              <strong>${formatPortfolioMoney(projectedTotal)}</strong>
+            </div>
+
+            <div>
+              <span>Projected principal + calculation</span>
+              <strong>${formatPortfolioMoney(projectedFinal)}</strong>
+            </div>
+
+            <div>
+              <span>Time remaining</span>
+              <strong>
+                ${formatVipRemainingTime(contract.ends_at)}
+              </strong>
+            </div>
+
+            <div>
+              <span>Status</span>
+              <strong>${statusText}</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+}
 function renderPortfolioLive() {
   const balanceElement =
     document.getElementById("balance");
@@ -5046,41 +5353,39 @@ function renderPortfolioLive() {
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
     levelElement.textContent = "Basic";
+    renderVipPortfolioContracts();
     return;
   }
 
-  const validInvestments =
+  const regularInvestments =
     currentInvestments.filter(item =>
-      item.status === "active" ||
-      item.status === "completed"
+      item.plan_name !== "VIP 60-Day Lock" &&
+      (
+        item.status === "active" ||
+        item.status === "completed"
+      )
     );
 
   const investedPrincipal =
-    validInvestments.reduce(
+    regularInvestments.reduce(
       (total, item) =>
         total + Number(item.principal || 0),
       0
     );
 
   const totalProfit =
-    validInvestments.reduce(
+    regularInvestments.reduce(
       (total, item) =>
-        total +
-        calculateInvestmentProfit(item),
+        total + calculateInvestmentProfit(item),
       0
     );
 
   const availableBalance =
     Number(currentUser.balance || 0);
 
-  const totalPortfolioBalance =
-    availableBalance +
-    investedPrincipal +
-    totalProfit;
-
   balanceElement.textContent =
     formatPortfolioMoney(
-      totalPortfolioBalance,
+      availableBalance,
       true
     );
 
@@ -5095,36 +5400,36 @@ function renderPortfolioLive() {
       true
     );
 
-  const activeInvestments =
-    currentInvestments.filter(item =>
+  const activeRegularInvestments =
+    regularInvestments.filter(item =>
       item.status === "active" &&
       Date.now() <
         new Date(item.ends_at).getTime()
     );
 
-  if (activeInvestments.length === 0) {
+  if (activeRegularInvestments.length === 0) {
     levelElement.textContent = "Basic";
-    return;
+  } else {
+    const highestPlan =
+      activeRegularInvestments.reduce(
+        (highest, item) => {
+          if (!highest) return item;
+
+          return Number(item.daily_rate) >
+            Number(highest.daily_rate)
+            ? item
+            : highest;
+        },
+        null
+      );
+
+    levelElement.textContent =
+      `${highestPlan.plan_name} · ` +
+      `${Number(highestPlan.daily_rate)}% Daily`;
   }
 
-  const highestPlan =
-    activeInvestments.reduce(
-      (highest, item) => {
-        if (!highest) return item;
-
-        return Number(item.daily_rate) >
-          Number(highest.daily_rate)
-          ? item
-          : highest;
-      },
-      null
-    );
-
-  levelElement.textContent =
-    `${highestPlan.plan_name} · ` +
-    `${Number(highestPlan.daily_rate)}% Daily`;
+  renderVipPortfolioContracts();
 }
-
 async function updatePortfolio() {
   if (portfolioTimer) {
     clearInterval(portfolioTimer);
