@@ -1746,6 +1746,254 @@ html[dir="rtl"] .plan-selection-label {
   font-size: 18px;
   line-height: 1;
 }
+/* Separate VIP 60-Day Lock Card */
+.vip-lock-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(240,185,11,.17),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(22,29,38,.98),
+      rgba(8,12,17,.98)
+    );
+  border: 1px solid rgba(240,185,11,.42);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 18px 50px rgba(0,0,0,.48),
+    0 0 22px rgba(240,185,11,.07);
+}
+
+.vip-lock-card::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 190px;
+  height: 190px;
+  background: rgba(240,185,11,.09);
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.vip-lock-header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 17px;
+}
+
+.vip-lock-icon {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  color: #171100;
+  font-size: 27px;
+  background: linear-gradient(135deg,#fff09a,#f0b90b);
+  border: 1px solid #ffe58a;
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.65),
+    0 8px 25px rgba(240,185,11,.22);
+}
+
+.vip-lock-label {
+  color: var(--gold2);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.vip-lock-header h2 {
+  margin: 5px 0 7px;
+  font-size: 23px;
+}
+
+.vip-lock-header p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.vip-rate-badge {
+  min-width: 105px;
+  padding: 13px 17px;
+  text-align: center;
+  background: rgba(240,185,11,.08);
+  border: 1px solid rgba(240,185,11,.35);
+  border-radius: 15px;
+}
+
+.vip-rate-badge strong,
+.vip-rate-badge span {
+  display: block;
+}
+
+.vip-rate-badge strong {
+  color: var(--gold);
+  font-size: 27px;
+  line-height: 1;
+}
+
+.vip-rate-badge span {
+  margin-top: 5px;
+  color: var(--gold2);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.vip-lock-body {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.vip-lock-body > label {
+  display: block;
+  margin-bottom: 7px;
+  color: #c4ccd7;
+  font-size: 12px;
+}
+
+.vip-amount-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.vip-amount-row input {
+  width: 100%;
+  padding: 13px;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+  background: #0b1016;
+  border: 1px solid #394452;
+  border-radius: 11px;
+  outline: none;
+}
+
+.vip-amount-row input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(240,185,11,.09);
+}
+
+.vip-lock-results {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.vip-lock-results div {
+  padding: 13px 10px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+}
+
+.vip-lock-results span,
+.vip-lock-results strong {
+  display: block;
+}
+
+.vip-lock-results span {
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.vip-lock-results strong {
+  color: var(--green);
+  font-size: 17px;
+}
+
+.vip-contract-notice {
+  display: flex;
+  gap: 9px;
+  margin-top: 14px;
+  padding: 11px;
+  color: #bdc6d1;
+  background: rgba(240,185,11,.055);
+  border: 1px solid rgba(240,185,11,.17);
+  border-radius: 11px;
+}
+
+.vip-contract-notice span {
+  color: var(--gold);
+}
+
+.vip-contract-notice p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.vip-lock-error {
+  display: none;
+  margin-top: 9px;
+  padding: 9px;
+  color: #ffabb2;
+  font-size: 11px;
+  background: rgba(234,57,67,.1);
+  border: 1px solid rgba(234,57,67,.25);
+  border-radius: 9px;
+}
+
+.vip-lock-error.show {
+  display: block;
+}
+
+.vip-lock-button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+}
+
+@media(max-width:700px) {
+  .vip-lock-card {
+    padding: 18px 14px;
+  }
+
+  .vip-lock-header {
+    grid-template-columns: auto 1fr;
+  }
+
+  .vip-rate-badge {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .vip-lock-results {
+    grid-template-columns: 1fr;
+  }
+
+  .vip-lock-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 23px;
+  }
+
+  .vip-lock-header h2 {
+    font-size: 19px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1882,7 +2130,7 @@ html[dir="rtl"] .plan-selection-label {
   </svg>
 </div>
             <div class="stat-circle-info">
-                <div class="stat-circle-value">$100,000,000+</div>
+                <div class="stat-circle-value">$500,000,000+</div>
                 <div class="stat-circle-label" data-t="statCapital">Platform Capital</div>
             </div>
         </div>
@@ -1977,7 +2225,90 @@ html[dir="rtl"] .plan-selection-label {
 <section id="invest" class="view">
 <div class="title"><h2 data-t="plans">Investment Plans</h2><span class="muted" data-t="illustrative">Illustrative returns</span></div>
 <div class="plans" id="plans"></div>
+<!-- Separate VIP 60-Day Lock Card -->
+<div class="vip-lock-card">
+  <div class="vip-lock-header">
+    <div class="vip-lock-icon">🔒</div>
 
+    <div>
+      <span class="vip-lock-label">VIP LOCK CONTRACT</span>
+      <h2>60-Day Capital Lock</h2>
+      <p>
+        Lock a selected amount for 60 days and calculate returns
+        using the displayed 5.5% daily rate.
+      </p>
+    </div>
+
+    <div class="vip-rate-badge">
+      <strong>5.5%</strong>
+      <span>Daily</span>
+    </div>
+  </div>
+
+  <div class="vip-lock-body">
+    <label for="vipLockAmount">
+      Amount to lock ($10 – $10,000)
+    </label>
+
+    <div class="vip-amount-row">
+      <input
+        id="vipLockAmount"
+        type="number"
+        min="10"
+        max="10000"
+        step="1"
+        value="500"
+        oninput="calculateVipLock()"
+      >
+
+      <button
+        class="btn"
+        type="button"
+        onclick="setVipMaximumAmount()"
+      >
+        MAX
+      </button>
+    </div>
+
+    <div id="vipLockError" class="vip-lock-error"></div>
+
+    <div class="vip-lock-results">
+      <div>
+        <span>Daily calculation</span>
+        <strong id="vipDailyProfit">$27.50</strong>
+      </div>
+
+      <div>
+        <span>60-day calculation</span>
+        <strong id="vipTotalProfit">$1,650.00</strong>
+      </div>
+
+      <div>
+        <span>Principal + calculation</span>
+        <strong id="vipFinalValue">$2,150.00</strong>
+      </div>
+    </div>
+
+    <div class="vip-contract-notice">
+      <span>⚠</span>
+
+      <p>
+        The selected principal remains locked for 60 days.
+        Review all contract conditions before continuing.
+        Displayed calculations are illustrative and do not themselves
+        activate a contract.
+      </p>
+    </div>
+
+    <button
+      class="btn gold vip-lock-button"
+      type="button"
+      onclick="continueVipLockDeposit()"
+    >
+      Continue to Deposit
+    </button>
+  </div>
+</div>
 <div class="card form" style="margin-top:20px">
     <h2 data-t="customTitle">Custom Investment Plan</h2>
     <p class="muted">Enter an amount from $10 to $10,000. The appropriate investment plan, daily rate and term will be selected automatically.</p>
@@ -2242,7 +2573,7 @@ html[dir="rtl"] .plan-selection-label {
       <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
-        <a href="mailto:binancinvest@zohomail.eu" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest@zohomail.eu</a>
+        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest@zohomail.eu</a>
       </div>
     </div>
   </div>
@@ -4140,6 +4471,128 @@ async function withdraw(){
   document.getElementById("withdrawAmount").value = "";
   document.getElementById("withdrawAddress").value = "";
 }
+const VIP_LOCK_RATE = 5.5;
+const VIP_LOCK_TERM = 60;
+const VIP_LOCK_MINIMUM = 10;
+const VIP_LOCK_MAXIMUM = 10000;
+
+function calculateVipLock() {
+  const input =
+    document.getElementById("vipLockAmount");
+
+  const errorBox =
+    document.getElementById("vipLockError");
+
+  if (!input) return;
+
+  const amount = Number(input.value);
+
+  const isValid =
+    Number.isFinite(amount) &&
+    amount >= VIP_LOCK_MINIMUM &&
+    amount <= VIP_LOCK_MAXIMUM;
+
+  if (!isValid) {
+    errorBox.textContent =
+      "Enter an amount between $10 and $10,000.";
+
+    errorBox.classList.add("show");
+
+    document.getElementById(
+      "vipDailyProfit"
+    ).textContent = "$0.00";
+
+    document.getElementById(
+      "vipTotalProfit"
+    ).textContent = "$0.00";
+
+    document.getElementById(
+      "vipFinalValue"
+    ).textContent = "$0.00";
+
+    return;
+  }
+
+  errorBox.textContent = "";
+  errorBox.classList.remove("show");
+
+  const dailyProfit =
+    amount * (VIP_LOCK_RATE / 100);
+
+  const totalProfit =
+    dailyProfit * VIP_LOCK_TERM;
+
+  const finalValue =
+    amount + totalProfit;
+
+  document.getElementById(
+    "vipDailyProfit"
+  ).textContent =
+    formatPortfolioMoney(dailyProfit);
+
+  document.getElementById(
+    "vipTotalProfit"
+  ).textContent =
+    formatPortfolioMoney(totalProfit);
+
+  document.getElementById(
+    "vipFinalValue"
+  ).textContent =
+    formatPortfolioMoney(finalValue);
+}
+
+function setVipMaximumAmount() {
+  const input =
+    document.getElementById("vipLockAmount");
+
+  if (!input) return;
+
+  const availableBalance =
+    Number(currentUser?.balance || 0);
+
+  input.value = Math.min(
+    VIP_LOCK_MAXIMUM,
+    Math.max(0, availableBalance)
+  );
+
+  calculateVipLock();
+}
+
+function continueVipLockDeposit() {
+  const amount = Number(
+    document.getElementById("vipLockAmount").value
+  );
+
+  if (
+    !Number.isFinite(amount) ||
+    amount < VIP_LOCK_MINIMUM ||
+    amount > VIP_LOCK_MAXIMUM
+  ) {
+    calculateVipLock();
+    return;
+  }
+
+  const depositInput =
+    document.getElementById("deposit-amount");
+
+  if (depositInput) {
+    depositInput.value = amount;
+  }
+
+  page(
+    "portfolio",
+    document.querySelector(
+      '[data-page="portfolio"]'
+    )
+  );
+
+  setTimeout(() => {
+    depositInput?.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }, 200);
+}
 let selectedPlanIndex = null;
 
 function openPlanSelectionModal(index) {
@@ -5380,9 +5833,9 @@ restoreEmailConfirmationNotice();
   renderTable();
   renderPlans();
   calc();
-  calcCustom();
-  fetchRealPrices();
-
+ calcCustom();
+calculateVipLock();
+fetchRealPrices();
   setInterval(fetchRealPrices, 15000);
 
   if (currentUser) {
