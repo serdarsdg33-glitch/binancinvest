@@ -1158,6 +1158,39 @@ html[dir="rtl"] .plan > .tag {
 .password-flow-error.show {
   display: block;
 }
+.email-confirm-box {
+  position: relative;
+}
+
+.email-confirm-close {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #aab4c0;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.email-confirm-close:hover {
+  color: #fff;
+  background: rgba(240,185,11,.12);
+  border-color: rgba(240,185,11,.5);
+}
+
+html[dir="rtl"] .email-confirm-close {
+  right: auto;
+  left: 15px;
+}
 </style>
 </head>
 <body>
@@ -1703,7 +1736,14 @@ html[dir="rtl"] .plan > .tag {
 <div class="toast" id="toast"></div>
 <div id="emailConfirmModal" class="email-confirm-modal">
   <div class="email-confirm-box">
-
+<button
+  class="email-confirm-close"
+  type="button"
+  onclick="dismissEmailConfirmation()"
+  aria-label="Close"
+>
+  ×
+</button>
     <div class="email-confirm-icon">✉</div>
 
     <h2>Confirm your email</h2>
@@ -2001,6 +2041,14 @@ function showEmailConfirmation(email) {
 
   if (modal) {
     modal.classList.add("open");
+  }
+}
+function dismissEmailConfirmation() {
+  const modal =
+    document.getElementById("emailConfirmModal");
+
+  if (modal) {
+    modal.classList.remove("open");
   }
 }
 
