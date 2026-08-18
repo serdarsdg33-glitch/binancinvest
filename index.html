@@ -1583,6 +1583,140 @@ html[dir="rtl"] .plan-selection-label {
     height: 370px;
   }
 }
+/* Professional circular security logos */
+.security-partners {
+  width: min(850px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.security-partner {
+  min-height: 105px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  background:
+    linear-gradient(145deg, rgba(21,28,36,.92), rgba(10,14,20,.96));
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 14px 35px rgba(0,0,0,.38);
+  transition: transform .25s ease, border-color .25s ease;
+}
+
+.security-partner:hover {
+  transform: translateY(-4px);
+  border-color: rgba(240,185,11,.42);
+}
+
+.security-logo {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  min-width: 62px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.5),
+    inset 0 -8px 14px rgba(0,0,0,.25),
+    0 8px 22px rgba(0,0,0,.45);
+}
+
+.security-logo::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 11px;
+  width: 27px;
+  height: 13px;
+  background: rgba(255,255,255,.35);
+  border-radius: 50%;
+  transform: rotate(-20deg);
+  filter: blur(1px);
+}
+
+.security-logo svg {
+  position: relative;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ssl-logo {
+  color: #062219;
+  background: radial-gradient(circle at 30% 20%, #baffdf, #16c784 55%, #08764e);
+  border: 1px solid #69e9b7;
+}
+
+.custody-logo {
+  color: #211700;
+  background: radial-gradient(circle at 30% 20%, #fff4a9, #f0b90b 55%, #9c6d00);
+  border: 1px solid #ffe15b;
+}
+
+.account-logo {
+  color: #07172b;
+  background: radial-gradient(circle at 30% 20%, #bcd1ff, #5577ff 55%, #263ca5);
+  border: 1px solid #91aaff;
+}
+
+.security-partner-text {
+  min-width: 0;
+}
+
+.security-partner-text b {
+  display: block;
+  color: #f4f7fb;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.security-partner-text span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+html[dir="rtl"] .security-partner {
+  text-align: right;
+}
+
+@media(max-width:700px) {
+  .security-partners {
+    grid-template-columns: 1fr;
+    max-width: 390px;
+  }
+
+  .security-partner {
+    min-height: 88px;
+    padding: 13px 15px;
+  }
+
+  .security-logo {
+    width: 55px;
+    height: 55px;
+    min-width: 55px;
+  }
+
+  .security-logo svg {
+    width: 28px;
+    height: 28px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1729,12 +1863,54 @@ html[dir="rtl"] .plan-selection-label {
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
         <h4 class="muted" data-t="securityPartners" style="margin-bottom:15px;">Security Partners & Protection</h4>
-        <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-            <div class="security-badge" style="color:#16c784;"><span style="font-size:20px;">🛡️</span> 256-bit SSL</div>
-            <div class="security-badge" style="color:#f0b90b;"><span style="font-size:20px;">🔒</span> Binance SAFU</div>
-            <div class="security-badge" style="color:#ea3943;"><span style="font-size:20px;">✓</span> McAfee Secured</div>
-        </div>
+        <div class="security-partners">
+
+  <div class="security-partner">
+    <div class="security-logo ssl-logo">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2 20 5v6c0 5.2-3.3 9.2-8 11-4.7-1.8-8-5.8-8-11V5l8-3Z"/>
+        <path d="m8.5 12 2.2 2.2 4.8-5"/>
+      </svg>
     </div>
+
+    <div class="security-partner-text">
+      <b>256-bit SSL</b>
+      <span>Encrypted Connection</span>
+    </div>
+  </div>
+
+  <div class="security-partner">
+    <div class="security-logo custody-logo">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="10" width="16" height="11" rx="2"/>
+        <path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10"/>
+        <circle cx="12" cy="15" r="1.5"/>
+        <path d="M12 16.5V18"/>
+      </svg>
+    </div>
+
+    <div class="security-partner-text">
+      <b>Secure Custody</b>
+      <span>Protected Assets</span>
+    </div>
+  </div>
+
+  <div class="security-partner">
+    <div class="security-logo account-logo">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4.5 21c.6-4.5 3.1-7 7.5-7s6.9 2.5 7.5 7"/>
+        <path d="m16.5 15.5 1.5 1.5 3-3"/>
+      </svg>
+    </div>
+
+    <div class="security-partner-text">
+      <b>Account Protection</b>
+      <span>Secure Authentication</span>
+    </div>
+  </div>
+
+</div>  </div>
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
         <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
         <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
@@ -3302,8 +3478,8 @@ const demo={
 
 const plans = [
   ["Starter", 10, 100, 2.5, 30],
-  ["Growth", 100.01, 1000, 3.5, 60],
-  ["Premium", 1000.01, 10000, 4.5, 90]
+  ["Growth", 100, 1000, 3.5, 60],
+  ["Premium", 1000, 10000, 4.5, 90]
 ];
 
 let currentInvestments = [];
