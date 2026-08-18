@@ -5260,24 +5260,6 @@ function renderVipPortfolioContracts() {
       )
     );
 
- 
-      const principal =
-        Number(contract.principal || 0);
-
-      const dailyRate =
-        Number(contract.daily_rate || 5.5);
-
-      const termDays =
-        Number(contract.term_days || 60);
-
-      return (
-        total +
-        principal *
-        (dailyRate / 100) *
-        termDays
-      );
-    }, 0);
-
   const activeContracts =
     vipContracts.filter(contract => {
       const endTime =
@@ -5290,6 +5272,32 @@ function renderVipPortfolioContracts() {
       );
     });
 
+  const totalLockedPrincipal =
+    activeContracts.reduce(
+      (total, contract) =>
+        total + Number(contract.principal || 0),
+      0
+    );
+
+  const totalProjectedProfit =
+    activeContracts.reduce((total, contract) => {
+      const principal =
+        Number(contract.principal || 0);
+
+      const dailyRate =
+        Number(contract.daily_rate ?? 5.5);
+
+      const termDays =
+        Number(contract.term_days ?? 60);
+
+      return (
+        total +
+        principal *
+        (dailyRate / 100) *
+        termDays
+      );
+    }, 0);
+
   principalElement.textContent =
     formatPortfolioMoney(totalLockedPrincipal);
 
@@ -5301,10 +5309,14 @@ function renderVipPortfolioContracts() {
 
   if (vipContracts.length === 0) {
     container.innerHTML = `
-      <div class="card muted" style="text-align:center;">
+      <div
+        class="card muted"
+        style="text-align:center;"
+      >
         No VIP lock contracts found.
       </div>
     `;
+
     return;
   }
 
@@ -5328,8 +5340,14 @@ function renderVipPortfolioContracts() {
       const finalProjection =
         principal + totalProjection;
 
+      const startedAt =
+        new Date(contract.started_at);
+
+      const endsAt =
+        new Date(contract.ends_at);
+
       const endTime =
-        new Date(contract.ends_at).getTime();
+        endsAt.getTime();
 
       const isFinished =
         Number.isFinite(endTime) &&
@@ -5340,18 +5358,29 @@ function renderVipPortfolioContracts() {
           ? "Contract completed"
           : "Principal locked";
 
+      const remainingTime =
+        formatVipRemainingTime(
+          contract.ends_at
+        );
+
       return `
-        <div class="card" style="
-          border:1px solid rgba(240,185,11,.32);
-          padding:18px;
-        ">
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:flex-start;
-            gap:12px;
-            margin-bottom:15px;
-          ">
+        <div
+          class="card"
+          style="
+            border:1px solid rgba(240,185,11,.32);
+            padding:18px;
+          "
+        >
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              align-items:flex-start;
+              flex-wrap:wrap;
+              gap:12px;
+              margin-bottom:15px;
+            "
+          >
             <div>
               <span class="vip-lock-label">
                 VIP CONTRACT #${vipContracts.length - index}
@@ -5362,12 +5391,28 @@ function renderVipPortfolioContracts() {
                 Locked
               </h3>
 
-              <div class="muted" style="font-size:11px;line-height:1.7;">
+              <div
+                class="muted"
+                style="
+                  font-size:11px;
+                  line-height:1.7;
+                "
+              >
                 Started:
-                ${new Date(contract.started_at).toLocaleString()}
+                ${
+                  Number.isNaN(startedAt.getTime())
+                    ? "Unknown"
+                    : startedAt.toLocaleString()
+                }
+
                 <br>
+
                 Ends:
-                ${new Date(contract.ends_at).toLocaleString()}
+                ${
+                  Number.isNaN(endsAt.getTime())
+                    ? "Unknown"
+                    : endsAt.toLocaleString()
+                }
               </div>
             </div>
 
@@ -5380,6 +5425,7 @@ function renderVipPortfolioContracts() {
           <div class="vip-lock-results">
             <div>
               <span>Locked principal</span>
+
               <strong>
                 ${formatPortfolioMoney(principal)}
               </strong>
@@ -5387,6 +5433,7 @@ function renderVipPortfolioContracts() {
 
             <div>
               <span>Daily calculation</span>
+
               <strong>
                 ${formatPortfolioMoney(dailyProjection)}
               </strong>
@@ -5394,6 +5441,7 @@ function renderVipPortfolioContracts() {
 
             <div>
               <span>Total calculation</span>
+
               <strong>
                 ${formatPortfolioMoney(totalProjection)}
               </strong>
@@ -5401,6 +5449,7 @@ function renderVipPortfolioContracts() {
 
             <div>
               <span>Principal + calculation</span>
+
               <strong>
                 ${formatPortfolioMoney(finalProjection)}
               </strong>
@@ -5408,14 +5457,18 @@ function renderVipPortfolioContracts() {
 
             <div>
               <span>Time remaining</span>
+
               <strong>
-                ${formatVipRemainingTime(contract.ends_at)}
+                ${remainingTime}
               </strong>
             </div>
 
             <div>
               <span>Status</span>
-              <strong>${statusText}</strong>
+
+              <strong>
+                ${statusText}
+              </strong>
             </div>
           </div>
         </div>
