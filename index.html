@@ -3481,39 +3481,64 @@ const fakeNames = [
 ];
 
 function addLiveWithdrawal() {
-    let list = document.getElementById("liveWithdrawalsList");
-    if(!list) return;
-    let name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-    let amount = (Math.random() * 990 + 10).toFixed(2);
-    let initial = name.charAt(0);
-    let lang = localStorage.getItem("bi_lang") || "en";
-    let justNowText = (T[lang] && T[lang].justNow) ? T[lang].justNow : T.en.justNow;
-    
-    let div = document.createElement("div");
-    div.className = "live-withdraw";
-    div.innerHTML = `
-        <div style="display:flex; align-items:center; flex:1;">
-            <div class="live-avatar">${initial}</div>
-            <div class="live-info">
-                <b>${name}</b>
-                <span>${justNowText}</span>
-            </div>
-        </div>
-        <div class="live-amount">+$${amount} USD</div>
-    `;
-    list.prepend(div);
+  const list =
+    document.getElementById("liveWithdrawalsList");
 
-const withdrawalItems =
-  list.querySelectorAll(".live-withdraw");
+  if (!list) return;
 
-if (withdrawalItems.length > 5) {
-  withdrawalItems[
-    withdrawalItems.length - 1
-  ].remove();
+  const name =
+    fakeNames[
+      Math.floor(Math.random() * fakeNames.length)
+    ];
+
+  const amount =
+    (Math.random() * 990 + 10).toFixed(2);
+
+  const initial = name.charAt(0);
+
+  const lang =
+    localStorage.getItem("bi_lang") || "en";
+
+  const justNowText =
+    T[lang]?.justNow || T.en.justNow;
+
+  const div = document.createElement("div");
+  div.className = "live-withdraw";
+
+  div.innerHTML = `
+    <div style="display:flex;align-items:center;flex:1;">
+      <div class="live-avatar">${initial}</div>
+
+      <div class="live-info">
+        <b>${name}</b>
+        <span>${justNowText}</span>
+      </div>
+    </div>
+
+    <div class="live-amount">
+      +$${amount} USD
+    </div>
+  `;
+
+  list.prepend(div);
+
+  const withdrawalItems =
+    list.querySelectorAll(".live-withdraw");
+
+  if (withdrawalItems.length > 5) {
+    withdrawalItems[
+      withdrawalItems.length - 1
+    ].remove();
+  }
 }
 
 setInterval(addLiveWithdrawal, 5000);
-setTimeout(() => { for(let i=0; i<3; i++) addLiveWithdrawal(); }, 500);
+
+setTimeout(() => {
+  for (let i = 0; i < 3; i++) {
+    addLiveWithdrawal();
+  }
+}, 500);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
