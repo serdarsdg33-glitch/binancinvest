@@ -1717,6 +1717,22 @@ html[dir="rtl"] .security-partner {
     height: 28px;
   }
 }
+.security-partners .partner-logo-box {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.security-partners .partner-logo-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08) !important;
+    border-color: rgba(0, 123, 255, 0.2);
+}
+
+.tracking-wider {
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
 </style>
 </head>
 <body>
@@ -1863,52 +1879,48 @@ html[dir="rtl"] .security-partner {
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
         <h4 class="muted" data-t="securityPartners" style="margin-bottom:15px;">Security Partners & Protection</h4>
-        <div class="security-partners">
+        <section class="security-partners py-5 bg-light border-top">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h5 class="text-muted fw-bold text-uppercase tracking-wider">امنیت و استانداردهای تایید شده</h5>
+            <p class="text-secondary small">ما از زیرساخت‌ها و استانداردهای امنیتی پیشرو در جهان بهره می‌بریم</p>
+        </div>
+        
+        <div class="row align-items-center justify-content-center g-4">
+            <!-- لوگوی McAfee -->
+            <div class="col-6 col-md-3 col-lg-2 text-center">
+                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/McAfee_Logo.svg" alt="McAfee Security" class="img-fluid" style="max-height: 40px; object-fit: contain;">
+                </div>
+            </div>
 
-  <div class="security-partner">
-    <div class="security-logo ssl-logo">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2 20 5v6c0 5.2-3.3 9.2-8 11-4.7-1.8-8-5.8-8-11V5l8-3Z"/>
-        <path d="m8.5 12 2.2 2.2 4.8-5"/>
-      </svg>
-    </div>
+            <!-- لوگوی Cloudflare -->
+            <div class="col-6 col-md-3 col-lg-2 text-center">
+                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.svg" alt="Cloudflare Protected" class="img-fluid" style="max-height: 35px; object-fit: contain;">
+                </div>
+            </div>
 
-    <div class="security-partner-text">
-      <b>256-bit SSL</b>
-      <span>Encrypted Connection</span>
-    </div>
-  </div>
+            <!-- گواهینامه DigiCert -->
+            <div class="col-6 col-md-3 col-lg-2 text-center">
+                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/DigiCert_logo.svg" alt="DigiCert SSL" class="img-fluid" style="max-height: 30px; object-fit: contain;">
+                </div>
+            </div>
 
-  <div class="security-partner">
-    <div class="security-logo custody-logo">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="4" y="10" width="16" height="11" rx="2"/>
-        <path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10"/>
-        <circle cx="12" cy="15" r="1.5"/>
-        <path d="M12 16.5V18"/>
-      </svg>
+            <!-- استاندارد ISO 27001 -->
+            <div class="col-6 col-md-3 col-lg-2 text-center">
+                <div class="partner-logo-box p-3 bg-white rounded shadow-sm h-100 d-flex align-items-center justify-content-center">
+                    <div class="d-flex align-items-center justify-content-center text-dark fw-bold">
+                        <i class="fas fa-shield-alt text-primary fs-3 me-2"></i>
+                        <span style="font-size: 0.85rem; line-height: 1.1;">ISO/IEC<br><strong>27001</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="security-partner-text">
-      <b>Secure Custody</b>
-      <span>Protected Assets</span>
-    </div>
-  </div>
-
-  <div class="security-partner">
-    <div class="security-logo account-logo">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4.5 21c.6-4.5 3.1-7 7.5-7s6.9 2.5 7.5 7"/>
-        <path d="m16.5 15.5 1.5 1.5 3-3"/>
-      </svg>
-    </div>
-
-    <div class="security-partner-text">
-      <b>Account Protection</b>
-      <span>Secure Authentication</span>
-    </div>
-  </div>
 
 </div>  </div>
     <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
