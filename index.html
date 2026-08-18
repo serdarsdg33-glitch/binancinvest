@@ -1053,6 +1053,111 @@ html[dir="rtl"] .plan > .tag {
   font-size: 12px;
   color: #7f8b9a !important;
 }
+/* Password recovery modals */
+.password-flow-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.password-flow-modal.open {
+  display: flex;
+}
+
+.password-flow-box {
+  width: min(440px,100%);
+  padding: 28px 24px;
+  text-align: center;
+  color: #fff;
+  background:
+    linear-gradient(145deg,#151c25,#0a0f16);
+  border: 1px solid rgba(240,185,11,.4);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.8),
+    0 0 30px rgba(240,185,11,.08);
+}
+
+.password-flow-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  color: #171100;
+  font-size: 29px;
+  background:
+    linear-gradient(135deg,#fff0a3,#f0b90b);
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(240,185,11,.25);
+}
+
+.password-flow-box h2 {
+  margin: 0 0 10px;
+  font-size: 25px;
+}
+
+.password-flow-box p {
+  margin: 0;
+  color: #aab4c0;
+  line-height: 1.8;
+}
+
+.password-flow-email {
+  margin: 17px 0;
+  padding: 12px;
+  direction: ltr;
+  color: #ffe58a;
+  font-weight: 850;
+  word-break: break-all;
+  background: rgba(240,185,11,.08);
+  border: 1px solid rgba(240,185,11,.25);
+  border-radius: 11px;
+}
+
+.password-flow-form {
+  margin-top: 18px;
+  text-align: initial;
+}
+
+.password-flow-form label {
+  display: block;
+  margin: 12px 0 7px;
+  color: #c4ccd7;
+  font-size: 12px;
+}
+
+.password-flow-form input {
+  width: 100%;
+  direction: ltr;
+  padding: 12px;
+  outline: none;
+}
+
+.password-flow-form input:focus {
+  border-color: var(--gold);
+}
+
+.password-flow-error {
+  display: none;
+  margin-top: 13px;
+  padding: 11px;
+  color: #ffb5bc;
+  background: rgba(234,57,67,.12);
+  border: 1px solid rgba(234,57,67,.3);
+  border-radius: 10px;
+}
+
+.password-flow-error.show {
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -1488,6 +1593,94 @@ html[dir="rtl"] .plan > .tag {
     </div>
   </div>
 </div>
+<!-- Reset email sent -->
+<div id="passwordResetSentModal" class="password-flow-modal">
+  <div class="password-flow-box">
+
+    <div class="password-flow-icon">✉</div>
+
+    <h2>Check your email</h2>
+
+    <p>
+      We sent a secure password recovery link to:
+    </p>
+
+    <div
+      id="passwordResetSentEmail"
+      class="password-flow-email"
+    ></div>
+
+    <p>
+      Open your email and click the recovery link.
+      Also check your Spam or Junk folder.
+    </p>
+
+    <button
+      class="btn gold"
+      style="width:100%;margin-top:20px;"
+      type="button"
+      onclick="resendPasswordRecovery()"
+    >
+      Resend recovery email
+    </button>
+
+  </div>
+</div>
+
+<!-- Enter new password -->
+<div id="newPasswordModal" class="password-flow-modal">
+  <div class="password-flow-box">
+
+    <div class="password-flow-icon">🔒</div>
+
+    <h2>Create a new password</h2>
+
+    <p>
+      Enter a strong new password for your account.
+    </p>
+
+    <div class="password-flow-form">
+
+      <label for="newRecoveryPassword">
+        New password
+      </label>
+
+      <input
+        id="newRecoveryPassword"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Minimum 8 characters"
+      >
+
+      <label for="confirmRecoveryPassword">
+        Confirm new password
+      </label>
+
+      <input
+        id="confirmRecoveryPassword"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Repeat new password"
+      >
+
+      <div
+        id="passwordRecoveryError"
+        class="password-flow-error"
+      ></div>
+
+      <button
+        id="saveRecoveryPasswordBtn"
+        class="btn gold"
+        style="width:100%;margin-top:18px;"
+        type="button"
+        onclick="saveRecoveredPassword()"
+      >
+        Save new password
+      </button>
+
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <div id="emailConfirmModal" class="email-confirm-modal">
   <div class="email-confirm-box">
@@ -1542,8 +1735,215 @@ html[dir="rtl"] .plan > .tag {
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-const PENDING_CONFIRMATION_KEY =
-  "bi_pending_confirmation_email";
+const PASSWORD_RECOVERY_EMAIL_KEY =
+  "bi_password_recovery_email";
+
+const IS_PASSWORD_RECOVERY_LINK =
+  window.location.search.includes("password_recovery=1") ||
+  window.location.hash.includes("type=recovery");
+
+let passwordRecoveryActive =
+  IS_PASSWORD_RECOVERY_LINK;
+
+function openPasswordResetSentModal(email) {
+  const cleanEmail =
+    String(email || "").trim().toLowerCase();
+
+  localStorage.setItem(
+    PASSWORD_RECOVERY_EMAIL_KEY,
+    cleanEmail
+  );
+
+  document.getElementById(
+    "passwordResetSentEmail"
+  ).textContent = cleanEmail;
+
+  document.getElementById(
+    "passwordResetSentModal"
+  ).classList.add("open");
+}
+
+function closePasswordResetSentModal() {
+  document.getElementById(
+    "passwordResetSentModal"
+  ).classList.remove("open");
+}
+
+function openNewPasswordModal() {
+  passwordRecoveryActive = true;
+
+  closePasswordResetSentModal();
+  closeAuth();
+  hideEmailConfirmation();
+
+  document.getElementById(
+    "newRecoveryPassword"
+  ).value = "";
+
+  document.getElementById(
+    "confirmRecoveryPassword"
+  ).value = "";
+
+  const errorBox =
+    document.getElementById("passwordRecoveryError");
+
+  errorBox.textContent = "";
+  errorBox.classList.remove("show");
+
+  document.getElementById(
+    "newPasswordModal"
+  ).classList.add("open");
+}
+
+function showPasswordRecoveryError(message) {
+  const box =
+    document.getElementById("passwordRecoveryError");
+
+  box.textContent = message;
+  box.classList.add("show");
+}
+
+async function sendPasswordRecovery(email) {
+  const cleanEmail =
+    String(email || "").trim().toLowerCase();
+
+  if (!cleanEmail.includes("@")) {
+    throw new Error(
+      "Enter your registered email address"
+    );
+  }
+
+  const { error } =
+    await supabaseClient.auth.resetPasswordForEmail(
+      cleanEmail,
+      {
+        redirectTo:
+          window.location.origin +
+          "/?password_recovery=1"
+      }
+    );
+
+  if (error) throw error;
+
+  openPasswordResetSentModal(cleanEmail);
+}
+
+async function resendPasswordRecovery() {
+  const email =
+    localStorage.getItem(
+      PASSWORD_RECOVERY_EMAIL_KEY
+    );
+
+  if (!email) {
+    closePasswordResetSentModal();
+    openAuth("forgot");
+    return;
+  }
+
+  try {
+    await sendPasswordRecovery(email);
+    toast("Recovery email sent again");
+  } catch (error) {
+    console.error(error);
+    toast(
+      error.message ||
+      "Recovery email could not be sent"
+    );
+  }
+}
+
+async function saveRecoveredPassword() {
+  const password =
+    document.getElementById(
+      "newRecoveryPassword"
+    ).value;
+
+  const confirmation =
+    document.getElementById(
+      "confirmRecoveryPassword"
+    ).value;
+
+  const button =
+    document.getElementById(
+      "saveRecoveryPasswordBtn"
+    );
+
+  if (
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
+      .test(password)
+  ) {
+    showPasswordRecoveryError(
+      "Password must contain uppercase, lowercase, number and at least 8 characters."
+    );
+    return;
+  }
+
+  if (password !== confirmation) {
+    showPasswordRecoveryError(
+      "The passwords do not match."
+    );
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.updateUser({
+        password
+      });
+
+    if (error) throw error;
+
+    passwordRecoveryActive = false;
+
+    localStorage.removeItem(
+      PASSWORD_RECOVERY_EMAIL_KEY
+    );
+
+    document.getElementById(
+      "newPasswordModal"
+    ).classList.remove("open");
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+
+    if (data.user) {
+      await loadAuthenticatedUser(data.user);
+    } else {
+      const { data: sessionData } =
+        await supabaseClient.auth.getSession();
+
+      if (sessionData.session?.user) {
+        await loadAuthenticatedUser(
+          sessionData.session.user
+        );
+      }
+    }
+
+    updateHeaderAuthUI();
+    updatePortfolio();
+
+    toast(
+      "Password changed. You are now signed in."
+    );
+
+  } catch (error) {
+    console.error(error);
+
+    showPasswordRecoveryError(
+      error.message ||
+      "Password could not be changed."
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Save new password";
+  }
+}
 
 function showEmailConfirmation(email) {
   const cleanEmail =
@@ -1646,13 +2046,19 @@ function changeConfirmationEmail() {
 
 supabaseClient.auth.onAuthStateChange(
   async (event, session) => {
+
+    if (event === "PASSWORD_RECOVERY") {
+      openNewPasswordModal();
+      return;
+    }
+
     if (
       event === "SIGNED_IN" &&
-      session?.user?.email_confirmed_at
+      session?.user?.email_confirmed_at &&
+      !passwordRecoveryActive
     ) {
       hideEmailConfirmation();
       await loadAuthenticatedUser(session.user);
-      toast("Email confirmed successfully");
     }
   }
 );
@@ -2687,12 +3093,17 @@ async function submitAuth() {
       toast("Signed in successfully");
     }
 
-    else if (authMode === "forgot") {
-      const email = document.getElementById("forgotInput").value.trim().toLowerCase();
+  else if (authMode === "forgot") {
+  const email =
+    document
+      .getElementById("forgotInput")
+      .value
+      .trim()
+      .toLowerCase();
 
-      if (!email.includes("@")) {
-        return toast("Enter your registered email address");
-      }
+  await sendPasswordRecovery(email);
+  closeAuth();
+}
 
 const { error } =
   await supabaseClient.auth.resetPasswordForEmail(email, {
@@ -3612,6 +4023,14 @@ window.onload = async function(){
   setLang(savedLang);
 
   await restoreAuthSession();
+if (IS_PASSWORD_RECOVERY_LINK) {
+  const { data: recoverySession } =
+    await supabaseClient.auth.getSession();
+
+  if (recoverySession.session) {
+    openNewPasswordModal();
+  }
+}
 restoreEmailConfirmationNotice();
 
   updateHeaderAuthUI();
