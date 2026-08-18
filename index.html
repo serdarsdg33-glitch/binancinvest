@@ -2155,6 +2155,78 @@ html[dir="rtl"] .plan-selection-label {
     font-size: 12px;
   }
 }
+/* Professional withdrawal error */
+.withdrawal-error-box {
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin: 4px 0 15px;
+  padding: 12px 13px;
+  color: #ffd6d9;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(234,57,67,.16),
+      rgba(234,57,67,.07)
+    );
+  border: 1px solid rgba(234,57,67,.55);
+  border-radius: 11px;
+  box-shadow:
+    0 0 0 3px rgba(234,57,67,.06),
+    0 8px 22px rgba(0,0,0,.22);
+}
+
+.withdrawal-error-box.show {
+  display: flex;
+  animation: withdrawalErrorAppear .28s ease;
+}
+
+.withdrawal-error-icon {
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--red);
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.withdrawal-error-box strong {
+  display: block;
+  margin: 1px 0 4px;
+  color: #ffabb2;
+  font-size: 13px;
+}
+
+.withdrawal-error-box p {
+  margin: 0;
+  color: #d9a8ad;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+#withdrawAmount.withdrawal-input-error {
+  border-color: var(--red) !important;
+  background: rgba(234,57,67,.075) !important;
+  box-shadow:
+    0 0 0 3px rgba(234,57,67,.11) !important;
+}
+
+@keyframes withdrawalErrorAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
 </head>
 <body>
@@ -2666,7 +2738,27 @@ html[dir="rtl"] .plan-selection-label {
       <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
 
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
-      <input id="withdrawAmount" type="number" placeholder="50" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+      <input
+  id="withdrawAmount"
+  type="number"
+  min="0.01"
+  step="0.01"
+  placeholder="50"
+  oninput="clearWithdrawalError()"
+  style="width:100%;padding:11px;background:#1a222c;border:1px solid #474d57;color:#fff;border-radius:8px;margin-bottom:8px;"
+>
+
+<div id="withdrawalError" class="withdrawal-error-box">
+  <span class="withdrawal-error-icon">!</span>
+
+  <div>
+    <strong id="withdrawalErrorTitle">
+      Insufficient balance
+    </strong>
+
+    <p id="withdrawalErrorMessage"></p>
+  </div>
+</div>
       
       <button class="btn" style="width:100%; padding: 12px;" onclick="withdraw()" data-t="request">Request Withdrawal</button>
     </div>
@@ -6742,6 +6834,45 @@ window.submitDepositRequest = async function () {
  await loadTransactions();
 showTransactionSuccessModal("deposit");
 };
+function showWithdrawalError(message) {
+  const box =
+    document.getElementById("withdrawalError");
+
+  const messageElement =
+    document.getElementById("withdrawalErrorMessage");
+
+  const amountInput =
+    document.getElementById("withdrawAmount");
+
+  if (!box || !messageElement || !amountInput) {
+    toast(message);
+    return;
+  }
+
+  messageElement.textContent = message;
+  box.classList.add("show");
+  amountInput.classList.add("withdrawal-input-error");
+
+  amountInput.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  amountInput.focus();
+}
+
+function clearWithdrawalError() {
+  const box =
+    document.getElementById("withdrawalError");
+
+  const amountInput =
+    document.getElementById("withdrawAmount");
+
+  box?.classList.remove("show");
+  amountInput?.classList.remove(
+    "withdrawal-input-error"
+  );
+}
 
 /* Secure withdrawal request */
 window.withdraw = async function () {
@@ -6766,9 +6897,24 @@ window.withdraw = async function () {
   }
 
   if (!Number.isFinite(amount) || amount <= 0) {
-    toast("Please enter a valid withdrawal amount");
-    return;
-  }
+  showWithdrawalError(
+    "Please enter a valid withdrawal amount."
+  );
+  return;
+}
+
+const availableBalance =
+  Number(currentUser.balance || 0);
+
+if (amount > availableBalance) {
+  showWithdrawalError(
+    `Your available balance is only ` +
+    `${formatPortfolioMoney(availableBalance)}. ` +
+    `Please enter a smaller withdrawal amount.`
+  );
+  return;
+}
+
 
   const selected = parseWithdrawalAsset(cryptoValue);
 
@@ -6783,11 +6929,36 @@ window.withdraw = async function () {
     }
   );
 
-  if (error) {
-    console.error("Withdrawal request error:", error);
-    toast(error.message || "Withdrawal request failed");
-    return;
+ if (error) {
+  console.error(
+    "Withdrawal request error:",
+    error
+  );
+
+  const errorMessage =
+    String(error.message || "");
+
+  if (
+    errorMessage.toLowerCase().includes(
+      "insufficient available balance"
+    )
+  ) {
+    showWithdrawalError(
+      `Your available balance is insufficient. ` +
+      `Available balance: ` +
+      `${formatPortfolioMoney(
+        Number(currentUser.balance || 0)
+      )}.`
+    );
+  } else {
+    showWithdrawalError(
+      errorMessage ||
+      "Withdrawal request failed."
+    );
   }
+
+  return;
+}
 
   document.getElementById("withdrawAmount").value = "";
   document.getElementById("withdrawAddress").value = "";
