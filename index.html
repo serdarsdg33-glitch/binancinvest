@@ -2360,18 +2360,38 @@ html[dir="rtl"] .plan-selection-label {
 
 <section id="portfolio" class="view">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
-  <div class="cards"><div class="card stat"><span class="muted">Available Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div class="cards"><div class="card stat"><span class="muted">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div id="vipPortfolioSection" style="margin-top:18px;">
   <div class="title" style="margin:18px 0 12px;">
-    <h2>VIP 60-Day Contracts</h2>
-    <span class="muted">Separate locked capital</span>
-  </div>
-
-  <div id="vipPortfolioContracts">
-    <div class="card muted" style="text-align:center;">
-      No VIP lock contracts found.
+    <div>
+      <h2 style="margin:0;">VIP Locked Capital</h2>
+      <span class="muted">
+        Completely separate from regular investment plans
+      </span>
     </div>
   </div>
+
+  <div id="vipPortfolioSummary" class="vip-lock-results">
+    <div>
+      <span>Total locked capital</span>
+      <strong id="vipSummaryPrincipal">$0.00</strong>
+    </div>
+
+    <div>
+      <span>Total projected calculation</span>
+      <strong id="vipSummaryProfit">$0.00</strong>
+    </div>
+
+    <div>
+      <span>Active contracts</span>
+      <strong id="vipSummaryCount">0</strong>
+    </div>
+  </div>
+
+  <div
+    id="vipPortfolioContracts"
+    style="display:grid;gap:12px;margin-top:14px;"
+  ></div>
 </div>
   
   <div class="portfolio-grid" id="portfolioGrid">
@@ -4753,19 +4773,28 @@ async function confirmVipLockFromBalance() {
 
     closeVipLockConfirmation();
 
-    await refreshSecureAccount();
+await refreshSecureAccount();
+await updatePortfolio();
 
-    document.getElementById(
-      "vipLockAmount"
-    ).value = "500";
+document.getElementById(
+  "vipLockAmount"
+).value = "500";
 
-    calculateVipLock();
+calculateVipLock();
 
-    page(
-      "portfolio",
-      document.querySelector('[data-page="portfolio"]')
-    );
+page(
+  "portfolio",
+  document.querySelector('[data-page="portfolio"]')
+);
 
+setTimeout(() => {
+  document.getElementById(
+    "vipPortfolioSection"
+  )?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}, 200);
     toast(
       `${formatPortfolioMoney(amount)} locked successfully`
     );
@@ -5189,17 +5218,30 @@ function formatVipRemainingTime(endsAt) {
 }
 
 function renderVipPortfolioContracts() {
-  const container =
-    document.getElementById(
-      "vipPortfolioContracts"
-    );
-
   const section =
-    document.getElementById(
-      "vipPortfolioSection"
-    );
+    document.getElementById("vipPortfolioSection");
 
-  if (!container || !section) return;
+  const container =
+    document.getElementById("vipPortfolioContracts");
+
+  const principalElement =
+    document.getElementById("vipSummaryPrincipal");
+
+  const profitElement =
+    document.getElementById("vipSummaryProfit");
+
+  const countElement =
+    document.getElementById("vipSummaryCount");
+
+  if (
+    !section ||
+    !container ||
+    !principalElement ||
+    !profitElement ||
+    !countElement
+  ) {
+    return;
+  }
 
   if (!currentUser?.id) {
     section.style.display = "none";
@@ -5218,6 +5260,45 @@ function renderVipPortfolioContracts() {
       )
     );
 
+ 
+      const principal =
+        Number(contract.principal || 0);
+
+      const dailyRate =
+        Number(contract.daily_rate || 5.5);
+
+      const termDays =
+        Number(contract.term_days || 60);
+
+      return (
+        total +
+        principal *
+        (dailyRate / 100) *
+        termDays
+      );
+    }, 0);
+
+  const activeContracts =
+    vipContracts.filter(contract => {
+      const endTime =
+        new Date(contract.ends_at).getTime();
+
+      return (
+        contract.status === "active" &&
+        Number.isFinite(endTime) &&
+        Date.now() < endTime
+      );
+    });
+
+  principalElement.textContent =
+    formatPortfolioMoney(totalLockedPrincipal);
+
+  profitElement.textContent =
+    formatPortfolioMoney(totalProjectedProfit);
+
+  countElement.textContent =
+    String(activeContracts.length);
+
   if (vipContracts.length === 0) {
     container.innerHTML = `
       <div class="card muted" style="text-align:center;">
@@ -5228,24 +5309,24 @@ function renderVipPortfolioContracts() {
   }
 
   container.innerHTML =
-    vipContracts.map(contract => {
+    vipContracts.map((contract, index) => {
       const principal =
         Number(contract.principal || 0);
 
-      const displayedRate =
-        Number(contract.daily_rate || 5.5);
+      const dailyRate =
+        Number(contract.daily_rate ?? 5.5);
 
-      const term =
-        Number(contract.term_days || 60);
+      const termDays =
+        Number(contract.term_days ?? 60);
 
-      const projectedDaily =
-        principal * (displayedRate / 100);
+      const dailyProjection =
+        principal * (dailyRate / 100);
 
-      const projectedTotal =
-        projectedDaily * term;
+      const totalProjection =
+        dailyProjection * termDays;
 
-      const projectedFinal =
-        principal + projectedTotal;
+      const finalProjection =
+        principal + totalProjection;
 
       const endTime =
         new Date(contract.ends_at).getTime();
@@ -5256,35 +5337,42 @@ function renderVipPortfolioContracts() {
 
       const statusText =
         isFinished
-          ? "Period completed"
+          ? "Contract completed"
           : "Principal locked";
 
       return `
-        <div class="vip-lock-card" style="margin-top:0;margin-bottom:13px;">
-          <div class="vip-lock-header">
-            <div class="vip-lock-icon">🔒</div>
-
+        <div class="card" style="
+          border:1px solid rgba(240,185,11,.32);
+          padding:18px;
+        ">
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:12px;
+            margin-bottom:15px;
+          ">
             <div>
               <span class="vip-lock-label">
-                VIP 60-DAY CONTRACT
+                VIP CONTRACT #${vipContracts.length - index}
               </span>
 
-              <h2>
+              <h3 style="margin:6px 0;">
                 ${formatPortfolioMoney(principal)}
-                Locked Principal
-              </h2>
+                Locked
+              </h3>
 
-              <p>
+              <div class="muted" style="font-size:11px;line-height:1.7;">
                 Started:
                 ${new Date(contract.started_at).toLocaleString()}
                 <br>
                 Ends:
                 ${new Date(contract.ends_at).toLocaleString()}
-              </p>
+              </div>
             </div>
 
             <div class="vip-rate-badge">
-              <strong>${displayedRate}%</strong>
+              <strong>${dailyRate}%</strong>
               <span>Projected daily</span>
             </div>
           </div>
@@ -5292,22 +5380,30 @@ function renderVipPortfolioContracts() {
           <div class="vip-lock-results">
             <div>
               <span>Locked principal</span>
-              <strong>${formatPortfolioMoney(principal)}</strong>
+              <strong>
+                ${formatPortfolioMoney(principal)}
+              </strong>
             </div>
 
             <div>
-              <span>Projected daily calculation</span>
-              <strong>${formatPortfolioMoney(projectedDaily)}</strong>
+              <span>Daily calculation</span>
+              <strong>
+                ${formatPortfolioMoney(dailyProjection)}
+              </strong>
             </div>
 
             <div>
-              <span>Projected 60-day calculation</span>
-              <strong>${formatPortfolioMoney(projectedTotal)}</strong>
+              <span>Total calculation</span>
+              <strong>
+                ${formatPortfolioMoney(totalProjection)}
+              </strong>
             </div>
 
             <div>
-              <span>Projected principal + calculation</span>
-              <strong>${formatPortfolioMoney(projectedFinal)}</strong>
+              <span>Principal + calculation</span>
+              <strong>
+                ${formatPortfolioMoney(finalProjection)}
+              </strong>
             </div>
 
             <div>
@@ -5324,7 +5420,8 @@ function renderVipPortfolioContracts() {
           </div>
         </div>
       `;
-    }).join("");
+    })
+    .join("");
 }
 function renderPortfolioLive() {
   const balanceElement =
@@ -5392,13 +5489,23 @@ function renderPortfolioLive() {
    * اصل سرمایه VIP و سود نمایشی VIP به آن اضافه نمی‌شود.
    */
   const availableBalance =
-    Number(currentUser.balance || 0);
+  Number(currentUser.balance || 0);
 
-  balanceElement.textContent =
-    formatPortfolioMoney(
-      availableBalance,
-      true
-    );
+/*
+ * مجموع دارایی عادی کاربر:
+ * موجودی آزاد + سرمایه پلن‌های عادی + سود پلن‌های عادی
+ * قرارداد VIP وارد این عدد نمی‌شود.
+ */
+const totalPortfolioBalance =
+  availableBalance +
+  investedPrincipal +
+  totalProfit;
+
+balanceElement.textContent =
+  formatPortfolioMoney(
+    totalPortfolioBalance,
+    true
+  );
 
   investedElement.textContent =
     formatPortfolioMoney(
