@@ -2514,7 +2514,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:600px){#homePlans>.plan,#plans>.plan{min-height:370px;background-position:58% center!important}#homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:74%}#homePlans>.plan .apy,#plans>.plan .apy{font-size:31px}#homePlans>.plan .btn,#plans>.plan .btn{right:13px;bottom:13px;left:13px}.vip-lock-card{background-position:64% center!important}}
 
 /* Premium glass platform statistics — no image assets required */
-.stats-vertical-stack{gap:13px;max-width:790px;padding-top:8px}
+.stats-vertical-stack{gap:15px;max-width:790px;padding-top:14px;perspective:1100px}
 .stat-circle-card{
   position:relative;
   isolation:isolate;
@@ -2606,8 +2606,12 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   background-repeat:no-repeat;
   background-position:center;
   background-size:cover;
-  animation:statCardBreath 5.5s ease-in-out infinite!important;
+  transform-origin:center center;
+  transform-style:preserve-3d;
+  will-change:transform,box-shadow;
+  animation:statCardFloat 4.8s cubic-bezier(.45,.05,.55,.95) infinite!important;
 }
+.stat-circle-card:nth-child(2),.stat-circle-card:nth-child(4){animation-direction:reverse!important}
 .stat-circle-card:nth-child(1){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-platform-users.webp")}
 .stat-circle-card:nth-child(2){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-active-investors.webp")}
 .stat-circle-card:nth-child(3){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-profit-paid.webp")}
@@ -2619,11 +2623,14 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .stat-circle-value{font-size:clamp(23px,3.2vw,29px)}
 .stat-circle-label{color:#c1cad6}
 .stat-badge-tag{position:relative;z-index:2;flex:0 0 auto}
-@keyframes statCardBreath{
-  0%,100%{transform:translateY(0);border-color:rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(0,0,0,.42),0 0 0 rgba(240,185,11,0)}
-  50%{transform:translateY(-5px);border-color:rgba(240,185,11,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 17px 38px rgba(0,0,0,.48),0 0 16px rgba(240,185,11,.075)}
+@keyframes statCardFloat{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) scale(1);border-color:rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 13px 30px rgba(0,0,0,.40),0 0 0 rgba(240,185,11,0)}
+  25%{transform:translate3d(1.5px,-4px,8px) rotateX(.35deg) scale(1.003)}
+  50%{transform:translate3d(0,-9px,15px) rotateX(.7deg) scale(1.008);border-color:rgba(255,225,91,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 22px 44px rgba(0,0,0,.52),0 0 20px rgba(240,185,11,.11)}
+  75%{transform:translate3d(-1.5px,-4px,8px) rotateX(.35deg) scale(1.003)}
 }
 @media(max-width:600px){
+  .stats-vertical-stack{gap:13px;padding-top:12px}
   .stat-circle-card{min-height:96px;padding:12px 11px 12px 32%;background-size:cover;background-position:center}
   .stat-circle-info{padding:3px 0}
   .stat-circle-value{font-size:clamp(17px,5.2vw,22px);white-space:nowrap}
