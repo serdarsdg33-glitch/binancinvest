@@ -11,6 +11,7 @@
 <link rel="preload" href="stat-active-investors.webp" as="image" type="image/webp">
 <link rel="preload" href="stat-profit-paid.webp" as="image" type="image/webp">
 <link rel="preload" href="stat-platform-capital.webp" as="image" type="image/webp">
+<link rel="preload" href="top-markets-background.webp" as="image" type="image/webp">
 <!-- بارگذاری کتابخانه Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -2666,6 +2667,40 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @supports(content-visibility:auto){
   .referral-home-card,.withdrawals-showcase,.footer-section,.site-footer{content-visibility:auto;contain-intrinsic-size:auto 600px}
 }
+
+/* Cinematic Top Markets showcase */
+.top-markets-showcase{
+  position:relative;
+  margin-top:28px;
+  padding:17px 16px 20px;
+  overflow:hidden;
+  background-color:#05080b;
+  background-image:linear-gradient(180deg,rgba(3,6,9,.20),rgba(3,6,9,.08) 42%,rgba(3,6,9,.24)),url("top-markets-background.webp");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  border:1px solid rgba(240,185,11,.20);
+  border-radius:25px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 20px 52px rgba(0,0,0,.42),0 0 20px rgba(240,185,11,.045)
+}
+.top-markets-showcase>.title{position:relative;z-index:2;margin:0 0 16px}
+.top-markets-showcase #topCoins{position:relative;z-index:2}
+.top-markets-showcase #topCoins>.card.coin{
+  background:transparent!important;
+  border:1px solid rgba(255,229,138,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 9px 25px rgba(0,0,0,.20)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.top-markets-showcase #topCoins>.card.coin:hover{
+  background:rgba(7,12,17,.20)!important;
+  border-color:rgba(255,225,91,.48)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 13px 30px rgba(0,0,0,.27),0 0 14px rgba(240,185,11,.10)!important;
+}
+@media(max-width:600px){
+  .top-markets-showcase{margin-top:20px;padding:13px 9px 14px;border-radius:20px;background-position:center top}
+  .top-markets-showcase>.title{margin-bottom:12px}
+}
 </style>
 </head>
 <body>
@@ -2724,7 +2759,10 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
 
-<div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div><div class="coins" id="topCoins"></div>
+<section class="top-markets-showcase">
+  <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div>
+  <div class="coins" id="topCoins"></div>
+</section>
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
 
 <div class="referral-home-card">
@@ -5188,7 +5226,7 @@ function addLiveWithdrawal() {
   const withdrawalItems =
     list.querySelectorAll(".live-withdraw");
 
-  if (withdrawalItems.length > 5) {
+  if (withdrawalItems.length > 7) {
     withdrawalItems[
       withdrawalItems.length - 1
     ].remove();
@@ -5196,7 +5234,7 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 600);
-setInterval(addLiveWithdrawal, 4200);
+setInterval(addLiveWithdrawal, 2800);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
