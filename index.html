@@ -2590,6 +2590,38 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   .stat-badge-tag{padding:6px 9px;font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.stat-circle-card,.stat-circle-icon,.stat-circle-card::after{animation:none!important}}
+
+/* Illustrated statistic cards */
+.stat-circle-card{
+  min-height:112px;
+  padding-left:165px;
+  background-color:#080c11;
+  background-repeat:no-repeat;
+  background-position:left center;
+  background-size:auto 100%;
+}
+.stat-circle-card:nth-child(1){background-image:url("stat-platform-users.png")}
+.stat-circle-card:nth-child(2){background-image:url("stat-active-investors.png")}
+.stat-circle-card:nth-child(3){background-image:url("stat-profit-paid.png")}
+.stat-circle-card:nth-child(4){background-image:url("stat-platform-capital.png")}
+.stat-circle-card::before{display:none}
+.stat-circle-icon{display:none!important}
+.stat-circle-left{min-width:0;position:relative;z-index:2}
+.stat-circle-info{padding:8px 0}
+.stat-circle-value{font-size:clamp(23px,3.2vw,29px)}
+.stat-circle-label{color:#c1cad6}
+.stat-badge-tag{position:relative;z-index:2;flex:0 0 auto}
+@media(max-width:600px){
+  .stat-circle-card{min-height:96px;padding:12px 11px 12px 126px;background-size:auto 100%}
+  .stat-circle-info{padding:3px 0}
+  .stat-circle-value{font-size:clamp(17px,5.2vw,22px);white-space:nowrap}
+  .stat-circle-label{font-size:7.5px;letter-spacing:.7px;white-space:nowrap}
+  .stat-badge-tag{padding:5px 7px;font-size:8px}
+}
+@media(max-width:420px){
+  .stat-circle-card{padding-left:112px}
+  .stat-badge-tag{max-width:76px;text-align:center;line-height:1.25}
+}
 </style>
 </head>
 <body>
