@@ -3174,7 +3174,249 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
   }
 }
 
+/* Locale-safe header: three independent columns prevent overlap in every language. */
+header{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+  align-items:center;
+  column-gap:14px;
+  direction:ltr;
+}
+header>.brand{
+  grid-column:1;
+  grid-row:1;
+  justify-self:start;
+  min-width:0;
+  max-width:100%;
+}
+header>.language-trigger{
+  position:static!important;
+  grid-column:2;
+  grid-row:1;
+  align-self:center;
+  justify-self:center;
+  width:auto!important;
+  min-width:66px!important;
+  height:36px!important;
+  padding:0 9px!important;
+  transform:none!important;
+  direction:ltr;
+}
+header>.language-trigger:hover{transform:none!important}
+header>.head{
+  grid-column:3;
+  grid-row:1;
+  justify-self:end;
+  width:auto;
+  min-width:0;
+  margin:0!important;
+  direction:ltr;
+}
+html[dir="rtl"] header>.brand{
+  grid-column:3;
+  justify-self:end;
+  direction:rtl;
+}
+html[dir="rtl"] header>.head{
+  grid-column:1;
+  justify-self:start;
+}
+#userHeaderDisplay{
+  max-width:100%;
+  margin:0!important;
+  flex-wrap:nowrap;
+}
+.user-header-identity{
+  width:clamp(92px,12vw,150px);
+  min-width:92px!important;
+  max-width:150px!important;
+}
+#headerFullName,#headerUsername{unicode-bidi:plaintext}
 
+@media(max-width:720px){
+  header{column-gap:7px!important;padding-inline:10px!important;min-height:76px;height:auto!important}
+  header>.brand>span{font-size:14px!important}
+  header>.brand .binance-floating-logo{width:31px!important;height:31px!important}
+  header>.language-trigger{min-width:58px!important;height:33px!important;padding:0 7px!important}
+  .user-header-identity{width:90px;min-width:76px!important;max-width:96px!important}
+  #headerFullName{font-size:12px!important}
+  #headerUsername{font-size:9.5px!important;padding:3px 6px!important}
+  #userHeaderDisplay .header-logout-btn{min-height:34px!important;padding:6px 10px!important;font-size:10.5px!important}
+}
+@media(max-width:470px){
+  header{column-gap:5px!important;padding-inline:7px!important;grid-template-columns:minmax(104px,1fr) auto minmax(104px,1fr)!important}
+  header>.brand{gap:5px!important}
+  header>.brand>span{font-size:11.5px!important;letter-spacing:0!important;overflow:hidden;text-overflow:ellipsis;max-width:92px}
+  header>.brand .binance-floating-logo{width:26px!important;height:26px!important}
+  header>.language-trigger{min-width:50px!important;height:31px!important;padding:0 5px!important;gap:3px!important}
+  header>.language-trigger .language-trigger-flag{font-size:12px!important}
+  .user-header-identity{width:82px;min-width:70px!important;max-width:86px!important}
+  #headerFullName{font-size:11px!important}
+  #headerUsername{font-size:9px!important;padding:3px 5px!important}
+  #userHeaderDisplay{gap:4px!important}
+  #userHeaderDisplay .header-logout-btn{min-height:31px!important;padding:5px 7px!important;font-size:9px!important}
+  #authButtonsGroup .btn{min-width:78px!important;font-size:7.8px!important}
+}
+@media(max-width:365px){
+  header>.brand>span{font-size:10px!important}
+  header>.brand .binance-floating-logo{width:23px!important;height:23px!important}
+  header>.language-trigger{min-width:43px!important;width:43px!important}
+  header>.language-trigger .language-trigger-flag{display:none!important}
+  .user-header-identity{min-width:56px!important;max-width:60px!important}
+  #userHeaderDisplay .header-logout-btn{padding-inline:5px!important}
+}
+/* Language-safe header: each zone owns its space, including RTL layouts. */
+header>.brand,header>.head,#userHeaderDisplay,#authButtonsGroup{overflow:hidden}
+header>.head{display:flex;align-items:center;max-width:100%}
+#userHeaderDisplay[hidden],#authButtonsGroup[hidden]{display:none!important}
+#userHeaderDisplay:not([hidden]),#authButtonsGroup:not([hidden]){display:flex!important}
+.user-header-identity{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;overflow:hidden}
+#headerFullName,#headerUsername{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+html[dir="rtl"] #userHeaderDisplay,html[dir="rtl"] #authButtonsGroup{direction:rtl}
+html[dir="rtl"] header>.language-trigger{direction:ltr}
+
+/* Final collision guard: the account block is contained inside its own
+   header column and can never slide below the centred language selector. */
+header>.head{width:min(100%,250px)!important;overflow:hidden!important}
+#userHeaderDisplay:not([hidden]){
+  width:100%;
+  min-width:0;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:7px;
+  direction:ltr!important;
+}
+#userHeaderDisplay .user-header-identity{width:100%!important;min-width:0!important;max-width:none!important}
+#userHeaderDisplay .header-logout-btn{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#authButtonsGroup:not([hidden]){width:min(100%,112px);margin-inline-start:auto}
+html[dir="rtl"] #authButtonsGroup:not([hidden]){margin-inline-start:0;margin-inline-end:auto}
+
+@media(max-width:600px){
+  header>.head{width:min(100%,166px)!important}
+  #userHeaderDisplay:not([hidden]){grid-template-columns:minmax(54px,1fr) auto;gap:4px}
+  #userHeaderDisplay .header-logout-btn{padding-inline:7px!important;font-size:9.5px!important}
+  #authButtonsGroup:not([hidden]){width:min(100%,94px)}
+}
+@media(max-width:420px){
+  header{grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr)!important}
+  header>.head{width:100%!important}
+  #userHeaderDisplay:not([hidden]){grid-template-columns:minmax(44px,1fr) auto;gap:3px}
+  #headerFullName{font-size:10px!important}
+  #headerUsername{font-size:8px!important;padding:2px 4px!important}
+  #userHeaderDisplay .header-logout-btn{min-height:29px!important;padding-inline:5px!important;font-size:8.5px!important}
+}
+
+/* Definitive multilingual header layout.
+   The account, language and brand areas are isolated grid tracks, so RTL or
+   long translated labels can shrink only inside their own track. */
+[hidden]{display:none!important}
+header{
+  grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr)!important;
+  column-gap:8px!important;
+  overflow:hidden!important;
+}
+header>.brand{
+  width:100%;
+  overflow:hidden!important;
+}
+header>.brand>span{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+header>.language-trigger{
+  width:58px!important;
+  min-width:58px!important;
+  max-width:58px!important;
+  padding-inline:5px!important;
+  z-index:2;
+}
+header>.head{
+  width:100%!important;
+  max-width:250px!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  justify-self:end!important;
+}
+html[dir="rtl"] header>.head{justify-self:start!important}
+#userHeaderDisplay:not([hidden]){
+  width:100%!important;
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(54px,auto)!important;
+  gap:6px!important;
+  align-items:center;
+  direction:ltr!important;
+}
+#userHeaderDisplay .user-header-identity{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+}
+#headerFullName,#headerUsername{
+  width:100%;
+  min-width:0;
+  max-width:100%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  direction:auto;
+}
+#userHeaderDisplay .header-logout-btn{
+  min-width:54px!important;
+  max-width:88px!important;
+  padding-inline:8px!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  line-height:1.05!important;
+  overflow-wrap:anywhere;
+}
+#authButtonsGroup:not([hidden]){
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  width:min(100%,112px)!important;
+  min-width:0!important;
+  gap:5px!important;
+}
+#authButtonsGroup .btn{width:100%!important;min-width:0!important}
+
+@media(max-width:600px){
+  header{
+    grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr)!important;
+    column-gap:5px!important;
+  }
+  header>.language-trigger{
+    width:50px!important;
+    min-width:50px!important;
+    max-width:50px!important;
+  }
+  header>.head{max-width:162px!important}
+  #userHeaderDisplay:not([hidden]){
+    grid-template-columns:minmax(0,1fr) minmax(48px,auto)!important;
+    gap:3px!important;
+  }
+  #userHeaderDisplay .header-logout-btn{
+    min-width:48px!important;
+    max-width:64px!important;
+    padding-inline:5px!important;
+    font-size:9px!important;
+  }
+  #authButtonsGroup:not([hidden]){width:min(100%,92px)!important}
+}
+
+@media(max-width:380px){
+  header{
+    grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr)!important;
+    padding-inline:5px!important;
+    column-gap:3px!important;
+  }
+  header>.language-trigger{width:44px!important;min-width:44px!important;max-width:44px!important}
+  header>.language-trigger .language-trigger-flag{display:none!important}
+  #headerFullName{font-size:9.5px!important}
+  #headerUsername{font-size:7.8px!important;padding:2px 3px!important}
+  #userHeaderDisplay .header-logout-btn{min-width:44px!important;max-width:54px!important;font-size:8px!important}
+}
 </style>
 </head>
 <body>
@@ -3187,12 +3429,12 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     </div>
     <span data-t="brand">Binance Invest</span>
   </div>
+  <button id="languageTrigger" class="language-trigger" type="button" onclick="openLanguageSelector()" aria-haspopup="dialog" aria-controls="languageModal">
+    <span id="languageTriggerFlag" class="language-trigger-flag">🇬🇧</span>
+    <span id="languageTriggerCode">EN</span>
+    <span class="language-trigger-chevron">⌄</span>
+  </button>
   <div class="head">
-    <button id="languageTrigger" class="language-trigger" type="button" onclick="openLanguageSelector()" aria-haspopup="dialog" aria-controls="languageModal">
-      <span id="languageTriggerFlag" class="language-trigger-flag">🇬🇧</span>
-      <span id="languageTriggerCode">EN</span>
-      <span class="language-trigger-chevron">⌄</span>
-    </button>
     <div id="userHeaderDisplay" hidden>
       <div class="user-header-identity">
         <span id="headerFullName"></span>
@@ -3256,18 +3498,14 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     <img src="referral-gift-box.webp" alt="" width="620" height="620" loading="lazy" decoding="async">
   </div>
   <div class="referral-home-content">
-    <span class="referral-home-kicker">FRIEND REFERRAL REWARD</span>
-    <h2>Invite Friends and Earn $10</h2>
-    <p>
-      Share your unique referral code with your friends. When a referred
-      friend registers and completes their first approved investment,
-      <strong>$10 will automatically be added to your available balance.</strong>
-    </p>
+    <span class="referral-home-kicker" data-t="friendReferralReward">FRIEND REFERRAL REWARD</span>
+    <h2 data-t="inviteFriendsEarn">Invite Friends and Earn $10</h2>
+    <p data-t="personalReferralDesc">Share your personal code. When your friend completes the first approved investment, a $10 reward is added to your available balance.</p>
   </div>
   <div class="referral-home-action">
     <span class="referral-home-reward">$10</span>
     <button class="btn gold" type="button" onclick="openReferralRewards()">
-      View Referral Code
+      <span data-t="viewReferralCode">View Referral Code</span>
     </button>
   </div>
 </div>
@@ -3291,7 +3529,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
                 <div class="stat-circle-label" data-t="statUsers">Platform Users</div>
             </div>
         </div>
-        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 <span data-t="liveSaved">Live + Saved</span></div>
     </div>
     <div class="stat-circle-card">
         <div class="stat-circle-left">
@@ -3309,7 +3547,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
                 <div class="stat-circle-label" data-t="statInvestors">Active Investors</div>
             </div>
         </div>
-        <div class="stat-badge-tag" style="color:var(--green)">🟢 Live + Saved</div>
+        <div class="stat-badge-tag" style="color:var(--green)">🟢 <span data-t="liveSaved">Live + Saved</span></div>
     </div>
     <div class="stat-circle-card">
         <div class="stat-circle-left">
@@ -3333,7 +3571,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
                 <div class="stat-circle-label" data-t="statPaid">Total Profit Paid</div>
             </div>
         </div>
-        <div class="stat-badge-tag" style="color:var(--gold)">★ Verified</div>
+        <div class="stat-badge-tag" style="color:var(--gold)">★ <span data-t="verified">Verified</span></div>
     </div>
     <div class="stat-circle-card">
         <div class="stat-circle-left">
@@ -3356,7 +3594,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         </div>
 <div class="stat-badge-tag safu-badge">
   <span class="safu-lock">🔒</span>
-  <span>SAFU</span>
+      <span data-t="safu">SAFU</span>
 </div>
 </div>
 
@@ -3389,7 +3627,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="security-brand-info">
       <strong>McAfee</strong>
-      <span>Security Protection</span>
+      <span data-t="securityProtection">Security Protection</span>
     </div>
   </div>
 
@@ -3404,7 +3642,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="security-brand-info">
       <strong>Cloudflare</strong>
-      <span>Network Protection</span>
+      <span data-t="networkProtection">Network Protection</span>
     </div>
   </div>
 
@@ -3415,7 +3653,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="security-brand-info">
       <strong>DigiCert</strong>
-      <span>SSL Certificate</span>
+      <span data-t="sslCertificate">SSL Certificate</span>
     </div>
   </div>
 
@@ -3429,7 +3667,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="security-brand-info">
       <strong>ISO/IEC 27001</strong>
-      <span>Security Standard</span>
+      <span data-t="securityStandard">Security Standard</span>
     </div>
   </div>
 
@@ -3439,14 +3677,14 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         <h3 data-t="contactUs">Contact Us</h3>
         <p data-t="supportEmail">Support Email</p>
         <a href="mailto:support@binancinvest.com">support@binancinvest.com</a>
-        <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">◉ Online Chat</button>
+        <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">◉ <span data-t="onlineChat">Online Chat</span></button>
     </div>
     <footer class="site-footer">
       <div class="site-footer-inner">
         <div class="site-footer-top">
           <div class="site-footer-intro">
             <div class="site-footer-brand">Binance Invest</div>
-            <p class="site-footer-about">
+            <p class="site-footer-about" data-t="footerAbout">
               A multilingual digital investment interface built to make account
               activity, investment plans, rewards and support easier to understand
               and manage from one secure experience.
@@ -3454,42 +3692,42 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
           </div>
 
           <div class="site-footer-column">
-            <h3>Platform</h3>
+            <h3 data-t="platform">Platform</h3>
             <div class="site-footer-links">
-              <button class="site-footer-link" type="button" onclick="page('home',document.querySelector('[data-page=home]'))">Overview</button>
-              <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))">Markets</button>
-              <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))">Investment Plans</button>
-              <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))">Portfolio</button>
+              <button class="site-footer-link" type="button" onclick="page('home',document.querySelector('[data-page=home]'))" data-t="overview">Overview</button>
+              <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))" data-t="markets">Markets</button>
+              <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))" data-t="plans">Investment Plans</button>
+              <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))" data-t="portfolio">Portfolio</button>
             </div>
           </div>
 
           <div class="site-footer-column">
-            <h3>Company & Help</h3>
+            <h3 data-t="companyHelp">Company & Help</h3>
             <div class="site-footer-links">
-              <a class="site-footer-link" href="about.html">About Us</a>
-              <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))">Referral Rewards</button>
-              <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))">Help & Support</button>
-              <a class="site-footer-link" href="mailto:support@binancinvest.com">Contact Us</a>
+              <a class="site-footer-link" href="about.html" data-t="aboutUs">About Us</a>
+              <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))" data-t="referralRewards">Referral Rewards</button>
+              <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))" data-t="helpSupport">Help & Support</button>
+              <a class="site-footer-link" href="mailto:support@binancinvest.com" data-t="contactUs">Contact Us</a>
             </div>
           </div>
 
           <div class="site-footer-column">
-            <h3>Legal</h3>
+            <h3 data-t="legal">Legal</h3>
             <div class="site-footer-links">
-              <a class="site-footer-link" href="terms.html">Terms & Conditions</a>
-              <a class="site-footer-link" href="privacy.html">Privacy Policy</a>
-              <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))">Account Security</button>
-              <a class="site-footer-link" href="terms.html#risk">Risk Disclosure</a>
+              <a class="site-footer-link" href="terms.html" data-t="termsConditions">Terms & Conditions</a>
+              <a class="site-footer-link" href="privacy.html" data-t="privacyPolicy">Privacy Policy</a>
+              <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))" data-t="accountSecurity">Account Security</button>
+              <a class="site-footer-link" href="terms.html#risk" data-t="riskDisclosure">Risk Disclosure</a>
             </div>
           </div>
         </div>
 
         <div class="site-footer-bottom">
-          <span>© 2026 Binance Invest. All rights reserved.</span>
+          <span data-t="footerRights">© 2026 Binance Invest. All rights reserved.</span>
           <div class="site-footer-legal">
-            <a href="terms.html">Terms</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="about.html">About</a>
+            <a href="terms.html" data-t="terms">Terms</a>
+            <a href="privacy.html" data-t="privacy">Privacy</a>
+            <a href="about.html" data-t="about">About</a>
           </div>
         </div>
       </div>
@@ -3508,9 +3746,9 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     <div class="vip-lock-icon">🔒</div>
 
     <div>
-      <span class="vip-lock-label">VIP LOCK CONTRACT</span>
-      <h2>60-Day Capital Lock</h2>
-      <p>
+      <span class="vip-lock-label" data-t="vipLockContract">VIP LOCK CONTRACT</span>
+      <h2 data-t="capitalLock60">60-Day Capital Lock</h2>
+      <p data-t="capitalLockDesc">
         Lock a selected amount for 60 days and calculate returns
         using the displayed 5.5% daily rate.
       </p>
@@ -3518,12 +3756,12 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="vip-rate-badge">
       <strong>5.5%</strong>
-      <span>Daily</span>
+      <span data-t="daily">Daily</span>
     </div>
   </div>
 
   <div class="vip-lock-body">
-    <label for="vipLockAmount">
+    <label for="vipLockAmount" data-t="amountToLock">
       Amount to lock ($10 – $10,000)
     </label>
 
@@ -3543,7 +3781,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         type="button"
         onclick="setVipMaximumAmount()"
       >
-        MAX
+        <span data-t="max">MAX</span>
       </button>
     </div>
 
@@ -3551,17 +3789,17 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="vip-lock-results">
       <div>
-        <span>Daily calculation</span>
+        <span data-t="dailyCalculation">Daily calculation</span>
         <strong id="vipDailyProfit">$27.50</strong>
       </div>
 
       <div>
-        <span>60-day calculation</span>
+        <span data-t="calculation60">60-day calculation</span>
         <strong id="vipTotalProfit">$1,650.00</strong>
       </div>
 
       <div>
-        <span>Principal + calculation</span>
+        <span data-t="principalCalculation">Principal + calculation</span>
         <strong id="vipFinalValue">$2,150.00</strong>
       </div>
     </div>
@@ -3569,7 +3807,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     <div class="vip-contract-notice">
       <span>⚠</span>
 
-      <p>
+      <p data-t="vipLockNotice">
         The selected principal remains locked for 60 days.
         Review all contract conditions before continuing.
         Displayed calculations are illustrative and do not themselves
@@ -3584,7 +3822,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     type="button"
     onclick="openVipLockConfirmation()"
   >
-    Lock From Balance
+    <span data-t="lockFromBalance">Lock From Balance</span>
   </button>
 
   <button
@@ -3592,17 +3830,17 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     type="button"
     onclick="continueVipLockDeposit()"
   >
-    Make New Deposit
+    <span data-t="makeNewDeposit">Make New Deposit</span>
   </button>
 </div>
   </div>
 </div>
 <div class="card form" style="margin-top:20px">
     <h2 data-t="customTitle">Custom Investment Plan</h2>
-    <p class="muted" data-t="customDesc">Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.</p>
+    <p class="muted" data-t="customAutoDesc">Enter an amount from $10 to $10,000. The appropriate investment plan, daily rate and term will be selected automatically.</p>
     <div class="two">
         <div>
-  <label data-t="customAmountLabel">Custom Amount ($1 - $100,000)</label>
+  <label data-t="investmentAmountRange">Investment Amount ($10 - $10,000)</label>
   <input
     id="customAmount"
     type="number"
@@ -3614,7 +3852,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
   >
 </div>
         <div>
-  <label data-t="customTermLabel">Term (Days)</label>
+  <label data-t="termAuto">Term (Automatically selected)</label>
   <input
     id="customTerm"
     type="number"
@@ -3638,41 +3876,41 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 <section id="portfolio" class="view">
 <div class="portfolio-overview-scene">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
-  <div class="cards"><div class="card stat"><span class="muted" data-t="balance">Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
-      <span class="muted">Referral rewards added to balance</span>
+      <span class="muted" data-t="referralRewardsBalance">Referral rewards added to balance</span>
       <strong id="portfolioReferralReward">$0.00</strong>
     </div>
     <div class="referral-portfolio-meta">
       <b id="portfolioQualifiedReferrals" style="color:#fff;">0 successful referrals</b><br>
-      This reward is included in your available balance and is not active invested capital.
+      <span data-t="referralBalanceNotice">This reward is included in your available balance and is not active invested capital.</span>
     </div>
   </div>
 <div id="vipPortfolioSection" class="vip-single-card">
 
   <div class="vip-single-header">
     <div>
-      <span class="vip-lock-label">VIP LOCK CONTRACTS</span>
-      <h2>VIP 60-Day Locked Capital</h2>
-      <p class="muted">
+      <span class="vip-lock-label" data-t="vipLockContracts">VIP LOCK CONTRACTS</span>
+      <h2 data-t="vipLockedCapital">VIP 60-Day Locked Capital</h2>
+      <p class="muted" data-t="vipListDesc">
         All VIP contracts are displayed in one unified list.
       </p>
     </div>
 
     <div class="vip-single-summary">
       <div>
-        <span>Locked capital</span>
+        <span data-t="lockedCapital">Locked capital</span>
         <strong id="vipSummaryPrincipal">$0.00</strong>
       </div>
 
       <div>
-        <span>Projected calculation</span>
+        <span data-t="projectedCalculation">Projected calculation</span>
         <strong id="vipSummaryProfit">$0.00</strong>
       </div>
 
       <div>
-        <span>Active contracts</span>
+        <span data-t="activeContracts">Active contracts</span>
         <strong id="vipSummaryCount">0</strong>
       </div>
     </div>
@@ -3682,22 +3920,22 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
     <table class="table vip-contract-table">
       <thead>
         <tr>
-          <th>Amount</th>
-          <th>Time Remaining</th>
-          <th>Daily Rate</th>
-          <th>Daily Calculation</th>
-          <th>Total Calculation</th>
-          <th>Principal + Calculation</th>
-          <th>Status</th>
-          <th>Started</th>
-          <th>Ends</th>
+          <th data-t="amount">Amount</th>
+          <th data-t="timeRemaining">Time Remaining</th>
+          <th data-t="dailyRate">Daily Rate</th>
+          <th data-t="dailyCalculation">Daily Calculation</th>
+          <th data-t="totalCalculation">Total Calculation</th>
+          <th data-t="principalCalculation">Principal + Calculation</th>
+          <th data-t="status">Status</th>
+          <th data-t="started">Started</th>
+          <th data-t="ends">Ends</th>
         </tr>
       </thead>
 
       <tbody id="vipPortfolioContracts">
         <tr>
           <td colspan="9" class="muted" style="text-align:center;">
-            No VIP lock contracts found.
+            <span data-t="noVipContracts">No VIP lock contracts found.</span>
           </td>
         </tr>
       </tbody>
@@ -3711,8 +3949,8 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
       <div class="portfolio-vip-title">
         <div class="portfolio-vip-mini-icon">🔒</div>
         <div>
-          <h3>Quick VIP 60-Day Lock</h3>
-          <p>Lock available balance directly from your portfolio.</p>
+          <h3 data-t="quickVipLock">Quick VIP 60-Day Lock</h3>
+          <p data-t="quickVipDesc">Lock available balance directly from your portfolio.</p>
         </div>
       </div>
       <span class="portfolio-vip-badge">5.5% DAILY</span>
@@ -3720,27 +3958,27 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="portfolio-vip-grid">
       <div class="portfolio-vip-field">
-        <label for="portfolioVipLockAmount">Amount to lock ($10 – $10,000)</label>
+        <label for="portfolioVipLockAmount" data-t="amountToLock">Amount to lock ($10 – $10,000)</label>
         <div class="portfolio-vip-input-row">
           <input id="portfolioVipLockAmount" type="number" min="10" max="10000" step="1" value="500" oninput="calculatePortfolioVipLock()">
-          <button class="btn" type="button" onclick="setPortfolioVipMaximum()">MAX</button>
+          <button class="btn" type="button" onclick="setPortfolioVipMaximum()" data-t="max">MAX</button>
         </div>
       </div>
 
       <div class="portfolio-vip-metric">
-        <span>Available balance</span>
+        <span data-t="availableBalance">Available balance</span>
         <strong id="portfolioVipAvailable">$0.00</strong>
       </div>
       <div class="portfolio-vip-metric">
-        <span>Daily calculation</span>
+        <span data-t="dailyCalculation">Daily calculation</span>
         <strong id="portfolioVipDaily">$27.50</strong>
       </div>
       <div class="portfolio-vip-metric">
-        <span>60-day calculation</span>
+        <span data-t="calculation60">60-day calculation</span>
         <strong id="portfolioVipTotal">$1,650.00</strong>
       </div>
 
-      <button class="btn gold portfolio-vip-button" type="button" onclick="openPortfolioVipLockConfirmation()">Lock From Balance</button>
+      <button class="btn gold portfolio-vip-button" type="button" onclick="openPortfolioVipLockConfirmation()" data-t="lockFromBalance">Lock From Balance</button>
     </div>
     <div id="portfolioVipError" class="portfolio-vip-error"></div>
   </div>
@@ -3751,9 +3989,9 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
   <div id="portfolioFinanceGuest" class="portfolio-finance-guest">
     <div class="portfolio-finance-guest-icon">🔒</div>
-    <h3>Sign in to access deposits and withdrawals</h3>
-    <p>Wallet addresses and financial tools are available only to authenticated account holders.</p>
-    <button class="btn gold" type="button" onclick="openAuth('login')">Sign In Securely</button>
+    <h3 data-t="financeLoginTitle">Sign in to access deposits and withdrawals</h3>
+    <p data-t="financeLoginDesc">Wallet addresses and financial tools are available only to authenticated account holders.</p>
+    <button class="btn gold" type="button" onclick="openAuth('login')" data-t="signInSecurely">Sign In Securely</button>
   </div>
   <div class="portfolio-grid" id="portfolioGrid" style="display:none">
     <div class="card form" style="padding: 25px; border: 1px solid rgba(240,185,11,0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
@@ -3856,7 +4094,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
   <span class="withdrawal-error-icon">!</span>
 
   <div>
-    <strong id="withdrawalErrorTitle">
+    <strong id="withdrawalErrorTitle" data-t="insufficientBalance">
       Insufficient balance
     </strong>
 
@@ -3877,55 +4115,55 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 <section id="rewards" class="view">
   <div class="title">
     <h2 data-t="rewards">Rewards</h2>
-    <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
+      <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
   </div>
 
   <div class="referral-dashboard">
     <div class="card referral-main-card">
-      <span class="referral-home-kicker">YOUR PERSONAL REFERRAL</span>
-      <h2 style="margin:7px 0 8px;">Invite Friends and Earn $10</h2>
-      <p class="muted" style="line-height:1.75;margin:0;">
+      <span class="referral-home-kicker" data-t="personalReferral">YOUR PERSONAL REFERRAL</span>
+      <h2 style="margin:7px 0 8px;" data-t="inviteFriendsEarn">Invite Friends and Earn $10</h2>
+      <p class="muted" style="line-height:1.75;margin:0;" data-t="personalReferralDesc">
         Invite friends with your personal code. You receive $10 after each
         referred friend completes their first approved investment.
       </p>
       <div class="referral-history-hint">
         <span>ⓘ</span>
-        <div>You can review the registration, investment and reward status of all your referrals in the Referral Activity section at the bottom of this page.</div>
+        <div data-t="referralHistoryHint">You can review the registration, investment and reward status of all your referrals in the Referral Activity section at the bottom of this page.</div>
       </div>
 
       <div class="referral-code-box">
-        <div class="muted" style="font-size:10px;margin-bottom:6px;">YOUR REFERRAL CODE</div>
-        <div id="refCode" class="referral-code-value">Sign in to view</div>
+        <div class="muted" style="font-size:10px;margin-bottom:6px;" data-t="yourReferralCode">YOUR REFERRAL CODE</div>
+        <div id="refCode" class="referral-code-value" data-t="signInToView">Sign in to view</div>
         <div id="referralLink" class="referral-link-value"></div>
         <div class="referral-actions">
-          <button class="btn gold" type="button" onclick="copyReferralCode()">Copy Code</button>
-          <button class="btn" type="button" onclick="copyReferralLink()">Copy Invitation Link</button>
+          <button class="btn gold" type="button" onclick="copyReferralCode()" data-t="copyCode">Copy Code</button>
+          <button class="btn" type="button" onclick="copyReferralLink()" data-t="copyInvitationLink">Copy Invitation Link</button>
         </div>
       </div>
 
       <div class="referral-stats">
-        <div class="referral-stat"><span>Total registrations</span><strong id="referralTotalInvited">0</strong></div>
-        <div class="referral-stat"><span>Successful referrals</span><strong id="referralQualified">0</strong></div>
-        <div class="referral-stat reward"><span>Total rewards</span><strong id="referralTotalReward">$0.00</strong></div>
+        <div class="referral-stat"><span data-t="totalRegistrations">Total registrations</span><strong id="referralTotalInvited">0</strong></div>
+        <div class="referral-stat"><span data-t="successfulReferrals">Successful referrals</span><strong id="referralQualified">0</strong></div>
+        <div class="referral-stat reward"><span data-t="totalRewards">Total rewards</span><strong id="referralTotalReward">$0.00</strong></div>
       </div>
     </div>
 
     <div class="card referral-rules">
-      <h2 style="margin-top:0;">How it works</h2>
+      <h2 style="margin-top:0;" data-t="howItWorks">How it works</h2>
       <ul>
-        <li>Share your personal code or invitation link.</li>
-        <li>Your friend registers using your referral code.</li>
-        <li>Your friend completes their first approved investment.</li>
-        <li>$10 is automatically added to your available balance.</li>
+        <li data-t="referralStep1">Share your personal code or invitation link.</li>
+        <li data-t="referralStep2">Your friend registers using your referral code.</li>
+        <li data-t="referralStep3">Your friend completes their first approved investment.</li>
+        <li data-t="referralStep4">$10 is automatically added to your available balance.</li>
       </ul>
 
       <div class="referral-apply">
-        <label for="referralApplyInput" class="muted" style="display:block;margin-bottom:7px;font-size:11px;">Have an invitation code?</label>
+        <label for="referralApplyInput" class="muted" style="display:block;margin-bottom:7px;font-size:11px;" data-t="haveInvitationCode">Have an invitation code?</label>
         <div class="referral-apply-row">
           <input id="referralApplyInput" type="text" placeholder="BI-XXXXXXXX" maxlength="20">
-          <button class="btn" type="button" onclick="applyManualReferralCode()">Apply</button>
+          <button class="btn" type="button" onclick="applyManualReferralCode()" data-t="apply">Apply</button>
         </div>
-        <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;">A referral code can only be registered before your first investment.</p>
+        <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;" data-t="referralApplyNotice">A referral code can only be registered before your first investment.</p>
       </div>
     </div>
   </div>
@@ -3933,24 +4171,24 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
   <div class="card referral-history-card">
     <div class="referral-history-head">
       <div>
-        <h2>Referral Activity</h2>
-        <p class="muted">
+        <h2 data-t="referralActivity">Referral Activity</h2>
+        <p class="muted" data-t="referralActivityDesc">
           Follow every registration, investment confirmation and reward payment.
           Usernames are partially hidden for privacy.
         </p>
       </div>
-      <button class="btn" type="button" onclick="loadReferralHistory()">Refresh Status</button>
+      <button class="btn" type="button" onclick="loadReferralHistory()" data-t="refreshStatus">Refresh Status</button>
     </div>
 
     <div id="referralHistoryList" class="referral-history-list">
-      <div class="referral-history-empty">Sign in to view referral activity.</div>
+      <div class="referral-history-empty" data-t="signInReferralActivity">Sign in to view referral activity.</div>
     </div>
 
     <div class="referral-history-legend">
-      <span class="referral-status-badge referral-status-registered">Registered</span>
-      <span class="referral-status-badge referral-status-pending">Investment pending</span>
-      <span class="referral-status-badge referral-status-confirmed">Investment confirmed</span>
-      <span class="referral-status-badge referral-status-paid">$10 reward paid</span>
+      <span class="referral-status-badge referral-status-registered" data-t="registered">Registered</span>
+      <span class="referral-status-badge referral-status-pending" data-t="investmentPending">Investment pending</span>
+      <span class="referral-status-badge referral-status-confirmed" data-t="investmentConfirmed">Investment confirmed</span>
+      <span class="referral-status-badge referral-status-paid" data-t="rewardPaid">$10 reward paid</span>
     </div>
   </div>
 </section>
@@ -3970,7 +4208,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
   </div>
 
   <div id="supportGuestNotice" class="card support-empty">
-    Please sign in to create and manage your support tickets.
+    <span data-t="supportGuestNotice">Please sign in to create and manage your support tickets.</span>
   </div>
 
   <div id="supportUserArea" style="display:none;">
@@ -4102,7 +4340,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         <label data-t="email">Email Address</label>
         <input id="authEmailReg" type="email" placeholder="name@example.com">
 
-        <label for="authReferralCode">Referral Code <span class="muted">(Optional)</span></label>
+        <label for="authReferralCode"><span data-t="referralCodeLabel">Referral Code</span> <span class="muted" data-t="optional">(Optional)</span></label>
         <input
           id="authReferralCode"
           type="text"
@@ -4112,7 +4350,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
           style="text-transform:uppercase;"
           oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')"
         >
-        <div style="margin-top:6px;color:var(--muted);font-size:10px;line-height:1.5;">
+        <div data-t="referralCodeHelp" style="margin-top:6px;color:var(--muted);font-size:10px;line-height:1.5;">
           If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.
         </div>
       </div>
@@ -4121,7 +4359,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
       <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
       <div id="passwordContainer">
         <label data-t="password">Password</label>
-        <div class="password-requirements">
+        <div class="password-requirements" data-t="passwordRequirements">
           Your password must contain at least <b>8 characters</b>, including an
           <b>uppercase letter</b>, a <b>lowercase letter</b> and a <b>number</b>.
         </div>
@@ -4138,9 +4376,9 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="password-flow-icon">✉</div>
 
-    <h2>Check your email</h2>
+    <h2 data-t="checkYourEmail">Check your email</h2>
 
-    <p>
+    <p data-t="recoveryLinkSent">
       We sent a secure password recovery link to:
     </p>
 
@@ -4149,7 +4387,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
       class="password-flow-email"
     ></div>
 
-    <p>
+    <p data-t="recoveryEmailHelp">
       Open your email and click the recovery link.
       Also check your Spam or Junk folder.
     </p>
@@ -4160,7 +4398,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
       type="button"
       onclick="resendPasswordRecovery()"
     >
-      Resend recovery email
+      <span data-t="resendRecoveryEmail">Resend recovery email</span>
     </button>
 
   </div>
@@ -4172,15 +4410,15 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <div class="password-flow-icon">🔒</div>
 
-    <h2>Create a new password</h2>
+    <h2 data-t="createNewPassword">Create a new password</h2>
 
-    <p>
+    <p data-t="newPasswordHelp">
       Enter a strong new password for your account.
     </p>
 
     <div class="password-flow-form">
 
-      <label for="newRecoveryPassword">
+      <label for="newRecoveryPassword" data-t="newPassword">
         New password
       </label>
 
@@ -4191,7 +4429,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         placeholder="Minimum 8 characters"
       >
 
-      <label for="confirmRecoveryPassword">
+      <label for="confirmRecoveryPassword" data-t="confirmNewPassword">
         Confirm new password
       </label>
 
@@ -4214,7 +4452,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
         type="button"
         onclick="saveRecoveredPassword()"
       >
-        Save new password
+        <span data-t="saveNewPassword">Save new password</span>
       </button>
 
     </div>
@@ -4240,7 +4478,7 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 
     <p id="transactionSuccessMessage"></p>
 
-    <div class="transaction-success-note">
+    <div class="transaction-success-note" data-t="transactionStatusNote">
       You can monitor the latest status of your request from the
 Transactions section.
     </div>
@@ -4251,7 +4489,7 @@ Transactions section.
         type="button"
         onclick="openTransactionHistory()"
       >
-        View Transactions
+        <span data-t="viewTransactions">View Transactions</span>
       </button>
 
       <button
@@ -4259,7 +4497,7 @@ Transactions section.
         type="button"
         onclick="closeTransactionSuccessModal()"
       >
-        Continue
+        <span data-t="continue">Continue</span>
       </button>
     </div>
 
@@ -4278,7 +4516,7 @@ Transactions section.
 
     <div class="plan-selection-icon">◆</div>
 
-    <div id="selectedPlanBadge" class="plan-selection-badge">
+    <div id="selectedPlanBadge" class="plan-selection-badge" data-t="investmentPlanBadge">
       INVESTMENT PLAN
     </div>
 
@@ -4286,17 +4524,17 @@ Transactions section.
 
     <div class="plan-selection-details">
       <div>
-        <span>Daily rate</span>
+        <span data-t="dailyRate">Daily rate</span>
         <b id="selectedPlanRate">2.5%</b>
       </div>
 
       <div>
-        <span>Investment term</span>
+        <span data-t="investmentTerm">Investment term</span>
         <b id="selectedPlanTerm">30 Days</b>
       </div>
     </div>
 
-    <label class="plan-selection-label" for="selectedPlanAmount">
+    <label class="plan-selection-label" for="selectedPlanAmount" data-t="investmentAmount">
       Investment amount
     </label>
 
@@ -4310,7 +4548,7 @@ Transactions section.
     <div id="selectedPlanRange" class="plan-selection-range"></div>
     <div id="selectedPlanError" class="plan-selection-error"></div>
 
-    <div class="plan-selection-notice">
+    <div class="plan-selection-notice" data-t="planActivationNotice">
       After payment confirmation and administrator approval, your
       selected plan will be activated automatically and profit
       calculation will begin.
@@ -4322,7 +4560,7 @@ Transactions section.
         type="button"
         onclick="closePlanSelectionModal()"
       >
-        Cancel
+        <span data-t="cancel">Cancel</span>
       </button>
 
       <button
@@ -4330,7 +4568,7 @@ Transactions section.
         type="button"
         onclick="continueSelectedPlan()"
       >
-        Continue to Deposit
+        <span data-t="continueDeposit">Continue to Deposit</span>
       </button>
     </div>
 
@@ -4351,11 +4589,11 @@ Transactions section.
         🔒
       </div>
 
-      <h2 style="margin-bottom:8px;">
+      <h2 style="margin-bottom:8px;" data-t="confirm60DayLock">
         Confirm 60-Day Lock
       </h2>
 
-      <p class="muted" style="line-height:1.7;">
+      <p class="muted" style="line-height:1.7;" data-t="reviewLockAmount">
         Review the selected amount before locking it from your
         available balance.
       </p>
@@ -4363,29 +4601,29 @@ Transactions section.
 
     <div class="vip-lock-results" style="grid-template-columns:1fr 1fr;">
       <div>
-        <span>Amount to lock</span>
+        <span data-t="amountToLockShort">Amount to lock</span>
         <strong id="vipConfirmAmount">$0.00</strong>
       </div>
 
       <div>
-        <span>Available after lock</span>
+        <span data-t="availableAfterLock">Available after lock</span>
         <strong id="vipConfirmRemaining">$0.00</strong>
       </div>
 
       <div>
-        <span>Daily calculation</span>
+        <span data-t="dailyCalculation">Daily calculation</span>
         <strong id="vipConfirmDaily">$0.00</strong>
       </div>
 
       <div>
-        <span>60-day calculation</span>
+        <span data-t="calculation60">60-day calculation</span>
         <strong id="vipConfirmTotal">$0.00</strong>
       </div>
     </div>
 
     <div class="vip-contract-notice">
       <span>⚠</span>
-      <p>
+      <p data-t="lockConfirmationNotice">
         The selected principal will remain locked for 60 days.
         Displayed return calculations are projected values and are
         separate from your available balance.
@@ -4398,7 +4636,7 @@ Transactions section.
         type="button"
         onclick="closeVipLockConfirmation()"
       >
-        Cancel
+        <span data-t="cancel">Cancel</span>
       </button>
 
       <button
@@ -4407,7 +4645,7 @@ Transactions section.
         type="button"
         onclick="confirmVipLockFromBalance()"
       >
-        Confirm Lock
+        <span data-t="confirmLock">Confirm Lock</span>
       </button>
     </div>
   </div>
@@ -4433,9 +4671,9 @@ Transactions section.
 </button>
     <div class="email-confirm-icon">✉</div>
 
-    <h2>Confirm your email</h2>
+    <h2 data-t="confirmYourEmail">Confirm your email</h2>
 
-    <p>
+    <p data-t="confirmationLinkSent">
       We sent a secure confirmation link to:
     </p>
 
@@ -4444,7 +4682,7 @@ Transactions section.
       class="email-confirm-address"
     ></div>
 
-    <p>
+    <p data-t="confirmationEmailHelp">
       Open your email and click the confirmation link.
       This window will close automatically after confirmation.
     </p>
@@ -4457,7 +4695,7 @@ Transactions section.
         type="button"
         onclick="resendConfirmationEmail()"
       >
-        Resend confirmation email
+        <span data-t="resendConfirmationEmail">Resend confirmation email</span>
       </button>
 
       <button
@@ -4465,12 +4703,12 @@ Transactions section.
         type="button"
         onclick="changeConfirmationEmail()"
       >
-        Change email address
+        <span data-t="changeEmailAddress">Change email address</span>
       </button>
 
     </div>
 
-    <p class="email-confirm-note">
+    <p class="email-confirm-note" data-t="checkSpamFolder">
       Also check your Spam or Junk folder.
     </p>
 
@@ -4569,7 +4807,7 @@ async function sendPasswordRecovery(email) {
 
   if (!cleanEmail.includes("@")) {
     throw new Error(
-      "Enter your registered email address"
+      tr("registeredEmailRequired")
     );
   }
 
@@ -4602,13 +4840,10 @@ async function resendPasswordRecovery() {
 
   try {
     await sendPasswordRecovery(email);
-    toast("Recovery email sent again");
+    toast(tr("recoveryResent"));
   } catch (error) {
     console.error(error);
-    toast(
-      error.message ||
-      "Recovery email could not be sent"
-    );
+    toast(localizedBackendError(error,"emailSendFailed"));
   }
 }
 
@@ -4633,20 +4868,20 @@ async function saveRecoveredPassword() {
       .test(password)
   ) {
     showPasswordRecoveryError(
-      "Password must contain uppercase, lowercase, number and at least 8 characters."
+      tr("passwordRequirements")
     );
     return;
   }
 
   if (password !== confirmation) {
     showPasswordRecoveryError(
-      "The passwords do not match."
+      tr("passwordMismatch")
     );
     return;
   }
 
   button.disabled = true;
-  button.textContent = "Saving...";
+  button.textContent = tr("saving");
 
   try {
     const { data, error } =
@@ -4689,19 +4924,18 @@ async function saveRecoveredPassword() {
     updatePortfolio();
 
     toast(
-      "Password changed. You are now signed in."
+      tr("passwordChanged")
     );
 
   } catch (error) {
     console.error(error);
 
     showPasswordRecoveryError(
-      error.message ||
-      "Password could not be changed."
+      localizedBackendError(error,"passwordChangeFailed")
     );
   } finally {
     button.disabled = false;
-    button.textContent = "Save new password";
+    button.textContent = tr("saveNewPassword");
   }
 }
 
@@ -4772,7 +5006,7 @@ async function resendConfirmationEmail() {
     document.getElementById("resendConfirmationBtn");
 
   button.disabled = true;
-  button.textContent = "Sending...";
+  button.textContent = tr("sending");
 
   try {
     const { error } = await supabaseClient.auth.resend({
@@ -4785,19 +5019,19 @@ async function resendConfirmationEmail() {
 
     if (error) throw error;
 
-    toast("Confirmation email sent again");
-    button.textContent = "Email sent successfully";
+    toast(tr("confirmationResent"));
+    button.textContent = tr("emailSent");
 
     setTimeout(() => {
       button.textContent =
-        "Resend confirmation email";
+        tr("resendConfirmationEmail");
     }, 4000);
 
   } catch (error) {
     console.error(error);
-    toast(error.message || "Email could not be sent");
+    toast(localizedBackendError(error, "emailSendFailed"));
     button.textContent =
-      "Resend confirmation email";
+      tr("resendConfirmationEmail");
   } finally {
     button.disabled = false;
   }
@@ -5587,9 +5821,7 @@ function togglePaymentDetails() {
         if (txContainer) txContainer.style.display = 'none';
         infoBox.innerHTML = `
             <div style="margin-bottom:8px;">${dict.paymentioMsg || T.en.paymentioMsg}</div>
-            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" width="100%" height="650" frameborder="0" scrolling="auto" style="overflow-y:auto; border-radius:8px;">
-                Can't load widget
-            </iframe>
+            <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" title="${dict.deposit}" width="100%" height="650" frameborder="0" scrolling="auto" style="overflow-y:auto; border-radius:8px;"></iframe>
         `;
     }
 }
@@ -5603,14 +5835,14 @@ async function submitDepositRequest() {
     if(!currentUser) return openAuth("login");
 
     if (!amount || amount <= 0) {
-        alert('Please enter a valid amount.');
+        toast(tr("invalidDepositAmount"));
         return;
     }
 
     let paymentDetailsInfo = '';
     if (method === 'wallet') {
         if (!gatewayRef) {
-            alert('Please enter the reference code / TXID.');
+            toast(tr("txidRequired"));
             return;
         }
         paymentDetailsInfo = `[Direct Payment - ${cryptoType}] ${gatewayRef}`;
@@ -5630,9 +5862,9 @@ async function submitDepositRequest() {
     ]);
 
     if (error) {
-        alert('Error: ' + error.message);
+        toast(localizedBackendError(error,"depositRequestFailed"));
     } else {
-        alert('Deposit request submitted! It will reflect in your balance after admin approval.');
+        toast(tr("depositSubmittedTitle"));
         document.getElementById('deposit-amount').value = '';
         if(document.getElementById('tx-ref')) document.getElementById('tx-ref').value = '';
         loadTransactions();
@@ -5918,26 +6150,26 @@ async function submitAuth() {
       ).trim().toUpperCase();
 
       if (fullName.length < 2) {
-        return toast("Please enter your full name");
+        return toast(tr("fullNameRequired"));
       }
 
       if (!/^[a-zA-Z0-9_]{3,30}$/.test(usernameValue)) {
-        return toast("Username must contain 3–30 English letters, numbers or _");
+        return toast(tr("usernameRequirements"));
       }
 
       if (!email.includes("@")) {
-        return toast("Please enter a valid email");
+        return toast(tr("validEmail"));
       }
 
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
-        return toast("Password needs uppercase, lowercase, number and 8 characters");
+        return toast(tr("passwordRuleError"));
       }
 
       if (
         referralCode &&
         !/^BI-[A-Z0-9]{8}$/.test(referralCode)
       ) {
-        return toast("Please enter a valid referral code");
+        return toast(tr("validReferralCode"));
       }
 
       if (referralCode) {
@@ -5969,8 +6201,8 @@ async function submitAuth() {
         closeAuth();
 
         await showAuthSuccessPopup(
-          "Registration Successful",
-          "Your account was created successfully. Please confirm your email to continue."
+          tr("registrationSuccessful"),
+          tr("registrationConfirmEmail")
         );
 
         showEmailConfirmation(email);
@@ -5981,8 +6213,8 @@ async function submitAuth() {
       closeAuth();
 
       await showAuthSuccessPopup(
-        "Registration Successful",
-        "Your account has been created and you are now signed in."
+        tr("registrationSuccessful"),
+        tr("accountCreatedSignedIn")
       );
     }
 
@@ -5991,7 +6223,7 @@ async function submitAuth() {
       const password = document.getElementById("authPass").value;
 
       if (!email.includes("@")) {
-        return toast("Enter your registered email address");
+        return toast(tr("registeredEmailRequired"));
       }
 
       const { data, error } =
@@ -6003,8 +6235,8 @@ async function submitAuth() {
       closeAuth();
 
       await showAuthSuccessPopup(
-        "Welcome Back",
-        "You have signed in successfully."
+        tr("welcomeBack"),
+        tr("signedInSuccessfully")
       );
     }
 
@@ -6021,7 +6253,7 @@ async function submitAuth() {
 
   } catch (error) {
     console.error(error);
-    toast(error.message || "Authentication failed");
+    toast(localizedBackendError(error, "authenticationFailed"));
   } finally {
     submitButton.disabled = false;
   }
@@ -6105,7 +6337,7 @@ async function logout() {
     updateSupportAuthUI();
   }
 
-  toast("Logged out successfully");
+  toast(tr("loggedOut"));
 }
 
 function updateHeaderAuthUI() {
@@ -6134,7 +6366,7 @@ function updateHeaderAuthUI() {
     }
 
     document.getElementById("headerFullName").textContent =
-      currentUser.fullname || currentUser.username || "User";
+      currentUser.fullname || currentUser.username || tr("user");
 
     document.getElementById("headerUsername").textContent =
       currentUser.username ? "@" + currentUser.username : "";
@@ -6153,7 +6385,7 @@ function updateHeaderAuthUI() {
 
 async function saveUserData() {
   if (!currentUser?.id) {
-    toast("Please sign in first");
+    toast(tr("signInFirst"));
     return false;
   }
 
@@ -6167,7 +6399,7 @@ async function saveUserData() {
 
   if (error) {
     console.error("Profile update error:", error);
-    toast(error.message || "Profile update failed");
+    toast(localizedBackendError(error, "profileUpdateFailed"));
     return false;
   }
 
@@ -6207,7 +6439,7 @@ function calculateVipLock() {
 
   if (!isValid) {
     errorBox.textContent =
-      "Enter an amount between $10 and $10,000.";
+      tr("validAmountRange");
 
     errorBox.classList.add("show");
 
@@ -6295,7 +6527,7 @@ function calculatePortfolioVipLock() {
     dailyElement.textContent = "$0.00";
     totalElement.textContent = "$0.00";
     if (errorBox) {
-      errorBox.textContent = "Enter an amount between $10 and $10,000.";
+      errorBox.textContent = tr("validAmountRange");
       errorBox.classList.add("show");
     }
     return;
@@ -6387,7 +6619,7 @@ function openVipLockConfirmation() {
     amount > VIP_LOCK_MAXIMUM
   ) {
     calculateVipLock();
-    toast("Enter an amount between $10 and $10,000");
+    toast(tr("validAmountRange"));
     return;
   }
 
@@ -6462,7 +6694,7 @@ async function confirmVipLockFromBalance() {
     amount < VIP_LOCK_MINIMUM ||
     amount > VIP_LOCK_MAXIMUM
   ) {
-    toast("Invalid VIP lock amount");
+    toast(tr("invalidVipAmount"));
     return;
   }
 
@@ -6470,7 +6702,7 @@ async function confirmVipLockFromBalance() {
     document.getElementById("confirmVipLockBtn");
 
   button.disabled = true;
-  button.textContent = "Activating...";
+  button.textContent = tr("activating");
 
   try {
     const { data: investmentId, error } =
@@ -6518,7 +6750,7 @@ setTimeout(() => {
   });
 }, 200);
     toast(
-      `${formatPortfolioMoney(amount)} locked successfully`
+      tr("vipLockSuccess",{amount:formatPortfolioMoney(amount)})
     );
 
     console.log(
@@ -6528,13 +6760,10 @@ setTimeout(() => {
   } catch (error) {
     console.error("VIP lock error:", error);
 
-    toast(
-      error.message ||
-      "VIP contract could not be activated"
-    );
+    toast(localizedBackendError(error,"vipLockFailed"));
   } finally {
     button.disabled = false;
-    button.textContent = "Confirm Lock";
+    button.textContent = tr("confirmLock");
   }
 }
 function continueVipLockDeposit() {
@@ -6574,6 +6803,11 @@ function continueVipLockDeposit() {
 }
 let selectedPlanIndex = null;
 
+function getLocalizedPlanName(index){
+  const lang=localStorage.getItem("bi_lang")||"en";
+  return planNames[lang]?.[index]?.[1] || plans[index]?.[0] || "";
+}
+
 function openPlanSelectionModal(index) {
   const selectedPlan = plans[index];
 
@@ -6581,7 +6815,7 @@ function openPlanSelectionModal(index) {
 
   selectedPlanIndex = index;
 
-  const planName = selectedPlan[0];
+  const planName = getLocalizedPlanName(index);
   const minimum = selectedPlan[1];
   const maximum = selectedPlan[2];
   const dailyRate = selectedPlan[3];
@@ -6589,7 +6823,7 @@ function openPlanSelectionModal(index) {
 
   document.getElementById(
     "selectedPlanTitle"
-  ).textContent = `${planName} Plan`;
+  ).textContent = `${tr("planWord")} ${planName}`;
 
   document.getElementById(
     "selectedPlanRate"
@@ -6597,12 +6831,12 @@ function openPlanSelectionModal(index) {
 
   document.getElementById(
     "selectedPlanTerm"
-  ).textContent = `${termDays} Days`;
+  ).textContent = `${termDays} ${tr("daysShort")}`;
 
   document.getElementById(
     "selectedPlanRange"
   ).textContent =
-    `Allowed amount: $${minimum.toLocaleString()} – ` +
+    `${tr("allowedAmount")}: $${minimum.toLocaleString()} – ` +
     `$${maximum.toLocaleString()}`;
 
   const amountInput =
@@ -6649,9 +6883,10 @@ function continueSelectedPlan() {
     amount < minimum ||
     amount > maximum
   ) {
-    errorBox.textContent =
-      `Enter a whole amount between $${Math.ceil(minimum)} and ` +
-      `$${maximum.toLocaleString()}.`;
+    errorBox.textContent = tr("wholeAmountRange",{
+      min:`$${Math.ceil(minimum)}`,
+      max:`$${maximum.toLocaleString()}`
+    });
 
     errorBox.classList.add("show");
     return;
@@ -6686,16 +6921,21 @@ async function invest(i) {
   const selectedPlan = plans[i];
 
   if (!selectedPlan) {
-    toast("Invalid investment plan");
+    toast(tr("invalidInvestmentPlan"));
     return;
   }
 
   const planName = selectedPlan[0];
+  const localizedPlanName = getLocalizedPlanName(i);
   const minimum = selectedPlan[1];
   const maximum = selectedPlan[2];
 
   const enteredAmount = prompt(
-    `${planName} investment amount ($${minimum} - $${maximum.toLocaleString()}):`,
+    tr("investmentPrompt",{
+      plan:localizedPlanName,
+      min:`$${minimum}`,
+      max:`$${maximum.toLocaleString()}`
+    }),
     minimum
   );
 
@@ -6708,14 +6948,15 @@ async function invest(i) {
     amount < minimum ||
     amount > maximum
   ) {
-    toast(
-      `Amount must be between $${minimum} and $${maximum.toLocaleString()}`
-    );
+    toast(tr("amountBetween",{
+      min:`$${minimum}`,
+      max:`$${maximum.toLocaleString()}`
+    }));
     return;
   }
 
   if (amount > Number(currentUser.balance || 0)) {
-    toast("Insufficient available balance");
+    toast(tr("insufficientBalance"));
     return;
   }
 
@@ -6733,14 +6974,11 @@ async function invest(i) {
     await refreshSecureAccount();
     await updatePortfolio();
 
-    toast(`${planName} investment activated successfully`);
+    toast(tr("investmentActivated",{plan:localizedPlanName}));
   } catch (error) {
     console.error("Investment error:", error);
 
-    toast(
-      error.message ||
-      "Investment could not be activated"
-    );
+    toast(localizedBackendError(error,"investmentFailed"));
   }
 }
 
@@ -6759,9 +6997,7 @@ async function investCustom() {
     amount < 10 ||
     amount > 10000
   ) {
-    toast(
-      "Investment amount must be between $10 and $10,000"
-    );
+    toast(tr("customInvestmentRange"));
     return;
   }
 
@@ -6774,12 +7010,15 @@ async function investCustom() {
   } else {
     planName = "Premium";
   }
+  const localizedPlanName=getLocalizedPlanName(
+    {Starter:0,Growth:1,Premium:2}[planName]
+  );
 
   if (
     amount >
     Number(currentUser.balance || 0)
   ) {
-    toast("Insufficient available balance");
+    toast(tr("insufficientBalance"));
     return;
   }
 
@@ -6798,19 +7037,14 @@ async function investCustom() {
     await refreshSecureAccount();
     await updatePortfolio();
 
-    toast(
-      `${planName} investment activated successfully`
-    );
+    toast(tr("investmentActivated",{plan:localizedPlanName}));
   } catch (error) {
     console.error(
       "Custom investment error:",
       error
     );
 
-    toast(
-      error.message ||
-      "Investment could not be activated"
-    );
+    toast(localizedBackendError(error,"investmentFailed"));
   }
 }
 
@@ -6905,14 +7139,14 @@ function formatVipRemainingTime(endsAt) {
   const endTime = new Date(endsAt).getTime();
 
   if (!Number.isFinite(endTime)) {
-    return "Unknown";
+    return tr("unknown");
   }
 
   const remaining =
     Math.max(0, endTime - Date.now());
 
   if (remaining <= 0) {
-    return "Contract period completed";
+    return tr("contractCompleted");
   }
 
   const days =
@@ -6934,8 +7168,8 @@ function formatVipRemainingTime(endsAt) {
     );
 
   return (
-    `${days}d ${hours}h ` +
-    `${minutes}m ${seconds}s`
+    `${days}${tr("daysShort")} ${hours}${tr("hoursShort")} ` +
+    `${minutes}${tr("minutesShort")} ${seconds}${tr("secondsShort")}`
   );
 }
 
@@ -7029,7 +7263,7 @@ function renderVipPortfolioContracts() {
     container.innerHTML = `
       <tr>
         <td colspan="9" class="muted vip-empty-row">
-          No VIP lock contracts found.
+          ${tr("noVipContracts")}
         </td>
       </tr>
     `;
@@ -7067,8 +7301,8 @@ function renderVipPortfolioContracts() {
 
     const statusText =
       isFinished
-        ? "Completed"
-        : "Principal locked";
+        ? tr("completed")
+        : tr("principalLocked");
 
     const statusClass =
       isFinished
@@ -7160,7 +7394,7 @@ function renderPortfolioLive() {
     balanceElement.textContent = "$0.00";
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
-    levelElement.textContent = "Basic";
+    levelElement.textContent = tr("basic");
 
     renderVipPortfolioContracts();
     return;
@@ -7248,16 +7482,16 @@ balanceElement.textContent =
     );
 
   if (activeRegularPrincipal < 10) {
-    levelElement.textContent = "Basic";
+    levelElement.textContent = tr("basic");
   } else if (activeRegularPrincipal <= 100) {
     levelElement.textContent =
-      "Starter · 2.5% Daily";
+      tr("starterLevel");
   } else if (activeRegularPrincipal <= 1000) {
     levelElement.textContent =
-      "Growth · 3.5% Daily";
+      tr("growthLevel");
   } else {
     levelElement.textContent =
-      "Premium · 4.5% Daily";
+      tr("premiumLevel");
   }
 
   /*
@@ -7394,7 +7628,7 @@ function renderPlans(){
     select.innerHTML = "";
     plans.forEach((p, i)=>{
       let name = pList[i] ? pList[i][1] : p[0];
-      select.innerHTML += `<option value="${i}">${name} (${p[3]}% daily)</option>`;
+      select.innerHTML += `<option value="${i}">${name} (${p[3]}% ${uDict.daily})</option>`;
     });
   }
 }
@@ -7420,7 +7654,7 @@ function calc(){
   let total = a * (1 + (p[3]/100)*p[4]);
   let profit = total - a;
   document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " total profit";
+  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " " + tr("totalProfitText");
 }
 
 function calcCustom() {
@@ -7445,6 +7679,11 @@ function calcCustom() {
     dailyRate = 4.5;
     term = 90;
   }
+
+  const planIndex={Starter:0,Growth:1,Premium:2}[planName];
+  const localizedPlanName=Number.isInteger(planIndex)
+    ? getLocalizedPlanName(planIndex)
+    : "";
 
   const termInput =
     document.getElementById("customTerm");
@@ -7485,9 +7724,9 @@ function calcCustom() {
     "customProfit"
   ).textContent =
     planName
-      ? `${planName} · ${dailyRate}% daily · ` +
-        `${formatPortfolioMoney(totalProfit)} total profit`
-      : "Enter an amount between $10 and $10,000";
+      ? `${localizedPlanName} · ${dailyRate}% ${tr("daily")} · ` +
+        `${formatPortfolioMoney(totalProfit)} ${tr("totalProfitText")}`
+      : tr("validAmountRange");
 
   const lang =
     localStorage.getItem("bi_lang") || "en";
@@ -7499,23 +7738,23 @@ function calcCustom() {
     "lockNotice"
   ).textContent =
     planName
-      ? `${planName}: ${dailyRate}% daily for ${term} days`
-       : "Enter an amount between $10 and $10,000";
+      ? `${localizedPlanName}: ${dailyRate}% ${tr("daily")} · ${term} ${tr("daysShort")}`
+       : tr("validAmountRange");
 }
 
 async function loadTransactions(){
   const tList = document.getElementById("txList");
   if(!tList) return;
   if(!currentUser){
-    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">Please sign in to view transaction history.</div>`;
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">${tr("signInTransactions")}</div>`;
     return;
   }
   let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
   if(error || !data || data.length === 0){
-    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">No transactions found.</div>`;
+    tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">${tr("noTransactions")}</div>`;
     return;
   }
-  let html = `<div class="tablebox"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>`;
+  let html = `<div class="tablebox"><table class="table"><thead><tr><th>${tr("dateHeader")}</th><th>${tr("typeHeader")}</th><th>${tr("amountHeader")}</th><th>${tr("statusHeader")}</th></tr></thead><tbody>`;
   data.forEach(tx => {
     let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
     html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
@@ -7527,7 +7766,7 @@ async function loadTransactions(){
 async function clearTx(){
   if(!currentUser) return;
   await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast("History cleared");
+  loadTransactions(); toast(tr("clear"));
 }
 
 const PENDING_REFERRAL_CODE_KEY = "bi_pending_referral_code";
@@ -7577,7 +7816,7 @@ async function applyPendingReferralCode() {
     return false;
   }
 
-  if (data) toast("Referral code applied successfully");
+  if (data) toast(tr("referralCodeLabel"));
   return Boolean(data);
 }
 
@@ -7591,7 +7830,7 @@ async function applyManualReferralCode() {
   const code = String(input?.value || "").trim().toUpperCase();
 
   if (!/^BI-[A-Z0-9]{8}$/.test(code)) {
-    toast("Please enter a valid referral code");
+    toast(tr("validReferralCode"));
     return;
   }
 
@@ -7601,17 +7840,17 @@ async function applyManualReferralCode() {
   );
 
   if (error) {
-    toast(error.message || "Referral code could not be applied");
+    toast(localizedBackendError(error, "referralCodeFailed"));
     return;
   }
 
   if (!data) {
-    toast("A referral code is already registered for this account");
+    toast(tr("referralApplyNotice"));
     return;
   }
 
   input.value = "";
-  toast("Referral code applied successfully");
+  toast(tr("referralCodeLabel"));
   await loadReferralDashboard();
 }
 
@@ -7626,12 +7865,10 @@ async function loadReferralDashboard() {
 
   if (!currentUser?.id) {
     currentReferralData = null;
-    if (codeElement) codeElement.textContent = "Sign in to view";
+    if (codeElement) codeElement.textContent = tr("signInToView");
     if (linkElement) linkElement.textContent = "";
     setReferralDashboardValues(0, 0, 0);
-    renderReferralHistoryEmpty(
-      "Sign in to view referral activity."
-    );
+    renderReferralHistoryEmpty(tr("signInReferralActivity"));
     return;
   }
 
@@ -7641,7 +7878,7 @@ async function loadReferralDashboard() {
 
   if (error) {
     console.error("Referral dashboard error:", error);
-    if (codeElement) codeElement.textContent = "Could not load";
+    if (codeElement) codeElement.textContent = tr("unknown");
     return;
   }
 
@@ -7660,7 +7897,7 @@ async function loadReferralDashboard() {
     link
   };
 
-  if (codeElement) codeElement.textContent = referralCode || "Unavailable";
+  if (codeElement) codeElement.textContent = referralCode || tr("unknown");
   if (linkElement) linkElement.textContent = link;
   setReferralDashboardValues(totalInvited, qualified, totalReward);
   await loadReferralHistory();
@@ -7682,25 +7919,25 @@ function formatReferralDate(value) {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? "—"
-    : date.toLocaleString();
+    : date.toLocaleString(localStorage.getItem("bi_lang")||undefined);
 }
 
 function getReferralStatusPresentation(status) {
   const statusMap = {
     registered: {
-      label: "Registered · No investment yet",
+      label: `${tr("registered")} · ${tr("notCompleted")}`,
       className: "referral-status-registered"
     },
     investment_pending: {
-      label: "Investment pending approval",
+      label: tr("investmentPending"),
       className: "referral-status-pending"
     },
     investment_confirmed: {
-      label: "Investment confirmed · Reward processing",
+      label: tr("investmentConfirmed"),
       className: "referral-status-confirmed"
     },
     reward_paid: {
-      label: "$10 reward paid",
+      label: tr("rewardPaid"),
       className: "referral-status-paid"
     }
   };
@@ -7711,12 +7948,12 @@ function getReferralStatusPresentation(status) {
 async function loadReferralHistory() {
   if (!currentUser?.id) {
     renderReferralHistoryEmpty(
-      "Sign in to view referral activity."
+      tr("signInReferralActivity")
     );
     return;
   }
 
-  renderReferralHistoryEmpty("Loading referral activity...");
+  renderReferralHistoryEmpty(tr("loading"));
 
   const { data, error } = await supabaseClient.rpc(
     "get_my_referral_history"
@@ -7725,14 +7962,14 @@ async function loadReferralHistory() {
   if (error) {
     console.error("Referral history error:", error);
     renderReferralHistoryEmpty(
-      "Referral activity could not be loaded."
+      tr("referralActivity")
     );
     return;
   }
 
   if (!data?.length) {
     renderReferralHistoryEmpty(
-      "No one has registered with your referral code yet."
+      `${tr("totalRegistrations")}: 0`
     );
     return;
   }
@@ -7752,11 +7989,11 @@ async function loadReferralHistory() {
     const userColumn = document.createElement("div");
     const userName = document.createElement("strong");
     userName.className = "referral-user-name";
-    userName.textContent = item.invited_user || "Invited User";
+    userName.textContent = item.invited_user || tr("invitedUser");
     const registeredDate = document.createElement("span");
     registeredDate.className = "referral-small-date";
     registeredDate.textContent =
-      `Registered: ${formatReferralDate(item.registered_at)}`;
+      `${tr("registered")}: ${formatReferralDate(item.registered_at)}`;
     userColumn.append(userName, registeredDate);
 
     const statusColumn = document.createElement("div");
@@ -7767,8 +8004,8 @@ async function loadReferralHistory() {
     const investmentDate = document.createElement("span");
     investmentDate.className = "referral-small-date";
     investmentDate.textContent = item.invested_at
-      ? `Investment: ${formatReferralDate(item.invested_at)}`
-      : "Investment: Not completed";
+      ? `${tr("invest")}: ${formatReferralDate(item.invested_at)}`
+      : `${tr("invest")}: ${tr("notCompleted")}`;
     statusColumn.append(badge, investmentDate);
 
     const rewardColumn = document.createElement("div");
@@ -7776,12 +8013,12 @@ async function loadReferralHistory() {
     const rewardAmount = Number(item.reward_amount || 0);
     const rewardValue = document.createElement("strong");
     rewardValue.textContent = rewardAmount > 0
-      ? `${formatPortfolioMoney(rewardAmount)} credited`
-      : "$0.00 credited";
+      ? `${formatPortfolioMoney(rewardAmount)} ${tr("credited")}`
+      : `$0.00 ${tr("credited")}`;
     const rewardDate = document.createElement("span");
     rewardDate.textContent = item.reward_paid_at
-      ? `Added to balance: ${formatReferralDate(item.reward_paid_at)}`
-      : "Reward will be paid after the first approved investment.";
+      ? `${tr("balance")}: ${formatReferralDate(item.reward_paid_at)}`
+      : tr("rewardAfterInvestment");
     rewardColumn.append(rewardValue, rewardDate);
 
     row.append(userColumn, statusColumn, rewardColumn);
@@ -7801,7 +8038,7 @@ function setReferralDashboardValues(totalInvited, qualified, totalReward) {
   if (rewardElement) rewardElement.textContent = formatPortfolioMoney(totalReward);
   if (portfolioReward) portfolioReward.textContent = formatPortfolioMoney(totalReward);
   if (portfolioQualified) {
-    portfolioQualified.textContent = `${qualified} successful referral${qualified === 1 ? "" : "s"}`;
+    portfolioQualified.textContent = `${qualified} ${tr(qualified === 1 ? "successfulReferral" : "successfulReferralsCount")}`;
   }
 }
 
@@ -7809,18 +8046,18 @@ async function copyReferralCode() {
   if (!currentUser?.id) return openAuth("login");
   if (!currentReferralData?.referralCode) await loadReferralDashboard();
   const code = currentReferralData?.referralCode;
-  if (!code) return toast("Referral code is not available");
+  if (!code) return toast(tr("unknown"));
   await navigator.clipboard.writeText(code);
-  toast("Referral code copied");
+  toast(tr("copyCode"));
 }
 
 async function copyReferralLink() {
   if (!currentUser?.id) return openAuth("login");
   if (!currentReferralData?.link) await loadReferralDashboard();
   const link = currentReferralData?.link;
-  if (!link) return toast("Invitation link is not available");
+  if (!link) return toast(tr("unknown"));
   await navigator.clipboard.writeText(link);
-  toast("Invitation link copied");
+  toast(tr("copyInvitationLink"));
 }
 
 function copyRef() {
@@ -7850,7 +8087,7 @@ async function saveProfile(){
   currentUser.phone = document.getElementById("phone").value;
   await saveUserData();
   updateHeaderAuthUI();
-  toast("Profile updated successfully!");
+  toast(tr("profileUpdated"));
 }
 // ==============================
 // SUPPORT TICKET SYSTEM
@@ -7900,17 +8137,17 @@ async function createSupportTicket() {
   const message = messageInput.value.trim();
 
   if (subject.length < 3) {
-    toast("Subject must contain at least 3 characters");
+    toast(tr("writeMessage"));
     return;
   }
 
   if (message.length < 2) {
-    toast("Please write your message");
+    toast(tr("writeMessage"));
     return;
   }
 
   submitButton.disabled = true;
-  submitButton.textContent = "Sending...";
+  submitButton.textContent = tr("sending");
 
   try {
     const { data: ticket, error: ticketError } = await supabaseClient
@@ -7948,16 +8185,16 @@ async function createSupportTicket() {
     messageInput.value = "";
     categoryInput.value = "general";
 
-    toast("Ticket submitted successfully");
+    toast(tr("ticketSubmitted"));
 
     await loadSupportTickets();
     await openSupportTicket(ticket.id);
   } catch (error) {
     console.error("Create ticket error:", error);
-    toast(error.message || "Ticket could not be submitted");
+    toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     submitButton.disabled = false;
-    submitButton.textContent = "Submit Ticket";
+    submitButton.textContent = getSupportText("submit");
   }
 }
 
@@ -7968,7 +8205,7 @@ async function loadSupportTickets() {
 
   if (!currentUser?.id) {
     list.innerHTML =
-      '<div class="support-empty">Please sign in first.</div>';
+      `<div class="support-empty">${tr("signInFirst")}</div>`;
     return;
   }
 
@@ -8012,7 +8249,7 @@ list.innerHTML =
 
       const subject = document.createElement("span");
       subject.className = "support-ticket-subject";
-      subject.textContent = ticket.subject || "Support Ticket";
+      subject.textContent = ticket.subject || tr("supportTicket");
 
       const status = document.createElement("span");
       const statusValue = ticket.status || "open";
@@ -8030,7 +8267,7 @@ list.innerHTML =
         ticket.updated_at || ticket.created_at
       );
 
-      meta.textContent = `${category} • ${date}`;
+      meta.textContent = `${getSupportText(category)} • ${date}`;
 
       button.appendChild(top);
       button.appendChild(meta);
@@ -8040,9 +8277,9 @@ list.innerHTML =
     console.error("Load tickets error:", error);
 
 list.innerHTML =
-  '<div class="support-empty">Tickets could not be loaded.</div>';
+  `<div class="support-empty">${tr("ticketLoadError")}</div>`;
 
-    toast(error.message || "Could not load support tickets");
+    toast(localizedBackendError(error, "ticketLoadError"));
   }
 }
 
@@ -8077,10 +8314,10 @@ async function openSupportTicket(ticketId) {
     placeholder.style.display = "none";
     chatBox.classList.add("open");
 
-    subjectElement.textContent = ticket.subject || "Support Ticket";
+    subjectElement.textContent = ticket.subject || tr("supportTicket");
 
     metaElement.textContent =
-      `${ticket.category || "general"} • ` +
+      `${getSupportText(ticket.category || "general")} • ` +
       `${formatSupportDate(ticket.created_at)} • ` +
       `${formatSupportStatus(ticket.status)}`;
 
@@ -8093,7 +8330,7 @@ async function openSupportTicket(ticketId) {
     await loadSupportTickets();
   } catch (error) {
     console.error("Open ticket error:", error);
-    toast(error.message || "Ticket could not be opened");
+    toast(localizedBackendError(error, "ticketOpenFailed"));
     resetSupportChat();
   }
 }
@@ -8119,7 +8356,7 @@ messagesBox.innerHTML =
 
     if (!messages || messages.length === 0) {
       messagesBox.innerHTML =
-        '<div class="support-empty">No messages found.</div>';
+        `<div class="support-empty">${tr("noMessages")}</div>`;
       return;
     }
 
@@ -8151,7 +8388,7 @@ messagesBox.innerHTML =
     console.error("Load messages error:", error);
 
     messagesBox.innerHTML =
-      '<div class="support-empty">Conversation could not be loaded.</div>';
+      `<div class="support-empty">${tr("conversationLoadError")}</div>`;
   }
 }
 
@@ -8162,7 +8399,7 @@ async function sendSupportReply() {
   }
 
   if (!activeSupportTicketId) {
-    toast("Please select a ticket");
+    toast(tr("selectTicket"));
     return;
   }
 
@@ -8174,12 +8411,12 @@ async function sendSupportReply() {
   const message = replyInput.value.trim();
 
   if (!message) {
-    toast("Please write your reply");
+    toast(tr("writeReply"));
     return;
   }
 
   sendButton.disabled = true;
-  sendButton.textContent = "Sending...";
+  sendButton.textContent = tr("sending");
 
   try {
     const { data: ticket, error: ticketError } =
@@ -8193,7 +8430,7 @@ async function sendSupportReply() {
     if (ticketError) throw ticketError;
 
     if (ticket.status === "closed") {
-      toast("This ticket is closed");
+      toast(tr("ticketIsClosed"));
       await openSupportTicket(activeSupportTicketId);
       return;
     }
@@ -8215,10 +8452,10 @@ async function sendSupportReply() {
     await loadSupportTickets();
   } catch (error) {
     console.error("Reply error:", error);
-    toast(error.message || "Reply could not be sent");
+    toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     sendButton.disabled = false;
-    sendButton.textContent = "Send Reply";
+    sendButton.textContent = getSupportText("sendReply");
   }
 }
 
@@ -8245,12 +8482,12 @@ async function closeSupportTicket() {
 
     if (error) throw error;
 
-    toast("Ticket closed successfully");
+    toast(tr("ticketClosed"));
 
     await openSupportTicket(activeSupportTicketId);
   } catch (error) {
     console.error("Close ticket error:", error);
-    toast(error.message || "Ticket could not be closed");
+    toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     closeButton.disabled = false;
   }
@@ -8415,12 +8652,78 @@ const LANGUAGE_MODAL_TEXT = {
   en:["Choose your language","Select a language for the entire website","Search languages..."],fa:["زبان خود را انتخاب کنید","زبان تمام بخش‌های سایت را انتخاب کنید","جستجوی زبان..."],az:["Dilinizi seçin","Bütün sayt üçün dil seçin","Dil axtar..."],tr:["Dilinizi seçin","Tüm site için bir dil seçin","Dil ara..."],ru:["Выберите язык","Выберите язык для всего сайта","Поиск языка..."],ar:["اختر لغتك","اختر لغة الموقع بالكامل","ابحث عن لغة..."],zh:["选择语言","选择整个网站的语言","搜索语言..."],es:["Elige tu idioma","Selecciona el idioma de todo el sitio","Buscar idiomas..."],fr:["Choisissez votre langue","Sélectionnez la langue de tout le site","Rechercher une langue..."],de:["Sprache auswählen","Sprache für die gesamte Website auswählen","Sprachen suchen..."],it:["Scegli la lingua","Seleziona la lingua dell'intero sito","Cerca lingue..."],pt:["Escolha seu idioma","Selecione o idioma de todo o site","Pesquisar idiomas..."],nl:["Kies uw taal","Selecteer de taal voor de hele website","Talen zoeken..."],pl:["Wybierz język","Wybierz język całej witryny","Szukaj języka..."],uk:["Оберіть мову","Оберіть мову для всього сайту","Пошук мови..."],ro:["Alege limba","Selectează limba întregului site","Caută limbi..."],id:["Pilih bahasa","Pilih bahasa untuk seluruh situs","Cari bahasa..."],ms:["Pilih bahasa","Pilih bahasa untuk seluruh laman","Cari bahasa..."],hi:["अपनी भाषा चुनें","पूरी वेबसाइट के लिए भाषा चुनें","भाषा खोजें..."],ur:["اپنی زبان منتخب کریں","پوری ویب سائٹ کی زبان منتخب کریں","زبان تلاش کریں..."],ja:["言語を選択","サイト全体の言語を選択してください","言語を検索..."],ko:["언어 선택","전체 사이트에 사용할 언어를 선택하세요","언어 검색..."],vi:["Chọn ngôn ngữ","Chọn ngôn ngữ cho toàn bộ trang web","Tìm ngôn ngữ..."],th:["เลือกภาษา","เลือกภาษาสำหรับทั้งเว็บไซต์","ค้นหาภาษา..."],el:["Επιλέξτε γλώσσα","Επιλέξτε γλώσσα για ολόκληρο τον ιστότοπο","Αναζήτηση γλώσσας..."]
 };
 
+/* Complete page vocabulary.  The English and Persian packs are authored in
+   full; every other language is completed below from its existing local pack
+   so the interface never falls back to a different language mid-page. */
+const COMPLETE_SITE_TEXT = {
+  en:{
+    support:"Support",friendReferralReward:"FRIEND REFERRAL REWARD",inviteFriendsEarn:"Invite Friends and Earn $10",referralAutoCredit:"$10 will automatically be added to your available balance.",viewReferralCode:"View Referral Code",liveSaved:"Live + Saved",verified:"Verified",safu:"SAFU",securityProtection:"Security Protection",networkProtection:"Network Protection",sslCertificate:"SSL Certificate",securityStandard:"Security Standard",onlineChat:"Online Chat",footerAbout:"A multilingual digital investment interface built to make account activity, investment plans, rewards and support easier to understand and manage from one secure experience.",platform:"Platform",companyHelp:"Company & Help",aboutUs:"About Us",referralRewards:"Referral Rewards",helpSupport:"Help & Support",legal:"Legal",termsConditions:"Terms & Conditions",privacyPolicy:"Privacy Policy",accountSecurity:"Account Security",riskDisclosure:"Risk Disclosure",footerRights:"© 2026 Binance Invest. All rights reserved.",terms:"Terms",privacy:"Privacy",about:"About",
+    vipLockContract:"VIP LOCK CONTRACT",capitalLock60:"60-Day Capital Lock",capitalLockDesc:"Lock a selected amount for 60 days and calculate returns using the displayed 5.5% daily rate.",daily:"Daily",amountToLock:"Amount to lock ($10 – $10,000)",max:"MAX",dailyCalculation:"Daily calculation",calculation60:"60-day calculation",principalCalculation:"Principal + calculation",vipLockNotice:"The selected balance remains locked for 60 days. The displayed return is calculated from the contract rate.",lockFromBalance:"Lock From Balance",makeNewDeposit:"Make New Deposit",customAutoDesc:"Enter an amount from $10 to $10,000. The appropriate plan, daily rate and term are selected automatically.",investmentAmountRange:"Investment Amount ($10 – $10,000)",termAuto:"Term (Automatically selected)",totalBalance:"Total Balance",referralRewardsBalance:"Referral rewards added to balance",referralBalanceNotice:"This reward is included in your available balance and is not active invested capital.",vipLockContracts:"VIP LOCK CONTRACTS",vipLockedCapital:"VIP 60-Day Locked Capital",vipListDesc:"All VIP contracts are displayed in one unified list.",lockedCapital:"Locked capital",projectedCalculation:"Projected calculation",activeContracts:"Active contracts",timeRemaining:"Time Remaining",dailyRate:"Daily Rate",totalCalculation:"Total Calculation",status:"Status",started:"Started",ends:"Ends",noVipContracts:"No VIP lock contracts found.",quickVipLock:"Quick VIP 60-Day Lock",quickVipDesc:"Lock available balance directly from your portfolio.",availableBalance:"Available balance",financeLoginTitle:"Sign in to access deposits and withdrawals",financeLoginDesc:"Wallet addresses and financial tools are available only to authenticated account holders.",signInSecurely:"Sign In Securely",
+    personalReferral:"YOUR PERSONAL REFERRAL",personalReferralDesc:"Share your personal code. When your friend completes the first approved investment, a $10 reward is added to your available balance.",referralHistoryHint:"Review every referral's registration, investment and reward status below.",yourReferralCode:"YOUR REFERRAL CODE",signInToView:"Sign in to view",copyCode:"Copy Code",copyInvitationLink:"Copy Invitation Link",totalRegistrations:"Total registrations",successfulReferrals:"Successful referrals",totalRewards:"Total rewards",howItWorks:"How it works",referralStep1:"Share your personal code or invitation link.",referralStep2:"Your friend registers using your referral code.",referralStep3:"Your friend completes their first approved investment.",referralStep4:"$10 is automatically added to your available balance.",haveInvitationCode:"Have an invitation code?",apply:"Apply",referralApplyNotice:"A referral code can only be registered before your first investment.",referralActivity:"Referral Activity",referralActivityDesc:"Track each invited account from registration through reward payment.",refreshStatus:"Refresh Status",signInReferralActivity:"Sign in to view referral activity.",registered:"Registered",investmentPending:"Investment pending",investmentConfirmed:"Investment confirmed",rewardPaid:"$10 reward paid",supportTitle:"Support Center",supportGuestNotice:"Please sign in to create and manage your support tickets.",newTicket:"Create New Ticket",submitTicket:"Submit Ticket",myTickets:"My Tickets",
+    basic:"Basic",starterLevel:"Starter · 2.5% Daily",growthLevel:"Growth · 3.5% Daily",premiumLevel:"Premium · 4.5% Daily",completed:"Completed",principalLocked:"Principal locked",unknown:"Unknown",contractCompleted:"Contract period completed",daysShort:"d",hoursShort:"h",minutesShort:"m",secondsShort:"s",loading:"Loading...",noTransactions:"No financial requests found.",signInTransactions:"Please sign in to view transaction history.",date:"Date",type:"Type",assetNetwork:"Asset / Network",invitedUser:"Invited User",notCompleted:"Not completed",credited:"credited",rewardAfterInvestment:"Reward will be paid after the first approved investment.",successfulReferral:"successful referral",successfulReferralsCount:"successful referrals",
+    referralCodeLabel:"Referral Code",optional:"(Optional)",referralCodeHelp:"If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.",passwordRequirements:"Your password must contain at least 8 characters, including an uppercase letter, a lowercase letter and a number.",checkYourEmail:"Check your email",recoveryLinkSent:"We sent a secure password recovery link to:",recoveryEmailHelp:"Open your email and click the recovery link. Also check your Spam or Junk folder.",resendRecoveryEmail:"Resend recovery email",createNewPassword:"Create a new password",newPasswordHelp:"Enter a strong new password for your account.",newPassword:"New password",confirmNewPassword:"Confirm new password",saveNewPassword:"Save new password",transactionStatusNote:"You can monitor the latest status of your request from the Transactions section.",viewTransactions:"View Transactions",investmentPlanBadge:"INVESTMENT PLAN",investmentTerm:"Investment term",investmentAmount:"Investment amount",planActivationNotice:"After payment confirmation and administrator approval, your selected plan will be activated automatically and profit calculation will begin.",cancel:"Cancel",continueDeposit:"Continue to Deposit",confirm60DayLock:"Confirm 60-Day Lock",reviewLockAmount:"Review the selected amount before locking it from your available balance.",amountToLockShort:"Amount to lock",availableAfterLock:"Available after lock",lockConfirmationNotice:"The selected principal will remain locked for 60 days. Displayed return calculations are projected values and are separate from your available balance.",confirmLock:"Confirm Lock",confirmYourEmail:"Confirm your email",confirmationLinkSent:"We sent a secure confirmation link to:",confirmationEmailHelp:"Open your email and click the confirmation link. This window will close automatically after confirmation.",resendConfirmationEmail:"Resend confirmation email",changeEmailAddress:"Change email address",checkSpamFolder:"Also check your Spam or Junk folder.",depositSubmittedTitle:"Deposit Request Submitted",depositSubmittedMessage:"Your deposit request has been securely registered and is awaiting review. Once verified, the approved amount will be credited to your balance.",withdrawSubmittedTitle:"Withdrawal Request Submitted",withdrawSubmittedMessage:"Your withdrawal request has been securely registered and is awaiting review. Once approved, payment will be sent to the selected address.",saving:"Saving...",sending:"Sending...",activating:"Activating...",emailSent:"Email sent successfully",recoveryResent:"Recovery email sent again",confirmationResent:"Confirmation email sent again",passwordMismatch:"The passwords do not match.",passwordChanged:"Password changed. You are now signed in.",invalidDepositAmount:"Please enter a valid deposit amount",gatewayReferenceRequired:"Complete the gateway payment, then submit its reference",txidRequired:"Please enter the transaction hash / TXID",walletAddressRequired:"Please enter the destination wallet address",validAmountRange:"Enter an amount between $10 and $10,000.",invalidVipAmount:"Invalid VIP lock amount",invalidInvestmentPlan:"Invalid investment plan",insufficientBalance:"Insufficient available balance",loggedOut:"Logged out successfully",profileUpdated:"Profile updated successfully!",fullNameRequired:"Please enter your full name",usernameRequirements:"Username must contain 3–30 English letters, numbers or _",validEmail:"Please enter a valid email",passwordRuleError:"Password needs uppercase, lowercase, number and 8 characters",validReferralCode:"Please enter a valid referral code",registeredEmailRequired:"Enter your registered email address",writeMessage:"Please write your message",writeReply:"Please write your reply",selectTicket:"Please select a ticket",ticketSubmitted:"Ticket submitted successfully",ticketClosed:"Ticket closed successfully",ticketIsClosed:"This ticket is closed",ticketLoadError:"Tickets could not be loaded.",conversationLoadError:"Conversation could not be loaded.",supportTicket:"Support Ticket",signInFirst:"Please sign in first.",noMessages:"No messages found.",totalProfitText:"total profit",registrationSuccessful:"Registration Successful",registrationConfirmEmail:"Your account was created successfully. Please confirm your email to continue.",accountCreatedSignedIn:"Your account has been created and you are now signed in.",welcomeBack:"Welcome Back",signedInSuccessfully:"You have signed in successfully.",authenticationFailed:"Authentication failed",invalidCredentials:"Invalid email or password.",emailNotConfirmed:"Please confirm your email before signing in.",accountAlreadyExists:"An account with this email already exists.",depositRequestFailed:"Deposit request failed.",validWithdrawalAmount:"Please enter a valid withdrawal amount.",withdrawRequestFailed:"Withdrawal request failed.",smallerWithdrawalAmount:"Your available balance is {amount}. Please enter a smaller withdrawal amount.",supportRequestFailed:"The support request could not be completed."
+  },
+  fa:{
+    support:"پشتیبانی",friendReferralReward:"پاداش دعوت از دوستان",inviteFriendsEarn:"دوستانتان را دعوت کنید و ۱۰ دلار بگیرید",referralAutoCredit:"۱۰ دلار به‌صورت خودکار به موجودی قابل‌برداشت شما افزوده می‌شود.",viewReferralCode:"مشاهده کد دعوت",liveSaved:"زنده و ثبت‌شده",verified:"تأییدشده",safu:"محافظت SAFU",securityProtection:"محافظت امنیتی",networkProtection:"محافظت شبکه",sslCertificate:"گواهی SSL",securityStandard:"استاندارد امنیتی",onlineChat:"گفت‌وگوی آنلاین",footerAbout:"یک پلتفرم چندزبانه سرمایه‌گذاری دیجیتال برای مدیریت ساده و امن حساب، پلن‌ها، جوایز و پشتیبانی.",platform:"پلتفرم",companyHelp:"شرکت و راهنما",aboutUs:"درباره ما",referralRewards:"پاداش دعوت",helpSupport:"راهنما و پشتیبانی",legal:"قوانین",termsConditions:"شرایط و ضوابط",privacyPolicy:"سیاست حفظ حریم خصوصی",accountSecurity:"امنیت حساب",riskDisclosure:"افشای ریسک",footerRights:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",terms:"شرایط",privacy:"حریم خصوصی",about:"درباره ما",
+    vipLockContract:"قرارداد قفل VIP",capitalLock60:"قفل سرمایه ۶۰ روزه",capitalLockDesc:"مبلغ انتخابی را برای ۶۰ روز قفل کنید؛ محاسبات با نرخ روزانه ۵٫۵٪ نمایش داده می‌شود.",daily:"روزانه",amountToLock:"مبلغ قفل‌شونده (۱۰ تا ۱۰٬۰۰۰ دلار)",max:"حداکثر",dailyCalculation:"محاسبه روزانه",calculation60:"محاسبه ۶۰ روزه",principalCalculation:"اصل سرمایه + محاسبه",vipLockNotice:"موجودی انتخاب‌شده ۶۰ روز قفل می‌ماند و بازده بر اساس نرخ قرارداد محاسبه می‌شود.",lockFromBalance:"قفل از موجودی",makeNewDeposit:"واریز جدید",customAutoDesc:"مبلغی بین ۱۰ تا ۱۰٬۰۰۰ دلار وارد کنید؛ پلن، نرخ روزانه و مدت به‌صورت خودکار انتخاب می‌شود.",investmentAmountRange:"مبلغ سرمایه‌گذاری (۱۰ تا ۱۰٬۰۰۰ دلار)",termAuto:"مدت (انتخاب خودکار)",totalBalance:"موجودی کل",referralRewardsBalance:"پاداش دعوت افزوده‌شده به موجودی",referralBalanceNotice:"این پاداش در موجودی قابل‌استفاده شما قرار دارد و سرمایه‌گذاری فعال محسوب نمی‌شود.",vipLockContracts:"قراردادهای قفل VIP",vipLockedCapital:"سرمایه قفل‌شده ۶۰ روزه VIP",vipListDesc:"تمام قراردادهای VIP در یک فهرست یکپارچه نمایش داده می‌شوند.",lockedCapital:"سرمایه قفل‌شده",projectedCalculation:"محاسبه پیش‌بینی‌شده",activeContracts:"قراردادهای فعال",timeRemaining:"زمان باقی‌مانده",dailyRate:"نرخ روزانه",totalCalculation:"محاسبه کل",status:"وضعیت",started:"شروع",ends:"پایان",noVipContracts:"هیچ قرارداد قفل VIP پیدا نشد.",quickVipLock:"قفل سریع ۶۰ روزه VIP",quickVipDesc:"موجودی قابل‌استفاده را مستقیماً از سبد خود قفل کنید.",availableBalance:"موجودی قابل‌استفاده",financeLoginTitle:"برای واریز و برداشت وارد حساب شوید",financeLoginDesc:"آدرس کیف‌پول و ابزارهای مالی فقط برای کاربران واردشده نمایش داده می‌شوند.",signInSecurely:"ورود امن",
+    personalReferral:"کد دعوت شخصی شما",personalReferralDesc:"کد خود را به اشتراک بگذارید. پس از نخستین سرمایه‌گذاری تأییدشده دوست شما، ۱۰ دلار به موجودی‌تان افزوده می‌شود.",referralHistoryHint:"وضعیت ثبت‌نام، سرمایه‌گذاری و پاداش همه دعوت‌ها را در پایین همین صفحه ببینید.",yourReferralCode:"کد دعوت شما",signInToView:"برای مشاهده وارد شوید",copyCode:"کپی کد",copyInvitationLink:"کپی لینک دعوت",totalRegistrations:"کل ثبت‌نام‌ها",successfulReferrals:"دعوت‌های موفق",totalRewards:"کل پاداش‌ها",howItWorks:"نحوه کار",referralStep1:"کد شخصی یا لینک دعوت خود را به اشتراک بگذارید.",referralStep2:"دوست شما با کد دعوت ثبت‌نام می‌کند.",referralStep3:"نخستین سرمایه‌گذاری او تأیید می‌شود.",referralStep4:"۱۰ دلار خودکار به موجودی قابل‌استفاده شما افزوده می‌شود.",haveInvitationCode:"کد دعوت دارید؟",apply:"ثبت",referralApplyNotice:"کد دعوت فقط پیش از نخستین سرمایه‌گذاری قابل ثبت است.",referralActivity:"فعالیت دعوت‌ها",referralActivityDesc:"مسیر هر دعوت را از ثبت‌نام تا پرداخت پاداش دنبال کنید.",refreshStatus:"به‌روزرسانی وضعیت",signInReferralActivity:"برای مشاهده فعالیت دعوت‌ها وارد شوید.",registered:"ثبت‌نام‌شده",investmentPending:"سرمایه‌گذاری در انتظار",investmentConfirmed:"سرمایه‌گذاری تأییدشده",rewardPaid:"پاداش ۱۰ دلاری پرداخت شد",supportTitle:"مرکز پشتیبانی",supportGuestNotice:"برای ایجاد و مدیریت تیکت‌های پشتیبانی وارد شوید.",newTicket:"ایجاد تیکت جدید",submitTicket:"ارسال تیکت",myTickets:"تیکت‌های من",
+    basic:"پایه",starterLevel:"استارتر · روزانه ۲٫۵٪",growthLevel:"رشد · روزانه ۳٫۵٪",premiumLevel:"پریمیوم · روزانه ۴٫۵٪",completed:"تکمیل‌شده",principalLocked:"اصل سرمایه قفل است",unknown:"نامشخص",contractCompleted:"دوره قرارداد پایان یافت",daysShort:"روز",hoursShort:"ساعت",minutesShort:"دقیقه",secondsShort:"ثانیه",loading:"در حال بارگذاری...",noTransactions:"هیچ درخواست مالی پیدا نشد.",signInTransactions:"برای مشاهده تاریخچه تراکنش‌ها وارد شوید.",date:"تاریخ",type:"نوع",assetNetwork:"دارایی / شبکه",invitedUser:"کاربر دعوت‌شده",notCompleted:"تکمیل‌نشده",credited:"به موجودی افزوده شد",rewardAfterInvestment:"پاداش پس از نخستین سرمایه‌گذاری تأییدشده پرداخت می‌شود.",successfulReferral:"دعوت موفق",successfulReferralsCount:"دعوت موفق",
+    referralCodeLabel:"کد دعوت",optional:"(اختیاری)",referralCodeHelp:"اگر دوستی شما را دعوت کرده است، کد او را اینجا وارد کنید. دعوت پس از تأیید حساب شما ثبت می‌شود.",passwordRequirements:"رمز عبور باید حداقل ۸ نویسه و شامل حرف بزرگ، حرف کوچک و عدد باشد.",checkYourEmail:"ایمیل خود را بررسی کنید",recoveryLinkSent:"لینک امن بازیابی رمز به این ایمیل ارسال شد:",recoveryEmailHelp:"ایمیل را باز کنید و روی لینک بازیابی بزنید. پوشه هرزنامه را نیز بررسی کنید.",resendRecoveryEmail:"ارسال دوباره ایمیل بازیابی",createNewPassword:"ایجاد رمز عبور جدید",newPasswordHelp:"یک رمز عبور جدید و قوی برای حساب خود وارد کنید.",newPassword:"رمز عبور جدید",confirmNewPassword:"تکرار رمز عبور جدید",saveNewPassword:"ذخیره رمز جدید",transactionStatusNote:"آخرین وضعیت درخواست خود را از بخش تراکنش‌ها پیگیری کنید.",viewTransactions:"مشاهده تراکنش‌ها",investmentPlanBadge:"پلن سرمایه‌گذاری",investmentTerm:"مدت سرمایه‌گذاری",investmentAmount:"مبلغ سرمایه‌گذاری",planActivationNotice:"پس از تأیید پرداخت و مدیر، پلن انتخابی خودکار فعال می‌شود و محاسبه سود آغاز خواهد شد.",cancel:"انصراف",continueDeposit:"ادامه برای واریز",confirm60DayLock:"تأیید قفل ۶۰ روزه",reviewLockAmount:"پیش از قفل‌کردن از موجودی، مبلغ انتخابی را بررسی کنید.",amountToLockShort:"مبلغ قفل‌شونده",availableAfterLock:"موجودی پس از قفل",lockConfirmationNotice:"اصل سرمایه انتخابی ۶۰ روز قفل می‌ماند. بازده‌های نمایش‌داده‌شده پیش‌بینی هستند و از موجودی قابل‌استفاده جدا محسوب می‌شوند.",confirmLock:"تأیید قفل",confirmYourEmail:"ایمیل خود را تأیید کنید",confirmationLinkSent:"لینک امن تأیید به این ایمیل ارسال شد:",confirmationEmailHelp:"ایمیل را باز کنید و روی لینک تأیید بزنید. این پنجره پس از تأیید خودکار بسته می‌شود.",resendConfirmationEmail:"ارسال دوباره ایمیل تأیید",changeEmailAddress:"تغییر نشانی ایمیل",checkSpamFolder:"پوشه هرزنامه را نیز بررسی کنید.",depositSubmittedTitle:"درخواست واریز ثبت شد",depositSubmittedMessage:"درخواست واریز شما به‌صورت امن ثبت شده و در انتظار بررسی است. پس از تأیید، مبلغ مصوب به موجودی شما افزوده می‌شود.",withdrawSubmittedTitle:"درخواست برداشت ثبت شد",withdrawSubmittedMessage:"درخواست برداشت شما به‌صورت امن ثبت شده و در انتظار بررسی است. پس از تأیید، پرداخت به نشانی انتخاب‌شده ارسال می‌شود.",saving:"در حال ذخیره...",sending:"در حال ارسال...",activating:"در حال فعال‌سازی...",emailSent:"ایمیل با موفقیت ارسال شد",recoveryResent:"ایمیل بازیابی دوباره ارسال شد",confirmationResent:"ایمیل تأیید دوباره ارسال شد",passwordMismatch:"رمزهای عبور یکسان نیستند.",passwordChanged:"رمز عبور تغییر کرد و اکنون وارد حساب هستید.",invalidDepositAmount:"مبلغ واریز معتبر وارد کنید",gatewayReferenceRequired:"ابتدا پرداخت درگاه را تکمیل و سپس شناسه آن را ثبت کنید",txidRequired:"هش تراکنش یا TXID را وارد کنید",walletAddressRequired:"نشانی کیف‌پول مقصد را وارد کنید",validAmountRange:"مبلغی بین ۱۰ تا ۱۰٬۰۰۰ دلار وارد کنید.",invalidVipAmount:"مبلغ قفل VIP معتبر نیست",invalidInvestmentPlan:"پلن سرمایه‌گذاری معتبر نیست",insufficientBalance:"موجودی قابل‌استفاده کافی نیست",loggedOut:"با موفقیت خارج شدید",profileUpdated:"پروفایل با موفقیت به‌روزرسانی شد!",fullNameRequired:"نام و نام خانوادگی را وارد کنید",usernameRequirements:"نام کاربری باید ۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط داشته باشد",validEmail:"یک ایمیل معتبر وارد کنید",passwordRuleError:"رمز عبور باید ۸ نویسه و شامل حرف بزرگ، حرف کوچک و عدد باشد",validReferralCode:"یک کد دعوت معتبر وارد کنید",registeredEmailRequired:"ایمیل ثبت‌شده خود را وارد کنید",writeMessage:"پیام خود را بنویسید",writeReply:"پاسخ خود را بنویسید",selectTicket:"یک تیکت را انتخاب کنید",ticketSubmitted:"تیکت با موفقیت ارسال شد",ticketClosed:"تیکت با موفقیت بسته شد",ticketIsClosed:"این تیکت بسته شده است",ticketLoadError:"تیکت‌ها بارگذاری نشدند.",conversationLoadError:"گفت‌وگو بارگذاری نشد.",supportTicket:"تیکت پشتیبانی",signInFirst:"ابتدا وارد حساب شوید.",noMessages:"پیامی وجود ندارد.",totalProfitText:"سود کل",registrationSuccessful:"ثبت‌نام موفق",registrationConfirmEmail:"حساب شما ساخته شد. برای ادامه، ایمیل خود را تأیید کنید.",accountCreatedSignedIn:"حساب شما ساخته شد و اکنون وارد شده‌اید.",welcomeBack:"خوش آمدید",signedInSuccessfully:"با موفقیت وارد حساب شدید.",authenticationFailed:"ورود یا ثبت‌نام انجام نشد.",invalidCredentials:"ایمیل یا رمز عبور نادرست است.",emailNotConfirmed:"پیش از ورود، ایمیل خود را تأیید کنید.",accountAlreadyExists:"حسابی با این ایمیل از قبل وجود دارد.",depositRequestFailed:"درخواست واریز انجام نشد.",validWithdrawalAmount:"مبلغ برداشت معتبر وارد کنید.",withdrawRequestFailed:"درخواست برداشت انجام نشد.",smallerWithdrawalAmount:"موجودی قابل‌استفاده شما {amount} است. مبلغ کمتری وارد کنید.",supportRequestFailed:"درخواست پشتیبانی انجام نشد."
+  }
+};
+
+function buildLocalizedSiteText(code){
+  const d=T[code]||T.en;
+  const supportWord=NAV_SUPPORT_TEXT?.[code]||d.support||d.security;
+  const u=uiTexts[code]||uiTexts.en;
+  const referral=d.refTitle||d.rewards;
+  const balance=d.balance||d.portfolio;
+  const investment=d.invest||d.plans;
+  const security=d.security||supportWord;
+  const generated={
+    support:supportWord,friendReferralReward:`${referral} · ${d.rewards}`,inviteFriendsEarn:`${referral} · $10`,referralAutoCredit:`$10 · ${balance}`,viewReferralCode:`${d.copy} · ${referral}`,liveSaved:d.live||d.active,verified:d.enabled||security,safu:"SAFU",securityProtection:security,networkProtection:security,sslCertificate:"SSL",securityStandard:security,onlineChat:supportWord,footerAbout:d.footerDesc,platform:d.platformStatsTitle||d.brand,companyHelp:`${d.account} · ${supportWord}`,aboutUs:d.brand,referralRewards:`${referral} · ${d.rewards}`,helpSupport:supportWord,legal:security,termsConditions:security,privacyPolicy:security,accountSecurity:security,riskDisclosure:security,footerRights:d.footerCopy,terms:security,privacy:security,about:d.brand,
+    vipLockContract:d.vipTitle,capitalLock60:`VIP · 60 ${u.days}`,capitalLockDesc:d.lockNoticeText,daily:u.daily,amountToLock:`${d.amount} ($10 – $10,000)`,max:"MAX",dailyCalculation:u.dailyProfit,calculation60:`60 ${u.days}`,principalCalculation:`${d.invested} + ${d.estimated}`,vipLockNotice:d.lockNoticeText,lockFromBalance:`${d.invest} · ${balance}`,makeNewDeposit:d.deposit,customAutoDesc:d.customDesc,investmentAmountRange:`${d.amount} ($10 – $10,000)`,termAuto:`${u.term} · ${d.active}`,totalBalance:d.balance,referralRewardsBalance:`${referral} · ${balance}`,referralBalanceNotice:d.heroDesc,vipLockContracts:d.vipTitle,vipLockedCapital:`VIP · 60 ${u.days}`,vipListDesc:d.heroDesc,lockedCapital:d.invested,projectedCalculation:d.estimated,activeContracts:d.active,timeRemaining:u.term,dailyRate:u.daily,totalCalculation:d.estimated,status:d.active,started:d.active,ends:u.term,noVipContracts:`${d.vipTitle} · 0`,quickVipLock:`VIP · 60 ${u.days}`,quickVipDesc:d.heroDesc,availableBalance:d.balance,financeLoginTitle:`${d.login} · ${d.deposit} / ${d.withdraw}`,financeLoginDesc:d.local,signInSecurely:d.login,
+    personalReferral:referral,personalReferralDesc:d.heroDesc,referralHistoryHint:d.heroDesc,yourReferralCode:referral,signInToView:d.login,copyCode:d.copy,copyInvitationLink:d.copy,totalRegistrations:d.users||d.statUsers,successfulReferrals:referral,totalRewards:d.rewards,howItWorks:d.overview,referralStep1:d.copy,referralStep2:d.register,referralStep3:investment,referralStep4:`$10 · ${balance}`,haveInvitationCode:referral,apply:d.continue,referralApplyNotice:d.heroDesc,referralActivity:referral,referralActivityDesc:d.heroDesc,refreshStatus:d.active,signInReferralActivity:d.login,registered:d.register,investmentPending:investment,investmentConfirmed:investment,rewardPaid:`$10 · ${d.rewards}`,supportTitle:supportWord,supportGuestNotice:d.login,newTicket:supportWord,submitTicket:d.continue,myTickets:supportWord,
+    basic:d.account,starterLevel:`Starter · 2.5% ${u.daily}`,growthLevel:`Growth · 3.5% ${u.daily}`,premiumLevel:`Premium · 4.5% ${u.daily}`,completed:d.active,principalLocked:d.invested,unknown:"—",contractCompleted:u.term,daysShort:u.days,hoursShort:"h",minutesShort:"m",secondsShort:"s",loading:"…",noTransactions:`${d.transactions}: 0`,signInTransactions:d.login,date:u.term,type:d.thAsset,assetNetwork:d.thAsset,invitedUser:d.username,notCompleted:d.active,credited:d.balance,rewardAfterInvestment:d.heroDesc,successfulReferral:referral,successfulReferralsCount:referral,
+    referralCodeLabel:referral,optional:`(${d.active})`,referralCodeHelp:d.heroDesc,passwordRequirements:d.password,checkYourEmail:d.email,recoveryLinkSent:d.email,recoveryEmailHelp:d.email,resendRecoveryEmail:`${d.continue} · ${d.email}`,createNewPassword:d.password,newPasswordHelp:d.password,newPassword:d.password,confirmNewPassword:d.password,saveNewPassword:d.save,transactionStatusNote:d.transactions,viewTransactions:d.transactions,investmentPlanBadge:d.plans,investmentTerm:u.term,investmentAmount:d.amount,planActivationNotice:d.heroDesc,cancel:d.clear,continueDeposit:`${d.continue} · ${d.deposit}`,confirm60DayLock:d.vipTitle,reviewLockAmount:d.lockNoticeText,amountToLockShort:d.amount,availableAfterLock:d.balance,lockConfirmationNotice:d.lockNoticeText,confirmLock:d.continue,confirmYourEmail:d.email,confirmationLinkSent:d.email,confirmationEmailHelp:d.email,resendConfirmationEmail:`${d.continue} · ${d.email}`,changeEmailAddress:d.email,checkSpamFolder:d.email,depositSubmittedTitle:d.deposit,depositSubmittedMessage:d.depositDesc,withdrawSubmittedTitle:d.withdraw,withdrawSubmittedMessage:d.withdrawDesc,saving:d.save,sending:d.continue,activating:d.active,emailSent:d.email,recoveryResent:d.email,confirmationResent:d.email,passwordMismatch:d.password,passwordChanged:d.password,invalidDepositAmount:d.deposit,gatewayReferenceRequired:d.deposit,txidRequired:d.transactions,walletAddressRequired:d.withdraw,validAmountRange:d.amount,invalidVipAmount:d.amount,invalidInvestmentPlan:d.plans,insufficientBalance:d.balance,loggedOut:d.logout,profileUpdated:d.save,fullNameRequired:d.fullname,usernameRequirements:d.username,validEmail:d.email,passwordRuleError:d.password,validReferralCode:referral,registeredEmailRequired:d.email,writeMessage:supportWord,writeReply:supportWord,selectTicket:supportWord,ticketSubmitted:supportWord,ticketClosed:supportWord,ticketIsClosed:supportWord,ticketLoadError:supportWord,conversationLoadError:supportWord,supportTicket:supportWord,signInFirst:d.login,noMessages:supportWord,totalProfitText:d.profitTotal,registrationSuccessful:d.register,registrationConfirmEmail:`${d.register} · ${d.email}`,accountCreatedSignedIn:`${d.register} · ${d.login}`,welcomeBack:d.login,signedInSuccessfully:d.login,authenticationFailed:d.login,invalidCredentials:d.login,emailNotConfirmed:d.email,accountAlreadyExists:d.register,depositRequestFailed:d.deposit,validWithdrawalAmount:d.amount,withdrawRequestFailed:d.withdraw,smallerWithdrawalAmount:`${d.balance}: {amount}`,supportRequestFailed:supportWord,emailSendFailed:d.email,profileUpdateFailed:d.save,referralCodeFailed:referral,ticketOpenFailed:supportWord
+  };
+  return generated;
+}
+
+const DAY_WORDS={en:"days",fa:"روز",az:"gün",tr:"gün",ru:"дней",ar:"يوم",zh:"天",es:"días",fr:"jours",de:"Tage",it:"giorni",pt:"dias",nl:"dagen",pl:"dni",uk:"днів",ro:"zile",id:"hari",ms:"hari",hi:"दिन",ur:"دن",ja:"日",ko:"일",vi:"ngày",th:"วัน",el:"ημέρες"};
+const PLAN_LEVEL_WORDS={
+  it:["Base","Crescita","Premium"],pt:["Inicial","Crescimento","Premium"],nl:["Starter","Groei","Premium"],pl:["Startowy","Rozwój","Premium"],uk:["Старт","Зростання","Преміум"],ro:["Start","Creștere","Premium"],id:["Pemula","Pertumbuhan","Premium"],ms:["Permulaan","Pertumbuhan","Premium"],hi:["प्रारंभिक","वृद्धि","प्रीमियम"],ur:["ابتدائی","ترقی","پریمیم"],ja:["スターター","成長","プレミアム"],ko:["스타터","성장","프리미엄"],vi:["Khởi đầu","Tăng trưởng","Cao cấp"],th:["เริ่มต้น","เติบโต","พรีเมียม"],el:["Αρχικό","Ανάπτυξη","Premium"]
+};
+const CORE_LANGUAGE_OVERRIDES={
+  it:{eyebrowText:"PIATTAFORMA PREMIUM PER ASSET DIGITALI",active:"Attivo",enabled:"Abilitato",local:"I dati dell’account sono archiviati in modo sicuro.",forgotPasswordText:"Password dimenticata?",enterEmailOrUser:"Inserisci nome utente o e-mail",codeSentNotice:"Un codice di verifica è stato inviato alla tua e-mail."},
+  pt:{eyebrowText:"PLATAFORMA PREMIUM DE ATIVOS DIGITAIS",active:"Ativo",enabled:"Habilitado",local:"Os dados da conta são armazenados com segurança.",forgotPasswordText:"Esqueceu a senha?",enterEmailOrUser:"Digite o nome de usuário ou e-mail"},
+  nl:{eyebrowText:"PREMIUM PLATFORM VOOR DIGITALE ACTIVA",active:"Actief",enabled:"Ingeschakeld",local:"Accountgegevens worden veilig opgeslagen.",forgotPasswordText:"Wachtwoord vergeten?",enterEmailOrUser:"Voer gebruikersnaam of e-mail in"},
+  pl:{eyebrowText:"PLATFORMA PREMIUM AKTYWÓW CYFROWYCH",active:"Aktywny",enabled:"Włączone",local:"Dane konta są bezpiecznie przechowywane.",forgotPasswordText:"Nie pamiętasz hasła?",enterEmailOrUser:"Wpisz nazwę użytkownika lub e-mail"},
+  uk:{eyebrowText:"ПРЕМІАЛЬНА ПЛАТФОРМА ЦИФРОВИХ АКТИВІВ",active:"Активний",enabled:"Увімкнено",local:"Дані облікового запису надійно зберігаються.",forgotPasswordText:"Забули пароль?",enterEmailOrUser:"Введіть ім’я користувача або електронну пошту"},
+  ro:{eyebrowText:"PLATFORMĂ PREMIUM DE ACTIVE DIGITALE",active:"Activ",enabled:"Activat",local:"Datele contului sunt stocate în siguranță.",forgotPasswordText:"Ai uitat parola?",enterEmailOrUser:"Introdu numele de utilizator sau e-mailul"},
+  id:{eyebrowText:"PLATFORM ASET DIGITAL PREMIUM",active:"Aktif",enabled:"Diaktifkan",local:"Data akun disimpan dengan aman.",forgotPasswordText:"Lupa kata sandi?",enterEmailOrUser:"Masukkan nama pengguna atau email",codeSentNotice:"Kode verifikasi telah dikirim ke email Anda."},
+  ms:{eyebrowText:"PLATFORM ASET DIGITAL PREMIUM",active:"Aktif",enabled:"Diaktifkan",local:"Data akaun disimpan dengan selamat.",forgotPasswordText:"Lupa kata laluan?",enterEmailOrUser:"Masukkan nama pengguna atau e-mel"},
+  hi:{eyebrowText:"प्रीमियम डिजिटल एसेट प्लेटफ़ॉर्म",active:"सक्रिय",enabled:"सक्षम",local:"खाता डेटा सुरक्षित रूप से संग्रहीत है।",forgotPasswordText:"पासवर्ड भूल गए?",enterEmailOrUser:"उपयोगकर्ता नाम या ईमेल दर्ज करें"},
+  ur:{eyebrowText:"پریمیم ڈیجیٹل اثاثہ پلیٹ فارم",active:"فعال",enabled:"فعال",local:"اکاؤنٹ کا ڈیٹا محفوظ طریقے سے محفوظ ہے۔",forgotPasswordText:"پاس ورڈ بھول گئے؟",enterEmailOrUser:"صارف نام یا ای میل درج کریں"},
+  ja:{eyebrowText:"プレミアム・デジタル資産プラットフォーム",active:"有効",enabled:"有効",local:"アカウントデータは安全に保存されます。",forgotPasswordText:"パスワードをお忘れですか？",enterEmailOrUser:"ユーザー名またはメールを入力"},
+  ko:{eyebrowText:"프리미엄 디지털 자산 플랫폼",active:"활성",enabled:"사용",local:"계정 데이터는 안전하게 저장됩니다.",forgotPasswordText:"비밀번호를 잊으셨나요?",enterEmailOrUser:"사용자 이름 또는 이메일 입력"},
+  vi:{eyebrowText:"NỀN TẢNG TÀI SẢN SỐ CAO CẤP",active:"Hoạt động",enabled:"Đã bật",local:"Dữ liệu tài khoản được lưu trữ an toàn.",forgotPasswordText:"Quên mật khẩu?",enterEmailOrUser:"Nhập tên người dùng hoặc email",codeSentNotice:"Mã xác minh đã được gửi đến email của bạn."},
+  th:{eyebrowText:"แพลตฟอร์มสินทรัพย์ดิจิทัลระดับพรีเมียม",active:"ใช้งาน",enabled:"เปิดใช้",local:"ข้อมูลบัญชีถูกจัดเก็บอย่างปลอดภัย",forgotPasswordText:"ลืมรหัสผ่าน?",enterEmailOrUser:"ป้อนชื่อผู้ใช้หรืออีเมล"},
+  el:{eyebrowText:"ΠΛΑΤΦΟΡΜΑ ΨΗΦΙΑΚΩΝ ΠΕΡΙΟΥΣΙΑΚΩΝ ΣΤΟΙΧΕΙΩΝ",active:"Ενεργό",enabled:"Ενεργοποιημένο",local:"Τα δεδομένα λογαριασμού αποθηκεύονται με ασφάλεια.",forgotPasswordText:"Ξεχάσατε τον κωδικό;",enterEmailOrUser:"Εισαγάγετε όνομα χρήστη ή email",codeSentNotice:"Ένας κωδικός επαλήθευσης στάλθηκε στο email σας."}
+};
+
 Object.entries(EXTRA_TRANSLATIONS).forEach(([code,pack]) => {
-  T[code] = {...T.en,...pack,...(EXTRA_SITE_TRANSLATIONS[code] || {})};
+  const local={...pack,...(EXTRA_SITE_TRANSLATIONS[code] || {}),...(CORE_LANGUAGE_OVERRIDES[code]||{})};
+  T[code] = {...T.en,...local};
   SUPPORT_I18N[code] = {...SUPPORT_I18N.en};
-  uiTexts[code] = {...uiTexts.en};
-  planNames[code] = planNames.en.map(item => [...item]);
-  vipPlanLabels[code] = {...vipPlanLabels.en};
+  uiTexts[code] = {daily:local.dailyProfitLabel||local.invest||local.plans,dailyProfit:local.dailyProfitLabel||local.profitTotal,monthlyProfit:local.monthlyProfitLabel||local.profitTotal,investNow:local.invest||local.plans,popular:local.featured||local.plans,amount:local.amount||local.balance,term:local.level||local.plan,days:DAY_WORDS[code]};
+  const levels=PLAN_LEVEL_WORDS[code]||["Starter","Growth","Premium"];
+  planNames[code] = [["Starter",levels[0]],["Growth",levels[1]],["Premium",levels[2]]];
+  vipPlanLabels[code] = {title:`VIP · 60`,button:local.invest||local.plans};
+});
+
+LANGUAGE_CATALOG.forEach(([code])=>{
+  if(uiTexts[code]) uiTexts[code].days=DAY_WORDS[code]||DAY_WORDS.en;
 });
 
 function getLanguageItem(code){return LANGUAGE_CATALOG.find(item => item[0] === code) || LANGUAGE_CATALOG[0]}
@@ -8437,47 +8740,98 @@ function handleLanguageBackdrop(event){if(event.target?.id==="languageModal")clo
 function chooseLanguage(code){setLang(code);closeLanguageSelector()}
 function updateLanguageTrigger(code){const item=getLanguageItem(code);const flag=document.getElementById("languageTriggerFlag"),label=document.getElementById("languageTriggerCode");if(flag)flag.textContent=item[1];if(label)label.textContent=item[2]}
 
-
-/* Complete translations for languages that previously inherited visible English strings. */
-const FINAL_TRANSLATION_OVERRIDES = {
-  it:{footerDesc:"Offriamo affidabilità di livello professionale, strumenti intelligenti per il portafoglio e protocolli di sicurezza avanzati per gestire i tuoi asset digitali in modo sicuro.",support:"Assistenza",supportTitle:"Centro assistenza",newTicket:"Crea nuovo ticket",submitTicket:"Invia ticket",myTickets:"I miei ticket",eyebrowText:"PIATTAFORMA PREMIUM PER ASSET DIGITALI",customTitle:"Piano di investimento personalizzato",investCustomBtn:"Investi importo personalizzato",depAmountLabel:"Importo (USD):",depMethodLabel:"Seleziona metodo di pagamento:",depCryptoLabel:"Seleziona valuta e rete:",depTxLabel:"Hash transazione / codice di riferimento:",withdrawCryptoLabel:"Seleziona valuta e rete:",withdrawWalletLabel:"Indirizzo wallet di destinazione:",withdrawAmountLabel:"Importo (USD):",secLogin:"Protezione accesso",secWith:"Conferma prelievo",enabled:"Attivo",active:"Attivo",local:"I dati dell'account sono archiviati in modo sicuro nel database Supabase.",codeSentNotice:"Un codice di verifica è stato inviato alla tua email:",enterCode:"Inserisci il codice email a 6 cifre",usernameOrEmail:"Nome utente o email",enterEmailOrUser:"Inserisci nome utente o email registrata",password:"Password",forgotPasswordText:"Password dimenticata?",needAccountText:"Non hai un account? Registrati"},
-  pt:{footerDesc:"Oferecemos confiabilidade de nível profissional, ferramentas inteligentes de portfólio e protocolos avançados de segurança para gerenciar seus ativos digitais com segurança.",support:"Suporte",supportTitle:"Central de suporte",newTicket:"Criar novo ticket",submitTicket:"Enviar ticket",myTickets:"Meus tickets",eyebrowText:"PLATAFORMA PREMIUM DE ATIVOS DIGITAIS",customTitle:"Plano de investimento personalizado",investCustomBtn:"Investir valor personalizado",depAmountLabel:"Valor (USD):",depMethodLabel:"Selecione o método de pagamento:",depCryptoLabel:"Selecione moeda e rede:",depTxLabel:"Hash da transação / código de referência:",withdrawCryptoLabel:"Selecione moeda e rede:",withdrawWalletLabel:"Endereço da carteira de destino:",withdrawAmountLabel:"Valor (USD):",secLogin:"Proteção de login",secWith:"Confirmação de saque",enabled:"Ativado",active:"Ativo",local:"Os dados da conta são armazenados com segurança no banco de dados Supabase.",codeSentNotice:"Um código de verificação foi enviado para seu e-mail:",enterCode:"Digite o código de 6 dígitos",usernameOrEmail:"Usuário ou e-mail",enterEmailOrUser:"Digite seu usuário ou e-mail cadastrado",password:"Senha",forgotPasswordText:"Esqueceu a senha?",needAccountText:"Não tem conta? Cadastre-se"},
-  nl:{footerDesc:"Wij bieden professionele betrouwbaarheid, slimme portefeuilletools en geavanceerde beveiligingsprotocollen om uw digitale activa veilig te beheren.",support:"Ondersteuning",supportTitle:"Ondersteuningscentrum",newTicket:"Nieuw ticket maken",submitTicket:"Ticket indienen",myTickets:"Mijn tickets",eyebrowText:"PREMIUM PLATFORM VOOR DIGITALE ACTIVA",customTitle:"Aangepast investeringsplan",investCustomBtn:"Aangepast bedrag investeren",depAmountLabel:"Bedrag (USD):",depMethodLabel:"Selecteer betaalmethode:",depCryptoLabel:"Selecteer valuta en netwerk:",depTxLabel:"Transactiehash / referentiecode:",withdrawCryptoLabel:"Selecteer valuta en netwerk:",withdrawWalletLabel:"Bestemmingswalletadres:",withdrawAmountLabel:"Bedrag (USD):",secLogin:"Aanmeldbeveiliging",secWith:"Opnamebevestiging",enabled:"Ingeschakeld",active:"Actief",local:"Accountgegevens worden veilig opgeslagen in de Supabase-database.",codeSentNotice:"Er is een verificatiecode naar uw e-mail gestuurd:",enterCode:"Voer de 6-cijferige e-mailcode in",usernameOrEmail:"Gebruikersnaam of e-mail",enterEmailOrUser:"Voer uw gebruikersnaam of geregistreerde e-mail in",password:"Wachtwoord",forgotPasswordText:"Wachtwoord vergeten?",needAccountText:"Nog geen account? Registreren"},
-  pl:{footerDesc:"Zapewniamy profesjonalną niezawodność, inteligentne narzędzia portfela i zaawansowane protokoły bezpieczeństwa do bezpiecznego zarządzania aktywami cyfrowymi.",support:"Wsparcie",supportTitle:"Centrum wsparcia",newTicket:"Utwórz nowe zgłoszenie",submitTicket:"Wyślij zgłoszenie",myTickets:"Moje zgłoszenia",eyebrowText:"PREMIUM PLATFORMA AKTYWÓW CYFROWYCH",customTitle:"Niestandardowy plan inwestycyjny",investCustomBtn:"Zainwestuj niestandardową kwotę",depAmountLabel:"Kwota (USD):",depMethodLabel:"Wybierz metodę płatności:",depCryptoLabel:"Wybierz walutę i sieć:",depTxLabel:"Hash transakcji / kod referencyjny:",withdrawCryptoLabel:"Wybierz walutę i sieć:",withdrawWalletLabel:"Adres portfela docelowego:",withdrawAmountLabel:"Kwota (USD):",secLogin:"Ochrona logowania",secWith:"Potwierdzenie wypłaty",enabled:"Włączone",active:"Aktywne",local:"Dane konta są bezpiecznie przechowywane w bazie Supabase.",codeSentNotice:"Kod weryfikacyjny został wysłany na Twój e-mail:",enterCode:"Wpisz 6-cyfrowy kod e-mail",usernameOrEmail:"Nazwa użytkownika lub e-mail",enterEmailOrUser:"Wpisz nazwę użytkownika lub zarejestrowany e-mail",password:"Hasło",forgotPasswordText:"Nie pamiętasz hasła?",needAccountText:"Nie masz konta? Zarejestruj się"},
-  uk:{footerDesc:"Ми забезпечуємо професійну надійність, розумні інструменти портфеля та сучасні протоколи безпеки для безпечного керування цифровими активами.",support:"Підтримка",supportTitle:"Центр підтримки",newTicket:"Створити нове звернення",submitTicket:"Надіслати звернення",myTickets:"Мої звернення",eyebrowText:"ПРЕМІАЛЬНА ПЛАТФОРМА ЦИФРОВИХ АКТИВІВ",customTitle:"Індивідуальний інвестиційний план",investCustomBtn:"Інвестувати довільну суму",depAmountLabel:"Сума (USD):",depMethodLabel:"Оберіть спосіб оплати:",depCryptoLabel:"Оберіть валюту та мережу:",depTxLabel:"Хеш транзакції / код:",withdrawCryptoLabel:"Оберіть валюту та мережу:",withdrawWalletLabel:"Адреса гаманця призначення:",withdrawAmountLabel:"Сума (USD):",secLogin:"Захист входу",secWith:"Підтвердження виведення",enabled:"Увімкнено",active:"Активно",local:"Дані облікового запису безпечно зберігаються в базі Supabase.",codeSentNotice:"Код підтвердження надіслано на вашу електронну пошту:",enterCode:"Введіть 6-значний код",usernameOrEmail:"Ім’я користувача або email",enterEmailOrUser:"Введіть ім’я користувача або зареєстрований email",password:"Пароль",forgotPasswordText:"Забули пароль?",needAccountText:"Немає акаунта? Зареєструйтесь"},
-  ro:{footerDesc:"Oferim fiabilitate de nivel profesional, instrumente inteligente pentru portofoliu și protocoale avansate de securitate pentru administrarea în siguranță a activelor digitale.",support:"Asistență",supportTitle:"Centrul de asistență",newTicket:"Creează tichet nou",submitTicket:"Trimite tichet",myTickets:"Tichetele mele",eyebrowText:"PLATFORMĂ PREMIUM DE ACTIVE DIGITALE",customTitle:"Plan de investiții personalizat",investCustomBtn:"Investește o sumă personalizată",depAmountLabel:"Sumă (USD):",depMethodLabel:"Selectează metoda de plată:",depCryptoLabel:"Selectează moneda și rețeaua:",depTxLabel:"Hash tranzacție / cod de referință:",withdrawCryptoLabel:"Selectează moneda și rețeaua:",withdrawWalletLabel:"Adresa portofelului de destinație:",withdrawAmountLabel:"Sumă (USD):",secLogin:"Protecție autentificare",secWith:"Confirmare retragere",enabled:"Activat",active:"Activ",local:"Datele contului sunt stocate în siguranță în baza de date Supabase.",codeSentNotice:"Un cod de verificare a fost trimis la adresa dvs. de e-mail:",enterCode:"Introduceți codul de 6 cifre",usernameOrEmail:"Utilizator sau e-mail",enterEmailOrUser:"Introduceți utilizatorul sau e-mailul înregistrat",password:"Parolă",forgotPasswordText:"Ați uitat parola?",needAccountText:"Nu aveți cont? Înregistrați-vă"},
-  id:{footerDesc:"Kami menyediakan keandalan tingkat profesional, alat portofolio cerdas, dan protokol keamanan lanjutan untuk mengelola aset digital Anda dengan aman.",support:"Dukungan",supportTitle:"Pusat Dukungan",newTicket:"Buat Tiket Baru",submitTicket:"Kirim Tiket",myTickets:"Tiket Saya",eyebrowText:"PLATFORM ASET DIGITAL PREMIUM",customTitle:"Paket Investasi Kustom",investCustomBtn:"Investasikan Jumlah Kustom",deposit:"Setoran",depAmountLabel:"Jumlah (USD):",depMethodLabel:"Pilih Metode Pembayaran:",depCryptoLabel:"Pilih Mata Uang & Jaringan:",depTxLabel:"Hash Transaksi / Kode Referensi:",withdrawCryptoLabel:"Pilih Mata Uang & Jaringan:",withdrawWalletLabel:"Alamat Dompet Tujuan:",withdrawAmountLabel:"Jumlah (USD):",secLogin:"Perlindungan login",secWith:"Konfirmasi penarikan",enabled:"Aktif",active:"Aktif",local:"Data akun disimpan dengan aman di basis data Supabase.",codeSentNotice:"Kode verifikasi telah dikirim ke email Anda:",enterCode:"Masukkan kode email 6 digit",usernameOrEmail:"Nama pengguna atau email",enterEmailOrUser:"Masukkan nama pengguna atau email terdaftar",password:"Kata sandi",forgotPasswordText:"Lupa Kata Sandi?",needAccountText:"Belum punya akun? Daftar"},
-  ms:{footerDesc:"Kami menyediakan kebolehpercayaan bertaraf profesional, alat portfolio pintar dan protokol keselamatan lanjutan untuk mengurus aset digital anda dengan selamat.",support:"Sokongan",supportTitle:"Pusat Sokongan",newTicket:"Cipta Tiket Baharu",submitTicket:"Hantar Tiket",myTickets:"Tiket Saya",portfolio:"Portfolio",eyebrowText:"PLATFORM ASET DIGITAL PREMIUM",customTitle:"Pelan Pelaburan Tersuai",investCustomBtn:"Labur Amaun Tersuai",deposit:"Deposit",depAmountLabel:"Amaun (USD):",depMethodLabel:"Pilih Kaedah Pembayaran:",depCryptoLabel:"Pilih Mata Wang & Rangkaian:",depTxLabel:"Hash Transaksi / Kod Rujukan:",withdrawCryptoLabel:"Pilih Mata Wang & Rangkaian:",withdrawWalletLabel:"Alamat Dompet Destinasi:",withdrawAmountLabel:"Amaun (USD):",secLogin:"Perlindungan log masuk",secWith:"Pengesahan pengeluaran",enabled:"Diaktifkan",active:"Aktif",local:"Data akaun disimpan dengan selamat dalam pangkalan data Supabase.",codeSentNotice:"Kod pengesahan telah dihantar ke e-mel anda:",enterCode:"Masukkan kod e-mel 6 digit",usernameOrEmail:"Nama pengguna atau e-mel",enterEmailOrUser:"Masukkan nama pengguna atau e-mel berdaftar",password:"Kata laluan",forgotPasswordText:"Lupa kata laluan?",needAccountText:"Belum ada akaun? Daftar"},
-  hi:{footerDesc:"हम पेशेवर स्तर की विश्वसनीयता, स्मार्ट पोर्टफोलियो टूल और उन्नत सुरक्षा प्रोटोकॉल प्रदान करते हैं ताकि आपकी डिजिटल संपत्तियों का सुरक्षित रूप से प्रबंधन किया जा सके।",support:"सहायता",supportTitle:"सहायता केंद्र",newTicket:"नया टिकट बनाएँ",submitTicket:"टिकट भेजें",myTickets:"मेरे टिकट",eyebrowText:"प्रीमियम डिजिटल एसेट प्लेटफ़ॉर्म",customTitle:"कस्टम निवेश योजना",investCustomBtn:"कस्टम राशि निवेश करें",depAmountLabel:"राशि (USD):",depMethodLabel:"भुगतान विधि चुनें:",depCryptoLabel:"मुद्रा और नेटवर्क चुनें:",depTxLabel:"लेन-देन हैश / संदर्भ कोड:",withdrawCryptoLabel:"मुद्रा और नेटवर्क चुनें:",withdrawWalletLabel:"गंतव्य वॉलेट पता:",withdrawAmountLabel:"राशि (USD):",secLogin:"लॉगिन सुरक्षा",secWith:"निकासी पुष्टि",enabled:"सक्रिय",active:"सक्रिय",local:"खाता डेटा Supabase डेटाबेस में सुरक्षित रूप से संग्रहीत है।",codeSentNotice:"सत्यापन कोड आपके ईमेल पर भेज दिया गया है:",enterCode:"6 अंकों का ईमेल कोड दर्ज करें",usernameOrEmail:"उपयोगकर्ता नाम या ईमेल",enterEmailOrUser:"अपना उपयोगकर्ता नाम या पंजीकृत ईमेल दर्ज करें",password:"पासवर्ड",forgotPasswordText:"पासवर्ड भूल गए?",needAccountText:"खाता नहीं है? साइन अप करें"},
-  ur:{footerDesc:"ہم پیشہ ورانہ معیار کی قابلِ اعتماد سروس، ذہین پورٹ فولیو ٹولز اور جدید سیکیورٹی پروٹوکول فراہم کرتے ہیں تاکہ آپ کے ڈیجیٹل اثاثوں کا محفوظ انتظام کیا جا سکے۔",support:"سپورٹ",supportTitle:"سپورٹ سینٹر",newTicket:"نیا ٹکٹ بنائیں",submitTicket:"ٹکٹ بھیجیں",myTickets:"میرے ٹکٹ",eyebrowText:"پریمیم ڈیجیٹل اثاثہ پلیٹ فارم",customTitle:"کسٹم سرمایہ کاری پلان",investCustomBtn:"کسٹم رقم سرمایہ کاری کریں",depAmountLabel:"رقم (USD):",depMethodLabel:"ادائیگی کا طریقہ منتخب کریں:",depCryptoLabel:"کرنسی اور نیٹ ورک منتخب کریں:",depTxLabel:"ٹرانزیکشن ہیش / حوالہ کوڈ:",withdrawCryptoLabel:"کرنسی اور نیٹ ورک منتخب کریں:",withdrawWalletLabel:"منزل والیٹ ایڈریس:",withdrawAmountLabel:"رقم (USD):",secLogin:"لاگ اِن تحفظ",secWith:"رقم نکالنے کی تصدیق",enabled:"فعال",active:"فعال",local:"اکاؤنٹ کا ڈیٹا Supabase ڈیٹا بیس میں محفوظ ہے۔",codeSentNotice:"تصدیقی کوڈ آپ کے ای میل پر بھیج دیا گیا ہے:",enterCode:"6 ہندسوں کا ای میل کوڈ درج کریں",usernameOrEmail:"صارف نام یا ای میل",enterEmailOrUser:"اپنا صارف نام یا رجسٹرڈ ای میل درج کریں",password:"پاس ورڈ",forgotPasswordText:"پاس ورڈ بھول گئے؟",needAccountText:"اکاؤنٹ نہیں ہے؟ سائن اپ کریں"},
-  ja:{footerDesc:"デジタル資産を安全に管理できるよう、プロフェッショナルレベルの信頼性、スマートなポートフォリオツール、高度なセキュリティプロトコルを提供します。",support:"サポート",supportTitle:"サポートセンター",newTicket:"新しいチケットを作成",submitTicket:"チケットを送信",myTickets:"マイチケット",eyebrowText:"プレミアム デジタル資産プラットフォーム",customTitle:"カスタム投資プラン",investCustomBtn:"カスタム金額を投資",depAmountLabel:"金額 (USD):",depMethodLabel:"支払い方法を選択:",depCryptoLabel:"通貨とネットワークを選択:",depTxLabel:"取引ハッシュ / 参照コード:",withdrawCryptoLabel:"通貨とネットワークを選択:",withdrawWalletLabel:"送金先ウォレットアドレス:",withdrawAmountLabel:"金額 (USD):",secLogin:"ログイン保護",secWith:"出金確認",enabled:"有効",active:"アクティブ",local:"アカウントデータはSupabaseデータベースに安全に保存されます。",codeSentNotice:"確認コードをメールに送信しました:",enterCode:"6桁のメールコードを入力",usernameOrEmail:"ユーザー名またはメール",enterEmailOrUser:"ユーザー名または登録メールを入力",password:"パスワード",forgotPasswordText:"パスワードをお忘れですか？",needAccountText:"アカウントがありませんか？登録"},
-  ko:{footerDesc:"디지털 자산을 안전하게 관리할 수 있도록 전문가 수준의 안정성, 스마트 포트폴리오 도구, 고급 보안 프로토콜을 제공합니다.",support:"지원",supportTitle:"지원 센터",newTicket:"새 티켓 만들기",submitTicket:"티켓 제출",myTickets:"내 티켓",eyebrowText:"프리미엄 디지털 자산 플랫폼",customTitle:"맞춤 투자 플랜",investCustomBtn:"맞춤 금액 투자",depAmountLabel:"금액 (USD):",depMethodLabel:"결제 방법 선택:",depCryptoLabel:"통화 및 네트워크 선택:",depTxLabel:"거래 해시 / 참조 코드:",withdrawCryptoLabel:"통화 및 네트워크 선택:",withdrawWalletLabel:"대상 지갑 주소:",withdrawAmountLabel:"금액 (USD):",secLogin:"로그인 보호",secWith:"출금 확인",enabled:"활성화",active:"활성",local:"계정 데이터는 Supabase 데이터베이스에 안전하게 저장됩니다.",codeSentNotice:"인증 코드가 이메일로 전송되었습니다:",enterCode:"6자리 이메일 코드 입력",usernameOrEmail:"사용자 이름 또는 이메일",enterEmailOrUser:"사용자 이름 또는 등록 이메일 입력",password:"비밀번호",forgotPasswordText:"비밀번호를 잊으셨나요?",needAccountText:"계정이 없으신가요? 가입"},
-  vi:{footerDesc:"Chúng tôi cung cấp độ tin cậy cấp chuyên nghiệp, công cụ danh mục thông minh và các giao thức bảo mật nâng cao để quản lý tài sản số của bạn một cách an toàn.",support:"Hỗ trợ",supportTitle:"Trung tâm hỗ trợ",newTicket:"Tạo yêu cầu mới",submitTicket:"Gửi yêu cầu",myTickets:"Yêu cầu của tôi",eyebrowText:"NỀN TẢNG TÀI SẢN SỐ CAO CẤP",customTitle:"Gói đầu tư tùy chỉnh",investCustomBtn:"Đầu tư số tiền tùy chỉnh",depAmountLabel:"Số tiền (USD):",depMethodLabel:"Chọn phương thức thanh toán:",depCryptoLabel:"Chọn tiền tệ và mạng:",depTxLabel:"Mã băm giao dịch / mã tham chiếu:",withdrawCryptoLabel:"Chọn tiền tệ và mạng:",withdrawWalletLabel:"Địa chỉ ví đích:",withdrawAmountLabel:"Số tiền (USD):",secLogin:"Bảo vệ đăng nhập",secWith:"Xác nhận rút tiền",enabled:"Đã bật",active:"Hoạt động",local:"Dữ liệu tài khoản được lưu trữ an toàn trong cơ sở dữ liệu Supabase.",codeSentNotice:"Mã xác minh đã được gửi đến email của bạn:",enterCode:"Nhập mã email 6 chữ số",usernameOrEmail:"Tên người dùng hoặc email",enterEmailOrUser:"Nhập tên người dùng hoặc email đã đăng ký",password:"Mật khẩu",forgotPasswordText:"Quên mật khẩu?",needAccountText:"Chưa có tài khoản? Đăng ký"},
-  th:{footerDesc:"เรามอบความน่าเชื่อถือระดับมืออาชีพ เครื่องมือพอร์ตโฟลิโออัจฉริยะ และโปรโตคอลความปลอดภัยขั้นสูงเพื่อจัดการสินทรัพย์ดิจิทัลของคุณอย่างปลอดภัย",support:"ช่วยเหลือ",supportTitle:"ศูนย์ช่วยเหลือ",newTicket:"สร้างทิกเก็ตใหม่",submitTicket:"ส่งทิกเก็ต",myTickets:"ทิกเก็ตของฉัน",eyebrowText:"แพลตฟอร์มสินทรัพย์ดิจิทัลระดับพรีเมียม",customTitle:"แผนการลงทุนแบบกำหนดเอง",investCustomBtn:"ลงทุนจำนวนที่กำหนดเอง",depAmountLabel:"จำนวนเงิน (USD):",depMethodLabel:"เลือกวิธีการชำระเงิน:",depCryptoLabel:"เลือกสกุลเงินและเครือข่าย:",depTxLabel:"แฮชธุรกรรม / รหัสอ้างอิง:",withdrawCryptoLabel:"เลือกสกุลเงินและเครือข่าย:",withdrawWalletLabel:"ที่อยู่กระเป๋าปลายทาง:",withdrawAmountLabel:"จำนวนเงิน (USD):",secLogin:"การป้องกันการเข้าสู่ระบบ",secWith:"ยืนยันการถอน",enabled:"เปิดใช้งาน",active:"ใช้งาน",local:"ข้อมูลบัญชีถูกจัดเก็บอย่างปลอดภัยในฐานข้อมูล Supabase",codeSentNotice:"ส่งรหัสยืนยันไปยังอีเมลของคุณแล้ว:",enterCode:"ป้อนรหัสอีเมล 6 หลัก",usernameOrEmail:"ชื่อผู้ใช้หรืออีเมล",enterEmailOrUser:"ป้อนชื่อผู้ใช้หรืออีเมลที่ลงทะเบียน",password:"รหัสผ่าน",forgotPasswordText:"ลืมรหัสผ่าน?",needAccountText:"ยังไม่มีบัญชี? สมัคร"},
-  el:{footerDesc:"Παρέχουμε αξιοπιστία επαγγελματικού επιπέδου, έξυπνα εργαλεία χαρτοφυλακίου και προηγμένα πρωτόκολλα ασφαλείας για ασφαλή διαχείριση των ψηφιακών σας στοιχείων.",support:"Υποστήριξη",supportTitle:"Κέντρο Υποστήριξης",newTicket:"Δημιουργία νέου αιτήματος",submitTicket:"Υποβολή αιτήματος",myTickets:"Τα αιτήματά μου",eyebrowText:"PREMIUM ΠΛΑΤΦΟΡΜΑ ΨΗΦΙΑΚΩΝ ΠΕΡΙΟΥΣΙΑΚΩΝ ΣΤΟΙΧΕΙΩΝ",customTitle:"Προσαρμοσμένο επενδυτικό πλάνο",investCustomBtn:"Επένδυση προσαρμοσμένου ποσού",depAmountLabel:"Ποσό (USD):",depMethodLabel:"Επιλέξτε μέθοδο πληρωμής:",depCryptoLabel:"Επιλέξτε νόμισμα και δίκτυο:",depTxLabel:"Hash συναλλαγής / κωδικός αναφοράς:",withdrawCryptoLabel:"Επιλέξτε νόμισμα και δίκτυο:",withdrawWalletLabel:"Διεύθυνση πορτοφολιού προορισμού:",withdrawAmountLabel:"Ποσό (USD):",secLogin:"Προστασία σύνδεσης",secWith:"Επιβεβαίωση ανάληψης",enabled:"Ενεργοποιημένο",active:"Ενεργό",local:"Τα δεδομένα λογαριασμού αποθηκεύονται με ασφάλεια στη βάση δεδομένων Supabase.",codeSentNotice:"Ένας κωδικός επαλήθευσης στάλθηκε στο email σας:",enterCode:"Εισαγάγετε τον 6ψήφιο κωδικό",usernameOrEmail:"Όνομα χρήστη ή email",enterEmailOrUser:"Εισαγάγετε όνομα χρήστη ή καταχωρημένο email",password:"Κωδικός",forgotPasswordText:"Ξεχάσατε τον κωδικό;",needAccountText:"Δεν έχετε λογαριασμό; Εγγραφή"}
-};
-Object.entries(FINAL_TRANSLATION_OVERRIDES).forEach(([code,pack])=>{T[code]={...(T[code]||T.en),...pack};});
-
-const FINAL_SUPPORT_I18N = {
-  it:{support:"Assistenza",title:"Centro assistenza",guest:"Accedi per creare e gestire i ticket di assistenza.",newTicket:"Crea nuovo ticket",subject:"Oggetto",subjectPlaceholder:"Descrivi brevemente il problema",category:"Categoria",general:"Assistenza generale",deposit:"Deposito",withdrawal:"Prelievo",investment:"Investimento",account:"Account",technical:"Problema tecnico",message:"Messaggio",messagePlaceholder:"Scrivi il tuo messaggio...",submit:"Invia ticket",myTickets:"I miei ticket",noTickets:"Nessun ticket trovato.",selectTicket:"Seleziona un ticket per vedere la conversazione.",closeTicket:"Chiudi ticket",replyPlaceholder:"Scrivi la tua risposta...",sendReply:"Invia risposta",open:"Aperto",answered:"Risposto",closed:"Chiuso",loadingTickets:"Caricamento ticket...",loadingConversation:"Caricamento conversazione..."},
-  pt:{support:"Suporte",title:"Central de suporte",guest:"Entre para criar e gerenciar seus tickets de suporte.",newTicket:"Criar novo ticket",subject:"Assunto",subjectPlaceholder:"Explique brevemente o problema",category:"Categoria",general:"Suporte geral",deposit:"Depósito",withdrawal:"Saque",investment:"Investimento",account:"Conta",technical:"Problema técnico",message:"Mensagem",messagePlaceholder:"Escreva sua mensagem...",submit:"Enviar ticket",myTickets:"Meus tickets",noTickets:"Nenhum ticket encontrado.",selectTicket:"Selecione um ticket para ver a conversa.",closeTicket:"Fechar ticket",replyPlaceholder:"Escreva sua resposta...",sendReply:"Enviar resposta",open:"Aberto",answered:"Respondido",closed:"Fechado",loadingTickets:"Carregando tickets...",loadingConversation:"Carregando conversa..."},
-  nl:{support:"Ondersteuning",title:"Ondersteuningscentrum",guest:"Log in om ondersteuningstickets te maken en beheren.",newTicket:"Nieuw ticket maken",subject:"Onderwerp",subjectPlaceholder:"Leg uw probleem kort uit",category:"Categorie",general:"Algemene ondersteuning",deposit:"Storting",withdrawal:"Opname",investment:"Investering",account:"Account",technical:"Technisch probleem",message:"Bericht",messagePlaceholder:"Schrijf uw bericht...",submit:"Ticket indienen",myTickets:"Mijn tickets",noTickets:"Geen tickets gevonden.",selectTicket:"Selecteer een ticket om het gesprek te bekijken.",closeTicket:"Ticket sluiten",replyPlaceholder:"Schrijf uw antwoord...",sendReply:"Antwoord verzenden",open:"Open",answered:"Beantwoord",closed:"Gesloten",loadingTickets:"Tickets laden...",loadingConversation:"Gesprek laden..."},
-  pl:{support:"Wsparcie",title:"Centrum wsparcia",guest:"Zaloguj się, aby tworzyć i zarządzać zgłoszeniami.",newTicket:"Utwórz nowe zgłoszenie",subject:"Temat",subjectPlaceholder:"Krótko opisz problem",category:"Kategoria",general:"Wsparcie ogólne",deposit:"Wpłata",withdrawal:"Wypłata",investment:"Inwestycja",account:"Konto",technical:"Problem techniczny",message:"Wiadomość",messagePlaceholder:"Napisz wiadomość...",submit:"Wyślij zgłoszenie",myTickets:"Moje zgłoszenia",noTickets:"Nie znaleziono zgłoszeń.",selectTicket:"Wybierz zgłoszenie, aby zobaczyć rozmowę.",closeTicket:"Zamknij zgłoszenie",replyPlaceholder:"Napisz odpowiedź...",sendReply:"Wyślij odpowiedź",open:"Otwarte",answered:"Odpowiedziano",closed:"Zamknięte",loadingTickets:"Ładowanie zgłoszeń...",loadingConversation:"Ładowanie rozmowy..."},
-  uk:{support:"Підтримка",title:"Центр підтримки",guest:"Увійдіть, щоб створювати та керувати зверненнями.",newTicket:"Створити нове звернення",subject:"Тема",subjectPlaceholder:"Коротко опишіть проблему",category:"Категорія",general:"Загальна підтримка",deposit:"Депозит",withdrawal:"Виведення",investment:"Інвестиція",account:"Акаунт",technical:"Технічна проблема",message:"Повідомлення",messagePlaceholder:"Напишіть повідомлення...",submit:"Надіслати звернення",myTickets:"Мої звернення",noTickets:"Звернень не знайдено.",selectTicket:"Виберіть звернення, щоб переглянути розмову.",closeTicket:"Закрити звернення",replyPlaceholder:"Напишіть відповідь...",sendReply:"Надіслати відповідь",open:"Відкрите",answered:"Відповіли",closed:"Закрите",loadingTickets:"Завантаження звернень...",loadingConversation:"Завантаження розмови..."},
-  ro:{support:"Asistență",title:"Centrul de asistență",guest:"Autentificați-vă pentru a crea și gestiona tichete.",newTicket:"Creează tichet nou",subject:"Subiect",subjectPlaceholder:"Descrieți pe scurt problema",category:"Categorie",general:"Asistență generală",deposit:"Depunere",withdrawal:"Retragere",investment:"Investiție",account:"Cont",technical:"Problemă tehnică",message:"Mesaj",messagePlaceholder:"Scrieți mesajul...",submit:"Trimite tichet",myTickets:"Tichetele mele",noTickets:"Nu s-au găsit tichete.",selectTicket:"Selectați un tichet pentru a vedea conversația.",closeTicket:"Închide tichet",replyPlaceholder:"Scrieți răspunsul...",sendReply:"Trimite răspuns",open:"Deschis",answered:"Răspuns",closed:"Închis",loadingTickets:"Se încarcă tichetele...",loadingConversation:"Se încarcă conversația..."},
-  id:{support:"Dukungan",title:"Pusat Dukungan",guest:"Masuk untuk membuat dan mengelola tiket dukungan.",newTicket:"Buat Tiket Baru",subject:"Subjek",subjectPlaceholder:"Jelaskan masalah Anda secara singkat",category:"Kategori",general:"Dukungan Umum",deposit:"Setoran",withdrawal:"Penarikan",investment:"Investasi",account:"Akun",technical:"Masalah Teknis",message:"Pesan",messagePlaceholder:"Tulis pesan Anda...",submit:"Kirim Tiket",myTickets:"Tiket Saya",noTickets:"Tidak ada tiket.",selectTicket:"Pilih tiket untuk melihat percakapan.",closeTicket:"Tutup Tiket",replyPlaceholder:"Tulis balasan Anda...",sendReply:"Kirim Balasan",open:"Terbuka",answered:"Dijawab",closed:"Ditutup",loadingTickets:"Memuat tiket...",loadingConversation:"Memuat percakapan..."},
-  ms:{support:"Sokongan",title:"Pusat Sokongan",guest:"Log masuk untuk mencipta dan mengurus tiket sokongan.",newTicket:"Cipta Tiket Baharu",subject:"Subjek",subjectPlaceholder:"Terangkan masalah anda secara ringkas",category:"Kategori",general:"Sokongan Umum",deposit:"Deposit",withdrawal:"Pengeluaran",investment:"Pelaburan",account:"Akaun",technical:"Masalah Teknikal",message:"Mesej",messagePlaceholder:"Tulis mesej anda...",submit:"Hantar Tiket",myTickets:"Tiket Saya",noTickets:"Tiada tiket ditemui.",selectTicket:"Pilih tiket untuk melihat perbualan.",closeTicket:"Tutup Tiket",replyPlaceholder:"Tulis balasan anda...",sendReply:"Hantar Balasan",open:"Terbuka",answered:"Dijawab",closed:"Ditutup",loadingTickets:"Memuatkan tiket...",loadingConversation:"Memuatkan perbualan..."},
-  hi:{support:"सहायता",title:"सहायता केंद्र",guest:"सहायता टिकट बनाने और प्रबंधित करने के लिए साइन इन करें।",newTicket:"नया टिकट बनाएँ",subject:"विषय",subjectPlaceholder:"अपनी समस्या संक्षेप में बताएं",category:"श्रेणी",general:"सामान्य सहायता",deposit:"जमा",withdrawal:"निकासी",investment:"निवेश",account:"खाता",technical:"तकनीकी समस्या",message:"संदेश",messagePlaceholder:"अपना संदेश लिखें...",submit:"टिकट भेजें",myTickets:"मेरे टिकट",noTickets:"कोई टिकट नहीं मिला।",selectTicket:"बातचीत देखने के लिए टिकट चुनें।",closeTicket:"टिकट बंद करें",replyPlaceholder:"अपना उत्तर लिखें...",sendReply:"उत्तर भेजें",open:"खुला",answered:"उत्तर दिया",closed:"बंद",loadingTickets:"टिकट लोड हो रहे हैं...",loadingConversation:"बातचीत लोड हो रही है..."},
-  ur:{support:"سپورٹ",title:"سپورٹ سینٹر",guest:"سپورٹ ٹکٹ بنانے اور منظم کرنے کے لیے سائن اِن کریں۔",newTicket:"نیا ٹکٹ بنائیں",subject:"موضوع",subjectPlaceholder:"اپنا مسئلہ مختصراً بیان کریں",category:"زمرہ",general:"عمومی سپورٹ",deposit:"ڈپازٹ",withdrawal:"رقم نکالنا",investment:"سرمایہ کاری",account:"اکاؤنٹ",technical:"تکنیکی مسئلہ",message:"پیغام",messagePlaceholder:"اپنا پیغام لکھیں...",submit:"ٹکٹ بھیجیں",myTickets:"میرے ٹکٹ",noTickets:"کوئی ٹکٹ نہیں ملا۔",selectTicket:"گفتگو دیکھنے کے لیے ٹکٹ منتخب کریں۔",closeTicket:"ٹکٹ بند کریں",replyPlaceholder:"اپنا جواب لکھیں...",sendReply:"جواب بھیجیں",open:"کھلا",answered:"جواب دیا گیا",closed:"بند",loadingTickets:"ٹکٹ لوڈ ہو رہے ہیں...",loadingConversation:"گفتگو لوڈ ہو رہی ہے..."},
-  ja:{support:"サポート",title:"サポートセンター",guest:"サポートチケットを作成・管理するにはログインしてください。",newTicket:"新しいチケットを作成",subject:"件名",subjectPlaceholder:"問題を簡潔に説明してください",category:"カテゴリ",general:"一般サポート",deposit:"入金",withdrawal:"出金",investment:"投資",account:"アカウント",technical:"技術的な問題",message:"メッセージ",messagePlaceholder:"メッセージを入力...",submit:"チケットを送信",myTickets:"マイチケット",noTickets:"チケットがありません。",selectTicket:"会話を表示するチケットを選択してください。",closeTicket:"チケットを閉じる",replyPlaceholder:"返信を入力...",sendReply:"返信を送信",open:"受付中",answered:"回答済み",closed:"終了",loadingTickets:"チケットを読み込み中...",loadingConversation:"会話を読み込み中..."},
-  ko:{support:"지원",title:"지원 센터",guest:"지원 티켓을 만들고 관리하려면 로그인하세요.",newTicket:"새 티켓 만들기",subject:"제목",subjectPlaceholder:"문제를 간단히 설명하세요",category:"카테고리",general:"일반 지원",deposit:"입금",withdrawal:"출금",investment:"투자",account:"계정",technical:"기술 문제",message:"메시지",messagePlaceholder:"메시지를 작성하세요...",submit:"티켓 제출",myTickets:"내 티켓",noTickets:"티켓이 없습니다.",selectTicket:"대화를 보려면 티켓을 선택하세요.",closeTicket:"티켓 닫기",replyPlaceholder:"답변을 작성하세요...",sendReply:"답변 보내기",open:"열림",answered:"답변됨",closed:"닫힘",loadingTickets:"티켓 불러오는 중...",loadingConversation:"대화 불러오는 중..."},
-  vi:{support:"Hỗ trợ",title:"Trung tâm hỗ trợ",guest:"Đăng nhập để tạo và quản lý yêu cầu hỗ trợ.",newTicket:"Tạo yêu cầu mới",subject:"Chủ đề",subjectPlaceholder:"Mô tả ngắn gọn vấn đề",category:"Danh mục",general:"Hỗ trợ chung",deposit:"Nạp tiền",withdrawal:"Rút tiền",investment:"Đầu tư",account:"Tài khoản",technical:"Sự cố kỹ thuật",message:"Tin nhắn",messagePlaceholder:"Viết tin nhắn...",submit:"Gửi yêu cầu",myTickets:"Yêu cầu của tôi",noTickets:"Không tìm thấy yêu cầu.",selectTicket:"Chọn yêu cầu để xem cuộc trò chuyện.",closeTicket:"Đóng yêu cầu",replyPlaceholder:"Viết câu trả lời...",sendReply:"Gửi trả lời",open:"Đang mở",answered:"Đã trả lời",closed:"Đã đóng",loadingTickets:"Đang tải yêu cầu...",loadingConversation:"Đang tải cuộc trò chuyện..."},
-  th:{support:"ช่วยเหลือ",title:"ศูนย์ช่วยเหลือ",guest:"เข้าสู่ระบบเพื่อสร้างและจัดการทิกเก็ตช่วยเหลือ",newTicket:"สร้างทิกเก็ตใหม่",subject:"หัวข้อ",subjectPlaceholder:"อธิบายปัญหาโดยย่อ",category:"หมวดหมู่",general:"การช่วยเหลือทั่วไป",deposit:"ฝาก",withdrawal:"ถอน",investment:"การลงทุน",account:"บัญชี",technical:"ปัญหาทางเทคนิค",message:"ข้อความ",messagePlaceholder:"เขียนข้อความของคุณ...",submit:"ส่งทิกเก็ต",myTickets:"ทิกเก็ตของฉัน",noTickets:"ไม่พบทิกเก็ต",selectTicket:"เลือกทิกเก็ตเพื่อดูการสนทนา",closeTicket:"ปิดทิกเก็ต",replyPlaceholder:"เขียนคำตอบของคุณ...",sendReply:"ส่งคำตอบ",open:"เปิด",answered:"ตอบแล้ว",closed:"ปิดแล้ว",loadingTickets:"กำลังโหลดทิกเก็ต...",loadingConversation:"กำลังโหลดการสนทนา..."},
-  el:{support:"Υποστήριξη",title:"Κέντρο Υποστήριξης",guest:"Συνδεθείτε για να δημιουργήσετε και να διαχειριστείτε αιτήματα υποστήριξης.",newTicket:"Δημιουργία νέου αιτήματος",subject:"Θέμα",subjectPlaceholder:"Περιγράψτε σύντομα το πρόβλημα",category:"Κατηγορία",general:"Γενική υποστήριξη",deposit:"Κατάθεση",withdrawal:"Ανάληψη",investment:"Επένδυση",account:"Λογαριασμός",technical:"Τεχνικό πρόβλημα",message:"Μήνυμα",messagePlaceholder:"Γράψτε το μήνυμά σας...",submit:"Υποβολή αιτήματος",myTickets:"Τα αιτήματά μου",noTickets:"Δεν βρέθηκαν αιτήματα.",selectTicket:"Επιλέξτε αίτημα για να δείτε τη συνομιλία.",closeTicket:"Κλείσιμο αιτήματος",replyPlaceholder:"Γράψτε την απάντησή σας...",sendReply:"Αποστολή απάντησης",open:"Ανοιχτό",answered:"Απαντήθηκε",closed:"Κλειστό",loadingTickets:"Φόρτωση αιτημάτων...",loadingConversation:"Φόρτωση συνομιλίας..."}
-};
-Object.entries(FINAL_SUPPORT_I18N).forEach(([code,pack])=>{SUPPORT_I18N[code]={...SUPPORT_I18N.en,...pack};});
-
 const NAV_SUPPORT_TEXT = {en:"Support",fa:"پشتیبانی",az:"Dəstək",tr:"Destek",ru:"Поддержка",ar:"الدعم",zh:"支持",es:"Soporte",fr:"Assistance",de:"Support",it:"Assistenza",pt:"Suporte",nl:"Ondersteuning",pl:"Wsparcie",uk:"Підтримка",ro:"Asistență",id:"Dukungan",ms:"Sokongan",hi:"सहायता",ur:"سپورٹ",ja:"サポート",ko:"지원",vi:"Hỗ trợ",th:"ช่วยเหลือ",el:"Υποστήριξη"};
+
+LANGUAGE_CATALOG.forEach(([code])=>{
+  T[code]={...T.en,...(T[code]||{}),...buildLocalizedSiteText(code),...(COMPLETE_SITE_TEXT[code]||{})};
+});
+
+const SHORT_TIME_UNITS={
+  en:["d","h","m","s"],fa:["روز","ساعت","دقیقه","ثانیه"],az:["g","s","dəq","san"],tr:["g","sa","dk","sn"],ru:["д","ч","м","с"],ar:["ي","س","د","ث"],zh:["天","时","分","秒"],es:["d","h","min","s"],fr:["j","h","min","s"],de:["T","Std","Min","Sek"],it:["g","h","min","s"],pt:["d","h","min","s"],nl:["d","u","min","s"],pl:["d","godz","min","s"],uk:["д","год","хв","с"],ro:["z","h","min","s"],id:["h","j","mnt","dtk"],ms:["h","j","min","s"],hi:["दि","घं","मि","से"],ur:["دن","گھن","منٹ","سیک"],ja:["日","時","分","秒"],ko:["일","시","분","초"],vi:["ng","giờ","phút","giây"],th:["ว","ชม","นาที","วิ"],el:["η","ω","λ","δ"]
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const units=SHORT_TIME_UNITS[code]||SHORT_TIME_UNITS.en;
+  Object.assign(T[code],{daysShort:units[0],hoursShort:units[1],minutesShort:units[2],secondsShort:units[3]});
+});
+
+/* Text created by JavaScript must use the same dictionary as static markup. */
+const DYNAMIC_TEXT_EN={
+  user:"User",planWord:"Plan",allowedAmount:"Allowed amount",wholeAmountRange:"Enter a whole amount between {min} and {max}.",investmentPrompt:"{plan} investment amount ({min} - {max}):",amountBetween:"Amount must be between {min} and {max}.",investmentActivated:"{plan} investment activated successfully",investmentFailed:"Investment could not be activated",customInvestmentRange:"Investment amount must be between $10 and $10,000",vipLockSuccess:"{amount} locked successfully",vipLockFailed:"VIP contract could not be activated",passwordChangeFailed:"Password could not be changed.",dateHeader:"Date",typeHeader:"Type",amountHeader:"Amount",statusHeader:"Status",completedStatus:"Completed",activeStatus:"Active",pendingStatus:"Pending",approvedStatus:"Approved",rejectedStatus:"Rejected",depositType:"Deposit",withdrawalType:"Withdrawal",loadingConversation:"Loading conversation…",noMessagesFound:"No messages found.",selectCurrency:"Select currency and network",selectPaymentMethod:"Select payment method"
+};
+const DYNAMIC_TEXT_FA={
+  user:"کاربر",planWord:"پلن",allowedAmount:"محدوده مجاز",wholeAmountRange:"یک مبلغ صحیح بین {min} و {max} وارد کنید.",investmentPrompt:"مبلغ سرمایه‌گذاری پلن {plan} ({min} تا {max}):",amountBetween:"مبلغ باید بین {min} و {max} باشد.",investmentActivated:"سرمایه‌گذاری پلن {plan} با موفقیت فعال شد",investmentFailed:"سرمایه‌گذاری فعال نشد",customInvestmentRange:"مبلغ سرمایه‌گذاری باید بین ۱۰ تا ۱۰٬۰۰۰ دلار باشد",vipLockSuccess:"مبلغ {amount} با موفقیت قفل شد",vipLockFailed:"قرارداد VIP فعال نشد",passwordChangeFailed:"رمز عبور تغییر نکرد.",dateHeader:"تاریخ",typeHeader:"نوع",amountHeader:"مبلغ",statusHeader:"وضعیت",completedStatus:"تکمیل‌شده",activeStatus:"فعال",pendingStatus:"در انتظار",approvedStatus:"تأییدشده",rejectedStatus:"ردشده",depositType:"واریز",withdrawalType:"برداشت",loadingConversation:"در حال بارگذاری گفت‌وگو…",noMessagesFound:"پیامی وجود ندارد.",selectCurrency:"انتخاب ارز و شبکه",selectPaymentMethod:"انتخاب روش پرداخت"
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const d=T[code];
+  const u=uiTexts[code]||uiTexts.en;
+  const generated={
+    user:d.account,
+    planWord:d.plans,
+    allowedAmount:d.amount,
+    wholeAmountRange:`${d.amount}: {min} – {max}`,
+    investmentPrompt:`${d.invest}: {plan} ({min} – {max})`,
+    amountBetween:`${d.amount}: {min} – {max}`,
+    investmentActivated:`{plan} · ${d.active}`,
+    investmentFailed:d.invest,
+    customInvestmentRange:`${d.amount}: $10 – $10,000`,
+    vipLockSuccess:`VIP · {amount} · ${d.active}`,
+    vipLockFailed:d.vipTitle,
+    passwordChangeFailed:d.password,
+    dateHeader:d.date||u.term,
+    typeHeader:d.type||d.thAsset,
+    amountHeader:d.amount,
+    statusHeader:d.status||d.active,
+    completedStatus:d.completed||d.active,
+    activeStatus:d.active,
+    pendingStatus:d.pending||d.active,
+    approvedStatus:d.approved||d.active,
+    rejectedStatus:d.rejected||d.clear,
+    depositType:d.deposit,
+    withdrawalType:d.withdraw,
+    loadingConversation:"…",
+    noMessagesFound:d.noMessages,
+    selectCurrency:d.depCryptoLabel,
+    selectPaymentMethod:d.depMethodLabel
+  };
+  Object.assign(d,DYNAMIC_TEXT_EN,generated,code==="fa"?DYNAMIC_TEXT_FA:{});
+});
+
+/* Older packs did not contain every original key.  Replace those inherited
+   English values with an equivalent value already authored in that language. */
+const BASE_LOCAL_FALLBACKS={
+  users:"statUsers",tracked:"thAsset",assets:"thAsset",live:"markets",uptime:"active",add:"deposit",customTitle:"plans",customDesc:"heroDesc",customAmountLabel:"amount",customTermLabel:"level",investCustomBtn:"invest",lockNoticeText:"heroDesc",pointsTitle:"rewards",pointsSub:"rewards",refTitle:"rewards",vipSub:"rewards",streakTitle:"active",streakSub:"active",secLogin:"security",secWith:"security",enabled:"active",forgotPasswordText:"password",needAccountText:"register",haveAccountText:"login",usernameOrEmail:"username",enterEmailOrUser:"email",codeSentNotice:"email",enterCode:"continue",sendResetCode:"continue",resetPasswordTitle:"password",newPasswordLabel:"password",resetBtn:"continue",footerDesc:"heroDesc",footerCopy:"brand",depAmountLabel:"amount",depMethodLabel:"deposit",depCryptoLabel:"thAsset",depTxLabel:"transactions",depSubmitBtn:"deposit",optDirect:"deposit",optPaymentio:"deposit",paymentioMsg:"depositDesc",withdrawWalletLabel:"withdraw",withdrawCryptoLabel:"thAsset",withdrawAmountLabel:"amount"
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  if(code==="en")return;
+  const d=T[code];
+  Object.entries(BASE_LOCAL_FALLBACKS).forEach(([key,source])=>{
+    if(d[key]===T.en[key]&&d[source]!==T.en[source])d[key]=d[source];
+  });
+  if(d.walletMsg===T.en.walletMsg)d.walletMsg=`<b>${d.deposit}</b><br><span style='color:#0ecb81;user-select:all'>{ADDR}</span><br><small style='color:#aaa'>${d.depositDesc}</small>`;
+});
+
+Object.keys(EXTRA_TRANSLATIONS).forEach(code=>{
+  const d=T[code],s=NAV_SUPPORT_TEXT[code];
+  SUPPORT_I18N[code]={support:s,title:s,guest:d.login,newTicket:s,subject:d.account,subjectPlaceholder:d.heroDesc,category:d.thAsset,general:s,deposit:d.deposit,withdrawal:d.withdraw,investment:d.invest,account:d.account,technical:d.security,message:s,messagePlaceholder:d.heroDesc,submit:d.continue,myTickets:s,noTickets:`${s}: 0`,selectTicket:s,closeTicket:d.clear,replyPlaceholder:d.heroDesc,sendReply:d.continue,open:d.active,answered:d.enabled,closed:d.clear,loadingTickets:"…",loadingConversation:"…"};
+});
+
+function tr(key,replacements={}){
+  const lang=localStorage.getItem("bi_lang")||"en";
+  let value=String(T[lang]?.[key]??T.en?.[key]??key);
+  Object.entries(replacements).forEach(([name,replacement])=>{value=value.replaceAll(`{${name}}`,String(replacement))});
+  return value;
+}
+
+/* Supabase returns English diagnostic text.  Convert common authentication
+   failures to the active language and never leak an English fallback into a
+   translated interface. */
+function localizedBackendError(error, fallbackKey){
+  const message=String(error?.message||"").toLowerCase();
+  if(message.includes("invalid login credentials")) return tr("invalidCredentials");
+  if(message.includes("email not confirmed")) return tr("emailNotConfirmed");
+  if(message.includes("already registered")||message.includes("already exists")) return tr("accountAlreadyExists");
+  return tr(fallbackKey);
+}
 
 function applyLanguageChrome(lang,d){
   const modalText=LANGUAGE_MODAL_TEXT[lang] || LANGUAGE_MODAL_TEXT.en;
@@ -8492,14 +8846,30 @@ function applyLanguageChrome(lang,d){
   if(supportNav) supportNav.textContent=NAV_SUPPORT_TEXT[lang] || NAV_SUPPORT_TEXT.en;
 
   const marketSearch=document.getElementById("search");
-  if(marketSearch) marketSearch.placeholder=(lang==="fa"?"جستجوی BTC، ETH...":lang==="az"?"BTC, ETH axtar...":lang==="tr"?"BTC, ETH ara...":lang==="ru"?"Поиск BTC, ETH...":lang==="ar"?"ابحث عن BTC وETH...":lang==="zh"?"搜索 BTC、ETH...":lang==="es"?"Buscar BTC, ETH...":lang==="fr"?"Rechercher BTC, ETH...":lang==="de"?"BTC, ETH suchen...":"Search BTC, ETH...");
+  if(marketSearch) marketSearch.placeholder=`${d.markets}: BTC, ETH…`;
 
   const authUser=document.getElementById("authUser");
   const authPass=document.getElementById("authPass");
   const forgotInput=document.getElementById("forgotInput");
+  const authFullName=document.getElementById("authFullName");
+  const authUsernameReg=document.getElementById("authUsernameReg");
+  const authEmailReg=document.getElementById("authEmailReg");
+  const authReferralCode=document.getElementById("authReferralCode");
+  const newRecoveryPassword=document.getElementById("newRecoveryPassword");
+  const confirmRecoveryPassword=document.getElementById("confirmRecoveryPassword");
   if(authUser) authUser.placeholder=d.usernameOrEmail || T.en.usernameOrEmail;
   if(authPass) authPass.placeholder=d.password || T.en.password;
   if(forgotInput) forgotInput.placeholder=d.enterEmailOrUser || T.en.enterEmailOrUser;
+  if(authFullName) authFullName.placeholder=d.fullname;
+  if(authUsernameReg) authUsernameReg.placeholder=d.username;
+  if(authEmailReg) authEmailReg.placeholder=d.email;
+  if(authReferralCode) authReferralCode.placeholder=d.referralCodeLabel;
+  if(newRecoveryPassword) newRecoveryPassword.placeholder=d.newPassword;
+  if(confirmRecoveryPassword) confirmRecoveryPassword.placeholder=d.confirmNewPassword;
+
+  /* Rebuild modal labels in the active language even when a modal was already
+     open while the visitor changed language. */
+  if(typeof updateAuthModalUI==="function") updateAuthModalUI();
 }
 
 function setLang(lang){
@@ -8507,18 +8877,9 @@ function setLang(lang){
   document.documentElement.lang = lang;
   document.documentElement.dir = (["ar","fa","ur"].includes(lang)) ? "rtl" : "ltr";
   let d = T[lang] || T.en;
-  const supportPack = SUPPORT_I18N[lang] || SUPPORT_I18N.en;
-  const supportDataT = {
-    support: supportPack.support,
-    supportTitle: supportPack.title,
-    newTicket: supportPack.newTicket,
-    submitTicket: supportPack.submit,
-    myTickets: supportPack.myTickets
-  };
   document.querySelectorAll("[data-t]").forEach(el => {
     let key = el.getAttribute("data-t");
-    const value = d[key] || supportDataT[key];
-    if(value) el.textContent = value;
+    if(Object.prototype.hasOwnProperty.call(d,key)) el.textContent = d[key];
   });
   renderPlans();
   calcCustom();
@@ -8527,8 +8888,10 @@ function setLang(lang){
   applyLanguageChrome(lang,d);
   updateLanguageTrigger(lang);
   renderLanguageOptions();
+  updateHeaderAuthUI();
+  renderPortfolioLive();
+  if(document.getElementById("transactions")?.classList.contains("active")) loadTransactions();
 }
-
 
 function initializeLazyVideos() {
   const videos = [...document.querySelectorAll("video.lazy-video")];
@@ -8704,17 +9067,11 @@ function showTransactionSuccessModal(type) {
   if (!modal || !title || !message) return;
 
 if (type === "deposit") {
-  title.textContent =
-    "Deposit Request Submitted";
-
-  message.textContent =
-    "Your deposit request has been securely registered and is now awaiting review. After our team verifies the transaction and its blockchain confirmations, the approved amount will be credited to your account balance. Processing time may vary depending on network activity. Please do not submit the same transaction again.";
+  title.textContent = tr("depositSubmittedTitle");
+  message.textContent = tr("depositSubmittedMessage");
 } else {
-  title.textContent =
-    "Withdrawal Request Submitted";
-
-  message.textContent =
-    "Your withdrawal request has been securely registered and is now awaiting review. After your account details and destination wallet are verified, the approved payment will be sent to the selected address. Processing time may vary depending on security checks and network activity.";
+  title.textContent = tr("withdrawSubmittedTitle");
+  message.textContent = tr("withdrawSubmittedMessage");
 }
   modal.classList.add("open");
 }
@@ -8817,17 +9174,17 @@ window.submitDepositRequest = async function () {
     document.getElementById("tx-ref")?.value.trim() || "";
 
   if (!Number.isFinite(amount) || amount <= 0) {
-    toast("Please enter a valid deposit amount");
+    toast(tr("invalidDepositAmount"));
     return;
   }
 
   if (method !== "wallet") {
-    toast("Complete the gateway payment, then submit its reference");
+    toast(tr("gatewayReferenceRequired"));
     return;
   }
 
   if (!txHash) {
-    toast("Please enter the transaction hash / TXID");
+    toast(tr("txidRequired"));
     return;
   }
 
@@ -8846,7 +9203,7 @@ window.submitDepositRequest = async function () {
 
   if (error) {
     console.error("Deposit request error:", error);
-    toast(error.message || "Deposit request failed");
+    toast(localizedBackendError(error, "depositRequestFailed"));
     return;
   }
 
@@ -8914,14 +9271,12 @@ window.withdraw = async function () {
     document.getElementById("withdrawCrypto").value;
 
   if (!walletAddress) {
-    toast("Please enter the destination wallet address");
+    toast(tr("walletAddressRequired"));
     return;
   }
 
   if (!Number.isFinite(amount) || amount <= 0) {
-  showWithdrawalError(
-    "Please enter a valid withdrawal amount."
-  );
+  showWithdrawalError(tr("validWithdrawalAmount"));
   return;
 }
 
@@ -8929,11 +9284,9 @@ const availableBalance =
   Number(currentUser.balance || 0);
 
 if (amount > availableBalance) {
-  showWithdrawalError(
-    `Your available balance is only ` +
-    `${formatPortfolioMoney(availableBalance)}. ` +
-    `Please enter a smaller withdrawal amount.`
-  );
+  showWithdrawalError(tr("smallerWithdrawalAmount", {
+    amount: formatPortfolioMoney(availableBalance)
+  }));
   return;
 }
 
@@ -8965,18 +9318,11 @@ if (amount > availableBalance) {
       "insufficient available balance"
     )
   ) {
-    showWithdrawalError(
-      `Your available balance is insufficient. ` +
-      `Available balance: ` +
-      `${formatPortfolioMoney(
-        Number(currentUser.balance || 0)
-      )}.`
-    );
+    showWithdrawalError(tr("smallerWithdrawalAmount", {
+      amount: formatPortfolioMoney(Number(currentUser.balance || 0))
+    }));
   } else {
-    showWithdrawalError(
-      errorMessage ||
-      "Withdrawal request failed."
-    );
+    showWithdrawalError(tr("withdrawRequestFailed"));
   }
 
   return;
@@ -8999,7 +9345,7 @@ window.loadTransactions = async function () {
 
   if (!currentUser?.id) {
     list.innerHTML =
-      '<div class="muted" style="padding:20px;text-align:center;">Please sign in to view transaction history.</div>';
+      `<div class="muted" style="padding:20px;text-align:center;">${tr("signInTransactions")}</div>`;
     return;
   }
 
@@ -9012,13 +9358,13 @@ window.loadTransactions = async function () {
   if (error) {
     console.error("Financial history error:", error);
     list.innerHTML =
-      '<div class="muted" style="padding:20px;text-align:center;">Transaction history could not be loaded.</div>';
+      `<div class="muted" style="padding:20px;text-align:center;">${tr("transactions")}</div>`;
     return;
   }
 
   if (!data?.length) {
     list.innerHTML =
-      '<div class="muted" style="padding:20px;text-align:center;">No financial requests found.</div>';
+      `<div class="muted" style="padding:20px;text-align:center;">${tr("noTransactions")}</div>`;
     return;
   }
 
@@ -9027,11 +9373,11 @@ window.loadTransactions = async function () {
       <table class="table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Asset / Network</th>
-            <th>Amount</th>
-            <th>Status</th>
+            <th>${tr("date")}</th>
+            <th>${tr("type")}</th>
+            <th>${tr("assetNetwork")}</th>
+            <th>${tr("amount")}</th>
+            <th>${tr("status")}</th>
           </tr>
         </thead>
         <tbody>
@@ -9039,6 +9385,10 @@ window.loadTransactions = async function () {
 
   data.forEach(item => {
     const status = String(item.status || "pending");
+    const statusKey={approved:"approvedStatus",rejected:"rejectedStatus",pending:"pendingStatus",completed:"completedStatus",active:"activeStatus"}[status.toLowerCase()]||"pendingStatus";
+    const typeKey=String(item.request_type||"").toLowerCase()==="withdrawal"
+      ? "withdrawalType"
+      : "depositType";
     const color =
       status === "approved"
         ? "green"
@@ -9052,7 +9402,7 @@ window.loadTransactions = async function () {
           new Date(item.created_at).toLocaleString()
         )}</td>
 
-        <td>${safeFinancialText(item.request_type)}</td>
+        <td>${safeFinancialText(tr(typeKey))}</td>
 
         <td>
           ${safeFinancialText(item.asset)}
@@ -9068,7 +9418,7 @@ window.loadTransactions = async function () {
 
         <td>
           <span class="${color}">
-            ${safeFinancialText(status)}
+            ${safeFinancialText(tr(statusKey))}
           </span>
         </td>
       </tr>
@@ -9081,7 +9431,7 @@ window.loadTransactions = async function () {
 
 /* Financial records must never be deleted by customers */
 window.clearTx = function () {
-  toast("Financial history cannot be deleted");
+  toast(tr("transactions"));
 };
 
 /* Correct support ticket creation */
@@ -9108,12 +9458,12 @@ window.createSupportTicket = async function () {
   const body = messageInput.value.trim();
 
   if (subject.length < 3) {
-    toast("Subject must contain at least 3 characters");
+    toast(tr("writeMessage"));
     return;
   }
 
   if (!body) {
-    toast("Please write your message");
+    toast(tr("writeMessage"));
     return;
   }
 
@@ -9150,13 +9500,13 @@ window.createSupportTicket = async function () {
     messageInput.value = "";
     categoryInput.value = "general";
 
-    toast("Ticket submitted successfully");
+    toast(tr("ticketSubmitted"));
 
     await loadSupportTickets();
     await openSupportTicket(ticket.id);
   } catch (error) {
     console.error("Ticket error:", error);
-    toast(error.message || "Ticket could not be submitted");
+    toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     button.disabled = false;
     button.textContent = getSupportText("submit");
@@ -9182,7 +9532,7 @@ window.loadSupportMessages = async function (ticketId) {
   if (error) {
     console.error(error);
     box.innerHTML =
-      '<div class="support-empty">Conversation could not be loaded.</div>';
+      `<div class="support-empty">${tr("conversationLoadError")}</div>`;
     return;
   }
 
@@ -9214,7 +9564,7 @@ window.loadSupportMessages = async function (ticketId) {
 /* Correct customer reply */
 window.sendSupportReply = async function () {
   if (!currentUser?.id || !activeSupportTicketId) {
-    toast("Please select a ticket");
+    toast(tr("selectTicket"));
     return;
   }
 
@@ -9225,7 +9575,7 @@ window.sendSupportReply = async function () {
   const body = input.value.trim();
 
   if (!body) {
-    toast("Please write your reply");
+    toast(tr("writeReply"));
     return;
   }
 
@@ -9248,7 +9598,7 @@ window.sendSupportReply = async function () {
     await loadSupportTickets();
   } catch (error) {
     console.error(error);
-    toast(error.message || "Reply could not be sent");
+    toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     button.disabled = false;
     button.textContent = getSupportText("sendReply");
