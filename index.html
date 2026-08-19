@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Binance Invest</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cryptologos.cc" crossorigin>
+<link rel="dns-prefetch" href="https://api.binance.com">
 <!-- بارگذاری کتابخانه Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -2446,11 +2449,11 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 @keyframes withdrawalGlassFlow{0%{opacity:0;transform:translate(-50%,-92px)}7%{opacity:1}44%{opacity:1}51%{opacity:.28}58%{opacity:1}93%{opacity:1}100%{opacity:0;transform:translate(-50%,calc(min(941px,123.83vw) + 92px))}}
 
 /* One continuous trust area: vault video, why section and footer */
-.footer-section{position:relative;width:100vw;margin:42px 0 0 calc(50% - 50vw);padding:0 20px 42px;overflow:hidden;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.04),rgba(3,5,7,.16) 36%,rgba(3,5,7,.28)),url("trust-section-background.png");background-repeat:no-repeat;background-position:center top;background-size:cover;border:0}
+.footer-section{position:relative;width:100vw;margin:42px 0 0 calc(50% - 50vw);padding:0 20px 42px;overflow:hidden;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.04),rgba(3,5,7,.16) 36%,rgba(3,5,7,.28)),url("trust-section-background.webp");background-repeat:no-repeat;background-position:center top;background-size:cover;border:0}
 .footer-section::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(2,4,6,.17),transparent 18%,transparent 82%,rgba(2,4,6,.17))}.footer-section>*{position:relative;z-index:1}
 .why-binance-video{width:min(1180px,100vw);aspect-ratio:16/9;margin:0 auto 30px;object-fit:cover;background:transparent;border:0;border-radius:0;box-shadow:none;mix-blend-mode:screen}.footer-section>p{padding:0 14px;text-shadow:0 2px 10px rgba(0,0,0,.85)}
 .security-brand-card,.footer-section>div>div[style*="background:#0c1117e8"]{background:linear-gradient(145deg,rgba(17,24,32,.72),rgba(5,9,13,.55));backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15)}
-.site-footer{margin-top:0;padding-top:38px;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.24),rgba(3,5,7,.72)),url("trust-section-background.png");background-repeat:no-repeat;background-position:center bottom;background-size:cover;border-top:1px solid rgba(240,185,11,.10)}
+.site-footer{margin-top:0;padding-top:38px;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.24),rgba(3,5,7,.72)),url("trust-section-background.webp");background-repeat:no-repeat;background-position:center bottom;background-size:cover;border-top:1px solid rgba(240,185,11,.10)}
 .footer-section>.site-footer{width:min(1180px,100%);margin:36px auto 0;padding:38px 0 0;background:transparent;border-top:1px solid rgba(240,185,11,.13);text-align:left}.footer-section>.site-footer .site-footer-inner{width:100%}
 html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:600px){.live-withdrawals-container.has-video{width:100vw;border-radius:0;box-shadow:none}.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){width:calc(100% - 16px);min-height:59px;padding:7px 9px 7px 7px;gap:7px}.live-withdrawals-container.has-video .live-avatar{width:42px!important;height:42px!important;min-width:42px!important;font-size:12px!important}.live-withdrawals-container.has-video .live-info{margin-left:9px}.live-withdrawals-container.has-video .live-info b{font-size:12px}.live-withdrawals-container.has-video .live-info span{margin-top:2px;font-size:8px}.live-withdrawals-container.has-video .live-amount{padding:6px 8px;font-size:12px}.footer-section{margin-top:28px;padding:0 12px 30px;background-size:auto 100%}.why-binance-video{width:100vw;margin-left:calc(50% - 50vw);margin-bottom:24px}.site-footer{padding-top:30px;background-size:auto 100%}}
@@ -2490,20 +2493,20 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 
 /* Illustrated investment plan cards */
 #homePlans>.plan,#plans>.plan{min-height:410px;background-color:#090d12!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important;border-color:rgba(240,185,11,.38)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 18px 44px rgba(0,0,0,.48),0 0 16px rgba(240,185,11,.065)!important}
-#homePlans>.plan:nth-child(1),#plans>.plan:nth-child(1){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.91) 47%,rgba(5,9,13,.48) 71%,rgba(5,9,13,.15) 100%),url("plan-starter.png")!important}
-#homePlans>.plan:nth-child(2),#plans>.plan:nth-child(2){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.46) 71%,rgba(5,9,13,.13) 100%),url("plan-growth.png")!important}
-#homePlans>.plan:nth-child(3),#plans>.plan:nth-child(3){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.44) 71%,rgba(5,9,13,.12) 100%),url("plan-premium.png")!important}
-#homePlans>.plan:nth-child(4),#plans>.plan:nth-child(4){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.44) 71%,rgba(5,9,13,.12) 100%),url("plan-vip.png")!important}
+#homePlans>.plan:nth-child(1),#plans>.plan:nth-child(1){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.91) 47%,rgba(5,9,13,.48) 71%,rgba(5,9,13,.15) 100%),url("plan-starter.webp")!important}
+#homePlans>.plan:nth-child(2),#plans>.plan:nth-child(2){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.46) 71%,rgba(5,9,13,.13) 100%),url("plan-growth.webp")!important}
+#homePlans>.plan:nth-child(3),#plans>.plan:nth-child(3){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.44) 71%,rgba(5,9,13,.12) 100%),url("plan-premium.webp")!important}
+#homePlans>.plan:nth-child(4),#plans>.plan:nth-child(4){background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.90) 47%,rgba(5,9,13,.44) 71%,rgba(5,9,13,.12) 100%),url("plan-vip.webp")!important}
 .vip-plan-summary .tag{color:#ffe58a!important;background:rgba(240,185,11,.11)!important;border-color:rgba(255,229,138,.48)!important}
 #homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:68%;text-shadow:0 2px 10px rgba(0,0,0,.95)}
 #homePlans>.plan h3,#plans>.plan h3{color:#f9fbfd;font-size:19px;font-weight:900}
 #homePlans>.plan ul,#plans>.plan ul{color:#c4ceda;font-weight:520}
 #homePlans>.plan .btn,#plans>.plan .btn{position:absolute;right:17px;bottom:17px;left:17px;width:auto;margin:0;z-index:4}
 #homePlans>.plan:hover,#plans>.plan:hover{background-size:104%!important;background-position:center!important;border-color:rgba(255,225,91,.62)!important}
-.vip-lock-card{background-color:#080c11!important;background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.92) 53%,rgba(5,9,13,.62) 72%,rgba(5,9,13,.20) 100%),url("plan-vip.png")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important;border-color:rgba(240,185,11,.46)!important}
+.vip-lock-card{background-color:#080c11!important;background-image:linear-gradient(90deg,rgba(5,9,13,.98) 0%,rgba(5,9,13,.92) 53%,rgba(5,9,13,.62) 72%,rgba(5,9,13,.20) 100%),url("plan-vip.webp")!important;background-repeat:no-repeat!important;background-position:center!important;background-size:cover!important;border-color:rgba(240,185,11,.46)!important}
 .vip-lock-card::before{background:radial-gradient(circle,rgba(240,185,11,.10),transparent 67%)}
 .vip-lock-header,.vip-lock-body{position:relative;z-index:2}.vip-lock-header>div:nth-child(2),.vip-lock-body{max-width:78%}
-@media(max-width:900px){#homePlans>.plan,#plans>.plan{min-height:390px}#homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:72%}.vip-lock-header>div:nth-child(2),.vip-lock-body{max-width:100%}.vip-lock-card{background-image:linear-gradient(90deg,rgba(5,9,13,.97),rgba(5,9,13,.84) 62%,rgba(5,9,13,.45)),url("plan-vip.png")!important}}
+@media(max-width:900px){#homePlans>.plan,#plans>.plan{min-height:390px}#homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:72%}.vip-lock-header>div:nth-child(2),.vip-lock-body{max-width:100%}.vip-lock-card{background-image:linear-gradient(90deg,rgba(5,9,13,.97),rgba(5,9,13,.84) 62%,rgba(5,9,13,.45)),url("plan-vip.webp")!important}}
 @media(max-width:600px){#homePlans>.plan,#plans>.plan{min-height:370px;background-position:58% center!important}#homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:74%}#homePlans>.plan .apy,#plans>.plan .apy{font-size:31px}#homePlans>.plan .btn,#plans>.plan .btn{right:13px;bottom:13px;left:13px}.vip-lock-card{background-position:64% center!important}}
 
 /* Premium glass platform statistics — no image assets required */
@@ -2600,10 +2603,10 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   background-position:left center;
   background-size:auto 100%;
 }
-.stat-circle-card:nth-child(1){background-image:url("stat-platform-users.png")}
-.stat-circle-card:nth-child(2){background-image:url("stat-active-investors.png")}
-.stat-circle-card:nth-child(3){background-image:url("stat-profit-paid.png")}
-.stat-circle-card:nth-child(4){background-image:url("stat-platform-capital.png")}
+.stat-circle-card:nth-child(1){background-image:url("stat-platform-users.webp")}
+.stat-circle-card:nth-child(2){background-image:url("stat-active-investors.webp")}
+.stat-circle-card:nth-child(3){background-image:url("stat-profit-paid.webp")}
+.stat-circle-card:nth-child(4){background-image:url("stat-platform-capital.webp")}
 .stat-circle-card::before{display:none}
 .stat-circle-icon{display:none!important}
 .stat-circle-left{min-width:0;position:relative;z-index:2}
@@ -2621,6 +2624,9 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:420px){
   .stat-circle-card{padding-left:112px}
   .stat-badge-tag{max-width:76px;text-align:center;line-height:1.25}
+}
+@supports(content-visibility:auto){
+  .referral-home-card,.stats-vertical-stack,.withdrawals-showcase,.footer-section,.site-footer{content-visibility:auto;contain-intrinsic-size:auto 600px}
 }
 </style>
 </head>
@@ -2793,22 +2799,18 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="title"><h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
-  <video class="live-withdrawals-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="live-withdrawals-new.mp4" type="video/mp4">
-    <source src="live-withdrawals-new.webm" type="video/webm">
-  </video>
-  <video class="live-withdrawals-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="live-withdrawals-new.mp4" type="video/mp4">
-    <source src="live-withdrawals-new.webm" type="video/webm">
+  <video class="live-withdrawals-video lazy-video" muted loop playsinline preload="none" aria-hidden="true">
+    <source data-src="live-withdrawals-new.webm" type="video/webm">
+    <source data-src="live-withdrawals-new.mp4" type="video/mp4">
   </video>
   <div class="fade-overlay"></div>
 </div>
 </section>
 
 <div class="footer-section">
-    <video class="why-binance-video" autoplay muted loop playsinline preload="metadata" aria-label="Secure digital asset vault">
-      <source src="why-binance-vault.mp4" type="video/mp4">
-      <source src="why-binance-vault.webm" type="video/webm">
+    <video class="why-binance-video lazy-video" muted loop playsinline preload="none" aria-label="Secure digital asset vault">
+      <source data-src="why-binance-vault.mp4" type="video/mp4">
+      <source data-src="why-binance-vault.webm" type="video/webm">
     </video>
     <h3 data-t="footerTitle">Why Binance Invest?</h3>
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
@@ -7785,7 +7787,48 @@ function setLang(lang){
   applySupportLanguage();
 }
 
+function initializeLazyVideos() {
+  const videos = [...document.querySelectorAll("video.lazy-video")];
+  if (!videos.length) return;
+
+  const loadVideo = video => {
+    if (!video.dataset.loaded) {
+      video.querySelectorAll("source[data-src]").forEach(source => {
+        source.src = source.dataset.src;
+        source.removeAttribute("data-src");
+      });
+      video.dataset.loaded = "true";
+      video.load();
+    }
+
+    const playPromise = video.play();
+    if (playPromise?.catch) playPromise.catch(() => {});
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    videos.forEach(loadVideo);
+    return;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        loadVideo(video);
+      } else if (!video.paused) {
+        video.pause();
+      }
+    });
+  }, {
+    rootMargin: "650px 0px",
+    threshold: 0.01
+  });
+
+  videos.forEach(video => observer.observe(video));
+}
+
 window.onload = async function(){
+  initializeLazyVideos();
   captureReferralCodeFromUrl();
 
   let savedLang = localStorage.getItem("bi_lang") || "en";
