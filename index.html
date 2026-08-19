@@ -2710,35 +2710,41 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   background-size:cover;
   background-position:center 64%;
   background-repeat:no-repeat;
+  border:1px solid rgba(240,185,11,.34);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 30px 90px #0008,0 0 17px rgba(240,185,11,.055);
 }
 .hero>*:not(.orb){position:relative;z-index:2}
 .hero .orb{
   z-index:1;
   top:auto;
-  right:7%;
+  right:10%;
   bottom:48px;
   width:clamp(190px,19vw,225px);
   height:clamp(190px,19vw,225px);
   opacity:1;
   background:
-    radial-gradient(circle at 28% 22%,rgba(255,255,255,.70) 0 4%,rgba(255,238,170,.24) 11%,rgba(240,185,11,.10) 28%,rgba(19,27,35,.18) 54%,rgba(3,6,9,.58) 78%),
-    linear-gradient(145deg,rgba(255,255,255,.18),rgba(240,185,11,.05) 44%,rgba(0,0,0,.22));
-  border:1px solid rgba(255,229,138,.42);
+    radial-gradient(ellipse at 28% 19%,rgba(255,255,255,.78) 0 2.5%,rgba(255,255,255,.30) 7%,rgba(255,235,167,.13) 16%,transparent 29%),
+    radial-gradient(ellipse at 72% 78%,rgba(240,185,11,.10),transparent 36%),
+    linear-gradient(118deg,rgba(255,255,255,.12) 0 10%,transparent 31% 67%,rgba(240,185,11,.045) 84%,rgba(0,0,0,.18)),
+    radial-gradient(ellipse at 47% 42%,rgba(35,46,57,.16),rgba(5,9,14,.61) 77%);
+  border:1px solid rgba(224,235,244,.34);
   box-shadow:
-    inset 16px 14px 30px rgba(255,255,255,.13),
-    inset -24px -28px 42px rgba(0,0,0,.50),
-    inset 0 0 22px rgba(240,185,11,.09),
+    inset 15px 13px 28px rgba(255,255,255,.16),
+    inset -25px -29px 43px rgba(0,0,0,.53),
+    inset 3px 2px 15px rgba(255,255,255,.055),
+    inset 0 0 24px rgba(240,185,11,.075),
     0 22px 65px rgba(0,0,0,.52),
-    0 0 30px rgba(240,185,11,.14);
+    0 0 27px rgba(187,211,226,.105),
+    0 0 0 3px rgba(224,235,244,.022);
   backdrop-filter:blur(3px) saturate(1.18);
   -webkit-backdrop-filter:blur(3px) saturate(1.18);
   animation:glassOrbFloat 4.8s ease-in-out infinite;
 }
-.hero .orb::before{content:"";position:absolute;top:13%;left:17%;width:38%;height:18%;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,229,138,.04));filter:blur(3px);transform:rotate(-21deg);opacity:.72}
-.hero .orb::after{content:"";position:absolute;inset:7%;border:1px solid rgba(255,255,255,.13);border-radius:50%;box-shadow:inset 0 0 20px rgba(255,229,138,.06)}
+.hero .orb::before{content:"";position:absolute;top:11%;left:15%;width:41%;height:17%;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,229,138,.025) 68%,transparent);filter:blur(2.7px);transform:rotate(-22deg);opacity:.74}
+.hero .orb::after{content:"";position:absolute;right:8%;bottom:9%;width:43%;height:24%;border:0;border-radius:50%;background:radial-gradient(ellipse,rgba(240,185,11,.10),rgba(240,185,11,.025) 43%,transparent 72%);filter:blur(8px);transform:rotate(-28deg);opacity:.74;box-shadow:none}
 @keyframes glassOrbFloat{
-  0%,100%{transform:translate3d(0,0,0) rotate(-1deg);filter:brightness(1)}
-  50%{transform:translate3d(0,-13px,0) rotate(2deg);filter:brightness(1.10)}
+  0%,100%{transform:translate3d(0,0,0) rotate(-1deg) scale(1);filter:brightness(1)}
+  50%{transform:translate3d(-17px,-12px,0) rotate(1.5deg) scale(1.015);filter:brightness(1.075)}
 }
 
 /* Full Markets page using the existing cinematic artwork */
@@ -2767,8 +2773,8 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .portfolio-finance-guest.show{display:block}
 .portfolio-finance-guest-icon{width:58px;height:58px;margin:0 auto 13px;display:grid;place-items:center;color:#171100;font-size:25px;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:16px;box-shadow:0 8px 25px rgba(240,185,11,.22)}
 .portfolio-finance-guest h3{margin:0 0 8px;font-size:20px}.portfolio-finance-guest p{max-width:510px;margin:0 auto 17px;color:#9ba7b7;line-height:1.7}
-@media(max-width:900px){.hero .orb{right:5%;bottom:66px;width:185px;height:185px;opacity:1}}
-@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero .orb{top:auto;right:5%;bottom:94px;width:150px;height:150px;opacity:1;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}}
+@media(max-width:900px){.hero .orb{right:9%;bottom:55px;width:185px;height:185px;opacity:1}}
+@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero .orb{top:auto;right:10%;bottom:76px;width:150px;height:150px;opacity:1;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}}
 </style>
 </head>
 <body>
@@ -2823,7 +2829,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 
 <section id="home" class="view active">
 <div class="homepage-vault-video">
-  <video autoplay muted loop playsinline preload="auto" aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
+  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><div class="orb"></div></div>
 
@@ -7985,8 +7991,59 @@ function initializeLazyVideos() {
   videos.forEach(video => observer.observe(video));
 }
 
+function initializeHomepageVaultVideo() {
+  const video = document.getElementById("homepageVaultVideo");
+  if (!video || video.dataset.playbackGuard === "true") return;
+
+  video.dataset.playbackGuard = "true";
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+
+  const isOnScreen = () => {
+    const rect = video.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
+  };
+
+  const safePlay = () => {
+    if (document.hidden || !isOnScreen()) return;
+    video.muted = true;
+    const promise = video.play();
+    if (promise?.catch) promise.catch(() => {});
+  };
+
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    safePlay();
+  });
+
+  video.addEventListener("pause", () => {
+    window.setTimeout(safePlay, 180);
+  });
+
+  video.addEventListener("stalled", () => {
+    window.setTimeout(safePlay, 350);
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) safePlay();
+  });
+
+  window.addEventListener("pageshow", safePlay);
+  window.addEventListener("focus", safePlay);
+  window.addEventListener("touchstart", safePlay, { passive: true });
+
+  window.setInterval(() => {
+    if (video.paused && !video.ended) safePlay();
+  }, 2500);
+
+  safePlay();
+}
+
 window.onload = async function(){
   initializeLazyVideos();
+  initializeHomepageVaultVideo();
   captureReferralCodeFromUrl();
 
   let savedLang = localStorage.getItem("bi_lang") || "en";
