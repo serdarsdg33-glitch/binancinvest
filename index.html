@@ -3115,6 +3115,64 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 }
 
 @media(max-width:600px){#portfolio .cards .stat>.muted{font-size:12px}}
+
+/* Clear-glass Portfolio cards: preserve the background image without blur. */
+#portfolio .card,
+#portfolio .referral-portfolio-card,
+#portfolio .vip-single-card,
+#portfolio .portfolio-vip-quick,
+#portfolio .portfolio-finance-guest{
+  background:
+    linear-gradient(145deg,rgba(12,18,25,.12),rgba(3,7,11,.055))!important;
+  border-color:rgba(255,225,91,.29)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.14),
+    inset 0 0 18px rgba(255,229,138,.018),
+    0 10px 26px rgba(0,0,0,.18)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+#portfolio .portfolio-vip-metric,
+#portfolio .vip-single-summary>div,
+#portfolio .vip-contract-tablebox,
+#portfolio .vip-contract-table thead,
+#portfolio .vip-contract-table tbody,
+#portfolio .vip-contract-table tr,
+#portfolio .vip-contract-table td,
+#portfolio .vip-contract-table th{
+  background:rgba(3,7,11,.075)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+#portfolio .portfolio-vip-metric,
+#portfolio .vip-single-summary>div,
+#portfolio .vip-contract-tablebox{
+  border-color:rgba(255,229,138,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+
+/* Inputs stay legible but no longer blur the artwork behind them. */
+#portfolio input,
+#portfolio select,
+#portfolio .custom-select-trigger,
+#portfolio .custom-options{
+  background:rgba(5,10,15,.30)!important;
+  border-color:rgba(255,229,138,.21)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+@media(max-width:600px){
+  #portfolio .card,
+  #portfolio .referral-portfolio-card,
+  #portfolio .vip-single-card,
+  #portfolio .portfolio-vip-quick,
+  #portfolio .portfolio-finance-guest{
+    background:linear-gradient(145deg,rgba(9,14,20,.095),rgba(2,5,9,.035))!important;
+  }
+}
 </style>
 </head>
 <body>
