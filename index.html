@@ -5,12 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Binance Invest</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://cryptologos.cc" crossorigin>
 <link rel="dns-prefetch" href="https://api.binance.com">
-<link rel="preload" href="stat-platform-users.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-active-investors.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-profit-paid.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-platform-capital.webp" as="image" type="image/webp">
 <link rel="preload" href="top-markets-background.webp" as="image" type="image/webp">
 <link rel="preload" href="hero-background.webp" as="image" type="image/webp">
 <!-- بارگذاری کتابخانه Supabase -->
@@ -173,10 +168,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section h3{color:#fff;margin-bottom:15px}
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
 .why-binance-demo-image{display:block;width:min(980px,100%);aspect-ratio:16/9;margin:0 auto 34px;object-fit:cover;border:1px solid rgba(240,185,11,.28);border-radius:20px;box-shadow:0 22px 60px rgba(0,0,0,.58),0 0 24px rgba(240,185,11,.08)}
-.live-withdrawals-container.has-demo-image{background-image:linear-gradient(90deg,rgba(7,10,14,.97) 0%,rgba(7,10,14,.88) 47%,rgba(7,10,14,.42) 100%),url("live-withdrawals-demo.jpg");background-size:cover;background-position:center;background-repeat:no-repeat}
-.live-withdrawals-container.has-demo-image .live-withdraw{width:min(620px,72%);background:rgba(12,17,23,.76);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
-.live-withdrawals-container.has-demo-image .fade-overlay{background:linear-gradient(transparent,rgba(7,10,14,.94))}
-@media(max-width:600px){.why-binance-demo-image{margin-bottom:26px;border-radius:14px}.live-withdrawals-container.has-demo-image{background-image:linear-gradient(rgba(7,10,14,.78),rgba(7,10,14,.88)),url("live-withdrawals-demo.jpg");background-position:center}.live-withdrawals-container.has-demo-image .live-withdraw{width:100%}}
+@media(max-width:600px){.why-binance-demo-image{margin-bottom:26px;border-radius:14px}}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
 
 /* Portfolio & Deposit Section Grid Layout */
@@ -3022,7 +3014,7 @@ html[dir="rtl"] .language-panel-head{padding-right:0;padding-left:43px}html[dir=
 
 <section id="home" class="view active">
 <div class="homepage-vault-video">
-  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
+  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="homepage-vault-poster.webp" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
 
@@ -5317,9 +5309,28 @@ window.addEventListener('click', function(e) {
 
 // دریافت زنده قیمت ها از بایننس
 async function fetchRealPrices() {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 5000);
+
     try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const res = await fetch(
+            'https://api.binance.com/api/v3/ticker/24hr',
+            {
+                signal: controller.signal,
+                cache: 'no-store'
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`Price service returned ${res.status}`);
+        }
+
         const data = await res.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid price response');
+        }
+
         const symbolMap = {
             'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
             'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
@@ -5339,6 +5350,8 @@ async function fetchRealPrices() {
         renderTable();
     } catch(e) {
         console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
+    } finally {
+        window.clearTimeout(timeoutId);
     }
 }
 
@@ -8316,8 +8329,16 @@ restoreEmailConfirmationNotice();
  calcCustom();
 calculateVipLock();
 calculatePortfolioVipLock();
-fetchRealPrices();
-  setInterval(fetchRealPrices, 15000);
+  const startPriceUpdates = () => {
+    fetchRealPrices();
+    window.setInterval(fetchRealPrices, 30000);
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(startPriceUpdates, { timeout: 2500 });
+  } else {
+    window.setTimeout(startPriceUpdates, 1200);
+  }
 
   if (currentUser) {
     loadProfile();
