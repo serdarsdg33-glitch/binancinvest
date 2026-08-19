@@ -2714,6 +2714,12 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .hero>*:not(.orb){position:relative;z-index:2}
 .hero .orb{
   z-index:1;
+  top:auto;
+  right:7%;
+  bottom:48px;
+  width:clamp(190px,19vw,225px);
+  height:clamp(190px,19vw,225px);
+  opacity:1;
   background:
     radial-gradient(circle at 28% 22%,rgba(255,255,255,.70) 0 4%,rgba(255,238,170,.24) 11%,rgba(240,185,11,.10) 28%,rgba(19,27,35,.18) 54%,rgba(3,6,9,.58) 78%),
     linear-gradient(145deg,rgba(255,255,255,.18),rgba(240,185,11,.05) 44%,rgba(0,0,0,.22));
@@ -2726,9 +2732,14 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
     0 0 30px rgba(240,185,11,.14);
   backdrop-filter:blur(3px) saturate(1.18);
   -webkit-backdrop-filter:blur(3px) saturate(1.18);
+  animation:glassOrbFloat 4.8s ease-in-out infinite;
 }
 .hero .orb::before{content:"";position:absolute;top:13%;left:17%;width:38%;height:18%;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,229,138,.04));filter:blur(3px);transform:rotate(-21deg);opacity:.72}
 .hero .orb::after{content:"";position:absolute;inset:7%;border:1px solid rgba(255,255,255,.13);border-radius:50%;box-shadow:inset 0 0 20px rgba(255,229,138,.06)}
+@keyframes glassOrbFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(-1deg);filter:brightness(1)}
+  50%{transform:translate3d(0,-13px,0) rotate(2deg);filter:brightness(1.10)}
+}
 
 /* Full Markets page using the existing cinematic artwork */
 #markets{
@@ -2756,7 +2767,8 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .portfolio-finance-guest.show{display:block}
 .portfolio-finance-guest-icon{width:58px;height:58px;margin:0 auto 13px;display:grid;place-items:center;color:#171100;font-size:25px;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:16px;box-shadow:0 8px 25px rgba(240,185,11,.22)}
 .portfolio-finance-guest h3{margin:0 0 8px;font-size:20px}.portfolio-finance-guest p{max-width:510px;margin:0 auto 17px;color:#9ba7b7;line-height:1.7}
-@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero .orb{backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}}
+@media(max-width:900px){.hero .orb{right:5%;bottom:66px;width:185px;height:185px;opacity:1}}
+@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero .orb{top:auto;right:5%;bottom:94px;width:150px;height:150px;opacity:1;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}}
 </style>
 </head>
 <body>
