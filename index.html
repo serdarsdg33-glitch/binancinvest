@@ -163,6 +163,11 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section{margin-top:60px;padding:50px 20px;background:#06080a;border-top:1px solid #ffffff10;text-align:center;color:var(--muted)}
 .footer-section h3{color:#fff;margin-bottom:15px}
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
+.why-binance-demo-image{display:block;width:min(980px,100%);aspect-ratio:16/9;margin:0 auto 34px;object-fit:cover;border:1px solid rgba(240,185,11,.28);border-radius:20px;box-shadow:0 22px 60px rgba(0,0,0,.58),0 0 24px rgba(240,185,11,.08)}
+.live-withdrawals-container.has-demo-image{background-image:linear-gradient(90deg,rgba(7,10,14,.97) 0%,rgba(7,10,14,.88) 47%,rgba(7,10,14,.42) 100%),url("live-withdrawals-demo.jpg");background-size:cover;background-position:center;background-repeat:no-repeat}
+.live-withdrawals-container.has-demo-image .live-withdraw{width:min(620px,72%);background:rgba(12,17,23,.76);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.live-withdrawals-container.has-demo-image .fade-overlay{background:linear-gradient(transparent,rgba(7,10,14,.94))}
+@media(max-width:600px){.why-binance-demo-image{margin-bottom:26px;border-radius:14px}.live-withdrawals-container.has-demo-image{background-image:linear-gradient(rgba(7,10,14,.78),rgba(7,10,14,.88)),url("live-withdrawals-demo.jpg");background-position:center}.live-withdrawals-container.has-demo-image .live-withdraw{width:100%}}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
 
 /* Portfolio & Deposit Section Grid Layout */
@@ -2290,6 +2295,20 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 @media(max-width:850px){.portfolio-vip-grid{grid-template-columns:1fr 1fr}.portfolio-vip-field{grid-column:1/-1}.portfolio-vip-button{grid-column:1/-1;width:100%}}
 @media(max-width:480px){.portfolio-vip-quick{padding:14px 12px}.portfolio-vip-head{align-items:flex-start}.portfolio-vip-grid{grid-template-columns:1fr}.portfolio-vip-field,.portfolio-vip-button{grid-column:auto}.portfolio-vip-badge{font-size:8px}.portfolio-vip-metric{min-height:52px}}
 
+/* Cinematic withdrawal and trust videos */
+.live-withdrawals-container.has-video{position:relative;isolation:isolate;height:420px;padding:15px;overflow:hidden;background:#070a0e;border:1px solid rgba(240,185,11,.32);border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 45px rgba(0,0,0,.34),0 18px 48px rgba(0,0,0,.48),0 0 22px rgba(240,185,11,.07)}
+.live-withdrawals-container.has-video::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(4,7,10,.78),rgba(4,7,10,.53) 48%,rgba(4,7,10,.16)),linear-gradient(0deg,rgba(4,7,10,.46),transparent 45%)}
+.live-withdrawals-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center;pointer-events:none}
+.live-withdrawals-container.has-video .live-withdraw{position:relative;z-index:3;width:min(650px,72%);min-height:66px;margin-bottom:8px;padding:10px 14px 10px 11px;overflow:hidden;color:#fff;background:linear-gradient(110deg,rgba(19,26,34,.68),rgba(8,13,18,.46));border:1px solid rgba(255,229,138,.19);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 22px rgba(255,255,255,.018),0 8px 25px rgba(0,0,0,.28),0 0 10px rgba(240,185,11,.045);backdrop-filter:blur(13px) saturate(1.18);-webkit-backdrop-filter:blur(13px) saturate(1.18)}
+.live-withdrawals-container.has-video .live-withdraw::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.075),transparent 28%,transparent 72%,rgba(240,185,11,.035))}
+.live-withdrawals-container.has-video .live-avatar{position:relative;z-index:1;width:46px!important;height:46px!important;min-width:46px!important;overflow:hidden;color:#fff3b0!important;font-size:15px!important;font-weight:950!important;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.24),rgba(240,185,11,.12) 34%,rgba(8,13,18,.46) 72%)!important;border:1px solid rgba(255,229,138,.56)!important;border-radius:50%!important;box-shadow:inset 2px 2px 6px rgba(255,255,255,.17),inset -4px -5px 10px rgba(0,0,0,.30),0 0 0 3px rgba(240,185,11,.055),0 0 16px rgba(240,185,11,.20)!important;text-shadow:0 0 9px rgba(255,225,91,.48);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.live-withdrawals-container.has-video .live-avatar::before{z-index:0;top:6px;left:8px;width:20px;height:10px;opacity:.55}.live-withdrawals-container.has-video .live-avatar::after{z-index:0;inset:3px;border-color:rgba(255,255,255,.15)}
+.live-withdrawals-container.has-video .live-info{position:relative;z-index:1;min-width:0;margin:0 13px}.live-withdrawals-container.has-video .live-info b{overflow:hidden;color:#fff;font-size:14px;font-weight:850;letter-spacing:.25px;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.7),0 0 7px rgba(255,229,138,.10)}.live-withdrawals-container.has-video .live-info span{display:block;margin-top:4px;color:rgba(220,228,238,.68);font-size:10px;letter-spacing:.5px}
+.live-withdrawals-container.has-video .live-amount{position:relative;z-index:1;flex-shrink:0;color:#63efb3;font-size:16px;font-weight:950;letter-spacing:.25px;text-shadow:0 0 10px rgba(22,199,132,.48),0 2px 7px rgba(0,0,0,.75)}
+.live-withdrawals-container.has-video .fade-overlay{z-index:4;height:72px;background:linear-gradient(transparent,rgba(5,8,12,.92))}
+.why-binance-video{display:block;width:min(980px,100%);aspect-ratio:16/9;margin:0 auto 34px;object-fit:cover;background:#05070b;border:1px solid rgba(240,185,11,.30);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 60px rgba(0,0,0,.58),0 0 24px rgba(240,185,11,.09)}
+@media(max-width:600px){.live-withdrawals-container.has-video{height:390px;padding:10px;border-radius:17px}.live-withdrawals-container.has-video::before{background:linear-gradient(90deg,rgba(4,7,10,.68),rgba(4,7,10,.35)),linear-gradient(0deg,rgba(4,7,10,.58),rgba(4,7,10,.08))}.live-withdrawals-container.has-video .live-withdraw{width:100%;min-height:64px;padding:9px 10px 9px 9px;border-radius:17px}.live-withdrawals-container.has-video .live-avatar{width:43px!important;height:43px!important;min-width:43px!important}.live-withdrawals-container.has-video .live-info{margin:0 9px}.live-withdrawals-container.has-video .live-info b{max-width:130px;font-size:12px}.live-withdrawals-container.has-video .live-amount{font-size:13px}.why-binance-video{margin-bottom:26px;border-radius:15px}}
+
 /* Homepage video: the only addition to the original layout */
 .homepage-vault-video{width:100%;margin:0 0 18px;overflow:hidden;aspect-ratio:16/9;background:#030405;border:1px solid rgba(240,185,11,.34);border-radius:22px;box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 18px rgba(240,185,11,.06)}
 .homepage-vault-video video{width:100%;height:100%;display:block;object-fit:cover;background:#030405}
@@ -2469,9 +2488,19 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 </div>
 
 <div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
-<div class="live-withdrawals-container" id="liveWithdrawalsList"><div class="fade-overlay"></div></div>
+<div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
+  <video class="live-withdrawals-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    <source src="live-withdrawals.mp4" type="video/mp4">
+    <source src="live-withdrawals.webm" type="video/webm">
+  </video>
+  <div class="fade-overlay"></div>
+</div>
 
 <div class="footer-section">
+    <video class="why-binance-video" autoplay muted loop playsinline preload="metadata" aria-label="Secure digital asset vault">
+      <source src="why-binance-vault.mp4" type="video/mp4">
+      <source src="why-binance-vault.webm" type="video/webm">
+    </video>
     <h3 data-t="footerTitle">Why Binance Invest?</h3>
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
