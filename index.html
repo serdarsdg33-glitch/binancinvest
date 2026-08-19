@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://cryptologos.cc" crossorigin>
 <link rel="dns-prefetch" href="https://api.binance.com">
+<link rel="preload" href="stat-platform-users.webp" as="image" type="image/webp">
+<link rel="preload" href="stat-active-investors.webp" as="image" type="image/webp">
+<link rel="preload" href="stat-profit-paid.webp" as="image" type="image/webp">
+<link rel="preload" href="stat-platform-capital.webp" as="image" type="image/webp">
 <!-- بارگذاری کتابخانه Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -2510,7 +2514,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:600px){#homePlans>.plan,#plans>.plan{min-height:370px;background-position:58% center!important}#homePlans>.plan h3,#plans>.plan h3,#homePlans>.plan .apy,#plans>.plan .apy,#homePlans>.plan ul,#plans>.plan ul{max-width:74%}#homePlans>.plan .apy,#plans>.plan .apy{font-size:31px}#homePlans>.plan .btn,#plans>.plan .btn{right:13px;bottom:13px;left:13px}.vip-lock-card{background-position:64% center!important}}
 
 /* Premium glass platform statistics — no image assets required */
-.stats-vertical-stack{gap:13px;max-width:790px}
+.stats-vertical-stack{gap:13px;max-width:790px;padding-top:8px}
 .stat-circle-card{
   position:relative;
   isolation:isolate;
@@ -2597,16 +2601,17 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 /* Illustrated statistic cards */
 .stat-circle-card{
   min-height:112px;
-  padding-left:165px;
+  padding:16px 22px 16px 32%;
   background-color:#080c11;
   background-repeat:no-repeat;
-  background-position:left center;
-  background-size:auto 100%;
+  background-position:center;
+  background-size:cover;
+  animation:statCardBreath 5.5s ease-in-out infinite!important;
 }
-.stat-circle-card:nth-child(1){background-image:url("stat-platform-users.webp")}
-.stat-circle-card:nth-child(2){background-image:url("stat-active-investors.webp")}
-.stat-circle-card:nth-child(3){background-image:url("stat-profit-paid.webp")}
-.stat-circle-card:nth-child(4){background-image:url("stat-platform-capital.webp")}
+.stat-circle-card:nth-child(1){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-platform-users.webp")}
+.stat-circle-card:nth-child(2){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-active-investors.webp")}
+.stat-circle-card:nth-child(3){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-profit-paid.webp")}
+.stat-circle-card:nth-child(4){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-platform-capital.webp")}
 .stat-circle-card::before{display:none}
 .stat-circle-icon{display:none!important}
 .stat-circle-left{min-width:0;position:relative;z-index:2}
@@ -2614,19 +2619,23 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .stat-circle-value{font-size:clamp(23px,3.2vw,29px)}
 .stat-circle-label{color:#c1cad6}
 .stat-badge-tag{position:relative;z-index:2;flex:0 0 auto}
+@keyframes statCardBreath{
+  0%,100%{transform:translateY(0);border-color:rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(0,0,0,.42),0 0 0 rgba(240,185,11,0)}
+  50%{transform:translateY(-5px);border-color:rgba(240,185,11,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 17px 38px rgba(0,0,0,.48),0 0 16px rgba(240,185,11,.075)}
+}
 @media(max-width:600px){
-  .stat-circle-card{min-height:96px;padding:12px 11px 12px 126px;background-size:auto 100%}
+  .stat-circle-card{min-height:96px;padding:12px 11px 12px 32%;background-size:cover;background-position:center}
   .stat-circle-info{padding:3px 0}
   .stat-circle-value{font-size:clamp(17px,5.2vw,22px);white-space:nowrap}
   .stat-circle-label{font-size:7.5px;letter-spacing:.7px;white-space:nowrap}
   .stat-badge-tag{padding:5px 7px;font-size:8px}
 }
 @media(max-width:420px){
-  .stat-circle-card{padding-left:112px}
+  .stat-circle-card{padding-left:31%}
   .stat-badge-tag{max-width:76px;text-align:center;line-height:1.25}
 }
 @supports(content-visibility:auto){
-  .referral-home-card,.stats-vertical-stack,.withdrawals-showcase,.footer-section,.site-footer{content-visibility:auto;contain-intrinsic-size:auto 600px}
+  .referral-home-card,.withdrawals-showcase,.footer-section,.site-footer{content-visibility:auto;contain-intrinsic-size:auto 600px}
 }
 </style>
 </head>
