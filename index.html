@@ -2835,7 +2835,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   background-color:#05070a;
   background-image:
     linear-gradient(180deg,rgba(3,6,9,.20),rgba(3,6,9,.38) 52%,rgba(3,6,9,.24)),
-    url("portfolio-page-background.webp");
+    url("portfolio-page-background-hq.webp");
   background-size:cover;
   background-position:center top;
   background-repeat:no-repeat;
@@ -2863,7 +2863,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   backdrop-filter:blur(.6px);
   -webkit-backdrop-filter:blur(.6px);
 }
-@media(max-width:600px){#portfolio{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}}
+@media(max-width:600px){#portfolio{padding:12px 9px;border-radius:20px;background-size:100% 100%;background-position:center top}}
 
 /* Continuous cinematic backgrounds for account pages */
 #rewards,#profile,#support,#transactions{
@@ -2879,7 +2879,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   border-radius:25px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 58px rgba(0,0,0,.42);
 }
-#rewards{background-image:linear-gradient(180deg,rgba(3,6,9,.15),rgba(3,6,9,.34) 48%,rgba(3,6,9,.20)),url("rewards-page-background.webp")}
+#rewards{background-image:linear-gradient(180deg,rgba(3,6,9,.10),rgba(3,6,9,.25) 48%,rgba(3,6,9,.14)),url("rewards-page-background-hq.webp")}
 #profile{background-image:linear-gradient(180deg,rgba(3,6,9,.16),rgba(3,6,9,.32) 50%,rgba(3,6,9,.20)),url("profile-page-background.webp")}
 #support{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.31) 50%,rgba(3,6,9,.20)),url("support-page-background.webp")}
 #transactions{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.30) 50%,rgba(3,6,9,.20)),url("transactions-page-background.webp")}
@@ -2891,6 +2891,11 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   backdrop-filter:blur(.8px) saturate(1.07);
   -webkit-backdrop-filter:blur(.8px) saturate(1.07);
 }
+#profile .card{
+  border:1px solid rgba(255,216,61,.38)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 0 12px rgba(240,185,11,.075),0 13px 32px rgba(0,0,0,.25)!important;
+}
+#profile .row{border-bottom-color:rgba(255,229,138,.15)}
 #rewards .referral-code-box,#rewards .referral-stat,#rewards .referral-history-item,
 #profile input,#profile select,
 #support textarea,#support input,#support select,#support .support-ticket-item,
@@ -2901,7 +2906,8 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   -webkit-backdrop-filter:blur(.6px);
 }
 @media(max-width:600px){
-  #rewards,#profile,#support,#transactions{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}
+  #rewards{padding:12px 9px;border-radius:20px;background-size:100% 100%;background-position:center top}
+  #profile,#support,#transactions{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}
 }
 
 /* Full Markets page using the existing cinematic artwork */
@@ -3818,7 +3824,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
       <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
-        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">binancinvest@zohomail.eu</a>
+        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">support@binancinvest.com</a>
       </div>
     </div>
   </div>
