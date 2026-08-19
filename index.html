@@ -3064,6 +3064,57 @@ html[dir="rtl"] .language-panel-head{padding-right:0;padding-left:43px}html[dir=
 html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 @media(max-width:600px){header{gap:7px}.head{gap:5px;flex:0 1 auto}#authButtonsGroup .btn{min-width:91px;height:27px!important;min-height:27px!important;padding:3px 7px!important;font-size:8.6px!important}.language-trigger{min-width:52px;width:52px;height:30px;padding:0 5px}.language-trigger-flag{font-size:13px}.brand{gap:7px;min-width:0}.brand>span{font-size:13px}.binance-floating-logo{width:29px;height:29px}.user-header-identity{min-width:68px;max-width:92px;gap:3px}#headerFullName{font-size:12px}#headerUsername{padding:3px 7px;font-size:9.5px}#userHeaderDisplay .header-logout-btn{min-height:33px;padding:6px 10px;font-size:10.5px}}
 @media(max-width:370px){#authButtonsGroup .btn{min-width:80px;font-size:8px!important}.language-trigger{min-width:48px;width:48px}.language-trigger-flag{display:none}}
+
+/* High-contrast text system for glass cards and illustrated backgrounds */
+:root{--muted:#c6cfdb}
+
+.muted,
+.form label,
+.table th,
+.stat-circle-label,
+.vip-single-summary span,
+.vip-contract-table th,
+.vip-date,
+.portfolio-vip-title p,
+.portfolio-vip-field label,
+.portfolio-vip-metric span,
+.referral-stat span,
+.referral-small-date,
+.referral-reward-detail span,
+.support-ticket-meta,
+.support-message-time{
+  color:#c6cfdb!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.92);
+}
+
+/* Portfolio labels sit over a detailed image, so give them extra contrast. */
+#portfolio .cards .stat>.muted,
+#portfolio .referral-portfolio-card .muted,
+#portfolio .referral-portfolio-meta,
+#portfolio .vip-single-summary span,
+#portfolio .vip-contract-table th,
+#portfolio .vip-date,
+#portfolio .portfolio-vip-title p,
+#portfolio .portfolio-vip-field label,
+#portfolio .portfolio-vip-metric span{
+  color:#e1e6ed!important;
+  font-weight:650;
+  letter-spacing:.12px;
+  text-shadow:0 2px 7px #000,0 0 13px rgba(0,0,0,.88);
+}
+
+#portfolio .cards .stat>.muted{font-size:13px}
+
+/* Secondary copy stays readable without competing with monetary values. */
+#portfolio .referral-portfolio-card,
+#portfolio .vip-single-header p,
+#portfolio .vip-single-card>p,
+#portfolio .portfolio-vip-quick p{
+  color:#d1d8e2;
+  text-shadow:0 2px 8px rgba(0,0,0,.9);
+}
+
+@media(max-width:600px){#portfolio .cards .stat>.muted{font-size:12px}}
 </style>
 </head>
 <body>
