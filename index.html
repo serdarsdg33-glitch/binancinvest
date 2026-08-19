@@ -2939,6 +2939,25 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:900px){.hero .orb{right:9%;bottom:55px;width:185px;height:185px;opacity:1}}
 @media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero-glass-lightning{top:0;right:0;width:155px;height:66%}.hero .orb{top:auto;right:10%;bottom:76px;width:150px;height:150px;opacity:1;backdrop-filter:saturate(1.08);-webkit-backdrop-filter:saturate(1.08)}}
 @media(prefers-reduced-motion:reduce){.hero-glass-lightning,.hero::after{animation:none;opacity:0}.hero-glass-lightning path{animation:none}}
+
+/* Premium 25-language selector */
+.language-trigger{min-width:76px;height:40px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;color:#f4f7fb;background:linear-gradient(145deg,rgba(20,28,38,.78),rgba(7,11,16,.72));border:1px solid rgba(255,229,138,.28);border-radius:11px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 12px rgba(240,185,11,.07);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);font-size:12px;font-weight:850}
+.language-trigger:hover{border-color:rgba(255,216,61,.62);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 14px rgba(240,185,11,.16)}
+.language-trigger-flag{font-size:17px;line-height:1}.language-trigger-chevron{color:var(--gold);font-size:10px}
+.language-modal{position:fixed;inset:0;z-index:1500;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.72);backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px)}
+.language-modal.open{display:flex;animation:languageBackdropIn .2s ease}
+.language-panel{position:relative;width:min(760px,100%);max-height:min(780px,90vh);overflow:hidden;padding:25px;background:linear-gradient(145deg,rgba(17,24,32,.94),rgba(5,9,14,.96));border:1px solid rgba(255,216,61,.42);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 30px 90px rgba(0,0,0,.75),0 0 32px rgba(240,185,11,.10)}
+.language-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;padding-right:43px}.language-panel-head h2{margin:0 0 5px;font-size:25px}.language-panel-head p{margin:0;color:var(--muted);font-size:12px}
+.language-modal-close{position:absolute;top:18px;right:18px;width:35px;height:35px;padding:0;display:grid;place-items:center;color:#d7dee8;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:50%;font-size:23px}.language-modal-close:hover{color:#fff;border-color:rgba(240,185,11,.55);background:rgba(240,185,11,.10)}
+.language-search{width:100%;margin-bottom:15px;padding:12px 14px 12px 42px;background:rgba(4,8,13,.70);border:1px solid rgba(255,255,255,.12);border-radius:12px;outline:none}.language-search:focus{border-color:rgba(240,185,11,.62);box-shadow:0 0 0 3px rgba(240,185,11,.08)}
+.language-search-wrap{position:relative}.language-search-wrap::before{content:"⌕";position:absolute;left:14px;top:8px;z-index:1;color:var(--gold);font-size:25px;pointer-events:none}
+.language-grid{max-height:580px;overflow:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:2px 4px 5px 2px;scrollbar-width:thin;scrollbar-color:#685619 transparent}
+.language-option{min-width:0;padding:12px 13px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:9px;text-align:left;color:#edf2f8;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.075);border-radius:13px;transition:.2s ease}.language-option:hover{transform:translateY(-2px);border-color:rgba(240,185,11,.35);background:rgba(240,185,11,.075)}.language-option.active{border-color:rgba(255,216,61,.62);background:linear-gradient(145deg,rgba(240,185,11,.15),rgba(240,185,11,.055));box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 0 12px rgba(240,185,11,.10)}
+.language-flag{font-size:24px;filter:saturate(1.08)}.language-name{min-width:0}.language-name strong,.language-name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.language-name strong{font-size:12px}.language-name span{margin-top:3px;color:var(--muted);font-size:9px}.language-check{color:var(--gold);font-size:17px;font-weight:900;opacity:0}.language-option.active .language-check{opacity:1}
+html[dir="rtl"] .language-panel-head{padding-right:0;padding-left:43px}html[dir="rtl"] .language-modal-close{right:auto;left:18px}html[dir="rtl"] .language-option{text-align:right}
+@keyframes languageBackdropIn{from{opacity:0}to{opacity:1}}
+@media(max-width:680px){.language-modal{padding:10px}.language-panel{max-height:91vh;padding:20px 13px 14px;border-radius:20px}.language-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:68vh}.language-panel-head h2{font-size:21px}.language-trigger{min-width:65px;height:36px;padding:0 9px}}
+@media(max-width:390px){.language-grid{grid-template-columns:1fr}.language-option{padding:10px 12px}}
 </style>
 </head>
 <body>
@@ -2952,9 +2971,11 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
     <span data-t="brand">Binance Invest</span>
   </div>
   <div class="head">
-    <select id="lang" onchange="setLang(this.value)">
-      <option value="en">EN</option><option value="fa">FA</option><option value="az">AZ</option><option value="tr">TR</option><option value="ru">RU</option><option value="ar">AR</option><option value="zh">中文</option><option value="es">ES</option><option value="fr">FR</option><option value="de">DE</option>
-    </select>
+    <button id="languageTrigger" class="language-trigger" type="button" onclick="openLanguageSelector()" aria-haspopup="dialog" aria-controls="languageModal">
+      <span id="languageTriggerFlag" class="language-trigger-flag">🇬🇧</span>
+      <span id="languageTriggerCode">EN</span>
+      <span class="language-trigger-chevron">⌄</span>
+    </button>
     <div id="userHeaderDisplay" style="display:none; align-items:center; gap:8px; font-weight:700; color:var(--gold);">
       <span id="headerFullName" style="font-size:13px;"></span>
       <span id="headerUsername" style="font-size:11px; background:#1a222c; padding:4px 8px; border-radius:6px; color:var(--muted);"></span>
@@ -2966,6 +2987,14 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
     </div>
   </div>
 </header>
+<div id="languageModal" class="language-modal" role="dialog" aria-modal="true" aria-labelledby="languageModalTitle" onclick="handleLanguageBackdrop(event)">
+  <div class="language-panel">
+    <button class="language-modal-close" type="button" onclick="closeLanguageSelector()" aria-label="Close">×</button>
+    <div class="language-panel-head"><div><h2 id="languageModalTitle">Choose your language</h2><p id="languageModalSubtitle">Select a language for the entire website</p></div></div>
+    <div class="language-search-wrap"><input id="languageSearch" class="language-search" type="search" placeholder="Search languages..." autocomplete="off" oninput="renderLanguageOptions(this.value)"></div>
+    <div id="languageGrid" class="language-grid"></div>
+  </div>
+</div>
 <div class="wrap">
 <nav class="nav">
   <button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
@@ -8103,9 +8132,59 @@ function openOnlineSupport() {
     document.querySelector('[data-page="support"]')
   );
 }
+
+const LANGUAGE_CATALOG = [
+  ["en","🇬🇧","EN","English","English"],["fa","🇮🇷","FA","فارسی","Persian"],["az","🇦🇿","AZ","Azərbaycan","Azerbaijani"],["tr","🇹🇷","TR","Türkçe","Turkish"],["ru","🇷🇺","RU","Русский","Russian"],
+  ["ar","🇸🇦","AR","العربية","Arabic"],["zh","🇨🇳","ZH","中文","Chinese"],["es","🇪🇸","ES","Español","Spanish"],["fr","🇫🇷","FR","Français","French"],["de","🇩🇪","DE","Deutsch","German"],
+  ["it","🇮🇹","IT","Italiano","Italian"],["pt","🇵🇹","PT","Português","Portuguese"],["nl","🇳🇱","NL","Nederlands","Dutch"],["pl","🇵🇱","PL","Polski","Polish"],["uk","🇺🇦","UK","Українська","Ukrainian"],
+  ["ro","🇷🇴","RO","Română","Romanian"],["id","🇮🇩","ID","Bahasa Indonesia","Indonesian"],["ms","🇲🇾","MS","Bahasa Melayu","Malay"],["hi","🇮🇳","HI","हिन्दी","Hindi"],["ur","🇵🇰","UR","اردو","Urdu"],
+  ["ja","🇯🇵","JA","日本語","Japanese"],["ko","🇰🇷","KO","한국어","Korean"],["vi","🇻🇳","VI","Tiếng Việt","Vietnamese"],["th","🇹🇭","TH","ไทย","Thai"],["el","🇬🇷","EL","Ελληνικά","Greek"]
+];
+
+const EXTRA_TRANSLATIONS = {
+  it:{login:"Accedi",register:"Crea account",logout:"Esci",overview:"Panoramica",markets:"Mercati",invest:"Investi",portfolio:"Portafoglio",transactions:"Transazioni",rewards:"Premi",profile:"Profilo",hero:"Costruisci il tuo futuro con investimenti intelligenti.",exploreInvest:"Esplora investimenti",exploreMarkets:"Esplora mercati",top:"Mercati principali",viewAll:"Vedi tutto",featured:"Investimenti in evidenza",plans:"Piani di investimento",balance:"Saldo",invested:"Investito",profitTotal:"Profitto totale",deposit:"Deposito",withdraw:"Prelievo",account:"Account",security:"Sicurezza",save:"Salva profilo",contactUs:"Contattaci",platformStatsTitle:"Statistiche della piattaforma",liveWithdrawalsTitle:"Prelievi in tempo reale"},
+  pt:{login:"Entrar",register:"Criar conta",logout:"Sair",overview:"Visão geral",markets:"Mercados",invest:"Investir",portfolio:"Portfólio",transactions:"Transações",rewards:"Recompensas",profile:"Perfil",hero:"Construa o seu futuro com investimentos inteligentes.",exploreInvest:"Explorar investimentos",exploreMarkets:"Explorar mercados",top:"Principais mercados",viewAll:"Ver tudo",featured:"Investimentos em destaque",plans:"Planos de investimento",balance:"Saldo",invested:"Investido",profitTotal:"Lucro total",deposit:"Depósito",withdraw:"Saque",account:"Conta",security:"Segurança",save:"Salvar perfil",contactUs:"Fale conosco",platformStatsTitle:"Estatísticas da plataforma",liveWithdrawalsTitle:"Saques ao vivo"},
+  nl:{login:"Inloggen",register:"Account maken",logout:"Uitloggen",overview:"Overzicht",markets:"Markten",invest:"Investeren",portfolio:"Portefeuille",transactions:"Transacties",rewards:"Beloningen",profile:"Profiel",hero:"Bouw aan uw toekomst met slim investeren.",exploreInvest:"Ontdek investeringen",exploreMarkets:"Ontdek markten",top:"Topmarkten",viewAll:"Alles bekijken",featured:"Uitgelichte investeringen",plans:"Investeringsplannen",balance:"Saldo",invested:"Geïnvesteerd",profitTotal:"Totale winst",deposit:"Storten",withdraw:"Opnemen",account:"Account",security:"Beveiliging",save:"Profiel opslaan",contactUs:"Contact",platformStatsTitle:"Platformstatistieken",liveWithdrawalsTitle:"Live opnames"},
+  pl:{login:"Zaloguj się",register:"Utwórz konto",logout:"Wyloguj",overview:"Przegląd",markets:"Rynki",invest:"Inwestuj",portfolio:"Portfel",transactions:"Transakcje",rewards:"Nagrody",profile:"Profil",hero:"Buduj przyszłość dzięki inteligentnym inwestycjom.",exploreInvest:"Poznaj inwestycje",exploreMarkets:"Poznaj rynki",top:"Najlepsze rynki",viewAll:"Zobacz wszystko",featured:"Polecane inwestycje",plans:"Plany inwestycyjne",balance:"Saldo",invested:"Zainwestowano",profitTotal:"Łączny zysk",deposit:"Wpłata",withdraw:"Wypłata",account:"Konto",security:"Bezpieczeństwo",save:"Zapisz profil",contactUs:"Kontakt",platformStatsTitle:"Statystyki platformy",liveWithdrawalsTitle:"Wypłaty na żywo"},
+  uk:{login:"Увійти",register:"Створити акаунт",logout:"Вийти",overview:"Огляд",markets:"Ринки",invest:"Інвестувати",portfolio:"Портфель",transactions:"Транзакції",rewards:"Нагороди",profile:"Профіль",hero:"Будуйте майбутнє з розумними інвестиціями.",exploreInvest:"Переглянути інвестиції",exploreMarkets:"Переглянути ринки",top:"Головні ринки",viewAll:"Переглянути все",featured:"Рекомендовані інвестиції",plans:"Інвестиційні плани",balance:"Баланс",invested:"Інвестовано",profitTotal:"Загальний прибуток",deposit:"Депозит",withdraw:"Виведення",account:"Акаунт",security:"Безпека",save:"Зберегти профіль",contactUs:"Зв'язатися",platformStatsTitle:"Статистика платформи",liveWithdrawalsTitle:"Виведення наживо"},
+  ro:{login:"Autentificare",register:"Creează cont",logout:"Ieșire",overview:"Prezentare",markets:"Piețe",invest:"Investește",portfolio:"Portofoliu",transactions:"Tranzacții",rewards:"Recompense",profile:"Profil",hero:"Construiește-ți viitorul prin investiții inteligente.",exploreInvest:"Explorează investițiile",exploreMarkets:"Explorează piețele",top:"Piețe principale",viewAll:"Vezi tot",featured:"Investiții recomandate",plans:"Planuri de investiții",balance:"Sold",invested:"Investit",profitTotal:"Profit total",deposit:"Depunere",withdraw:"Retragere",account:"Cont",security:"Securitate",save:"Salvează profilul",contactUs:"Contact",platformStatsTitle:"Statisticile platformei",liveWithdrawalsTitle:"Retrageri live"},
+  id:{login:"Masuk",register:"Buat Akun",logout:"Keluar",overview:"Ikhtisar",markets:"Pasar",invest:"Investasi",portfolio:"Portofolio",transactions:"Transaksi",rewards:"Hadiah",profile:"Profil",hero:"Bangun masa depan dengan investasi cerdas.",exploreInvest:"Jelajahi Investasi",exploreMarkets:"Jelajahi Pasar",top:"Pasar Teratas",viewAll:"Lihat semua",featured:"Investasi Pilihan",plans:"Paket Investasi",balance:"Saldo",invested:"Diinvestasikan",profitTotal:"Total keuntungan",deposit:"Deposit",withdraw:"Penarikan",account:"Akun",security:"Keamanan",save:"Simpan Profil",contactUs:"Hubungi Kami",platformStatsTitle:"Statistik Platform",liveWithdrawalsTitle:"Penarikan Langsung"},
+  ms:{login:"Log Masuk",register:"Cipta Akaun",logout:"Log Keluar",overview:"Gambaran",markets:"Pasaran",invest:"Melabur",portfolio:"Portfolio",transactions:"Transaksi",rewards:"Ganjaran",profile:"Profil",hero:"Bina masa depan anda dengan pelaburan pintar.",exploreInvest:"Terokai Pelaburan",exploreMarkets:"Terokai Pasaran",top:"Pasaran Utama",viewAll:"Lihat semua",featured:"Pelaburan Pilihan",plans:"Pelan Pelaburan",balance:"Baki",invested:"Dilaburkan",profitTotal:"Jumlah keuntungan",deposit:"Deposit",withdraw:"Pengeluaran",account:"Akaun",security:"Keselamatan",save:"Simpan Profil",contactUs:"Hubungi Kami",platformStatsTitle:"Statistik Platform",liveWithdrawalsTitle:"Pengeluaran Langsung"},
+  hi:{login:"साइन इन",register:"खाता बनाएँ",logout:"लॉग आउट",overview:"अवलोकन",markets:"बाज़ार",invest:"निवेश",portfolio:"पोर्टफोलियो",transactions:"लेनदेन",rewards:"पुरस्कार",profile:"प्रोफ़ाइल",hero:"स्मार्ट निवेश के साथ अपना भविष्य बनाएँ।",exploreInvest:"निवेश देखें",exploreMarkets:"बाज़ार देखें",top:"शीर्ष बाज़ार",viewAll:"सभी देखें",featured:"विशेष निवेश",plans:"निवेश योजनाएँ",balance:"शेष राशि",invested:"निवेशित",profitTotal:"कुल लाभ",deposit:"जमा",withdraw:"निकासी",account:"खाता",security:"सुरक्षा",save:"प्रोफ़ाइल सहेजें",contactUs:"संपर्क करें",platformStatsTitle:"प्लेटफ़ॉर्म आँकड़े",liveWithdrawalsTitle:"लाइव निकासी"},
+  ur:{login:"سائن اِن",register:"اکاؤنٹ بنائیں",logout:"لاگ آؤٹ",overview:"جائزہ",markets:"مارکیٹس",invest:"سرمایہ کاری",portfolio:"پورٹ فولیو",transactions:"لین دین",rewards:"انعامات",profile:"پروفائل",hero:"ذہین سرمایہ کاری کے ساتھ اپنا مستقبل بنائیں۔",exploreInvest:"سرمایہ کاری دیکھیں",exploreMarkets:"مارکیٹس دیکھیں",top:"بہترین مارکیٹس",viewAll:"سب دیکھیں",featured:"نمایاں سرمایہ کاری",plans:"سرمایہ کاری کے منصوبے",balance:"بیلنس",invested:"سرمایہ کاری",profitTotal:"کل منافع",deposit:"ڈپازٹ",withdraw:"نکلوائیں",account:"اکاؤنٹ",security:"سیکیورٹی",save:"پروفائل محفوظ کریں",contactUs:"رابطہ کریں",platformStatsTitle:"پلیٹ فارم کے اعداد",liveWithdrawalsTitle:"لائیو نکلوائی"},
+  ja:{login:"ログイン",register:"アカウント作成",logout:"ログアウト",overview:"概要",markets:"マーケット",invest:"投資",portfolio:"ポートフォリオ",transactions:"取引",rewards:"報酬",profile:"プロフィール",hero:"スマートな投資で未来を築きましょう。",exploreInvest:"投資を見る",exploreMarkets:"市場を見る",top:"トップマーケット",viewAll:"すべて見る",featured:"注目の投資",plans:"投資プラン",balance:"残高",invested:"投資済み",profitTotal:"総利益",deposit:"入金",withdraw:"出金",account:"アカウント",security:"セキュリティ",save:"保存",contactUs:"お問い合わせ",platformStatsTitle:"プラットフォーム統計",liveWithdrawalsTitle:"ライブ出金"},
+  ko:{login:"로그인",register:"계정 만들기",logout:"로그아웃",overview:"개요",markets:"시장",invest:"투자",portfolio:"포트폴리오",transactions:"거래",rewards:"리워드",profile:"프로필",hero:"스마트 투자로 미래를 설계하세요.",exploreInvest:"투자 살펴보기",exploreMarkets:"시장 살펴보기",top:"주요 시장",viewAll:"모두 보기",featured:"추천 투자",plans:"투자 플랜",balance:"잔액",invested:"투자금",profitTotal:"총 수익",deposit:"입금",withdraw:"출금",account:"계정",security:"보안",save:"프로필 저장",contactUs:"문의하기",platformStatsTitle:"플랫폼 통계",liveWithdrawalsTitle:"실시간 출금"},
+  vi:{login:"Đăng nhập",register:"Tạo tài khoản",logout:"Đăng xuất",overview:"Tổng quan",markets:"Thị trường",invest:"Đầu tư",portfolio:"Danh mục",transactions:"Giao dịch",rewards:"Phần thưởng",profile:"Hồ sơ",hero:"Xây dựng tương lai với đầu tư thông minh.",exploreInvest:"Khám phá đầu tư",exploreMarkets:"Khám phá thị trường",top:"Thị trường hàng đầu",viewAll:"Xem tất cả",featured:"Đầu tư nổi bật",plans:"Kế hoạch đầu tư",balance:"Số dư",invested:"Đã đầu tư",profitTotal:"Tổng lợi nhuận",deposit:"Nạp tiền",withdraw:"Rút tiền",account:"Tài khoản",security:"Bảo mật",save:"Lưu hồ sơ",contactUs:"Liên hệ",platformStatsTitle:"Thống kê nền tảng",liveWithdrawalsTitle:"Rút tiền trực tiếp"},
+  th:{login:"เข้าสู่ระบบ",register:"สร้างบัญชี",logout:"ออกจากระบบ",overview:"ภาพรวม",markets:"ตลาด",invest:"ลงทุน",portfolio:"พอร์ตโฟลิโอ",transactions:"ธุรกรรม",rewards:"รางวัล",profile:"โปรไฟล์",hero:"สร้างอนาคตด้วยการลงทุนอัจฉริยะ",exploreInvest:"สำรวจการลงทุน",exploreMarkets:"สำรวจตลาด",top:"ตลาดชั้นนำ",viewAll:"ดูทั้งหมด",featured:"การลงทุนแนะนำ",plans:"แผนการลงทุน",balance:"ยอดคงเหลือ",invested:"ลงทุนแล้ว",profitTotal:"กำไรรวม",deposit:"ฝากเงิน",withdraw:"ถอนเงิน",account:"บัญชี",security:"ความปลอดภัย",save:"บันทึกโปรไฟล์",contactUs:"ติดต่อเรา",platformStatsTitle:"สถิติแพลตฟอร์ม",liveWithdrawalsTitle:"ถอนเงินสด"},
+  el:{login:"Σύνδεση",register:"Δημιουργία λογαριασμού",logout:"Αποσύνδεση",overview:"Επισκόπηση",markets:"Αγορές",invest:"Επένδυση",portfolio:"Χαρτοφυλάκιο",transactions:"Συναλλαγές",rewards:"Ανταμοιβές",profile:"Προφίλ",hero:"Χτίστε το μέλλον σας με έξυπνες επενδύσεις.",exploreInvest:"Εξερεύνηση επενδύσεων",exploreMarkets:"Εξερεύνηση αγορών",top:"Κορυφαίες αγορές",viewAll:"Προβολή όλων",featured:"Προτεινόμενες επενδύσεις",plans:"Επενδυτικά πλάνα",balance:"Υπόλοιπο",invested:"Επενδύθηκε",profitTotal:"Συνολικό κέρδος",deposit:"Κατάθεση",withdraw:"Ανάληψη",account:"Λογαριασμός",security:"Ασφάλεια",save:"Αποθήκευση προφίλ",contactUs:"Επικοινωνία",platformStatsTitle:"Στατιστικά πλατφόρμας",liveWithdrawalsTitle:"Ζωντανές αναλήψεις"}
+};
+
+Object.entries(EXTRA_TRANSLATIONS).forEach(([code,pack]) => {
+  T[code] = {...T.en,...pack};
+  SUPPORT_I18N[code] = {...SUPPORT_I18N.en};
+  uiTexts[code] = {...uiTexts.en};
+  planNames[code] = planNames.en.map(item => [...item]);
+  vipPlanLabels[code] = {...vipPlanLabels.en};
+});
+
+function getLanguageItem(code){return LANGUAGE_CATALOG.find(item => item[0] === code) || LANGUAGE_CATALOG[0]}
+function renderLanguageOptions(query=""){
+  const grid=document.getElementById("languageGrid"); if(!grid)return;
+  const active=localStorage.getItem("bi_lang")||"en";
+  const normalized=String(query).trim().toLocaleLowerCase();
+  const items=LANGUAGE_CATALOG.filter(item => !normalized || item.slice(2).join(" ").toLocaleLowerCase().includes(normalized));
+  grid.innerHTML=items.map(item=>`<button type="button" class="language-option ${item[0]===active?"active":""}" onclick="chooseLanguage('${item[0]}')"><span class="language-flag">${item[1]}</span><span class="language-name"><strong>${item[3]}</strong><span>${item[4]}</span></span><span class="language-check">✓</span></button>`).join("");
+}
+function openLanguageSelector(){const modal=document.getElementById("languageModal");modal?.classList.add("open");document.body.style.overflow="hidden";renderLanguageOptions();setTimeout(()=>document.getElementById("languageSearch")?.focus(),80)}
+function closeLanguageSelector(){document.getElementById("languageModal")?.classList.remove("open");document.body.style.overflow="";const search=document.getElementById("languageSearch");if(search)search.value=""}
+function handleLanguageBackdrop(event){if(event.target?.id==="languageModal")closeLanguageSelector()}
+function chooseLanguage(code){setLang(code);closeLanguageSelector()}
+function updateLanguageTrigger(code){const item=getLanguageItem(code);const flag=document.getElementById("languageTriggerFlag"),label=document.getElementById("languageTriggerCode");if(flag)flag.textContent=item[1];if(label)label.textContent=item[2]}
+
 function setLang(lang){
   localStorage.setItem("bi_lang", lang);
-  document.documentElement.dir = (lang === "ar" || lang === "fa") ? "rtl" : "ltr";
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (["ar","fa","ur"].includes(lang)) ? "rtl" : "ltr";
   let d = T[lang] || T.en;
   document.querySelectorAll("[data-t]").forEach(el => {
     let key = el.getAttribute("data-t");
@@ -8115,6 +8194,8 @@ function setLang(lang){
   calcCustom();
   togglePaymentDetails();
   applySupportLanguage();
+  updateLanguageTrigger(lang);
+  renderLanguageOptions();
 }
 
 function initializeLazyVideos() {
@@ -8214,7 +8295,6 @@ window.onload = async function(){
 
   let savedLang = localStorage.getItem("bi_lang") || "en";
 
-  document.getElementById("lang").value = savedLang;
   setLang(savedLang);
 
   await restoreAuthSession();
