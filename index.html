@@ -2609,9 +2609,12 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   transform-origin:center center;
   transform-style:preserve-3d;
   will-change:transform,box-shadow;
-  animation:statCardFloat 4.8s cubic-bezier(.45,.05,.55,.95) infinite!important;
+  animation:none;
 }
-.stat-circle-card:nth-child(2),.stat-circle-card:nth-child(4){animation-direction:reverse!important}
+.stat-circle-card:nth-child(1){animation:statUsersFloat 5.2s cubic-bezier(.45,.05,.55,.95) -.7s infinite!important}
+.stat-circle-card:nth-child(2){animation:statInvestorsDrift 6.1s cubic-bezier(.42,0,.58,1) -2.4s infinite!important}
+.stat-circle-card:nth-child(3){animation:statProfitDepth 4.6s ease-in-out -1.3s infinite!important}
+.stat-circle-card:nth-child(4){animation:statCapitalOrbit 6.8s cubic-bezier(.4,0,.6,1) -3.1s infinite!important}
 .stat-circle-card:nth-child(1){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-platform-users.webp")}
 .stat-circle-card:nth-child(2){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-active-investors.webp")}
 .stat-circle-card:nth-child(3){background-image:linear-gradient(90deg,rgba(3,6,9,.03) 0%,rgba(4,7,10,.12) 26%,rgba(5,9,13,.80) 49%,rgba(6,10,15,.98) 73%),url("stat-profit-paid.webp")}
@@ -2623,11 +2626,30 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .stat-circle-value{font-size:clamp(23px,3.2vw,29px)}
 .stat-circle-label{color:#c1cad6}
 .stat-badge-tag{position:relative;z-index:2;flex:0 0 auto}
-@keyframes statCardFloat{
-  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) scale(1);border-color:rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 13px 30px rgba(0,0,0,.40),0 0 0 rgba(240,185,11,0)}
-  25%{transform:translate3d(1.5px,-4px,8px) rotateX(.35deg) scale(1.003)}
-  50%{transform:translate3d(0,-9px,15px) rotateX(.7deg) scale(1.008);border-color:rgba(255,225,91,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 22px 44px rgba(0,0,0,.52),0 0 20px rgba(240,185,11,.11)}
-  75%{transform:translate3d(-1.5px,-4px,8px) rotateX(.35deg) scale(1.003)}
+@keyframes statUsersFloat{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg);box-shadow:0 13px 30px rgba(0,0,0,.40)}
+  30%{transform:translate3d(2px,-5px,8px) rotateX(.35deg)}
+  58%{transform:translate3d(0,-10px,16px) rotateX(.75deg) scale(1.007);box-shadow:0 23px 45px rgba(0,0,0,.53),0 0 19px rgba(240,185,11,.10)}
+  82%{transform:translate3d(-1px,-3px,5px) rotateX(.2deg)}
+}
+@keyframes statInvestorsDrift{
+  0%,100%{transform:translate3d(0,-1px,0) rotateY(0deg)}
+  24%{transform:translate3d(-4px,-5px,9px) rotateY(-.45deg)}
+  52%{transform:translate3d(2px,-8px,14px) rotateY(.5deg) scale(1.006);box-shadow:0 21px 42px rgba(0,0,0,.50),0 0 17px rgba(240,185,11,.09)}
+  78%{transform:translate3d(4px,-3px,6px) rotateY(.3deg)}
+}
+@keyframes statProfitDepth{
+  0%,100%{transform:translate3d(0,0,0) scale(1);filter:brightness(1)}
+  38%{transform:translate3d(0,-4px,12px) scale(1.004);filter:brightness(1.035)}
+  66%{transform:translate3d(0,-7px,20px) scale(1.011);filter:brightness(1.07);box-shadow:0 24px 46px rgba(0,0,0,.52),0 0 22px rgba(22,199,132,.08)}
+  84%{transform:translate3d(1px,-2px,7px) scale(1.003);filter:brightness(1.02)}
+}
+@keyframes statCapitalOrbit{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) rotateY(0deg)}
+  20%{transform:translate3d(3px,-3px,6px) rotateX(.18deg) rotateY(.3deg)}
+  48%{transform:translate3d(1px,-8px,15px) rotateX(.55deg) rotateY(.1deg) scale(1.006);box-shadow:0 22px 44px rgba(0,0,0,.52),0 0 20px rgba(240,185,11,.10)}
+  72%{transform:translate3d(-3px,-6px,10px) rotateX(.32deg) rotateY(-.35deg)}
+  88%{transform:translate3d(-1px,-2px,4px) rotateX(.12deg) rotateY(-.1deg)}
 }
 @media(max-width:600px){
   .stats-vertical-stack{gap:13px;padding-top:12px}
