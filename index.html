@@ -2861,6 +2861,45 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 }
 @media(max-width:600px){#portfolio{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}}
 
+/* Continuous cinematic backgrounds for account pages */
+#rewards,#profile,#support,#transactions{
+  position:relative;
+  isolation:isolate;
+  padding:18px;
+  overflow:hidden;
+  background-color:#05070a;
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  border:1px solid rgba(240,185,11,.20);
+  border-radius:25px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 58px rgba(0,0,0,.42);
+}
+#rewards{background-image:linear-gradient(180deg,rgba(3,6,9,.15),rgba(3,6,9,.34) 48%,rgba(3,6,9,.20)),url("rewards-page-background.webp")}
+#profile{background-image:linear-gradient(180deg,rgba(3,6,9,.16),rgba(3,6,9,.32) 50%,rgba(3,6,9,.20)),url("profile-page-background.webp")}
+#support{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.31) 50%,rgba(3,6,9,.20)),url("support-page-background.webp")}
+#transactions{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.30) 50%,rgba(3,6,9,.20)),url("transactions-page-background.webp")}
+#rewards>*,#profile>*,#support>*,#transactions>*{position:relative;z-index:1}
+#rewards .card,#profile .card,#support .card,#transactions .card{
+  background:linear-gradient(145deg,rgba(12,18,25,.43),rgba(5,9,14,.27))!important;
+  border-color:rgba(255,229,138,.19)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.075),0 13px 32px rgba(0,0,0,.23)!important;
+  backdrop-filter:blur(1.5px) saturate(1.07);
+  -webkit-backdrop-filter:blur(1.5px) saturate(1.07);
+}
+#rewards .referral-code-box,#rewards .referral-stat,#rewards .referral-history-item,
+#profile input,#profile select,
+#support textarea,#support input,#support select,#support .support-ticket-item,
+#transactions .tablebox{
+  background:rgba(5,9,14,.38)!important;
+  border-color:rgba(255,255,255,.11)!important;
+  backdrop-filter:blur(1px);
+  -webkit-backdrop-filter:blur(1px);
+}
+@media(max-width:600px){
+  #rewards,#profile,#support,#transactions{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}
+}
+
 /* Full Markets page using the existing cinematic artwork */
 #markets{
   position:relative;
