@@ -3002,11 +3002,66 @@ html[dir="rtl"] .language-panel-head{padding-right:0;padding-left:43px}html[dir=
 .head{margin-left:auto;min-width:0}
 #authButtonsGroup{display:grid!important;grid-template-columns:1fr;gap:4px!important;order:1}
 #authButtonsGroup .btn{width:100%;min-width:104px;height:29px!important;min-height:29px!important;padding:4px 9px!important;font-size:9.5px!important}
+#authButtonsGroup[hidden],#userHeaderDisplay[hidden]{display:none!important}
+#userHeaderDisplay{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  min-width:0;
+  margin-left:auto;
+  color:var(--gold);
+  font-weight:800;
+}
+.user-header-identity{
+  min-width:68px;
+  max-width:118px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  justify-content:center;
+  gap:3px;
+  line-height:1;
+}
+#headerFullName{
+  display:block;
+  width:100%;
+  overflow:hidden;
+  color:#ffe58a;
+  font-size:11px;
+  font-weight:900;
+  text-align:right;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#headerUsername{
+  display:block;
+  max-width:100%;
+  overflow:hidden;
+  padding:3px 7px;
+  color:#aeb8c6;
+  background:rgba(25,33,42,.84);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:6px;
+  font-size:9px;
+  font-weight:750;
+  text-align:right;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#userHeaderDisplay .header-logout-btn{
+  flex:0 0 auto;
+  min-height:31px;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:850;
+  white-space:nowrap;
+}
 .language-trigger{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;order:2;min-width:58px;width:58px;height:33px;padding:0 6px;gap:4px;border-radius:9px;font-size:10px}
 .language-trigger:hover{transform:translate(-50%,-50%)}
 .language-trigger-flag{font-size:14px}
 html[dir="rtl"] .head{margin-left:auto;margin-right:0}
-@media(max-width:600px){header{gap:7px}.head{gap:5px;flex:0 1 auto}#authButtonsGroup .btn{min-width:91px;height:27px!important;min-height:27px!important;padding:3px 7px!important;font-size:8.6px!important}.language-trigger{min-width:52px;width:52px;height:30px;padding:0 5px}.language-trigger-flag{font-size:13px}.brand{gap:7px;min-width:0}.brand>span{font-size:13px}.binance-floating-logo{width:29px;height:29px}}
+@media(max-width:600px){header{gap:7px}.head{gap:5px;flex:0 1 auto}#authButtonsGroup .btn{min-width:91px;height:27px!important;min-height:27px!important;padding:3px 7px!important;font-size:8.6px!important}.language-trigger{min-width:52px;width:52px;height:30px;padding:0 5px}.language-trigger-flag{font-size:13px}.brand{gap:7px;min-width:0}.brand>span{font-size:13px}.binance-floating-logo{width:29px;height:29px}.user-header-identity{min-width:56px;max-width:76px;gap:2px}#headerFullName{font-size:9.5px}#headerUsername{padding:2px 5px;font-size:7.8px}#userHeaderDisplay .header-logout-btn{min-height:28px;padding:5px 8px;font-size:8.5px}}
 @media(max-width:370px){#authButtonsGroup .btn{min-width:80px;font-size:8px!important}.language-trigger{min-width:48px;width:48px}.language-trigger-flag{display:none}}
 </style>
 </head>
@@ -3026,12 +3081,14 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
       <span id="languageTriggerCode">EN</span>
       <span class="language-trigger-chevron">⌄</span>
     </button>
-    <div id="userHeaderDisplay" style="display:none; align-items:center; gap:8px; font-weight:700; color:var(--gold);">
-      <span id="headerFullName" style="font-size:13px;"></span>
-      <span id="headerUsername" style="font-size:11px; background:#1a222c; padding:4px 8px; border-radius:6px; color:var(--muted);"></span>
-      <button class="btn" style="padding:5px 10px; font-size:11px;" onclick="logout()" data-t="logout">Logout</button>
+    <div id="userHeaderDisplay" hidden>
+      <div class="user-header-identity">
+        <span id="headerFullName"></span>
+        <span id="headerUsername"></span>
+      </div>
+      <button class="btn header-logout-btn" onclick="logout()" data-t="logout">Logout</button>
     </div>
-    <div id="authButtonsGroup" style="display:flex; gap:8px;">
+    <div id="authButtonsGroup">
       <button class="btn login" onclick="openAuth('login')" data-t="login">Sign In</button>
       <button class="btn gold" onclick="openAuth('register')" data-t="register">Create Account</button>
     </div>
@@ -5946,9 +6003,16 @@ function updateHeaderAuthUI() {
   const portfolioGrid = document.getElementById("portfolioGrid");
   const financeGuest = document.getElementById("portfolioFinanceGuest");
 
+  if (!headerDisplay || !authGroup) return;
+
+  /* Clear legacy inline display values, then use the hidden state. This keeps
+     guest and authenticated controls mutually exclusive even with !important CSS. */
+  headerDisplay.style.removeProperty("display");
+  authGroup.style.removeProperty("display");
+
   if (currentUser) {
-    headerDisplay.style.display = "flex";
-    authGroup.style.display = "none";
+    headerDisplay.hidden = false;
+    authGroup.hidden = true;
 
     if (portfolioGrid) portfolioGrid.style.display = "grid";
     if (financeGuest) financeGuest.classList.remove("show");
@@ -5963,8 +6027,8 @@ function updateHeaderAuthUI() {
     document.getElementById("headerUsername").textContent =
       currentUser.username ? "@" + currentUser.username : "";
   } else {
-    headerDisplay.style.display = "none";
-    authGroup.style.display = "flex";
+    headerDisplay.hidden = true;
+    authGroup.hidden = false;
 
     if (portfolioGrid) portfolioGrid.style.display = "none";
     if (financeGuest) financeGuest.classList.add("show");
