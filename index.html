@@ -2294,6 +2294,12 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .homepage-vault-video{width:100%;margin:0 0 18px;overflow:hidden;aspect-ratio:16/9;background:#030405;border:1px solid rgba(240,185,11,.34);border-radius:22px;box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 18px rgba(240,185,11,.06)}
 .homepage-vault-video video{width:100%;height:100%;display:block;object-fit:cover;background:#030405}
 @media(max-width:600px){.homepage-vault-video{margin-bottom:14px;border-radius:17px}}
+
+/* Global site footer */
+.site-footer{margin-top:35px;padding:46px 18px 22px;background:linear-gradient(180deg,#080b0f,#030507);border-top:1px solid rgba(240,185,11,.18)}
+.site-footer-inner{width:min(1180px,100%);margin:auto}.site-footer-top{display:grid;grid-template-columns:1.35fr repeat(3,1fr);gap:42px;padding-bottom:32px}.site-footer-brand{color:var(--gold);font-size:20px;font-weight:950}.site-footer-about{max-width:380px;margin:13px 0 0;color:#8f9baa;font-size:12px;line-height:1.85}.site-footer-column h3{margin:0 0 14px;color:#fff;font-size:13px}.site-footer-links{display:flex;flex-direction:column}.site-footer-link{padding:11px 0;color:#9ba6b5;text-decoration:none;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;text-align:left;transition:.2s ease}.site-footer-link:hover{color:var(--gold2);padding-left:5px}.site-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);color:#727e8d;font-size:10px}.site-footer-legal{display:flex;flex-wrap:wrap;gap:17px}.site-footer-legal a{color:#98a3b1;text-decoration:none}.site-footer-legal a:hover{color:var(--gold2)}html[dir="rtl"] .site-footer-link{text-align:right}html[dir="rtl"] .site-footer-link:hover{padding-left:0;padding-right:5px}
+@media(max-width:760px){.site-footer{padding:34px 16px 20px}.site-footer-top{grid-template-columns:1fr 1fr;gap:28px 22px}.site-footer-intro{grid-column:1/-1}.site-footer-bottom{align-items:flex-start;flex-direction:column}}
+@media(max-width:430px){.site-footer-top{grid-template-columns:1fr;gap:25px}.site-footer-intro{grid-column:auto}.site-footer-link{padding:12px 0}}
 </style>
 </head>
 <body>
@@ -3117,6 +3123,60 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
   </div>
 </section>
 </div>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-top">
+      <div class="site-footer-intro">
+        <div class="site-footer-brand">Binance Invest</div>
+        <p class="site-footer-about">
+          A multilingual digital investment interface built to make account
+          activity, investment plans, rewards and support easier to understand
+          and manage from one secure experience.
+        </p>
+      </div>
+
+      <div class="site-footer-column">
+        <h3>Platform</h3>
+        <div class="site-footer-links">
+          <button class="site-footer-link" type="button" onclick="page('home',document.querySelector('[data-page=home]'))">Overview</button>
+          <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))">Markets</button>
+          <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))">Investment Plans</button>
+          <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))">Portfolio</button>
+        </div>
+      </div>
+
+      <div class="site-footer-column">
+        <h3>Company & Help</h3>
+        <div class="site-footer-links">
+          <a class="site-footer-link" href="about.html">About Us</a>
+          <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))">Referral Rewards</button>
+          <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))">Help & Support</button>
+          <a class="site-footer-link" href="mailto:support@binancinvest.com">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="site-footer-column">
+        <h3>Legal</h3>
+        <div class="site-footer-links">
+          <a class="site-footer-link" href="terms.html">Terms & Conditions</a>
+          <a class="site-footer-link" href="privacy.html">Privacy Policy</a>
+          <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))">Account Security</button>
+          <a class="site-footer-link" href="terms.html#risk">Risk Disclosure</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-footer-bottom">
+      <span>© 2026 Binance Invest. All rights reserved.</span>
+      <div class="site-footer-legal">
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <div class="modal" id="auth">
   <div class="modalbox">
