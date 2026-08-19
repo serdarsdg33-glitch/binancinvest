@@ -1802,7 +1802,7 @@ html[dir="rtl"] .plan-selection-label {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 17px;
 }
@@ -2303,7 +2303,7 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .auth-success-popup {position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.auth-success-popup.show {display:flex;animation:authSuccessBackdrop .2s ease}.auth-success-popup-box {width:min(330px,calc(100% - 20px));padding:23px 19px;text-align:center;background:linear-gradient(145deg,#151c25,#090e14);border:1px solid rgba(22,199,132,.42);border-radius:17px;box-shadow:0 25px 70px rgba(0,0,0,.72),0 0 25px rgba(22,199,132,.1);animation:authSuccessBox .28s ease}.auth-success-popup-icon {width:52px;height:52px;margin:0 auto 12px;display:grid;place-items:center;color:#07150f;font-size:26px;font-weight:950;background:linear-gradient(135deg,#8dffd2,#16c784);border-radius:50%;box-shadow:0 8px 24px rgba(22,199,132,.25)}.auth-success-popup h3 {margin:0 0 7px;font-size:19px}.auth-success-popup p {margin:0;color:#aeb7c3;font-size:11px;line-height:1.65}.auth-success-progress {height:3px;margin-top:15px;overflow:hidden;background:rgba(255,255,255,.08);border-radius:999px}.auth-success-progress::after {content:"";display:block;width:100%;height:100%;background:var(--green);transform-origin:left;animation:authSuccessProgress 1.8s linear forwards}html[dir="rtl"] .auth-success-progress::after {transform-origin:right}
 .portfolio-vip-quick {margin:14px 0;padding:17px 18px;background:radial-gradient(circle at 96% 0%,rgba(240,185,11,.13),transparent 35%),linear-gradient(145deg,#141b23,#090e14);border:1px solid rgba(240,185,11,.32);border-radius:16px;box-shadow:0 13px 35px rgba(0,0,0,.36)}.portfolio-vip-head {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:13px}.portfolio-vip-title {display:flex;align-items:center;gap:11px}.portfolio-vip-mini-icon {width:40px;height:40px;display:grid;place-items:center;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:11px;font-size:18px}.portfolio-vip-title h3 {margin:0 0 4px;font-size:16px}.portfolio-vip-title p {margin:0;color:var(--muted);font-size:9px}.portfolio-vip-badge {padding:7px 10px;color:var(--gold2);background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.27);border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}.portfolio-vip-grid {display:grid;grid-template-columns:minmax(150px,1.35fr) repeat(3,minmax(105px,.65fr)) auto;align-items:end;gap:8px}.portfolio-vip-field label {display:block;margin-bottom:6px;color:#b9c2cd;font-size:9px}.portfolio-vip-input-row {display:grid;grid-template-columns:1fr auto;gap:6px}.portfolio-vip-input-row input {min-width:0;width:100%;padding:10px;text-align:center;font-weight:850}.portfolio-vip-metric {min-height:57px;padding:9px;text-align:center;background:rgba(255,255,255,.024);border:1px solid rgba(255,255,255,.075);border-radius:10px}.portfolio-vip-metric span,.portfolio-vip-metric strong {display:block}.portfolio-vip-metric span {margin-bottom:5px;color:var(--muted);font-size:8px}.portfolio-vip-metric strong {color:var(--green);font-size:12px}.portfolio-vip-button {min-height:57px;padding:9px 15px;white-space:nowrap}.portfolio-vip-error {display:none;margin-top:9px;padding:8px;color:#ffabb2;font-size:10px;background:rgba(234,57,67,.09);border:1px solid rgba(234,57,67,.24);border-radius:8px}.portfolio-vip-error.show {display:block}
 @keyframes authSuccessBackdrop {from{opacity:0}to{opacity:1}}@keyframes authSuccessBox {from{opacity:0;transform:translateY(9px) scale(.96)}to{opacity:1;transform:none}}@keyframes authSuccessProgress {from{transform:scaleX(1)}to{transform:scaleX(0)}}
-@media(max-width:760px){.referral-home-card{grid-template-columns:auto 1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
+@media(max-width:760px){.referral-home-card{grid-template-columns:1fr}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
 @media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}}
 @media(max-width:850px){.portfolio-vip-grid{grid-template-columns:1fr 1fr}.portfolio-vip-field{grid-column:1/-1}.portfolio-vip-button{grid-column:1/-1;width:100%}}
 @media(max-width:480px){.portfolio-vip-quick{padding:14px 12px}.portfolio-vip-head{align-items:flex-start}.portfolio-vip-grid{grid-template-columns:1fr}.portfolio-vip-field,.portfolio-vip-button{grid-column:auto}.portfolio-vip-badge{font-size:8px}.portfolio-vip-metric{min-height:52px}}
@@ -2822,6 +2822,45 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   50%{transform:translate3d(-17px,-12px,0) rotate(1.5deg) scale(1.015);filter:brightness(1.075)}
 }
 
+/* Continuous cinematic Portfolio page */
+#portfolio{
+  position:relative;
+  isolation:isolate;
+  padding:18px;
+  overflow:hidden;
+  background-color:#05070a;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,9,.20),rgba(3,6,9,.38) 52%,rgba(3,6,9,.24)),
+    url("portfolio-page-background.webp");
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+  border:1px solid rgba(240,185,11,.20);
+  border-radius:25px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 58px rgba(0,0,0,.42);
+}
+#portfolio>*{position:relative;z-index:1}
+#portfolio .card,
+#portfolio .referral-portfolio-card,
+#portfolio .vip-single-card,
+#portfolio .portfolio-vip-quick,
+#portfolio .portfolio-finance-guest{
+  background:linear-gradient(145deg,rgba(14,20,27,.47),rgba(5,9,14,.31))!important;
+  border-color:rgba(255,229,138,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.075),0 14px 34px rgba(0,0,0,.25)!important;
+  backdrop-filter:blur(7px) saturate(1.10);
+  -webkit-backdrop-filter:blur(7px) saturate(1.10);
+}
+#portfolio .portfolio-vip-metric,
+#portfolio .vip-single-summary>div,
+#portfolio .vip-contract-tablebox{
+  background:rgba(5,9,14,.28)!important;
+  border-color:rgba(255,255,255,.10)!important;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+@media(max-width:600px){#portfolio{padding:12px 9px;border-radius:20px;background-size:auto 100%;background-position:center top}}
+
 /* Full Markets page using the existing cinematic artwork */
 #markets{
   position:relative;
@@ -2916,7 +2955,6 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
 
 <div class="referral-home-card">
-  <div class="referral-home-icon">🎁</div>
   <div class="referral-home-content">
     <span class="referral-home-kicker">FRIEND REFERRAL REWARD</span>
     <h2>Invite Friends and Earn $10</h2>
