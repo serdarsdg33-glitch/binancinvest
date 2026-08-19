@@ -2454,6 +2454,21 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .footer-section>.site-footer{width:min(1180px,100%);margin:36px auto 0;padding:38px 0 0;background:transparent;border-top:1px solid rgba(240,185,11,.13);text-align:left}.footer-section>.site-footer .site-footer-inner{width:100%}
 html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 @media(max-width:600px){.live-withdrawals-container.has-video{width:100vw;border-radius:0;box-shadow:none}.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){width:calc(100% - 16px);min-height:59px;padding:7px 9px 7px 7px;gap:7px}.live-withdrawals-container.has-video .live-avatar{width:42px!important;height:42px!important;min-width:42px!important;font-size:12px!important}.live-withdrawals-container.has-video .live-info{margin-left:9px}.live-withdrawals-container.has-video .live-info b{font-size:12px}.live-withdrawals-container.has-video .live-info span{margin-top:2px;font-size:8px}.live-withdrawals-container.has-video .live-amount{padding:6px 8px;font-size:12px}.footer-section{margin-top:28px;padding:0 12px 30px;background-size:auto 100%}.why-binance-video{width:100vw;margin-left:calc(50% - 50vw);margin-bottom:24px}.site-footer{padding-top:30px;background-size:auto 100%}}
+
+/* Refined standalone withdrawals showcase */
+.withdrawals-showcase{position:relative;width:min(800px,calc(100vw - 24px));margin:22px auto 0;padding:16px;background:linear-gradient(145deg,rgba(10,15,21,.58),rgba(3,6,9,.34));border:1px solid rgba(240,185,11,.28);border-radius:26px;box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 22px 55px rgba(0,0,0,.48),0 0 20px rgba(240,185,11,.055)}
+.withdrawals-showcase>.title{margin:0 4px 14px}.withdrawals-showcase>.title h2{font-size:clamp(21px,3vw,29px)}
+.withdrawals-showcase .live-withdrawals-container.has-video{width:100%;border-radius:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)}
+.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.live-withdrawals-container.has-video .live-withdraw::before{display:none}
+.live-withdrawals-container.has-video .live-amount{background:transparent;border:0;box-shadow:none}
+.contact-simple{max-width:620px;margin:34px auto 0;padding:12px 16px;text-align:center;background:transparent;border:0;box-shadow:none}
+.contact-simple h3{margin:0 0 9px;color:#fff;font-size:22px;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+.contact-simple p{margin:0 0 10px;color:#aab4c0;font-size:12px;text-shadow:0 2px 9px rgba(0,0,0,.9)}
+.contact-simple a{display:inline-block;color:#ffd83d;font-size:clamp(15px,2.4vw,20px);font-weight:900;text-decoration:none;text-shadow:0 0 13px rgba(240,185,11,.30),0 2px 10px rgba(0,0,0,.9)}
+.contact-simple a:hover{color:#fff0a3}
+.contact-simple .contact-chat-btn{display:block;width:min(280px,100%);min-height:43px;margin:14px auto 0;padding:10px 18px;color:#171100;text-shadow:none;text-decoration:none;background:linear-gradient(135deg,#fff09a,#f0b90b 62%,#d99a00);border:1px solid #ffd83d;border-radius:11px;box-shadow:inset 0 1px 1px rgba(255,255,255,.58),0 8px 22px rgba(0,0,0,.30),0 0 15px rgba(240,185,11,.18);font-size:13px;font-weight:900;cursor:pointer}.contact-simple .contact-chat-btn:hover{color:#171100;transform:translateY(-2px);box-shadow:inset 0 1px 1px rgba(255,255,255,.68),0 10px 25px rgba(0,0,0,.35),0 0 19px rgba(240,185,11,.28)}
+@media(max-width:600px){.withdrawals-showcase{width:calc(100vw - 16px);margin-top:16px;padding:8px;border-radius:20px}.withdrawals-showcase>.title{margin:5px 7px 11px}.withdrawals-showcase .live-withdrawals-container.has-video{width:100%;border-radius:14px}.contact-simple{margin-top:25px;padding:8px 5px}}
 </style>
 </head>
 <body>
@@ -2622,7 +2637,8 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 </div>
 </div>
 
-<div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
+<section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
+<div class="title"><h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
   <video class="live-withdrawals-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
     <source src="live-withdrawals-new.mp4" type="video/mp4">
@@ -2634,6 +2650,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   </video>
   <div class="fade-overlay"></div>
 </div>
+</section>
 
 <div class="footer-section">
     <video class="why-binance-video" autoplay muted loop playsinline preload="metadata" aria-label="Secure digital asset vault">
@@ -2699,18 +2716,11 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 
 </div>
   
-    <div style="margin-top: 40px; background:#0c1117e8; border:1px solid #ffffff10; border-radius:16px; padding:25px; max-width:450px; margin-left:auto; margin-right:auto;">
-        <h3 style="margin:0 0 10px 0; color:#fff;" data-t="contactUs">Contact Us</h3>
-        <p class="muted" style="margin:0 0 15px 0; font-size:13px;" data-t="supportEmail">Support Email</p>
-        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:10px 20px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:900; font-size:16px;">support@binancinvest.com</a>
-        <button
-  class="btn gold"
-  type="button"
-  onclick="openOnlineSupport()"
-  style="display:block;width:100%;max-width:280px;margin:12px auto 0;padding:11px 18px;"
->
-  ◉ Online Chat
-</button>
+    <div class="contact-simple">
+        <h3 data-t="contactUs">Contact Us</h3>
+        <p data-t="supportEmail">Support Email</p>
+        <a href="mailto:support@binancinvest.com">support@binancinvest.com</a>
+        <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">◉ Online Chat</button>
     </div>
     <footer class="site-footer">
       <div class="site-footer-inner">
