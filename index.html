@@ -2309,6 +2309,60 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .why-binance-video{display:block;width:min(980px,100%);aspect-ratio:16/9;margin:0 auto 34px;object-fit:cover;background:#05070b;border:1px solid rgba(240,185,11,.30);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 60px rgba(0,0,0,.58),0 0 24px rgba(240,185,11,.09)}
 @media(max-width:600px){.live-withdrawals-container.has-video{height:390px;padding:10px;border-radius:17px}.live-withdrawals-container.has-video::before{background:linear-gradient(90deg,rgba(4,7,10,.68),rgba(4,7,10,.35)),linear-gradient(0deg,rgba(4,7,10,.58),rgba(4,7,10,.08))}.live-withdrawals-container.has-video .live-withdraw{width:100%;min-height:64px;padding:9px 10px 9px 9px;border-radius:17px}.live-withdrawals-container.has-video .live-avatar{width:43px!important;height:43px!important;min-width:43px!important}.live-withdrawals-container.has-video .live-info{margin:0 9px}.live-withdrawals-container.has-video .live-info b{max-width:130px;font-size:12px}.live-withdrawals-container.has-video .live-amount{font-size:13px}.why-binance-video{margin-bottom:26px;border-radius:15px}}
 
+/* Immersive full-bleed Live Withdrawals */
+.live-withdrawals-container.has-video{
+  width:100vw;
+  height:clamp(620px,78vh,860px);
+  margin-left:calc(50% - 50vw);
+  padding:0;
+  overflow:hidden;
+  border-left:0;
+  border-right:0;
+  border-radius:0;
+  background:#030507;
+}
+.live-withdrawals-container.has-video::before{
+  z-index:2;
+  background:radial-gradient(circle at center,transparent 35%,rgba(2,4,7,.18) 70%,rgba(2,4,7,.55) 100%),linear-gradient(0deg,rgba(2,4,7,.38),transparent 22%,transparent 80%,rgba(2,4,7,.28));
+}
+.live-withdrawals-video-bg{position:absolute;inset:-26px;z-index:0;width:calc(100% + 52px);height:calc(100% + 52px);object-fit:cover;filter:blur(22px) brightness(.40) saturate(1.15);transform:scale(1.06);pointer-events:none}
+.live-withdrawals-video{z-index:1;object-fit:contain;filter:none}
+.live-withdrawals-container.has-video .live-withdraw{
+  position:absolute;
+  z-index:4;
+  width:auto;
+  min-width:0;
+  min-height:0;
+  margin:0;
+  padding:0;
+  overflow:visible;
+  gap:0;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+.live-withdrawals-container.has-video .live-withdraw::after{display:none}
+.live-withdrawals-container.has-video .live-withdraw>div:first-child{display:flex!important;align-items:center!important;padding:7px 10px 7px 7px;background:transparent;border-radius:999px;filter:drop-shadow(0 5px 12px rgba(0,0,0,.65))}
+.live-withdrawals-container.has-video .live-avatar{width:54px!important;height:54px!important;min-width:54px!important;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.25),rgba(240,185,11,.09) 38%,rgba(6,11,16,.30) 75%)!important;border-color:rgba(255,229,138,.62)!important;box-shadow:inset 2px 2px 6px rgba(255,255,255,.18),inset -4px -5px 10px rgba(0,0,0,.3),0 0 0 4px rgba(240,185,11,.055),0 0 20px rgba(240,185,11,.28)!important;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.live-withdrawals-container.has-video .live-info{margin:0 10px 0 12px}.live-withdrawals-container.has-video .live-info b{max-width:190px;color:#fff7d1;font-size:13px;text-shadow:0 2px 10px #000,0 0 9px rgba(240,185,11,.25)}.live-withdrawals-container.has-video .live-info span{color:rgba(235,240,247,.72);text-shadow:0 2px 7px #000}
+.live-withdrawals-container.has-video .live-amount{margin-left:7px;padding:7px 10px;color:#75f7bf;font-size:14px;background:transparent;border-radius:999px;text-shadow:0 0 11px rgba(22,199,132,.65),0 2px 8px #000}
+.live-withdrawals-container.has-video .live-withdraw:nth-of-type(1){top:8%;left:3%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(2){top:11%;right:3%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(3){bottom:12%;left:4%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(4){bottom:9%;right:4%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(5){top:48%;left:2%}
+.live-withdrawals-container.has-video .fade-overlay{display:none}
+@media(min-width:900px){.live-withdrawals-video{object-fit:cover}}
+@media(max-width:600px){
+  .live-withdrawals-container.has-video{height:clamp(620px,82vh,780px);margin-top:2px}
+  .live-withdrawals-video{object-fit:contain}
+  .live-withdrawals-container.has-video::before{background:linear-gradient(0deg,rgba(2,4,7,.42),transparent 28%,transparent 72%,rgba(2,4,7,.35))}
+  .live-withdrawals-container.has-video .live-withdraw>div:first-child{padding:4px 7px 4px 4px;background:transparent}
+  .live-withdrawals-container.has-video .live-avatar{width:43px!important;height:43px!important;min-width:43px!important;font-size:13px!important}
+  .live-withdrawals-container.has-video .live-info{margin:0 6px 0 8px}.live-withdrawals-container.has-video .live-info b{max-width:98px;font-size:10px}.live-withdrawals-container.has-video .live-info span{margin-top:2px;font-size:8px}
+  .live-withdrawals-container.has-video .live-amount{margin-left:3px;padding:5px 7px;font-size:10px}
+  .live-withdrawals-container.has-video .live-withdraw:nth-of-type(1){top:5%;left:3%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(2){top:19%;right:2%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(3){bottom:19%;left:2%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(4){bottom:5%;right:2%}.live-withdrawals-container.has-video .live-withdraw:nth-of-type(5){top:44%;left:2%}
+}
+
 /* Homepage video: the only addition to the original layout */
 .homepage-vault-video{width:100%;margin:0 0 18px;overflow:hidden;aspect-ratio:16/9;background:#030405;border:1px solid rgba(240,185,11,.34);border-radius:22px;box-shadow:0 18px 48px rgba(0,0,0,.5),0 0 18px rgba(240,185,11,.06)}
 .homepage-vault-video video{width:100%;height:100%;display:block;object-fit:cover;background:#030405}
@@ -2489,6 +2543,10 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 
 <div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
+  <video class="live-withdrawals-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    <source src="live-withdrawals.mp4" type="video/mp4">
+    <source src="live-withdrawals.webm" type="video/webm">
+  </video>
   <video class="live-withdrawals-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
     <source src="live-withdrawals.mp4" type="video/mp4">
     <source src="live-withdrawals.webm" type="video/webm">
