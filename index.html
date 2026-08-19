@@ -5,12 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Binance Invest</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://cryptologos.cc" crossorigin>
 <link rel="dns-prefetch" href="https://api.binance.com">
-<link rel="preload" href="stat-platform-users.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-active-investors.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-profit-paid.webp" as="image" type="image/webp">
-<link rel="preload" href="stat-platform-capital.webp" as="image" type="image/webp">
 <link rel="preload" href="top-markets-background.webp" as="image" type="image/webp">
 <link rel="preload" href="hero-background.webp" as="image" type="image/webp">
 <!-- بارگذاری کتابخانه Supabase -->
@@ -173,10 +168,7 @@ header{height:72px;position:sticky;top:0;z-index:50;background:#05070be8;backdro
 .footer-section h3{color:#fff;margin-bottom:15px}
 .footer-section p{max-width:600px;margin:0 auto;line-height:1.7;font-size:0.9rem}
 .why-binance-demo-image{display:block;width:min(980px,100%);aspect-ratio:16/9;margin:0 auto 34px;object-fit:cover;border:1px solid rgba(240,185,11,.28);border-radius:20px;box-shadow:0 22px 60px rgba(0,0,0,.58),0 0 24px rgba(240,185,11,.08)}
-.live-withdrawals-container.has-demo-image{background-image:linear-gradient(90deg,rgba(7,10,14,.97) 0%,rgba(7,10,14,.88) 47%,rgba(7,10,14,.42) 100%),url("live-withdrawals-demo.jpg");background-size:cover;background-position:center;background-repeat:no-repeat}
-.live-withdrawals-container.has-demo-image .live-withdraw{width:min(620px,72%);background:rgba(12,17,23,.76);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
-.live-withdrawals-container.has-demo-image .fade-overlay{background:linear-gradient(transparent,rgba(7,10,14,.94))}
-@media(max-width:600px){.why-binance-demo-image{margin-bottom:26px;border-radius:14px}.live-withdrawals-container.has-demo-image{background-image:linear-gradient(rgba(7,10,14,.78),rgba(7,10,14,.88)),url("live-withdrawals-demo.jpg");background-position:center}.live-withdrawals-container.has-demo-image .live-withdraw{width:100%}}
+@media(max-width:600px){.why-binance-demo-image{margin-bottom:26px;border-radius:14px}}
 .security-badge {background:#111820; border:1px solid #ffffff1a; padding:10px 18px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; font-weight:800;}
 
 /* Portfolio & Deposit Section Grid Layout */
@@ -2830,20 +2822,35 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 #portfolio{
   position:relative;
   isolation:isolate;
-  padding:18px;
+  padding:0;
   overflow:hidden;
   background-color:#05070a;
-  background-image:
-    linear-gradient(180deg,rgba(3,6,9,.10),rgba(3,6,9,.22) 52%,rgba(3,6,9,.13)),
-    url("portfolio-page-background-open-hq.webp");
-  background-size:100% 100%;
-  background-position:center top;
-  background-repeat:no-repeat;
   border:1px solid rgba(240,185,11,.20);
   border-radius:25px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 58px rgba(0,0,0,.42);
 }
 #portfolio>*{position:relative;z-index:1}
+.portfolio-background-section{
+  position:relative;
+  padding:18px;
+  background-color:#070a0e;
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% 100%;
+}
+.portfolio-upper-background{
+  background-image:
+    linear-gradient(180deg,rgba(3,6,9,.08),rgba(3,6,9,.18) 55%,rgba(3,6,9,.24)),
+    url("portfolio-upper-background.webp");
+}
+.portfolio-finance-background{
+  margin-top:12px;
+  padding-top:24px;
+  background-image:
+    linear-gradient(180deg,rgba(3,6,9,.16),rgba(3,6,9,.20) 55%,rgba(3,6,9,.28)),
+    url("portfolio-finance-background.webp");
+  border-top:1px solid rgba(240,185,11,.20);
+}
 #portfolio .card,
 #portfolio .referral-portfolio-card,
 #portfolio .vip-single-card,
@@ -2863,7 +2870,11 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   backdrop-filter:blur(.6px);
   -webkit-backdrop-filter:blur(.6px);
 }
-@media(max-width:600px){#portfolio{padding:12px 9px;border-radius:20px;background-size:100% 100%;background-position:center top}}
+@media(max-width:600px){
+  #portfolio{border-radius:20px}
+  .portfolio-background-section{padding:12px 9px;background-size:100% 100%}
+  .portfolio-finance-background{margin-top:8px;padding-top:18px}
+}
 
 /* Continuous cinematic backgrounds for account pages */
 #rewards,#profile,#support,#transactions{
@@ -2958,15 +2969,6 @@ html[dir="rtl"] .language-panel-head{padding-right:0;padding-left:43px}html[dir=
 @keyframes languageBackdropIn{from{opacity:0}to{opacity:1}}
 @media(max-width:680px){.language-modal{padding:10px}.language-panel{max-height:91vh;padding:20px 13px 14px;border-radius:20px}.language-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:68vh}.language-panel-head h2{font-size:21px}.language-trigger{min-width:65px;height:36px;padding:0 9px}}
 @media(max-width:390px){.language-grid{grid-template-columns:1fr}.language-option{padding:10px 12px}}
-/* Compact authentication header — keeps the language control on the outer edge. */
-.head{margin-left:auto;min-width:0}
-#authButtonsGroup{display:grid!important;grid-template-columns:1fr;gap:4px!important;order:1}
-#authButtonsGroup .btn{width:100%;min-width:104px;height:29px!important;min-height:29px!important;padding:4px 9px!important;font-size:9.5px!important}
-.language-trigger{order:2;min-width:58px;width:58px;height:33px;padding:0 6px;gap:4px;border-radius:9px;font-size:10px}
-.language-trigger-flag{font-size:14px}
-html[dir="rtl"] .head{margin-left:0;margin-right:auto}
-@media(max-width:600px){header{gap:7px}.head{gap:5px;flex:0 1 auto}#authButtonsGroup .btn{min-width:91px;height:27px!important;min-height:27px!important;padding:3px 7px!important;font-size:8.6px!important}.language-trigger{min-width:52px;width:52px;height:30px;padding:0 5px}.language-trigger-flag{font-size:13px}.brand{gap:7px;min-width:0}.brand>span{font-size:13px}.binance-floating-logo{width:29px;height:29px}}
-@media(max-width:370px){#authButtonsGroup .btn{min-width:80px;font-size:8px!important}.language-trigger{min-width:48px;width:48px}.language-trigger-flag{display:none}}
 </style>
 </head>
 <body>
@@ -3031,7 +3033,7 @@ html[dir="rtl"] .head{margin-left:0;margin-right:auto}
 
 <section id="home" class="view active">
 <div class="homepage-vault-video">
-  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
+  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="homepage-vault-poster.webp" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
 
@@ -3426,6 +3428,7 @@ html[dir="rtl"] .head{margin-left:0;margin-right:auto}
 <div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" value="1000" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$1,000.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
 
 <section id="portfolio" class="view">
+<div class="portfolio-background-section portfolio-upper-background">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div id="referralPortfolioCard" class="referral-portfolio-card">
@@ -3533,6 +3536,10 @@ html[dir="rtl"] .head{margin-left:0;margin-right:auto}
     </div>
     <div id="portfolioVipError" class="portfolio-vip-error"></div>
   </div>
+
+</div>
+
+<div class="portfolio-background-section portfolio-finance-background">
 
   <div id="portfolioFinanceGuest" class="portfolio-finance-guest">
     <div class="portfolio-finance-guest-icon">🔒</div>
@@ -3653,6 +3660,7 @@ html[dir="rtl"] .head{margin-left:0;margin-right:auto}
     </div>
   </div>
 
+</div>
 </section>
 
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
@@ -5326,9 +5334,28 @@ window.addEventListener('click', function(e) {
 
 // دریافت زنده قیمت ها از بایننس
 async function fetchRealPrices() {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 5000);
+
     try {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/24hr');
+        const res = await fetch(
+            'https://api.binance.com/api/v3/ticker/24hr',
+            {
+                signal: controller.signal,
+                cache: 'no-store'
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(`Price service returned ${res.status}`);
+        }
+
         const data = await res.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid price response');
+        }
+
         const symbolMap = {
             'BTCUSDT': 'btc', 'ETHUSDT': 'eth', 'BNBUSDT': 'bnb', 'SOLUSDT': 'sol',
             'XRPUSDT': 'xrp', 'ADAUSDT': 'ada', 'DOGEUSDT': 'doge', 'TRXUSDT': 'trx',
@@ -5348,6 +5375,8 @@ async function fetchRealPrices() {
         renderTable();
     } catch(e) {
         console.log("استفاده از قیمت‌های آفلاین (مشکل در اتصال به بایننس)");
+    } finally {
+        window.clearTimeout(timeoutId);
     }
 }
 
@@ -8168,31 +8197,8 @@ const EXTRA_TRANSLATIONS = {
   el:{login:"Σύνδεση",register:"Δημιουργία λογαριασμού",logout:"Αποσύνδεση",overview:"Επισκόπηση",markets:"Αγορές",invest:"Επένδυση",portfolio:"Χαρτοφυλάκιο",transactions:"Συναλλαγές",rewards:"Ανταμοιβές",profile:"Προφίλ",hero:"Χτίστε το μέλλον σας με έξυπνες επενδύσεις.",exploreInvest:"Εξερεύνηση επενδύσεων",exploreMarkets:"Εξερεύνηση αγορών",top:"Κορυφαίες αγορές",viewAll:"Προβολή όλων",featured:"Προτεινόμενες επενδύσεις",plans:"Επενδυτικά πλάνα",balance:"Υπόλοιπο",invested:"Επενδύθηκε",profitTotal:"Συνολικό κέρδος",deposit:"Κατάθεση",withdraw:"Ανάληψη",account:"Λογαριασμός",security:"Ασφάλεια",save:"Αποθήκευση προφίλ",contactUs:"Επικοινωνία",platformStatsTitle:"Στατιστικά πλατφόρμας",liveWithdrawalsTitle:"Ζωντανές αναλήψεις"}
 };
 
-/* Complete the high-visibility interface vocabulary for every added language. */
-const EXTRA_SITE_TRANSLATIONS = {
-  it:{heroDesc:"Esplora asset digitali, piani di investimento e strumenti di portafoglio in un'unica interfaccia premium.",footerTitle:"Perché Binance Invest?",illustrative:"Rendimenti indicativi",calculator:"Calcolatore investimenti",amount:"Importo",plan:"Piano",estimated:"Valore stimato",level:"Livello account",depositDesc:"Aggiungi saldo in modo sicuro tramite wallet o gateway.",withdrawDesc:"Richiedi un prelievo immediato.",request:"Richiedi prelievo",clear:"Cancella cronologia",username:"Nome utente",email:"Email",fullname:"Nome completo",phone:"Telefono",password:"Password",continue:"Continua",thAsset:"Asset",thPrice:"Prezzo",thCap:"Capitalizzazione",thVol:"Volume",dailyProfitLabel:"Profitto giornaliero",monthlyProfitLabel:"Profitto mensile",supportEmail:"Email assistenza",securityPartners:"Partner di sicurezza",statUsers:"Utenti della piattaforma",statInvestors:"Investitori attivi",statPaid:"Profitti pagati",statCapital:"Capitale della piattaforma",depSubmitBtn:"Invia richiesta di deposito"},
-  pt:{heroDesc:"Explore ativos digitais, planos de investimento e ferramentas de portfólio em uma interface premium.",footerTitle:"Por que Binance Invest?",illustrative:"Retornos ilustrativos",calculator:"Calculadora de investimento",amount:"Valor",plan:"Plano",estimated:"Valor estimado",level:"Nível da conta",depositDesc:"Adicione saldo com segurança via carteira ou gateway.",withdrawDesc:"Solicite um saque instantaneamente.",request:"Solicitar saque",clear:"Limpar histórico",username:"Nome de usuário",email:"E-mail",fullname:"Nome completo",phone:"Telefone",password:"Senha",continue:"Continuar",thAsset:"Ativo",thPrice:"Preço",thCap:"Capitalização",thVol:"Volume",dailyProfitLabel:"Lucro diário",monthlyProfitLabel:"Lucro mensal",supportEmail:"E-mail de suporte",securityPartners:"Parceiros de segurança",statUsers:"Usuários da plataforma",statInvestors:"Investidores ativos",statPaid:"Lucro total pago",statCapital:"Capital da plataforma",depSubmitBtn:"Enviar solicitação de depósito"},
-  nl:{heroDesc:"Ontdek digitale activa, investeringsplannen en portfoliotools in één premium interface.",footerTitle:"Waarom Binance Invest?",illustrative:"Indicatieve rendementen",calculator:"Investeringscalculator",amount:"Bedrag",plan:"Plan",estimated:"Geschatte waarde",level:"Accountniveau",depositDesc:"Voeg veilig saldo toe via wallet of gateway.",withdrawDesc:"Vraag direct een opname aan.",request:"Opname aanvragen",clear:"Geschiedenis wissen",username:"Gebruikersnaam",email:"E-mail",fullname:"Volledige naam",phone:"Telefoon",password:"Wachtwoord",continue:"Doorgaan",thAsset:"Activa",thPrice:"Prijs",thCap:"Marktkapitalisatie",thVol:"Volume",dailyProfitLabel:"Dagelijkse winst",monthlyProfitLabel:"Maandelijkse winst",supportEmail:"Support-e-mail",securityPartners:"Beveiligingspartners",statUsers:"Platformgebruikers",statInvestors:"Actieve investeerders",statPaid:"Totaal uitbetaalde winst",statCapital:"Platformkapitaal",depSubmitBtn:"Stortingsverzoek indienen"},
-  pl:{heroDesc:"Odkrywaj aktywa cyfrowe, plany inwestycyjne i narzędzia portfelowe w jednym interfejsie premium.",footerTitle:"Dlaczego Binance Invest?",illustrative:"Przykładowe zwroty",calculator:"Kalkulator inwestycji",amount:"Kwota",plan:"Plan",estimated:"Szacowana wartość",level:"Poziom konta",depositDesc:"Bezpiecznie dodaj saldo przez portfel lub bramkę.",withdrawDesc:"Złóż natychmiastową dyspozycję wypłaty.",request:"Zleć wypłatę",clear:"Wyczyść historię",username:"Nazwa użytkownika",email:"E-mail",fullname:"Imię i nazwisko",phone:"Telefon",password:"Hasło",continue:"Kontynuuj",thAsset:"Aktywo",thPrice:"Cena",thCap:"Kapitalizacja",thVol:"Wolumen",dailyProfitLabel:"Dzienny zysk",monthlyProfitLabel:"Miesięczny zysk",supportEmail:"E-mail wsparcia",securityPartners:"Partnerzy bezpieczeństwa",statUsers:"Użytkownicy platformy",statInvestors:"Aktywni inwestorzy",statPaid:"Łącznie wypłacony zysk",statCapital:"Kapitał platformy",depSubmitBtn:"Wyślij prośbę o wpłatę"},
-  uk:{heroDesc:"Досліджуйте цифрові активи, інвестиційні плани та інструменти портфеля в одному преміальному інтерфейсі.",footerTitle:"Чому Binance Invest?",illustrative:"Орієнтовна дохідність",calculator:"Інвестиційний калькулятор",amount:"Сума",plan:"План",estimated:"Орієнтовна вартість",level:"Рівень акаунта",depositDesc:"Безпечно поповнюйте баланс через гаманець або шлюз.",withdrawDesc:"Створіть миттєвий запит на виведення.",request:"Запит на виведення",clear:"Очистити історію",username:"Ім'я користувача",email:"Ел. пошта",fullname:"Повне ім'я",phone:"Телефон",password:"Пароль",continue:"Продовжити",thAsset:"Актив",thPrice:"Ціна",thCap:"Капіталізація",thVol:"Обсяг",dailyProfitLabel:"Денний прибуток",monthlyProfitLabel:"Місячний прибуток",supportEmail:"Пошта підтримки",securityPartners:"Партнери безпеки",statUsers:"Користувачі платформи",statInvestors:"Активні інвестори",statPaid:"Виплачений прибуток",statCapital:"Капітал платформи",depSubmitBtn:"Надіслати запит на депозит"},
-  ro:{heroDesc:"Explorează active digitale, planuri de investiții și instrumente de portofoliu într-o interfață premium.",footerTitle:"De ce Binance Invest?",illustrative:"Randamente orientative",calculator:"Calculator de investiții",amount:"Sumă",plan:"Plan",estimated:"Valoare estimată",level:"Nivel cont",depositDesc:"Adaugă sold în siguranță prin portofel sau gateway.",withdrawDesc:"Solicită o retragere instant.",request:"Solicită retragerea",clear:"Șterge istoricul",username:"Utilizator",email:"E-mail",fullname:"Nume complet",phone:"Telefon",password:"Parolă",continue:"Continuă",thAsset:"Activ",thPrice:"Preț",thCap:"Capitalizare",thVol:"Volum",dailyProfitLabel:"Profit zilnic",monthlyProfitLabel:"Profit lunar",supportEmail:"E-mail suport",securityPartners:"Parteneri de securitate",statUsers:"Utilizatori platformă",statInvestors:"Investitori activi",statPaid:"Profit total plătit",statCapital:"Capital platformă",depSubmitBtn:"Trimite cererea de depunere"},
-  id:{heroDesc:"Jelajahi aset digital, paket investasi, dan alat portofolio dalam satu antarmuka premium.",footerTitle:"Mengapa Binance Invest?",illustrative:"Imbal hasil ilustratif",calculator:"Kalkulator Investasi",amount:"Jumlah",plan:"Paket",estimated:"Nilai perkiraan",level:"Level akun",depositDesc:"Tambah saldo dengan aman melalui dompet atau gateway.",withdrawDesc:"Ajukan penarikan secara instan.",request:"Ajukan Penarikan",clear:"Hapus riwayat",username:"Nama pengguna",email:"Email",fullname:"Nama lengkap",phone:"Telepon",password:"Kata sandi",continue:"Lanjutkan",thAsset:"Aset",thPrice:"Harga",thCap:"Kapitalisasi",thVol:"Volume",dailyProfitLabel:"Keuntungan harian",monthlyProfitLabel:"Keuntungan bulanan",supportEmail:"Email dukungan",securityPartners:"Mitra Keamanan",statUsers:"Pengguna Platform",statInvestors:"Investor Aktif",statPaid:"Total Profit Dibayar",statCapital:"Modal Platform",depSubmitBtn:"Kirim Permintaan Deposit"},
-  ms:{heroDesc:"Terokai aset digital, pelan pelaburan dan alat portfolio dalam satu antara muka premium.",footerTitle:"Mengapa Binance Invest?",illustrative:"Pulangan ilustrasi",calculator:"Kalkulator Pelaburan",amount:"Jumlah",plan:"Pelan",estimated:"Nilai anggaran",level:"Tahap akaun",depositDesc:"Tambah baki dengan selamat melalui dompet atau gerbang.",withdrawDesc:"Mohon pengeluaran segera.",request:"Mohon Pengeluaran",clear:"Padam sejarah",username:"Nama pengguna",email:"E-mel",fullname:"Nama penuh",phone:"Telefon",password:"Kata laluan",continue:"Teruskan",thAsset:"Aset",thPrice:"Harga",thCap:"Modal pasaran",thVol:"Volum",dailyProfitLabel:"Keuntungan harian",monthlyProfitLabel:"Keuntungan bulanan",supportEmail:"E-mel sokongan",securityPartners:"Rakan Keselamatan",statUsers:"Pengguna Platform",statInvestors:"Pelabur Aktif",statPaid:"Jumlah Untung Dibayar",statCapital:"Modal Platform",depSubmitBtn:"Hantar Permintaan Deposit"},
-  hi:{heroDesc:"डिजिटल एसेट, निवेश योजनाएँ और पोर्टफोलियो टूल एक प्रीमियम इंटरफ़ेस में देखें।",footerTitle:"Binance Invest क्यों?",illustrative:"अनुमानित रिटर्न",calculator:"निवेश कैलकुलेटर",amount:"राशि",plan:"योजना",estimated:"अनुमानित मूल्य",level:"खाता स्तर",depositDesc:"वॉलेट या गेटवे से सुरक्षित रूप से बैलेंस जोड़ें।",withdrawDesc:"तुरंत निकासी अनुरोध करें।",request:"निकासी अनुरोध",clear:"इतिहास साफ़ करें",username:"उपयोगकर्ता नाम",email:"ईमेल",fullname:"पूरा नाम",phone:"फ़ोन",password:"पासवर्ड",continue:"जारी रखें",thAsset:"एसेट",thPrice:"कीमत",thCap:"मार्केट कैप",thVol:"वॉल्यूम",dailyProfitLabel:"दैनिक लाभ",monthlyProfitLabel:"मासिक लाभ",supportEmail:"सहायता ईमेल",securityPartners:"सुरक्षा भागीदार",statUsers:"प्लेटफ़ॉर्म उपयोगकर्ता",statInvestors:"सक्रिय निवेशक",statPaid:"कुल भुगतान लाभ",statCapital:"प्लेटफ़ॉर्म पूंजी",depSubmitBtn:"जमा अनुरोध भेजें"},
-  ur:{heroDesc:"ڈیجیٹل اثاثے، سرمایہ کاری کے منصوبے اور پورٹ فولیو ٹولز ایک پریمیم انٹرفیس میں دیکھیں۔",footerTitle:"Binance Invest کیوں؟",illustrative:"تخمینی منافع",calculator:"سرمایہ کاری کیلکولیٹر",amount:"رقم",plan:"منصوبہ",estimated:"تخمینی قیمت",level:"اکاؤنٹ لیول",depositDesc:"والیٹ یا گیٹ وے سے محفوظ طریقے سے بیلنس شامل کریں۔",withdrawDesc:"فوری نکلوائی کی درخواست دیں۔",request:"نکلوائی کی درخواست",clear:"تاریخ صاف کریں",username:"صارف نام",email:"ای میل",fullname:"پورا نام",phone:"فون",password:"پاس ورڈ",continue:"جاری رکھیں",thAsset:"اثاثہ",thPrice:"قیمت",thCap:"مارکیٹ کیپ",thVol:"حجم",dailyProfitLabel:"روزانہ منافع",monthlyProfitLabel:"ماہانہ منافع",supportEmail:"سپورٹ ای میل",securityPartners:"سیکیورٹی پارٹنرز",statUsers:"پلیٹ فارم صارفین",statInvestors:"فعال سرمایہ کار",statPaid:"کل ادا شدہ منافع",statCapital:"پلیٹ فارم سرمایہ",depSubmitBtn:"ڈپازٹ درخواست بھیجیں"},
-  ja:{heroDesc:"デジタル資産、投資プラン、ポートフォリオツールを1つのプレミアム画面で利用できます。",footerTitle:"Binance Investを選ぶ理由",illustrative:"参考利回り",calculator:"投資計算機",amount:"金額",plan:"プラン",estimated:"予想価値",level:"アカウントレベル",depositDesc:"ウォレットまたはゲートウェイから安全に残高を追加します。",withdrawDesc:"出金をすぐに申請します。",request:"出金を申請",clear:"履歴を消去",username:"ユーザー名",email:"メール",fullname:"氏名",phone:"電話",password:"パスワード",continue:"続行",thAsset:"資産",thPrice:"価格",thCap:"時価総額",thVol:"出来高",dailyProfitLabel:"日次利益",monthlyProfitLabel:"月次利益",supportEmail:"サポートメール",securityPartners:"セキュリティパートナー",statUsers:"プラットフォーム利用者",statInvestors:"アクティブ投資家",statPaid:"支払済み利益",statCapital:"プラットフォーム資本",depSubmitBtn:"入金申請を送信"},
-  ko:{heroDesc:"디지털 자산, 투자 플랜 및 포트폴리오 도구를 하나의 프리미엄 인터페이스에서 이용하세요.",footerTitle:"왜 Binance Invest인가요?",illustrative:"예상 수익률",calculator:"투자 계산기",amount:"금액",plan:"플랜",estimated:"예상 가치",level:"계정 등급",depositDesc:"지갑 또는 게이트웨이로 안전하게 잔액을 추가하세요.",withdrawDesc:"즉시 출금을 요청하세요.",request:"출금 요청",clear:"기록 지우기",username:"사용자 이름",email:"이메일",fullname:"이름",phone:"전화",password:"비밀번호",continue:"계속",thAsset:"자산",thPrice:"가격",thCap:"시가총액",thVol:"거래량",dailyProfitLabel:"일일 수익",monthlyProfitLabel:"월간 수익",supportEmail:"지원 이메일",securityPartners:"보안 파트너",statUsers:"플랫폼 사용자",statInvestors:"활성 투자자",statPaid:"총 지급 수익",statCapital:"플랫폼 자본",depSubmitBtn:"입금 요청 제출"},
-  vi:{heroDesc:"Khám phá tài sản số, kế hoạch đầu tư và công cụ danh mục trong một giao diện cao cấp.",footerTitle:"Tại sao chọn Binance Invest?",illustrative:"Lợi nhuận minh họa",calculator:"Máy tính đầu tư",amount:"Số tiền",plan:"Kế hoạch",estimated:"Giá trị ước tính",level:"Cấp tài khoản",depositDesc:"Nạp số dư an toàn qua ví hoặc cổng thanh toán.",withdrawDesc:"Yêu cầu rút tiền ngay.",request:"Yêu cầu rút tiền",clear:"Xóa lịch sử",username:"Tên người dùng",email:"Email",fullname:"Họ tên",phone:"Điện thoại",password:"Mật khẩu",continue:"Tiếp tục",thAsset:"Tài sản",thPrice:"Giá",thCap:"Vốn hóa",thVol:"Khối lượng",dailyProfitLabel:"Lợi nhuận ngày",monthlyProfitLabel:"Lợi nhuận tháng",supportEmail:"Email hỗ trợ",securityPartners:"Đối tác bảo mật",statUsers:"Người dùng nền tảng",statInvestors:"Nhà đầu tư hoạt động",statPaid:"Tổng lợi nhuận đã trả",statCapital:"Vốn nền tảng",depSubmitBtn:"Gửi yêu cầu nạp tiền"},
-  th:{heroDesc:"สำรวจสินทรัพย์ดิจิทัล แผนการลงทุน และเครื่องมือพอร์ตในอินเทอร์เฟซระดับพรีเมียม",footerTitle:"ทำไมต้อง Binance Invest?",illustrative:"ผลตอบแทนโดยประมาณ",calculator:"เครื่องคำนวณการลงทุน",amount:"จำนวน",plan:"แผน",estimated:"มูลค่าโดยประมาณ",level:"ระดับบัญชี",depositDesc:"เพิ่มยอดอย่างปลอดภัยผ่านกระเป๋าหรือเกตเวย์",withdrawDesc:"ส่งคำขอถอนเงินทันที",request:"ขอถอนเงิน",clear:"ล้างประวัติ",username:"ชื่อผู้ใช้",email:"อีเมล",fullname:"ชื่อเต็ม",phone:"โทรศัพท์",password:"รหัสผ่าน",continue:"ดำเนินการต่อ",thAsset:"สินทรัพย์",thPrice:"ราคา",thCap:"มูลค่าตลาด",thVol:"ปริมาณ",dailyProfitLabel:"กำไรรายวัน",monthlyProfitLabel:"กำไรรายเดือน",supportEmail:"อีเมลสนับสนุน",securityPartners:"พันธมิตรความปลอดภัย",statUsers:"ผู้ใช้แพลตฟอร์ม",statInvestors:"นักลงทุนที่ใช้งาน",statPaid:"กำไรที่จ่ายทั้งหมด",statCapital:"ทุนแพลตฟอร์ม",depSubmitBtn:"ส่งคำขอฝากเงิน"},
-  el:{heroDesc:"Εξερευνήστε ψηφιακά στοιχεία, επενδυτικά πλάνα και εργαλεία χαρτοφυλακίου σε ένα premium περιβάλλον.",footerTitle:"Γιατί Binance Invest;",illustrative:"Ενδεικτικές αποδόσεις",calculator:"Υπολογιστής επένδυσης",amount:"Ποσό",plan:"Πλάνο",estimated:"Εκτιμώμενη αξία",level:"Επίπεδο λογαριασμού",depositDesc:"Προσθέστε υπόλοιπο με ασφάλεια μέσω πορτοφολιού ή πύλης.",withdrawDesc:"Ζητήστε άμεσα ανάληψη.",request:"Αίτημα ανάληψης",clear:"Εκκαθάριση ιστορικού",username:"Όνομα χρήστη",email:"Email",fullname:"Ονοματεπώνυμο",phone:"Τηλέφωνο",password:"Κωδικός",continue:"Συνέχεια",thAsset:"Στοιχείο",thPrice:"Τιμή",thCap:"Κεφαλαιοποίηση",thVol:"Όγκος",dailyProfitLabel:"Ημερήσιο κέρδος",monthlyProfitLabel:"Μηνιαίο κέρδος",supportEmail:"Email υποστήριξης",securityPartners:"Συνεργάτες ασφαλείας",statUsers:"Χρήστες πλατφόρμας",statInvestors:"Ενεργοί επενδυτές",statPaid:"Συνολικά κέρδη",statCapital:"Κεφάλαιο πλατφόρμας",depSubmitBtn:"Υποβολή αιτήματος κατάθεσης"}
-};
-
-const LANGUAGE_MODAL_TEXT = {
-  en:["Choose your language","Select a language for the entire website","Search languages..."],fa:["زبان خود را انتخاب کنید","زبان تمام بخش‌های سایت را انتخاب کنید","جستجوی زبان..."],az:["Dilinizi seçin","Bütün sayt üçün dil seçin","Dil axtar..."],tr:["Dilinizi seçin","Tüm site için bir dil seçin","Dil ara..."],ru:["Выберите язык","Выберите язык для всего сайта","Поиск языка..."],ar:["اختر لغتك","اختر لغة الموقع بالكامل","ابحث عن لغة..."],zh:["选择语言","选择整个网站的语言","搜索语言..."],es:["Elige tu idioma","Selecciona el idioma de todo el sitio","Buscar idiomas..."],fr:["Choisissez votre langue","Sélectionnez la langue de tout le site","Rechercher une langue..."],de:["Sprache auswählen","Sprache für die gesamte Website auswählen","Sprachen suchen..."],it:["Scegli la lingua","Seleziona la lingua dell'intero sito","Cerca lingue..."],pt:["Escolha seu idioma","Selecione o idioma de todo o site","Pesquisar idiomas..."],nl:["Kies uw taal","Selecteer de taal voor de hele website","Talen zoeken..."],pl:["Wybierz język","Wybierz język całej witryny","Szukaj języka..."],uk:["Оберіть мову","Оберіть мову для всього сайту","Пошук мови..."],ro:["Alege limba","Selectează limba întregului site","Caută limbi..."],id:["Pilih bahasa","Pilih bahasa untuk seluruh situs","Cari bahasa..."],ms:["Pilih bahasa","Pilih bahasa untuk seluruh laman","Cari bahasa..."],hi:["अपनी भाषा चुनें","पूरी वेबसाइट के लिए भाषा चुनें","भाषा खोजें..."],ur:["اپنی زبان منتخب کریں","پوری ویب سائٹ کی زبان منتخب کریں","زبان تلاش کریں..."],ja:["言語を選択","サイト全体の言語を選択してください","言語を検索..."],ko:["언어 선택","전체 사이트에 사용할 언어를 선택하세요","언어 검색..."],vi:["Chọn ngôn ngữ","Chọn ngôn ngữ cho toàn bộ trang web","Tìm ngôn ngữ..."],th:["เลือกภาษา","เลือกภาษาสำหรับทั้งเว็บไซต์","ค้นหาภาษา..."],el:["Επιλέξτε γλώσσα","Επιλέξτε γλώσσα για ολόκληρο τον ιστότοπο","Αναζήτηση γλώσσας..."]
-};
-
 Object.entries(EXTRA_TRANSLATIONS).forEach(([code,pack]) => {
-  T[code] = {...T.en,...pack,...(EXTRA_SITE_TRANSLATIONS[code] || {})};
+  T[code] = {...T.en,...pack};
   SUPPORT_I18N[code] = {...SUPPORT_I18N.en};
   uiTexts[code] = {...uiTexts.en};
   planNames[code] = planNames.en.map(item => [...item]);
@@ -8213,31 +8219,6 @@ function handleLanguageBackdrop(event){if(event.target?.id==="languageModal")clo
 function chooseLanguage(code){setLang(code);closeLanguageSelector()}
 function updateLanguageTrigger(code){const item=getLanguageItem(code);const flag=document.getElementById("languageTriggerFlag"),label=document.getElementById("languageTriggerCode");if(flag)flag.textContent=item[1];if(label)label.textContent=item[2]}
 
-const NAV_SUPPORT_TEXT = {en:"Support",fa:"پشتیبانی",az:"Dəstək",tr:"Destek",ru:"Поддержка",ar:"الدعم",zh:"支持",es:"Soporte",fr:"Assistance",de:"Support",it:"Assistenza",pt:"Suporte",nl:"Ondersteuning",pl:"Wsparcie",uk:"Підтримка",ro:"Asistență",id:"Dukungan",ms:"Sokongan",hi:"सहायता",ur:"سپورٹ",ja:"サポート",ko:"지원",vi:"Hỗ trợ",th:"ช่วยเหลือ",el:"Υποστήριξη"};
-
-function applyLanguageChrome(lang,d){
-  const modalText=LANGUAGE_MODAL_TEXT[lang] || LANGUAGE_MODAL_TEXT.en;
-  const modalTitle=document.getElementById("languageModalTitle");
-  const modalSubtitle=document.getElementById("languageModalSubtitle");
-  const languageSearch=document.getElementById("languageSearch");
-  if(modalTitle) modalTitle.textContent=modalText[0];
-  if(modalSubtitle) modalSubtitle.textContent=modalText[1];
-  if(languageSearch) languageSearch.placeholder=modalText[2];
-
-  const supportNav=document.querySelector('[data-page="support"]');
-  if(supportNav) supportNav.textContent=NAV_SUPPORT_TEXT[lang] || NAV_SUPPORT_TEXT.en;
-
-  const marketSearch=document.getElementById("search");
-  if(marketSearch) marketSearch.placeholder=(lang==="fa"?"جستجوی BTC، ETH...":lang==="az"?"BTC, ETH axtar...":lang==="tr"?"BTC, ETH ara...":lang==="ru"?"Поиск BTC, ETH...":lang==="ar"?"ابحث عن BTC وETH...":lang==="zh"?"搜索 BTC、ETH...":lang==="es"?"Buscar BTC, ETH...":lang==="fr"?"Rechercher BTC, ETH...":lang==="de"?"BTC, ETH suchen...":"Search BTC, ETH...");
-
-  const authUser=document.getElementById("authUser");
-  const authPass=document.getElementById("authPass");
-  const forgotInput=document.getElementById("forgotInput");
-  if(authUser) authUser.placeholder=d.usernameOrEmail || T.en.usernameOrEmail;
-  if(authPass) authPass.placeholder=d.password || T.en.password;
-  if(forgotInput) forgotInput.placeholder=d.enterEmailOrUser || T.en.enterEmailOrUser;
-}
-
 function setLang(lang){
   localStorage.setItem("bi_lang", lang);
   document.documentElement.lang = lang;
@@ -8251,7 +8232,6 @@ function setLang(lang){
   calcCustom();
   togglePaymentDetails();
   applySupportLanguage();
-  applyLanguageChrome(lang,d);
   updateLanguageTrigger(lang);
   renderLanguageOptions();
 }
@@ -8374,8 +8354,16 @@ restoreEmailConfirmationNotice();
  calcCustom();
 calculateVipLock();
 calculatePortfolioVipLock();
-fetchRealPrices();
-  setInterval(fetchRealPrices, 15000);
+  const startPriceUpdates = () => {
+    fetchRealPrices();
+    window.setInterval(fetchRealPrices, 30000);
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(startPriceUpdates, { timeout: 2500 });
+  } else {
+    window.setTimeout(startPriceUpdates, 1200);
+  }
 
   if (currentUser) {
     loadProfile();
