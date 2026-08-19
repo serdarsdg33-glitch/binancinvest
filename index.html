@@ -2430,6 +2430,30 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .site-footer-inner{width:min(1180px,100%);margin:auto}.site-footer-top{display:grid;grid-template-columns:1.35fr repeat(3,1fr);gap:42px;padding-bottom:32px}.site-footer-brand{color:var(--gold);font-size:20px;font-weight:950}.site-footer-about{max-width:380px;margin:13px 0 0;color:#8f9baa;font-size:12px;line-height:1.85}.site-footer-column h3{margin:0 0 14px;color:#fff;font-size:13px}.site-footer-links{display:flex;flex-direction:column}.site-footer-link{padding:11px 0;color:#9ba6b5;text-decoration:none;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;text-align:left;transition:.2s ease}.site-footer-link:hover{color:var(--gold2);padding-left:5px}.site-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);color:#727e8d;font-size:10px}.site-footer-legal{display:flex;flex-wrap:wrap;gap:17px}.site-footer-legal a{color:#98a3b1;text-decoration:none}.site-footer-legal a:hover{color:var(--gold2)}html[dir="rtl"] .site-footer-link{text-align:right}html[dir="rtl"] .site-footer-link:hover{padding-left:0;padding-right:5px}
 @media(max-width:760px){.site-footer{padding:34px 16px 20px}.site-footer-top{grid-template-columns:1fr 1fr;gap:28px 22px}.site-footer-intro{grid-column:1/-1}.site-footer-bottom{align-items:flex-start;flex-direction:column}}
 @media(max-width:430px){.site-footer-top{grid-template-columns:1fr;gap:25px}.site-footer-intro{grid-column:auto}.site-footer-link{padding:12px 0}}
+
+/* Final cinematic withdrawals layout */
+.live-withdrawals-container.has-video{width:min(760px,100vw);height:auto;aspect-ratio:512/634;margin:0 auto;padding:0;overflow:hidden;isolation:isolate;background:#030507;border:0;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 30px rgba(240,185,11,.08)}
+.live-withdrawals-video-bg{display:none}.live-withdrawals-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center}
+.live-withdrawals-container.has-video::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(2,4,7,.14),transparent 22%,transparent 78%,rgba(2,4,7,.14)),linear-gradient(0deg,rgba(2,4,7,.28),transparent 19%,transparent 81%,rgba(2,4,7,.24))}
+.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){position:absolute;z-index:3;top:0;right:auto;bottom:auto;left:50%;width:min(680px,calc(100% - 28px));min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0;padding:10px 18px 10px 11px;overflow:hidden;color:#fff;background:linear-gradient(105deg,rgba(11,17,23,.58),rgba(20,27,35,.33));border:1px solid rgba(255,229,138,.25);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 -1px 0 rgba(240,185,11,.06),0 10px 30px rgba(0,0,0,.30),0 0 18px rgba(240,185,11,.07);backdrop-filter:blur(13px) saturate(1.25);-webkit-backdrop-filter:blur(13px) saturate(1.25);animation:withdrawalGlassFlow 18s linear forwards;will-change:transform,opacity}
+.live-withdrawals-container.has-video .live-withdraw::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,rgba(255,255,255,.10),transparent 24%,transparent 72%,rgba(240,185,11,.055))}.live-withdrawals-container.has-video .live-withdraw::after{display:none}
+.live-withdrawals-container.has-video .live-withdraw>div:first-child{position:relative;z-index:1;flex:1;min-width:0;display:flex!important;align-items:center!important;padding:0;background:transparent;filter:none}
+.live-withdrawals-container.has-video .live-avatar{width:50px!important;height:50px!important;min-width:50px!important;color:#fff0a0!important;font-size:15px!important;font-weight:950!important;background:radial-gradient(circle at 29% 22%,rgba(255,255,255,.31),rgba(240,185,11,.13) 32%,rgba(8,13,18,.48) 72%)!important;border:1px solid rgba(255,229,138,.72)!important;box-shadow:inset 2px 2px 7px rgba(255,255,255,.18),inset -5px -6px 12px rgba(0,0,0,.36),0 0 0 4px rgba(240,185,11,.065),0 0 19px rgba(240,185,11,.28)!important;text-shadow:0 0 10px rgba(255,225,91,.55);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.live-withdrawals-container.has-video .live-info{display:block;min-width:0;margin:0 0 0 15px}.live-withdrawals-container.has-video .live-info::before{content:none!important;display:none!important}
+.live-withdrawals-container.has-video .live-info b{display:block;max-width:none;overflow:hidden;color:#fff9dc;font-size:clamp(15px,2.1vw,21px);font-weight:900;letter-spacing:.35px;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 2px 12px #000,0 0 10px rgba(240,185,11,.22)}
+.live-withdrawals-container.has-video .live-info span{display:block;margin-top:4px;color:rgba(229,236,244,.72);font-size:10px;letter-spacing:.8px;text-shadow:0 2px 8px #000}
+.live-withdrawals-container.has-video .live-amount{position:relative;z-index:1;flex-shrink:0;margin:0;padding:9px 13px;color:#72f3ba;font-size:clamp(15px,2.15vw,21px);font-weight:950;letter-spacing:.35px;white-space:nowrap;background:rgba(7,31,23,.20);border:1px solid rgba(93,244,181,.18);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 16px rgba(22,199,132,.08);text-shadow:0 0 12px rgba(22,199,132,.58),0 2px 8px #000}.live-withdrawals-container.has-video .fade-overlay{display:none}
+@keyframes withdrawalGlassFlow{0%{opacity:0;transform:translate(-50%,-92px)}7%{opacity:1}44%{opacity:1}51%{opacity:.28}58%{opacity:1}93%{opacity:1}100%{opacity:0;transform:translate(-50%,calc(min(941px,123.83vw) + 92px))}}
+
+/* One continuous trust area: vault video, why section and footer */
+.footer-section{position:relative;width:100vw;margin:42px 0 0 calc(50% - 50vw);padding:0 20px 42px;overflow:hidden;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.04),rgba(3,5,7,.16) 36%,rgba(3,5,7,.28)),url("trust-section-background.png");background-repeat:no-repeat;background-position:center top;background-size:cover;border:0}
+.footer-section::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(2,4,6,.17),transparent 18%,transparent 82%,rgba(2,4,6,.17))}.footer-section>*{position:relative;z-index:1}
+.why-binance-video{width:min(1180px,100vw);aspect-ratio:16/9;margin:0 auto 30px;object-fit:cover;background:transparent;border:0;border-radius:0;box-shadow:none;mix-blend-mode:screen}.footer-section>p{padding:0 14px;text-shadow:0 2px 10px rgba(0,0,0,.85)}
+.security-brand-card,.footer-section>div>div[style*="background:#0c1117e8"]{background:linear-gradient(145deg,rgba(17,24,32,.72),rgba(5,9,13,.55));backdrop-filter:blur(12px) saturate(1.15);-webkit-backdrop-filter:blur(12px) saturate(1.15)}
+.site-footer{margin-top:0;padding-top:38px;background-color:#030507;background-image:linear-gradient(180deg,rgba(3,5,7,.24),rgba(3,5,7,.72)),url("trust-section-background.png");background-repeat:no-repeat;background-position:center bottom;background-size:cover;border-top:1px solid rgba(240,185,11,.10)}
+.footer-section>.site-footer{width:min(1180px,100%);margin:36px auto 0;padding:38px 0 0;background:transparent;border-top:1px solid rgba(240,185,11,.13);text-align:left}.footer-section>.site-footer .site-footer-inner{width:100%}
+html[dir="rtl"] .footer-section>.site-footer{text-align:right}
+@media(max-width:600px){.live-withdrawals-container.has-video{width:100vw;border-radius:0;box-shadow:none}.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){width:calc(100% - 16px);min-height:59px;padding:7px 9px 7px 7px;gap:7px}.live-withdrawals-container.has-video .live-avatar{width:42px!important;height:42px!important;min-width:42px!important;font-size:12px!important}.live-withdrawals-container.has-video .live-info{margin-left:9px}.live-withdrawals-container.has-video .live-info b{font-size:12px}.live-withdrawals-container.has-video .live-info span{margin-top:2px;font-size:8px}.live-withdrawals-container.has-video .live-amount{padding:6px 8px;font-size:12px}.footer-section{margin-top:28px;padding:0 12px 30px;background-size:auto 100%}.why-binance-video{width:100vw;margin-left:calc(50% - 50vw);margin-bottom:24px}.site-footer{padding-top:30px;background-size:auto 100%}}
 </style>
 </head>
 <body>
@@ -2601,12 +2625,12 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 <div class="title"><h2 data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
   <video class="live-withdrawals-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="live-withdrawals.mp4" type="video/mp4">
-    <source src="live-withdrawals.webm" type="video/webm">
+    <source src="live-withdrawals-new.mp4" type="video/mp4">
+    <source src="live-withdrawals-new.webm" type="video/webm">
   </video>
   <video class="live-withdrawals-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="live-withdrawals.mp4" type="video/mp4">
-    <source src="live-withdrawals.webm" type="video/webm">
+    <source src="live-withdrawals-new.mp4" type="video/mp4">
+    <source src="live-withdrawals-new.webm" type="video/webm">
   </video>
   <div class="fade-overlay"></div>
 </div>
@@ -2688,7 +2712,59 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
   ◉ Online Chat
 </button>
     </div>
-    <div style="margin-top: 30px; font-size: 0.8rem;" data-t="footerCopy">&copy; 2026 Binance Invest Global. All rights reserved.</div>
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div class="site-footer-top">
+          <div class="site-footer-intro">
+            <div class="site-footer-brand">Binance Invest</div>
+            <p class="site-footer-about">
+              A multilingual digital investment interface built to make account
+              activity, investment plans, rewards and support easier to understand
+              and manage from one secure experience.
+            </p>
+          </div>
+
+          <div class="site-footer-column">
+            <h3>Platform</h3>
+            <div class="site-footer-links">
+              <button class="site-footer-link" type="button" onclick="page('home',document.querySelector('[data-page=home]'))">Overview</button>
+              <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))">Markets</button>
+              <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))">Investment Plans</button>
+              <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))">Portfolio</button>
+            </div>
+          </div>
+
+          <div class="site-footer-column">
+            <h3>Company & Help</h3>
+            <div class="site-footer-links">
+              <a class="site-footer-link" href="about.html">About Us</a>
+              <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))">Referral Rewards</button>
+              <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))">Help & Support</button>
+              <a class="site-footer-link" href="mailto:support@binancinvest.com">Contact Us</a>
+            </div>
+          </div>
+
+          <div class="site-footer-column">
+            <h3>Legal</h3>
+            <div class="site-footer-links">
+              <a class="site-footer-link" href="terms.html">Terms & Conditions</a>
+              <a class="site-footer-link" href="privacy.html">Privacy Policy</a>
+              <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))">Account Security</button>
+              <a class="site-footer-link" href="terms.html#risk">Risk Disclosure</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="site-footer-bottom">
+          <span>© 2026 Binance Invest. All rights reserved.</span>
+          <div class="site-footer-legal">
+            <a href="terms.html">Terms</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="about.html">About</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 </div>
 </section>
 
@@ -3267,60 +3343,6 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
   </div>
 </section>
 </div>
-
-<footer class="site-footer">
-  <div class="site-footer-inner">
-    <div class="site-footer-top">
-      <div class="site-footer-intro">
-        <div class="site-footer-brand">Binance Invest</div>
-        <p class="site-footer-about">
-          A multilingual digital investment interface built to make account
-          activity, investment plans, rewards and support easier to understand
-          and manage from one secure experience.
-        </p>
-      </div>
-
-      <div class="site-footer-column">
-        <h3>Platform</h3>
-        <div class="site-footer-links">
-          <button class="site-footer-link" type="button" onclick="page('home',document.querySelector('[data-page=home]'))">Overview</button>
-          <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))">Markets</button>
-          <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))">Investment Plans</button>
-          <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))">Portfolio</button>
-        </div>
-      </div>
-
-      <div class="site-footer-column">
-        <h3>Company & Help</h3>
-        <div class="site-footer-links">
-          <a class="site-footer-link" href="about.html">About Us</a>
-          <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))">Referral Rewards</button>
-          <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))">Help & Support</button>
-          <a class="site-footer-link" href="mailto:support@binancinvest.com">Contact Us</a>
-        </div>
-      </div>
-
-      <div class="site-footer-column">
-        <h3>Legal</h3>
-        <div class="site-footer-links">
-          <a class="site-footer-link" href="terms.html">Terms & Conditions</a>
-          <a class="site-footer-link" href="privacy.html">Privacy Policy</a>
-          <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))">Account Security</button>
-          <a class="site-footer-link" href="terms.html#risk">Risk Disclosure</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="site-footer-bottom">
-      <span>© 2026 Binance Invest. All rights reserved.</span>
-      <div class="site-footer-legal">
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="about.html">About</a>
-      </div>
-    </div>
-  </div>
-</footer>
 
 <div class="modal" id="auth">
   <div class="modalbox">
