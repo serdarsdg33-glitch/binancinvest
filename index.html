@@ -2253,14 +2253,18 @@ html[dir="rtl"] .plan-selection-label {
   align-items: center;
   gap: 18px;
   background:
-    radial-gradient(circle at 92% 0%,rgba(240,185,11,.18),transparent 38%),
-    linear-gradient(145deg,#151c24,#090d12);
+    linear-gradient(90deg,rgba(4,7,10,.12) 0%,rgba(4,7,10,.48) 35%,rgba(4,7,10,.88) 58%,rgba(4,7,10,.94) 100%),
+    linear-gradient(180deg,rgba(4,7,10,.06),rgba(4,7,10,.30)),
+    url("referral-reward-background.webp");
+  background-size:cover;
+  background-position:left center;
+  background-repeat:no-repeat;
   border: 1px solid rgba(240,185,11,.38);
   border-radius: 19px;
   box-shadow: 0 18px 45px rgba(0,0,0,.42),0 0 20px rgba(240,185,11,.06);
 }
-.referral-home-card::after {content:"";position:absolute;inset:auto -45px -80px auto;width:180px;height:180px;border-radius:50%;background:rgba(240,185,11,.06);pointer-events:none}
-.referral-home-icon {width:58px;height:58px;display:grid;place-items:center;color:#171100;font-size:27px;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:17px;box-shadow:0 8px 25px rgba(240,185,11,.23)}
+.referral-home-card::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 0 28%,rgba(4,7,10,.20) 42%,rgba(4,7,10,.42) 100%)}
+.referral-home-icon {position:relative;z-index:1;width:58px;height:58px;display:grid;place-items:center;color:#171100;font-size:27px;background:rgba(8,12,17,.22);border:1px solid rgba(255,229,138,.22);border-radius:17px;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 25px rgba(0,0,0,.28);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 .referral-home-content,.referral-home-action {position:relative;z-index:1}
 .referral-home-kicker {color:var(--gold2);font-size:9px;font-weight:900;letter-spacing:1.6px}
 .referral-home-content h2 {margin:5px 0 7px;font-size:21px}
@@ -2715,25 +2719,24 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 }
 .hero>*:not(.orb){position:relative;z-index:2}
 .hero::before{display:none}
-.hero-lightning{
+.hero>.hero-glass-lightning{
   position:absolute;
   z-index:1;
-  top:-3%;
-  right:2.5%;
-  width:clamp(150px,18vw,225px);
-  height:78%;
+  top:0;
+  right:0;
+  width:clamp(190px,24vw,290px);
+  height:76%;
   pointer-events:none;
   opacity:0;
   overflow:visible;
-  filter:drop-shadow(0 0 5px rgba(230,244,255,.72)) drop-shadow(0 0 15px rgba(255,229,138,.45));
-  transform:rotate(2deg);
-  transform-origin:top center;
+  filter:drop-shadow(0 0 5px rgba(235,248,255,.82)) drop-shadow(0 0 16px rgba(255,234,166,.48));
+  transform-origin:100% 0;
   animation:heroLightningStrike 7.2s ease-in-out infinite;
 }
-.hero-lightning .lightning-core{fill:none;stroke:url(#glassLightningGradient);stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;filter:url(#glassLightningGlow)}
-.hero-lightning .lightning-highlight{fill:none;stroke:rgba(255,255,255,.92);stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
-.hero-lightning .lightning-branch{fill:none;stroke:url(#glassLightningGradient);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:url(#glassLightningGlow)}
-.hero-lightning path{stroke-dasharray:520;stroke-dashoffset:520;animation:heroLightningDraw 7.2s ease-in-out infinite}
+.hero-glass-lightning path{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:570;stroke-dashoffset:570;animation:heroLightningDraw 7.2s ease-in-out infinite}
+.hero-glass-lightning .lightning-core{stroke:url(#heroGlassBolt);stroke-width:5.2;filter:url(#heroBoltGlow)}
+.hero-glass-lightning .lightning-shine{stroke:rgba(255,255,255,.92);stroke-width:1.25}
+.hero-glass-lightning .lightning-branch{stroke:url(#heroGlassBolt);stroke-width:2.8;filter:url(#heroBoltGlow)}
 .hero::after{
   content:"";
   position:absolute;
@@ -2741,13 +2744,15 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   inset:0;
   pointer-events:none;
   opacity:0;
-  background:radial-gradient(circle at 88% 5%,rgba(255,244,185,.30),rgba(240,185,11,.09) 20%,transparent 48%);
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,255,255,.48),rgba(224,243,255,.20) 18%,rgba(255,229,138,.10) 34%,transparent 62%),
+    linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,229,138,.055) 44%,transparent 72%);
   animation:heroLightningGlow 7.2s ease-in-out infinite;
 }
 @keyframes heroLightningStrike{
   0%,9%,16%,100%{opacity:0}
-  10%{opacity:.28;transform:rotate(2deg) scaleY(.98)}
-  10.8%{opacity:1;transform:rotate(2deg) scaleY(1.01)}
+  10%{opacity:.28;transform:scaleY(.98)}
+  10.8%{opacity:1;transform:scaleY(1.015)}
   11.7%{opacity:.10}
   12.4%{opacity:.88}
   13.3%{opacity:.22}
@@ -2755,15 +2760,15 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   15.5%{opacity:0}
 }
 @keyframes heroLightningDraw{
-  0%,9%{stroke-dashoffset:520}
-  10.9%,15.5%{stroke-dashoffset:0}
+  0%,9%{stroke-dashoffset:570}
+  10.8%,15.4%{stroke-dashoffset:0}
   16%,100%{stroke-dashoffset:-35}
 }
 @keyframes heroLightningGlow{
   0%,9%,16%,100%{opacity:0}
-  10.8%{opacity:.75}
-  12%{opacity:.16}
-  12.5%{opacity:.55}
+  10.8%{opacity:.92}
+  12%{opacity:.18}
+  12.5%{opacity:.68}
   15.5%{opacity:0}
 }
 .hero .orb{
@@ -2793,6 +2798,25 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 }
 .hero .orb::before{content:"";position:absolute;top:11%;left:15%;width:41%;height:17%;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,229,138,.025) 68%,transparent);filter:blur(2.7px);transform:rotate(-22deg);opacity:.74}
 .hero .orb::after{content:"";position:absolute;right:8%;bottom:9%;width:43%;height:24%;border:0;border-radius:50%;background:radial-gradient(ellipse,rgba(240,185,11,.10),rgba(240,185,11,.025) 43%,transparent 72%);filter:blur(8px);transform:rotate(-28deg);opacity:.74;box-shadow:none}
+.hero .actions .btn:not(.gold){
+  color:#fff;
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018))!important;
+  border:1px solid rgba(240,185,11,.34)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 0 14px rgba(255,229,138,.035),
+    0 0 8px rgba(240,185,11,.10),
+    0 0 18px rgba(240,185,11,.035)!important;
+  backdrop-filter:blur(1.5px) saturate(1.18);
+  -webkit-backdrop-filter:blur(1.5px) saturate(1.18);
+  text-shadow:0 2px 8px rgba(0,0,0,.85);
+}
+.hero .actions .btn:not(.gold):hover{
+  color:#fff4bd;
+  background:linear-gradient(145deg,rgba(255,229,138,.10),rgba(255,255,255,.025))!important;
+  border-color:rgba(240,185,11,.52)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 0 10px rgba(240,185,11,.18),0 0 22px rgba(240,185,11,.06)!important;
+}
 @keyframes glassOrbFloat{
   0%,100%{transform:translate3d(0,0,0) rotate(-1deg) scale(1);filter:brightness(1)}
   50%{transform:translate3d(-17px,-12px,0) rotate(1.5deg) scale(1.015);filter:brightness(1.075)}
@@ -2825,8 +2849,8 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 .portfolio-finance-guest-icon{width:58px;height:58px;margin:0 auto 13px;display:grid;place-items:center;color:#171100;font-size:25px;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:16px;box-shadow:0 8px 25px rgba(240,185,11,.22)}
 .portfolio-finance-guest h3{margin:0 0 8px;font-size:20px}.portfolio-finance-guest p{max-width:510px;margin:0 auto 17px;color:#9ba7b7;line-height:1.7}
 @media(max-width:900px){.hero .orb{right:9%;bottom:55px;width:185px;height:185px;opacity:1}}
-@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero-lightning{top:-2%;right:0;width:132px;height:62%}.hero .orb{top:auto;right:10%;bottom:76px;width:150px;height:150px;opacity:1;backdrop-filter:saturate(1.08);-webkit-backdrop-filter:saturate(1.08)}}
-@media(prefers-reduced-motion:reduce){.hero-lightning,.hero::after{animation:none;opacity:0}.hero-lightning path{animation:none}}
+@media(max-width:600px){#markets{padding:11px 8px;border-radius:19px;background-position:center top}#markets>.title{align-items:stretch;flex-direction:column;gap:10px}#markets #search{width:100%}.hero{background-position:center bottom}.hero-glass-lightning{top:0;right:0;width:155px;height:66%}.hero .orb{top:auto;right:10%;bottom:76px;width:150px;height:150px;opacity:1;backdrop-filter:saturate(1.08);-webkit-backdrop-filter:saturate(1.08)}}
+@media(prefers-reduced-motion:reduce){.hero-glass-lightning,.hero::after{animation:none;opacity:0}.hero-glass-lightning path{animation:none}}
 </style>
 </head>
 <body>
@@ -2883,7 +2907,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
 <div class="homepage-vault-video">
   <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
-<div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-lightning" viewBox="0 0 240 420" preserveAspectRatio="xMidYMin meet" aria-hidden="true"><defs><linearGradient id="glassLightningGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".98"/><stop offset=".45" stop-color="#dff3ff" stop-opacity=".88"/><stop offset=".76" stop-color="#ffe9a2" stop-opacity=".72"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".18"/></linearGradient><filter id="glassLightningGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M209 0 L191 66 L204 96 L158 151 L169 184 L122 238 L132 273 L82 348 L91 382"/><path class="lightning-highlight" d="M209 0 L191 66 L204 96 L158 151 L169 184 L122 238 L132 273 L82 348 L91 382"/><path class="lightning-branch" d="M159 150 L121 128 L95 91"/><path class="lightning-branch" d="M168 184 L202 164 L225 129"/><path class="lightning-branch" d="M122 238 L88 220 L57 178"/><path class="lightning-branch" d="M132 273 L169 262 L198 230"/></svg><div class="orb"></div></div>
+<div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
 
 <section class="top-markets-showcase">
   <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div>
