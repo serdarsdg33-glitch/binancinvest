@@ -8604,28 +8604,28 @@ function openOnlineSupport() {
 }
 
 const LANGUAGE_CATALOG = [
-  ["ar","🇸🇦","AR","العربية","Arabic"],
-  ["az","🇦🇿","AZ","Azərbaycan","Azerbaijani"],
+  ["en","🇬🇧","EN","English","English"],
+  ["de","🇩🇪","DE","Deutsch","German"],
+  ["it","🇮🇹","IT","Italiano","Italian"],
+  ["ru","🇷🇺","RU","Русский","Russian"],
+  ["ja","🇯🇵","JA","日本語","Japanese"],
+  ["tr","🇹🇷","TR","Türkçe","Turkish"],
   ["zh","🇨🇳","ZH","中文","Chinese"],
   ["nl","🇳🇱","NL","Nederlands","Dutch"],
-  ["en","🇬🇧","EN","English","English"],
   ["fr","🇫🇷","FR","Français","French"],
-  ["de","🇩🇪","DE","Deutsch","German"],
+  ["ko","🇰🇷","KO","한국어","Korean"],
+  ["ar","🇸🇦","AR","العربية","Arabic"],
+  ["az","🇦🇿","AZ","Azərbaycan","Azerbaijani"],
   ["el","🇬🇷","EL","Ελληνικά","Greek"],
   ["hi","🇮🇳","HI","हिन्दी","Hindi"],
   ["id","🇮🇩","ID","Bahasa Indonesia","Indonesian"],
-  ["it","🇮🇹","IT","Italiano","Italian"],
-  ["ja","🇯🇵","JA","日本語","Japanese"],
-  ["ko","🇰🇷","KO","한국어","Korean"],
   ["ms","🇲🇾","MS","Bahasa Melayu","Malay"],
   ["fa","🇮🇷","FA","فارسی","Persian"],
   ["pl","🇵🇱","PL","Polski","Polish"],
   ["pt","🇵🇹","PT","Português","Portuguese"],
   ["ro","🇷🇴","RO","Română","Romanian"],
-  ["ru","🇷🇺","RU","Русский","Russian"],
   ["es","🇪🇸","ES","Español","Spanish"],
   ["th","🇹🇭","TH","ไทย","Thai"],
-  ["tr","🇹🇷","TR","Türkçe","Turkish"],
   ["uk","🇺🇦","UK","Українська","Ukrainian"],
   ["ur","🇵🇰","UR","اردو","Urdu"],
   ["vi","🇻🇳","VI","Tiếng Việt","Vietnamese"]
@@ -8752,8 +8752,7 @@ function renderLanguageOptions(query=""){
   const active=localStorage.getItem("bi_lang")||"en";
   const normalized=String(query).trim().toLocaleLowerCase();
   const items=LANGUAGE_CATALOG
-    .filter(item => !normalized || item.slice(2).join(" ").toLocaleLowerCase().includes(normalized))
-    .sort((first,second)=>first[4].localeCompare(second[4],"en",{sensitivity:"base"}));
+    .filter(item => !normalized || item.slice(2).join(" ").toLocaleLowerCase().includes(normalized));
   grid.innerHTML=items.map(item=>`<button type="button" class="language-option ${item[0]===active?"active":""}" onclick="chooseLanguage('${item[0]}')"><span class="language-flag">${item[1]}</span><span class="language-name"><strong>${item[3]}</strong><span>${item[4]}</span></span><span class="language-check">✓</span></button>`).join("");
 }
 function openLanguageSelector(){const modal=document.getElementById("languageModal");modal?.classList.add("open");document.body.style.overflow="hidden";renderLanguageOptions();setTimeout(()=>document.getElementById("languageSearch")?.focus(),80)}
