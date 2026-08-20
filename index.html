@@ -3728,6 +3728,129 @@ html[dir="rtl"] .toast::before { right: auto; left: 11px; }
   .field-validation-message { font-size: 12px; }
 }
 
+/* Refined support conversation, notification badge and themed confirmation */
+.support-message {
+  position: relative;
+  padding: 12px 14px;
+  line-height: 1.65;
+  box-shadow: 0 10px 24px rgba(0,0,0,.24);
+  backdrop-filter: blur(7px) saturate(1.12);
+  -webkit-backdrop-filter: blur(7px) saturate(1.12);
+}
+.support-message.user {
+  color: #f7f9fc;
+  background: linear-gradient(135deg,rgba(240,185,11,.19),rgba(13,18,25,.88));
+  border: 1px solid rgba(255,224,112,.46);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10),0 10px 26px rgba(0,0,0,.30),0 0 15px rgba(240,185,11,.07);
+  text-shadow: 0 1px 6px rgba(0,0,0,.75);
+}
+.support-message.admin {
+  color: #f3fff9;
+  background: linear-gradient(135deg,rgba(22,199,132,.13),rgba(16,23,31,.90));
+  border: 1px solid rgba(83,229,174,.32);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08),0 10px 26px rgba(0,0,0,.28);
+}
+.support-message-time {
+  margin-top: 7px;
+  color: #ffe99a;
+  font-size: 11px !important;
+  font-weight: 700;
+  line-height: 1.35;
+  opacity: .94 !important;
+  text-shadow: 0 1px 5px rgba(0,0,0,.95);
+  direction: auto;
+  unicode-bidi: plaintext;
+}
+.support-message.admin .support-message-time { color: #a5f4d5; }
+html[dir="rtl"] .support-message.user { border-bottom-right-radius: 14px; border-bottom-left-radius: 4px; }
+html[dir="rtl"] .support-message.admin { border-bottom-left-radius: 14px; border-bottom-right-radius: 4px; }
+
+.nav [data-page="support"] { position: relative; }
+.support-nav-badge {
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-end: 3px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  display: inline-grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg,#ff6671,#d92f3b);
+  border: 2px solid #16130a;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 0 0 3px rgba(234,57,67,.12),0 0 13px rgba(234,57,67,.55);
+  animation: supportBadgePulse 1.8s ease-in-out infinite;
+  z-index: 4;
+}
+.support-nav-badge[hidden] { display: none !important; }
+@keyframes supportBadgePulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 3px rgba(234,57,67,.10),0 0 10px rgba(234,57,67,.42); }
+  50% { transform: scale(1.10); box-shadow: 0 0 0 5px rgba(234,57,67,.05),0 0 17px rgba(234,57,67,.68); }
+}
+
+.support-confirm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.76);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+}
+.support-confirm-modal.open { display: flex; animation: supportConfirmIn .2s ease; }
+.support-confirm-box {
+  width: min(420px,100%);
+  padding: 24px 21px 20px;
+  color: #f7f9fc;
+  text-align: center;
+  background: linear-gradient(145deg,rgba(22,29,38,.97),rgba(7,11,16,.98));
+  border: 1px solid rgba(240,185,11,.42);
+  border-radius: 20px;
+  box-shadow: 0 28px 75px rgba(0,0,0,.76),0 0 28px rgba(240,185,11,.08);
+  animation: supportConfirmBoxIn .25s ease;
+}
+.support-confirm-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 13px;
+  display: grid;
+  place-items: center;
+  color: #2a0a0d;
+  background: linear-gradient(135deg,#ff9da5,#ea3943);
+  border-radius: 16px;
+  font-size: 25px;
+  font-weight: 950;
+  box-shadow: 0 8px 24px rgba(234,57,67,.24);
+}
+.support-confirm-box h3 { margin: 0 0 9px; font-size: 21px; }
+.support-confirm-box p { margin: 0; color: #c7d0dc; font-size: 13px; line-height: 1.7; }
+.support-confirm-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 20px; }
+.support-confirm-actions .btn { min-height: 43px; }
+.support-confirm-submit {
+  color: #fff !important;
+  background: linear-gradient(135deg,#f26069,#c92734) !important;
+  border-color: rgba(255,140,148,.68) !important;
+  font-weight: 900;
+  box-shadow: 0 8px 19px rgba(234,57,67,.20);
+}
+@keyframes supportConfirmIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes supportConfirmBoxIn { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+@media(max-width:600px) {
+  .support-message { max-width: 90%; font-size: 13px; }
+  .support-message-time { font-size: 10.5px !important; }
+  .support-confirm-box { padding: 22px 17px 17px; border-radius: 17px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .support-nav-badge,.support-confirm-modal.open,.support-confirm-box { animation: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -3784,9 +3907,9 @@ html[dir="rtl"] .toast::before { right: auto; left: 11px; }
   <button
     data-page="support"
     onclick="page('support',this)"
-    data-t="support"
   >
-    Support
+    <span data-support-label data-t="support">Support</span>
+    <span id="supportNavBadge" class="support-nav-badge" hidden aria-label="New support reply">!</span>
   </button>
 
   <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
@@ -4969,6 +5092,17 @@ Transactions section.
     <div class="auth-success-progress"></div>
   </div>
 </div>
+<div id="supportCloseConfirmModal" class="support-confirm-modal" aria-hidden="true">
+  <div class="support-confirm-box" role="dialog" aria-modal="true" aria-labelledby="supportCloseConfirmTitle" aria-describedby="supportCloseConfirmMessage">
+    <div class="support-confirm-icon">!</div>
+    <h3 id="supportCloseConfirmTitle">Close Ticket</h3>
+    <p id="supportCloseConfirmMessage">Are you sure you want to close this ticket? You will not be able to send more replies.</p>
+    <div class="support-confirm-actions">
+      <button id="supportCloseCancelBtn" class="btn" type="button">Cancel</button>
+      <button id="supportCloseConfirmBtn" class="btn support-confirm-submit" type="button">Close Ticket</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast" hidden></div>
 <div id="emailConfirmModal" class="email-confirm-modal">
   <div class="email-confirm-box">
@@ -5913,7 +6047,7 @@ function applySupportLanguage() {
     if (element) element.textContent = value;
   };
 
-  setText('[data-page="support"]', s.support);
+  setText('[data-page="support"] [data-support-label]', s.support);
   setText('#support .title h2', s.title);
   setText('#supportGuestNotice', s.guest);
   setText('.support-compose h2', s.newTicket);
@@ -8556,6 +8690,145 @@ async function saveProfile(){
 let activeSupportTicketId = null;
 let supportRealtimeChannel = null;
 
+const SUPPORT_CONFIRM_MESSAGES = {
+  en: "Are you sure you want to close this ticket? You will not be able to send more replies.",
+  de: "Möchten Sie diese Anfrage wirklich schließen? Danach können keine weiteren Antworten gesendet werden.",
+  it: "Vuoi davvero chiudere questa richiesta? Non potrai inviare altre risposte.",
+  ru: "Вы уверены, что хотите закрыть обращение? После этого отправлять ответы будет нельзя.",
+  ja: "このチケットを閉じてもよろしいですか？閉じた後は返信できません。",
+  tr: "Bu destek talebini kapatmak istediğinizden emin misiniz? Daha sonra yanıt gönderemezsiniz.",
+  zh: "确定要关闭此工单吗？关闭后将无法继续回复。",
+  nl: "Weet je zeker dat je dit ticket wilt sluiten? Daarna kun je geen antwoorden meer sturen.",
+  fr: "Voulez-vous vraiment fermer ce ticket ? Vous ne pourrez plus envoyer de réponse.",
+  ko: "이 지원 티켓을 닫으시겠습니까? 닫은 후에는 더 이상 답장할 수 없습니다.",
+  fa: "آیا مطمئن هستید که می‌خواهید این تیکت را ببندید؟ پس از بستن، امکان ارسال پاسخ جدید وجود ندارد.",
+  ar: "هل أنت متأكد من إغلاق هذه التذكرة؟ لن تتمكن من إرسال ردود جديدة بعد الإغلاق.",
+  az: "Bu dəstək sorğusunu bağlamaq istədiyinizə əminsiniz? Sonra yeni cavab göndərə bilməyəcəksiniz.",
+  es: "¿Seguro que deseas cerrar este ticket? Después no podrás enviar más respuestas.",
+  pt: "Tem certeza de que deseja fechar este chamado? Depois não será possível enviar novas respostas.",
+  pl: "Czy na pewno chcesz zamknąć to zgłoszenie? Nie będzie można wysyłać kolejnych odpowiedzi.",
+  uk: "Ви впевнені, що хочете закрити це звернення? Після цього відповіді будуть недоступні.",
+  ro: "Sigur doriți să închideți acest tichet? După închidere nu veți mai putea trimite răspunsuri.",
+  id: "Yakin ingin menutup tiket ini? Setelah ditutup, Anda tidak dapat mengirim balasan lagi.",
+  ms: "Adakah anda pasti mahu menutup tiket ini? Selepas ditutup, anda tidak boleh menghantar balasan lagi.",
+  hi: "क्या आप इस टिकट को बंद करना चाहते हैं? बंद करने के बाद आप नया उत्तर नहीं भेज सकेंगे।",
+  ur: "کیا آپ واقعی یہ ٹکٹ بند کرنا چاہتے ہیں؟ بند ہونے کے بعد نیا جواب نہیں بھیجا جا سکے گا۔",
+  vi: "Bạn có chắc muốn đóng phiếu hỗ trợ này? Sau khi đóng, bạn sẽ không thể gửi thêm phản hồi.",
+  th: "คุณแน่ใจหรือไม่ว่าต้องการปิดทิกเก็ตนี้ หลังจากปิดแล้วจะไม่สามารถส่งคำตอบเพิ่มได้",
+  el: "Θέλετε σίγουρα να κλείσετε αυτό το αίτημα; Μετά δεν θα μπορείτε να στείλετε άλλες απαντήσεις."
+};
+
+function supportSeenStorageKey() {
+  return `bi_support_seen_${currentUser?.id || "guest"}`;
+}
+
+function setSupportNotificationVisible(visible) {
+  const badge = document.getElementById("supportNavBadge");
+  if (!badge) return;
+  badge.hidden = !visible;
+  badge.setAttribute(
+    "aria-label",
+    visible ? getSupportText("answered") : getSupportText("support")
+  );
+}
+
+function markSupportNotificationsSeen() {
+  if (!currentUser?.id) return;
+  localStorage.setItem(supportSeenStorageKey(), new Date().toISOString());
+  setSupportNotificationVisible(false);
+}
+
+async function refreshSupportNotificationBadge() {
+  if (!currentUser?.id) {
+    setSupportNotificationVisible(false);
+    return;
+  }
+
+  try {
+    const { data: tickets, error: ticketError } = await supabaseClient
+      .from("support_tickets")
+      .select("id")
+      .eq("user_id", currentUser.id);
+
+    if (ticketError) throw ticketError;
+    const ticketIds = (tickets || []).map(ticket => ticket.id);
+
+    if (!ticketIds.length) {
+      setSupportNotificationVisible(false);
+      return;
+    }
+
+    const { data: replies, error: replyError } = await supabaseClient
+      .from("support_messages")
+      .select("created_at")
+      .in("ticket_id", ticketIds)
+      .eq("sender_role", "admin")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (replyError) throw replyError;
+
+    const latestReplyTime = replies?.[0]?.created_at
+      ? new Date(replies[0].created_at).getTime()
+      : 0;
+    const lastSeenTime = new Date(
+      localStorage.getItem(supportSeenStorageKey()) || 0
+    ).getTime();
+
+    setSupportNotificationVisible(
+      Number.isFinite(latestReplyTime) && latestReplyTime > (lastSeenTime || 0)
+    );
+  } catch (error) {
+    console.error("Support notification error:", error);
+  }
+}
+
+function requestSupportCloseConfirmation() {
+  const modal = document.getElementById("supportCloseConfirmModal");
+  const title = document.getElementById("supportCloseConfirmTitle");
+  const message = document.getElementById("supportCloseConfirmMessage");
+  const cancelButton = document.getElementById("supportCloseCancelBtn");
+  const confirmButton = document.getElementById("supportCloseConfirmBtn");
+
+  if (!modal || !cancelButton || !confirmButton) {
+    return Promise.resolve(false);
+  }
+
+  const lang = localStorage.getItem("bi_lang") || "en";
+  if (title) title.textContent = getSupportText("closeTicket");
+  if (message) {
+    message.textContent = SUPPORT_CONFIRM_MESSAGES[lang] || SUPPORT_CONFIRM_MESSAGES.en;
+  }
+  cancelButton.textContent = tr("cancel");
+  confirmButton.textContent = getSupportText("closeTicket");
+
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+
+  return new Promise(resolve => {
+    let finished = false;
+    const finish = result => {
+      if (finished) return;
+      finished = true;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.removeEventListener("keydown", onKeyDown);
+      resolve(result);
+    };
+    const onKeyDown = event => {
+      if (event.key === "Escape") finish(false);
+    };
+
+    cancelButton.onclick = () => finish(false);
+    confirmButton.onclick = () => finish(true);
+    modal.onclick = event => {
+      if (event.target === modal) finish(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    requestAnimationFrame(() => confirmButton.focus());
+  });
+}
+
 function updateSupportAuthUI() {
   const loginButton = document.getElementById("supportLoginBtn");
   const guestNotice = document.getElementById("supportGuestNotice");
@@ -8570,6 +8843,7 @@ function updateSupportAuthUI() {
 
     loadSupportTickets();
     startSupportRealtime();
+    refreshSupportNotificationBadge();
   } else {
     loginButton.style.display = "inline-block";
     guestNotice.style.display = "block";
@@ -8578,6 +8852,7 @@ function updateSupportAuthUI() {
     activeSupportTicketId = null;
     stopSupportRealtime();
     resetSupportChat();
+    setSupportNotificationVisible(false);
   }
 }
 
@@ -8788,6 +9063,7 @@ async function openSupportTicket(ticketId) {
 
     await loadSupportMessages(ticketId);
     await loadSupportTickets();
+    markSupportNotificationsSeen();
   } catch (error) {
     console.error("Open ticket error:", error);
     toast(localizedBackendError(error, "ticketOpenFailed"));
@@ -8922,9 +9198,7 @@ async function sendSupportReply() {
 async function closeSupportTicket() {
   if (!currentUser?.id || !activeSupportTicketId) return;
 
-  const confirmed = window.confirm(
-    "Are you sure you want to close this ticket?"
-  );
+  const confirmed = await requestSupportCloseConfirmation();
 
   if (!confirmed) return;
 
@@ -8998,9 +9272,12 @@ function startSupportRealtime() {
 
         if (
           activeSupportTicketId &&
-          payload.new?.id === activeSupportTicketId
+          payload.new?.id === activeSupportTicketId &&
+          document.getElementById("support")?.classList.contains("active")
         ) {
           await openSupportTicket(activeSupportTicketId);
+        } else if (payload.new?.status === "answered") {
+          await refreshSupportNotificationBadge();
         }
       }
     )
@@ -9013,15 +9290,21 @@ function startSupportRealtime() {
         table: "support_messages"
       },
       async payload => {
-        if (
+        const isActiveTicket =
           activeSupportTicketId &&
           (
             payload.new?.ticket_id === activeSupportTicketId ||
             payload.old?.ticket_id === activeSupportTicketId
-          )
-        ) {
+          );
+        const supportIsOpen =
+          document.getElementById("support")?.classList.contains("active");
+
+        if (isActiveTicket && supportIsOpen) {
           await loadSupportMessages(activeSupportTicketId);
           await loadSupportTickets();
+          markSupportNotificationsSeen();
+        } else if (payload.new?.sender_role === "admin") {
+          await refreshSupportNotificationBadge();
         }
       }
     )
@@ -9054,7 +9337,26 @@ function formatSupportDate(value) {
     return "";
   }
 
-  return date.toLocaleString();
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const localeMap = {
+    en:"en-GB", fa:"fa-IR", az:"az-AZ", tr:"tr-TR", ru:"ru-RU",
+    ar:"ar", zh:"zh-CN", es:"es-ES", fr:"fr-FR", de:"de-DE",
+    it:"it-IT", pt:"pt-PT", nl:"nl-NL", pl:"pl-PL", uk:"uk-UA",
+    ro:"ro-RO", id:"id-ID", ms:"ms-MY", hi:"hi-IN", ur:"ur-PK",
+    ja:"ja-JP", ko:"ko-KR", vi:"vi-VN", th:"th-TH", el:"el-GR"
+  };
+
+  try {
+    return new Intl.DateTimeFormat(localeMap[lang] || lang, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+  } catch (_) {
+    return date.toLocaleString();
+  }
 }
 function openOnlineSupport() {
   page(
@@ -9324,7 +9626,8 @@ function applyLanguageChrome(lang,d){
   if(languageSearch) languageSearch.placeholder=modalText[2];
 
   const supportNav=document.querySelector('[data-page="support"]');
-  if(supportNav) supportNav.textContent=NAV_SUPPORT_TEXT[lang] || NAV_SUPPORT_TEXT.en;
+  const supportNavLabel=supportNav?.querySelector('[data-support-label]');
+  if(supportNavLabel) supportNavLabel.textContent=NAV_SUPPORT_TEXT[lang] || NAV_SUPPORT_TEXT.en;
 
   const marketSearch=document.getElementById("search");
   if(marketSearch) marketSearch.placeholder=`${d.markets}: BTC, ETH…`;
@@ -10077,7 +10380,7 @@ window.loadSupportMessages = async function (ticketId) {
       }`;
 
     const text = document.createElement("div");
-    text.textContent = item.body || "";
+    text.textContent = item.body || item.message || "";
 
     const time = document.createElement("span");
     time.className = "support-message-time";
