@@ -3417,60 +3417,188 @@ html[dir="rtl"] header>.head{justify-self:start!important}
   #headerUsername{font-size:7.8px!important;padding:2px 3px!important}
   #userHeaderDisplay .header-logout-btn{min-width:44px!important;max-width:54px!important;font-size:8px!important}
 }
+/* ---------------------------------------------------------
+   Readability pass — larger secondary copy + restrained glass
+   Keeps card dimensions and illustrated backgrounds unchanged.
+---------------------------------------------------------- */
+.eyebrow,
+.table th,
+.form label,
+#portfolio label,
+.referral-home-kicker,
+.referral-home-content p,
+.referral-portfolio-meta,
+.referral-link-value,
+.referral-stat span,
+.referral-history-head p,
+.referral-small-date,
+.referral-status-badge,
+.referral-reward-detail span,
+.referral-history-hint,
+.password-requirements,
+.auth-success-popup p,
+.portfolio-vip-title p,
+.portfolio-vip-field label,
+.portfolio-vip-metric span,
+.portfolio-vip-error,
+.vip-single-header p,
+.vip-single-summary span,
+.vip-date,
+.vip-table-status,
+.withdrawal-error-box p,
+.support-ticket-meta,
+.support-message-time,
+.support-status,
+.security-brand-info span,
+.site-footer-about,
+.site-footer-link,
+.site-footer-bottom,
+[data-t="referralCodeHelp"],
+[data-t="referralApplyNotice"],
+[data-t="haveInvitationCode"],
+[data-t="yourReferralCode"] {
+  text-shadow: 0 2px 8px rgba(0,0,0,.94);
+}
 
-/* VIP readability patch: softer blurred boxes for clearer text */
-.vip-lock-card{
-  backdrop-filter: blur(3px) saturate(1.06);
-  -webkit-backdrop-filter: blur(3px) saturate(1.06);
+.eyebrow { font-size: 12px; }
+.table th { font-size: 12px; letter-spacing: .45px; }
+.form label,
+#portfolio label { font-size: 13px !important; line-height: 1.45; }
+
+.referral-home-kicker { font-size: 11px; }
+.referral-home-content p { font-size: 13px; line-height: 1.78; }
+.referral-portfolio-meta { font-size: 12px; line-height: 1.7; }
+.referral-link-value { font-size: 11px; line-height: 1.65; }
+.referral-stat span { font-size: 11px; line-height: 1.45; }
+.referral-history-head p { font-size: 12px; line-height: 1.7; }
+.referral-small-date,
+.referral-reward-detail span { font-size: 10.5px; line-height: 1.55; }
+.referral-status-badge { font-size: 10px; }
+.referral-history-hint {
+  padding: 11px 13px;
+  color: #e4eaf2;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.65;
 }
-.vip-rate-badge,
-.vip-amount-row input,
-.vip-amount-row .btn,
-.vip-lock-results div,
-.vip-contract-notice{
-  backdrop-filter: blur(12px) saturate(1.14) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.14) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.10),
-    0 10px 24px rgba(0,0,0,.18) !important;
+.password-requirements { font-size: 11.5px; line-height: 1.65; }
+.auth-success-popup p { font-size: 12px; line-height: 1.7; }
+
+/* Quick VIP Lock and VIP contract details */
+.portfolio-vip-title p {
+  color: #e2e8f0 !important;
+  font-size: 13px !important;
+  font-weight: 650;
+  line-height: 1.45;
 }
-.vip-rate-badge{
-  background: linear-gradient(145deg, rgba(10,14,19,.62), rgba(38,28,4,.22)) !important;
-  border-color: rgba(255,225,91,.34) !important;
+.portfolio-vip-field label { font-size: 12px !important; }
+.portfolio-vip-badge { font-size: 11px !important; }
+.portfolio-vip-metric span {
+  color: #e1e7ef !important;
+  font-size: 11.5px !important;
+  font-weight: 700;
+  line-height: 1.4;
 }
-.vip-amount-row input{
-  background: linear-gradient(145deg, rgba(6,10,15,.54), rgba(11,17,24,.34)) !important;
-  border-color: rgba(255,255,255,.14) !important;
-  text-shadow: 0 1px 8px rgba(0,0,0,.55);
-}
-.vip-amount-row .btn{
-  background: linear-gradient(145deg, rgba(7,12,18,.72), rgba(7,12,18,.52)) !important;
-  border-color: rgba(255,255,255,.16) !important;
-}
-.vip-lock-results div{
-  background: linear-gradient(145deg, rgba(7,11,16,.48), rgba(7,11,16,.26)) !important;
-  border-color: rgba(255,255,255,.12) !important;
-}
-.vip-contract-notice{
-  background: linear-gradient(145deg, rgba(17,14,6,.34), rgba(7,11,16,.34)) !important;
-  border-color: rgba(255,225,91,.20) !important;
-}
-.vip-lock-header h2,
+.portfolio-vip-metric strong { font-size: 15px; }
+.portfolio-vip-error { font-size: 11.5px; line-height: 1.55; }
+.vip-single-header p { font-size: 13px; line-height: 1.65; }
+.vip-single-summary span { font-size: 11px; line-height: 1.4; }
+.vip-single-summary strong { font-size: 15px; }
+.vip-date { font-size: 12px; }
+.vip-table-status { font-size: 11px; }
+
+/* Small operational and support copy */
+.withdrawal-error-box p { font-size: 12px; line-height: 1.65; }
+.support-ticket-meta { font-size: 11.5px; line-height: 1.55; }
+.support-message-time { font-size: 10px; }
+.support-status { font-size: 10px; }
+.support-empty { font-size: 13px; line-height: 1.65; }
+.security-brand-info span { font-size: 10px; line-height: 1.5; }
+.site-footer-about { font-size: 13px; }
+.site-footer-link { font-size: 13px; }
+.site-footer-bottom { font-size: 11.5px; }
+.language-name span { font-size: 10.5px; }
+
+/* Investment, confirmation and recovery dialogs */
+.email-confirm-note,
+.password-flow-form label,
+.transaction-success-note,
+.plan-selection-details span,
+.plan-selection-range,
+.plan-selection-error,
+.plan-selection-notice,
 .vip-lock-header p,
+.vip-rate-badge span,
 .vip-lock-body > label,
 .vip-lock-results span,
-.vip-contract-notice p{
-  text-shadow: 0 2px 10px rgba(0,0,0,.82);
+.vip-contract-notice p,
+.vip-lock-error {
+  color: #d4dce7 !important;
+  font-size: 12px !important;
+  line-height: 1.65;
+  text-shadow: 0 2px 8px rgba(0,0,0,.92);
 }
-@media(max-width:600px){
-  .vip-rate-badge,
-  .vip-amount-row input,
-  .vip-amount-row .btn,
-  .vip-lock-results div,
-  .vip-contract-notice{
-    backdrop-filter: blur(10px) saturate(1.12) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(1.12) !important;
-  }
+.plan-selection-badge,
+.vip-lock-label { font-size: 11px; }
+.transaction-success-box > p { font-size: 13px; line-height: 1.72; }
+.security-brand-info strong { font-size: 12.5px; }
+
+/* Inline legacy labels are overridden without changing their markup. */
+[data-t="yourReferralCode"],
+[data-t="referralApplyNotice"],
+[data-t="referralCodeHelp"] {
+  color: #dce3ed !important;
+  font-size: 11.5px !important;
+  line-height: 1.65 !important;
+}
+[data-t="haveInvitationCode"] { font-size: 12px !important; }
+
+/* Mild glass only where detailed artwork competes with text. */
+#portfolio .portfolio-vip-metric,
+#portfolio .vip-single-summary > div,
+#portfolio .vip-contract-tablebox,
+#portfolio .referral-portfolio-card,
+#rewards .referral-code-box,
+#rewards .referral-stat,
+#rewards .referral-history-item,
+#rewards .referral-history-hint,
+#profile .card,
+#support .card,
+#transactions .tablebox {
+  background: linear-gradient(145deg,rgba(5,9,14,.48),rgba(8,12,18,.34)) !important;
+  border-color: rgba(255,229,138,.25) !important;
+  backdrop-filter: blur(3.5px) saturate(1.06) !important;
+  -webkit-backdrop-filter: blur(3.5px) saturate(1.06) !important;
+}
+
+#portfolio .portfolio-vip-input-row input,
+#portfolio .custom-select-trigger,
+#portfolio .custom-options,
+#rewards input,
+#profile input,
+#profile select,
+#support input,
+#support select,
+#support textarea {
+  background: rgba(4,8,13,.54) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
+}
+
+/* Restore readable mobile sizes previously reduced to 8–9px. */
+@media (max-width:600px) {
+  .portfolio-vip-title p { font-size: 12px !important; }
+  .portfolio-vip-badge { font-size: 10px !important; }
+  .portfolio-vip-field label,
+  .portfolio-vip-metric span { font-size: 11px !important; }
+  .referral-history-hint { font-size: 12px; }
+  .stat-circle-label { font-size: 10px !important; line-height: 1.35; }
+  .stat-badge-tag { font-size: 9.5px !important; }
+  .language-name strong { font-size: 12.5px; }
+  .language-name span { font-size: 10px; }
+  .site-footer-link { font-size: 13px; }
+  .live-withdrawals-container.has-video .live-info span { font-size: 10px !important; }
+  .security-brand-info span { font-size: 9.5px !important; }
 }
 
 </style>
@@ -8670,8 +8798,8 @@ const LANGUAGE_CATALOG = [
   ["nl","🇳🇱","NL","Nederlands","Dutch"],
   ["fr","🇫🇷","FR","Français","French"],
   ["ko","🇰🇷","KO","한국어","Korean"],
-  ["ar","🇸🇦","AR","العربية","Arabic"],
   ["fa","🇮🇷","FA","فارسی","Persian"],
+  ["ar","🇸🇦","AR","العربية","Arabic"],
   ["az","🇦🇿","AZ","Azərbaycan","Azerbaijani"],
   ["el","🇬🇷","EL","Ελληνικά","Greek"],
   ["hi","🇮🇳","HI","हिन्दी","Hindi"],
