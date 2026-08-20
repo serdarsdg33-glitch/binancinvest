@@ -3851,6 +3851,26 @@ html[dir="rtl"] .support-message.admin { border-bottom-left-radius: 14px; border
   .support-nav-badge,.support-confirm-modal.open,.support-confirm-box { animation: none !important; }
 }
 
+
+/* Professional AI Support polish */
+.support-message.ai-support-message{
+  position:relative;
+  border-color:rgba(83,229,174,.38)!important;
+  background:linear-gradient(135deg,rgba(22,199,132,.14),rgba(12,18,25,.94))!important;
+}
+.ai-support-badge{
+  display:inline-flex;align-items:center;gap:5px;margin:0 0 7px;padding:3px 8px;
+  border-radius:999px;font-size:9.5px;font-weight:900;letter-spacing:.15px;
+  color:#b9ffe2;background:rgba(22,199,132,.12);border:1px solid rgba(83,229,174,.28);
+}
+.ai-support-badge::before{content:"✦";font-size:9px;color:#69e9b5}
+.support-ai-typing{align-self:flex-start;max-width:82%;padding:11px 13px;border-radius:14px;border-bottom-left-radius:4px;color:#dce6ef;background:#151d26;border:1px solid rgba(83,229,174,.24);box-shadow:0 10px 26px rgba(0,0,0,.24)}
+.support-ai-typing-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#a5f4d5;font-weight:800}
+.support-ai-dots{display:inline-flex;gap:3px}
+.support-ai-dots i{width:5px;height:5px;border-radius:50%;background:#69e9b5;display:block;animation:aiDotPulse 1.05s infinite ease-in-out}
+.support-ai-dots i:nth-child(2){animation-delay:.16s}.support-ai-dots i:nth-child(3){animation-delay:.32s}
+@keyframes aiDotPulse{0%,70%,100%{opacity:.28;transform:translateY(0)}35%{opacity:1;transform:translateY(-2px)}}
+html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-right-radius:4px}
 </style>
 </head>
 <body>
@@ -10270,11 +10290,47 @@ window.clearTx = async function () {
 /* AI support integration */
 const supportAiRequestsInFlight = new Set();
 
+
+function getAiSupportLabel() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const labels = {
+    en:"AI Support", fa:"پشتیبانی هوشمند", az:"AI dəstək", tr:"AI Destek", ru:"ИИ-поддержка",
+    ar:"دعم ذكي", zh:"AI 客服", es:"Soporte IA", fr:"Support IA", de:"KI-Support"
+  };
+  return labels[lang] || labels.en;
+}
+
+function getAiTypingText() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const labels = {
+    en:"AI Support is typing", fa:"پشتیبانی هوشمند در حال پاسخ است", az:"AI dəstək cavab yazır", tr:"AI Destek yanıt yazıyor", ru:"ИИ-поддержка печатает",
+    ar:"الدعم الذكي يكتب الرد", zh:"AI 客服正在回复", es:"El soporte de IA está respondiendo", fr:"Le support IA répond", de:"KI-Support antwortet"
+  };
+  return labels[lang] || labels.en;
+}
+
+function showAiTyping(ticketId) {
+  if (activeSupportTicketId !== ticketId) return;
+  const box = document.getElementById("supportMessages");
+  if (!box || document.getElementById("supportAiTyping")) return;
+  const el = document.createElement("div");
+  el.id = "supportAiTyping";
+  el.className = "support-ai-typing";
+  el.innerHTML = `<div class="support-ai-typing-row"><span>${getAiTypingText()}</span><span class="support-ai-dots"><i></i><i></i><i></i></span></div>`;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+
+function hideAiTyping() {
+  document.getElementById("supportAiTyping")?.remove();
+}
+
 async function requestAiSupportReply(ticketId) {
   if (!currentUser?.id || !ticketId) return;
   if (supportAiRequestsInFlight.has(ticketId)) return;
 
   supportAiRequestsInFlight.add(ticketId);
+  showAiTyping(ticketId);
 
   try {
     const { data, error } = await supabaseClient.functions.invoke(
@@ -10298,6 +10354,7 @@ async function requestAiSupportReply(ticketId) {
     /* Keep the ticket open for human support if AI is unavailable. */
     console.error("AI support reply error:", error);
   } finally {
+    hideAiTyping();
     supportAiRequestsInFlight.delete(ticketId);
   }
 }
@@ -10420,10 +10477,10 @@ window.loadSupportMessages = async function (ticketId) {
     text.textContent = item.body || "";
 
     if (isAdmin && item.is_ai === true) {
+      element.classList.add("ai-support-message");
       const aiBadge = document.createElement("span");
-      aiBadge.textContent = "AI Support";
-      aiBadge.style.cssText =
-        "display:inline-flex;align-items:center;margin-bottom:6px;padding:2px 7px;border-radius:999px;font-size:9px;font-weight:850;color:#a5f4d5;background:rgba(22,199,132,.10);border:1px solid rgba(83,229,174,.25);";
+      aiBadge.className = "ai-support-badge";
+      aiBadge.textContent = getAiSupportLabel();
       element.appendChild(aiBadge);
     }
 
