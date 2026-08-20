@@ -6909,7 +6909,7 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 600);
-setInterval(addLiveWithdrawal, 2800);
+setInterval(addLiveWithdrawal, 2200);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -11901,6 +11901,29 @@ window.sendSupportReply = async function () {
   }
 }
 
+
+/* Final withdrawal feed adjustment: no surrounding cards, slightly tighter spacing. */
+.live-withdrawals-feed .live-withdraw,
+.live-withdrawals-container.has-video .live-withdraw,
+.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+.live-withdrawals-feed .live-withdraw::before,
+.live-withdrawals-container.has-video .live-withdraw::before {
+  display: none !important;
+}
+.live-withdrawals-feed .live-info b,
+.live-withdrawals-feed .live-info span,
+.live-withdrawals-feed .live-amount {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,.9));
+}
 </style>
 
 <script>
