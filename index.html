@@ -4182,11 +4182,14 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
 </div>
 
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
-<div class="title"><h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
   <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
     <source src="live-withdrawals-smooth.mp4" type="video/mp4">
   </video>
+  <div class="live-withdrawals-overlay-title">
+    <h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2>
+  </div>
+  <div id="liveWithdrawalsFeed" class="live-withdrawals-feed" aria-live="polite"></div>
   <div class="fade-overlay"></div>
 </div>
 </section>
@@ -4859,14 +4862,13 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
               <div id="supportChatMeta" class="muted"></div>
             </div>
 
-            <button
-              id="closeTicketBtn"
-              class="btn"
-              onclick="closeSupportTicket()"
-            >
-              Close Ticket
-            </button>
+            <div class="support-ticket-actions">
+              <button id="closeTicketBtn" class="btn" onclick="closeSupportTicket()">Close Ticket</button>
+              <button id="deleteTicketBtn" class="btn support-delete-ticket" style="display:none" onclick="deleteClosedSupportTicket()">Delete Ticket</button>
+            </div>
           </div>
+
+          <div id="supportInlineNotice" class="support-inline-notice" hidden role="status" aria-live="polite"></div>
 
           <div id="supportMessages" class="support-messages"></div>
 
@@ -4895,11 +4897,17 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
 <section id="profile" class="view"><div class="title"><h2 data-t="profile">Profile & Security</h2></div>
   <div class="two">
     <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
-    <div class="card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+    <div class="card profile-security-card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
       <div class="twofa-security-card">
         <div class="twofa-security-head">
           <div class="twofa-security-title">
-            <div class="twofa-security-icon">⌁</div>
+            <div class="twofa-security-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" role="img">
+                <path d="M24 4 39 10v11c0 10.4-6.2 18.2-15 23-8.8-4.8-15-12.6-15-23V10L24 4Z"/>
+                <circle cx="24" cy="21" r="5"/>
+                <path d="M24 26v7M20.5 33h7"/>
+              </svg>
+            </div>
             <div><strong id="twofaCardTitle">Authenticator App</strong><span id="twofaCardDescription">Protect sign-in with a time-based 6-digit code.</span></div>
           </div>
           <span id="twofaStatus" class="twofa-status disabled">Disabled</span>
@@ -6823,6 +6831,7 @@ const maskedNames = [
 
 function addLiveWithdrawal() {
   const list =
+    document.getElementById("liveWithdrawalsFeed") ||
     document.getElementById("liveWithdrawalsList");
 
   if (!list) return;
@@ -6853,6 +6862,10 @@ function addLiveWithdrawal() {
 
   const div = document.createElement("div");
   div.className = "live-withdraw";
+  div.style.setProperty(
+    "--withdraw-duration",
+    `${(12.1 + Math.random() * 1.1).toFixed(2)}s`
+  );
 
   div.innerHTML = `
     <div style="display:flex;align-items:center;flex:1;">
@@ -6869,14 +6882,15 @@ function addLiveWithdrawal() {
     </div>
   `;
 
-  list.prepend(div);
+  list.appendChild(div);
+  div.addEventListener("animationend", () => div.remove(), { once: true });
 
   const withdrawalItems =
     list.querySelectorAll(".live-withdraw");
 
-  if (withdrawalItems.length > 7) {
+  if (withdrawalItems.length > 6) {
     withdrawalItems[
-      withdrawalItems.length - 1
+      0
     ].remove();
   }
 }
@@ -9641,6 +9655,11 @@ async function openSupportTicket(ticketId) {
   const metaElement = document.getElementById("supportChatMeta");
   const replyBox = document.getElementById("supportReplyBox");
   const closeButton = document.getElementById("closeTicketBtn");
+  const deleteButton = document.getElementById("deleteTicketBtn");
+  const inlineNotice = document.getElementById("supportInlineNotice");
+
+  if (changedTicket && inlineNotice) inlineNotice.hidden = true;
+  if (deleteButton) deleteButton.textContent = getSupportActionCopy("deleteButton");
 
   try {
     const { data: ticket, error } = await supabaseClient
@@ -10957,13 +10976,17 @@ function normalizeAiSupportMessage(value) {
   /* This platform accepts crypto deposits only. Never expose card/CVV advice
      even when an older Edge Function response contains generic payment text. */
   const cardPaymentLanguage = [
-    /\bCVV\b/iu,
-    /\bCVC\b/iu,
-    /\bOTP\b/iu,
-    /card\s*(?:details?|number|password|payment)/iu,
-    /credit\s*card|debit\s*card/iu,
-    /اطلاعات\s*کارت|شماره\s*کارت|رمز\s*کارت|کارت\s*بانکی|رمز\s*یکبار\s*مصرف/iu,
-    /kart\s*(?:bilgileri|numarası|şifresi|ödemesi)/iu
+    /\b(?:CVV|CVC|OTP|SMS|phone|telephone|mobile)\b/iu,
+    /\b(?:credit|debit|bank|payment)\s*card\b/iu,
+    /\bcard\s*(?:details?|number|password|payment|holder|verification)?\b/iu,
+    /اطلاعات\s*کارت|شماره\s*(?:کامل\s*)?(?:کارت|تلفن|تماس|موبایل)|رمز\s*(?:کارت|عبور|یکبار\s*مصرف)|کارت\s*(?:بانکی|اعتباری)|پیامک|اس[\s‌-]*ام[\s‌-]*اس|تلفن|موبایل|کد\s*(?:تأیید|تایید|یکبار)/iu,
+    /kart\s*(?:bilgileri|numarası|şifresi|ödemesi)|telefon|sms|doğrulama\s*kodu/iu,
+    /(?:بطاقة|رقم\s*الهاتف|هاتف|رسالة\s*نصية|رمز\s*تحقق)/iu,
+    /(?:carte\s*(?:bancaire|de\s*crédit)|numéro\s*de\s*téléphone|sms)/iu,
+    /(?:tarjeta|teléfono|mensaje\s*de\s*texto|sms)/iu,
+    /(?:Kreditkarte|Bankkarte|Telefonnummer|SMS|Bestätigungscode)/iu,
+    /(?:банковск(?:ая|ой)\s*карт|номер\s*телефона|смс|код\s*подтверждения)/iu,
+    /(?:银行卡|信用卡|手机号|短信|验证码|カード|電話番号|認証コード|카드|전화번호|인증\s*코드)/u
   ];
 
   if (cardPaymentLanguage.some(pattern => pattern.test(text))) {
@@ -11109,6 +11132,19 @@ async function requestAiSupportReply(ticketId) {
             payment_method: "cryptocurrency_only",
             never_mention_card_payment: true,
             never_request_card_number_cvv_password_or_otp: true,
+            never_mention_sms_phone_mobile_or_otp: true,
+            do_not_append_security_disclaimer: true,
+            answer_only_for_crypto_deposits_and_platform_features: true,
+            forbidden_topics: [
+              "card payment",
+              "card number",
+              "CVV",
+              "CVC",
+              "SMS",
+              "phone number",
+              "mobile number",
+              "OTP"
+            ],
             crypto_deposit_required_fields: [
               "cryptocurrency",
               "network",
@@ -11446,6 +11482,165 @@ window.sendSupportReply = async function () {
 .support-ticket-list.support-refreshing {
   opacity: 1;
 }
+
+/* Final live-withdrawals composition: the video, heading and feed share one frame. */
+.withdrawals-showcase {
+  padding: 0 !important;
+  overflow: hidden;
+  background: rgba(4,7,10,.28) !important;
+  border-color: rgba(240,185,11,.38) !important;
+}
+
+.withdrawals-showcase .live-withdrawals-container.has-video {
+  position: relative;
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 512 / 634;
+  border: 0 !important;
+  border-radius: inherit !important;
+  overflow: hidden;
+  background: #020408;
+}
+
+.withdrawals-showcase .live-withdrawals-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.live-withdrawals-overlay-title {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: clamp(18px,4vw,34px) clamp(18px,4vw,38px) 54px;
+  pointer-events: none;
+  background: linear-gradient(180deg,rgba(1,3,6,.9),rgba(1,3,6,.42) 58%,transparent);
+}
+
+.live-withdrawals-overlay-title h2 {
+  margin: 0;
+  color: #f7f9fc;
+  font-size: clamp(24px,4.2vw,38px);
+  line-height: 1.15;
+  text-shadow: 0 3px 18px rgba(0,0,0,.95);
+}
+
+.live-withdrawals-feed {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(transparent 1%,#000 10%,#000 91%,transparent 100%);
+  mask-image: linear-gradient(transparent 1%,#000 10%,#000 91%,transparent 100%);
+}
+
+.live-withdrawals-feed .live-withdraw {
+  position: absolute !important;
+  top: 0;
+  right: clamp(12px,3vw,30px);
+  left: clamp(12px,3vw,30px);
+  z-index: 2;
+  min-height: 60px;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  opacity: 0;
+  background: linear-gradient(90deg,rgba(3,7,11,.22),rgba(3,7,11,.08),rgba(3,7,11,.22)) !important;
+  border: 1px solid rgba(255,229,138,.14) !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.22) !important;
+  animation: withdrawalNamesDown var(--withdraw-duration,12.6s) linear forwards !important;
+  will-change: transform,opacity;
+}
+
+.live-withdrawals-feed .live-info b {
+  color: #fff8da;
+  font-size: clamp(13px,2vw,17px);
+  text-shadow: 0 2px 8px #000;
+}
+
+.live-withdrawals-feed .live-info span {
+  color: rgba(235,240,247,.82);
+  font-size: clamp(9px,1.5vw,11px);
+}
+
+.live-withdrawals-feed .live-amount {
+  color: #6fffc3 !important;
+  font-size: clamp(13px,2.1vw,18px) !important;
+  text-shadow: 0 0 10px rgba(22,199,132,.5),0 2px 8px #000;
+}
+
+@keyframes withdrawalNamesDown {
+  0% { opacity:0; transform:translate3d(0,-88px,0) scale(.96); }
+  8% { opacity:1; }
+  47% { opacity:.96; }
+  91% { opacity:1; }
+  100% { opacity:0; transform:translate3d(0,1150px,0) scale(1); }
+}
+
+/* Contextual support feedback and closed-ticket controls. */
+.support-ticket-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+.support-delete-ticket { color:#ffb4ba !important; border-color:rgba(234,57,67,.42) !important; background:rgba(234,57,67,.09) !important; }
+.support-inline-notice {
+  margin: -3px 0 13px;
+  padding: 10px 12px;
+  color:#caffea;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.5;
+  background:rgba(22,199,132,.11);
+  border:1px solid rgba(22,199,132,.38);
+  border-radius:10px;
+  box-shadow:0 7px 20px rgba(0,0,0,.2);
+}
+.support-inline-notice.error { color:#ffd0d4; background:rgba(234,57,67,.12); border-color:rgba(234,57,67,.45); }
+.support-list-notice { margin:0 0 9px; }
+
+/* Clear glass profile and authenticator surfaces. */
+#profile .card {
+  background:linear-gradient(145deg,rgba(7,12,18,.28),rgba(2,6,10,.16)) !important;
+  border-color:rgba(255,218,76,.42) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 35px rgba(0,0,0,.27) !important;
+  -webkit-backdrop-filter:blur(2px) saturate(1.08) !important;
+  backdrop-filter:blur(2px) saturate(1.08) !important;
+}
+
+#profile .profile-security-card { background:rgba(3,7,11,.20) !important; }
+
+#profile .twofa-security-card {
+  background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.012)) !important;
+  border:1px solid rgba(255,222,92,.48) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 12px 30px rgba(0,0,0,.22),0 0 16px rgba(240,185,11,.07) !important;
+  -webkit-backdrop-filter:blur(1.5px) saturate(1.12) !important;
+  backdrop-filter:blur(1.5px) saturate(1.12) !important;
+}
+
+#profile .twofa-security-icon {
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+  color:#ffe681;
+  background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(240,185,11,.035)) !important;
+  border:1px solid rgba(255,229,138,.55);
+  border-radius:15px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.19),0 8px 22px rgba(0,0,0,.28),0 0 14px rgba(240,185,11,.10) !important;
+}
+
+#profile .twofa-security-icon svg { width:29px; height:29px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 5px rgba(240,185,11,.28)); }
+
+@media(max-width:600px) {
+  .withdrawals-showcase { width:calc(100vw - 16px) !important; padding:0 !important; }
+  .live-withdrawals-feed .live-withdraw { right:8px; left:8px; min-height:54px; padding:6px 8px !important; }
+  .live-withdrawals-feed .live-avatar { width:38px !important; height:38px !important; min-width:38px !important; }
+  .support-chat-header { align-items:stretch; flex-direction:column; }
+  .support-ticket-actions { justify-content:stretch; }
+  .support-ticket-actions .btn { flex:1; }
+}
 </style>
 
 <script>
@@ -11703,6 +11898,11 @@ openSupportTicket = async function openSupportTicketStable(ticketId, options = {
   const metaElement = document.getElementById("supportChatMeta");
   const replyBox = document.getElementById("supportReplyBox");
   const closeButton = document.getElementById("closeTicketBtn");
+  const deleteButton = document.getElementById("deleteTicketBtn");
+  const inlineNotice = document.getElementById("supportInlineNotice");
+
+  if (changedTicket && inlineNotice) inlineNotice.hidden = true;
+  if (deleteButton) deleteButton.textContent = getSupportActionCopy("deleteButton");
 
   try {
     const { data: ticket, error } = await supabaseClient
@@ -11723,6 +11923,7 @@ openSupportTicket = async function openSupportTicketStable(ticketId, options = {
     const isClosed = ticket.status === "closed";
     if (replyBox) replyBox.style.display = isClosed ? "none" : "block";
     if (closeButton) closeButton.style.display = isClosed ? "none" : "inline-block";
+    if (deleteButton) deleteButton.style.display = isClosed ? "inline-block" : "none";
 
     await window.loadSupportMessages(ticketId, {
       silent: options.silent || !changedTicket
@@ -11826,6 +12027,154 @@ if (document.readyState === "loading") {
 } else {
   initializePerformanceVideos();
 }
+</script>
+
+<script>
+/* Contextual support actions: feedback stays inside the ticket area. */
+function getSupportActionCopy(key) {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const copy = {
+    en:{deleted:"Ticket deleted successfully.",deleteTitle:"Delete closed ticket",deleteMessage:"Delete this closed ticket and its conversation permanently?",deleteButton:"Delete Ticket",closed:"Ticket closed successfully."},
+    fa:{deleted:"تیکت با موفقیت حذف شد.",deleteTitle:"حذف تیکت بسته‌شده",deleteMessage:"این تیکت بسته‌شده و گفت‌وگوی آن برای همیشه حذف شود؟",deleteButton:"حذف تیکت",closed:"تیکت با موفقیت بسته شد."},
+    ar:{deleted:"تم حذف التذكرة بنجاح.",deleteTitle:"حذف التذكرة المغلقة",deleteMessage:"هل تريد حذف هذه التذكرة المغلقة ومحادثتها نهائيًا؟",deleteButton:"حذف التذكرة",closed:"تم إغلاق التذكرة بنجاح."},
+    tr:{deleted:"Destek talebi silindi.",deleteTitle:"Kapalı talebi sil",deleteMessage:"Bu kapalı talep ve görüşme kalıcı olarak silinsin mi?",deleteButton:"Talebi Sil",closed:"Destek talebi kapatıldı."},
+    de:{deleted:"Ticket wurde gelöscht.",deleteTitle:"Geschlossenes Ticket löschen",deleteMessage:"Dieses geschlossene Ticket und den Verlauf dauerhaft löschen?",deleteButton:"Ticket löschen",closed:"Ticket wurde geschlossen."},
+    fr:{deleted:"Ticket supprimé.",deleteTitle:"Supprimer le ticket fermé",deleteMessage:"Supprimer définitivement ce ticket fermé et sa conversation ?",deleteButton:"Supprimer",closed:"Ticket fermé avec succès."},
+    es:{deleted:"Ticket eliminado.",deleteTitle:"Eliminar ticket cerrado",deleteMessage:"¿Eliminar permanentemente este ticket cerrado y su conversación?",deleteButton:"Eliminar ticket",closed:"Ticket cerrado correctamente."},
+    ru:{deleted:"Тикет удалён.",deleteTitle:"Удалить закрытый тикет",deleteMessage:"Навсегда удалить этот закрытый тикет и переписку?",deleteButton:"Удалить тикет",closed:"Тикет успешно закрыт."},
+    zh:{deleted:"工单已删除。",deleteTitle:"删除已关闭工单",deleteMessage:"永久删除此已关闭工单及其对话？",deleteButton:"删除工单",closed:"工单已关闭。"}
+  };
+  return (copy[lang] || copy.en)[key] || copy.en[key] || "";
+}
+
+function showSupportInlineNotice(message, type = "success") {
+  const notice = document.getElementById("supportInlineNotice");
+  if (!notice) return;
+  window.clearTimeout(showSupportInlineNotice.timer);
+  notice.textContent = String(message || "");
+  notice.classList.toggle("error", type === "error");
+  notice.hidden = false;
+  showSupportInlineNotice.timer = window.setTimeout(() => {
+    notice.hidden = true;
+  }, 3600);
+}
+
+function showSupportListNotice(message, type = "success") {
+  const list = document.getElementById("supportTicketList");
+  const host = list?.closest(".support-tickets");
+  if (!list || !host) return;
+  host.querySelector(".support-list-notice")?.remove();
+  const notice = document.createElement("div");
+  notice.className = `support-inline-notice support-list-notice${type === "error" ? " error" : ""}`;
+  notice.setAttribute("role", "status");
+  notice.textContent = String(message || "");
+  host.insertBefore(notice, list);
+  window.setTimeout(() => notice.remove(), 3600);
+}
+
+function requestSupportDeleteConfirmation() {
+  const modal = document.getElementById("supportCloseConfirmModal");
+  const title = document.getElementById("supportCloseConfirmTitle");
+  const message = document.getElementById("supportCloseConfirmMessage");
+  const cancelButton = document.getElementById("supportCloseCancelBtn");
+  const confirmButton = document.getElementById("supportCloseConfirmBtn");
+  if (!modal || !cancelButton || !confirmButton) return Promise.resolve(false);
+
+  if (title) title.textContent = getSupportActionCopy("deleteTitle");
+  if (message) message.textContent = getSupportActionCopy("deleteMessage");
+  cancelButton.textContent = typeof tr === "function" ? tr("cancel") : "Cancel";
+  confirmButton.textContent = getSupportActionCopy("deleteButton");
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+
+  return new Promise(resolve => {
+    let finished = false;
+    const finish = result => {
+      if (finished) return;
+      finished = true;
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.removeEventListener("keydown", onKeyDown);
+      resolve(result);
+    };
+    const onKeyDown = event => { if (event.key === "Escape") finish(false); };
+    cancelButton.onclick = () => finish(false);
+    confirmButton.onclick = () => finish(true);
+    modal.onclick = event => { if (event.target === modal) finish(false); };
+    document.addEventListener("keydown", onKeyDown);
+    requestAnimationFrame(() => confirmButton.focus());
+  });
+}
+
+window.closeSupportTicket = async function closeSupportTicketContextual() {
+  if (!currentUser?.id || !activeSupportTicketId) return;
+  const confirmed = await requestSupportCloseConfirmation();
+  if (!confirmed) return;
+
+  const button = document.getElementById("closeTicketBtn");
+  if (button) button.disabled = true;
+  try {
+    const { error } = await supabaseClient
+      .from("support_tickets")
+      .update({ status:"closed", updated_at:new Date().toISOString() })
+      .eq("id", activeSupportTicketId)
+      .eq("user_id", currentUser.id);
+    if (error) throw error;
+    supportPerformanceState?.messageSignatures?.delete(activeSupportTicketId);
+    await openSupportTicket(activeSupportTicketId, { silent:true });
+    await loadSupportTickets({ silent:true });
+    showSupportInlineNotice(getSupportActionCopy("closed"));
+  } catch (error) {
+    console.error("Close ticket error:", error);
+    showSupportInlineNotice(localizedBackendError(error, "supportRequestFailed"), "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+};
+
+window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
+  if (!currentUser?.id || !activeSupportTicketId) return;
+  if (!(await requestSupportDeleteConfirmation())) return;
+
+  const ticketId = activeSupportTicketId;
+  const button = document.getElementById("deleteTicketBtn");
+  if (button) button.disabled = true;
+  try {
+    const { data:ticket, error:ticketReadError } = await supabaseClient
+      .from("support_tickets")
+      .select("id,status")
+      .eq("id", ticketId)
+      .eq("user_id", currentUser.id)
+      .single();
+    if (ticketReadError) throw ticketReadError;
+    if (ticket.status !== "closed") throw new Error("Only closed tickets can be deleted.");
+
+    const { error:messageDeleteError } = await supabaseClient
+      .from("support_messages")
+      .delete()
+      .eq("ticket_id", ticketId);
+    if (messageDeleteError) throw messageDeleteError;
+
+    const { error:ticketDeleteError } = await supabaseClient
+      .from("support_tickets")
+      .delete()
+      .eq("id", ticketId)
+      .eq("user_id", currentUser.id)
+      .eq("status", "closed");
+    if (ticketDeleteError) throw ticketDeleteError;
+
+    activeSupportTicketId = null;
+    supportPerformanceState?.messageSignatures?.delete(ticketId);
+    resetSupportChat();
+    await loadSupportTickets({ silent:true });
+    showSupportListNotice(getSupportActionCopy("deleted"));
+  } catch (error) {
+    console.error("Delete ticket error:", error);
+    showSupportInlineNotice(localizedBackendError(error, "supportRequestFailed"), "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+};
 </script>
 
 </body>
