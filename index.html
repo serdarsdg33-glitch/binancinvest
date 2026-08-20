@@ -4061,7 +4061,7 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
     <span id="supportNavBadge" class="support-nav-badge" hidden aria-label="New support reply">!</span>
   </button>
 
-  <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
+  <button hidden class="guest-locked-nav" data-page="profile" onclick="page('profile',this)" data-t="profile" aria-hidden="true">Profile</button>
 </nav>
 
 <section id="home" class="view active">
@@ -7091,6 +7091,13 @@ function showAuthSuccessPopup(title, message, duration = 1800) {
 }
 
 function page(id, button) {
+  /* Profile contains private account information. Guests must authenticate
+     before the view can be opened, including calls made from inline links. */
+  if (id === "profile" && !currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
   document.querySelectorAll(".view").forEach(view => {
     view.classList.remove("active");
   });
@@ -7516,6 +7523,9 @@ function updateHeaderAuthUI() {
   const portfolioAuthButton = document.getElementById("portfolioAuthBtn");
   const portfolioGrid = document.getElementById("portfolioGrid");
   const financeGuest = document.getElementById("portfolioFinanceGuest");
+  const profileNavigationButton = document.querySelector(
+    '.nav button[data-page="profile"]'
+  );
 
   if (!headerDisplay || !authGroup) return;
 
@@ -7527,6 +7537,13 @@ function updateHeaderAuthUI() {
   if (currentUser) {
     headerDisplay.hidden = false;
     authGroup.hidden = true;
+
+    if (profileNavigationButton) {
+      profileNavigationButton.hidden = false;
+      profileNavigationButton.classList.remove("guest-locked-nav");
+      profileNavigationButton.removeAttribute("aria-hidden");
+      profileNavigationButton.tabIndex = 0;
+    }
 
     if (portfolioGrid) portfolioGrid.style.display = "grid";
     if (financeGuest) financeGuest.classList.remove("show");
@@ -7543,6 +7560,29 @@ function updateHeaderAuthUI() {
   } else {
     headerDisplay.hidden = true;
     authGroup.hidden = false;
+
+    if (profileNavigationButton) {
+      profileNavigationButton.hidden = true;
+      profileNavigationButton.classList.add("guest-locked-nav");
+      profileNavigationButton.setAttribute("aria-hidden", "true");
+      profileNavigationButton.tabIndex = -1;
+    }
+
+    /* A logout or expired session must immediately close an already-open
+       private profile view without triggering another sign-in dialog. */
+    const profileView = document.getElementById("profile");
+    if (profileView?.classList.contains("active")) {
+      profileView.classList.remove("active");
+      const homeView = document.getElementById("home");
+      const homeButton = document.querySelector(
+        '.nav button[data-page="home"]'
+      );
+      homeView?.classList.add("active");
+      document.querySelectorAll(".nav button").forEach(navButton => {
+        navButton.classList.toggle("active", navButton === homeButton);
+      });
+      window.scrollTo(0, 0);
+    }
 
     if (portfolioGrid) portfolioGrid.style.display = "none";
     if (financeGuest) financeGuest.classList.add("show");
@@ -11549,6 +11589,14 @@ window.sendSupportReply = async function () {
   min-height: 60px;
   margin: 0 !important;
   padding: 8px 10px !important;
+  width: auto !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) max-content !important;
+  align-items: center !important;
+  gap: 8px !important;
+  overflow: hidden !important;
   opacity: 0;
   background: linear-gradient(90deg,rgba(3,7,11,.22),rgba(3,7,11,.08),rgba(3,7,11,.22)) !important;
   border: 1px solid rgba(255,229,138,.14) !important;
@@ -11558,7 +11606,28 @@ window.sendSupportReply = async function () {
   will-change: transform,opacity;
 }
 
+.live-withdrawals-feed .live-withdraw > div:first-child {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.live-withdrawals-feed .live-avatar {
+  flex: 0 0 auto;
+}
+
+.live-withdrawals-feed .live-info {
+  min-width: 0;
+  margin-inline: 9px !important;
+  overflow: hidden;
+}
+
 .live-withdrawals-feed .live-info b {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #fff8da;
   font-size: clamp(13px,2vw,17px);
   text-shadow: 0 2px 8px #000;
@@ -11570,9 +11639,20 @@ window.sendSupportReply = async function () {
 }
 
 .live-withdrawals-feed .live-amount {
+  min-width: 0;
+  max-width: 42vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #6fffc3 !important;
   font-size: clamp(13px,2.1vw,18px) !important;
   text-shadow: 0 0 10px rgba(22,199,132,.5),0 2px 8px #000;
+}
+
+/* Never expose the private profile navigation item to a guest. */
+.nav button.guest-locked-nav,
+.nav button[hidden][data-page="profile"] {
+  display: none !important;
 }
 
 @keyframes withdrawalNamesDown {
@@ -11635,8 +11715,22 @@ window.sendSupportReply = async function () {
 
 @media(max-width:600px) {
   .withdrawals-showcase { width:calc(100vw - 16px) !important; padding:0 !important; }
-  .live-withdrawals-feed .live-withdraw { right:8px; left:8px; min-height:54px; padding:6px 8px !important; }
+  .live-withdrawals-feed .live-withdraw {
+    right:8px;
+    left:8px;
+    min-height:54px;
+    padding:6px 8px !important;
+    grid-template-columns:minmax(0,1fr) max-content !important;
+    gap:5px !important;
+  }
   .live-withdrawals-feed .live-avatar { width:38px !important; height:38px !important; min-width:38px !important; }
+  .live-withdrawals-feed .live-info { margin-inline:6px !important; }
+  .live-withdrawals-feed .live-info b { font-size:clamp(11px,3.25vw,14px); }
+  .live-withdrawals-feed .live-info span { font-size:clamp(8px,2.45vw,10px); }
+  .live-withdrawals-feed .live-amount {
+    max-width:39vw;
+    font-size:clamp(10.5px,3.15vw,14px) !important;
+  }
   .support-chat-header { align-items:stretch; flex-direction:column; }
   .support-ticket-actions { justify-content:stretch; }
   .support-ticket-actions .btn { flex:1; }
