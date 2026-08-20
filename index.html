@@ -3646,50 +3646,71 @@ html[dir="rtl"] header>.head{justify-self:start!important}
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Toasts are no longer hidden below long pages: keep them under the header. */
+/* Compact contextual alerts: inserted beside the control/card that created them. */
 .toast {
-  position: fixed !important;
-  z-index: 1600 !important;
-  top: calc(82px + env(safe-area-inset-top)) !important;
-  right: auto !important;
-  bottom: auto !important;
-  left: 50% !important;
-  width: min(430px,calc(100% - 28px));
+  position: relative !important;
+  z-index: 30 !important;
+  inset: auto !important;
+  width: 100%;
+  max-width: 100%;
   display: block;
-  padding: 13px 46px 13px 16px;
-  color: #f5f8fb;
-  background: linear-gradient(145deg,rgba(21,29,38,.97),rgba(8,12,17,.97));
-  border: 1px solid rgba(240,185,11,.42);
-  border-radius: 13px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.58),0 0 18px rgba(240,185,11,.10);
-  font-size: 13px;
-  font-weight: 750;
-  line-height: 1.55;
+  margin: 9px 0;
+  padding: 9px 38px 9px 11px;
+  color: #ffe5e7;
+  background: linear-gradient(135deg,rgba(234,57,67,.20),rgba(53,12,18,.90));
+  border: 1px solid rgba(255,104,115,.62);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.30),0 0 0 3px rgba(234,57,67,.06);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
   text-align: initial;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translate(-50%,-12px);
-  transition: opacity .22s ease,transform .22s ease,visibility .22s ease;
+  transform: translateY(-5px);
+  transition: opacity .18s ease,transform .18s ease,visibility .18s ease;
 }
 
 .toast::before {
-  content: "ⓘ";
+  content: "!";
   position: absolute;
-  top: 12px;
-  right: 15px;
-  color: var(--gold);
-  font-size: 17px;
-  font-weight: 900;
+  top: 50%;
+  right: 11px;
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--red);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 950;
+  transform: translateY(-50%);
 }
 
-html[dir="rtl"] .toast { padding: 13px 16px 13px 46px; }
-html[dir="rtl"] .toast::before { right: auto; left: 15px; }
-.toast.show { opacity: 1; visibility: visible; transform: translate(-50%,0); }
-.toast.success { border-color: rgba(22,199,132,.52); }
-.toast.success::before { content: "✓"; color: var(--green); }
-.toast.error { border-color: rgba(234,57,67,.58); }
-.toast.error::before { content: "!"; color: #ff8c95; }
+html[dir="rtl"] .toast { padding: 9px 11px 9px 38px; }
+html[dir="rtl"] .toast::before { right: auto; left: 11px; }
+.toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.toast[hidden] { display: none !important; }
+.toast.success {
+  color: #d9ffef;
+  background: linear-gradient(135deg,rgba(22,199,132,.18),rgba(7,45,31,.90));
+  border-color: rgba(22,199,132,.56);
+}
+.toast.success::before { content: "✓"; background: var(--green); }
+.toast.error { border-color: rgba(255,104,115,.66); }
+.toast.error::before { content: "!"; background: var(--red); }
+
+.toast.toast-after-section-title { margin: -3px 0 12px; }
+.toast.toast-in-header {
+  position: fixed !important;
+  top: calc(74px + env(safe-area-inset-top)) !important;
+  left: 50% !important;
+  width: min(360px,calc(100% - 22px));
+  transform: translate(-50%,-5px);
+}
+.toast.toast-in-header.show { transform: translate(-50%,0); }
 
 #transactions .clear-history-btn[disabled] {
   opacity: .62;
@@ -3698,9 +3719,11 @@ html[dir="rtl"] .toast::before { right: auto; left: 15px; }
 
 @media (max-width:600px) {
   .toast {
-    top: calc(74px + env(safe-area-inset-top)) !important;
-    width: calc(100% - 20px);
-    font-size: 12.5px;
+    margin: 7px 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 11.5px;
+    line-height: 1.4;
   }
   .field-validation-message { font-size: 12px; }
 }
@@ -4946,7 +4969,7 @@ Transactions section.
     <div class="auth-success-progress"></div>
   </div>
 </div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" hidden></div>
 <div id="emailConfirmModal" class="email-confirm-modal">
   <div class="email-confirm-box">
 <button
@@ -5128,7 +5151,7 @@ async function resendPasswordRecovery() {
 
   try {
     await sendPasswordRecovery(email);
-    toast(tr("recoveryResent"));
+    toast(tr("recoveryResent"), "success");
   } catch (error) {
     console.error(error);
     toast(localizedBackendError(error,"emailSendFailed"));
@@ -5212,7 +5235,8 @@ async function saveRecoveredPassword() {
     updatePortfolio();
 
     toast(
-      tr("passwordChanged")
+      tr("passwordChanged"),
+      "success"
     );
 
   } catch (error) {
@@ -5307,7 +5331,7 @@ async function resendConfirmationEmail() {
 
     if (error) throw error;
 
-    toast(tr("confirmationResent"));
+    toast(tr("confirmationResent"), "success");
     button.textContent = tr("emailSent");
 
     setTimeout(() => {
@@ -6152,7 +6176,7 @@ async function submitDepositRequest() {
     if (error) {
         toast(localizedBackendError(error,"depositRequestFailed"));
     } else {
-        toast(tr("depositSubmittedTitle"));
+        toast(tr("depositSubmittedTitle"), "success");
         document.getElementById('deposit-amount').value = '';
         if(document.getElementById('tx-ref')) document.getElementById('tx-ref').value = '';
         loadTransactions();
@@ -6275,11 +6299,106 @@ setInterval(() => {
     displayCounters();
 }, 5000);
 
-function toast(message, type = "info") {
+function placeToastNearContext(element) {
+  element.classList.remove("toast-after-section-title", "toast-in-header");
+
+  const active = document.activeElement;
+  const activeElement =
+    active instanceof HTMLElement && active !== document.body
+      ? active
+      : (
+          window.lastAlertOrigin?.isConnected &&
+          Date.now() - Number(window.lastAlertOriginTime || 0) < 8000
+            ? window.lastAlertOrigin
+            : null
+        );
+
+  if (activeElement?.closest("header")) {
+    document.body.appendChild(element);
+    element.classList.add("toast-in-header");
+    return;
+  }
+
+  const actionGroup = activeElement?.closest(
+    ".referral-actions,.plan-selection-actions,.transaction-success-actions," +
+    ".email-confirm-actions,.actions,.password-flow-form"
+  );
+
+  if (actionGroup) {
+    actionGroup.insertAdjacentElement("beforebegin", element);
+    return;
+  }
+
+  const activeTitle = activeElement?.closest(".title");
+  if (activeTitle) {
+    activeTitle.insertAdjacentElement("afterend", element);
+    element.classList.add("toast-after-section-title");
+    return;
+  }
+
+  const contextualCard = activeElement?.closest(
+    ".modalbox,.password-flow-box,.email-confirm-box,.transaction-success-box," +
+    ".plan-selection-box,.card,.portfolio-vip-quick,.vip-lock-card"
+  );
+
+  if (contextualCard) {
+    if (activeElement.matches("button,.btn")) {
+      activeElement.insertAdjacentElement("beforebegin", element);
+    } else {
+      const heading = contextualCard.querySelector("h2,h3");
+      heading?.insertAdjacentElement("afterend", element);
+      if (!heading) contextualCard.prepend(element);
+    }
+    return;
+  }
+
+  const openDialog = [
+    ".modal[style*='flex'] .modalbox",
+    ".password-flow-modal.open .password-flow-box",
+    ".email-confirm-modal.open .email-confirm-box",
+    ".transaction-success-modal.open .transaction-success-box",
+    ".plan-selection-modal.open .plan-selection-box"
+  ].map(selector => document.querySelector(selector)).find(Boolean);
+
+  if (openDialog) {
+    const heading = openDialog.querySelector("h2,h3");
+    heading?.insertAdjacentElement("afterend", element);
+    if (!heading) openDialog.prepend(element);
+    return;
+  }
+
+  const activeView = document.querySelector(".view.active");
+  const sectionTitle = activeView?.querySelector(":scope > .title");
+  if (sectionTitle) {
+    sectionTitle.insertAdjacentElement("afterend", element);
+    element.classList.add("toast-after-section-title");
+    return;
+  }
+
+  if (activeView) {
+    activeView.prepend(element);
+    return;
+  }
+
+  document.body.appendChild(element);
+  element.classList.add("toast-in-header");
+}
+
+document.addEventListener("pointerdown", event => {
+  const origin = event.target.closest?.("button,input,select,textarea,a");
+  if (!origin) return;
+  window.lastAlertOrigin = origin;
+  window.lastAlertOriginTime = Date.now();
+}, true);
+
+function toast(message, type = "error") {
   const element = document.getElementById("toast");
   if (!element) return;
 
   clearTimeout(window.x);
+  clearTimeout(window.toastCleanupTimer);
+  placeToastNearContext(element);
+  element.hidden = false;
   element.textContent = String(message || "");
   element.classList.remove("show", "success", "error");
   if (type === "success" || type === "error") {
@@ -6290,7 +6409,10 @@ function toast(message, type = "info") {
   element.classList.add("show");
   window.x = setTimeout(() => {
     element.classList.remove("show");
-  }, 3400);
+    window.toastCleanupTimer = setTimeout(() => {
+      element.hidden = true;
+    }, 190);
+  }, 3000);
 }
 
 function clearFieldError(inputId) {
@@ -6674,7 +6796,7 @@ async function logout() {
     updateSupportAuthUI();
   }
 
-  toast(tr("loggedOut"));
+  toast(tr("loggedOut"), "success");
 }
 
 function updateHeaderAuthUI() {
@@ -7087,7 +7209,8 @@ setTimeout(() => {
   });
 }, 200);
     toast(
-      tr("vipLockSuccess",{amount:formatPortfolioMoney(amount)})
+      tr("vipLockSuccess",{amount:formatPortfolioMoney(amount)}),
+      "success"
     );
 
     console.log(
@@ -7311,7 +7434,7 @@ async function invest(i) {
     await refreshSecureAccount();
     await updatePortfolio();
 
-    toast(tr("investmentActivated",{plan:localizedPlanName}));
+    toast(tr("investmentActivated",{plan:localizedPlanName}), "success");
   } catch (error) {
     console.error("Investment error:", error);
 
@@ -7374,7 +7497,7 @@ async function investCustom() {
     await refreshSecureAccount();
     await updatePortfolio();
 
-    toast(tr("investmentActivated",{plan:localizedPlanName}));
+    toast(tr("investmentActivated",{plan:localizedPlanName}), "success");
   } catch (error) {
     console.error(
       "Custom investment error:",
@@ -8103,7 +8226,7 @@ async function loadTransactions(){
 async function clearTx(){
   if(!currentUser) return;
   await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
-  loadTransactions(); toast(tr("clear"));
+  loadTransactions(); toast(tr("clear"), "success");
 }
 
 const PENDING_REFERRAL_CODE_KEY = "bi_pending_referral_code";
@@ -8153,7 +8276,7 @@ async function applyPendingReferralCode() {
     return false;
   }
 
-  if (data) toast(tr("referralCodeLabel"));
+  if (data) toast(tr("referralCodeLabel"), "success");
   return Boolean(data);
 }
 
@@ -8187,7 +8310,7 @@ async function applyManualReferralCode() {
   }
 
   input.value = "";
-  toast(tr("referralCodeLabel"));
+  toast(tr("referralCodeLabel"), "success");
   await loadReferralDashboard();
 }
 
@@ -8385,7 +8508,7 @@ async function copyReferralCode() {
   const code = currentReferralData?.referralCode;
   if (!code) return toast(tr("unknown"));
   await navigator.clipboard.writeText(code);
-  toast(tr("copyCode"));
+  toast(tr("copyCode"), "success");
 }
 
 async function copyReferralLink() {
@@ -8394,7 +8517,7 @@ async function copyReferralLink() {
   const link = currentReferralData?.link;
   if (!link) return toast(tr("unknown"));
   await navigator.clipboard.writeText(link);
-  toast(tr("copyInvitationLink"));
+  toast(tr("copyInvitationLink"), "success");
 }
 
 function copyRef() {
@@ -8424,7 +8547,7 @@ async function saveProfile(){
   currentUser.phone = document.getElementById("phone").value;
   await saveUserData();
   updateHeaderAuthUI();
-  toast(tr("profileUpdated"));
+  toast(tr("profileUpdated"), "success");
 }
 // ==============================
 // SUPPORT TICKET SYSTEM
@@ -8522,7 +8645,7 @@ async function createSupportTicket() {
     messageInput.value = "";
     categoryInput.value = "general";
 
-    toast(tr("ticketSubmitted"));
+    toast(tr("ticketSubmitted"), "success");
 
     await loadSupportTickets();
     await openSupportTicket(ticket.id);
@@ -8819,7 +8942,7 @@ async function closeSupportTicket() {
 
     if (error) throw error;
 
-    toast(tr("ticketClosed"));
+    toast(tr("ticketClosed"), "success");
 
     await openSupportTicket(activeSupportTicketId);
   } catch (error) {
@@ -9907,7 +10030,7 @@ window.createSupportTicket = async function () {
     messageInput.value = "";
     categoryInput.value = "general";
 
-    toast(tr("ticketSubmitted"));
+    toast(tr("ticketSubmitted"), "success");
 
     await loadSupportTickets();
     await openSupportTicket(ticket.id);
