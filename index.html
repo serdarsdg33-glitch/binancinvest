@@ -4000,6 +4000,19 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
   .support-message { min-width: 112px; max-width: 88%; padding: 10px 12px 8px; font-size: 13px; }
   .support-message-author { font-size: 9.5px; }
 }
+
+/* Requested adjustment: withdrawals move bottom-to-top with moderate spacing. */
+.live-withdrawals-feed .live-withdraw,
+.live-withdrawals-container.has-video .live-withdraw,
+.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n) {
+  animation: withdrawalNamesUp var(--withdraw-duration,10.8s) linear forwards !important;
+}
+@keyframes withdrawalNamesUp {
+  0%   { opacity:0; transform:translate3d(-50%,1080px,0) scale(.985); }
+  7%   { opacity:1; }
+  92%  { opacity:1; }
+  100% { opacity:0; transform:translate3d(-50%,-100px,0) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -6877,7 +6890,7 @@ function addLiveWithdrawal() {
   div.className = "live-withdraw";
   div.style.setProperty(
     "--withdraw-duration",
-    `${(12.1 + Math.random() * 1.1).toFixed(2)}s`
+    `${(10.4 + Math.random() * 0.8).toFixed(2)}s`
   );
 
   div.innerHTML = `
@@ -6909,7 +6922,7 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 600);
-setInterval(addLiveWithdrawal, 2200);
+setInterval(addLiveWithdrawal, 1650);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
