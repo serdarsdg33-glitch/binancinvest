@@ -10267,67 +10267,100 @@ window.clearTx = async function () {
   }
 };
 
-/* Correct support ticket creation */
+/* AI support integration */
+const supportAiRequestsInFlight = new Set();
+
+async function requestAiSupportReply(ticketId) {
+  if (!currentUser?.id || !ticketId) return;
+  if (supportAiRequestsInFlight.has(ticketId)) return;
+
+  supportAiRequestsInFlight.add(ticketId);
+
+  try {
+    const { data, error } = await supabaseClient.functions.invoke(
+      "bright-responder",
+      {
+        body: { ticket_id: ticketId }
+      }
+    );
+
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+
+    if (activeSupportTicketId === ticketId) {
+      await window.loadSupportMessages(ticketId);
+      await loadSupportTickets();
+      markSupportNotificationsSeen();
+    } else {
+      await refreshSupportNotificationBadge();
+    }
+  } catch (error) {
+    /* Keep the ticket open for human support if AI is unavailable. */
+    console.error("AI support reply error:", error);
+  } finally {
+    supportAiRequestsInFlight.delete(ticketId);
+  }
+}
+
+/* Correct support ticket creation + automatic AI reply */
 window.createSupportTicket = async function () {
   if (!currentUser?.id) {
     openAuth("login");
     return;
   }
 
-  const subjectInput =
-    document.getElementById("ticketSubject");
-
-  const categoryInput =
-    document.getElementById("ticketCategory");
-
-  const messageInput =
-    document.getElementById("ticketMessage");
-
-  const button =
-    document.getElementById("createTicketBtn");
+  const subjectInput = document.getElementById("ticketSubject");
+  const categoryInput = document.getElementById("ticketCategory");
+  const messageInput = document.getElementById("ticketMessage");
+  const button = document.getElementById("createTicketBtn");
 
   const subject = subjectInput.value.trim();
   const category = categoryInput.value;
   const body = messageInput.value.trim();
 
-  if (subject.length < 3) {
-    toast(tr("writeMessage"));
-    return;
-  }
-
-  if (!body) {
+  if (subject.length < 3 || !body) {
     toast(tr("writeMessage"));
     return;
   }
 
   button.disabled = true;
+  button.textContent = tr("sending");
+
+  let createdTicketId = null;
 
   try {
-    const { data: ticket, error: ticketError } =
-      await supabaseClient
-        .from("support_tickets")
-        .insert({
-          user_id: currentUser.id,
-          subject,
-          category,
-          status: "open"
-        })
-        .select()
-        .single();
+    const { data: ticket, error: ticketError } = await supabaseClient
+      .from("support_tickets")
+      .insert({
+        user_id: currentUser.id,
+        subject,
+        category,
+        status: "open"
+      })
+      .select()
+      .single();
 
     if (ticketError) throw ticketError;
+    createdTicketId = ticket.id;
 
-    const { error: messageError } =
+    const { error: messageError } = await supabaseClient
+      .from("support_messages")
+      .insert({
+        ticket_id: ticket.id,
+        sender_id: currentUser.id,
+        sender_role: "user",
+        body,
+        is_ai: false
+      });
+
+    if (messageError) {
       await supabaseClient
-        .from("support_messages")
-        .insert({
-          ticket_id: ticket.id,
-          sender_id: currentUser.id,
-          sender_role: "user",
-          body
-        });
-
-    if (messageError) throw messageError;
+        .from("support_tickets")
+        .delete()
+        .eq("id", ticket.id)
+        .eq("user_id", currentUser.id);
+      throw messageError;
+    }
 
     subjectInput.value = "";
     messageInput.value = "";
@@ -10337,6 +10370,9 @@ window.createSupportTicket = async function () {
 
     await loadSupportTickets();
     await openSupportTicket(ticket.id);
+
+    /* Do not block the UI while the AI prepares its response. */
+    void requestAiSupportReply(ticket.id);
   } catch (error) {
     console.error("Ticket error:", error);
     toast(localizedBackendError(error, "supportRequestFailed"));
@@ -10352,18 +10388,16 @@ window.loadSupportMessages = async function (ticketId) {
   if (!box || !ticketId) return;
 
   box.innerHTML =
-    `<div class="support-empty">${getSupportText(
-      "loadingConversation"
-    )}</div>`;
+    `<div class="support-empty">${getSupportText("loadingConversation")}</div>`;
 
   const { data, error } = await supabaseClient
     .from("support_messages")
-    .select("*")
+    .select("id,ticket_id,sender_id,body,sender_role,created_at,is_ai")
     .eq("ticket_id", ticketId)
     .order("created_at", { ascending: true });
 
   if (error) {
-    console.error(error);
+    console.error("Load support messages error:", error);
     box.innerHTML =
       `<div class="support-empty">${tr("conversationLoadError")}</div>`;
     return;
@@ -10371,16 +10405,27 @@ window.loadSupportMessages = async function (ticketId) {
 
   box.innerHTML = "";
 
+  if (!data || data.length === 0) {
+    box.innerHTML = `<div class="support-empty">${tr("noMessages")}</div>`;
+    return;
+  }
+
   data.forEach(item => {
     const element = document.createElement("div");
+    const isAdmin = item.sender_role === "admin";
 
-    element.className =
-      `support-message ${
-        item.sender_role === "admin" ? "admin" : "user"
-      }`;
+    element.className = `support-message ${isAdmin ? "admin" : "user"}`;
 
     const text = document.createElement("div");
-    text.textContent = item.body || item.message || "";
+    text.textContent = item.body || "";
+
+    if (isAdmin && item.is_ai === true) {
+      const aiBadge = document.createElement("span");
+      aiBadge.textContent = "AI Support";
+      aiBadge.style.cssText =
+        "display:inline-flex;align-items:center;margin-bottom:6px;padding:2px 7px;border-radius:999px;font-size:9px;font-weight:850;color:#a5f4d5;background:rgba(22,199,132,.10);border:1px solid rgba(83,229,174,.25);";
+      element.appendChild(aiBadge);
+    }
 
     const time = document.createElement("span");
     time.className = "support-message-time";
@@ -10394,7 +10439,7 @@ window.loadSupportMessages = async function (ticketId) {
   box.scrollTop = box.scrollHeight;
 };
 
-/* Correct customer reply */
+/* Correct customer reply + automatic AI reply */
 window.sendSupportReply = async function () {
   if (!currentUser?.id || !activeSupportTicketId) {
     toast(tr("selectTicket"));
@@ -10402,9 +10447,7 @@ window.sendSupportReply = async function () {
   }
 
   const input = document.getElementById("supportReply");
-  const button =
-    document.getElementById("sendSupportReplyBtn");
-
+  const button = document.getElementById("sendSupportReplyBtn");
   const body = input.value.trim();
 
   if (!body) {
@@ -10413,24 +10456,58 @@ window.sendSupportReply = async function () {
   }
 
   button.disabled = true;
+  button.textContent = tr("sending");
 
   try {
-    const { error } = await supabaseClient
+    const { data: ticket, error: ticketError } = await supabaseClient
+      .from("support_tickets")
+      .select("id,status")
+      .eq("id", activeSupportTicketId)
+      .eq("user_id", currentUser.id)
+      .single();
+
+    if (ticketError) throw ticketError;
+
+    if (ticket.status === "closed") {
+      toast(tr("ticketIsClosed"));
+      await openSupportTicket(activeSupportTicketId);
+      return;
+    }
+
+    const { error: messageError } = await supabaseClient
       .from("support_messages")
       .insert({
         ticket_id: activeSupportTicketId,
         sender_id: currentUser.id,
         sender_role: "user",
-        body
+        body,
+        is_ai: false
       });
 
-    if (error) throw error;
+    if (messageError) throw messageError;
 
+    const { error: ticketUpdateError } = await supabaseClient
+      .from("support_tickets")
+      .update({
+        status: "open",
+        updated_at: new Date().toISOString(),
+        user_unread: 0
+      })
+      .eq("id", activeSupportTicketId)
+      .eq("user_id", currentUser.id);
+
+    if (ticketUpdateError) throw ticketUpdateError;
+
+    const ticketId = activeSupportTicketId;
     input.value = "";
-    await loadSupportMessages(activeSupportTicketId);
+
+    await window.loadSupportMessages(ticketId);
     await loadSupportTickets();
+
+    /* Do not block the reply box while the AI responds. */
+    void requestAiSupportReply(ticketId);
   } catch (error) {
-    console.error(error);
+    console.error("Support reply error:", error);
     toast(localizedBackendError(error, "supportRequestFailed"));
   } finally {
     button.disabled = false;
