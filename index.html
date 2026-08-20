@@ -10563,17 +10563,85 @@ function getAiTypingText() {
 function getSupportAuthorLabel(kind) {
   const lang = localStorage.getItem("bi_lang") || "en";
   const labels = {
-    en:{user:"You",admin:"Support Team",retry:"Retry",failed:"AI reply is temporarily unavailable. Your message is saved."},
-    fa:{user:"شما",admin:"تیم پشتیبانی",retry:"تلاش دوباره",failed:"پاسخ هوش مصنوعی موقتاً در دسترس نیست؛ پیام شما ذخیره شده است."},
-    ar:{user:"أنت",admin:"فريق الدعم",retry:"إعادة المحاولة",failed:"رد الذكاء الاصطناعي غير متاح مؤقتًا، وتم حفظ رسالتك."},
-    tr:{user:"Siz",admin:"Destek Ekibi",retry:"Tekrar dene",failed:"AI yanıtı geçici olarak kullanılamıyor. Mesajınız kaydedildi."},
-    de:{user:"Sie",admin:"Support-Team",retry:"Erneut versuchen",failed:"Die KI-Antwort ist vorübergehend nicht verfügbar. Ihre Nachricht wurde gespeichert."},
-    fr:{user:"Vous",admin:"Équipe support",retry:"Réessayer",failed:"La réponse IA est temporairement indisponible. Votre message a été enregistré."},
-    es:{user:"Tú",admin:"Equipo de soporte",retry:"Reintentar",failed:"La respuesta de IA no está disponible temporalmente. Tu mensaje se guardó."},
-    zh:{user:"您",admin:"支持团队",retry:"重试",failed:"AI 回复暂时不可用，您的消息已保存。"},
-    ru:{user:"Вы",admin:"Служба поддержки",retry:"Повторить",failed:"Ответ ИИ временно недоступен. Ваше сообщение сохранено."}
+    en:{user:"You",admin:"Relevant Support Team",retry:"Retry",failed:"I’m referring your request to the relevant support team."},
+    fa:{user:"شما",admin:"تیم پشتیبانی مربوطه",retry:"تلاش دوباره",failed:"من مشکل شما را به تیم پشتیبانی مربوطه ارجاع می‌دهم."},
+    az:{user:"Siz",admin:"Müvafiq dəstək komandası",retry:"Yenidən cəhd et",failed:"Probleminizi müvafiq dəstək komandasına yönləndirirəm."},
+    ar:{user:"أنت",admin:"فريق الدعم المختص",retry:"إعادة المحاولة",failed:"سأحيل مشكلتك إلى فريق الدعم المختص."},
+    tr:{user:"Siz",admin:"İlgili Destek Ekibi",retry:"Tekrar dene",failed:"Sorununuzu ilgili destek ekibine iletiyorum."},
+    de:{user:"Sie",admin:"Zuständiges Support-Team",retry:"Erneut versuchen",failed:"Ich leite Ihr Anliegen an das zuständige Support-Team weiter."},
+    fr:{user:"Vous",admin:"Équipe compétente",retry:"Réessayer",failed:"Je transmets votre demande à l’équipe d’assistance compétente."},
+    es:{user:"Tú",admin:"Equipo de soporte correspondiente",retry:"Reintentar",failed:"Voy a derivar tu solicitud al equipo de soporte correspondiente."},
+    zh:{user:"您",admin:"相关支持团队",retry:"重试",failed:"我会将您的问题转交给相关支持团队。"},
+    ru:{user:"Вы",admin:"Профильная служба поддержки",retry:"Повторить",failed:"Я передам ваш вопрос профильной службе поддержки。"}
   };
   return (labels[lang] || labels.en)[kind] || labels.en[kind] || "";
+}
+
+/*
+ * Keep AI wording concise and consistent, including messages that were
+ * generated before the current support policy was introduced.
+ */
+function normalizeAiSupportMessage(value) {
+  let text = String(value || "").trim();
+
+  const replacements = [
+    [/تیم\s+پشتیبانی\s+انسانی/gu, "تیم پشتیبانی مربوطه"],
+    [/پشتیبانی\s+انسانی/gu, "تیم پشتیبانی مربوطه"],
+    [/اپراتور\s+انسانی/gu, "تیم پشتیبانی مربوطه"],
+    [/human\s+support/giu, "the relevant support team"],
+    [/human\s+(agent|operator)/giu, "support specialist"],
+    [/canlı\s+destek/giu, "ilgili destek ekibi"],
+    [/insan\s+destek/giu, "ilgili destek ekibi"]
+  ];
+
+  replacements.forEach(([pattern, replacement]) => {
+    text = text.replace(pattern, replacement);
+  });
+
+  /* Remove the repetitive end-of-message security disclaimer. */
+  const trailingDisclaimers = [
+    /(?:\s|^)(?:لطفاً|خواهشمندم)?\s*(?:اطلاعات\s+حساس|رمز(?:\s+عبور)?|کد\s+تأیید)[\s\S]{0,110}?(?:ارسال|به\s+اشتراک)\s+نکنید[.!؟]?\s*$/u,
+    /(?:\s|^)please\s+do\s+not\s+(?:send|share)[\s\S]{0,130}?(?:password|verification\s+code|sensitive\s+(?:data|information))[.!?]?\s*$/iu,
+    /(?:\s|^)(?:şifrenizi|doğrulama\s+kodunuzu|hassas\s+bilgilerinizi)[\s\S]{0,100}?(?:göndermeyin|paylaşmayın)[.!?]?\s*$/iu
+  ];
+
+  trailingDisclaimers.forEach(pattern => {
+    text = text.replace(pattern, "").trim();
+  });
+
+  const cannotResolve = [
+    /(?:نمی‌توانم|نمي‌توانم|نمیتوانم|نميتوانم)\s+(?:به\s+این\s+موضوع\s+پاسخ|پاسخ|کمک|بررسی|پیگیری)/u,
+    /(?:اطلاعات|دسترسی)\s+کافی\s+ندارم/u,
+    /(?:نمی‌دانم|نمي‌دانم|نمیدانم)/u,
+    /(?:i\s+(?:am\s+)?unable\s+to|i\s+can(?:not|'t))\s+(?:answer|resolve|help|check|investigate)/iu,
+    /(?:i\s+do\s+not|i\s+don't)\s+have\s+(?:enough\s+)?(?:information|access)/iu
+  ];
+
+  if (cannotResolve.some(pattern => pattern.test(text))) {
+    return getSupportAuthorLabel("failed");
+  }
+
+  return text;
+}
+
+async function ticketHasRelevantSupportReply(ticketId) {
+  if (!ticketId) return false;
+
+  const { data, error } = await supabaseClient
+    .from("support_messages")
+    .select("id")
+    .eq("ticket_id", ticketId)
+    .in("sender_role", ["admin", "support", "agent"])
+    .or("is_ai.eq.false,is_ai.is.null")
+    .limit(1);
+
+  if (error) {
+    console.error("Support handoff check error:", error);
+    /* A failed check must not accidentally trigger another AI response. */
+    return true;
+  }
+
+  return Boolean(data?.length);
 }
 
 function showAiTyping(ticketId) {
@@ -10623,6 +10691,12 @@ async function requestAiSupportReply(ticketId) {
   if (!currentUser?.id || !ticketId) return;
   if (supportAiRequestsInFlight.has(ticketId)) return;
 
+  /* Once the support team joins a ticket, AI stays silent permanently. */
+  if (await ticketHasRelevantSupportReply(ticketId)) {
+    hideAiTyping();
+    return;
+  }
+
   supportAiRequestsInFlight.add(ticketId);
   showAiTyping(ticketId);
 
@@ -10636,7 +10710,19 @@ async function requestAiSupportReply(ticketId) {
 
     const invokePromise = supabaseClient.functions.invoke(
       "bright-responder",
-      { body: { ticket_id: ticketId } }
+      {
+        body: {
+          ticket_id: ticketId,
+          locale: localStorage.getItem("bi_lang") || "en",
+          response_policy: {
+            support_team_term_fa: "تیم پشتیبانی مربوطه",
+            never_use_human_support_term: true,
+            omit_repetitive_security_disclaimer: true,
+            fallback_fa: "من مشکل شما را به تیم پشتیبانی مربوطه ارجاع می‌دهم.",
+            stop_ai_after_support_team_reply: true
+          }
+        }
+      }
     );
 
     let timeoutId;
@@ -10664,7 +10750,7 @@ async function requestAiSupportReply(ticketId) {
       await refreshSupportNotificationBadge();
     }
   } catch (error) {
-    /* Keep the ticket open for human support if AI is unavailable. */
+    /* Keep the ticket open for the relevant support team if AI is unavailable. */
     console.error("AI support reply error:", error);
     showAiSupportError(ticketId);
   } finally {
@@ -10826,7 +10912,9 @@ window.loadSupportMessages = async function (ticketId, options = {}) {
 
     const text = document.createElement("div");
     text.className = "support-message-body";
-    text.textContent = item.body || "";
+    text.textContent = isAi
+      ? normalizeAiSupportMessage(item.body)
+      : (item.body || "");
 
     if (isAi) {
       element.classList.add("ai-support-message");
@@ -10919,8 +11007,10 @@ window.sendSupportReply = async function () {
     await window.loadSupportMessages(ticketId);
     await loadSupportTickets();
 
-    /* Do not block the reply box while the AI responds. */
-    void requestAiSupportReply(ticketId);
+    /* AI replies only while the support team has not joined this ticket. */
+    if (!(await ticketHasRelevantSupportReply(ticketId))) {
+      void requestAiSupportReply(ticketId);
+    }
   } catch (error) {
     console.error("Support reply error:", error);
     toast(localizedBackendError(error, "supportRequestFailed"));
