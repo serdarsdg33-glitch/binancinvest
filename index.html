@@ -3065,6 +3065,13 @@ html[dir="rtl"] .head{margin-left:auto;margin-right:0}
 @media(max-width:600px){header{gap:7px}.head{gap:5px;flex:0 1 auto}#authButtonsGroup .btn{min-width:91px;height:27px!important;min-height:27px!important;padding:3px 7px!important;font-size:8.6px!important}.language-trigger{min-width:52px;width:52px;height:30px;padding:0 5px}.language-trigger-flag{font-size:13px}.brand{gap:7px;min-width:0}.brand>span{font-size:13px}.binance-floating-logo{width:29px;height:29px}.user-header-identity{min-width:68px;max-width:92px;gap:3px}#headerFullName{font-size:12px}#headerUsername{padding:3px 7px;font-size:9.5px}#userHeaderDisplay .header-logout-btn{min-height:33px;padding:6px 10px;font-size:10.5px}}
 @media(max-width:370px){#authButtonsGroup .btn{min-width:80px;font-size:8px!important}.language-trigger{min-width:48px;width:48px}.language-trigger-flag{display:none}}
 
+/* Authenticator-app two-factor authentication */
+.twofa-security-card{margin-top:16px;padding:16px;background:linear-gradient(145deg,rgba(6,12,18,.58),rgba(5,9,14,.34));border:1px solid rgba(255,229,138,.25);border-radius:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.twofa-security-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.twofa-security-title{display:flex;align-items:center;gap:10px}.twofa-security-icon{width:42px;height:42px;display:grid;place-items:center;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:12px;font-size:20px;box-shadow:0 7px 20px rgba(240,185,11,.20)}
+.twofa-security-title strong,.twofa-security-title span{display:block}.twofa-security-title strong{font-size:14px}.twofa-security-title span{margin-top:4px;color:#d0d7e2;font-size:11px;line-height:1.5}.twofa-status{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:900;white-space:nowrap}.twofa-status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}.twofa-status.enabled{color:#60e9b3;background:rgba(22,199,132,.12);border:1px solid rgba(22,199,132,.34)}.twofa-status.disabled{color:#ffd773;background:rgba(240,185,11,.09);border:1px solid rgba(240,185,11,.28)}.twofa-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}.twofa-actions .btn{width:100%}
+.twofa-modal{position:fixed;inset:0;z-index:1800;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.twofa-modal.open{display:flex}.twofa-box{position:relative;width:min(430px,100%);max-height:92vh;overflow:auto;padding:25px 22px;color:#fff;background:linear-gradient(145deg,rgba(18,25,34,.98),rgba(6,10,15,.985));border:1px solid rgba(255,216,61,.42);border-radius:21px;box-shadow:0 30px 90px rgba(0,0,0,.78),0 0 26px rgba(240,185,11,.08)}.twofa-box h2{margin:0 0 8px;font-size:23px}.twofa-box>p{margin:0;color:#c6cfdb;font-size:12px;line-height:1.7}.twofa-close{position:absolute;top:12px;right:13px;width:34px;height:34px;padding:0;display:grid;place-items:center;color:#c4ccd7;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:50%;font-size:22px}.twofa-qr{width:190px;height:190px;margin:17px auto 10px;display:block;padding:10px;background:#fff;border-radius:15px;box-shadow:0 10px 28px rgba(0,0,0,.36)}.twofa-secret{margin:10px 0;padding:10px;color:#ffe58a;text-align:center;direction:ltr;word-break:break-all;background:rgba(240,185,11,.075);border:1px solid rgba(240,185,11,.23);border-radius:10px;font-size:11px;font-weight:800}.twofa-field{margin-top:14px}.twofa-field label{display:block;margin-bottom:7px;color:#d0d7e2;font-size:12px}.twofa-code{width:100%;padding:13px;text-align:center;direction:ltr;font-size:21px;font-weight:900;letter-spacing:5px}.twofa-error{display:none;margin-top:10px;padding:9px 10px;color:#ffc5ca;background:rgba(234,57,67,.12);border:1px solid rgba(234,57,67,.34);border-radius:9px;font-size:11px;line-height:1.55}.twofa-error.show{display:block}.twofa-buttons{display:grid;grid-template-columns:.75fr 1.25fr;gap:8px;margin-top:15px}.twofa-buttons .btn{width:100%}.twofa-login-box{text-align:center}.twofa-login-icon{width:58px;height:58px;margin:0 auto 14px;display:grid;place-items:center;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b);border-radius:16px;font-size:26px;box-shadow:0 9px 26px rgba(240,185,11,.22)}
+html[dir="rtl"] .twofa-close{right:auto;left:13px}@media(max-width:430px){.twofa-box{padding:22px 16px 17px}.twofa-security-head{align-items:flex-start;flex-direction:column}.twofa-qr{width:170px;height:170px}.twofa-buttons{grid-template-columns:1fr}}
+
 /* High-contrast text system for glass cards and illustrated backgrounds */
 :root{--muted:#c6cfdb}
 
@@ -4889,7 +4896,20 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
 <section id="profile" class="view"><div class="title"><h2 data-t="profile">Profile & Security</h2></div>
   <div class="two">
     <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
-    <div class="card"><h2 data-t="security">Security</h2><div class="row"><span data-t="sec2fa">2FA</span><span class="green" data-t="enabled">Enabled</span></div><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+    <div class="card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+      <div class="twofa-security-card">
+        <div class="twofa-security-head">
+          <div class="twofa-security-title">
+            <div class="twofa-security-icon">⌁</div>
+            <div><strong id="twofaCardTitle">Authenticator App</strong><span id="twofaCardDescription">Protect sign-in with a time-based 6-digit code.</span></div>
+          </div>
+          <span id="twofaStatus" class="twofa-status disabled">Disabled</span>
+        </div>
+        <div class="twofa-actions">
+          <button id="twofaEnableBtn" type="button" class="btn gold" onclick="startTwoFactorEnrollment()">Enable Google Authenticator</button>
+          <button id="twofaDisableBtn" type="button" class="btn" style="display:none" onclick="startTwoFactorDisable()">Disable two-factor authentication</button>
+        </div>
+      </div>
       <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
@@ -4898,6 +4918,42 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
     </div>
   </div>
 </section>
+</div>
+
+<div id="twofaSetupModal" class="twofa-modal" role="dialog" aria-modal="true" aria-labelledby="twofaSetupTitle">
+  <div class="twofa-box">
+    <button type="button" class="twofa-close" onclick="cancelTwoFactorEnrollment()" aria-label="Close">×</button>
+    <h2 id="twofaSetupTitle">Set up Google Authenticator</h2>
+    <p id="twofaSetupDescription">Scan this QR code, then enter the 6-digit code shown in your authenticator app.</p>
+    <img id="twofaQrCode" class="twofa-qr" alt="Authenticator QR code">
+    <div id="twofaManualLabel" style="text-align:center;color:#c6cfdb;font-size:11px">Or enter this setup key manually:</div>
+    <div id="twofaSecret" class="twofa-secret"></div>
+    <div class="twofa-field">
+      <label id="twofaSetupCodeLabel" for="twofaSetupCode">6-digit verification code</label>
+      <input id="twofaSetupCode" class="twofa-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)">
+    </div>
+    <div id="twofaSetupError" class="twofa-error"></div>
+    <div class="twofa-buttons">
+      <button id="twofaSetupCancelBtn" type="button" class="btn" onclick="cancelTwoFactorEnrollment()">Cancel</button>
+      <button id="twofaSetupConfirmBtn" type="button" class="btn gold" onclick="confirmTwoFactorEnrollment()">Verify & Enable</button>
+    </div>
+  </div>
+</div>
+
+<div id="twofaChallengeModal" class="twofa-modal" role="dialog" aria-modal="true" aria-labelledby="twofaChallengeTitle">
+  <div class="twofa-box twofa-login-box">
+    <div class="twofa-login-icon">⌁</div>
+    <h2 id="twofaChallengeTitle">Two-step verification</h2>
+    <p id="twofaChallengeDescription">Enter the 6-digit code from Google Authenticator to finish signing in.</p>
+    <div class="twofa-field">
+      <input id="twofaChallengeCode" class="twofa-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)" onkeydown="if(event.key==='Enter') verifyTwoFactorChallenge()">
+    </div>
+    <div id="twofaChallengeError" class="twofa-error"></div>
+    <div class="twofa-buttons">
+      <button id="twofaChallengeCancelBtn" type="button" class="btn" onclick="cancelTwoFactorChallenge()">Cancel & Sign Out</button>
+      <button id="twofaChallengeConfirmBtn" type="button" class="btn gold" onclick="verifyTwoFactorChallenge()">Verify</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal" id="auth">
@@ -5634,6 +5690,236 @@ function changeConfirmationEmail() {
   openAuth("register");
 }
 
+/* Optional TOTP MFA compatible with Google Authenticator and other TOTP apps. */
+let currentTotpFactor = null;
+let pendingTotpFactor = null;
+let twofaChallengePurpose = "login";
+let twofaChallengeOpen = false;
+
+const TWOFA_TEXT = {
+  en:{title:"Authenticator App",description:"Protect sign-in with a time-based 6-digit code.",enabled:"Enabled",disabled:"Disabled",enable:"Enable Google Authenticator",disable:"Disable two-factor authentication",setupTitle:"Set up Google Authenticator",setupDescription:"Scan this QR code, then enter the 6-digit code shown in your authenticator app.",manual:"Or enter this setup key manually:",code:"6-digit verification code",cancel:"Cancel",verifyEnable:"Verify & Enable",challengeTitle:"Two-step verification",challengeDescription:"Enter the 6-digit code from Google Authenticator to finish signing in.",cancelSignout:"Cancel & Sign Out",verify:"Verify",invalid:"Enter a valid 6-digit code.",enabledMessage:"Two-factor authentication is now enabled.",disabledMessage:"Two-factor authentication has been disabled.",failed:"The verification code is invalid or expired.",confirmDisable:"Enter your authenticator code to disable two-factor authentication."},
+  fa:{title:"برنامه تأیید هویت",description:"ورود را با کد زمان‌دار ۶ رقمی محافظت کنید.",enabled:"فعال",disabled:"غیرفعال",enable:"فعال‌سازی Google Authenticator",disable:"غیرفعال‌کردن ورود دومرحله‌ای",setupTitle:"راه‌اندازی Google Authenticator",setupDescription:"کد QR را اسکن کنید و سپس کد ۶ رقمی برنامه را وارد کنید.",manual:"یا این کلید راه‌اندازی را دستی وارد کنید:",code:"کد تأیید ۶ رقمی",cancel:"انصراف",verifyEnable:"تأیید و فعال‌سازی",challengeTitle:"تأیید دومرحله‌ای",challengeDescription:"برای تکمیل ورود، کد ۶ رقمی Google Authenticator را وارد کنید.",cancelSignout:"انصراف و خروج",verify:"تأیید",invalid:"یک کد معتبر ۶ رقمی وارد کنید.",enabledMessage:"ورود دومرحله‌ای با موفقیت فعال شد.",disabledMessage:"ورود دومرحله‌ای غیرفعال شد.",failed:"کد واردشده اشتباه است یا اعتبار آن تمام شده است.",confirmDisable:"برای غیرفعال‌کردن ورود دومرحله‌ای، کد برنامه را وارد کنید."},
+  ar:{title:"تطبيق المصادقة",description:"احمِ تسجيل الدخول برمز مؤقت من 6 أرقام.",enabled:"مفعّل",disabled:"غير مفعّل",enable:"تفعيل Google Authenticator",disable:"إيقاف التحقق بخطوتين",setupTitle:"إعداد Google Authenticator",setupDescription:"امسح رمز QR ثم أدخل الرمز المكوّن من 6 أرقام.",manual:"أو أدخل مفتاح الإعداد يدوياً:",code:"رمز التحقق من 6 أرقام",cancel:"إلغاء",verifyEnable:"تحقق وفعّل",challengeTitle:"التحقق بخطوتين",challengeDescription:"أدخل رمز Google Authenticator لإكمال تسجيل الدخول.",cancelSignout:"إلغاء وتسجيل الخروج",verify:"تحقق",invalid:"أدخل رمزاً صالحاً من 6 أرقام.",enabledMessage:"تم تفعيل التحقق بخطوتين.",disabledMessage:"تم إيقاف التحقق بخطوتين.",failed:"الرمز غير صحيح أو منتهي الصلاحية.",confirmDisable:"أدخل رمز المصادقة لإيقاف التحقق بخطوتين."},
+  tr:{title:"Kimlik Doğrulama Uygulaması",description:"Girişi 6 haneli süreli kodla koruyun.",enabled:"Etkin",disabled:"Devre dışı",enable:"Google Authenticator'ı etkinleştir",disable:"İki adımlı doğrulamayı kapat",setupTitle:"Google Authenticator kurulumu",setupDescription:"QR kodunu tarayın ve uygulamadaki 6 haneli kodu girin.",manual:"Veya bu kurulum anahtarını elle girin:",code:"6 haneli doğrulama kodu",cancel:"İptal",verifyEnable:"Doğrula ve Etkinleştir",challengeTitle:"İki adımlı doğrulama",challengeDescription:"Girişi tamamlamak için Google Authenticator kodunu girin.",cancelSignout:"İptal ve Çıkış",verify:"Doğrula",invalid:"Geçerli 6 haneli bir kod girin.",enabledMessage:"İki adımlı doğrulama etkinleştirildi.",disabledMessage:"İki adımlı doğrulama kapatıldı.",failed:"Kod geçersiz veya süresi dolmuş.",confirmDisable:"İki adımlı doğrulamayı kapatmak için kodu girin."}
+};
+
+function getTwoFactorText() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return TWOFA_TEXT[lang] || TWOFA_TEXT.en;
+}
+
+function applyTwoFactorLanguage() {
+  const d = getTwoFactorText();
+  const values = {
+    twofaCardTitle:d.title,twofaCardDescription:d.description,
+    twofaEnableBtn:d.enable,twofaDisableBtn:d.disable,
+    twofaSetupTitle:d.setupTitle,twofaSetupDescription:d.setupDescription,
+    twofaManualLabel:d.manual,twofaSetupCodeLabel:d.code,
+    twofaSetupCancelBtn:d.cancel,twofaSetupConfirmBtn:d.verifyEnable,
+    twofaChallengeTitle:d.challengeTitle,twofaChallengeDescription:d.challengeDescription,
+    twofaChallengeCancelBtn:d.cancelSignout,twofaChallengeConfirmBtn:d.verify
+  };
+  Object.entries(values).forEach(([id,value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  });
+  const status = document.getElementById("twofaStatus");
+  if (status) status.textContent = currentTotpFactor ? d.enabled : d.disabled;
+}
+
+async function getVerifiedTotpFactor() {
+  const { data, error } = await supabaseClient.auth.mfa.listFactors();
+  if (error) throw error;
+  return (data?.totp || []).find(item => item.status === "verified") || null;
+}
+
+async function refreshTwoFactorStatus() {
+  const status = document.getElementById("twofaStatus");
+  const enableButton = document.getElementById("twofaEnableBtn");
+  const disableButton = document.getElementById("twofaDisableBtn");
+  if (!status || !enableButton || !disableButton) return;
+  if (!currentUser?.id) {
+    currentTotpFactor = null;
+  } else {
+    try { currentTotpFactor = await getVerifiedTotpFactor(); }
+    catch (error) { console.warn("Could not load MFA factors:", error); }
+  }
+  status.classList.toggle("enabled", Boolean(currentTotpFactor));
+  status.classList.toggle("disabled", !currentTotpFactor);
+  enableButton.style.display = currentTotpFactor ? "none" : "block";
+  disableButton.style.display = currentTotpFactor ? "block" : "none";
+  applyTwoFactorLanguage();
+}
+
+function showTwoFactorError(id, message) {
+  const box = document.getElementById(id);
+  if (!box) return;
+  box.textContent = message;
+  box.classList.add("show");
+}
+
+function clearTwoFactorError(id) {
+  const box = document.getElementById(id);
+  if (!box) return;
+  box.textContent = "";
+  box.classList.remove("show");
+}
+
+async function startTwoFactorEnrollment() {
+  if (!currentUser?.id) return openAuth("login");
+  const button = document.getElementById("twofaEnableBtn");
+  if (button) button.disabled = true;
+  try {
+    const { data, error } = await supabaseClient.auth.mfa.enroll({
+      factorType:"totp",
+      friendlyName:"Binance Invest",
+      issuer:"Binance Invest"
+    });
+    if (error) throw error;
+    pendingTotpFactor = data;
+    document.getElementById("twofaQrCode").src = data.totp.qr_code;
+    document.getElementById("twofaSecret").textContent = data.totp.secret || "";
+    document.getElementById("twofaSetupCode").value = "";
+    clearTwoFactorError("twofaSetupError");
+    applyTwoFactorLanguage();
+    document.getElementById("twofaSetupModal").classList.add("open");
+    setTimeout(() => document.getElementById("twofaSetupCode")?.focus(), 120);
+  } catch (error) {
+    console.error("MFA enrollment error:", error);
+    toast(error.message || getTwoFactorText().failed, "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+async function cancelTwoFactorEnrollment() {
+  document.getElementById("twofaSetupModal")?.classList.remove("open");
+  if (pendingTotpFactor?.id) {
+    try { await supabaseClient.auth.mfa.unenroll({ factorId:pendingTotpFactor.id }); }
+    catch (error) { console.warn("Pending MFA factor cleanup failed:", error); }
+  }
+  pendingTotpFactor = null;
+}
+
+async function confirmTwoFactorEnrollment() {
+  const code = document.getElementById("twofaSetupCode")?.value.trim() || "";
+  const d = getTwoFactorText();
+  if (!/^\d{6}$/.test(code)) return showTwoFactorError("twofaSetupError", d.invalid);
+  const button = document.getElementById("twofaSetupConfirmBtn");
+  button.disabled = true;
+  clearTwoFactorError("twofaSetupError");
+  try {
+    const { error } = await supabaseClient.auth.mfa.challengeAndVerify({
+      factorId:pendingTotpFactor.id,
+      code
+    });
+    if (error) throw error;
+    pendingTotpFactor = null;
+    document.getElementById("twofaSetupModal").classList.remove("open");
+    await refreshTwoFactorStatus();
+    toast(d.enabledMessage, "success");
+  } catch (error) {
+    console.error("MFA verification error:", error);
+    showTwoFactorError("twofaSetupError", d.failed);
+  } finally { button.disabled = false; }
+}
+
+async function ensureTwoFactorForCurrentSession(options = {}) {
+  try {
+    const factor = await getVerifiedTotpFactor();
+    currentTotpFactor = factor;
+    if (!factor) return true;
+    const { data, error } = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (error) throw error;
+    if (data?.currentLevel === "aal2" || data?.nextLevel !== "aal2") return true;
+    if (twofaChallengeOpen) return false;
+    twofaChallengePurpose = options.purpose || "login";
+    twofaChallengeOpen = true;
+    const d = getTwoFactorText();
+    applyTwoFactorLanguage();
+    if (twofaChallengePurpose === "disable") {
+      document.getElementById("twofaChallengeDescription").textContent = d.confirmDisable;
+      document.getElementById("twofaChallengeCancelBtn").textContent = d.cancel;
+    }
+    document.getElementById("twofaChallengeCode").value = "";
+    clearTwoFactorError("twofaChallengeError");
+    document.getElementById("twofaChallengeModal").classList.add("open");
+    setTimeout(() => document.getElementById("twofaChallengeCode")?.focus(), 120);
+    return false;
+  } catch (error) {
+    console.error("MFA assurance check error:", error);
+    throw error;
+  }
+}
+
+async function verifyTwoFactorChallenge() {
+  const code = document.getElementById("twofaChallengeCode")?.value.trim() || "";
+  const d = getTwoFactorText();
+  if (!/^\d{6}$/.test(code)) return showTwoFactorError("twofaChallengeError", d.invalid);
+  const button = document.getElementById("twofaChallengeConfirmBtn");
+  button.disabled = true;
+  clearTwoFactorError("twofaChallengeError");
+  try {
+    const factor = currentTotpFactor || await getVerifiedTotpFactor();
+    if (!factor) throw new Error("No verified authenticator factor found");
+    const { error } = await supabaseClient.auth.mfa.challengeAndVerify({ factorId:factor.id, code });
+    if (error) throw error;
+    const purpose = twofaChallengePurpose;
+    twofaChallengeOpen = false;
+    document.getElementById("twofaChallengeModal").classList.remove("open");
+    if (purpose === "disable") {
+      await disableTwoFactorNow();
+      return;
+    }
+    const { data:sessionData } = await supabaseClient.auth.getSession();
+    if (sessionData.session?.user) await loadAuthenticatedUser(sessionData.session.user, {force:true});
+    closeAuth();
+    await showAuthSuccessPopup(tr("welcomeBack"), tr("signedInSuccessfully"));
+  } catch (error) {
+    console.error("MFA challenge error:", error);
+    showTwoFactorError("twofaChallengeError", d.failed);
+  } finally { button.disabled = false; }
+}
+
+async function cancelTwoFactorChallenge() {
+  const purpose = twofaChallengePurpose;
+  twofaChallengeOpen = false;
+  document.getElementById("twofaChallengeModal")?.classList.remove("open");
+  if (purpose === "login") {
+    await supabaseClient.auth.signOut({scope:"local"});
+    currentUser = null;
+    currentTotpFactor = null;
+    pendingTotpFactor = null;
+    updateHeaderAuthUI();
+    updatePortfolio();
+    if (typeof updateSupportAuthUI === "function") {
+      updateSupportAuthUI();
+    }
+  }
+}
+
+async function startTwoFactorDisable() {
+  if (!currentTotpFactor) return;
+  const allowed = await ensureTwoFactorForCurrentSession({purpose:"disable"});
+  if (allowed) await disableTwoFactorNow();
+}
+
+async function disableTwoFactorNow() {
+  const d = getTwoFactorText();
+  try {
+    const factor = currentTotpFactor || await getVerifiedTotpFactor();
+    if (!factor) return;
+    const { error } = await supabaseClient.auth.mfa.unenroll({factorId:factor.id});
+    if (error) throw error;
+    currentTotpFactor = null;
+    await refreshTwoFactorStatus();
+    toast(d.disabledMessage, "success");
+  } catch (error) {
+    console.error("MFA disable error:", error);
+    toast(error.message || d.failed, "error");
+  }
+}
+
 let pendingAuthStateTimer = null;
 
 /*
@@ -5651,6 +5937,11 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   pendingAuthStateTimer = window.setTimeout(() => {
     if (event === "SIGNED_OUT") {
       currentUser = null;
+      currentTotpFactor = null;
+      pendingTotpFactor = null;
+      twofaChallengeOpen = false;
+      document.getElementById("twofaChallengeModal")?.classList.remove("open");
+      document.getElementById("twofaSetupModal")?.classList.remove("open");
       updateHeaderAuthUI();
       updatePortfolio();
       if (typeof updateSupportAuthUI === "function") {
@@ -5666,7 +5957,18 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
         .includes(event)
     ) {
       hideEmailConfirmation();
-      void loadAuthenticatedUser(session.user);
+      void (async () => {
+        try {
+          const mfaComplete = await ensureTwoFactorForCurrentSession({purpose:"login"});
+          if (mfaComplete) await loadAuthenticatedUser(session.user);
+        } catch (error) {
+          console.error("MFA session enforcement error:", error);
+          await supabaseClient.auth.signOut({scope:"local"});
+          currentUser = null;
+          updateHeaderAuthUI();
+          toast(getTwoFactorText().failed, "error");
+        }
+      })();
     }
   }, 0);
 });
@@ -6984,13 +7286,17 @@ async function submitAuth() {
 
       if (error) throw error;
 
-      await loadAuthenticatedUser(data.user);
-      closeAuth();
-
-      await showAuthSuccessPopup(
-        tr("welcomeBack"),
-        tr("signedInSuccessfully")
-      );
+      const mfaComplete = await ensureTwoFactorForCurrentSession({purpose:"login"});
+      if (mfaComplete) {
+        await loadAuthenticatedUser(data.user);
+        closeAuth();
+        await showAuthSuccessPopup(
+          tr("welcomeBack"),
+          tr("signedInSuccessfully")
+        );
+      } else {
+        closeAuth();
+      }
     }
 
     else if (authMode === "forgot") {
@@ -7111,6 +7417,7 @@ async function loadAuthenticatedUser(authUser, options = {}) {
 
       updateHeaderAuthUI();
       loadProfile();
+      void refreshTwoFactorStatus();
 
       /* Render the account immediately; load heavier panels in the background. */
       void updatePortfolio();
@@ -7150,7 +7457,8 @@ async function restoreAuthSession() {
   }
 
   if (data.session?.user) {
-    await loadAuthenticatedUser(data.session.user);
+    const mfaComplete = await ensureTwoFactorForCurrentSession({purpose:"login"});
+    if (mfaComplete) await loadAuthenticatedUser(data.session.user);
   } else {
     currentUser = null;
     updateHeaderAuthUI();
@@ -7166,6 +7474,9 @@ async function logout() {
   scope: "local"
 });
   currentUser = null;
+  currentTotpFactor = null;
+  twofaChallengeOpen = false;
+  document.getElementById("twofaChallengeModal")?.classList.remove("open");
   currentReferralData = null;
   updateHeaderAuthUI();
   updatePortfolio();
@@ -9940,6 +10251,7 @@ function setLang(lang){
   updateLanguageTrigger(lang);
   renderLanguageOptions();
   updateHeaderAuthUI();
+  applyTwoFactorLanguage();
   renderPortfolioLive();
   if(document.getElementById("transactions")?.classList.contains("active")) loadTransactions();
 }
@@ -10577,12 +10889,45 @@ function getSupportAuthorLabel(kind) {
   return (labels[lang] || labels.en)[kind] || labels.en[kind] || "";
 }
 
+function getCryptoDepositSupportPrompt() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  const prompts = {
+    en:"To review your crypto deposit, please send the cryptocurrency, network, amount, approximate date and time, and transaction hash (TXID).",
+    fa:"برای بررسی واریز رمزارزی، لطفاً نوع رمزارز، شبکه انتقال، مبلغ، تاریخ و زمان تقریبی و هش تراکنش (TXID) را ارسال کنید.",
+    ar:"لمراجعة إيداع العملة الرقمية، أرسل نوع العملة والشبكة والمبلغ والتاريخ والوقت التقريبيين ومعرّف المعاملة (TXID).",
+    tr:"Kripto para yatırma işlemini incelemek için kripto para türünü, ağı, tutarı, yaklaşık tarih ve saati ve işlem hash'ini (TXID) gönderin.",
+    az:"Kriptovalyuta depozitini yoxlamaq üçün valyutanı, şəbəkəni, məbləği, təxmini tarix və vaxtı və əməliyyat heşini (TXID) göndərin.",
+    ru:"Для проверки криптовалютного депозита отправьте название актива, сеть, сумму, примерные дату и время и хеш транзакции (TXID).",
+    zh:"如需核查加密货币充值，请提供币种、网络、金额、大致日期和时间以及交易哈希（TXID）。",
+    es:"Para revisar el depósito de criptomonedas, envía la moneda, la red, el importe, la fecha y hora aproximadas y el hash de la transacción (TXID).",
+    fr:"Pour vérifier votre dépôt crypto, envoyez la cryptomonnaie, le réseau, le montant, la date et l’heure approximatives et le hash de transaction (TXID).",
+    de:"Zur Prüfung Ihrer Krypto-Einzahlung senden Sie bitte Kryptowährung, Netzwerk, Betrag, ungefähres Datum und Uhrzeit sowie den Transaktionshash (TXID)."
+  };
+  return prompts[lang] || prompts.en;
+}
+
 /*
  * Keep AI wording concise and consistent, including messages that were
  * generated before the current support policy was introduced.
  */
 function normalizeAiSupportMessage(value) {
   let text = String(value || "").trim();
+
+  /* This platform accepts crypto deposits only. Never expose card/CVV advice
+     even when an older Edge Function response contains generic payment text. */
+  const cardPaymentLanguage = [
+    /\bCVV\b/iu,
+    /\bCVC\b/iu,
+    /\bOTP\b/iu,
+    /card\s*(?:details?|number|password|payment)/iu,
+    /credit\s*card|debit\s*card/iu,
+    /اطلاعات\s*کارت|شماره\s*کارت|رمز\s*کارت|کارت\s*بانکی|رمز\s*یکبار\s*مصرف/iu,
+    /kart\s*(?:bilgileri|numarası|şifresi|ödemesi)/iu
+  ];
+
+  if (cardPaymentLanguage.some(pattern => pattern.test(text))) {
+    return getCryptoDepositSupportPrompt();
+  }
 
   const replacements = [
     [/تیم\s+پشتیبانی\s+انسانی/gu, "تیم پشتیبانی مربوطه"],
@@ -10719,7 +11064,18 @@ async function requestAiSupportReply(ticketId) {
             never_use_human_support_term: true,
             omit_repetitive_security_disclaimer: true,
             fallback_fa: "من مشکل شما را به تیم پشتیبانی مربوطه ارجاع می‌دهم.",
-            stop_ai_after_support_team_reply: true
+            stop_ai_after_support_team_reply: true,
+            payment_method: "cryptocurrency_only",
+            never_mention_card_payment: true,
+            never_request_card_number_cvv_password_or_otp: true,
+            crypto_deposit_required_fields: [
+              "cryptocurrency",
+              "network",
+              "amount",
+              "approximate_date_time",
+              "transaction_hash_txid"
+            ],
+            crypto_deposit_prompt_fa: "برای بررسی واریز رمزارزی، لطفاً نوع رمزارز، شبکه انتقال، مبلغ، تاریخ و زمان تقریبی و هش تراکنش (TXID) را ارسال کنید."
           }
         }
       }
