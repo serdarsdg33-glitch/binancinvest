@@ -3601,6 +3601,110 @@ html[dir="rtl"] header>.head{justify-self:start!important}
   .security-brand-info span { font-size: 9.5px !important; }
 }
 
+/* Contextual validation and visible global notifications */
+.field-validation-message {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 8px 0 13px;
+  padding: 11px 12px;
+  color: #ffd7da;
+  background: linear-gradient(135deg,rgba(234,57,67,.20),rgba(42,12,17,.82));
+  border: 1px solid rgba(255,104,115,.62);
+  border-radius: 10px;
+  box-shadow: 0 7px 22px rgba(0,0,0,.28),0 0 0 3px rgba(234,57,67,.06);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.55;
+  text-align: initial;
+  animation: fieldValidationIn .22s ease;
+}
+
+.field-validation-message::before {
+  content: "!";
+  width: 23px;
+  height: 23px;
+  min-width: 23px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--red);
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.field-validation-input-error {
+  border-color: var(--red) !important;
+  background: rgba(55,10,16,.68) !important;
+  box-shadow: 0 0 0 3px rgba(234,57,67,.12) !important;
+}
+
+@keyframes fieldValidationIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Toasts are no longer hidden below long pages: keep them under the header. */
+.toast {
+  position: fixed !important;
+  z-index: 1600 !important;
+  top: calc(82px + env(safe-area-inset-top)) !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  width: min(430px,calc(100% - 28px));
+  display: block;
+  padding: 13px 46px 13px 16px;
+  color: #f5f8fb;
+  background: linear-gradient(145deg,rgba(21,29,38,.97),rgba(8,12,17,.97));
+  border: 1px solid rgba(240,185,11,.42);
+  border-radius: 13px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.58),0 0 18px rgba(240,185,11,.10);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.55;
+  text-align: initial;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%,-12px);
+  transition: opacity .22s ease,transform .22s ease,visibility .22s ease;
+}
+
+.toast::before {
+  content: "ⓘ";
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  color: var(--gold);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+html[dir="rtl"] .toast { padding: 13px 16px 13px 46px; }
+html[dir="rtl"] .toast::before { right: auto; left: 15px; }
+.toast.show { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+.toast.success { border-color: rgba(22,199,132,.52); }
+.toast.success::before { content: "✓"; color: var(--green); }
+.toast.error { border-color: rgba(234,57,67,.58); }
+.toast.error::before { content: "!"; color: #ff8c95; }
+
+#transactions .clear-history-btn[disabled] {
+  opacity: .62;
+  cursor: wait;
+}
+
+@media (max-width:600px) {
+  .toast {
+    top: calc(74px + env(safe-area-inset-top)) !important;
+    width: calc(100% - 20px);
+    font-size: 12.5px;
+  }
+  .field-validation-message { font-size: 12px; }
+}
+
 </style>
 </head>
 <body>
@@ -4184,12 +4288,12 @@ html[dir="rtl"] header>.head{justify-self:start!important}
       
       <div style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
-          <input type="number" id="deposit-amount" placeholder="100" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <input type="number" id="deposit-amount" placeholder="100" oninput="clearFieldError('deposit-amount')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
       </div>
 
       <div style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depMethodLabel">Select Payment Method:</label>
-          <select id="payment-method" onchange="togglePaymentDetails()" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <select id="payment-method" onchange="togglePaymentDetails();clearFieldError('payment-method')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
               <option value="wallet" id="opt-direct-payment">1. Direct Payment</option>
               <option value="paymentio" id="opt-paymentio">2. Payment via Payment.io Gateway</option>
           </select>
@@ -4226,7 +4330,7 @@ html[dir="rtl"] header>.head{justify-self:start!important}
 
       <div id="tx-container" style="margin-bottom: 20px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
-          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" oninput="clearFieldError('tx-ref')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
       </div>
 
       <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
@@ -4261,7 +4365,7 @@ html[dir="rtl"] header>.head{justify-self:start!important}
       <input type="hidden" id="withdrawCrypto" value="USDT (TRC20)">
 
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawWalletLabel">Destination Wallet Address:</label>
-      <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
+      <input id="withdrawAddress" type="text" placeholder="e.g. TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG" oninput="clearFieldError('withdrawAddress')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px; margin-bottom:15px;">
 
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawAmountLabel">Amount (USD):</label>
       <input
@@ -4294,7 +4398,7 @@ html[dir="rtl"] header>.head{justify-self:start!important}
 
 </section>
 
-<section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
+<section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn clear-history-btn" type="button" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
 
 <section id="rewards" class="view">
   <div class="title">
@@ -6171,7 +6275,56 @@ setInterval(() => {
     displayCounters();
 }, 5000);
 
-function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.x);window.x=setTimeout(()=>t.style.display="none",2300)}
+function toast(message, type = "info") {
+  const element = document.getElementById("toast");
+  if (!element) return;
+
+  clearTimeout(window.x);
+  element.textContent = String(message || "");
+  element.classList.remove("show", "success", "error");
+  if (type === "success" || type === "error") {
+    element.classList.add(type);
+  }
+
+  void element.offsetWidth;
+  element.classList.add("show");
+  window.x = setTimeout(() => {
+    element.classList.remove("show");
+  }, 3400);
+}
+
+function clearFieldError(inputId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(`${inputId}-field-error`);
+  input?.classList.remove("field-validation-input-error");
+  input?.removeAttribute("aria-invalid");
+  input?.removeAttribute("aria-describedby");
+  error?.remove();
+}
+
+function showFieldError(inputId, message) {
+  const input = document.getElementById(inputId);
+  if (!input) {
+    toast(message, "error");
+    return;
+  }
+
+  clearFieldError(inputId);
+  const error = document.createElement("div");
+  error.id = `${inputId}-field-error`;
+  error.className = "field-validation-message";
+  error.setAttribute("role", "alert");
+  error.textContent = String(message || "");
+  input.insertAdjacentElement("afterend", error);
+  input.classList.add("field-validation-input-error");
+  input.setAttribute("aria-invalid", "true");
+  input.setAttribute("aria-describedby", error.id);
+
+  requestAnimationFrame(() => {
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+    input.focus({ preventScroll: true });
+  });
+}
 
 function showAuthSuccessPopup(title, message, duration = 1800) {
   return new Promise(resolve => {
@@ -9378,18 +9531,20 @@ window.submitDepositRequest = async function () {
   const txHash =
     document.getElementById("tx-ref")?.value.trim() || "";
 
+  ["deposit-amount", "payment-method", "tx-ref"].forEach(clearFieldError);
+
   if (!Number.isFinite(amount) || amount <= 0) {
-    toast(tr("invalidDepositAmount"));
+    showFieldError("deposit-amount", tr("invalidDepositAmount"));
     return;
   }
 
   if (method !== "wallet") {
-    toast(tr("gatewayReferenceRequired"));
+    showFieldError("payment-method", tr("gatewayReferenceRequired"));
     return;
   }
 
   if (!txHash) {
-    toast(tr("txidRequired"));
+    showFieldError("tx-ref", tr("txidRequired"));
     return;
   }
 
@@ -9408,7 +9563,10 @@ window.submitDepositRequest = async function () {
 
   if (error) {
     console.error("Deposit request error:", error);
-    toast(localizedBackendError(error, "depositRequestFailed"));
+    showFieldError(
+      "tx-ref",
+      localizedBackendError(error, "depositRequestFailed")
+    );
     return;
   }
 
@@ -9456,6 +9614,7 @@ function clearWithdrawalError() {
   amountInput?.classList.remove(
     "withdrawal-input-error"
   );
+  clearFieldError("withdrawAmount");
 }
 
 /* Secure withdrawal request */
@@ -9475,8 +9634,11 @@ window.withdraw = async function () {
   const cryptoValue =
     document.getElementById("withdrawCrypto").value;
 
+  clearFieldError("withdrawAddress");
+  clearWithdrawalError();
+
   if (!walletAddress) {
-    toast(tr("walletAddressRequired"));
+    showFieldError("withdrawAddress", tr("walletAddressRequired"));
     return;
   }
 
@@ -9543,6 +9705,17 @@ if (amount > availableBalance) {
   showTransactionSuccessModal("withdrawal");
 };
 
+const TRANSACTION_HISTORY_CUTOFF_PREFIX = "bi_transaction_history_cutoff_";
+
+function getTransactionHistoryCutoff() {
+  if (!currentUser?.id) return 0;
+  return Number(
+    localStorage.getItem(
+      TRANSACTION_HISTORY_CUTOFF_PREFIX + currentUser.id
+    ) || 0
+  );
+}
+
 /* Real financial history */
 window.loadTransactions = async function () {
   const list = document.getElementById("txList");
@@ -9567,7 +9740,13 @@ window.loadTransactions = async function () {
     return;
   }
 
-  if (!data?.length) {
+  const cutoff = getTransactionHistoryCutoff();
+  const visibleData = (data || []).filter(item => {
+    const createdAt = new Date(item.created_at).getTime();
+    return !Number.isFinite(createdAt) || createdAt > cutoff;
+  });
+
+  if (!visibleData.length) {
     list.innerHTML =
       `<div class="muted" style="padding:20px;text-align:center;">${tr("noTransactions")}</div>`;
     return;
@@ -9588,7 +9767,7 @@ window.loadTransactions = async function () {
         <tbody>
   `;
 
-  data.forEach(item => {
+  visibleData.forEach(item => {
     const status = String(item.status || "pending");
     const statusKey={approved:"approvedStatus",rejected:"rejectedStatus",pending:"pendingStatus",completed:"completedStatus",active:"activeStatus"}[status.toLowerCase()]||"pendingStatus";
     const typeKey=String(item.request_type||"").toLowerCase()==="withdrawal"
@@ -9634,9 +9813,32 @@ window.loadTransactions = async function () {
   list.innerHTML = html;
 };
 
-/* Financial records must never be deleted by customers */
-window.clearTx = function () {
-  toast(tr("transactions"));
+/* Clear the customer's visible history while preserving protected audit records. */
+window.clearTx = async function () {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const button = document.querySelector(
+    "#transactions .clear-history-btn"
+  );
+
+  if (button) button.disabled = true;
+
+  try {
+    localStorage.setItem(
+      TRANSACTION_HISTORY_CUTOFF_PREFIX + currentUser.id,
+      String(Date.now())
+    );
+    await loadTransactions();
+    toast(tr("noTransactions"), "success");
+  } catch (error) {
+    console.error("Clear transaction history error:", error);
+    toast(localizedBackendError(error, "transactions"), "error");
+  } finally {
+    if (button) button.disabled = false;
+  }
 };
 
 /* Correct support ticket creation */
