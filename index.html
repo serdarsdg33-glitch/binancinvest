@@ -4184,9 +4184,8 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="title"><h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2></div>
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
-  <video class="live-withdrawals-video lazy-video" muted loop playsinline preload="none" aria-hidden="true">
-    <source data-src="live-withdrawals-new.webm" type="video/webm">
-    <source data-src="live-withdrawals-new.mp4" type="video/mp4">
+  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
+    <source src="live-withdrawals-smooth.mp4" type="video/mp4">
   </video>
   <div class="fade-overlay"></div>
 </div>
@@ -6828,6 +6827,14 @@ function addLiveWithdrawal() {
 
   if (!list) return;
 
+  /* Do not keep rebuilding an invisible feed in background tabs/pages. */
+  if (
+    document.hidden ||
+    !document.getElementById("home")?.classList.contains("active")
+  ) {
+    return;
+  }
+
   const name =
     maskedNames[
       Math.floor(Math.random() * maskedNames.length)
@@ -8410,17 +8417,46 @@ function renderVipPortfolioContracts() {
     String(activeContracts.length);
 
   if (vipContracts.length === 0) {
-    container.innerHTML = `
-      <tr>
-        <td colspan="9" class="muted vip-empty-row">
-          ${tr("noVipContracts")}
-        </td>
-      </tr>
-    `;
+    if (container.dataset.vipSignature !== "empty") {
+      container.innerHTML = `
+        <tr>
+          <td colspan="9" class="muted vip-empty-row">
+            ${tr("noVipContracts")}
+          </td>
+        </tr>
+      `;
+      container.dataset.vipSignature = "empty";
+    }
     return;
   }
 
-  container.innerHTML = vipContracts.map(contract => {
+  const contractStates = vipContracts.map(contract => {
+    const endTime = new Date(contract.ends_at).getTime();
+    const isFinished =
+      contract.status === "completed" ||
+      (Number.isFinite(endTime) && Date.now() >= endTime);
+
+    return {
+      contract,
+      isFinished,
+      endTime
+    };
+  });
+
+  const vipSignature = contractStates.map(({ contract, isFinished }) => [
+    contract.id,
+    contract.plan_name,
+    contract.principal,
+    contract.daily_rate,
+    contract.term_days,
+    contract.status,
+    contract.started_at,
+    contract.ends_at,
+    isFinished
+  ].join("|")).join("::");
+
+  if (container.dataset.vipSignature !== vipSignature) {
+    container.innerHTML = contractStates.map(({ contract, isFinished }) => {
     const principal =
       Number(contract.principal || 0);
 
@@ -8438,16 +8474,6 @@ function renderVipPortfolioContracts() {
 
     const finalCalculation =
       principal + totalCalculation;
-
-    const endTime =
-      new Date(contract.ends_at).getTime();
-
-    const isFinished =
-      contract.status === "completed" ||
-      (
-        Number.isFinite(endTime) &&
-        Date.now() >= endTime
-      );
 
     const statusText =
       isFinished
@@ -8481,7 +8507,7 @@ function renderVipPortfolioContracts() {
           ${formatPortfolioMoney(principal)}
         </td>
 
-        <td class="vip-countdown">
+        <td class="vip-countdown" data-vip-end="${safeFinancialText(contract.ends_at || "")}">
           ${formatVipRemainingTime(contract.ends_at)}
         </td>
 
@@ -8516,7 +8542,17 @@ function renderVipPortfolioContracts() {
         </td>
       </tr>
     `;
-  }).join("");
+    }).join("");
+    container.dataset.vipSignature = vipSignature;
+  } else {
+    /* Only update the countdown text; preserve the table DOM and scroll state. */
+    container.querySelectorAll("[data-vip-end]").forEach(cell => {
+      const nextValue = formatVipRemainingTime(cell.dataset.vipEnd);
+      if (cell.textContent.trim() !== nextValue) {
+        cell.textContent = nextValue;
+      }
+    });
+  }
 }
 function renderPortfolioLive() {
   const balanceElement =
@@ -8659,7 +8695,12 @@ async function updatePortfolio() {
   renderPortfolioLive();
 
   portfolioTimer = setInterval(() => {
-    renderPortfolioLive();
+    if (
+      !document.hidden &&
+      document.getElementById("portfolio")?.classList.contains("active")
+    ) {
+      renderPortfolioLive();
+    }
   }, 1000);
 }
 
@@ -11375,6 +11416,416 @@ window.sendSupportReply = async function () {
     button.textContent = getSupportText("sendReply");
   }
 };
+</script>
+
+<style>
+/* Stable support rendering and low-cost video compositing */
+.live-withdrawals-video.performance-video {
+  transform: translate3d(0,0,0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: paint;
+}
+
+.live-withdrawals-container.has-video {
+  contain: layout paint;
+}
+
+/* Keep the glass look without forcing an expensive live backdrop blur over video. */
+.live-withdrawals-container.has-video .live-avatar {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.support-ticket-list,
+.support-messages {
+  overflow-anchor: none;
+}
+
+.support-messages.support-refreshing,
+.support-ticket-list.support-refreshing {
+  opacity: 1;
+}
+</style>
+
+<script>
+/* Performance patch: coalesced support refreshes and stable DOM rendering. */
+const supportPerformanceState = {
+  ticketSignature: "",
+  messageSignatures: new Map(),
+  ticketRequest: null,
+  realtimeTicketTimer: null,
+  realtimeMessageTimer: null
+};
+
+function supportTicketSignature(tickets) {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return JSON.stringify([
+    lang,
+    activeSupportTicketId,
+    ...(tickets || []).map(ticket => [
+      ticket.id,
+      ticket.subject,
+      ticket.category,
+      ticket.status,
+      ticket.updated_at || ticket.created_at
+    ])
+  ]);
+}
+
+function supportMessagesSignature(ticketId, messages) {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return JSON.stringify([
+    lang,
+    ticketId,
+    ...(messages || []).map(item => [
+      item.id,
+      item.sender_role,
+      item.is_ai,
+      item.created_at,
+      item.body
+    ])
+  ]);
+}
+
+loadSupportTickets = async function loadSupportTicketsStable(options = {}) {
+  const list = document.getElementById("supportTicketList");
+  if (!list) return [];
+
+  if (!currentUser?.id) {
+    const guestText = tr("signInFirst");
+    if (list.textContent !== guestText) {
+      const guest = document.createElement("div");
+      guest.className = "support-empty";
+      guest.textContent = guestText;
+      list.replaceChildren(guest);
+    }
+    supportPerformanceState.ticketSignature = "";
+    return [];
+  }
+
+  if (supportPerformanceState.ticketRequest) {
+    return supportPerformanceState.ticketRequest;
+  }
+
+  const hasTicketUi = Boolean(list.querySelector(".support-ticket-item"));
+  if (!options.silent && !hasTicketUi && !list.children.length) {
+    const loading = document.createElement("div");
+    loading.className = "support-empty";
+    loading.textContent = getSupportText("loadingTickets");
+    list.replaceChildren(loading);
+  }
+
+  supportPerformanceState.ticketRequest = (async () => {
+    try {
+      const { data: tickets, error } = await supabaseClient
+        .from("support_tickets")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("updated_at", { ascending: false });
+
+      if (error) throw error;
+      const rows = tickets || [];
+      const signature = supportTicketSignature(rows);
+
+      if (signature === supportPerformanceState.ticketSignature) {
+        return rows;
+      }
+
+      if (!rows.length) {
+        const empty = document.createElement("div");
+        empty.className = "support-empty";
+        empty.textContent = getSupportText("noTickets");
+        list.replaceChildren(empty);
+        supportPerformanceState.ticketSignature = signature;
+        if (!activeSupportTicketId) resetSupportChat();
+        return rows;
+      }
+
+      const fragment = document.createDocumentFragment();
+      rows.forEach(ticket => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "support-ticket-item";
+        button.dataset.ticketId = String(ticket.id);
+        button.classList.toggle("active", ticket.id === activeSupportTicketId);
+        button.addEventListener("click", () => openSupportTicket(ticket.id));
+
+        const top = document.createElement("div");
+        top.className = "support-ticket-top";
+
+        const subject = document.createElement("span");
+        subject.className = "support-ticket-subject";
+        subject.textContent = ticket.subject || tr("supportTicket");
+
+        const statusValue = ticket.status || "open";
+        const status = document.createElement("span");
+        status.className = `support-status ${statusValue}`;
+        status.textContent = formatSupportStatus(statusValue);
+        top.append(subject, status);
+
+        const meta = document.createElement("div");
+        meta.className = "support-ticket-meta";
+        meta.textContent = `${getSupportText(ticket.category || "general")} • ${formatSupportDate(ticket.updated_at || ticket.created_at)}`;
+
+        button.append(top, meta);
+        fragment.appendChild(button);
+      });
+
+      list.replaceChildren(fragment);
+      supportPerformanceState.ticketSignature = signature;
+      return rows;
+    } catch (error) {
+      console.error("Load tickets error:", error);
+      if (!hasTicketUi) {
+        const failure = document.createElement("div");
+        failure.className = "support-empty";
+        failure.textContent = tr("ticketLoadError");
+        list.replaceChildren(failure);
+      }
+      if (!options.silent) toast(localizedBackendError(error, "ticketLoadError"));
+      return [];
+    } finally {
+      supportPerformanceState.ticketRequest = null;
+    }
+  })();
+
+  return supportPerformanceState.ticketRequest;
+};
+
+window.loadSupportMessages = async function loadSupportMessagesStable(ticketId, options = {}) {
+  const box = document.getElementById("supportMessages");
+  if (!box || !ticketId) return [];
+
+  const requestSequence = ++supportMessageRenderSequence;
+  const isDifferentTicket = supportLastRenderedTicketId !== ticketId;
+  const hasRenderedMessages = Boolean(box.querySelector(".support-message"));
+  const wasNearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
+
+  if (!options.silent && isDifferentTicket && !hasRenderedMessages) {
+    const loading = document.createElement("div");
+    loading.className = "support-empty";
+    loading.textContent = getSupportText("loadingConversation");
+    box.replaceChildren(loading);
+  }
+
+  const { data, error } = await supabaseClient
+    .from("support_messages")
+    .select("id,ticket_id,sender_id,body,sender_role,created_at,is_ai")
+    .eq("ticket_id", ticketId)
+    .order("created_at", { ascending: true });
+
+  if (requestSequence !== supportMessageRenderSequence || activeSupportTicketId !== ticketId) {
+    return [];
+  }
+
+  if (error) {
+    console.error("Load support messages error:", error);
+    if (!hasRenderedMessages) {
+      const failure = document.createElement("div");
+      failure.className = "support-empty";
+      failure.textContent = tr("conversationLoadError");
+      box.replaceChildren(failure);
+    }
+    return [];
+  }
+
+  const rows = data || [];
+  const signature = supportMessagesSignature(ticketId, rows);
+  if (signature === supportPerformanceState.messageSignatures.get(ticketId)) {
+    if (supportAiRequestsInFlight.has(ticketId) && !box.querySelector("#supportAiTyping")) {
+      showAiTyping(ticketId);
+    }
+    return rows;
+  }
+
+  if (!rows.length) {
+    const empty = document.createElement("div");
+    empty.className = "support-empty";
+    empty.textContent = tr("noMessages");
+    box.replaceChildren(empty);
+    supportPerformanceState.messageSignatures.set(ticketId, signature);
+    supportLastRenderedTicketId = ticketId;
+    return rows;
+  }
+
+  const fragment = document.createDocumentFragment();
+  rows.forEach(item => {
+    const element = document.createElement("div");
+    const rawRole = String(item.sender_role || "").toLowerCase();
+    const isAi = item.is_ai === true || ["ai", "assistant", "bot"].includes(rawRole);
+    const isUser = !isAi && rawRole === "user";
+    const roleClass = isAi ? "ai" : (isUser ? "user" : "admin");
+    element.className = `support-message ${roleClass}`;
+    element.dataset.messageId = String(item.id || "");
+
+    const author = document.createElement("span");
+    author.className = "support-message-author";
+    author.textContent = isAi
+      ? getAiSupportLabel()
+      : getSupportAuthorLabel(isUser ? "user" : "admin");
+
+    const text = document.createElement("div");
+    text.className = "support-message-body";
+    text.textContent = isAi ? normalizeAiSupportMessage(item.body) : (item.body || "");
+    if (isAi) element.classList.add("ai-support-message");
+
+    const time = document.createElement("span");
+    time.className = "support-message-time";
+    time.textContent = formatSupportDate(item.created_at);
+    element.append(author, text, time);
+    fragment.appendChild(element);
+  });
+
+  box.replaceChildren(fragment);
+  supportPerformanceState.messageSignatures.set(ticketId, signature);
+  supportLastRenderedTicketId = ticketId;
+
+  if (supportAiRequestsInFlight.has(ticketId)) showAiTyping(ticketId);
+  if (isDifferentTicket || wasNearBottom) {
+    requestAnimationFrame(() => { box.scrollTop = box.scrollHeight; });
+  }
+  return rows;
+};
+
+openSupportTicket = async function openSupportTicketStable(ticketId, options = {}) {
+  if (!currentUser?.id || !ticketId) return;
+  const changedTicket = activeSupportTicketId !== ticketId;
+  activeSupportTicketId = ticketId;
+
+  document.querySelectorAll(".support-ticket-item").forEach(item => {
+    item.classList.toggle("active", item.dataset.ticketId === String(ticketId));
+  });
+
+  const placeholder = document.getElementById("supportChatPlaceholder");
+  const chatBox = document.getElementById("supportChatBox");
+  const subjectElement = document.getElementById("supportChatSubject");
+  const metaElement = document.getElementById("supportChatMeta");
+  const replyBox = document.getElementById("supportReplyBox");
+  const closeButton = document.getElementById("closeTicketBtn");
+
+  try {
+    const { data: ticket, error } = await supabaseClient
+      .from("support_tickets")
+      .select("*")
+      .eq("id", ticketId)
+      .eq("user_id", currentUser.id)
+      .single();
+    if (error) throw error;
+
+    if (placeholder) placeholder.style.display = "none";
+    chatBox?.classList.add("open");
+    if (subjectElement) subjectElement.textContent = ticket.subject || tr("supportTicket");
+    if (metaElement) {
+      metaElement.textContent = `${getSupportText(ticket.category || "general")} • ${formatSupportDate(ticket.created_at)} • ${formatSupportStatus(ticket.status)}`;
+    }
+
+    const isClosed = ticket.status === "closed";
+    if (replyBox) replyBox.style.display = isClosed ? "none" : "block";
+    if (closeButton) closeButton.style.display = isClosed ? "none" : "inline-block";
+
+    await window.loadSupportMessages(ticketId, {
+      silent: options.silent || !changedTicket
+    });
+    markSupportNotificationsSeen();
+  } catch (error) {
+    console.error("Open ticket error:", error);
+    if (!options.silent) toast(localizedBackendError(error, "ticketOpenFailed"));
+    if (changedTicket) resetSupportChat();
+  }
+};
+
+startSupportRealtime = function startSupportRealtimeStable() {
+  if (!currentUser?.id || supportRealtimeChannel) return;
+  const channelUserId = currentUser.id;
+
+  const refreshTicketsSoon = () => {
+    clearTimeout(supportPerformanceState.realtimeTicketTimer);
+    supportPerformanceState.realtimeTicketTimer = window.setTimeout(() => {
+      if (currentUser?.id === channelUserId) void loadSupportTickets({ silent: true });
+    }, 320);
+  };
+
+  const refreshMessagesSoon = ticketId => {
+    clearTimeout(supportPerformanceState.realtimeMessageTimer);
+    supportPerformanceState.realtimeMessageTimer = window.setTimeout(() => {
+      const supportIsOpen = document.getElementById("support")?.classList.contains("active");
+      if (currentUser?.id !== channelUserId) return;
+      if (supportIsOpen && activeSupportTicketId === ticketId) {
+        void window.loadSupportMessages(ticketId, { silent: true });
+        markSupportNotificationsSeen();
+      }
+    }, 260);
+  };
+
+  supportRealtimeChannel = supabaseClient
+    .channel(`support-user-${channelUserId}`)
+    .on("postgres_changes", {
+      event: "*",
+      schema: "public",
+      table: "support_tickets",
+      filter: `user_id=eq.${channelUserId}`
+    }, payload => {
+      refreshTicketsSoon();
+      if (payload.new?.status === "answered") void refreshSupportNotificationBadge();
+    })
+    .on("postgres_changes", {
+      event: "*",
+      schema: "public",
+      table: "support_messages"
+    }, payload => {
+      const ticketId = payload.new?.ticket_id || payload.old?.ticket_id;
+      if (ticketId && ticketId === activeSupportTicketId) refreshMessagesSoon(ticketId);
+      if (payload.new?.sender_role === "admin") void refreshSupportNotificationBadge();
+    })
+    .subscribe(status => console.log("Support realtime:", status));
+};
+
+const originalStopSupportRealtime = stopSupportRealtime;
+stopSupportRealtime = function stopSupportRealtimeStable() {
+  clearTimeout(supportPerformanceState.realtimeTicketTimer);
+  clearTimeout(supportPerformanceState.realtimeMessageTimer);
+  supportPerformanceState.realtimeTicketTimer = null;
+  supportPerformanceState.realtimeMessageTimer = null;
+  supportPerformanceState.ticketRequest = null;
+  supportPerformanceState.ticketSignature = "";
+  supportPerformanceState.messageSignatures.clear();
+  originalStopSupportRealtime();
+};
+
+function initializePerformanceVideos() {
+  const video = document.getElementById("liveWithdrawalsVideo");
+  if (!video || video.dataset.performanceReady === "true") return;
+  video.dataset.performanceReady = "true";
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+
+  const playSafely = () => {
+    if (document.hidden) return;
+    const promise = video.play();
+    if (promise?.catch) promise.catch(() => {});
+  };
+
+  video.addEventListener("canplay", playSafely, { once: true });
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    playSafely();
+  });
+  video.addEventListener("stalled", () => window.setTimeout(playSafely, 250));
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) playSafely();
+  });
+  window.addEventListener("pageshow", playSafely);
+  playSafely();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializePerformanceVideos, { once: true });
+} else {
+  initializePerformanceVideos();
+}
 </script>
 
 </body>
