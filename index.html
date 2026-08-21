@@ -4609,6 +4609,150 @@ html.native-app {
 }
 </style>
 
+
+<style id="native-app-auth-rtl-fix-v3">
+/* Native app auth/header fix: keep hidden state authoritative and make RTL safe. */
+@media (max-width: 900px) {
+  /* Never let app-only layout rules override the real auth hidden state. */
+  html.native-app #userHeaderDisplay[hidden],
+  html.native-app #authButtonsGroup[hidden] {
+    display: none !important;
+  }
+
+  html.native-app #userHeaderDisplay:not([hidden]) {
+    display: grid !important;
+  }
+
+  html.native-app #authButtonsGroup:not([hidden]) {
+    display: grid !important;
+  }
+
+  /* Stable physical header tracks. */
+  html.native-app header {
+    grid-template-columns: minmax(0, 1fr) 52px minmax(96px, 1fr) !important;
+  }
+
+  html.native-app header > .brand {
+    grid-row: 1 !important;
+    grid-column: 1 !important;
+    justify-self: start !important;
+    direction: ltr !important;
+  }
+
+  html.native-app header > .language-trigger {
+    grid-row: 1 !important;
+    grid-column: 2 !important;
+    justify-self: center !important;
+    direction: ltr !important;
+  }
+
+  html.native-app header > .head {
+    grid-row: 1 !important;
+    grid-column: 3 !important;
+    justify-self: end !important;
+    width: 100% !important;
+    max-width: 132px !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    direction: ltr !important;
+  }
+
+  /* Keep the same reliable geometry when the document itself is RTL. */
+  html.native-app[dir="rtl"] header > .brand {
+    grid-column: 1 !important;
+    justify-self: start !important;
+  }
+
+  html.native-app[dir="rtl"] header > .head {
+    grid-column: 3 !important;
+    justify-self: end !important;
+  }
+
+  html.native-app #userHeaderDisplay:not([hidden]) {
+    width: 100% !important;
+    max-width: 132px !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 4px !important;
+    direction: ltr !important;
+    overflow: visible !important;
+  }
+
+  html.native-app #userHeaderDisplay .user-header-identity {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 4px 5px !important;
+    overflow: hidden !important;
+    direction: ltr !important;
+  }
+
+  html.native-app #headerFullName,
+  html.native-app #headerUsername {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    unicode-bidi: plaintext !important;
+  }
+
+  html.native-app #headerFullName {
+    font-size: 10.5px !important;
+  }
+
+  html.native-app #headerUsername {
+    font-size: 8.5px !important;
+    padding: 2px 3px !important;
+  }
+
+  html.native-app #userHeaderDisplay .header-logout-btn {
+    flex: 0 0 auto !important;
+    min-width: 45px !important;
+    max-width: 52px !important;
+    min-height: 30px !important;
+    height: 30px !important;
+    padding: 0 5px !important;
+    font-size: 8.5px !important;
+    white-space: nowrap !important;
+  }
+
+  html.native-app #authButtonsGroup:not([hidden]) {
+    width: 100% !important;
+    max-width: 106px !important;
+    min-width: 0 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  html.native-app header {
+    grid-template-columns: minmax(0, 1fr) 48px 112px !important;
+    gap: 5px !important;
+  }
+
+  html.native-app header > .head,
+  html.native-app #userHeaderDisplay:not([hidden]) {
+    max-width: 112px !important;
+  }
+
+  html.native-app #headerFullName {
+    font-size: 9.5px !important;
+  }
+
+  html.native-app #headerUsername {
+    font-size: 7.8px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -10850,7 +10994,30 @@ function renderLanguageOptions(query=""){
 function openLanguageSelector(){const modal=document.getElementById("languageModal");modal?.classList.add("open");document.body.style.overflow="hidden";renderLanguageOptions();setTimeout(()=>document.getElementById("languageSearch")?.focus(),80)}
 function closeLanguageSelector(){document.getElementById("languageModal")?.classList.remove("open");document.body.style.overflow="";const search=document.getElementById("languageSearch");if(search)search.value=""}
 function handleLanguageBackdrop(event){if(event.target?.id==="languageModal")closeLanguageSelector()}
-function chooseLanguage(code){setLang(code);closeLanguageSelector()}
+async function chooseLanguage(code){
+  setLang(code);
+  closeLanguageSelector();
+
+  /* Language switching must never look like a logout inside the native app.
+     Re-read the existing Supabase session and repaint only the header/account UI. */
+  if (document.documentElement.classList.contains("native-app")) {
+    try {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) throw error;
+
+      if (data.session?.user) {
+        await loadAuthenticatedUser(data.session.user, { force: false });
+      } else {
+        updateHeaderAuthUI();
+      }
+    } catch (error) {
+      console.warn("Language switch session refresh failed; preserving current UI:", error);
+      updateHeaderAuthUI();
+    }
+  } else {
+    updateHeaderAuthUI();
+  }
+}
 function updateLanguageTrigger(code){const item=getLanguageItem(code);const flag=document.getElementById("languageTriggerFlag"),label=document.getElementById("languageTriggerCode");if(flag)flag.textContent=item[1];if(label)label.textContent=item[2]}
 
 const NAV_SUPPORT_TEXT = {en:"Support",fa:"پشتیبانی",az:"Dəstək",tr:"Destek",ru:"Поддержка",ar:"الدعم",zh:"支持",es:"Soporte",fr:"Assistance",de:"Support",it:"Assistenza",pt:"Suporte",nl:"Ondersteuning",pl:"Wsparcie",uk:"Підтримка",ro:"Asistență",id:"Dukungan",ms:"Sokongan",hi:"सहायता",ur:"سپورٹ",ja:"サポート",ko:"지원",vi:"Hỗ trợ",th:"ช่วยเหลือ",el:"Υποστήριξη"};
