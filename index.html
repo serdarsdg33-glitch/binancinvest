@@ -4987,133 +4987,28 @@ html.native-app .portfolio-overview-scene {
 </style>
 
 
-<style id="portfolio-background-stable-login-v7">
+<style id="native-app-portfolio-split-v9">
 /* =========================================================
-   PORTFOLIO BACKGROUND STABLE SIZE
-   The artwork scale is tied to container WIDTH, not HEIGHT.
-   So showing authenticated sections no longer zooms/stretches
-   either the overview image or the deposit/finance image.
+   NATIVE APP ONLY — PORTFOLIO SPLIT
+   The normal website is intentionally untouched.
    ========================================================= */
 
-/* WEB + APP: keep gradient filling the whole scene,
-   while the actual image preserves its own aspect ratio. */
-.portfolio-overview-scene {
-  background-size:
-    100% 100%,
-    100% auto !important;
-
-  background-position:
-    center center,
-    center top !important;
-
-  background-repeat:
-    no-repeat,
-    no-repeat !important;
-
-  background-color:#05070a !important;
-}
-
-.portfolio-finance-scene {
-  background-size:
-    100% 100%,
-    100% auto !important;
-
-  background-position:
-    center center,
-    center top !important;
-
-  background-repeat:
-    no-repeat,
-    no-repeat !important;
-
-  background-color:#05070a !important;
-}
-
-/* Native app keeps its own top artwork but follows the SAME
-   non-zoom scaling rule after login. */
-html.native-app .portfolio-overview-scene {
-  background-size:
-    100% 100%,
-    100% auto !important;
-
-  background-position:
-    center center,
-    center top !important;
-}
-
-/* Normal browser keeps its original web artwork and the same
-   stable sizing rule. */
-html:not(.native-app) .portfolio-overview-scene,
-html.normal-web .portfolio-overview-scene {
-  background-size:
-    100% 100%,
-    100% auto !important;
-
-  background-position:
-    center center,
-    center top !important;
-}
-
-/* Deposit/withdraw image also stays fixed to width when its
-   authenticated controls increase the scene height. */
-html.native-app .portfolio-finance-scene,
-html:not(.native-app) .portfolio-finance-scene,
-html.normal-web .portfolio-finance-scene {
-  background-size:
-    100% 100%,
-    100% auto !important;
-
-  background-position:
-    center center,
-    center top !important;
-}
-
-/* Important on small phones: override older mobile rules that
-   used cover or 100% 100% for the image layer. */
 @media (max-width: 900px) {
-  .portfolio-overview-scene,
-  .portfolio-finance-scene,
-  html.native-app .portfolio-overview-scene,
-  html.native-app .portfolio-finance-scene,
-  html:not(.native-app) .portfolio-overview-scene,
-  html:not(.native-app) .portfolio-finance-scene {
-    background-size:
-      100% 100%,
-      100% auto !important;
-
-    background-position:
-      center center,
-      center top !important;
-  }
-}
-</style>
-
-
-<style id="portfolio-app-split-background-v8">
-/* =========================================================
-   APP PORTFOLIO: TWO INDEPENDENT BACKGROUND ZONES
-   1) Top summary artwork = slightly zoomed, fixed by width.
-   2) Referral/VIP area = its own continuation artwork.
-   This prevents login/VIP content from resizing the top image.
-   ========================================================= */
-
-/* Wrapper is neutral on the normal website. */
-.portfolio-continuation-scene {
-  position: relative;
-  isolation: isolate;
-}
-
-.portfolio-continuation-scene > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Native app only */
-@media (max-width: 900px) {
-
-  /* TOP PORTFOLIO IMAGE
-     Slight 12% zoom, but still tied to width rather than height. */
+  /*
+   * Top portfolio artwork: slightly zoomed in the app only.
+   * After JS moves Referral/VIP out of this scene, its height
+   * no longer changes when the user is logged in.
+   */
   html.native-app .portfolio-overview-scene {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.08),
+        rgba(3,6,9,.18) 52%,
+        rgba(3,6,9,.12)
+      ),
+      url("portfolio-overview-app.webp?v=app-20260821-5") !important;
+
     background-size:
       100% 100%,
       112% auto !important;
@@ -5126,82 +5021,73 @@ html.normal-web .portfolio-finance-scene {
       no-repeat,
       no-repeat !important;
 
-    /* Top artwork is now independent of lower logged-in content. */
     overflow: hidden !important;
-    border-radius: 20px 20px 14px 14px !important;
+    border-radius: 20px !important;
   }
 
-  /* LOWER REFERRAL / VIP CONTINUATION
-     When you later upload portfolio-overview-continuation.webp,
-     the app automatically uses it.
-     Until then, portfolio-overview-app.webp is the visual fallback. */
-  html.native-app .portfolio-continuation-scene {
+  /*
+   * Referral + VIP get their own background zone in the app.
+   * We currently reuse the app artwork as a continuation so
+   * there is no empty/black gap. This can later be replaced
+   * by a dedicated continuation image without touching web.
+   */
+  html.native-app .portfolio-app-lower {
+    position: relative;
+    isolation: isolate;
     margin-top: 8px;
-    padding: 10px 9px 18px;
+    padding: 12px 9px 18px;
     overflow: hidden;
-
     background-color: #05070a;
 
     background-image:
       linear-gradient(
         180deg,
-        rgba(3,6,9,.10),
-        rgba(3,6,9,.20) 48%,
-        rgba(3,6,9,.14)
+        rgba(3,6,9,.14),
+        rgba(3,6,9,.25) 52%,
+        rgba(3,6,9,.17)
       ),
-      url("portfolio-overview-continuation.webp?v=20260821-1"),
-      url("portfolio-overview-app.webp?v=20260821-4");
+      url("portfolio-overview-app.webp?v=app-lower-20260821-5");
 
-    /*
-     * The image scale never depends on content height.
-     * If VIP rows make this section taller, the background
-     * repeats vertically instead of zooming or stretching.
-     */
     background-size:
       100% 100%,
-      100% auto,
-      100% auto;
+      112% auto !important;
 
     background-position:
       center center,
-      center top,
-      center bottom;
+      center bottom !important;
 
     background-repeat:
       no-repeat,
-      repeat-y,
-      repeat-y;
+      repeat-y !important;
 
-    border-radius: 14px 14px 20px 20px;
+    border: 1px solid rgba(240,185,11,.16);
+    border-radius: 18px;
   }
 
-  /* Keep lower cards transparent enough to reveal continuation artwork. */
-  html.native-app .portfolio-continuation-scene .referral-portfolio-card,
-  html.native-app .portfolio-continuation-scene .vip-single-card,
-  html.native-app .portfolio-continuation-scene .portfolio-vip-quick {
+  html.native-app .portfolio-app-lower > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  html.native-app .portfolio-app-lower .referral-portfolio-card,
+  html.native-app .portfolio-app-lower .vip-single-card,
+  html.native-app .portfolio-app-lower .portfolio-vip-quick {
     background:
       linear-gradient(
         145deg,
-        rgba(14,20,27,.38),
-        rgba(5,9,14,.26)
+        rgba(14,20,27,.40),
+        rgba(5,9,14,.27)
       ) !important;
-
-    backdrop-filter: blur(1px) saturate(1.08);
-    -webkit-backdrop-filter: blur(1px) saturate(1.08);
   }
 
-  /* Remove accidental gaps between the two visual zones. */
-  html.native-app .portfolio-overview-scene + .portfolio-continuation-scene {
+  /*
+   * Deposit/withdraw scene remains completely independent.
+   * Its height can grow after login without affecting the top
+   * portfolio artwork.
+   */
+  html.native-app .portfolio-finance-scene {
     margin-top: 8px !important;
   }
-}
-
-/* Normal browser website keeps its existing backgrounds/sizing. */
-html:not(.native-app) .portfolio-continuation-scene,
-html.normal-web .portfolio-continuation-scene {
-  margin-top: 0;
-  padding: 0;
-  background: none !important;
 }
 </style>
 
@@ -5688,9 +5574,6 @@ html.normal-web .portfolio-continuation-scene {
 <div class="portfolio-overview-scene">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
-</div>
-
-<div class="portfolio-continuation-scene">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
       <span class="muted" data-t="referralRewardsBalance">Referral rewards added to balance</span>
@@ -13991,6 +13874,67 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   window.addEventListener("resize", function () {
     setTimeout(centerActiveNativeNav, 100);
   });
+})();
+</script>
+
+
+<script id="native-app-portfolio-split-js">
+(function () {
+  function setupNativePortfolioSplit() {
+    /*
+     * Critical: do absolutely nothing in Safari/Chrome.
+     * The website DOM stays exactly as it was.
+     */
+    if (!document.documentElement.classList.contains("native-app")) {
+      return;
+    }
+
+    if (document.querySelector("#portfolio > .portfolio-app-lower")) {
+      return;
+    }
+
+    const portfolio = document.getElementById("portfolio");
+    const overview = portfolio?.querySelector(".portfolio-overview-scene");
+    const finance = portfolio?.querySelector(".portfolio-finance-scene");
+
+    const referral = document.getElementById("referralPortfolioCard");
+    const vipContracts = document.getElementById("vipPortfolioSection");
+    const quickVip = portfolio?.querySelector(".portfolio-vip-quick");
+
+    if (
+      !portfolio ||
+      !overview ||
+      !finance ||
+      !referral ||
+      !vipContracts ||
+      !quickVip
+    ) {
+      return;
+    }
+
+    /*
+     * Create the extra visual zone only inside the Android app.
+     * No HTML structure is changed for the normal website.
+     */
+    const lower = document.createElement("div");
+    lower.className = "portfolio-app-lower";
+
+    portfolio.insertBefore(lower, finance);
+
+    lower.appendChild(referral);
+    lower.appendChild(vipContracts);
+    lower.appendChild(quickVip);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      setupNativePortfolioSplit,
+      { once: true }
+    );
+  } else {
+    setupNativePortfolioSplit();
+  }
 })();
 </script>
 
