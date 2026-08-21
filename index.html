@@ -3,6 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script id="native-app-mode-detector">
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("app") === "1") {
+      localStorage.setItem("native_app_mode", "1");
+    }
+
+    if (localStorage.getItem("native_app_mode") === "1") {
+      document.documentElement.classList.add("native-app");
+    }
+  } catch (error) {
+    console.warn("Native app mode detection failed:", error);
+  }
+})();
+</script>
+
 <meta name="theme-color" content="#0b0e11">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -4087,6 +4105,276 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
     .pwa-install-card{padding:19px}
     #installAppBtn{width:100%}
   }
+
+  .pwa-ios-help{
+    display:none;
+    margin-top:14px;
+    padding:14px;
+    border:1px solid rgba(240,185,11,.25);
+    border-radius:12px;
+    background:rgba(0,0,0,.28);
+    color:#e8edf3;
+    line-height:1.8;
+    font-size:14px;
+  }
+  .pwa-ios-help.show{display:block}
+  .pwa-ios-help strong{color:#f0b90b}
+</style>
+
+
+<style id="native-app-only-ui">
+/* =========================================================
+   NATIVE APP MODE
+   Enabled only when the Capacitor app opens ?app=1
+   Normal Safari/Chrome website is unchanged.
+   ========================================================= */
+
+html.native-app {
+  --native-app-header-h: 72px;
+  --native-app-nav-h: 82px;
+  --native-safe-top: env(safe-area-inset-top, 0px);
+  --native-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 900px) {
+  html.native-app,
+  html.native-app body {
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at top, rgba(240,185,11,.10), transparent 30%),
+      linear-gradient(180deg, #06090d 0%, #0b1118 100%);
+  }
+
+  html.native-app body {
+    padding-top: calc(var(--native-app-header-h) + var(--native-safe-top));
+    padding-bottom: calc(var(--native-app-nav-h) + var(--native-safe-bottom) + 14px);
+  }
+
+  /* Compact native-style top bar */
+  html.native-app header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3000;
+    min-height: var(--native-app-header-h);
+    padding:
+      calc(9px + var(--native-safe-top))
+      12px
+      9px
+      12px !important;
+    display: grid !important;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    gap: 9px;
+    background: rgba(5,9,14,.94) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(240,185,11,.16) !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.28);
+  }
+
+  html.native-app .brand {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  html.native-app .brand span {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px !important;
+    font-weight: 900;
+  }
+
+  html.native-app .binance-floating-logo {
+    width: 33px !important;
+    height: 33px !important;
+    min-width: 33px;
+    min-height: 33px;
+  }
+
+  html.native-app #languageTrigger {
+    min-width: auto !important;
+    padding: 8px 9px !important;
+    border-radius: 13px !important;
+    font-size: 11px !important;
+  }
+
+  html.native-app .head {
+    justify-self: end;
+    min-width: 0;
+  }
+
+  html.native-app #authButtonsGroup {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  html.native-app #authButtonsGroup .btn,
+  html.native-app #userHeaderDisplay .btn {
+    min-height: 37px !important;
+    padding: 0 11px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    white-space: nowrap;
+  }
+
+  html.native-app #userHeaderDisplay {
+    align-items: center;
+    gap: 7px;
+  }
+
+  html.native-app .user-header-identity {
+    max-width: 112px;
+    padding: 7px 9px !important;
+    border-radius: 12px !important;
+  }
+
+  html.native-app #headerFullName,
+  html.native-app #headerUsername {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* App content sizing */
+  html.native-app .wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px 12px 0 !important;
+  }
+
+  html.native-app .view {
+    margin-top: 0 !important;
+  }
+
+  /* Native-style bottom navigation */
+  html.native-app .nav {
+    position: fixed !important;
+    left: 9px;
+    right: 9px;
+    bottom: calc(8px + var(--native-safe-bottom));
+    z-index: 3100;
+    display: grid !important;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(76px, 1fr);
+    gap: 7px;
+    padding: 8px !important;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    background: rgba(8,12,18,.95) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(240,185,11,.18) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 18px 42px rgba(0,0,0,.38);
+  }
+
+  html.native-app .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  html.native-app .nav button {
+    min-height: 52px !important;
+    padding: 8px 9px !important;
+    border-radius: 15px !important;
+    font-size: 11px !important;
+    font-weight: 850 !important;
+    line-height: 1.15;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,.055) !important;
+    background: rgba(255,255,255,.02) !important;
+    color: #d9e1ea !important;
+  }
+
+  html.native-app .nav button.active {
+    color: #171100 !important;
+    background: linear-gradient(135deg,#ffe082,#f0b90b) !important;
+    border-color: rgba(240,185,11,.45) !important;
+    box-shadow: 0 7px 18px rgba(240,185,11,.20);
+  }
+
+  /* App-like portfolio/forms */
+  html.native-app .card,
+  html.native-app .vip-single-card,
+  html.native-app .portfolio-vip-quick,
+  html.native-app .referral-portfolio-card,
+  html.native-app .portfolio-finance-guest,
+  html.native-app .live-withdrawals-container,
+  html.native-app .top-markets-showcase,
+  html.native-app .hero,
+  html.native-app .stat-circle-card {
+    border-radius: 20px !important;
+  }
+
+  html.native-app .cards {
+    grid-template-columns: 1fr !important;
+    gap: 11px !important;
+  }
+
+  html.native-app .cards .stat {
+    min-height: 104px;
+    padding: 17px 15px !important;
+  }
+
+  html.native-app .cards .stat .big {
+    font-size: 23px !important;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  html.native-app .portfolio-vip-grid {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  html.native-app .portfolio-vip-field,
+  html.native-app .portfolio-vip-button {
+    grid-column: auto !important;
+    width: 100% !important;
+  }
+
+  html.native-app input,
+  html.native-app select,
+  html.native-app textarea,
+  html.native-app .custom-select-trigger {
+    min-height: 48px !important;
+    border-radius: 14px !important;
+    font-size: 16px !important;
+  }
+
+  html.native-app .portfolio-finance-guest .btn {
+    width: 100%;
+    min-height: 48px;
+    border-radius: 14px;
+  }
+
+  /* Hide website-only PWA install card inside the native APK */
+  html.native-app #downloadAppSection {
+    display: none !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html.native-app .brand span {
+    max-width: 92px;
+    font-size: 13px !important;
+  }
+
+  html.native-app #authButtonsGroup .btn,
+  html.native-app #userHeaderDisplay .btn {
+    padding: 0 9px !important;
+    font-size: 10.5px !important;
+  }
+
+  html.native-app .user-header-identity {
+    max-width: 94px;
+  }
+}
 </style>
 
 </head>
@@ -4364,6 +4652,13 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
       <span id="installAppHelp">Android: tap Install App. iPhone: use Share → Add to Home Screen.</span>
     </div>
     <div id="installAppStatus" role="status" aria-live="polite"></div>
+    <div id="iosInstallHelp" class="pwa-ios-help">
+      <strong>نصب روی آیفون:</strong><br>
+      ۱) سایت را داخل Safari باز کنید.<br>
+      ۲) دکمه Share را بزنید.<br>
+      ۳) گزینه Add to Home Screen را انتخاب کنید.<br>
+      ۴) در صفحه بعد Add را بزنید.
+    </div>
   </div>
 </section>
 
@@ -12648,6 +12943,7 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   const title = document.getElementById("downloadAppTitle");
   const desc = document.getElementById("downloadAppDescription");
   const help = document.getElementById("installAppHelp");
+  const iosHelpBox = document.getElementById("iosInstallHelp");
 
   if (!btn || !status) return;
 
@@ -12722,6 +13018,10 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
 
     if (isiOS) {
       btn.disabled = false;
+      btn.textContent =
+        activeLanguage() === "fa"
+          ? "راهنمای نصب روی آیفون"
+          : c.button;
       help.textContent = c.helpIOS;
       status.textContent = c.iosStatus;
       return;
@@ -12756,6 +13056,9 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
 
     if (isiOS) {
       status.textContent = c.iosStatus;
+      if (iosHelpBox) {
+        iosHelpBox.classList.toggle("show");
+      }
       return;
     }
 
@@ -12784,6 +13087,56 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   }
 
   paintCopy();
+})();
+</script>
+
+
+<script id="native-app-navigation-helper">
+(function () {
+  function isNativeAppMode() {
+    return document.documentElement.classList.contains("native-app");
+  }
+
+  function centerActiveNativeNav() {
+    if (!isNativeAppMode()) return;
+
+    const nav = document.querySelector(".nav");
+    const active = nav?.querySelector("button.active");
+
+    if (!nav || !active) return;
+
+    const navRect = nav.getBoundingClientRect();
+    const buttonRect = active.getBoundingClientRect();
+
+    if (
+      buttonRect.left < navRect.left ||
+      buttonRect.right > navRect.right
+    ) {
+      active.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest"
+      });
+    }
+  }
+
+  const previousPageFunction = window.page;
+
+  if (typeof previousPageFunction === "function") {
+    window.page = function () {
+      const result = previousPageFunction.apply(this, arguments);
+      setTimeout(centerActiveNativeNav, 60);
+      return result;
+    };
+  }
+
+  window.addEventListener("load", function () {
+    setTimeout(centerActiveNativeNav, 200);
+  });
+
+  window.addEventListener("resize", function () {
+    setTimeout(centerActiveNativeNav, 100);
+  });
 })();
 </script>
 
