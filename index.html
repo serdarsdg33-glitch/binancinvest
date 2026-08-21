@@ -5088,6 +5088,123 @@ html.normal-web .portfolio-finance-scene {
 }
 </style>
 
+
+<style id="portfolio-app-split-background-v8">
+/* =========================================================
+   APP PORTFOLIO: TWO INDEPENDENT BACKGROUND ZONES
+   1) Top summary artwork = slightly zoomed, fixed by width.
+   2) Referral/VIP area = its own continuation artwork.
+   This prevents login/VIP content from resizing the top image.
+   ========================================================= */
+
+/* Wrapper is neutral on the normal website. */
+.portfolio-continuation-scene {
+  position: relative;
+  isolation: isolate;
+}
+
+.portfolio-continuation-scene > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Native app only */
+@media (max-width: 900px) {
+
+  /* TOP PORTFOLIO IMAGE
+     Slight 12% zoom, but still tied to width rather than height. */
+  html.native-app .portfolio-overview-scene {
+    background-size:
+      100% 100%,
+      112% auto !important;
+
+    background-position:
+      center center,
+      center top !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+
+    /* Top artwork is now independent of lower logged-in content. */
+    overflow: hidden !important;
+    border-radius: 20px 20px 14px 14px !important;
+  }
+
+  /* LOWER REFERRAL / VIP CONTINUATION
+     When you later upload portfolio-overview-continuation.webp,
+     the app automatically uses it.
+     Until then, portfolio-overview-app.webp is the visual fallback. */
+  html.native-app .portfolio-continuation-scene {
+    margin-top: 8px;
+    padding: 10px 9px 18px;
+    overflow: hidden;
+
+    background-color: #05070a;
+
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.10),
+        rgba(3,6,9,.20) 48%,
+        rgba(3,6,9,.14)
+      ),
+      url("portfolio-overview-continuation.webp?v=20260821-1"),
+      url("portfolio-overview-app.webp?v=20260821-4");
+
+    /*
+     * The image scale never depends on content height.
+     * If VIP rows make this section taller, the background
+     * repeats vertically instead of zooming or stretching.
+     */
+    background-size:
+      100% 100%,
+      100% auto,
+      100% auto;
+
+    background-position:
+      center center,
+      center top,
+      center bottom;
+
+    background-repeat:
+      no-repeat,
+      repeat-y,
+      repeat-y;
+
+    border-radius: 14px 14px 20px 20px;
+  }
+
+  /* Keep lower cards transparent enough to reveal continuation artwork. */
+  html.native-app .portfolio-continuation-scene .referral-portfolio-card,
+  html.native-app .portfolio-continuation-scene .vip-single-card,
+  html.native-app .portfolio-continuation-scene .portfolio-vip-quick {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(14,20,27,.38),
+        rgba(5,9,14,.26)
+      ) !important;
+
+    backdrop-filter: blur(1px) saturate(1.08);
+    -webkit-backdrop-filter: blur(1px) saturate(1.08);
+  }
+
+  /* Remove accidental gaps between the two visual zones. */
+  html.native-app .portfolio-overview-scene + .portfolio-continuation-scene {
+    margin-top: 8px !important;
+  }
+}
+
+/* Normal browser website keeps its existing backgrounds/sizing. */
+html:not(.native-app) .portfolio-continuation-scene,
+html.normal-web .portfolio-continuation-scene {
+  margin-top: 0;
+  padding: 0;
+  background: none !important;
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -5571,6 +5688,9 @@ html.normal-web .portfolio-finance-scene {
 <div class="portfolio-overview-scene">
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+</div>
+
+<div class="portfolio-continuation-scene">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
       <span class="muted" data-t="referralRewardsBalance">Referral rewards added to balance</span>
