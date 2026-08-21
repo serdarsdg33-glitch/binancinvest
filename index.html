@@ -5128,6 +5128,60 @@ html.native-app .live-withdrawals-video {
 }
 </style>
 
+
+<style id="support-delete-all-closed-v1">
+.support-tickets-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.support-tickets-title-row h2 {
+  margin: 0;
+}
+
+.support-delete-all-tickets {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 11px !important;
+  color: #ffb8be !important;
+  background: rgba(234,57,67,.085) !important;
+  border: 1px solid rgba(234,57,67,.38) !important;
+  border-radius: 10px !important;
+  font-size: 10.5px !important;
+  font-weight: 850 !important;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 5px 14px rgba(0,0,0,.20) !important;
+}
+
+.support-delete-all-tickets:hover {
+  color: #fff !important;
+  background: rgba(234,57,67,.15) !important;
+  border-color: rgba(255,100,110,.62) !important;
+}
+
+.support-delete-all-tickets:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+@media (max-width: 600px) {
+  .support-tickets-title-row {
+    align-items: center;
+  }
+
+  .support-delete-all-tickets {
+    min-height: 32px;
+    padding: 6px 9px !important;
+    font-size: 9.5px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -6003,7 +6057,18 @@ html.native-app .live-withdrawals-video {
         </div>
 
         <div class="card support-tickets">
-          <h2 data-t="myTickets">My Tickets</h2>
+          <div class="support-tickets-title-row">
+            <h2 data-t="myTickets">My Tickets</h2>
+            <button
+              id="deleteAllClosedTicketsBtn"
+              class="btn support-delete-all-tickets"
+              type="button"
+              style="display:none"
+              onclick="deleteAllClosedSupportTickets()"
+            >
+              Delete All
+            </button>
+          </div>
 
           <div id="supportTicketList" class="support-ticket-list">
             <div class="support-empty">
@@ -13578,15 +13643,15 @@ if (document.readyState === "loading") {
 function getSupportActionCopy(key) {
   const lang = localStorage.getItem("bi_lang") || "en";
   const copy = {
-    en:{deleted:"Ticket deleted successfully.",deleteTitle:"Delete closed ticket",deleteMessage:"Delete this closed ticket and its conversation permanently?",deleteButton:"Delete Ticket",closed:"Ticket closed successfully."},
-    fa:{deleted:"تیکت با موفقیت حذف شد.",deleteTitle:"حذف تیکت بسته‌شده",deleteMessage:"این تیکت بسته‌شده و گفت‌وگوی آن برای همیشه حذف شود؟",deleteButton:"حذف تیکت",closed:"تیکت با موفقیت بسته شد."},
-    ar:{deleted:"تم حذف التذكرة بنجاح.",deleteTitle:"حذف التذكرة المغلقة",deleteMessage:"هل تريد حذف هذه التذكرة المغلقة ومحادثتها نهائيًا؟",deleteButton:"حذف التذكرة",closed:"تم إغلاق التذكرة بنجاح."},
-    tr:{deleted:"Destek talebi silindi.",deleteTitle:"Kapalı talebi sil",deleteMessage:"Bu kapalı talep ve görüşme kalıcı olarak silinsin mi?",deleteButton:"Talebi Sil",closed:"Destek talebi kapatıldı."},
-    de:{deleted:"Ticket wurde gelöscht.",deleteTitle:"Geschlossenes Ticket löschen",deleteMessage:"Dieses geschlossene Ticket und den Verlauf dauerhaft löschen?",deleteButton:"Ticket löschen",closed:"Ticket wurde geschlossen."},
-    fr:{deleted:"Ticket supprimé.",deleteTitle:"Supprimer le ticket fermé",deleteMessage:"Supprimer définitivement ce ticket fermé et sa conversation ?",deleteButton:"Supprimer",closed:"Ticket fermé avec succès."},
-    es:{deleted:"Ticket eliminado.",deleteTitle:"Eliminar ticket cerrado",deleteMessage:"¿Eliminar permanentemente este ticket cerrado y su conversación?",deleteButton:"Eliminar ticket",closed:"Ticket cerrado correctamente."},
-    ru:{deleted:"Тикет удалён.",deleteTitle:"Удалить закрытый тикет",deleteMessage:"Навсегда удалить этот закрытый тикет и переписку?",deleteButton:"Удалить тикет",closed:"Тикет успешно закрыт."},
-    zh:{deleted:"工单已删除。",deleteTitle:"删除已关闭工单",deleteMessage:"永久删除此已关闭工单及其对话？",deleteButton:"删除工单",closed:"工单已关闭。"}
+    en:{deleted:"Ticket deleted successfully.",deleteTitle:"Delete closed ticket",deleteMessage:"Delete this closed ticket and its conversation permanently?",deleteButton:"Delete Ticket",closed:"Ticket closed successfully.",deleteAllButton:"Delete All",deleteAllTitle:"Delete all closed tickets",deleteAllMessage:"Permanently delete all closed tickets and their conversations?",deleteAllDone:"All closed tickets were deleted.",noClosedTickets:"There are no closed tickets to delete."},
+    fa:{deleted:"تیکت با موفقیت حذف شد.",deleteTitle:"حذف تیکت بسته‌شده",deleteMessage:"این تیکت بسته‌شده و گفت‌وگوی آن برای همیشه حذف شود؟",deleteButton:"حذف تیکت",closed:"تیکت با موفقیت بسته شد.",deleteAllButton:"حذف همه",deleteAllTitle:"حذف همه تیکت‌های بسته‌شده",deleteAllMessage:"همه تیکت‌های بسته‌شده و گفت‌وگوهای آن‌ها برای همیشه حذف شوند؟",deleteAllDone:"همه تیکت‌های بسته‌شده حذف شدند.",noClosedTickets:"تیکت بسته‌شده‌ای برای حذف وجود ندارد."},
+    ar:{deleted:"تم حذف التذكرة بنجاح.",deleteTitle:"حذف التذكرة المغلقة",deleteMessage:"هل تريد حذف هذه التذكرة المغلقة ومحادثتها نهائيًا؟",deleteButton:"حذف التذكرة",closed:"تم إغلاق التذكرة بنجاح.",deleteAllButton:"حذف الكل",deleteAllTitle:"حذف جميع التذاكر المغلقة",deleteAllMessage:"هل تريد حذف جميع التذاكر المغلقة ومحادثاتها نهائيًا؟",deleteAllDone:"تم حذف جميع التذاكر المغلقة.",noClosedTickets:"لا توجد تذاكر مغلقة للحذف."},
+    tr:{deleted:"Destek talebi silindi.",deleteTitle:"Kapalı talebi sil",deleteMessage:"Bu kapalı talep ve görüşme kalıcı olarak silinsin mi?",deleteButton:"Talebi Sil",closed:"Destek talebi kapatıldı.",deleteAllButton:"Tümünü Sil",deleteAllTitle:"Tüm kapalı talepleri sil",deleteAllMessage:"Tüm kapalı talepler ve konuşmaları kalıcı olarak silinsin mi?",deleteAllDone:"Tüm kapalı talepler silindi.",noClosedTickets:"Silinecek kapalı talep yok."},
+    de:{deleted:"Ticket wurde gelöscht.",deleteTitle:"Geschlossenes Ticket löschen",deleteMessage:"Dieses geschlossene Ticket und den Verlauf dauerhaft löschen?",deleteButton:"Ticket löschen",closed:"Ticket wurde geschlossen.",deleteAllButton:"Alle löschen",deleteAllTitle:"Alle geschlossenen Tickets löschen",deleteAllMessage:"Alle geschlossenen Tickets und Unterhaltungen dauerhaft löschen?",deleteAllDone:"Alle geschlossenen Tickets wurden gelöscht.",noClosedTickets:"Keine geschlossenen Tickets zum Löschen."},
+    fr:{deleted:"Ticket supprimé.",deleteTitle:"Supprimer le ticket fermé",deleteMessage:"Supprimer définitivement ce ticket fermé et sa conversation ?",deleteButton:"Supprimer",closed:"Ticket fermé avec succès.",deleteAllButton:"Tout supprimer",deleteAllTitle:"Supprimer tous les tickets fermés",deleteAllMessage:"Supprimer définitivement tous les tickets fermés et leurs conversations ?",deleteAllDone:"Tous les tickets fermés ont été supprimés.",noClosedTickets:"Aucun ticket fermé à supprimer."},
+    es:{deleted:"Ticket eliminado.",deleteTitle:"Eliminar ticket cerrado",deleteMessage:"¿Eliminar permanentemente este ticket cerrado y su conversación?",deleteButton:"Eliminar ticket",closed:"Ticket cerrado correctamente.",deleteAllButton:"Eliminar todo",deleteAllTitle:"Eliminar todos los tickets cerrados",deleteAllMessage:"¿Eliminar permanentemente todos los tickets cerrados y sus conversaciones?",deleteAllDone:"Se eliminaron todos los tickets cerrados.",noClosedTickets:"No hay tickets cerrados para eliminar."},
+    ru:{deleted:"Тикет удалён.",deleteTitle:"Удалить закрытый тикет",deleteMessage:"Навсегда удалить этот закрытый тикет и переписку?",deleteButton:"Удалить тикет",closed:"Тикет успешно закрыт.",deleteAllButton:"Удалить все",deleteAllTitle:"Удалить все закрытые тикеты",deleteAllMessage:"Навсегда удалить все закрытые тикеты и их переписку?",deleteAllDone:"Все закрытые тикеты удалены.",noClosedTickets:"Нет закрытых тикетов для удаления."},
+    zh:{deleted:"工单已删除。",deleteTitle:"删除已关闭工单",deleteMessage:"永久删除此已关闭工单及其对话？",deleteButton:"删除工单",closed:"工单已关闭。",deleteAllButton:"全部删除",deleteAllTitle:"删除所有已关闭工单",deleteAllMessage:"永久删除所有已关闭工单及其对话？",deleteAllDone:"所有已关闭工单均已删除。",noClosedTickets:"没有可删除的已关闭工单。"}
   };
   return (copy[lang] || copy.en)[key] || copy.en[key] || "";
 }
@@ -13719,6 +13784,218 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
     if (button) button.disabled = false;
   }
 };
+
+function updateDeleteAllClosedTicketsButton() {
+  const button = document.getElementById("deleteAllClosedTicketsBtn");
+  const list = document.getElementById("supportTicketList");
+  if (!button || !list) return;
+
+  button.textContent = getSupportActionCopy("deleteAllButton");
+
+  if (!currentUser?.id) {
+    button.style.display = "none";
+    return;
+  }
+
+  const hasClosedTicket = Boolean(
+    list.querySelector(".support-ticket-item .support-status.closed")
+  );
+
+  button.style.display = hasClosedTicket ? "inline-flex" : "none";
+}
+
+function requestSupportDeleteAllConfirmation() {
+  const modal = document.getElementById("supportCloseConfirmModal");
+  const title = document.getElementById("supportCloseConfirmTitle");
+  const message = document.getElementById("supportCloseConfirmMessage");
+  const cancelButton = document.getElementById("supportCloseCancelBtn");
+  const confirmButton = document.getElementById("supportCloseConfirmBtn");
+
+  if (!modal || !cancelButton || !confirmButton) {
+    return Promise.resolve(false);
+  }
+
+  if (title) title.textContent = getSupportActionCopy("deleteAllTitle");
+  if (message) message.textContent = getSupportActionCopy("deleteAllMessage");
+
+  cancelButton.textContent =
+    typeof tr === "function" ? tr("cancel") : "Cancel";
+
+  confirmButton.textContent =
+    getSupportActionCopy("deleteAllButton");
+
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+
+  return new Promise(resolve => {
+    let finished = false;
+
+    const finish = result => {
+      if (finished) return;
+      finished = true;
+
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+
+      document.removeEventListener("keydown", onKeyDown);
+      resolve(result);
+    };
+
+    const onKeyDown = event => {
+      if (event.key === "Escape") finish(false);
+    };
+
+    cancelButton.onclick = () => finish(false);
+    confirmButton.onclick = () => finish(true);
+
+    modal.onclick = event => {
+      if (event.target === modal) finish(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    requestAnimationFrame(() => confirmButton.focus());
+  });
+}
+
+window.deleteAllClosedSupportTickets =
+async function deleteAllClosedSupportTickets() {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const button = document.getElementById(
+    "deleteAllClosedTicketsBtn"
+  );
+
+  if (button) button.disabled = true;
+
+  try {
+    const { data: tickets, error: readError } =
+      await supabaseClient
+        .from("support_tickets")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .eq("status", "closed");
+
+    if (readError) throw readError;
+
+    const ticketIds = (tickets || [])
+      .map(item => item.id)
+      .filter(Boolean);
+
+    if (!ticketIds.length) {
+      showSupportListNotice(
+        getSupportActionCopy("noClosedTickets")
+      );
+      return;
+    }
+
+    const confirmed =
+      await requestSupportDeleteAllConfirmation();
+
+    if (!confirmed) return;
+
+    const { error: messageDeleteError } =
+      await supabaseClient
+        .from("support_messages")
+        .delete()
+        .in("ticket_id", ticketIds);
+
+    if (messageDeleteError) {
+      throw messageDeleteError;
+    }
+
+    const { error: ticketDeleteError } =
+      await supabaseClient
+        .from("support_tickets")
+        .delete()
+        .eq("user_id", currentUser.id)
+        .eq("status", "closed")
+        .in("id", ticketIds);
+
+    if (ticketDeleteError) {
+      throw ticketDeleteError;
+    }
+
+    if (
+      activeSupportTicketId &&
+      ticketIds.includes(activeSupportTicketId)
+    ) {
+      activeSupportTicketId = null;
+      resetSupportChat();
+    }
+
+    if (supportPerformanceState) {
+      supportPerformanceState.ticketSignature = "";
+
+      ticketIds.forEach(ticketId => {
+        supportPerformanceState.messageSignatures
+          ?.delete(ticketId);
+      });
+    }
+
+    markSupportNotificationsSeen();
+
+    await loadSupportTickets({ silent: true });
+
+    showSupportListNotice(
+      getSupportActionCopy("deleteAllDone")
+    );
+
+    updateDeleteAllClosedTicketsButton();
+
+  } catch (error) {
+    console.error(
+      "Delete all closed tickets error:",
+      error
+    );
+
+    showSupportListNotice(
+      localizedBackendError(
+        error,
+        "supportRequestFailed"
+      ),
+      "error"
+    );
+  } finally {
+    if (button) button.disabled = false;
+  }
+};
+
+(function initDeleteAllClosedTicketsButton() {
+  function start() {
+    const list = document.getElementById("supportTicketList");
+    if (!list) return;
+
+    updateDeleteAllClosedTicketsButton();
+
+    new MutationObserver(
+      updateDeleteAllClosedTicketsButton
+    ).observe(list, {
+      childList: true,
+      subtree: true
+    });
+
+    new MutationObserver(
+      updateDeleteAllClosedTicketsButton
+    ).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang", "dir"]
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      start,
+      { once: true }
+    );
+  } else {
+    start();
+  }
+})();
+
 </script>
 
 
