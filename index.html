@@ -13809,23 +13809,56 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
 </script>
 
 <style id="native-app-media-fit-clean-final-guard">
-/* Single final APK guard.
-   Keeps long page artwork proportional and prevents late legacy
-   mobile rules from restoring 100% x 100% stretching. */
+/* =========================================================
+   APK FINAL MEDIA GUARD
+   App-only: background artwork fills the complete container.
+   Normal web layout is not changed.
+   ========================================================= */
+
+/* Long app page/portfolio backgrounds:
+   image layer matches the full card/section size, so no empty
+   lower half remains when authenticated content makes it taller. */
 html.native-app .portfolio-overview-scene,
 html.native-app .portfolio-finance-scene,
 html.native-app #rewards,
 html.native-app #profile,
 html.native-app #support,
 html.native-app #transactions {
-  background-size: 100% 100%, 100% auto !important;
-  background-position: center top, center top !important;
+  background-size: 100% 100%, 100% 100% !important;
+  background-position: center center, center center !important;
   background-repeat: no-repeat, no-repeat !important;
   background-attachment: scroll, scroll !important;
   background-color: #030609 !important;
 }
 
-/* Keep video rendering proportional in the APK. */
+/* Other app artwork/cards fill their own cards cleanly. */
+html.native-app .hero,
+html.native-app .top-markets-showcase,
+html.native-app .referral-home-card,
+html.native-app .stat-circle-card,
+html.native-app #homePlans > .plan,
+html.native-app #plans > .plan,
+html.native-app .vip-lock-card,
+html.native-app .footer-section,
+html.native-app .site-footer {
+  background-size: 100% 100%, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position: center center, center center !important;
+}
+
+/* Real image elements remain inside their boxes. */
+html.native-app .referral-home-gift img,
+html.native-app .custom-select-trigger img,
+html.native-app .custom-option img,
+html.native-app .coin img,
+html.native-app .security-brand-circle img {
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  image-rendering: auto !important;
+}
+
+/* Videos keep filling their authored frames. */
 html.native-app .homepage-vault-video video,
 html.native-app .live-withdrawals-video {
   width: 100% !important;
