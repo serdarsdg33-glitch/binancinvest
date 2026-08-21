@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0e11">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Invest App">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/app-icon-192.png">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>Binance Invest</title>
@@ -4016,6 +4023,72 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
   100% { opacity:0; transform:translate3d(-50%,-100px,0) scale(1); }
 }
 </style>
+
+<style id="pwa-install-section-style">
+  #downloadAppSection{
+    margin:28px 0 8px;
+    padding:0 16px;
+  }
+  .pwa-install-card{
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(240,185,11,.28);
+    border-radius:20px;
+    padding:24px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(240,185,11,.13), transparent 36%),
+      rgba(17,22,29,.78);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+  .pwa-install-card h2{
+    margin:0 0 8px;
+    font-size:clamp(21px,4vw,30px);
+    color:#fff;
+  }
+  .pwa-install-card p{
+    margin:0 0 18px;
+    color:#b7c0cc;
+    line-height:1.75;
+    max-width:760px;
+  }
+  .pwa-install-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+  #installAppBtn{
+    border:0;
+    border-radius:12px;
+    min-height:46px;
+    padding:0 20px;
+    font-weight:800;
+    cursor:pointer;
+    background:#f0b90b;
+    color:#0b0e11;
+  }
+  #installAppBtn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
+  #installAppHelp{
+    color:#8f9aa7;
+    font-size:13px;
+    line-height:1.65;
+  }
+  #installAppStatus{
+    margin-top:12px;
+    min-height:20px;
+    color:#d7dde5;
+    font-size:13px;
+  }
+  @media(max-width:600px){
+    .pwa-install-card{padding:19px}
+    #installAppBtn{width:100%}
+  }
+</style>
+
 </head>
 <body>
 <header>
@@ -4279,6 +4352,21 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
         <a href="mailto:support@binancinvest.com">support@binancinvest.com</a>
         <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">◉ <span data-t="onlineChat">Online Chat</span></button>
     </div>
+
+<section id="downloadAppSection" aria-labelledby="downloadAppTitle">
+  <div class="pwa-install-card">
+    <h2 id="downloadAppTitle">Download App</h2>
+    <p id="downloadAppDescription">
+      Install the mobile version on your phone. It opens the same online account and keeps the website features and updates.
+    </p>
+    <div class="pwa-install-actions">
+      <button id="installAppBtn" type="button">Install App</button>
+      <span id="installAppHelp">Android: tap Install App. iPhone: use Share → Add to Home Screen.</span>
+    </div>
+    <div id="installAppStatus" role="status" aria-live="polite"></div>
+  </div>
+</section>
+
     <footer class="site-footer">
       <div class="site-footer-inner">
         <div class="site-footer-top">
@@ -12548,6 +12636,155 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
     if (button) button.disabled = false;
   }
 };
+</script>
+
+
+<script id="pwa-install-script">
+(() => {
+  let deferredInstallPrompt = null;
+
+  const btn = document.getElementById("installAppBtn");
+  const status = document.getElementById("installAppStatus");
+  const title = document.getElementById("downloadAppTitle");
+  const desc = document.getElementById("downloadAppDescription");
+  const help = document.getElementById("installAppHelp");
+
+  if (!btn || !status) return;
+
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone =
+    window.matchMedia?.("(display-mode: standalone)")?.matches ||
+    window.navigator.standalone === true;
+
+  const copy = {
+    en: {
+      title: "Download App",
+      desc: "Install the mobile version on your phone. It opens the same online account and keeps the website features and updates.",
+      button: "Install App",
+      helpAndroid: "Android: tap Install App.",
+      helpIOS: "iPhone: tap Share, then Add to Home Screen.",
+      installed: "The app is already installed on this device.",
+      iosStatus: "On iPhone, use Safari: Share → Add to Home Screen.",
+      waiting: "Installation will be available when your browser recognizes the app."
+    },
+    fa: {
+      title: "دانلود برنامه",
+      desc: "نسخه موبایل را روی گوشی نصب کنید. برنامه همان حساب آنلاین و امکانات سایت را نمایش می‌دهد و تغییرات سایت را دریافت می‌کند.",
+      button: "نصب برنامه",
+      helpAndroid: "اندروید: روی نصب برنامه بزنید.",
+      helpIOS: "آیفون: Share را بزنید و Add to Home Screen را انتخاب کنید.",
+      installed: "برنامه روی این دستگاه نصب شده است.",
+      iosStatus: "در آیفون با Safari گزینه Share → Add to Home Screen را بزنید.",
+      waiting: "وقتی مرورگر برنامه را شناسایی کند گزینه نصب فعال می‌شود."
+    },
+    az: {
+      title: "Tətbiqi yüklə",
+      desc: "Mobil versiyanı telefonunuza quraşdırın. Tətbiq eyni onlayn hesabı və sayt imkanlarını göstərir.",
+      button: "Tətbiqi quraşdır",
+      helpAndroid: "Android: Tətbiqi quraşdır düyməsinə toxunun.",
+      helpIOS: "iPhone: Share → Add to Home Screen seçin.",
+      installed: "Tətbiq artıq bu cihazda quraşdırılıb.",
+      iosStatus: "iPhone-da Safari ilə Share → Add to Home Screen seçin.",
+      waiting: "Brauzer tətbiqi tanıdıqda quraşdırma aktiv olacaq."
+    },
+    tr: {
+      title: "Uygulamayı İndir",
+      desc: "Mobil sürümü telefonunuza yükleyin. Uygulama aynı çevrimiçi hesabı ve site özelliklerini açar.",
+      button: "Uygulamayı Yükle",
+      helpAndroid: "Android: Uygulamayı Yükle'ye dokunun.",
+      helpIOS: "iPhone: Paylaş → Ana Ekrana Ekle seçin.",
+      installed: "Uygulama bu cihazda zaten yüklü.",
+      iosStatus: "iPhone'da Safari: Paylaş → Ana Ekrana Ekle.",
+      waiting: "Tarayıcı uygulamayı tanıdığında yükleme etkinleşir."
+    }
+  };
+
+  function activeLanguage() {
+    const lang =
+      (document.documentElement.lang || "en")
+        .toLowerCase()
+        .split("-")[0];
+    return copy[lang] ? lang : "en";
+  }
+
+  function paintCopy() {
+    const c = copy[activeLanguage()];
+    title.textContent = c.title;
+    desc.textContent = c.desc;
+    btn.textContent = c.button;
+
+    if (isStandalone) {
+      btn.disabled = true;
+      help.textContent = "";
+      status.textContent = c.installed;
+      return;
+    }
+
+    if (isiOS) {
+      btn.disabled = false;
+      help.textContent = c.helpIOS;
+      status.textContent = c.iosStatus;
+      return;
+    }
+
+    help.textContent = c.helpAndroid;
+    if (!deferredInstallPrompt) {
+      status.textContent = c.waiting;
+    }
+  }
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    btn.disabled = false;
+    status.textContent = "";
+    paintCopy();
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    paintCopy();
+  });
+
+  btn.addEventListener("click", async () => {
+    const c = copy[activeLanguage()];
+
+    if (isStandalone) {
+      status.textContent = c.installed;
+      return;
+    }
+
+    if (isiOS) {
+      status.textContent = c.iosStatus;
+      return;
+    }
+
+    if (!deferredInstallPrompt) {
+      status.textContent = c.waiting;
+      return;
+    }
+
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    paintCopy();
+  });
+
+  new MutationObserver(paintCopy).observe(
+    document.documentElement,
+    { attributes: true, attributeFilter: ["lang"] }
+  );
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch((error) => {
+        console.warn("Service worker registration failed:", error);
+      });
+    });
+  }
+
+  paintCopy();
+})();
 </script>
 
 </body>
