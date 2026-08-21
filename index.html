@@ -5019,6 +5019,115 @@ html.native-app .live-withdrawals-video {
 }
 </style>
 
+
+<style id="vip-contract-list-collapse-v1">
+/* =========================================================
+   VIP CONTRACT LIST — COMPACT / EXPAND
+   Keeps Portfolio short when many VIP contracts exist.
+   ========================================================= */
+
+.vip-contract-list-toggle {
+  margin-top: 12px;
+  min-height: 34px;
+  padding: 7px 12px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #ffe58a;
+  background: rgba(240,185,11,.08);
+  border: 1px solid rgba(240,185,11,.34);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.vip-contract-list-toggle:hover {
+  color: #fff3b8;
+  border-color: rgba(255,229,138,.58);
+  background: rgba(240,185,11,.13);
+}
+
+.vip-contract-list-toggle-icon {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+  transition: transform .22s ease;
+}
+
+.vip-contract-list-toggle[aria-expanded="true"]
+.vip-contract-list-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Default compact list. It remains scrollable inside the VIP card. */
+.vip-contract-tablebox.vip-list-compact {
+  max-height: 430px !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* Full list when the user explicitly expands it. */
+.vip-contract-tablebox.vip-list-expanded {
+  max-height: none !important;
+  overflow-y: visible !important;
+  overflow-x: auto !important;
+}
+
+/* Keep column titles visible while scrolling a compact list. */
+.vip-contract-tablebox.vip-list-compact
+.vip-contract-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: rgba(8,12,17,.97);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Subtle cue that more contracts continue below. */
+.vip-contract-tablebox.vip-list-compact::after {
+  content: "";
+  position: sticky;
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22px;
+  margin-top: -22px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(5,9,14,.78)
+  );
+  z-index: 3;
+}
+
+@media (max-width: 600px) {
+  .vip-contract-list-toggle {
+    width: 100%;
+    min-height: 38px;
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .vip-contract-tablebox.vip-list-compact {
+    max-height: 410px !important;
+  }
+}
+
+/* App: slightly smaller compact window because of fixed bottom navigation. */
+@media (max-width: 600px) {
+  html.native-app .vip-contract-tablebox.vip-list-compact {
+    max-height: 380px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -5524,6 +5633,17 @@ html.native-app .live-withdrawals-video {
       <p class="muted" data-t="vipListDesc">
         All VIP contracts are displayed in one unified list.
       </p>
+
+      <button
+        id="vipContractListToggle"
+        class="btn vip-contract-list-toggle"
+        type="button"
+        aria-expanded="false"
+        onclick="toggleVipContractList()"
+      >
+        <span id="vipContractListToggleText">Show all</span>
+        <span class="vip-contract-list-toggle-icon" aria-hidden="true">⌄</span>
+      </button>
     </div>
 
     <div class="vip-single-summary">
@@ -5544,7 +5664,7 @@ html.native-app .live-withdrawals-video {
     </div>
   </div>
 
-  <div class="tablebox vip-contract-tablebox">
+  <div id="vipContractTableBox" class="tablebox vip-contract-tablebox vip-list-compact">
     <table class="table vip-contract-table">
       <thead>
         <tr>
@@ -13881,6 +14001,118 @@ html.native-app .live-withdrawals-container.has-video {
   aspect-ratio: 512 / 634 !important;
 }
 </style>
+
+
+<script id="vip-contract-list-collapse-js">
+(function () {
+  const vipToggleLabels = {
+    en: { compact: "Show all contracts", expanded: "Make list smaller" },
+    fa: { compact: "نمایش همه قراردادها", expanded: "کوچک کردن لیست" },
+    ar: { compact: "عرض كل العقود", expanded: "تصغير القائمة" },
+    tr: { compact: "Tüm sözleşmeleri göster", expanded: "Listeyi küçült" },
+    az: { compact: "Bütün müqavilələri göstər", expanded: "Siyahını kiçilt" },
+    ru: { compact: "Показать все договоры", expanded: "Свернуть список" },
+    zh: { compact: "显示全部合约", expanded: "收起列表" },
+    es: { compact: "Mostrar todos los contratos", expanded: "Reducir lista" },
+    fr: { compact: "Afficher tous les contrats", expanded: "Réduire la liste" },
+    de: { compact: "Alle Verträge anzeigen", expanded: "Liste verkleinern" }
+  };
+
+  function currentVipToggleLanguage() {
+    const lang = String(
+      document.documentElement.lang ||
+      localStorage.getItem("bi_lang") ||
+      "en"
+    ).toLowerCase();
+
+    return vipToggleLabels[lang] ? lang : "en";
+  }
+
+  window.updateVipContractListToggle = function () {
+    const box = document.getElementById("vipContractTableBox");
+    const button = document.getElementById("vipContractListToggle");
+    const label = document.getElementById("vipContractListToggleText");
+
+    if (!box || !button || !label) return;
+
+    const expanded = box.classList.contains("vip-list-expanded");
+    const copy = vipToggleLabels[currentVipToggleLanguage()];
+
+    label.textContent = expanded ? copy.expanded : copy.compact;
+    button.setAttribute("aria-expanded", String(expanded));
+  };
+
+  window.toggleVipContractList = function () {
+    const box = document.getElementById("vipContractTableBox");
+    if (!box) return;
+
+    const willExpand = !box.classList.contains("vip-list-expanded");
+
+    box.classList.toggle("vip-list-expanded", willExpand);
+    box.classList.toggle("vip-list-compact", !willExpand);
+
+    if (!willExpand) {
+      box.scrollTop = 0;
+    }
+
+    window.updateVipContractListToggle();
+  };
+
+  function updateVipToggleVisibility() {
+    const button = document.getElementById("vipContractListToggle");
+    const body = document.getElementById("vipPortfolioContracts");
+    const box = document.getElementById("vipContractTableBox");
+
+    if (!button || !body || !box) return;
+
+    const contractRows = Array.from(body.children).filter(row =>
+      row.tagName === "TR" &&
+      !row.querySelector(".vip-empty-row")
+    );
+
+    /* With four or fewer contracts there is no reason to show the control. */
+    button.style.display =
+      contractRows.length > 4 ? "inline-flex" : "none";
+
+    if (contractRows.length <= 4) {
+      box.classList.remove("vip-list-expanded");
+      box.classList.add("vip-list-compact");
+    }
+
+    window.updateVipContractListToggle();
+  }
+
+  function startVipCollapseObserver() {
+    const body = document.getElementById("vipPortfolioContracts");
+    if (!body) return;
+
+    updateVipToggleVisibility();
+
+    new MutationObserver(updateVipToggleVisibility).observe(body, {
+      childList: true,
+      subtree: false
+    });
+
+    new MutationObserver(window.updateVipContractListToggle).observe(
+      document.documentElement,
+      {
+        attributes: true,
+        attributeFilter: ["lang", "dir"]
+      }
+    );
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      startVipCollapseObserver,
+      { once: true }
+    );
+  } else {
+    startVipCollapseObserver();
+  }
+})();
+</script>
 
 </body>
 </html>
