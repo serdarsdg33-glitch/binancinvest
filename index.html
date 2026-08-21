@@ -13748,38 +13748,44 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   const ticketId = activeSupportTicketId;
   const button = document.getElementById("deleteTicketBtn");
   if (button) button.disabled = true;
+
   try {
-    const { data:ticket, error:ticketReadError } = await supabaseClient
-      .from("support_tickets")
-      .select("id,status")
-      .eq("id", ticketId)
-      .eq("user_id", currentUser.id)
-      .single();
-    if (ticketReadError) throw ticketReadError;
-    if (ticket.status !== "closed") throw new Error("Only closed tickets can be deleted.");
+    const { data, error } = await supabaseClient.rpc(
+      "delete_my_closed_support_ticket",
+      { p_ticket_id: ticketId }
+    );
 
-    const { error:messageDeleteError } = await supabaseClient
-      .from("support_messages")
-      .delete()
-      .eq("ticket_id", ticketId);
-    if (messageDeleteError) throw messageDeleteError;
+    if (error) throw error;
 
-    const { error:ticketDeleteError } = await supabaseClient
-      .from("support_tickets")
-      .delete()
-      .eq("id", ticketId)
-      .eq("user_id", currentUser.id)
-      .eq("status", "closed");
-    if (ticketDeleteError) throw ticketDeleteError;
+    const deletedCount = Number(data || 0);
+    if (deletedCount < 1) {
+      throw new Error("Closed ticket was not deleted.");
+    }
 
     activeSupportTicketId = null;
     supportPerformanceState?.messageSignatures?.delete(ticketId);
+    supportPerformanceState.ticketSignature = "";
+
     resetSupportChat();
+    markSupportNotificationsSeen();
+
     await loadSupportTickets({ silent:true });
     showSupportListNotice(getSupportActionCopy("deleted"));
+
   } catch (error) {
-    console.error("Delete ticket error:", error);
-    showSupportInlineNotice(localizedBackendError(error, "supportRequestFailed"), "error");
+    console.error("Delete ticket RPC error:", error);
+
+    const msg = String(error?.message || error || "");
+    const missingRpc =
+      /delete_my_closed_support_ticket/i.test(msg) &&
+      /(function|schema cache|does not exist|not found)/i.test(msg);
+
+    showSupportInlineNotice(
+      missingRpc
+        ? "Delete function is not installed in Supabase yet."
+        : localizedBackendError(error, "supportRequestFailed"),
+      "error"
+    );
   } finally {
     if (button) button.disabled = false;
   }
@@ -13864,81 +13870,36 @@ async function deleteAllClosedSupportTickets() {
     return;
   }
 
-  const button = document.getElementById(
-    "deleteAllClosedTicketsBtn"
-  );
-
+  const button = document.getElementById("deleteAllClosedTicketsBtn");
   if (button) button.disabled = true;
 
   try {
-    const { data: tickets, error: readError } =
-      await supabaseClient
-        .from("support_tickets")
-        .select("id")
-        .eq("user_id", currentUser.id)
-        .eq("status", "closed");
+    const confirmed = await requestSupportDeleteAllConfirmation();
+    if (!confirmed) return;
 
-    if (readError) throw readError;
+    const { data, error } = await supabaseClient.rpc(
+      "delete_all_my_closed_support_tickets"
+    );
 
-    const ticketIds = (tickets || [])
-      .map(item => item.id)
-      .filter(Boolean);
+    if (error) throw error;
 
-    if (!ticketIds.length) {
+    const deletedCount = Number(data || 0);
+
+    if (deletedCount < 1) {
       showSupportListNotice(
         getSupportActionCopy("noClosedTickets")
       );
       return;
     }
 
-    const confirmed =
-      await requestSupportDeleteAllConfirmation();
+    activeSupportTicketId = null;
+    supportPerformanceState.ticketSignature = "";
+    supportPerformanceState.messageSignatures?.clear();
 
-    if (!confirmed) return;
-
-    const { error: messageDeleteError } =
-      await supabaseClient
-        .from("support_messages")
-        .delete()
-        .in("ticket_id", ticketIds);
-
-    if (messageDeleteError) {
-      throw messageDeleteError;
-    }
-
-    const { error: ticketDeleteError } =
-      await supabaseClient
-        .from("support_tickets")
-        .delete()
-        .eq("user_id", currentUser.id)
-        .eq("status", "closed")
-        .in("id", ticketIds);
-
-    if (ticketDeleteError) {
-      throw ticketDeleteError;
-    }
-
-    if (
-      activeSupportTicketId &&
-      ticketIds.includes(activeSupportTicketId)
-    ) {
-      activeSupportTicketId = null;
-      resetSupportChat();
-    }
-
-    if (supportPerformanceState) {
-      supportPerformanceState.ticketSignature = "";
-
-      ticketIds.forEach(ticketId => {
-        supportPerformanceState.messageSignatures
-          ?.delete(ticketId);
-      });
-    }
-
+    resetSupportChat();
     markSupportNotificationsSeen();
 
-    await loadSupportTickets({ silent: true });
-
+    await loadSupportTickets({ silent:true });
     showSupportListNotice(
       getSupportActionCopy("deleteAllDone")
     );
@@ -13946,16 +13907,17 @@ async function deleteAllClosedSupportTickets() {
     updateDeleteAllClosedTicketsButton();
 
   } catch (error) {
-    console.error(
-      "Delete all closed tickets error:",
-      error
-    );
+    console.error("Delete all closed tickets RPC error:", error);
+
+    const msg = String(error?.message || error || "");
+    const missingRpc =
+      /delete_all_my_closed_support_tickets/i.test(msg) &&
+      /(function|schema cache|does not exist|not found)/i.test(msg);
 
     showSupportListNotice(
-      localizedBackendError(
-        error,
-        "supportRequestFailed"
-      ),
+      missingRpc
+        ? "Delete function is not installed in Supabase yet."
+        : localizedBackendError(error, "supportRequestFailed"),
       "error"
     );
   } finally {
