@@ -6057,7 +6057,7 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
   </svg>
 </div>
             <div class="stat-circle-info">
-  <div class="stat-circle-value" id="active-online-users">900</div>
+  <div class="stat-circle-value" id="active-online-users">325,000</div>
   <div class="stat-circle-label" data-t="statInvestors">سرمایه‌گذاران و کاربران آنلاین</div>
 </div>
         </div>
@@ -15524,31 +15524,90 @@ document.addEventListener("DOMContentLoaded", function() {
     // ۲. منطق کاربران فعال و آنلاین (نوسان طبیعی)
     // ==========================================
     const onlineUsersElement = document.getElementById("active-online-users");
+
     if (onlineUsersElement) {
-        // عدد پایه تصادفی در هر بار ورود: بین 300 تا 1500 نفر
-        const baseOnlineUsers =
-            Math.floor(Math.random() * (1500 - 300 + 1)) + 300;
+        // بازه اصلی موردنظر:
+        // حداقل: 250,000
+        // محدوده غالب: 250,000 تا 500,000
+        // سقف نهایی: 800,000
+        const MIN_ONLINE = 250000;
+        const MAIN_MAX_ONLINE = 500000;
+        const ABSOLUTE_MAX_ONLINE = 800000;
 
-        let currentOnlineUsers = baseOnlineUsers;
+        // هر بار ورود، عدد اولیه داخل بازه اصلی انتخاب می‌شود.
+        let currentOnlineUsers =
+            Math.floor(
+                Math.random() *
+                (MAIN_MAX_ONLINE - MIN_ONLINE + 1)
+            ) + MIN_ONLINE;
 
-        onlineUsersElement.innerText =
-            currentOnlineUsers.toLocaleString('en-US');
-
-        // هر ۲ ثانیه فقط 100 تا 500 نفر نسبت به عدد پایه کم یا زیاد شود.
-        // نوسان تجمعی نیست؛ بنابراین پرش‌های خیلی بزرگ ایجاد نمی‌شود.
-        setInterval(() => {
-            const movement =
-                Math.floor(Math.random() * (500 - 100 + 1)) + 100;
-
-            const direction =
-                Math.random() < 0.5 ? -1 : 1;
-
-            currentOnlineUsers =
-                Math.max(1, baseOnlineUsers + (direction * movement));
-
+        function renderOnlineUsers() {
             onlineUsersElement.innerText =
-                currentOnlineUsers.toLocaleString('en-US');
-        }, 2000);
+                Math.round(currentOnlineUsers).toLocaleString("en-US");
+        }
+
+        function updateOnlineUsers() {
+            /*
+             * بیشتر اوقات عدد بین 250k و 500k می‌ماند.
+             * اگر از 500k بالاتر رفت، تمایل بیشتری برای برگشت دارد.
+             * گاهی هم می‌تواند تا سقف 800k بالا برود.
+             */
+
+            let minStep;
+            let maxStep;
+            let direction;
+
+            if (currentOnlineUsers < MAIN_MAX_ONLINE) {
+                // داخل محدوده اصلی:
+                // تغییرات نرم‌تر و بیشتر رو به بالا/پایین معمولی
+                minStep = 1200;
+                maxStep = 9000;
+
+                // نزدیک کف، احتمال بالا رفتن بیشتر می‌شود.
+                if (currentOnlineUsers < 300000) {
+                    direction = Math.random() < 0.78 ? 1 : -1;
+                }
+                // نزدیک 500k، کمی احتمال پایین آمدن بیشتر است.
+                else if (currentOnlineUsers > 460000) {
+                    direction = Math.random() < 0.42 ? 1 : -1;
+                }
+                else {
+                    direction = Math.random() < 0.52 ? 1 : -1;
+                }
+            } else {
+                // بالای 500k:
+                // هنوز امکان افزایش وجود دارد، ولی بیشتر به سمت محدوده اصلی برمی‌گردد.
+                minStep = 2500;
+                maxStep = 15000;
+                direction = Math.random() < 0.28 ? 1 : -1;
+            }
+
+            const step =
+                Math.floor(Math.random() * (maxStep - minStep + 1)) + minStep;
+
+            currentOnlineUsers += direction * step;
+
+            // حدود 8 درصد مواقع، یک جهش کنترل‌شده رو به بالا ایجاد می‌شود.
+            if (Math.random() < 0.08) {
+                const spike =
+                    Math.floor(Math.random() * (35000 - 10000 + 1)) + 10000;
+
+                currentOnlineUsers += spike;
+            }
+
+            // هیچ‌وقت از 250 هزار کمتر و از 800 هزار بیشتر نشود.
+            currentOnlineUsers = Math.max(
+                MIN_ONLINE,
+                Math.min(ABSOLUTE_MAX_ONLINE, currentOnlineUsers)
+            );
+
+            renderOnlineUsers();
+        }
+
+        renderOnlineUsers();
+
+        // هر 2 ثانیه یک تغییر نرم انجام شود.
+        setInterval(updateOnlineUsers, 2000);
     }
 });
 </script>
