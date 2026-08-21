@@ -10653,9 +10653,63 @@ async function refreshSecureAccount() {
     await supabaseClient.auth.getSession();
 
   if (sessionData.session?.user) {
-    await loadAuthenticatedUser(sessionData.session.user);
+    /*
+     * Always force a fresh profile read here.
+     * Without force:true, loadAuthenticatedUser() can return the
+     * already-cached currentUser and the portfolio keeps showing
+     * the pre-withdrawal balance.
+     */
+    await loadAuthenticatedUser(
+      sessionData.session.user,
+      { force: true }
+    );
   }
 }
+
+/*
+ * Keep the customer portfolio synchronized with admin decisions.
+ * - Pending withdrawal: reserved amount disappears from portfolio.
+ * - Approved withdrawal: it stays deducted.
+ * - Rejected withdrawal: restored funds appear again automatically.
+ */
+let financialStateSyncRunning = false;
+
+async function syncFinancialStateFromServer() {
+  if (
+    financialStateSyncRunning ||
+    document.hidden ||
+    !currentUser?.id
+  ) {
+    return;
+  }
+
+  financialStateSyncRunning = true;
+
+  try {
+    await refreshSecureAccount();
+
+    if (typeof loadTransactions === "function") {
+      await loadTransactions();
+    }
+  } catch (error) {
+    console.warn(
+      "Financial state synchronization failed:",
+      error
+    );
+  } finally {
+    financialStateSyncRunning = false;
+  }
+}
+
+setInterval(() => {
+  void syncFinancialStateFromServer();
+}, 5000);
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    void syncFinancialStateFromServer();
+  }
+});
 
 /* Secure deposit request */
 window.submitDepositRequest = async function () {
