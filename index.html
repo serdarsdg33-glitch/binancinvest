@@ -6,22 +6,38 @@
 <script id="native-app-mode-detector">
 (function () {
   try {
-    const params = new URLSearchParams(window.location.search);
-
     /*
-     * App styling is enabled ONLY for the current URL when ?app=1 exists.
-     * Nothing is saved in localStorage, so normal browser visits
-     * can never inherit the native-app mode.
+     * HARD WEB / APP SEPARATION
+     *
+     * The Android Capacitor app appends:
+     *   InvestNativeApp/1.0
+     * to its WebView user-agent.
+     *
+     * A normal Safari/Chrome visit does not have this token,
+     * so it can NEVER inherit native-app styling.
+     *
+     * Also remove the obsolete stored mode from older builds.
      */
-    const isNativeApp = params.get("app") === "1";
+    try {
+      localStorage.removeItem("native_app_mode");
+    } catch (_) {}
+
+    const isNativeApp =
+      navigator.userAgent.includes("InvestNativeApp/1.0");
 
     document.documentElement.classList.toggle(
       "native-app",
       isNativeApp
     );
+
+    document.documentElement.classList.toggle(
+      "normal-web",
+      !isNativeApp
+    );
   } catch (error) {
     document.documentElement.classList.remove("native-app");
-    console.warn("Native app mode detection failed:", error);
+    document.documentElement.classList.add("normal-web");
+    console.warn("Native app detection failed:", error);
   }
 })();
 </script>
@@ -4920,6 +4936,49 @@ html.native-app .portfolio-overview-scene {
       rgba(3,6,9,.12)
     ),
     url("portfolio-overview-app.webp?v=20260821-2") !important;
+
+  background-size: cover, cover !important;
+  background-position: center top, center top !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+</style>
+
+
+<style id="portfolio-hard-web-app-separation-v6">
+/* =========================================================
+   HARD PORTFOLIO BACKGROUND SEPARATION
+   Browser: original website image
+   Capacitor Android app: app-specific image
+   ========================================================= */
+
+/* WEBSITE — Safari / Chrome / PWA browser */
+html.normal-web .portfolio-overview-scene,
+html:not(.native-app) .portfolio-overview-scene {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(3,6,9,.08),
+      rgba(3,6,9,.18) 52%,
+      rgba(3,6,9,.12)
+    ),
+    url("portfolio-overview-v2.webp?v=web-20260821-3") !important;
+
+  /* Restore the website's own behavior instead of the app sizing. */
+  background-size: cover, cover !important;
+  background-position: center center, center center !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+
+/* NATIVE ANDROID APK ONLY */
+html.native-app .portfolio-overview-scene {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(3,6,9,.08),
+      rgba(3,6,9,.18) 52%,
+      rgba(3,6,9,.12)
+    ),
+    url("portfolio-overview-app.webp?v=app-20260821-3") !important;
 
   background-size: cover, cover !important;
   background-position: center top, center top !important;
