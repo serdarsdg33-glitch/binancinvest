@@ -22,8 +22,41 @@
       localStorage.removeItem("native_app_mode");
     } catch (_) {}
 
+    /*
+     * Native mode can be selected in three reliable ways:
+     * 1) the Android WebView user-agent token;
+     * 2) Capacitor's local protocol;
+     * 3) an explicit ?app=1 fallback for APK builds whose
+     *    WebView does not keep the custom user-agent.
+     *
+     * ?app=0 is an escape hatch that always forces web mode.
+     */
+    const appModeParameter = new URLSearchParams(
+      window.location.search
+    ).get("app");
+
+    const hasNativeUserAgent =
+      /InvestNativeApp\/1\.0/i.test(navigator.userAgent);
+
+    const hasCapacitorProtocol =
+      window.location.protocol === "capacitor:";
+
+    const hasCapacitorBridge = Boolean(
+      window.Capacitor &&
+      typeof window.Capacitor.isNativePlatform === "function" &&
+      window.Capacitor.isNativePlatform()
+    );
+
     const isNativeApp =
-      navigator.userAgent.includes("InvestNativeApp/1.0");
+      appModeParameter === "1" ||
+      (
+        appModeParameter !== "0" &&
+        (
+          hasNativeUserAgent ||
+          hasCapacitorProtocol ||
+          hasCapacitorBridge
+        )
+      );
 
     document.documentElement.classList.toggle(
       "native-app",
@@ -34,6 +67,9 @@
       "normal-web",
       !isNativeApp
     );
+
+    document.documentElement.dataset.runtime =
+      isNativeApp ? "native-app" : "web";
   } catch (error) {
     document.documentElement.classList.remove("native-app");
     document.documentElement.classList.add("normal-web");
@@ -4951,6 +4987,172 @@ html.native-app .portfolio-app-lower {
 }
 </style>
 
+<style id="native-app-media-fit-v5">
+/* =========================================================
+   NATIVE APP MEDIA FIT V5 — FINAL OVERRIDE
+
+   The website keeps its existing, approved layout. These
+   rules run only when <html> has the native-app class.
+
+   Important: artwork is never stretched with 100% 100%.
+   Card art uses proportional cover; long page art is scaled
+   by width and continues over the page without cover-zoom.
+   ========================================================= */
+
+html.native-app {
+  --app-media-surface: #030609;
+}
+
+/* Long portrait scenes: preserve the image ratio. The first
+   size belongs to the dark readability gradient; the second
+   belongs to the real artwork. */
+html.native-app .portfolio-overview-scene,
+html.native-app .portfolio-finance-scene,
+html.native-app #rewards,
+html.native-app #profile,
+html.native-app #support,
+html.native-app #transactions {
+  background-size: 100% 100%, 100% auto !important;
+  background-position: center top, center top !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-attachment: scroll, scroll !important;
+  background-color: var(--app-media-surface) !important;
+}
+
+/* Compact cards: fill the app card while preserving the
+   artwork's aspect ratio. This removes oval icons and warped
+   geometry caused by the old 100% 100% rule. */
+html.native-app .hero,
+html.native-app .top-markets-showcase,
+html.native-app .referral-home-card,
+html.native-app .stat-circle-card,
+html.native-app #homePlans > .plan,
+html.native-app #plans > .plan,
+html.native-app .vip-lock-card,
+html.native-app .footer-section,
+html.native-app .site-footer,
+html.native-app .live-withdrawals-container.has-demo-image {
+  background-size: 100% 100%, cover !important;
+  background-position: center, center !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-attachment: scroll, scroll !important;
+  background-color: var(--app-media-surface) !important;
+}
+
+/* Keep the artwork focal point on the right side of plan
+   cards, where the source images were designed to sit. */
+html.native-app #homePlans > .plan,
+html.native-app #plans > .plan {
+  background-position: center, 58% center !important;
+}
+
+html.native-app .vip-lock-card {
+  background-position: center, 64% center !important;
+}
+
+/* Touch browsers can leave :hover active. Never enlarge the
+   native artwork on tap. */
+html.native-app .hero:hover,
+html.native-app .top-markets-showcase:hover,
+html.native-app .referral-home-card:hover,
+html.native-app .stat-circle-card:hover,
+html.native-app #homePlans > .plan:hover,
+html.native-app #plans > .plan:hover,
+html.native-app .vip-lock-card:hover {
+  background-size: 100% 100%, cover !important;
+}
+
+html.native-app #homePlans > .plan:hover,
+html.native-app #plans > .plan:hover {
+  background-position: center, 58% center !important;
+}
+
+html.native-app .vip-lock-card:hover {
+  background-position: center, 64% center !important;
+}
+
+/* Real image elements keep their native proportions. The
+   earlier broad img[width][height] rule is deliberately not
+   repeated here, so unrelated UI images are not resized. */
+html.native-app .referral-home-gift img,
+html.native-app .custom-select-trigger img,
+html.native-app .custom-option img,
+html.native-app .coin img,
+html.native-app .security-brand-circle img {
+  max-width: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  image-rendering: auto !important;
+}
+
+/* Preserve every video's authored frame ratio in the APK.
+   The portrait withdrawal video fills its matching portrait
+   card; the cinematic videos remain true 16:9. */
+html.native-app .homepage-vault-video {
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+}
+
+html.native-app .homepage-vault-video video {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+html.native-app .why-binance-video {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+html.native-app .live-withdrawals-container.has-video {
+  width: min(760px, 100%) !important;
+  height: auto !important;
+  aspect-ratio: 512 / 634 !important;
+  overflow: hidden !important;
+}
+
+html.native-app .live-withdrawals-video {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+@media (max-width: 520px) {
+  /* Re-assert only proportional fitting against legacy phone
+     rules; never restore the old stretching behaviour. */
+  html.native-app .portfolio-overview-scene,
+  html.native-app .portfolio-finance-scene,
+  html.native-app #rewards,
+  html.native-app #profile,
+  html.native-app #support,
+  html.native-app #transactions {
+    background-size: 100% 100%, 100% auto !important;
+    background-position: center top, center top !important;
+  }
+
+  html.native-app .hero,
+  html.native-app .top-markets-showcase,
+  html.native-app .referral-home-card,
+  html.native-app .stat-circle-card,
+  html.native-app .footer-section,
+  html.native-app .site-footer,
+  html.native-app .live-withdrawals-container.has-demo-image {
+    background-size: 100% 100%, cover !important;
+    background-position: center, center !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -5131,6 +5333,8 @@ html.native-app .portfolio-app-lower {
 </div>
 </div>
 
+</div><!-- /.stats-vertical-stack -->
+
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
   <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
@@ -5289,7 +5493,8 @@ html.native-app .portfolio-app-lower {
         </div>
       </div>
     </footer>
-</div>
+</div><!-- /security-and-contact wrapper -->
+</div><!-- /.footer-section -->
 </section>
 
 <section id="markets" class="view"><div class="title"><h2 data-t="markets">Markets</h2><input id="search" placeholder="Search BTC, ETH..." oninput="renderTable()"></div><div class="card tablebox"><table class="table"><thead><tr><th>★</th><th data-t="thAsset">Asset</th><th data-t="thPrice">Price</th><th data-t="th24h">24h</th><th data-t="thCap">Market Cap</th><th data-t="thVol">Volume</th></tr></thead><tbody id="marketTable"></tbody></table></div></section>
@@ -13736,6 +13941,57 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   });
 })();
 </script>
+
+<style id="native-app-media-fit-final-guard">
+/* This guard intentionally lives at the end of the file so
+   late legacy styles cannot reintroduce stretching in APK. */
+html.native-app .portfolio-overview-scene,
+html.native-app .portfolio-finance-scene,
+html.native-app #rewards,
+html.native-app #profile,
+html.native-app #support,
+html.native-app #transactions {
+  background-size: 100% 100%, 100% auto !important;
+  background-position: center top, center top !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-color: #030609 !important;
+}
+
+html.native-app .hero,
+html.native-app .top-markets-showcase,
+html.native-app .referral-home-card,
+html.native-app .stat-circle-card,
+html.native-app #homePlans > .plan,
+html.native-app #plans > .plan,
+html.native-app .vip-lock-card,
+html.native-app .footer-section,
+html.native-app .site-footer {
+  background-size: 100% 100%, cover !important;
+  background-repeat: no-repeat, no-repeat !important;
+}
+
+html.native-app .homepage-vault-video video,
+html.native-app .live-withdrawals-video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+html.native-app .why-binance-video {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+html.native-app .live-withdrawals-container.has-video {
+  height: auto !important;
+  aspect-ratio: 512 / 634 !important;
+}
+</style>
 
 </body>
 </html>
