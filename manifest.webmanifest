@@ -1,7 +1,6 @@
 {
   "name": "binancinvest",
   "short_name": "binancinvest",
-  "description": "Mobile access to the binancinvest online dashboard.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
