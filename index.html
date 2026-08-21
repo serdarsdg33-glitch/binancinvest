@@ -8,14 +8,19 @@
   try {
     const params = new URLSearchParams(window.location.search);
 
-    if (params.get("app") === "1") {
-      localStorage.setItem("native_app_mode", "1");
-    }
+    /*
+     * App styling is enabled ONLY for the current URL when ?app=1 exists.
+     * Nothing is saved in localStorage, so normal browser visits
+     * can never inherit the native-app mode.
+     */
+    const isNativeApp = params.get("app") === "1";
 
-    if (localStorage.getItem("native_app_mode") === "1") {
-      document.documentElement.classList.add("native-app");
-    }
+    document.documentElement.classList.toggle(
+      "native-app",
+      isNativeApp
+    );
   } catch (error) {
+    document.documentElement.classList.remove("native-app");
     console.warn("Native app mode detection failed:", error);
   }
 })();
@@ -4888,6 +4893,37 @@ html.native-app {
     background-position: center top, center top !important;
     background-repeat: no-repeat, no-repeat !important;
   }
+}
+</style>
+
+
+<style id="portfolio-web-app-background-separation-fix">
+/* Normal browser always keeps the original website image. */
+html:not(.native-app) .portfolio-overview-scene {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(3,6,9,.08),
+      rgba(3,6,9,.18) 52%,
+      rgba(3,6,9,.12)
+    ),
+    url("portfolio-overview-v2.webp?v=20260819-1") !important;
+}
+
+/* Only the Android app (?app=1) uses the app-specific image. */
+html.native-app .portfolio-overview-scene {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(3,6,9,.08),
+      rgba(3,6,9,.18) 52%,
+      rgba(3,6,9,.12)
+    ),
+    url("portfolio-overview-app.webp?v=20260821-2") !important;
+
+  background-size: cover, cover !important;
+  background-position: center top, center top !important;
+  background-repeat: no-repeat, no-repeat !important;
 }
 </style>
 
