@@ -2536,7 +2536,7 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .live-withdrawals-container.has-video{width:min(760px,100vw);height:auto;aspect-ratio:512/634;margin:0 auto;padding:0;overflow:hidden;isolation:isolate;background:#030507;border:0;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.58),0 0 30px rgba(240,185,11,.08)}
 .live-withdrawals-video-bg{display:none}.live-withdrawals-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .live-withdrawals-container.has-video::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(2,4,7,.14),transparent 22%,transparent 78%,rgba(2,4,7,.14)),linear-gradient(0deg,rgba(2,4,7,.28),transparent 19%,transparent 81%,rgba(2,4,7,.24))}
-.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){position:absolute;z-index:3;top:0;right:auto;bottom:auto;left:50%;width:min(680px,calc(100% - 28px));min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0;padding:10px 18px 10px 11px;overflow:hidden;color:#fff;background:linear-gradient(105deg,rgba(11,17,23,.58),rgba(20,27,35,.33));border:1px solid rgba(255,229,138,.25);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 -1px 0 rgba(240,185,11,.06),0 10px 30px rgba(0,0,0,.30),0 0 18px rgba(240,185,11,.07);backdrop-filter:blur(13px) saturate(1.25);-webkit-backdrop-filter:blur(13px) saturate(1.25);animation:withdrawalGlassFlow 18s linear forwards;will-change:transform,opacity}
+.live-withdrawals-container.has-video .live-withdraw,.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){position:absolute;z-index:3;top:0;right:auto;bottom:auto;left:50%;width:min(680px,calc(100% - 28px));min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0;padding:10px 18px 10px 11px;overflow:hidden;color:#fff;background:linear-gradient(105deg,rgba(11,17,23,.58),rgba(20,27,35,.33));border:1px solid rgba(255,229,138,.25);border-radius:999px;box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 -1px 0 rgba(240,185,11,.06),0 10px 30px rgba(0,0,0,.30),0 0 18px rgba(240,185,11,.07);backdrop-filter:blur(13px) saturate(1.25);-webkit-backdrop-filter:blur(13px) saturate(1.25);animation:withdrawalGlassFlow var(--withdraw-duration,20.6s) linear forwards;will-change:transform,opacity}
 .live-withdrawals-container.has-video .live-withdraw::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,rgba(255,255,255,.10),transparent 24%,transparent 72%,rgba(240,185,11,.055))}.live-withdrawals-container.has-video .live-withdraw::after{display:none}
 .live-withdrawals-container.has-video .live-withdraw>div:first-child{position:relative;z-index:1;flex:1;min-width:0;display:flex!important;align-items:center!important;padding:0;background:transparent;filter:none}
 .live-withdrawals-container.has-video .live-avatar{width:50px!important;height:50px!important;min-width:50px!important;color:#fff0a0!important;font-size:15px!important;font-weight:950!important;background:radial-gradient(circle at 29% 22%,rgba(255,255,255,.31),rgba(240,185,11,.13) 32%,rgba(8,13,18,.48) 72%)!important;border:1px solid rgba(255,229,138,.72)!important;box-shadow:inset 2px 2px 7px rgba(255,255,255,.18),inset -5px -6px 12px rgba(0,0,0,.36),0 0 0 4px rgba(240,185,11,.065),0 0 19px rgba(240,185,11,.28)!important;text-shadow:0 0 10px rgba(255,225,91,.55);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
@@ -5182,6 +5182,51 @@ html.native-app .live-withdrawals-video {
 }
 </style>
 
+
+<style id="profile-nav-vertical-align-fix">
+/* Small optical alignment fix for the Profile navigation label. */
+.nav button[data-page="profile"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.nav button[data-page="profile"] .profile-nav-label {
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  line-height: 1 !important;
+}
+</style>
+
+
+<style id="live-withdrawals-performance-v2">
+/* Keep the video on its own composited layer and reduce unnecessary repaints. */
+.live-withdrawals-container.has-video {
+  contain: layout paint style;
+}
+
+.live-withdrawals-video {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Moving rows do not need expensive blur effects; the final design is transparent. */
+.live-withdrawals-container.has-video .live-withdraw {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* On phones, slightly reduce shadow workload without changing the visible design. */
+@media (max-width: 600px) {
+  .live-withdrawals-container.has-video .live-avatar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -5242,7 +5287,9 @@ html.native-app .live-withdrawals-video {
     <span id="supportNavBadge" class="support-nav-badge" hidden aria-label="New support reply">!</span>
   </button>
 
-  <button data-page="profile" onclick="page('profile',this)" data-t="profile">Profile</button>
+  <button data-page="profile" onclick="page('profile',this)">
+    <span class="profile-nav-label" data-t="profile">Profile</span>
+  </button>
 </nav>
 
 <section id="home" class="view active">
@@ -5366,7 +5413,12 @@ html.native-app .live-withdrawals-video {
 
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
-  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
+  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video"
+    autoplay muted loop playsinline webkit-playsinline
+    preload="auto"
+    poster="live-withdrawals-demo.jpg"
+    disablepictureinpicture disableremoteplayback
+    aria-hidden="true">
     <source src="live-withdrawals-smooth.mp4" type="video/mp4">
   </video>
   <div class="live-withdrawals-overlay-title">
@@ -8105,7 +8157,7 @@ function addLiveWithdrawal() {
   div.className = "live-withdraw";
   div.style.setProperty(
     "--withdraw-duration",
-    `${(10.4 + Math.random() * 0.8).toFixed(2)}s`
+    `${(20.2 + Math.random() * 0.7).toFixed(2)}s`
   );
 
   div.innerHTML = `
@@ -8129,7 +8181,7 @@ function addLiveWithdrawal() {
   const withdrawalItems =
     list.querySelectorAll(".live-withdraw");
 
-  if (withdrawalItems.length > 6) {
+  if (withdrawalItems.length > 5) {
     withdrawalItems[
       0
     ].remove();
@@ -8137,7 +8189,7 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 600);
-setInterval(addLiveWithdrawal, 1650);
+setInterval(addLiveWithdrawal, 1550);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -14350,6 +14402,149 @@ html.native-app .live-withdrawals-container.has-video {
   } else {
     startVipCollapseObserver();
   }
+})();
+</script>
+
+
+<script id="live-withdrawals-video-performance-v2">
+(function () {
+  const video = document.getElementById("liveWithdrawalsVideo");
+  const section = document.querySelector(".live-withdrawals-container.has-video");
+  const home = document.getElementById("home");
+
+  if (!video || !section) return;
+
+  video.muted = true;
+  video.playsInline = true;
+
+  let inViewport = false;
+  let retryTimer = null;
+  let lastReloadAt = 0;
+
+  function homeIsActive() {
+    return !home || home.classList.contains("active");
+  }
+
+  async function safePlay() {
+    if (
+      document.hidden ||
+      !inViewport ||
+      !homeIsActive()
+    ) {
+      return;
+    }
+
+    try {
+      const result = video.play();
+      if (result && typeof result.catch === "function") {
+        await result.catch(() => {});
+      }
+    } catch (_) {}
+  }
+
+  function pauseWhenNotNeeded() {
+    if (
+      document.hidden ||
+      !inViewport ||
+      !homeIsActive()
+    ) {
+      video.pause();
+      return true;
+    }
+    return false;
+  }
+
+  const observer = new IntersectionObserver(
+    entries => {
+      const entry = entries[0];
+      inViewport = Boolean(
+        entry &&
+        entry.isIntersecting &&
+        entry.intersectionRatio > 0.06
+      );
+
+      if (!pauseWhenNotNeeded()) {
+        safePlay();
+      }
+    },
+    {
+      threshold: [0, 0.06, 0.2]
+    }
+  );
+
+  observer.observe(section);
+
+  document.addEventListener("visibilitychange", () => {
+    if (!pauseWhenNotNeeded()) {
+      safePlay();
+    }
+  });
+
+  /* If WebView/Safari temporarily stalls, first try a cheap resume.
+     Only reload after a longer repeated stall, and never repeatedly. */
+  function recoverFromStall() {
+    clearTimeout(retryTimer);
+
+    retryTimer = window.setTimeout(async () => {
+      if (pauseWhenNotNeeded()) return;
+
+      if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+        await safePlay();
+        return;
+      }
+
+      const now = Date.now();
+
+      if (now - lastReloadAt > 12000) {
+        lastReloadAt = now;
+        const keepTime = Number.isFinite(video.currentTime)
+          ? video.currentTime
+          : 0;
+
+        try {
+          video.load();
+
+          video.addEventListener(
+            "loadedmetadata",
+            () => {
+              try {
+                if (
+                  keepTime > 0 &&
+                  Number.isFinite(video.duration) &&
+                  keepTime < video.duration
+                ) {
+                  video.currentTime = keepTime;
+                }
+              } catch (_) {}
+
+              safePlay();
+            },
+            { once: true }
+          );
+        } catch (_) {
+          safePlay();
+        }
+      } else {
+        safePlay();
+      }
+    }, 900);
+  }
+
+  video.addEventListener("waiting", recoverFromStall);
+  video.addEventListener("stalled", recoverFromStall);
+  video.addEventListener("suspend", () => {
+    if (!document.hidden && inViewport) safePlay();
+  });
+
+  video.addEventListener("canplay", () => {
+    clearTimeout(retryTimer);
+    safePlay();
+  });
+
+  video.addEventListener("ended", () => {
+    try { video.currentTime = 0; } catch (_) {}
+    safePlay();
+  });
 })();
 </script>
 
