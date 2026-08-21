@@ -4868,6 +4868,29 @@ html.native-app {
 }
 </style>
 
+
+<style id="native-app-separate-portfolio-background">
+/* App uses its own correctly proportioned portfolio image.
+   Normal browser site keeps portfolio-overview-v2.webp unchanged. */
+@media (max-width: 900px) {
+  html.native-app .portfolio-overview-scene {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.08),
+        rgba(3,6,9,.18) 52%,
+        rgba(3,6,9,.12)
+      ),
+      url("portfolio-overview-app.webp?v=20260821-1") !important;
+
+    /* Never stretch the artwork. */
+    background-size: cover, cover !important;
+    background-position: center top, center top !important;
+    background-repeat: no-repeat, no-repeat !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
