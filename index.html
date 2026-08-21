@@ -10831,11 +10831,17 @@ if (amount > availableBalance) {
       "insufficient available balance"
     )
   ) {
-    showWithdrawalError(tr("smallerWithdrawalAmount", {
-      amount: formatPortfolioMoney(getMainAvailableBalance())
-    }));
+    showWithdrawalError(
+      errorMessage ||
+      tr("smallerWithdrawalAmount", {
+        amount: formatPortfolioMoney(getMainAvailableBalance())
+      })
+    );
   } else {
-    showWithdrawalError(tr("withdrawRequestFailed"));
+    showWithdrawalError(
+      errorMessage ||
+      tr("withdrawRequestFailed")
+    );
   }
 
   return;
