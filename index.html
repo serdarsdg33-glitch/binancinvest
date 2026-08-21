@@ -4986,6 +4986,108 @@ html.native-app .portfolio-overview-scene {
 }
 </style>
 
+
+<style id="portfolio-background-stable-login-v7">
+/* =========================================================
+   PORTFOLIO BACKGROUND STABLE SIZE
+   The artwork scale is tied to container WIDTH, not HEIGHT.
+   So showing authenticated sections no longer zooms/stretches
+   either the overview image or the deposit/finance image.
+   ========================================================= */
+
+/* WEB + APP: keep gradient filling the whole scene,
+   while the actual image preserves its own aspect ratio. */
+.portfolio-overview-scene {
+  background-size:
+    100% 100%,
+    100% auto !important;
+
+  background-position:
+    center center,
+    center top !important;
+
+  background-repeat:
+    no-repeat,
+    no-repeat !important;
+
+  background-color:#05070a !important;
+}
+
+.portfolio-finance-scene {
+  background-size:
+    100% 100%,
+    100% auto !important;
+
+  background-position:
+    center center,
+    center top !important;
+
+  background-repeat:
+    no-repeat,
+    no-repeat !important;
+
+  background-color:#05070a !important;
+}
+
+/* Native app keeps its own top artwork but follows the SAME
+   non-zoom scaling rule after login. */
+html.native-app .portfolio-overview-scene {
+  background-size:
+    100% 100%,
+    100% auto !important;
+
+  background-position:
+    center center,
+    center top !important;
+}
+
+/* Normal browser keeps its original web artwork and the same
+   stable sizing rule. */
+html:not(.native-app) .portfolio-overview-scene,
+html.normal-web .portfolio-overview-scene {
+  background-size:
+    100% 100%,
+    100% auto !important;
+
+  background-position:
+    center center,
+    center top !important;
+}
+
+/* Deposit/withdraw image also stays fixed to width when its
+   authenticated controls increase the scene height. */
+html.native-app .portfolio-finance-scene,
+html:not(.native-app) .portfolio-finance-scene,
+html.normal-web .portfolio-finance-scene {
+  background-size:
+    100% 100%,
+    100% auto !important;
+
+  background-position:
+    center center,
+    center top !important;
+}
+
+/* Important on small phones: override older mobile rules that
+   used cover or 100% 100% for the image layer. */
+@media (max-width: 900px) {
+  .portfolio-overview-scene,
+  .portfolio-finance-scene,
+  html.native-app .portfolio-overview-scene,
+  html.native-app .portfolio-finance-scene,
+  html:not(.native-app) .portfolio-overview-scene,
+  html:not(.native-app) .portfolio-finance-scene {
+    background-size:
+      100% 100%,
+      100% auto !important;
+
+    background-position:
+      center center,
+      center top !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
