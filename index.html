@@ -6668,6 +6668,7 @@ const vipPlanLabels = {
 };
 
 let currentInvestments = [];
+let currentWithdrawalPrincipalOffset = 0;
 let portfolioTimer = null;
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
@@ -8368,6 +8369,53 @@ async function loadInvestments() {
 
   currentInvestments = data || [];
 }
+
+/*
+ * Withdrawal principal adjustment:
+ * request_withdrawal already reduces the user's available/total balance.
+ * The investment rows themselves stay unchanged, so the Invested card used
+ * to keep showing the old principal. We mirror every non-rejected withdrawal
+ * against the displayed regular invested principal.
+ */
+async function loadWithdrawalPrincipalOffset() {
+  if (!currentUser?.id) {
+    currentWithdrawalPrincipalOffset = 0;
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("financial_requests")
+    .select("amount,status,request_type")
+    .eq("user_id", currentUser.id)
+    .eq("request_type", "withdrawal");
+
+  if (error) {
+    console.error(
+      "Load withdrawal principal offset error:",
+      error
+    );
+    currentWithdrawalPrincipalOffset = 0;
+    return;
+  }
+
+  currentWithdrawalPrincipalOffset = (data || []).reduce(
+    (total, item) => {
+      const status = String(item.status || "pending").toLowerCase();
+
+      if (
+        status === "rejected" ||
+        status === "cancelled" ||
+        status === "canceled"
+      ) {
+        return total;
+      }
+
+      const amount = Number(item.amount || 0);
+      return total + (Number.isFinite(amount) && amount > 0 ? amount : 0);
+    },
+    0
+  );
+}
 function formatVipRemainingTime(endsAt) {
   const endTime = new Date(endsAt).getTime();
 
@@ -8677,12 +8725,23 @@ function renderPortfolioLive() {
       )
     );
 
-  const investedPrincipal =
+  const rawInvestedPrincipal =
     regularInvestments.reduce(
       (total, item) =>
         total + Number(item.principal || 0),
       0
     );
+
+  /*
+   * A withdrawal must reduce both Total Balance (handled by the backend)
+   * and the Invested figure by the same amount.
+   * Profit remains independent from the withdrawal.
+   */
+  const investedPrincipal = Math.max(
+    0,
+    rawInvestedPrincipal -
+      Number(currentWithdrawalPrincipalOffset || 0)
+  );
 
   const totalProfit =
     regularInvestments.reduce(
@@ -8767,7 +8826,10 @@ async function updatePortfolio() {
     portfolioTimer = null;
   }
 
-  await loadInvestments();
+  await Promise.all([
+    loadInvestments(),
+    loadWithdrawalPrincipalOffset()
+  ]);
   renderPortfolioLive();
 
   portfolioTimer = setInterval(() => {
