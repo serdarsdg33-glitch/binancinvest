@@ -4091,7 +4091,7 @@ html[dir="rtl"] .support-ai-typing{border-bottom-left-radius:14px;border-bottom-
 .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n) {
   animation:
     withdrawalNamesUp
-    var(--withdraw-duration,18.8s)
+    var(--withdraw-duration,19s)
     linear
     forwards !important;
 }
@@ -8194,7 +8194,7 @@ function addLiveWithdrawal() {
   div.className = "live-withdraw";
   div.style.setProperty(
     "--withdraw-duration",
-    `${(18.6 + Math.random() * 0.8).toFixed(2)}s`
+    `${(18.8 + Math.random() * 0.6).toFixed(2)}s`
   );
 
   const startY = Math.max(
@@ -8228,17 +8228,15 @@ function addLiveWithdrawal() {
   const withdrawalItems =
     list.querySelectorAll(".live-withdraw");
 
-  if (withdrawalItems.length > 12) {
+  if (withdrawalItems.length > 5) {
     withdrawalItems[
       0
     ].remove();
   }
 }
 
-setTimeout(addLiveWithdrawal, 180);
-setTimeout(addLiveWithdrawal, 850);
-setTimeout(addLiveWithdrawal, 1520);
-setInterval(addLiveWithdrawal, 1450);
+setTimeout(addLiveWithdrawal, 300);
+setInterval(addLiveWithdrawal, 3900);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -14631,6 +14629,26 @@ html.native-app .live-withdrawals-container.has-video {
 .live-withdrawals-feed .live-withdraw {
   display: flex !important;
   visibility: visible !important;
+}
+</style>
+
+
+<style id="live-withdrawals-max-five-v4">
+/* Maximum five moving withdrawal names in the visual frame. */
+.live-withdrawals-feed {
+  overflow: hidden !important;
+}
+
+/* Keep each row compact but not crowded. */
+.live-withdrawals-feed .live-withdraw {
+  min-height: 86px !important;
+}
+
+/* On phones keep the row proportions comfortable. */
+@media (max-width: 600px) {
+  .live-withdrawals-feed .live-withdraw {
+    min-height: 82px !important;
+  }
 }
 </style>
 
