@@ -4377,6 +4377,238 @@ html.native-app {
 }
 </style>
 
+
+<style id="native-app-layout-fix-v2">
+/* =========================================================
+   APP MODE LAYOUT FIX V2
+   Fixes header truncation + bottom-nav overlap.
+   Only affects ?app=1 / native-app mode.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  html.native-app {
+    --native-app-header-h: 78px;
+    --native-app-nav-h: 76px;
+  }
+
+  /* Header: keep everything inside one clean row */
+  html.native-app header {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 7px !important;
+    min-height: var(--native-app-header-h) !important;
+    padding:
+      calc(8px + var(--native-safe-top))
+      10px
+      8px
+      10px !important;
+  }
+
+  html.native-app .brand {
+    min-width: 0 !important;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  html.native-app .brand span {
+    display: block;
+    max-width: none !important;
+    width: 100%;
+    font-size: 13px !important;
+    line-height: 1.15;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  html.native-app .binance-floating-logo {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    min-height: 29px !important;
+  }
+
+  html.native-app #languageTrigger {
+    min-height: 36px !important;
+    padding: 7px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  html.native-app #authButtonsGroup {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+    justify-items: stretch;
+    min-width: 88px;
+  }
+
+  html.native-app #authButtonsGroup .btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 29px !important;
+    height: 29px !important;
+    padding: 0 8px !important;
+    border-radius: 10px !important;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+  }
+
+  html.native-app #userHeaderDisplay {
+    min-width: 92px;
+    max-width: 116px;
+  }
+
+  html.native-app .user-header-identity {
+    max-width: 100px !important;
+  }
+
+  /* Main content must never sit behind the bottom navigation */
+  html.native-app body {
+    padding-bottom: calc(104px + var(--native-safe-bottom)) !important;
+  }
+
+  html.native-app .wrap {
+    padding-bottom: calc(104px + var(--native-safe-bottom)) !important;
+  }
+
+  html.native-app .view.active {
+    padding-bottom: 18px !important;
+  }
+
+  /* Bottom navigation: horizontal scroller, never compress items */
+  html.native-app .nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px !important;
+    min-height: 66px !important;
+    height: auto !important;
+  }
+
+  html.native-app .nav button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 86px !important;
+    max-width: none !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+    scroll-snap-align: center;
+  }
+
+  html.native-app .nav button [data-support-label] {
+    white-space: nowrap !important;
+  }
+
+  html.native-app .support-nav-badge {
+    position: static !important;
+    margin-inline-start: 5px;
+    flex: 0 0 auto;
+  }
+
+  /* Give page sections breathing room above fixed nav */
+  html.native-app #home,
+  html.native-app #markets,
+  html.native-app #invest,
+  html.native-app #portfolio,
+  html.native-app #transactions,
+  html.native-app #rewards,
+  html.native-app #support,
+  html.native-app #profile {
+    padding-bottom: 18px !important;
+  }
+
+  /* Prevent cards/grids from overflowing each other */
+  html.native-app .plans,
+  html.native-app .coins,
+  html.native-app .portfolio-grid,
+  html.native-app .stats-vertical-stack {
+    min-width: 0 !important;
+  }
+
+  html.native-app .plans > *,
+  html.native-app .coins > *,
+  html.native-app .portfolio-grid > *,
+  html.native-app .cards > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Market cards: stable two-column grid */
+  html.native-app .coins {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  html.native-app .coin {
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Investment cards: one per row in app mode */
+  html.native-app .plans {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Long numbers/text should wrap instead of pushing neighboring cards */
+  html.native-app .big,
+  html.native-app .stat-circle-value,
+  html.native-app .coin-price,
+  html.native-app .referral-home-content,
+  html.native-app .plan {
+    min-width: 0 !important;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 420px) {
+  html.native-app header {
+    grid-template-columns: minmax(92px, 1fr) auto 82px !important;
+    gap: 5px !important;
+  }
+
+  html.native-app .brand span {
+    font-size: 12px !important;
+  }
+
+  html.native-app #languageTrigger {
+    padding: 6px 7px !important;
+    font-size: 10px !important;
+  }
+
+  html.native-app #authButtonsGroup {
+    min-width: 82px;
+  }
+
+  html.native-app #authButtonsGroup .btn {
+    font-size: 9px !important;
+    padding: 0 5px !important;
+  }
+
+  html.native-app .nav button {
+    min-width: 82px !important;
+    padding: 0 10px !important;
+    font-size: 10.5px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
