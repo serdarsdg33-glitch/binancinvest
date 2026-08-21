@@ -4810,141 +4810,16 @@ html.native-app {
 }
 </style>
 
-
-<style id="native-app-image-fit-v4">
-/* =========================================================
-   NATIVE APP IMAGE FIT V4
-   App-only: make cinematic/card images fit their own app
-   containers without cover-zoom/cropping.
-   Normal browser website remains unchanged.
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-  /* Exact-fit backgrounds for app cards/sections.
-     Two sizes are supplied because most backgrounds use:
-     gradient layer + image layer. */
-  html.native-app .hero,
-  html.native-app .top-markets-showcase,
-  html.native-app .referral-home-card,
-  html.native-app .stat-circle-card,
-  html.native-app #homePlans > .plan,
-  html.native-app #plans > .plan,
-  html.native-app .vip-lock-card,
-  html.native-app .portfolio-overview-scene,
-  html.native-app .portfolio-finance-scene,
-  html.native-app #rewards,
-  html.native-app #profile,
-  html.native-app #support,
-  html.native-app #transactions,
-  html.native-app .live-withdrawals-container.has-demo-image {
-    background-size: 100% 100%, 100% 100% !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-  }
-
-  /* Some elements can have a single image layer only. */
-  html.native-app [style*="background-image"] {
-    background-repeat: no-repeat;
-  }
-
-  /* Disable the website hover zoom inside the Android app.
-     Touch devices can otherwise keep :hover active and zoom
-     the plan artwork to 104%. */
-  html.native-app #homePlans > .plan:hover,
-  html.native-app #plans > .plan:hover,
-  html.native-app .vip-lock-card:hover,
-  html.native-app .top-markets-showcase:hover,
-  html.native-app .hero:hover {
-    background-size: 100% 100%, 100% 100% !important;
-    background-position: center center !important;
-  }
-
-  /* Real <img> artwork: always fit the app container with
-     preserved proportions and no crop. */
-  html.native-app .referral-home-gift img,
-  html.native-app .custom-select-trigger img,
-  html.native-app .custom-option img,
-  html.native-app img[width][height] {
-    max-width: 100%;
-    object-fit: contain !important;
-    object-position: center center !important;
-    image-rendering: auto;
-  }
-
-  /* Keep the referral artwork sharp and fully visible. */
-  html.native-app .referral-home-gift {
-    overflow: hidden;
-  }
-
-  html.native-app .referral-home-gift img {
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  /* Portfolio image scenes were previously cover-scaled on
-     mobile; in app mode they now follow the exact card size. */
-  html.native-app .portfolio-overview-scene,
-  html.native-app .portfolio-finance-scene {
-    background-size: 100% 100%, 100% 100% !important;
-  }
-
-  /* Statistics artwork must stay inside each stat card. */
-  html.native-app .stat-circle-card {
-    background-size: 100% 100%, 100% 100% !important;
-  }
-
-  /* Investment-plan artwork must follow each app plan card. */
-  html.native-app #homePlans > .plan,
-  html.native-app #plans > .plan,
-  html.native-app .vip-lock-card {
-    background-size: 100% 100%, 100% 100% !important;
-  }
-}
-
-@media (max-width: 520px) {
-  /* Re-assert exact fitting against older <=600px website rules
-     that change background-position on mobile. */
-  html.native-app .hero,
-  html.native-app .top-markets-showcase,
-  html.native-app .referral-home-card,
-  html.native-app .stat-circle-card,
-  html.native-app #homePlans > .plan,
-  html.native-app #plans > .plan,
-  html.native-app .vip-lock-card,
-  html.native-app .portfolio-overview-scene,
-  html.native-app .portfolio-finance-scene,
-  html.native-app #rewards,
-  html.native-app #profile,
-  html.native-app #support,
-  html.native-app #transactions,
-  html.native-app .live-withdrawals-container.has-demo-image {
-    background-position: center center !important;
-    background-size: 100% 100%, 100% 100% !important;
-  }
-}
-</style>
-
-
-
-
-
-
-
-
 <style id="portfolio-two-original-images-v11">
 /* =========================================================
-   PORTFOLIO — ONLY THE TWO ORIGINAL WEBSITE IMAGES
-   Web and native app both use:
-   1) portfolio-overview-v2.webp
-   2) portfolio-finance.webp
+   PORTFOLIO — TWO ORIGINAL WEBSITE IMAGES
+   WEB-ONLY OVERRIDE
 
-   No referral/VIP/quick-VIP background images are added.
+   Native app uses the same original image files through the
+   base Portfolio CSS, while its sizing is controlled only by
+   the native-app media-fit rules below.
    ========================================================= */
 
-/* Top portfolio area */
-.portfolio-overview-scene,
-html.native-app .portfolio-overview-scene,
 html.normal-web .portfolio-overview-scene,
 html:not(.native-app) .portfolio-overview-scene {
   background-image:
@@ -4961,9 +4836,6 @@ html:not(.native-app) .portfolio-overview-scene {
   background-repeat: no-repeat !important;
 }
 
-/* Deposit / withdrawal area */
-.portfolio-finance-scene,
-html.native-app .portfolio-finance-scene,
 html.normal-web .portfolio-finance-scene,
 html:not(.native-app) .portfolio-finance-scene {
   background-image:
@@ -4978,12 +4850,6 @@ html:not(.native-app) .portfolio-finance-scene {
   background-size: 100% 100% !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
-}
-
-/* Make sure no generated app-only portfolio backgrounds can appear. */
-html.native-app .portfolio-app-zone,
-html.native-app .portfolio-app-lower {
-  background-image: none !important;
 }
 </style>
 
@@ -13942,9 +13808,10 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
 })();
 </script>
 
-<style id="native-app-media-fit-final-guard">
-/* This guard intentionally lives at the end of the file so
-   late legacy styles cannot reintroduce stretching in APK. */
+<style id="native-app-media-fit-clean-final-guard">
+/* Single final APK guard.
+   Keeps long page artwork proportional and prevents late legacy
+   mobile rules from restoring 100% x 100% stretching. */
 html.native-app .portfolio-overview-scene,
 html.native-app .portfolio-finance-scene,
 html.native-app #rewards,
@@ -13954,22 +13821,11 @@ html.native-app #transactions {
   background-size: 100% 100%, 100% auto !important;
   background-position: center top, center top !important;
   background-repeat: no-repeat, no-repeat !important;
+  background-attachment: scroll, scroll !important;
   background-color: #030609 !important;
 }
 
-html.native-app .hero,
-html.native-app .top-markets-showcase,
-html.native-app .referral-home-card,
-html.native-app .stat-circle-card,
-html.native-app #homePlans > .plan,
-html.native-app #plans > .plan,
-html.native-app .vip-lock-card,
-html.native-app .footer-section,
-html.native-app .site-footer {
-  background-size: 100% 100%, cover !important;
-  background-repeat: no-repeat, no-repeat !important;
-}
-
+/* Keep video rendering proportional in the APK. */
 html.native-app .homepage-vault-video video,
 html.native-app .live-withdrawals-video {
   width: 100% !important;
