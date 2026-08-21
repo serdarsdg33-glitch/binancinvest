@@ -5899,9 +5899,10 @@ html.native-app .live-withdrawals-video {
   </svg>
 </div>
             <div class="stat-circle-info">
-                <div class="stat-circle-value" id="statUsersVal">1,284,901</div>
-                <div class="stat-circle-label" data-t="statUsers">Platform Users</div>
-            </div>
+  <div class="stat-circle-value" id="total-registered-users">1,284,901</div>
+  <div class="stat-circle-label" data-t="statUsers">تعداد كل كاربران ثبت شده در سايت</div>
+</div>
+
         </div>
         <div class="stat-badge-tag" style="color:var(--green)">🟢 <span data-t="liveSaved">Live + Saved</span></div>
     </div>
@@ -5917,9 +5918,9 @@ html.native-app .live-withdrawals-video {
   </svg>
 </div>
             <div class="stat-circle-info">
-                <div class="stat-circle-value" id="statInvestorsVal">450,231</div>
-                <div class="stat-circle-label" data-t="statInvestors">Active Investors</div>
-            </div>
+  <div class="stat-circle-value" id="active-online-users">450,231</div>
+  <div class="stat-circle-label" data-t="statInvestors">سرمايه گذاران و كاربران فعال و انلاين در حال حاضر</div>
+</div>
         </div>
         <div class="stat-badge-tag" style="color:var(--green)">🟢 <span data-t="liveSaved">Live + Saved</span></div>
     </div>
@@ -5935,15 +5936,12 @@ html.native-app .live-withdrawals-video {
   </svg>
 </div>
             <div class="stat-circle-info">
-                <div
-  id="total-profit"
-  class="stat-circle-value"
-  style="color:var(--green)"
->
-  $8,452,000+
+  <div id="total-profit" class="stat-circle-value" style="color:var(--green)">
+    $8,452,000+
+  </div>
+  <div class="stat-circle-label" data-t="statPaid">كل سود پرداختي تا الان</div>
 </div>
-                <div class="stat-circle-label" data-t="statPaid">Total Profit Paid</div>
-            </div>
+
         </div>
         <div class="stat-badge-tag" style="color:var(--gold)">★ <span data-t="verified">Verified</span></div>
     </div>
@@ -15357,6 +15355,67 @@ html.native-app .live-withdrawals-container.has-video {
   }
 }
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // ==========================================
+    // ۱. منطق تعداد کل کاربران (هر ۵ دقیقه ۱ نفر)
+    // ==========================================
+    const totalUsersElement = document.getElementById("total-registered-users");
+    if (totalUsersElement) {
+        // یک زمان پایه در گذشته تعیین می‌کنیم تا حتی با بستن سایت هم عدد به مرور بالا برود
+        const startDate = new Date("2024-01-01T00:00:00").getTime();
+        const baseTotalUsers = 2145320; // عدد پایه دلخواه شما برای کاربران کل
+        
+        function updateTotalUsers() {
+            const now = new Date().getTime();
+            // محاسبه تعداد 5 دقیقه‌های گذشته از زمان مبدا
+            const diffMinutes = Math.floor((now - startDate) / (1000 * 60 * 5)); 
+            const currentTotal = baseTotalUsers + diffMinutes;
+            
+            totalUsersElement.innerText = currentTotal.toLocaleString('en-US');
+        }
+        
+        updateTotalUsers();
+        // هر ۶۰ ثانیه چک می‌کند که آیا ۵ دقیقه رد شده تا آپدیت کند یا خیر
+        setInterval(updateTotalUsers, 60000); 
+    }
+
+    // ==========================================
+    // ۲. منطق کاربران فعال و آنلاین (نوسان طبیعی)
+    // ==========================================
+    const onlineUsersElement = document.getElementById("active-online-users");
+    if (onlineUsersElement) {
+        // تولید یک عدد تصادفی بین 300,000 تا 500,000 در هر بار ورود کاربر به سایت
+        let currentOnlineUsers = Math.floor(Math.random() * (500000 - 300000 + 1)) + 300000;
+        onlineUsersElement.innerText = currentOnlineUsers.toLocaleString('en-US');
+
+        // الف) نوسانات ریز و ثانیه‌ای (مثلاً کم و زیاد شدن ۱ تا ۵ نفر به صورت مداوم)
+        setInterval(() => {
+            const change = Math.floor(Math.random() * 11) - 5; // عدد تصادفی بین -5 تا +5
+            currentOnlineUsers += change;
+            onlineUsersElement.innerText = currentOnlineUsers.toLocaleString('en-US');
+        }, 2000); // هر ۲ ثانیه انجام می‌شود
+
+        // ب) پرش‌های ناگهانی بزرگ (مثلاً کم و زیاد شدن ۵۰ تا ۱۰۰ نفر به صورت رندوم)
+        setInterval(() => {
+            const isPositive = Math.random() > 0.5; // ۵۰ درصد احتمال افزایش، ۵۰ درصد کاهش
+            const jump = Math.floor(Math.random() * (100 - 50 + 1)) + 50; // عدد تصادفی بین ۵۰ تا ۱۰۰
+            
+            if (isPositive) {
+                currentOnlineUsers += jump;
+            } else {
+                currentOnlineUsers -= jump;
+            }
+            
+            // یک حد پایین می‌گذاریم که عدد هیچوقت غیرمنطقی پایین نیاید
+            if (currentOnlineUsers < 150000) currentOnlineUsers = 150000;
+            
+            onlineUsersElement.innerText = currentOnlineUsers.toLocaleString('en-US');
+        }, 15000); // هر ۱۵ ثانیه یک پرش ناگهانی رخ می‌دهد
+    }
+});
+</script>
 
 </body>
 </html>
