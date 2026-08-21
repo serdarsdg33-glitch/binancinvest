@@ -6668,7 +6668,6 @@ const vipPlanLabels = {
 };
 
 let currentInvestments = [];
-let currentWithdrawalPrincipalOffset = 0;
 let portfolioTimer = null;
 
 let live={}, stars=JSON.parse(localStorage.getItem("bi_stars")||"[]"), currentUser=null, authMode="login";
@@ -7726,7 +7725,7 @@ function setVipMaximumAmount() {
   if (!input) return;
 
   const availableBalance =
-    Number(currentUser?.balance || 0);
+    getMainAvailableBalance();
 
   input.value = Math.min(
     VIP_LOCK_MAXIMUM,
@@ -7746,7 +7745,7 @@ function calculatePortfolioVipLock() {
   if (!input || !dailyElement || !totalElement) return;
 
   const amount = Number(input.value);
-  const availableBalance = Number(currentUser?.balance || 0);
+  const availableBalance = getMainAvailableBalance();
 
   if (availableElement) {
     availableElement.textContent = formatPortfolioMoney(availableBalance);
@@ -7790,7 +7789,7 @@ function setPortfolioVipMaximum() {
 
   input.value = Math.min(
     VIP_LOCK_MAXIMUM,
-    Math.max(0, Number(currentUser.balance || 0))
+    Math.max(0, getMainAvailableBalance())
   );
 
   calculatePortfolioVipLock();
@@ -7816,7 +7815,7 @@ function openPortfolioVipLockConfirmation() {
     return;
   }
 
-  const availableBalance = Number(currentUser.balance || 0);
+  const availableBalance = getMainAvailableBalance();
   if (amount > availableBalance) {
     if (errorBox) {
       errorBox.textContent =
@@ -7857,7 +7856,7 @@ function openVipLockConfirmation() {
   }
 
   const availableBalance =
-    Number(currentUser.balance || 0);
+    getMainAvailableBalance();
 
   if (amount > availableBalance) {
     toast(
@@ -8303,7 +8302,10 @@ function calculateInvestmentProfit(investment) {
   }
 
   const startedAt =
-    new Date(investment.started_at).getTime();
+    new Date(
+      investment.profit_started_at ||
+      investment.started_at
+    ).getTime();
 
   const endsAt =
     new Date(investment.ends_at).getTime();
@@ -8350,7 +8352,7 @@ async function loadInvestments() {
   const { data, error } = await supabaseClient
     .from("investments")
     .select(
-      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at"
+      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at"
     )
     .eq("user_id", currentUser.id)
     .order("created_at", {
@@ -8368,53 +8370,6 @@ async function loadInvestments() {
   }
 
   currentInvestments = data || [];
-}
-
-/*
- * Withdrawal principal adjustment:
- * request_withdrawal already reduces the user's available/total balance.
- * The investment rows themselves stay unchanged, so the Invested card used
- * to keep showing the old principal. We mirror every non-rejected withdrawal
- * against the displayed regular invested principal.
- */
-async function loadWithdrawalPrincipalOffset() {
-  if (!currentUser?.id) {
-    currentWithdrawalPrincipalOffset = 0;
-    return;
-  }
-
-  const { data, error } = await supabaseClient
-    .from("financial_requests")
-    .select("amount,status,request_type")
-    .eq("user_id", currentUser.id)
-    .eq("request_type", "withdrawal");
-
-  if (error) {
-    console.error(
-      "Load withdrawal principal offset error:",
-      error
-    );
-    currentWithdrawalPrincipalOffset = 0;
-    return;
-  }
-
-  currentWithdrawalPrincipalOffset = (data || []).reduce(
-    (total, item) => {
-      const status = String(item.status || "pending").toLowerCase();
-
-      if (
-        status === "rejected" ||
-        status === "cancelled" ||
-        status === "canceled"
-      ) {
-        return total;
-      }
-
-      const amount = Number(item.amount || 0);
-      return total + (Number.isFinite(amount) && amount > 0 ? amount : 0);
-    },
-    0
-  );
 }
 function formatVipRemainingTime(endsAt) {
   const endTime = new Date(endsAt).getTime();
@@ -8678,6 +8633,67 @@ function renderVipPortfolioContracts() {
     });
   }
 }
+
+/*
+ * Main portfolio accounting:
+ * Total Balance = Free/Referral Balance + Invested Principal
+ *               + Banked Profit + Live Profit
+ *
+ * VIP_LOCK contracts are kept outside these main portfolio cards.
+ */
+function getMainPortfolioSnapshot() {
+  const regularInvestments = (currentInvestments || []).filter(item =>
+    ["Starter", "Growth", "Premium"].includes(
+      String(item.plan_name || "")
+    ) &&
+    (
+      item.status === "active" ||
+      item.status === "completed"
+    )
+  );
+
+  const investedPrincipal = Math.max(
+    0,
+    Number(currentUser?.invested || 0)
+  );
+
+  const bankedProfit = Math.max(
+    0,
+    Number(currentUser?.profit || 0)
+  );
+
+  const liveProfit = regularInvestments.reduce(
+    (total, item) =>
+      total + calculateInvestmentProfit(item),
+    0
+  );
+
+  const totalProfit =
+    bankedProfit + liveProfit;
+
+  const freeBalance = Math.max(
+    0,
+    Number(currentUser?.balance || 0)
+  );
+
+  return {
+    regularInvestments,
+    investedPrincipal,
+    bankedProfit,
+    liveProfit,
+    totalProfit,
+    freeBalance,
+    totalBalance:
+      freeBalance +
+      investedPrincipal +
+      totalProfit
+  };
+}
+
+function getMainAvailableBalance() {
+  return getMainPortfolioSnapshot().totalBalance;
+}
+
 function renderPortfolioLive() {
   const balanceElement =
     document.getElementById("balance");
@@ -8705,86 +8721,31 @@ function renderPortfolioLive() {
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
     levelElement.textContent = tr("basic");
-
     renderVipPortfolioContracts();
     return;
   }
 
-  /*
-   * فقط سه پلن عادی وارد کارت‌های اصلی سبد می‌شوند.
-   * VIP_LOCK کاملاً از این محاسبات خارج است.
-   */
-  const regularInvestments =
-    currentInvestments.filter(item =>
-      ["Starter", "Growth", "Premium"].includes(
-        String(item.plan_name || "")
-      ) &&
-      (
-        item.status === "active" ||
-        item.status === "completed"
-      )
+  const snapshot = getMainPortfolioSnapshot();
+
+  balanceElement.textContent =
+    formatPortfolioMoney(
+      snapshot.totalBalance,
+      true
     );
-
-  const rawInvestedPrincipal =
-    regularInvestments.reduce(
-      (total, item) =>
-        total + Number(item.principal || 0),
-      0
-    );
-
-  /*
-   * A withdrawal must reduce both Total Balance (handled by the backend)
-   * and the Invested figure by the same amount.
-   * Profit remains independent from the withdrawal.
-   */
-  const investedPrincipal = Math.max(
-    0,
-    rawInvestedPrincipal -
-      Number(currentWithdrawalPrincipalOffset || 0)
-  );
-
-  const totalProfit =
-    regularInvestments.reduce(
-      (total, item) =>
-        total + calculateInvestmentProfit(item),
-      0
-    );
-
-  /*
-   * این مقدار فقط موجودی آزاد کاربر است.
-   * اصل سرمایه VIP و سود نمایشی VIP به آن اضافه نمی‌شود.
-   */
-  const availableBalance =
-  Number(currentUser.balance || 0);
-
-/*
- * مجموع دارایی عادی کاربر:
- * موجودی آزاد + سرمایه پلن‌های عادی + سود پلن‌های عادی
- * قرارداد VIP وارد این عدد نمی‌شود.
- */
-const totalPortfolioBalance =
-  availableBalance +
-  totalProfit;
-
-balanceElement.textContent =
-  formatPortfolioMoney(
-    totalPortfolioBalance,
-    true
-  );
 
   investedElement.textContent =
     formatPortfolioMoney(
-      investedPrincipal
+      snapshot.investedPrincipal
     );
 
   profitElement.textContent =
     formatPortfolioMoney(
-      totalProfit,
+      snapshot.totalProfit,
       true
     );
 
-   const activeRegularInvestments =
-    regularInvestments.filter(item => {
+  const activeRegularInvestments =
+    snapshot.regularInvestments.filter(item => {
       const endTime =
         new Date(item.ends_at).getTime();
 
@@ -8805,31 +8766,23 @@ balanceElement.textContent =
   if (activeRegularPrincipal < 10) {
     levelElement.textContent = tr("basic");
   } else if (activeRegularPrincipal <= 100) {
-    levelElement.textContent =
-      tr("starterLevel");
+    levelElement.textContent = tr("starterLevel");
   } else if (activeRegularPrincipal <= 1000) {
-    levelElement.textContent =
-      tr("growthLevel");
+    levelElement.textContent = tr("growthLevel");
   } else {
-    levelElement.textContent =
-      tr("premiumLevel");
+    levelElement.textContent = tr("premiumLevel");
   }
 
-  /*
-   * VIP فقط در بخش اختصاصی خودش رندر می‌شود.
-   */
   renderVipPortfolioContracts();
 }
+
 async function updatePortfolio() {
   if (portfolioTimer) {
     clearInterval(portfolioTimer);
     portfolioTimer = null;
   }
 
-  await Promise.all([
-    loadInvestments(),
-    loadWithdrawalPrincipalOffset()
-  ]);
+  await loadInvestments();
   renderPortfolioLive();
 
   portfolioTimer = setInterval(() => {
@@ -10841,7 +10794,7 @@ window.withdraw = async function () {
 }
 
 const availableBalance =
-  Number(currentUser.balance || 0);
+  getMainAvailableBalance();
 
 if (amount > availableBalance) {
   showWithdrawalError(tr("smallerWithdrawalAmount", {
@@ -10879,7 +10832,7 @@ if (amount > availableBalance) {
     )
   ) {
     showWithdrawalError(tr("smallerWithdrawalAmount", {
-      amount: formatPortfolioMoney(Number(currentUser.balance || 0))
+      amount: formatPortfolioMoney(getMainAvailableBalance())
     }));
   } else {
     showWithdrawalError(tr("withdrawRequestFailed"));
