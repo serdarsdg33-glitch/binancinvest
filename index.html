@@ -4890,68 +4890,25 @@ html.native-app {
 </style>
 
 
-<style id="native-app-separate-portfolio-background">
-/* App uses its own correctly proportioned portfolio image.
-   Normal browser site keeps portfolio-overview-v2.webp unchanged. */
-@media (max-width: 900px) {
-  html.native-app .portfolio-overview-scene {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.08),
-        rgba(3,6,9,.18) 52%,
-        rgba(3,6,9,.12)
-      ),
-      url("portfolio-overview-app.webp?v=20260821-1") !important;
-
-    /* Never stretch the artwork. */
-    background-size: cover, cover !important;
-    background-position: center top, center top !important;
-    background-repeat: no-repeat, no-repeat !important;
-  }
-}
-</style>
 
 
-<style id="portfolio-web-app-background-separation-fix">
-/* Normal browser always keeps the original website image. */
-html:not(.native-app) .portfolio-overview-scene {
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(3,6,9,.08),
-      rgba(3,6,9,.18) 52%,
-      rgba(3,6,9,.12)
-    ),
-    url("portfolio-overview-v2.webp?v=20260819-1") !important;
-}
-
-/* Only the Android app (?app=1) uses the app-specific image. */
-html.native-app .portfolio-overview-scene {
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(3,6,9,.08),
-      rgba(3,6,9,.18) 52%,
-      rgba(3,6,9,.12)
-    ),
-    url("portfolio-overview-app.webp?v=20260821-2") !important;
-
-  background-size: cover, cover !important;
-  background-position: center top, center top !important;
-  background-repeat: no-repeat, no-repeat !important;
-}
-</style>
 
 
-<style id="portfolio-hard-web-app-separation-v6">
+
+
+<style id="portfolio-two-original-images-v11">
 /* =========================================================
-   HARD PORTFOLIO BACKGROUND SEPARATION
-   Browser: original website image
-   Capacitor Android app: app-specific image
+   PORTFOLIO — ONLY THE TWO ORIGINAL WEBSITE IMAGES
+   Web and native app both use:
+   1) portfolio-overview-v2.webp
+   2) portfolio-finance.webp
+
+   No referral/VIP/quick-VIP background images are added.
    ========================================================= */
 
-/* WEBSITE — Safari / Chrome / PWA browser */
+/* Top portfolio area */
+.portfolio-overview-scene,
+html.native-app .portfolio-overview-scene,
 html.normal-web .portfolio-overview-scene,
 html:not(.native-app) .portfolio-overview-scene {
   background-image:
@@ -4961,211 +4918,36 @@ html:not(.native-app) .portfolio-overview-scene {
       rgba(3,6,9,.18) 52%,
       rgba(3,6,9,.12)
     ),
-    url("portfolio-overview-v2.webp?v=web-20260821-3") !important;
+    url("portfolio-overview-v2.webp?v=20260821-two-images") !important;
 
-  /* Restore the website's own behavior instead of the app sizing. */
-  background-size: cover, cover !important;
-  background-position: center center, center center !important;
-  background-repeat: no-repeat, no-repeat !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-repeat: no-repeat !important;
 }
 
-/* NATIVE ANDROID APK ONLY */
-html.native-app .portfolio-overview-scene {
+/* Deposit / withdrawal area */
+.portfolio-finance-scene,
+html.native-app .portfolio-finance-scene,
+html.normal-web .portfolio-finance-scene,
+html:not(.native-app) .portfolio-finance-scene {
   background-image:
     linear-gradient(
       180deg,
       rgba(3,6,9,.08),
-      rgba(3,6,9,.18) 52%,
+      rgba(3,6,9,.16) 52%,
       rgba(3,6,9,.12)
     ),
-    url("portfolio-overview-app.webp?v=app-20260821-3") !important;
+    url("portfolio-finance.webp?v=20260821-two-images") !important;
 
-  background-size: cover, cover !important;
-  background-position: center top, center top !important;
-  background-repeat: no-repeat, no-repeat !important;
+  background-size: 100% 100% !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
 }
-</style>
 
-
-<style id="native-app-portfolio-section-backgrounds-v10">
-/* =========================================================
-   NATIVE APP ONLY — PORTFOLIO SECTION BACKGROUNDS
-   Normal browser website remains untouched.
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-  /*
-   * TOP PORTFOLIO ARTWORK
-   * 130% width = about 30% visual zoom.
-   * Height of lower authenticated content cannot change it.
-   */
-  html.native-app .portfolio-overview-scene {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.08),
-        rgba(3,6,9,.16) 52%,
-        rgba(3,6,9,.10)
-      ),
-      url("portfolio-overview-app.webp?v=app-top-20260821-10") !important;
-
-    background-size:
-      100% 100%,
-      130% auto !important;
-
-    background-position:
-      center center,
-      center top !important;
-
-    background-repeat:
-      no-repeat,
-      no-repeat !important;
-
-    overflow: hidden !important;
-    border-radius: 20px !important;
-  }
-
-  /*
-   * Shared wrapper style for the separate authenticated areas.
-   * Each block gets a DIFFERENT background image, so nothing
-   * is repeated awkwardly down the page.
-   */
-  html.native-app .portfolio-app-zone {
-    position: relative;
-    isolation: isolate;
-    margin-top: 8px;
-    padding: 12px 9px 16px;
-    overflow: hidden;
-    background-color: #05070a;
-    border: 1px solid rgba(240,185,11,.16);
-    border-radius: 18px;
-  }
-
-  html.native-app .portfolio-app-zone > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Referral zone */
-  html.native-app .portfolio-app-zone-referral {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.15),
-        rgba(3,6,9,.28) 55%,
-        rgba(3,6,9,.18)
-      ),
-      url("portfolio-app-referral.webp?v=20260821-10");
-
-    background-size:
-      100% 100%,
-      cover;
-
-    background-position:
-      center center,
-      center center;
-
-    background-repeat:
-      no-repeat,
-      no-repeat;
-  }
-
-  /* VIP contracts zone */
-  html.native-app .portfolio-app-zone-contracts {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.13),
-        rgba(3,6,9,.24) 52%,
-        rgba(3,6,9,.17)
-      ),
-      url("portfolio-app-vip-contracts.webp?v=20260821-10");
-
-    background-size:
-      100% 100%,
-      cover;
-
-    background-position:
-      center center,
-      center center;
-
-    background-repeat:
-      no-repeat,
-      no-repeat;
-  }
-
-  /* Quick VIP zone */
-  html.native-app .portfolio-app-zone-quick {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.13),
-        rgba(3,6,9,.24) 50%,
-        rgba(3,6,9,.17)
-      ),
-      url("portfolio-app-vip-quick.webp?v=20260821-10");
-
-    background-size:
-      100% 100%,
-      cover;
-
-    background-position:
-      center center,
-      center center;
-
-    background-repeat:
-      no-repeat,
-      no-repeat;
-  }
-
-  /*
-   * Finance / deposit / withdrawal gets its own app artwork too.
-   * Login state can make this section taller without affecting
-   * the portfolio top or the other zones.
-   */
-  html.native-app .portfolio-finance-scene {
-    margin-top: 8px !important;
-
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.14),
-        rgba(3,6,9,.25) 50%,
-        rgba(3,6,9,.18)
-      ),
-      url("portfolio-app-finance.webp?v=20260821-10") !important;
-
-    background-size:
-      100% 100%,
-      cover !important;
-
-    background-position:
-      center center,
-      center center !important;
-
-    background-repeat:
-      no-repeat,
-      no-repeat !important;
-  }
-
-  /*
-   * Let the artwork show through the content cards without
-   * sacrificing readability.
-   */
-  html.native-app .portfolio-app-zone .referral-portfolio-card,
-  html.native-app .portfolio-app-zone .vip-single-card,
-  html.native-app .portfolio-app-zone .portfolio-vip-quick {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(14,20,27,.43),
-        rgba(5,9,14,.30)
-      ) !important;
-
-    backdrop-filter: blur(1.2px) saturate(1.06);
-    -webkit-backdrop-filter: blur(1.2px) saturate(1.06);
-  }
+/* Make sure no generated app-only portfolio backgrounds can appear. */
+html.native-app .portfolio-app-zone,
+html.native-app .portfolio-app-lower {
+  background-image: none !important;
 }
 </style>
 
@@ -13952,65 +13734,6 @@ window.deleteClosedSupportTicket = async function deleteClosedSupportTicket() {
   window.addEventListener("resize", function () {
     setTimeout(centerActiveNativeNav, 100);
   });
-})();
-</script>
-
-
-<script id="native-app-portfolio-section-backgrounds-js">
-(function () {
-  function setupNativePortfolioZones() {
-    /*
-     * IMPORTANT:
-     * No DOM changes at all in Safari/Chrome.
-     * Only the native Android WebView receives these wrappers.
-     */
-    if (!document.documentElement.classList.contains("native-app")) {
-      return;
-    }
-
-    if (document.querySelector("#portfolio > .portfolio-app-zone")) {
-      return;
-    }
-
-    const portfolio = document.getElementById("portfolio");
-    const finance = portfolio?.querySelector(".portfolio-finance-scene");
-
-    const referral = document.getElementById("referralPortfolioCard");
-    const vipContracts = document.getElementById("vipPortfolioSection");
-    const quickVip = portfolio?.querySelector(".portfolio-vip-quick");
-
-    if (
-      !portfolio ||
-      !finance ||
-      !referral ||
-      !vipContracts ||
-      !quickVip
-    ) {
-      return;
-    }
-
-    function makeZone(className, node) {
-      const zone = document.createElement("div");
-      zone.className = "portfolio-app-zone " + className;
-      portfolio.insertBefore(zone, finance);
-      zone.appendChild(node);
-      return zone;
-    }
-
-    makeZone("portfolio-app-zone-referral", referral);
-    makeZone("portfolio-app-zone-contracts", vipContracts);
-    makeZone("portfolio-app-zone-quick", quickVip);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener(
-      "DOMContentLoaded",
-      setupNativePortfolioZones,
-      { once: true }
-    );
-  } else {
-    setupNativePortfolioZones();
-  }
 })();
 </script>
 
