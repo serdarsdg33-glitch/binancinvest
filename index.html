@@ -6176,6 +6176,81 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 }
 </style>
 
+
+<style id="native-portfolio-vip-use-invest-image-v1">
+/*
+  Native app only:
+  Quick VIP card in Portfolio uses the same VIP artwork
+  as the VIP section in Invest: plan-vip.webp
+*/
+@media (max-width: 900px) {
+  html.native-app .portfolio-vip-quick {
+    position: relative !important;
+    overflow: hidden !important;
+
+    background-color: #080c11 !important;
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(5,9,13,.97) 0%,
+        rgba(5,9,13,.90) 48%,
+        rgba(5,9,13,.68) 70%,
+        rgba(5,9,13,.38) 100%
+      ),
+      url("plan-vip.webp") !important;
+
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center center, 64% center !important;
+    background-size: cover, cover !important;
+
+    border-color: rgba(240,185,11,.42) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.045),
+      inset 0 0 28px rgba(240,185,11,.025),
+      0 16px 42px rgba(0,0,0,.48),
+      0 0 18px rgba(240,185,11,.07) !important;
+  }
+
+  /* Keep every control/text above the artwork */
+  html.native-app .portfolio-vip-quick > * {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Metrics remain dark glass so values stay readable */
+  html.native-app .portfolio-vip-quick .portfolio-vip-metric,
+  html.native-app .portfolio-vip-quick .portfolio-vip-input-row input {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(4,7,10,.82),
+        rgba(12,15,18,.70)
+      ) !important;
+
+    border-color: rgba(240,185,11,.22) !important;
+
+    backdrop-filter: blur(10px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(1.08) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html.native-app .portfolio-vip-quick {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(5,9,13,.84) 0%,
+        rgba(5,9,13,.74) 44%,
+        rgba(5,9,13,.84) 100%
+      ),
+      url("plan-vip.webp") !important;
+
+    background-position: center center, 64% center !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
