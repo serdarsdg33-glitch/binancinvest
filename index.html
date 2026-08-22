@@ -6021,6 +6021,161 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 }
 </style>
 
+
+<style id="native-black-glass-gold-shell-v1">
+/* =========================================================
+   NATIVE APP — BLACK GLASS + SUBTLE GOLD SHELL
+   فقط حالت اپ گوشی؛ نسخه وب دست‌نخورده می‌ماند.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  html.native-app {
+    --app-media-surface: #020304 !important;
+    --native-shell-black: #020304;
+    --native-shell-black-2: #07090c;
+    --native-shell-gold: rgba(240,185,11,.10);
+    --native-shell-line: rgba(240,185,11,.22);
+  }
+
+  /* پس‌زمینه اصلی همه صفحه‌ها:
+     مشکی شیشه‌ای با هاله طلایی خیلی کم */
+  html.native-app,
+  html.native-app body {
+    background:
+      radial-gradient(
+        circle at 50% 8%,
+        rgba(240,185,11,.13) 0%,
+        rgba(240,185,11,.055) 18%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 50% 92%,
+        rgba(240,185,11,.075) 0%,
+        transparent 34%
+      ),
+      linear-gradient(
+        180deg,
+        #020304 0%,
+        #05070a 42%,
+        #020304 100%
+      ) !important;
+
+    background-color: #020304 !important;
+    background-attachment: fixed !important;
+  }
+
+  /* فضای خالی اطراف و بین سکشن‌ها شفاف بماند
+     تا همان بک‌گراند مشکی/طلایی یکدست دیده شود */
+  html.native-app .wrap {
+    background: transparent !important;
+  }
+
+  html.native-app .view.active {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.018),
+      inset 0 -1px 0 rgba(240,185,11,.035) !important;
+  }
+
+  /* هدر شیشه‌ای مشکی */
+  html.native-app header {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,9,12,.94),
+        rgba(2,4,6,.88)
+      ) !important;
+
+    border-bottom-color: rgba(240,185,11,.24) !important;
+
+    box-shadow:
+      0 12px 34px rgba(0,0,0,.52),
+      0 1px 0 rgba(240,185,11,.05) !important;
+
+    backdrop-filter: blur(20px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.08) !important;
+  }
+
+  /* نوار پایین: مشکی شیشه‌ای + طلایی خیلی ملایم */
+  html.native-app .nav {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(11,13,16,.90),
+        rgba(2,4,6,.86)
+      ) !important;
+
+    border-color: rgba(240,185,11,.25) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      inset 0 0 24px rgba(240,185,11,.025),
+      0 18px 46px rgba(0,0,0,.58),
+      0 0 16px rgba(240,185,11,.055) !important;
+
+    backdrop-filter: blur(22px) saturate(1.10) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.10) !important;
+  }
+
+  /* دکمه‌های غیرفعال نوار پایین */
+  html.native-app .nav button:not(.active) {
+    background:
+      linear-gradient(
+        145deg,
+        rgba(255,255,255,.035),
+        rgba(240,185,11,.018)
+      ) !important;
+
+    border-color: rgba(240,185,11,.10) !important;
+    color: #d9e0e8 !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  /* صفحات تصویری: رنگ زیر عکس مشکی باشد، نه آبی */
+  html.native-app #transactions,
+  html.native-app #rewards,
+  html.native-app #profile,
+  html.native-app #support,
+  html.native-app #markets,
+  html.native-app .portfolio-overview-scene,
+  html.native-app .portfolio-finance-scene {
+    background-color: #020304 !important;
+  }
+
+  /* در Home / Invest / Portfolio فضای خالی آبی نشود */
+  html.native-app #home,
+  html.native-app #invest,
+  html.native-app #portfolio {
+    background-color: transparent !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html.native-app,
+  html.native-app body {
+    background:
+      radial-gradient(
+        circle at 50% 10%,
+        rgba(240,185,11,.11) 0%,
+        rgba(240,185,11,.04) 20%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 50% 90%,
+        rgba(240,185,11,.06) 0%,
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        #020304 0%,
+        #050608 46%,
+        #020304 100%
+      ) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
