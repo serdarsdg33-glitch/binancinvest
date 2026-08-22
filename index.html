@@ -5929,6 +5929,98 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 }
 </style>
 
+
+<style id="native-full-page-background-unified-v1">
+/*
+  Native app only:
+  Prevent page artwork from ending before the phone viewport and exposing
+  a different body background underneath.
+*/
+@media (max-width: 900px) {
+  html.native-app {
+    --native-page-min-h:
+      calc(
+        100dvh
+        - var(--native-app-header-h)
+        - var(--native-app-nav-h)
+        - var(--native-safe-top)
+        - var(--native-safe-bottom)
+        - 30px
+      );
+  }
+
+  /* Every opened app page must at least fill the visible phone area. */
+  html.native-app .view.active {
+    min-height: var(--native-page-min-h) !important;
+    box-sizing: border-box !important;
+  }
+
+  /*
+    Pages that have their own full-page artwork:
+    keep one continuous background all the way to the bottom.
+    The first background layer is the dark readability gradient;
+    the second is the actual image.
+  */
+  html.native-app #transactions,
+  html.native-app #rewards,
+  html.native-app #profile,
+  html.native-app #support {
+    min-height: var(--native-page-min-h) !important;
+    background-size: 100% 100%, cover !important;
+    background-position: center center, center center !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-attachment: scroll, scroll !important;
+    background-color: #030609 !important;
+  }
+
+  /* Markets also has a page-wide artwork. */
+  html.native-app #markets {
+    min-height: var(--native-page-min-h) !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-color: #05080b !important;
+  }
+
+  /*
+    Portfolio uses two separate authored scenes, so do not stretch those
+    images.  Only ensure the page container itself cannot finish early.
+  */
+  html.native-app #portfolio {
+    min-height: var(--native-page-min-h) !important;
+    box-sizing: border-box !important;
+  }
+
+  /*
+    Home and Invest do not use one full-page image, but still keep the
+    active page at least viewport-height so a short state cannot reveal
+    a separate strip of body background.
+  */
+  html.native-app #home,
+  html.native-app #invest {
+    min-height: var(--native-page-min-h) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* Fallback for older Android WebViews without dynamic viewport units. */
+@supports not (height: 100dvh) {
+  @media (max-width: 900px) {
+    html.native-app {
+      --native-page-min-h:
+        calc(
+          100vh
+          - var(--native-app-header-h)
+          - var(--native-app-nav-h)
+          - var(--native-safe-top)
+          - var(--native-safe-bottom)
+          - 30px
+        );
+    }
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
