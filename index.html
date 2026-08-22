@@ -7022,7 +7022,7 @@ html[dir="rtl"] .flex-fixed-plan-notice {
 </style>
 
 </head>
-<body>
+<body data-investment-model="flex-v4">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -17326,7 +17326,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"Confirm plan", insufficient:"Insufficient principal in your Flexible 1.5% plan.",
       confirmWithdrawal:"Withdraw investment", settleText:"Principal and calculated profit will be moved to your available balance.",
       cancel:"Cancel", confirm:"Confirm withdrawal", success:"Plan activated after your confirmation.",
-      settled:"Investment was moved to your available balance.", processing:"Processing...", vipHardLockNotice:"Unlike the plans above, your capital in this VIP plan is fully locked for 60 days. You cannot withdraw the locked principal before the 60-day contract ends."
+      settled:"Investment was moved to your available balance.", processing:"Processing...", vipHardLockNotice:"Unlike the plans above, your capital in this VIP plan is fully locked for 60 days. You cannot withdraw the locked principal before the 60-day contract ends.", baseLevel:"Flexible · 1.5% Daily"
     },
     fa: {
       kicker:"پلن مادر خودکار", title:"سود روزانه منعطف",
@@ -17344,7 +17344,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"تأیید پلن", insufficient:"سرمایه موجود در پلن منعطف ۱.۵٪ کافی نیست.",
       confirmWithdrawal:"برداشت سرمایه", settleText:"اصل سرمایه و سود محاسبه‌شده به موجودی قابل برداشت شما منتقل می‌شود.",
       cancel:"انصراف", confirm:"تأیید برداشت", success:"پلن با تأیید شما فعال شد.",
-      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش...", vipHardLockNotice:"در این پلن برخلاف پلن‌های بالا، سرمایه شما به‌طور کامل برای ۶۰ روز قفل خواهد شد و تا پایان قرارداد امکان برداشت از سرمایه قفل‌شده وجود ندارد."
+      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش...", vipHardLockNotice:"در این پلن برخلاف پلن‌های بالا، سرمایه شما به‌طور کامل برای ۶۰ روز قفل خواهد شد و تا پایان قرارداد امکان برداشت از سرمایه قفل‌شده وجود ندارد.", baseLevel:"پلن منعطف · روزانه ۱.۵٪"
     }
   };
 
@@ -17752,16 +17752,133 @@ document.addEventListener("DOMContentLoaded", function() {
        * Banked/realized profit is already inside profiles.balance.
        * Do not add it again to Total Balance.
        */
+      /*
+       * Main portfolio total:
+       * invested principal + realized/live profit.
+       *
+       * profiles.balance is the separately available/free balance and must
+       * not be added here, otherwise an approved deposit can appear twice.
+       */
       totalBalance:
-        freeBalance +
         investedPrincipal +
+        bankedProfit +
         liveProfit
     };
   };
 
-  var originalRenderPortfolioLive = window.renderPortfolioLive;
+  function renderMainFlexibleSummary() {
+    if (!currentUser || !currentUser.id) return;
+
+    var balanceElement =
+      document.getElementById("balance");
+
+    var investedElement =
+      document.getElementById("invested");
+
+    var profitElement =
+      document.getElementById("profitTotal");
+
+    var levelElement =
+      document.getElementById("level");
+
+    var snapshot =
+      window.getMainPortfolioSnapshot();
+
+    /*
+     * "Total Balance" is intentionally:
+     * active invested principal + all profit.
+     *
+     * Do not add profiles.balance here. That value is the separate
+     * available/free balance and adding it caused a $200 deposit to
+     * appear as roughly $400 in the main portfolio card.
+     */
+    if (balanceElement) {
+      balanceElement.textContent =
+        formatPortfolioMoney(
+          snapshot.investedPrincipal +
+          snapshot.totalProfit,
+          true
+        );
+    }
+
+    if (investedElement) {
+      investedElement.textContent =
+        formatPortfolioMoney(
+          snapshot.investedPrincipal
+        );
+    }
+
+    if (profitElement) {
+      profitElement.textContent =
+        formatPortfolioMoney(
+          snapshot.totalProfit,
+          true
+        );
+    }
+
+    if (levelElement) {
+      var confirmedPlans =
+        (currentInvestments || [])
+          .filter(function (item) {
+            return (
+              active(item) &&
+              isConfirmedRegularPlan(item)
+            );
+          })
+          .sort(function (a, b) {
+            return (
+              Number(b.daily_rate || 0) -
+              Number(a.daily_rate || 0)
+            );
+          });
+
+      if (!confirmedPlans.length) {
+        /*
+         * Every approved deposit starts in FLEX_DAILY.
+         * Deposit amount alone must NEVER make the account show Growth,
+         * Starter or Premium.
+         */
+        levelElement.textContent =
+          text("baseLevel");
+      } else {
+        var selected =
+          String(
+            confirmedPlans[0].plan_name || ""
+          );
+
+        if (selected === "Starter") {
+          levelElement.textContent =
+            tr("starterLevel");
+        } else if (selected === "Growth") {
+          levelElement.textContent =
+            tr("growthLevel");
+        } else if (selected === "Premium") {
+          levelElement.textContent =
+            tr("premiumLevel");
+        } else {
+          levelElement.textContent =
+            text("baseLevel");
+        }
+      }
+    }
+  }
+
+  var originalRenderPortfolioLive =
+    window.renderPortfolioLive;
+
   window.renderPortfolioLive = function () {
     originalRenderPortfolioLive();
+
+    /*
+     * The legacy renderer still derives account level from the amount.
+     * Correct it immediately with the explicit-confirmation model.
+     */
+    renderMainFlexibleSummary();
+
+    /*
+     * FLEX_DAILY continues independently in the lower card even after
+     * the user confirms Starter/Growth/Premium with part of the principal.
+     */
     renderFlexibleCard();
   };
 
