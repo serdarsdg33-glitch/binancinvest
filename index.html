@@ -17203,5 +17203,643 @@ document.addEventListener("DOMContentLoaded", function() {
 })();
 </script>
 
+<style id="flexibleYieldStyles">
+.flex-yield-card{position:relative;margin:18px 0;padding:22px;overflow:hidden;background:linear-gradient(145deg,rgba(10,15,21,.76),rgba(7,10,15,.58));border:1px solid rgba(240,185,11,.42);border-radius:19px;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 45px rgba(0,0,0,.38)}
+.flex-yield-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 92% 4%,rgba(240,185,11,.13),transparent 34%);pointer-events:none}
+.flex-yield-head,.flex-yield-summary,.flex-contracts-wrap{position:relative;z-index:1}
+.flex-yield-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+.flex-yield-kicker{display:block;color:#ffe58a;font-size:10px;font-weight:900;letter-spacing:1.7px}
+.flex-yield-head h2{margin:6px 0 7px;font-size:23px}.flex-yield-head p{margin:0;max-width:720px;color:#d4dbe5;font-size:13px;line-height:1.75}
+.flex-yield-rate{min-width:118px;padding:13px 16px;text-align:center;border:1px solid rgba(22,199,132,.42);border-radius:14px;background:rgba(8,36,29,.52)}
+.flex-yield-rate strong,.flex-yield-rate span{display:block}.flex-yield-rate strong{color:#37e5a4;font-size:28px}.flex-yield-rate span{margin-top:4px;color:#b9f7de;font-size:10px;font-weight:850}
+.flex-yield-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}
+.flex-yield-summary>div{padding:13px 10px;background:rgba(3,7,11,.48);border:1px solid rgba(255,255,255,.12);border-radius:12px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.flex-yield-summary span,.flex-yield-summary strong{display:block}.flex-yield-summary span{margin-bottom:6px;color:#c5ceda;font-size:10px}.flex-yield-summary strong{color:#fff;font-size:16px}.flex-yield-summary .green{color:#2bdd9c}
+.flex-contracts-wrap{margin-top:14px;overflow:auto;border:1px solid rgba(255,255,255,.09);border-radius:13px}
+.flex-contract-table{width:100%;min-width:800px;border-collapse:collapse}.flex-contract-table th,.flex-contract-table td{padding:13px 11px;text-align:left;border-bottom:1px solid rgba(255,255,255,.075);white-space:nowrap}
+.flex-contract-table th{color:#aeb9c8;font-size:10px;text-transform:uppercase;background:rgba(0,0,0,.20)}.flex-contract-table td{font-size:12px}.flex-contract-table tr:last-child td{border-bottom:0}
+.flex-contract-type{font-weight:900;color:#ffe58a}.flex-contract-payout{font-weight:900;color:#2bdd9c}.flex-contract-note{color:#b8c2cf;font-size:10px}
+.flex-action-btn{min-height:34px;padding:7px 11px!important;font-size:10px!important}
+.flex-empty{padding:24px!important;text-align:center!important;color:#aeb8c5}
+.flex-plan-auto{border-color:rgba(22,199,132,.4)!important;background:radial-gradient(circle at 92% 8%,rgba(22,199,132,.12),transparent 34%),linear-gradient(145deg,rgba(16,28,27,.94),rgba(8,13,18,.96))!important}
+.flex-auto-tag{color:#aef7da!important;background:rgba(22,199,132,.1)!important;border-color:rgba(22,199,132,.35)!important}
+.flex-plan-auto .apy{color:#31dda0}.flex-plan-auto .btn[disabled]{opacity:1;color:#d9fff0;background:rgba(22,199,132,.11);border-color:rgba(22,199,132,.35);cursor:default}
+.plans{grid-template-columns:repeat(4,minmax(0,1fr))}
+.plan-explicit-consent{display:flex;align-items:flex-start;gap:9px;margin-top:11px;padding:10px;text-align:left;color:#d7dee8;font-size:11px;line-height:1.55;background:rgba(22,199,132,.055);border:1px solid rgba(22,199,132,.22);border-radius:10px}
+.plan-explicit-consent input{width:17px;height:17px;margin:1px 0 0;accent-color:#16c784;flex:0 0 auto}
+.flex-settle-modal{position:fixed;inset:0;z-index:990;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.flex-settle-modal.open{display:flex}.flex-settle-box{width:min(410px,100%);padding:24px;text-align:center;background:linear-gradient(145deg,#151c25,#090e14);border:1px solid rgba(240,185,11,.4);border-radius:20px;box-shadow:0 28px 80px rgba(0,0,0,.72)}
+.flex-settle-icon{width:56px;height:56px;margin:0 auto 12px;display:grid;place-items:center;color:#10150f;font-size:25px;font-weight:900;background:linear-gradient(135deg,#8dffd2,#16c784);border-radius:50%}.flex-settle-box h2{margin:0 0 8px}.flex-settle-box p{margin:0;color:#bdc7d3;line-height:1.7}.flex-settle-amount{margin:15px 0;padding:12px;color:#37e5a4;font-size:24px;font-weight:950;background:rgba(22,199,132,.08);border:1px solid rgba(22,199,132,.25);border-radius:11px}.flex-settle-actions{display:grid;grid-template-columns:.8fr 1.2fr;gap:8px;margin-top:15px}
+@media(max-width:1100px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:750px){.plans{grid-template-columns:1fr}.flex-yield-card{padding:17px 13px}.flex-yield-head{flex-direction:column}.flex-yield-rate{width:100%}.flex-yield-summary{grid-template-columns:1fr 1fr}.flex-yield-head h2{font-size:20px}}
+</style>
+
+<div id="flexSettleModal" class="flex-settle-modal" aria-hidden="true">
+  <div class="flex-settle-box">
+    <div class="flex-settle-icon">✓</div>
+    <h2 id="flexSettleTitle">Withdraw investment</h2>
+    <p id="flexSettleText">Principal and calculated profit will be moved to your available balance.</p>
+    <div id="flexSettleAmount" class="flex-settle-amount">$0.00</div>
+    <div class="flex-settle-actions">
+      <button class="btn" type="button" onclick="closeFlexibleSettlement()">Cancel</button>
+      <button id="flexSettleConfirmBtn" class="btn gold" type="button" onclick="confirmFlexibleSettlement()">Confirm withdrawal</button>
+    </div>
+  </div>
+</div>
+
+<script id="flexibleYieldLogic">
+(function () {
+  "use strict";
+
+  var FLEX_NAME = "FLEX_DAILY";
+  var FLEX_RATE = 1.5;
+  var DAY_MS = 86400000;
+  var settlementInvestmentId = null;
+
+  var copy = {
+    en: {
+      kicker:"AUTOMATIC BASE PLAN", title:"Flexible Daily Yield",
+      description:"Every approved deposit automatically starts earning 1.5% daily. There is no fixed term and you can move principal and earned profit to your available balance at any time.",
+      autoBadge:"1.5% DAILY", principal:"Flexible principal", liveProfit:"Live flexible profit",
+      withdrawable:"Withdrawable now", fixedContracts:"Selected contracts", contracts:"My active plans",
+      plan:"Plan", amount:"Principal", rate:"Current rate", remaining:"Time remaining",
+      early:"Available if withdrawn now", action:"Action", withdraw:"Withdraw now",
+      noContracts:"No approved deposit or active plan is available yet.",
+      autoTitle:"Flexible 1.5% Plan", autoText:"Activated automatically after every approved deposit",
+      noLock:"No fixed term", anyAmount:"Any approved deposit amount", anytime:"Withdraw principal and profit at any time",
+      improve:"Choose and confirm another plan to increase your daily rate.",
+      fixedNotice:"Your principal is not permanently locked. If you withdraw before this contract ends, profit is recalculated at 1.5% daily. If you keep it until maturity, the selected plan rate applies.",
+      consent:"I understand the contract term and explicitly confirm moving this amount from my Flexible 1.5% plan into the selected plan.",
+      confirmPlan:"Confirm plan", insufficient:"Insufficient principal in your Flexible 1.5% plan.",
+      confirmWithdrawal:"Withdraw investment", settleText:"Principal and calculated profit will be moved to your available balance.",
+      cancel:"Cancel", confirm:"Confirm withdrawal", success:"Plan activated after your confirmation.",
+      settled:"Investment was moved to your available balance.", processing:"Processing..."
+    },
+    fa: {
+      kicker:"پلن مادر خودکار", title:"سود روزانه منعطف",
+      description:"هر واریز تأییدشده، بدون توجه به مبلغ آن، به‌صورت خودکار با سود روزانه ۱.۵٪ شروع می‌شود. این پلن مدت ثابت ندارد و هر زمان بخواهید می‌توانید اصل سرمایه و سود محاسبه‌شده را به موجودی قابل برداشت منتقل کنید.",
+      autoBadge:"روزانه ۱.۵٪", principal:"سرمایه منعطف", liveProfit:"سود زنده پلن منعطف",
+      withdrawable:"قابل برداشت در حال حاضر", fixedContracts:"قراردادهای انتخابی", contracts:"پلن‌های فعال من",
+      plan:"پلن", amount:"اصل سرمایه", rate:"نرخ فعلی", remaining:"زمان باقی‌مانده",
+      early:"مبلغ برداشت زودهنگام", action:"عملیات", withdraw:"برداشت",
+      noContracts:"هنوز واریز تأییدشده یا پلن فعالی وجود ندارد.",
+      autoTitle:"پلن منعطف ۱.۵٪", autoText:"پس از تأیید هر واریز به‌صورت خودکار فعال می‌شود",
+      noLock:"بدون مدت ثابت", anyAmount:"هر مبلغ واریز تأییدشده", anytime:"برداشت اصل سرمایه و سود در هر زمان",
+      improve:"برای افزایش نرخ سود، یکی از پلن‌های دیگر را انتخاب و تأیید کنید.",
+      fixedNotice:"اصل سرمایه شما برای همیشه قفل نمی‌شود. اگر قبل از پایان قرارداد برداشت کنید، سود با نرخ روزانه ۱.۵٪ محاسبه می‌شود؛ در صورت تکمیل دوره، نرخ پلن انتخابی اعمال خواهد شد.",
+      consent:"مدت قرارداد و شرایط برداشت زودهنگام را مطالعه کردم و انتقال این مبلغ از پلن منعطف ۱.۵٪ به پلن انتخابی را صریحاً تأیید می‌کنم.",
+      confirmPlan:"تأیید پلن", insufficient:"سرمایه موجود در پلن منعطف ۱.۵٪ کافی نیست.",
+      confirmWithdrawal:"برداشت سرمایه", settleText:"اصل سرمایه و سود محاسبه‌شده به موجودی قابل برداشت شما منتقل می‌شود.",
+      cancel:"انصراف", confirm:"تأیید برداشت", success:"پلن با تأیید شما فعال شد.",
+      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش..."
+    }
+  };
+
+  function language() {
+    return localStorage.getItem("bi_lang") || "en";
+  }
+
+  function text(key) {
+    var dictionary = copy[language()] || copy.en;
+    return dictionary[key] || copy.en[key] || key;
+  }
+
+  function isFlexible(item) {
+    return String(item && item.plan_name || "") === FLEX_NAME;
+  }
+
+  function isFixed(item) {
+    return ["Starter","Growth","Premium","VIP_LOCK"].indexOf(String(item && item.plan_name || "")) !== -1;
+  }
+
+  function active(item) {
+    return item && item.status === "active" && Number(item.principal || 0) > 0;
+  }
+
+  function startedTime(item) {
+    return new Date(item.profit_started_at || item.started_at).getTime();
+  }
+
+  function elapsedDays(item, until) {
+    var start = startedTime(item);
+    if (!Number.isFinite(start)) return 0;
+    return Math.max(0, (until - start) / DAY_MS);
+  }
+
+  function flexibleProfit(item) {
+    return Number(item.principal || 0) * (FLEX_RATE / 100) * elapsedDays(item, Date.now());
+  }
+
+  function fixedEarlyProfit(item) {
+    var end = new Date(item.ends_at).getTime();
+    var calculationTime = Number.isFinite(end) && Date.now() >= end ? end : Date.now();
+    var rate = Number.isFinite(end) && Date.now() >= end ? Number(item.daily_rate || 0) : FLEX_RATE;
+    return Number(item.principal || 0) * (rate / 100) * elapsedDays(item, calculationTime);
+  }
+
+  function flexiblePrincipal() {
+    return (currentInvestments || []).filter(function (item) {
+      return active(item) && isFlexible(item);
+    }).reduce(function (total, item) {
+      return total + Number(item.principal || 0);
+    }, 0);
+  }
+
+  function flexibleLiveProfit() {
+    return (currentInvestments || []).filter(function (item) {
+      return active(item) && isFlexible(item);
+    }).reduce(function (total, item) {
+      return total + flexibleProfit(item);
+    }, 0);
+  }
+
+  function fixedCount() {
+    return (currentInvestments || []).filter(function (item) {
+      return active(item) && isFixed(item);
+    }).length;
+  }
+
+  function remainingText(item) {
+    if (isFlexible(item)) return language() === "fa" ? "بدون پایان" : "No fixed term";
+    return formatVipRemainingTime(item.ends_at);
+  }
+
+  function escapeHtml(value) {
+    if (typeof safeFinancialText === "function") return safeFinancialText(value);
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (character) {
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[character];
+    });
+  }
+
+  function ensureFlexibleUI() {
+    if (!document.getElementById("flexibleYieldCard")) {
+      var vipSection = document.getElementById("vipPortfolioSection");
+      if (vipSection) {
+        var html = [
+          '<section id="flexibleYieldCard" class="flex-yield-card">',
+            '<div class="flex-yield-head">',
+              '<div><span class="flex-yield-kicker" id="flexYieldKicker"></span><h2 id="flexYieldTitle"></h2><p id="flexYieldDescription"></p></div>',
+              '<div class="flex-yield-rate"><strong>1.5%</strong><span id="flexYieldRateLabel"></span></div>',
+            '</div>',
+            '<div class="flex-yield-summary">',
+              '<div><span id="flexPrincipalLabel"></span><strong id="flexPrincipal">$0.00</strong></div>',
+              '<div><span id="flexProfitLabel"></span><strong id="flexProfit" class="green">$0.00</strong></div>',
+              '<div><span id="flexWithdrawableLabel"></span><strong id="flexWithdrawable" class="green">$0.00</strong></div>',
+              '<div><span id="flexFixedCountLabel"></span><strong id="flexFixedCount">0</strong></div>',
+            '</div>',
+            '<h3 id="flexContractsTitle" style="position:relative;z-index:1;margin:18px 0 9px"></h3>',
+            '<div class="flex-contracts-wrap"><table class="flex-contract-table"><thead><tr>',
+              '<th id="flexThPlan"></th><th id="flexThAmount"></th><th id="flexThRate"></th><th id="flexThRemaining"></th><th id="flexThEarly"></th><th id="flexThAction"></th>',
+            '</tr></thead><tbody id="flexContractRows"></tbody></table></div>',
+          '</section>'
+        ].join("");
+        vipSection.insertAdjacentHTML("beforebegin", html);
+      }
+    }
+
+    var modalNotice = document.querySelector("#planSelectionModal .plan-selection-notice");
+    if (modalNotice && !document.getElementById("planExplicitConsent")) {
+      modalNotice.id = "fixedPlanNotice";
+      modalNotice.removeAttribute("data-t");
+      modalNotice.insertAdjacentHTML("afterend", [
+        '<label class="plan-explicit-consent">',
+          '<input id="planExplicitConsent" type="checkbox">',
+          '<span id="planExplicitConsentText"></span>',
+        '</label>'
+      ].join(""));
+      var actionLabel = document.querySelector("#planSelectionModal .plan-selection-actions .gold span");
+      if (actionLabel) {
+        actionLabel.id = "confirmSelectedPlanText";
+        actionLabel.removeAttribute("data-t");
+      }
+    }
+
+    paintFlexibleText();
+  }
+
+  function paintFlexibleText() {
+    var map = {
+      flexYieldKicker:"kicker", flexYieldTitle:"title", flexYieldDescription:"description",
+      flexYieldRateLabel:"autoBadge", flexPrincipalLabel:"principal", flexProfitLabel:"liveProfit",
+      flexWithdrawableLabel:"withdrawable", flexFixedCountLabel:"fixedContracts",
+      flexContractsTitle:"contracts", flexThPlan:"plan", flexThAmount:"amount", flexThRate:"rate",
+      flexThRemaining:"remaining", flexThEarly:"early", flexThAction:"action",
+      fixedPlanNotice:"fixedNotice", planExplicitConsentText:"consent",
+      confirmSelectedPlanText:"confirmPlan", flexSettleTitle:"confirmWithdrawal",
+      flexSettleText:"settleText"
+    };
+    Object.keys(map).forEach(function (id) {
+      var element = document.getElementById(id);
+      if (element) element.textContent = text(map[id]);
+    });
+    var cancel = document.querySelector("#flexSettleModal .flex-settle-actions .btn:first-child");
+    var confirm = document.getElementById("flexSettleConfirmBtn");
+    if (cancel) cancel.textContent = text("cancel");
+    if (confirm) confirm.textContent = text("confirm");
+  }
+
+  function renderFlexibleCard() {
+    ensureFlexibleUI();
+    var principal = flexiblePrincipal();
+    var profit = flexibleLiveProfit();
+    var values = {
+      flexPrincipal:formatPortfolioMoney(principal),
+      flexProfit:formatPortfolioMoney(profit, true),
+      flexWithdrawable:formatPortfolioMoney(principal + profit, true),
+      flexFixedCount:String(fixedCount())
+    };
+    Object.keys(values).forEach(function (id) {
+      var element = document.getElementById(id);
+      if (element) element.textContent = values[id];
+    });
+
+    var rows = document.getElementById("flexContractRows");
+    if (!rows) return;
+    if (!currentUser || !currentUser.id) {
+      rows.innerHTML = '<tr><td colspan="6" class="flex-empty">' + escapeHtml(language() === "fa" ? "برای مشاهده پلن‌ها وارد حساب شوید." : "Sign in to view your plans.") + '</td></tr>';
+      return;
+    }
+
+    var investments = (currentInvestments || []).filter(active).filter(function (item) {
+      return isFlexible(item) || ["Starter","Growth","Premium"].indexOf(String(item.plan_name || "")) !== -1;
+    });
+    if (!investments.length) {
+      rows.innerHTML = '<tr><td colspan="6" class="flex-empty">' + escapeHtml(text("noContracts")) + '</td></tr>';
+      return;
+    }
+
+    rows.innerHTML = investments.map(function (item) {
+      var principalValue = Number(item.principal || 0);
+      var payout = principalValue + (isFlexible(item) ? flexibleProfit(item) : fixedEarlyProfit(item));
+      var planTitle = isFlexible(item) ? text("autoTitle") : String(item.plan_name || "");
+      var currentRate = isFlexible(item) ? FLEX_RATE : Number(item.daily_rate || 0);
+      return [
+        '<tr>',
+          '<td><span class="flex-contract-type">',escapeHtml(planTitle),'</span><br><span class="flex-contract-note">',escapeHtml(isFlexible(item) ? text("noLock") : text("fixedNotice")),'</span></td>',
+          '<td>',formatPortfolioMoney(principalValue),'</td>',
+          '<td>',currentRate.toFixed(1),'%</td>',
+          '<td>',escapeHtml(remainingText(item)),'</td>',
+          '<td class="flex-contract-payout">',formatPortfolioMoney(payout, true),'</td>',
+          '<td><button class="btn flex-action-btn" type="button" onclick="openFlexibleSettlement(\'',escapeHtml(item.id),'\')">',escapeHtml(text("withdraw")),'</button></td>',
+        '</tr>'
+      ].join("");
+    }).join("");
+  }
+
+  function basePlanMarkup() {
+    return [
+      '<div class="card plan flex-plan-auto">',
+        '<div class="tag flex-auto-tag">AUTO</div>',
+        '<h3>',escapeHtml(text("autoTitle")),'</h3>',
+        '<div class="apy">1.5% <span style="font-size:14px;color:var(--muted)">/ ',escapeHtml(language() === "fa" ? "روزانه" : "Daily"),'</span></div>',
+        '<ul>',
+          '<li>',escapeHtml(text("anyAmount")),'</li>',
+          '<li>',escapeHtml(text("noLock")),'</li>',
+          '<li class="plan-profit">',escapeHtml(text("anytime")),'</li>',
+          '<li class="plan-profit">',escapeHtml(text("improve")),'</li>',
+        '</ul>',
+        '<button class="btn" type="button" disabled>',escapeHtml(text("autoText")),'</button>',
+      '</div>'
+    ].join("");
+  }
+
+  var originalRenderPlans = window.renderPlans;
+  window.renderPlans = function () {
+    originalRenderPlans();
+    ["plans","homePlans"].forEach(function (id) {
+      var container = document.getElementById(id);
+      if (container && !container.querySelector(".flex-plan-auto")) {
+        container.insertAdjacentHTML("afterbegin", basePlanMarkup());
+      }
+    });
+  };
+
+  var originalOpenPlanSelectionModal = window.openPlanSelectionModal;
+  window.openPlanSelectionModal = function (index) {
+    if (!currentUser || !currentUser.id) {
+      openAuth("login");
+      return;
+    }
+    originalOpenPlanSelectionModal(index);
+    ensureFlexibleUI();
+    var consent = document.getElementById("planExplicitConsent");
+    if (consent) consent.checked = false;
+    var errorBox = document.getElementById("selectedPlanError");
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.classList.remove("show");
+    }
+  };
+
+  window.continueSelectedPlan = async function () {
+    var selectedPlan = plans[selectedPlanIndex];
+    var input = document.getElementById("selectedPlanAmount");
+    var errorBox = document.getElementById("selectedPlanError");
+    var consent = document.getElementById("planExplicitConsent");
+    if (!currentUser || !currentUser.id) {
+      closePlanSelectionModal();
+      openAuth("login");
+      return;
+    }
+    if (!selectedPlan) return;
+    var amount = Number(input && input.value);
+    if (!Number.isFinite(amount) || amount < selectedPlan[1] || amount > selectedPlan[2]) {
+      if (errorBox) {
+        errorBox.textContent = tr("wholeAmountRange", {min:"$" + selectedPlan[1], max:"$" + selectedPlan[2].toLocaleString()});
+        errorBox.classList.add("show");
+      }
+      return;
+    }
+    if (amount > flexiblePrincipal()) {
+      if (errorBox) {
+        errorBox.textContent = text("insufficient") + " " + formatPortfolioMoney(flexiblePrincipal());
+        errorBox.classList.add("show");
+      }
+      return;
+    }
+    if (!consent || !consent.checked) {
+      if (errorBox) {
+        errorBox.textContent = language() === "fa" ? "برای فعال‌سازی پلن، تأیید شرایط قرارداد الزامی است." : "You must confirm the contract conditions before activation.";
+        errorBox.classList.add("show");
+      }
+      return;
+    }
+    var button = document.querySelector("#planSelectionModal .plan-selection-actions .gold");
+    if (button) {
+      button.disabled = true;
+      button.textContent = text("processing");
+    }
+    try {
+      var result = await supabaseClient.rpc("confirm_upgrade_investment", {
+        p_plan_name:selectedPlan[0],
+        p_amount:amount
+      });
+      if (result.error) throw result.error;
+      closePlanSelectionModal();
+      await refreshSecureAccount();
+      await updatePortfolio();
+      renderFlexibleCard();
+      toast(text("success"), "success");
+    } catch (error) {
+      console.error("Confirmed plan activation error:", error);
+      if (errorBox) {
+        errorBox.textContent = localizedBackendError(error, "investmentFailed");
+        errorBox.classList.add("show");
+      }
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = text("confirmPlan");
+      }
+    }
+  };
+
+  window.invest = function (index) {
+    openPlanSelectionModal(index);
+  };
+
+  window.investCustom = function () {
+    var amount = Number(document.getElementById("customAmount") && document.getElementById("customAmount").value);
+    var index = amount >= 10 && amount <= 100 ? 0 : amount > 100 && amount <= 1000 ? 1 : amount > 1000 && amount <= 10000 ? 2 : -1;
+    if (index < 0) {
+      toast(tr("validAmountRange"), "error");
+      return;
+    }
+    openPlanSelectionModal(index);
+    var input = document.getElementById("selectedPlanAmount");
+    if (input) input.value = amount;
+  };
+
+  window.getFlexibleAvailablePrincipal = flexiblePrincipal;
+
+  window.getMainAvailableBalance = function () {
+    return Math.max(0, Number(currentUser && currentUser.balance || 0));
+  };
+
+  window.calculateInvestmentProfit = function (investment) {
+    if (!investment || investment.status === "cancelled" || investment.status === "pending") return 0;
+    if (isFlexible(investment)) return flexibleProfit(investment);
+    var start = startedTime(investment);
+    var end = new Date(investment.ends_at).getTime();
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return 0;
+    var calculationTime = Math.min(Date.now(), end);
+    return Number(investment.principal || 0) * (Number(investment.daily_rate || 0) / 100) * Math.max(0, (calculationTime - start) / DAY_MS);
+  };
+
+  window.getMainPortfolioSnapshot = function () {
+    var mainInvestments = (currentInvestments || []).filter(function (item) {
+      return ["FLEX_DAILY","Starter","Growth","Premium"].indexOf(String(item.plan_name || "")) !== -1 &&
+        (item.status === "active" || item.status === "completed") && Number(item.principal || 0) > 0;
+    });
+    var investedPrincipal = mainInvestments.reduce(function (total, item) {
+      return total + Number(item.principal || 0);
+    }, 0);
+    var bankedProfit = Math.max(0, Number(currentUser && currentUser.profit || 0));
+    var liveProfit = mainInvestments.reduce(function (total, item) {
+      return total + calculateInvestmentProfit(item);
+    }, 0);
+    var freeBalance = Math.max(0, Number(currentUser && currentUser.balance || 0));
+    return {
+      regularInvestments:mainInvestments,
+      investedPrincipal:investedPrincipal,
+      bankedProfit:bankedProfit,
+      liveProfit:liveProfit,
+      totalProfit:bankedProfit + liveProfit,
+      freeBalance:freeBalance,
+      totalBalance:freeBalance + investedPrincipal + liveProfit
+    };
+  };
+
+  var originalRenderPortfolioLive = window.renderPortfolioLive;
+  window.renderPortfolioLive = function () {
+    originalRenderPortfolioLive();
+    renderFlexibleCard();
+  };
+
+  function vipAmount() {
+    return flexiblePrincipal();
+  }
+
+  window.calculateVipLock = function () {
+    var input = document.getElementById("vipLockAmount");
+    var errorBox = document.getElementById("vipLockError");
+    if (!input) return;
+    var amount = Number(input.value);
+    var valid = Number.isFinite(amount) && amount >= VIP_LOCK_MINIMUM && amount <= VIP_LOCK_MAXIMUM;
+    if (!valid) {
+      if (errorBox) { errorBox.textContent = tr("validAmountRange"); errorBox.classList.add("show"); }
+      ["vipDailyProfit","vipTotalProfit","vipFinalValue"].forEach(function (id) {
+        var element = document.getElementById(id); if (element) element.textContent = "$0.00";
+      });
+      return;
+    }
+    if (errorBox) { errorBox.textContent = ""; errorBox.classList.remove("show"); }
+    var daily = amount * VIP_LOCK_RATE / 100;
+    document.getElementById("vipDailyProfit").textContent = formatPortfolioMoney(daily);
+    document.getElementById("vipTotalProfit").textContent = formatPortfolioMoney(daily * VIP_LOCK_TERM);
+    document.getElementById("vipFinalValue").textContent = formatPortfolioMoney(amount + daily * VIP_LOCK_TERM);
+  };
+
+  window.setVipMaximumAmount = function () {
+    var input = document.getElementById("vipLockAmount");
+    if (!input) return;
+    input.value = Math.min(VIP_LOCK_MAXIMUM, vipAmount());
+    calculateVipLock();
+  };
+
+  window.calculatePortfolioVipLock = function () {
+    var input = document.getElementById("portfolioVipLockAmount");
+    var daily = document.getElementById("portfolioVipDaily");
+    var total = document.getElementById("portfolioVipTotal");
+    var available = document.getElementById("portfolioVipAvailable");
+    var errorBox = document.getElementById("portfolioVipError");
+    if (!input || !daily || !total) return;
+    var amount = Number(input.value);
+    if (available) available.textContent = formatPortfolioMoney(vipAmount());
+    if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM) {
+      daily.textContent = "$0.00"; total.textContent = "$0.00";
+      if (errorBox) { errorBox.textContent = tr("validAmountRange"); errorBox.classList.add("show"); }
+      return;
+    }
+    daily.textContent = formatPortfolioMoney(amount * VIP_LOCK_RATE / 100);
+    total.textContent = formatPortfolioMoney(amount * VIP_LOCK_RATE / 100 * VIP_LOCK_TERM);
+    if (errorBox) { errorBox.textContent = ""; errorBox.classList.remove("show"); }
+  };
+
+  window.setPortfolioVipMaximum = function () {
+    if (!currentUser || !currentUser.id) { openAuth("login"); return; }
+    var input = document.getElementById("portfolioVipLockAmount");
+    if (!input) return;
+    input.value = Math.min(VIP_LOCK_MAXIMUM, vipAmount());
+    calculatePortfolioVipLock();
+  };
+
+  window.openVipLockConfirmation = function () {
+    if (!currentUser || !currentUser.id) { openAuth("login"); return; }
+    var amount = Number(document.getElementById("vipLockAmount") && document.getElementById("vipLockAmount").value);
+    if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM) {
+      calculateVipLock(); toast(tr("validAmountRange"), "error"); return;
+    }
+    if (amount > vipAmount()) {
+      toast(text("insufficient") + " " + formatPortfolioMoney(vipAmount()), "error"); return;
+    }
+    pendingVipLockAmount = amount;
+    var daily = amount * VIP_LOCK_RATE / 100;
+    document.getElementById("vipConfirmAmount").textContent = formatPortfolioMoney(amount);
+    document.getElementById("vipConfirmRemaining").textContent = formatPortfolioMoney(vipAmount() - amount);
+    document.getElementById("vipConfirmDaily").textContent = formatPortfolioMoney(daily);
+    document.getElementById("vipConfirmTotal").textContent = formatPortfolioMoney(daily * VIP_LOCK_TERM);
+    document.getElementById("vipLockConfirmModal").style.display = "flex";
+  };
+
+  window.openPortfolioVipLockConfirmation = function () {
+    if (!currentUser || !currentUser.id) { openAuth("login"); return; }
+    var compact = document.getElementById("portfolioVipLockAmount");
+    var main = document.getElementById("vipLockAmount");
+    var amount = Number(compact && compact.value);
+    if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM || amount > vipAmount()) {
+      calculatePortfolioVipLock();
+      var errorBox = document.getElementById("portfolioVipError");
+      if (errorBox && amount > vipAmount()) { errorBox.textContent = text("insufficient") + " " + formatPortfolioMoney(vipAmount()); errorBox.classList.add("show"); }
+      return;
+    }
+    if (main) main.value = amount;
+    calculateVipLock();
+    openVipLockConfirmation();
+  };
+
+  window.confirmVipLockFromBalance = async function () {
+    var amount = Number(pendingVipLockAmount);
+    if (!currentUser || !currentUser.id) { closeVipLockConfirmation(); openAuth("login"); return; }
+    if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM) return;
+    var button = document.getElementById("confirmVipLockBtn");
+    if (button) { button.disabled = true; button.textContent = text("processing"); }
+    try {
+      var result = await supabaseClient.rpc("confirm_upgrade_investment", {p_plan_name:"VIP_LOCK", p_amount:amount});
+      if (result.error) throw result.error;
+      closeVipLockConfirmation();
+      await refreshSecureAccount();
+      await updatePortfolio();
+      renderFlexibleCard();
+      toast(text("success"), "success");
+    } catch (error) {
+      console.error("Confirmed VIP activation error:", error);
+      toast(localizedBackendError(error, "vipLockFailed"), "error");
+    } finally {
+      if (button) { button.disabled = false; button.textContent = tr("confirmLock"); }
+    }
+  };
+
+  window.openFlexibleSettlement = function (investmentId) {
+    var item = (currentInvestments || []).find(function (investment) { return String(investment.id) === String(investmentId); });
+    if (!item) return;
+    settlementInvestmentId = item.id;
+    var payout = Number(item.principal || 0) + (isFlexible(item) ? flexibleProfit(item) : fixedEarlyProfit(item));
+    document.getElementById("flexSettleAmount").textContent = formatPortfolioMoney(payout, true);
+    paintFlexibleText();
+    var modal = document.getElementById("flexSettleModal");
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  };
+
+  window.closeFlexibleSettlement = function () {
+    settlementInvestmentId = null;
+    var modal = document.getElementById("flexSettleModal");
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  window.confirmFlexibleSettlement = async function () {
+    if (!settlementInvestmentId) return;
+    var button = document.getElementById("flexSettleConfirmBtn");
+    if (button) { button.disabled = true; button.textContent = text("processing"); }
+    try {
+      var result = await supabaseClient.rpc("settle_investment", {p_investment_id:settlementInvestmentId});
+      if (result.error) throw result.error;
+      closeFlexibleSettlement();
+      await refreshSecureAccount();
+      await updatePortfolio();
+      renderFlexibleCard();
+      toast(text("settled"), "success");
+    } catch (error) {
+      console.error("Investment settlement error:", error);
+      toast(localizedBackendError(error, "investmentFailed"), "error");
+    } finally {
+      if (button) { button.disabled = false; button.textContent = text("confirm"); }
+    }
+  };
+
+  function updateVipCopy() {
+    var labels = document.querySelectorAll('[data-t="lockFromBalance"]');
+    labels.forEach(function (element) {
+      element.textContent = language() === "fa" ? "انتقال از پلن منعطف" : "Move From Flexible Plan";
+    });
+    var descriptions = document.querySelectorAll('[data-t="vipLockNotice"]');
+    descriptions.forEach(function (element) {
+      element.textContent = text("fixedNotice");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    ensureFlexibleUI();
+    updateVipCopy();
+    setTimeout(function () {
+      renderPlans();
+      renderFlexibleCard();
+      calculatePortfolioVipLock();
+    }, 0);
+  }, {once:true});
+
+  document.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "flexSettleModal") closeFlexibleSettlement();
+  });
+
+  new MutationObserver(function () {
+    paintFlexibleText();
+    updateVipCopy();
+  }).observe(document.documentElement, {attributes:true, attributeFilter:["lang","dir"]});
+})();
+</script>
+
 </body>
 </html>
