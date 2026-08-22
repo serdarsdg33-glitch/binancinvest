@@ -7614,7 +7614,7 @@ html:not(.native-app) #headerUsername {
     <div id="twofaSecret" class="twofa-secret"></div>
     <div class="twofa-field">
       <label id="twofaSetupCodeLabel" for="twofaSetupCode">6-digit verification code</label>
-      <input id="twofaSetupCode" class="twofa-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)">
+      <input id="twofaSetupCode" class="twofa-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="000000" oninput="this.value=this.value.replace(/\D/g,'').slice(0,8)">
     </div>
     <div id="twofaSetupError" class="twofa-error"></div>
     <div class="twofa-buttons">
@@ -7705,7 +7705,7 @@ html:not(.native-app) #headerUsername {
 
     <div class="password-flow-form" style="margin-top:16px;">
       <label for="passwordRecoveryOtp" data-t="enterCode">
-        Enter 6-digit verification code
+        Enter 8-digit verification code
       </label>
 
       <input
@@ -8265,14 +8265,14 @@ async function verifyPasswordRecoveryCode() {
       document.getElementById(
         "passwordRecoveryOtp"
       )?.value || ""
-    ).replace(/\D/g, "").slice(0, 6);
+    ).replace(/\D/g, "").slice(0, 8);
 
   const button =
     document.getElementById(
       "verifyRecoveryCodeBtn"
     );
 
-  if (!email || token.length !== 6) {
+  if (!email || token.length !== 8) {
     showPasswordRecoveryOtpError(
       tr("enterCode")
     );
@@ -8870,7 +8870,7 @@ customTitle:"Custom Investment Plan",customDesc:"Invest any custom amount from $
 dailyProfitLabel:"Daily Profit",monthlyProfitLabel:"Monthly Profit",
 lockNoticeText:"If you lock your money for 60 days or more, your daily profit rate reaches over 7.5% according to the contract agreement.",
 pointsTitle:"Points",pointsSub:"+50 weekly",refTitle:"Referral",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Streak",streakSub:"Active",sec2fa:"2FA",secLogin:"Login protection",secWith:"Withdrawal confirmation",enabled:"Enabled",active:"Active",
-forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"A verification code has been sent to your email. (Simulated code preview:",enterCode:"Enter 6-digit Email Code",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
+forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"کد بازیابی رمز عبور به ایمیل شما ارسال شد.",enterCode:"کد ۸ رقمی ایمیل را وارد کنید",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
 platformStatsTitle:"Platform Statistics", statUsers:"Total registered users on the site", statInvestors:"Investors and active users", statPaid:"Total profit paid to date", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
@@ -8892,7 +8892,7 @@ customTitle:"پلن سرمایه‌گذاری کاستوم (سفارشی)",custo
 dailyProfitLabel:"سود روزانه",monthlyProfitLabel:"سود ماهانه",
 lockNoticeText:"اگر شما پول خودتان را به مدت ۶۰ روز یا بیشتر قفل کنید، سود شما طبق قرارداد به بالای ۷.۵ درصد روزانه می‌رسد.",
 pointsTitle:"امتیاز",pointsSub:"+۵۰ هفتگی",refTitle:"دعوت دوستان",vipTitle:"وی‌آی‌پی",vipSub:"۱۲۵۰ امتیاز",streakTitle:"مداومت",streakSub:"فعال",sec2fa:"تأیید دو مرحله‌ای",secLogin:"محافظت از ورود",secWith:"تأیید برداشت",enabled:"فعال",active:"فعال",
-forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد تأیید به ایمیل شما ارسال شد. (پیش‌نمایش کد شبیه‌سازی‌شده:",enterCode:"کد ۶ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
+forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد تأیید به ایمیل شما ارسال شد. (",enterCode:"کد ۸ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"تعداد کل سرمایه‌گذاران و کاربران ثبت‌شده در سایت", statInvestors:"سرمایه‌گذاران و کاربران آنلاین", statPaid:"کل سود پرداختی تا الان", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
