@@ -6445,6 +6445,73 @@ html:not(.native-app) #headerUsername {
 }
 </style>
 
+
+<style id="password-flow-close-buttons-v1">
+.password-flow-box {
+  position: relative !important;
+}
+
+.password-flow-close {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  color: #aeb8c5 !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 50% !important;
+
+  font-size: 29px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+
+  box-shadow: none !important;
+  cursor: pointer !important;
+  z-index: 8 !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.password-flow-close:hover,
+.password-flow-close:focus-visible {
+  color: #fff !important;
+  border-color: rgba(240,185,11,.48) !important;
+  background: rgba(240,185,11,.08) !important;
+  outline: none !important;
+}
+
+html[dir="rtl"] .password-flow-close {
+  right: auto !important;
+  left: 14px !important;
+}
+
+@media (max-width: 520px) {
+  .password-flow-close {
+    top: 12px !important;
+    right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    font-size: 27px !important;
+  }
+
+  html[dir="rtl"] .password-flow-close {
+    right: auto !important;
+    left: 12px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -7690,6 +7757,13 @@ html:not(.native-app) #headerUsername {
 <div id="passwordResetSentModal" class="password-flow-modal">
   <div class="password-flow-box">
 
+    <button
+      class="password-flow-close"
+      type="button"
+      onclick="closePasswordResetSentModal()"
+      aria-label="Close"
+    >×</button>
+
     <div class="password-flow-icon">✉</div>
 
     <h2 data-t="checkYourEmail">Check your email</h2>
@@ -7751,6 +7825,13 @@ html:not(.native-app) #headerUsername {
 <!-- Enter new password -->
 <div id="newPasswordModal" class="password-flow-modal">
   <div class="password-flow-box">
+
+    <button
+      class="password-flow-close"
+      type="button"
+      onclick="cancelNewPasswordRecovery()"
+      aria-label="Close"
+    >×</button>
 
     <div class="password-flow-icon">🔒</div>
 
@@ -8202,6 +8283,48 @@ function openNewPasswordModal() {
   document.getElementById(
     "newPasswordModal"
   ).classList.add("open");
+}
+
+async function cancelNewPasswordRecovery() {
+  passwordRecoveryActive = false;
+
+  localStorage.removeItem(
+    PASSWORD_RECOVERY_EMAIL_KEY
+  );
+
+  document.getElementById(
+    "newPasswordModal"
+  )?.classList.remove("open");
+
+  /*
+   * verifyOtp creates an authenticated recovery session.
+   * If the user closes this step without choosing a new password,
+   * close that temporary local session as well.
+   */
+  try {
+    await supabaseClient.auth.signOut({
+      scope: "local"
+    });
+  } catch (error) {
+    console.warn(
+      "Recovery session cleanup skipped:",
+      error
+    );
+  }
+
+  currentUser = null;
+
+  if (typeof updateHeaderAuthUI === "function") {
+    updateHeaderAuthUI();
+  }
+
+  if (typeof updateProfileAccessUI === "function") {
+    updateProfileAccessUI();
+  }
+
+  if (typeof updateSupportAuthUI === "function") {
+    updateSupportAuthUI();
+  }
 }
 
 function showPasswordRecoveryError(message) {
