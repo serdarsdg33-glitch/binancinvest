@@ -7021,8 +7021,149 @@ html[dir="rtl"] .flex-fixed-plan-notice {
 }
 </style>
 
+
+<style id="selected-plan-summary-v5">
+.selected-plan-summary-zone{
+  position:relative;
+  z-index:2;
+  display:grid;
+  gap:14px;
+  margin:16px 0 18px;
+}
+
+.selected-plan-summary-card{
+  position:relative;
+  overflow:hidden;
+  padding:18px;
+  border:1px solid rgba(240,185,11,.35);
+  border-radius:20px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,24,33,.94),
+      rgba(6,10,15,.92)
+    );
+  box-shadow:
+    0 18px 44px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.selected-plan-summary-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      circle at 86% 12%,
+      rgba(240,185,11,.12),
+      transparent 34%
+    );
+}
+
+.selected-plan-summary-head{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.selected-plan-summary-title{
+  margin:0;
+  font-size:20px;
+  font-weight:950;
+  color:#fff;
+}
+
+.selected-plan-summary-date{
+  margin-top:5px;
+  color:#98a3b1;
+  font-size:12px;
+  line-height:1.55;
+}
+
+.selected-plan-summary-badge{
+  flex:0 0 auto;
+  padding:7px 10px;
+  border:1px solid rgba(240,185,11,.38);
+  border-radius:999px;
+  color:#ffd75b;
+  background:rgba(240,185,11,.08);
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.selected-plan-summary-grid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+}
+
+.selected-plan-summary-metric{
+  min-width:0;
+  padding:12px 11px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  background:rgba(3,7,12,.58);
+}
+
+.selected-plan-summary-metric span{
+  display:block;
+  margin-bottom:7px;
+  color:#99a5b4;
+  font-size:11px;
+  line-height:1.45;
+}
+
+.selected-plan-summary-metric strong{
+  display:block;
+  overflow-wrap:anywhere;
+  color:#fff;
+  font-size:18px;
+  line-height:1.2;
+  font-weight:950;
+}
+
+.selected-plan-summary-metric strong.green{
+  color:#21d99a;
+}
+
+html[dir="rtl"] .selected-plan-summary-card{
+  text-align:right;
+}
+
+@media(max-width:760px){
+  .selected-plan-summary-card{
+    padding:14px;
+    border-radius:17px;
+  }
+
+  .selected-plan-summary-head{
+    align-items:center;
+  }
+
+  .selected-plan-summary-title{
+    font-size:18px;
+  }
+
+  .selected-plan-summary-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .selected-plan-summary-metric strong{
+    font-size:17px;
+  }
+}
+</style>
+
 </head>
-<body data-investment-model="flex-v4">
+<body data-investment-model="flex-v5">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -17665,6 +17806,7 @@ document.addEventListener("DOMContentLoaded", function() {
       closePlanSelectionModal();
       await refreshSecureAccount();
       await updatePortfolio();
+      renderSelectedPlanSummaryCards();
       renderFlexibleCard();
       toast(text("success"), "success");
     } catch (error) {
@@ -17714,26 +17856,31 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   window.getMainPortfolioSnapshot = function () {
-    var mainInvestments = (currentInvestments || []).filter(function (item) {
-      if (!active(item)) return false;
+    /*
+     * V5 MODEL
+     * --------
+     * The four large cards at the top represent ONLY the mother
+     * FLEX_DAILY 1.5% plan.
+     *
+     * Explicitly-confirmed Starter/Growth/Premium contracts are displayed
+     * in their own compact cards below and must never change the mother
+     * plan's rate, label or profit calculation.
+     */
+    var flexInvestments =
+      (currentInvestments || [])
+        .filter(function (item) {
+          return active(item) && isFlexible(item);
+        });
 
-      if (isFlexible(item)) return true;
+    var investedPrincipal =
+      flexInvestments.reduce(function (total, item) {
+        return total + Number(item.principal || 0);
+      }, 0);
 
-      return isConfirmedRegularPlan(item);
-    });
-
-    var investedPrincipal = mainInvestments.reduce(function (total, item) {
-      return total + Number(item.principal || 0);
-    }, 0);
-
-    var bankedProfit = Math.max(
-      0,
-      Number(currentUser && currentUser.profit || 0)
-    );
-
-    var liveProfit = mainInvestments.reduce(function (total, item) {
-      return total + calculateInvestmentProfit(item);
-    }, 0);
+    var liveProfit =
+      flexInvestments.reduce(function (total, item) {
+        return total + flexibleProfit(item);
+      }, 0);
 
     var freeBalance = Math.max(
       0,
@@ -17741,27 +17888,20 @@ document.addEventListener("DOMContentLoaded", function() {
     );
 
     return {
-      regularInvestments:mainInvestments,
+      regularInvestments:flexInvestments,
       investedPrincipal:investedPrincipal,
-      bankedProfit:bankedProfit,
+      bankedProfit:0,
       liveProfit:liveProfit,
-      totalProfit:bankedProfit + liveProfit,
+      totalProfit:liveProfit,
       freeBalance:freeBalance,
 
       /*
-       * Banked/realized profit is already inside profiles.balance.
-       * Do not add it again to Total Balance.
-       */
-      /*
-       * Main portfolio total:
-       * invested principal + realized/live profit.
-       *
-       * profiles.balance is the separately available/free balance and must
-       * not be added here, otherwise an approved deposit can appear twice.
+       * Main Total Balance = mother-plan principal + mother-plan profit.
+       * Selected contracts are shown separately and are not mixed into
+       * this number.
        */
       totalBalance:
         investedPrincipal +
-        bankedProfit +
         liveProfit
     };
   };
@@ -17785,18 +17925,13 @@ document.addEventListener("DOMContentLoaded", function() {
       window.getMainPortfolioSnapshot();
 
     /*
-     * "Total Balance" is intentionally:
-     * active invested principal + all profit.
-     *
-     * Do not add profiles.balance here. That value is the separate
-     * available/free balance and adding it caused a $200 deposit to
-     * appear as roughly $400 in the main portfolio card.
+     * The main four-card summary is permanently reserved for the
+     * FLEX_DAILY mother plan.
      */
     if (balanceElement) {
       balanceElement.textContent =
         formatPortfolioMoney(
-          snapshot.investedPrincipal +
-          snapshot.totalProfit,
+          snapshot.totalBalance,
           true
         );
     }
@@ -17817,50 +17952,243 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (levelElement) {
-      var confirmedPlans =
-        (currentInvestments || [])
-          .filter(function (item) {
-            return (
-              active(item) &&
-              isConfirmedRegularPlan(item)
-            );
-          })
-          .sort(function (a, b) {
-            return (
-              Number(b.daily_rate || 0) -
-              Number(a.daily_rate || 0)
-            );
-          });
-
-      if (!confirmedPlans.length) {
-        /*
-         * Every approved deposit starts in FLEX_DAILY.
-         * Deposit amount alone must NEVER make the account show Growth,
-         * Starter or Premium.
-         */
-        levelElement.textContent =
-          text("baseLevel");
-      } else {
-        var selected =
-          String(
-            confirmedPlans[0].plan_name || ""
-          );
-
-        if (selected === "Starter") {
-          levelElement.textContent =
-            tr("starterLevel");
-        } else if (selected === "Growth") {
-          levelElement.textContent =
-            tr("growthLevel");
-        } else if (selected === "Premium") {
-          levelElement.textContent =
-            tr("premiumLevel");
-        } else {
-          levelElement.textContent =
-            text("baseLevel");
-        }
-      }
+      levelElement.textContent =
+        text("baseLevel");
     }
+  }
+
+  function selectedPlanName(item) {
+    var name =
+      String(item && item.plan_name || "");
+
+    if (language() === "fa") {
+      if (name === "Starter") return "پلن استارتر";
+      if (name === "Growth") return "پلن رشد";
+      if (name === "Premium") return "پلن پریمیوم";
+    }
+
+    return name + " Plan";
+  }
+
+  function selectedPlanStartedLabel(item) {
+    var raw =
+      item &&
+      (
+        item.profit_started_at ||
+        item.started_at
+      );
+
+    var date =
+      new Date(raw);
+
+    if (!Number.isFinite(date.getTime())) {
+      return language() === "fa"
+        ? "تاریخ شروع: —"
+        : "Started: —";
+    }
+
+    var formatted;
+
+    try {
+      formatted =
+        date.toLocaleDateString(
+          language() === "fa"
+            ? "fa-IR"
+            : undefined,
+          {
+            year:"numeric",
+            month:"2-digit",
+            day:"2-digit"
+          }
+        );
+    } catch (_) {
+      formatted =
+        date.toLocaleDateString();
+    }
+
+    return (
+      language() === "fa"
+        ? "تاریخ شروع: "
+        : "Started: "
+    ) + formatted;
+  }
+
+  function ensureSelectedPlanSummaryZone() {
+    var zone =
+      document.getElementById(
+        "selectedPlanSummaryZone"
+      );
+
+    if (zone) return zone;
+
+    var referralCard =
+      document.getElementById(
+        "referralPortfolioCard"
+      );
+
+    if (!referralCard) return null;
+
+    zone =
+      document.createElement("div");
+
+    zone.id =
+      "selectedPlanSummaryZone";
+
+    zone.className =
+      "selected-plan-summary-zone";
+
+    referralCard.insertAdjacentElement(
+      "beforebegin",
+      zone
+    );
+
+    return zone;
+  }
+
+  function renderSelectedPlanSummaryCards() {
+    var zone =
+      ensureSelectedPlanSummaryZone();
+
+    if (!zone) return;
+
+    if (!currentUser || !currentUser.id) {
+      zone.replaceChildren();
+      return;
+    }
+
+    var plans =
+      (currentInvestments || [])
+        .filter(function (item) {
+          return (
+            active(item) &&
+            isConfirmedRegularPlan(item)
+          );
+        })
+        .sort(function (a, b) {
+          return (
+            new Date(a.started_at).getTime() -
+            new Date(b.started_at).getTime()
+          );
+        });
+
+    if (!plans.length) {
+      zone.replaceChildren();
+      return;
+    }
+
+    zone.innerHTML =
+      plans.map(function (item) {
+        var principal =
+          Number(item.principal || 0);
+
+        /*
+         * This card shows the selected contract's own live contractual
+         * profit. The lower list continues to show the early-withdrawal
+         * amount recalculated at 1.5% when applicable.
+         */
+        var planProfit =
+          calculateInvestmentProfit(item);
+
+        var planBalance =
+          principal + planProfit;
+
+        var rate =
+          Number(item.daily_rate || 0);
+
+        var principalLabel =
+          language() === "fa"
+            ? "مبلغ سرمایه"
+            : "Principal";
+
+        var rateLabel =
+          language() === "fa"
+            ? "نرخ سود روزانه"
+            : "Daily rate";
+
+        var profitLabel =
+          language() === "fa"
+            ? "مقدار سود"
+            : "Profit";
+
+        var balanceLabel =
+          language() === "fa"
+            ? "بالانس پلن"
+            : "Plan balance";
+
+        return [
+          '<section class="selected-plan-summary-card" data-plan-id="',
+          escapeHtml(item.id),
+          '">',
+            '<div class="selected-plan-summary-head">',
+              '<div>',
+                '<h3 class="selected-plan-summary-title">',
+                  escapeHtml(selectedPlanName(item)),
+                '</h3>',
+                '<div class="selected-plan-summary-date">',
+                  escapeHtml(selectedPlanStartedLabel(item)),
+                '</div>',
+              '</div>',
+              '<div class="selected-plan-summary-badge">',
+                rate.toFixed(1),
+                '% / ',
+                escapeHtml(
+                  language() === "fa"
+                    ? "روزانه"
+                    : "Daily"
+                ),
+              '</div>',
+            '</div>',
+
+            '<div class="selected-plan-summary-grid">',
+
+              '<div class="selected-plan-summary-metric">',
+                '<span>',
+                  escapeHtml(principalLabel),
+                '</span>',
+                '<strong>',
+                  formatPortfolioMoney(principal),
+                '</strong>',
+              '</div>',
+
+              '<div class="selected-plan-summary-metric">',
+                '<span>',
+                  escapeHtml(rateLabel),
+                '</span>',
+                '<strong>',
+                  rate.toFixed(1),
+                  '%',
+                '</strong>',
+              '</div>',
+
+              '<div class="selected-plan-summary-metric">',
+                '<span>',
+                  escapeHtml(profitLabel),
+                '</span>',
+                '<strong class="green">',
+                  formatPortfolioMoney(
+                    planProfit,
+                    true
+                  ),
+                '</strong>',
+              '</div>',
+
+              '<div class="selected-plan-summary-metric">',
+                '<span>',
+                  escapeHtml(balanceLabel),
+                '</span>',
+                '<strong>',
+                  formatPortfolioMoney(
+                    planBalance,
+                    true
+                  ),
+                '</strong>',
+              '</div>',
+
+            '</div>',
+          '</section>'
+        ].join("");
+      })
+      .join("");
   }
 
   var originalRenderPortfolioLive =
@@ -17870,14 +18198,18 @@ document.addEventListener("DOMContentLoaded", function() {
     originalRenderPortfolioLive();
 
     /*
-     * The legacy renderer still derives account level from the amount.
-     * Correct it immediately with the explicit-confirmation model.
+     * Top four cards: mother FLEX_DAILY 1.5% only.
      */
     renderMainFlexibleSummary();
 
     /*
-     * FLEX_DAILY continues independently in the lower card even after
-     * the user confirms Starter/Growth/Premium with part of the principal.
+     * Separate compact cards: explicitly confirmed
+     * Starter / Growth / Premium contracts.
+     */
+    renderSelectedPlanSummaryCards();
+
+    /*
+     * Lower FLEX card + list stays in place.
      */
     renderFlexibleCard();
   };
