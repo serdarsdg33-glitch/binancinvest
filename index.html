@@ -17657,6 +17657,19 @@ document.addEventListener("DOMContentLoaded", function() {
   var settlementInvestmentId = null;
   var cancellationInvestmentId = null;
 
+  /*
+   * Stable base-plan live-profit clock.
+   * The visible FLEX_DAILY profit is anchored to the current server snapshot
+   * and then advances only at exactly 1.5% daily on the CURRENT base principal.
+   * Activating Starter/Growth/Premium can therefore never accelerate the base plan.
+   */
+  var flexibleProfitClock = {
+    signature: "",
+    anchoredAt: 0,
+    anchoredProfit: 0,
+    ratePerMs: 0
+  };
+
   var copy = {
     en: {
       kicker:"AUTOMATIC BASE PLAN", title:"Flexible Daily Yield",
@@ -17737,8 +17750,73 @@ document.addEventListener("DOMContentLoaded", function() {
     return Math.max(0, (until - start) / DAY_MS);
   }
 
+  function flexibleProfitAt(item, atTime) {
+    return (
+      Number(item.principal || 0) *
+      (FLEX_RATE / 100) *
+      elapsedDays(item, atTime)
+    );
+  }
+
   function flexibleProfit(item) {
-    return Number(item.principal || 0) * (FLEX_RATE / 100) * elapsedDays(item, Date.now());
+    return flexibleProfitAt(item, Date.now());
+  }
+
+  function activeFlexibleRows() {
+    return (currentInvestments || []).filter(function (item) {
+      return active(item) && isFlexible(item);
+    });
+  }
+
+  function flexibleClockSignature(rows) {
+    return rows
+      .slice()
+      .sort(function (a, b) {
+        return String(a.id || "").localeCompare(String(b.id || ""));
+      })
+      .map(function (item) {
+        return [
+          String(item.id || ""),
+          Number(item.principal || 0).toFixed(8),
+          String(item.profit_started_at || item.started_at || ""),
+          String(item.status || "")
+        ].join("|");
+      })
+      .join("::");
+  }
+
+  function rawFlexibleLiveProfit(rows, atTime) {
+    return rows.reduce(function (total, item) {
+      return total + flexibleProfitAt(item, atTime);
+    }, 0);
+  }
+
+  function stableFlexibleLiveProfit() {
+    var rows = activeFlexibleRows();
+    var now = Date.now();
+    var signature = flexibleClockSignature(rows);
+
+    if (
+      flexibleProfitClock.signature !== signature ||
+      !Number.isFinite(flexibleProfitClock.anchoredAt) ||
+      flexibleProfitClock.anchoredAt <= 0
+    ) {
+      var principalNow = rows.reduce(function (total, item) {
+        return total + Number(item.principal || 0);
+      }, 0);
+
+      flexibleProfitClock.signature = signature;
+      flexibleProfitClock.anchoredAt = now;
+      flexibleProfitClock.anchoredProfit = rawFlexibleLiveProfit(rows, now);
+      flexibleProfitClock.ratePerMs =
+        principalNow * (FLEX_RATE / 100) / DAY_MS;
+    }
+
+    return (
+      flexibleProfitClock.anchoredProfit +
+      Math.max(0, now - flexibleProfitClock.anchoredAt) *
+        flexibleProfitClock.ratePerMs
+    );
   }
 
   function fixedEarlyProfit(item) {
@@ -17775,19 +17853,13 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function flexiblePrincipal() {
-    return (currentInvestments || []).filter(function (item) {
-      return active(item) && isFlexible(item);
-    }).reduce(function (total, item) {
+    return activeFlexibleRows().reduce(function (total, item) {
       return total + Number(item.principal || 0);
     }, 0);
   }
 
   function flexibleLiveProfit() {
-    return (currentInvestments || []).filter(function (item) {
-      return active(item) && isFlexible(item);
-    }).reduce(function (total, item) {
-      return total + flexibleProfit(item);
-    }, 0);
+    return stableFlexibleLiveProfit();
   }
 
   function fixedCount() {
@@ -18147,6 +18219,9 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   window.getFlexibleAvailablePrincipal = flexiblePrincipal;
+  window.getBasePlanProfitRatePerSecond = function () {
+    return flexiblePrincipal() * (FLEX_RATE / 100) / 86400;
+  };
 
   window.getMainAvailableBalance = function () {
     var freeBalance =
@@ -18209,10 +18284,12 @@ document.addEventListener("DOMContentLoaded", function() {
         return total + Number(item.principal || 0);
       }, 0);
 
+    /*
+     * Use the dedicated base-plan clock. The selected contracts have their own
+     * profit calculations and never contribute to this live-profit speed.
+     */
     var liveProfit =
-      flexInvestments.reduce(function (total, item) {
-        return total + flexibleProfit(item);
-      }, 0);
+      stableFlexibleLiveProfit();
 
     var freeBalance = Math.max(
       0,
