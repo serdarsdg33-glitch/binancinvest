@@ -9855,6 +9855,8 @@ function updateAuthModalUI() {
   const loginFields = document.getElementById("loginFields");
   const forgotFields = document.getElementById("forgotFields");
   const passwordContainer = document.getElementById("passwordContainer");
+  const passwordRequirements =
+    passwordContainer?.querySelector(".password-requirements");
   const submitButton = document.getElementById("authSubmitBtn");
   const forgotLink = document.getElementById("forgotLink");
   const switchLink = document.getElementById("switchAuthLink");
@@ -9865,6 +9867,9 @@ function updateAuthModalUI() {
   loginFields.style.display = "none";
   forgotFields.style.display = "none";
   passwordContainer.style.display = "block";
+  if (passwordRequirements) {
+    passwordRequirements.style.display = "block";
+  }
   forgotLink.style.display = "none";
   switchLink.style.display = "block";
 
@@ -9897,10 +9902,79 @@ function updateAuthModalUI() {
     authMode = "login";
     title.textContent = d.login || "Sign In";
     loginFields.style.display = "block";
+
+    /* Password rules are for account creation/reset, not normal sign-in. */
+    if (passwordRequirements) {
+      passwordRequirements.style.display = "none";
+    }
+
     submitButton.textContent = d.login || "Sign In";
     forgotLink.style.display = "block";
     switchLink.textContent = d.needAccountText || "Don't have an account? Sign up";
   }
+}
+
+
+async function resolveLoginEmailFromIdentifier(identifier) {
+  const raw =
+    String(identifier || "").trim();
+
+  /*
+   * A normal email can be sent directly to Supabase Auth.
+   * A leading @ always means username.
+   */
+  const looksLikeEmail =
+    !raw.startsWith("@") &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw);
+
+  if (looksLikeEmail) {
+    return raw.toLowerCase();
+  }
+
+  const username =
+    raw.replace(/^@+/, "").trim();
+
+  if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
+    throw new Error("Invalid login credentials");
+  }
+
+  const { data, error } =
+    await supabaseClient.rpc(
+      "resolve_login_email_by_username",
+      {
+        p_username: username
+      }
+    );
+
+  if (error) {
+    console.error(
+      "Username login lookup failed:",
+      error
+    );
+    throw new Error("Invalid login credentials");
+  }
+
+  let email = "";
+
+  if (typeof data === "string") {
+    email = data;
+  } else if (Array.isArray(data) && data.length) {
+    email =
+      typeof data[0] === "string"
+        ? data[0]
+        : data[0]?.email || "";
+  } else if (data && typeof data === "object") {
+    email = data.email || "";
+  }
+
+  email =
+    String(email || "").trim().toLowerCase();
+
+  if (!email.includes("@")) {
+    throw new Error("Invalid login credentials");
+  }
+
+  return email;
 }
 
 async function submitAuth() {
@@ -9987,15 +10061,29 @@ async function submitAuth() {
     }
 
     else if (authMode === "login") {
-      const email = document.getElementById("authUser").value.trim().toLowerCase();
-      const password = document.getElementById("authPass").value;
+      const loginIdentifier =
+        document.getElementById("authUser").value.trim();
 
-      if (!email.includes("@")) {
-        return toast(tr("registeredEmailRequired"));
+      const password =
+        document.getElementById("authPass").value;
+
+      if (!loginIdentifier) {
+        return toast(
+          tr("usernameOrEmail") ||
+          "Username or Email"
+        );
       }
 
+      const email =
+        await resolveLoginEmailFromIdentifier(
+          loginIdentifier
+        );
+
       const { data, error } =
-        await supabaseClient.auth.signInWithPassword({ email, password });
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
 
       if (error) throw error;
 
