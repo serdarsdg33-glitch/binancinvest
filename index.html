@@ -3,6 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<script id="ios-web-safe-area-detector">
+(function () {
+  try {
+    const ua = navigator.userAgent || "";
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(ua) ||
+      (
+        navigator.platform === "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+    /*
+      iPhone/iPad only.
+      Android APK/native styling stays completely separate.
+    */
+    if (
+      isIOS &&
+      !document.documentElement.classList.contains("native-app")
+    ) {
+      document.documentElement.classList.add("ios-web-safe");
+    }
+  } catch (_) {}
+})();
+</script>
+
 <script id="native-app-mode-detector">
 (function () {
   try {
@@ -5930,493 +5956,82 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 </style>
 
 
-<style id="native-full-page-background-unified-v1">
+<style id="ios-web-header-safe-area-v1">
 /*
-  Native app only:
-  Prevent page artwork from ending before the phone viewport and exposing
-  a different body background underneath.
+  iPhone/iPad WEBSITE + Add to Home Screen only.
+  Android/native-app is not affected.
 */
-@media (max-width: 900px) {
-  html.native-app {
-    --native-page-min-h:
-      calc(
-        100dvh
-        - var(--native-app-header-h)
-        - var(--native-app-nav-h)
-        - var(--native-safe-top)
-        - var(--native-safe-bottom)
-        - 30px
-      );
-  }
-
-  /* Every opened app page must at least fill the visible phone area. */
-  html.native-app .view.active {
-    min-height: var(--native-page-min-h) !important;
-    box-sizing: border-box !important;
-  }
-
-  /*
-    Pages that have their own full-page artwork:
-    keep one continuous background all the way to the bottom.
-    The first background layer is the dark readability gradient;
-    the second is the actual image.
-  */
-  html.native-app #transactions,
-  html.native-app #rewards,
-  html.native-app #profile,
-  html.native-app #support {
-    min-height: var(--native-page-min-h) !important;
-    background-size: 100% 100%, cover !important;
-    background-position: center center, center center !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-attachment: scroll, scroll !important;
-    background-color: #030609 !important;
-  }
-
-  /* Markets also has a page-wide artwork. */
-  html.native-app #markets {
-    min-height: var(--native-page-min-h) !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-color: #05080b !important;
-  }
-
-  /*
-    Portfolio uses two separate authored scenes, so do not stretch those
-    images.  Only ensure the page container itself cannot finish early.
-  */
-  html.native-app #portfolio {
-    min-height: var(--native-page-min-h) !important;
-    box-sizing: border-box !important;
-  }
-
-  /*
-    Home and Invest do not use one full-page image, but still keep the
-    active page at least viewport-height so a short state cannot reveal
-    a separate strip of body background.
-  */
-  html.native-app #home,
-  html.native-app #invest {
-    min-height: var(--native-page-min-h) !important;
-    box-sizing: border-box !important;
-  }
+html.ios-web-safe {
+  --ios-header-safe-top:
+    max(env(safe-area-inset-top, 0px), 18px);
 }
 
-/* Fallback for older Android WebViews without dynamic viewport units. */
-@supports not (height: 100dvh) {
-  @media (max-width: 900px) {
-    html.native-app {
-      --native-page-min-h:
-        calc(
-          100vh
-          - var(--native-app-header-h)
-          - var(--native-app-nav-h)
-          - var(--native-safe-top)
-          - var(--native-safe-bottom)
-          - 30px
-        );
-    }
-  }
-}
-</style>
+html.ios-web-safe header {
+  height: auto !important;
+  min-height:
+    calc(
+      72px
+      + var(--ios-header-safe-top)
+    ) !important;
 
+  padding-top:
+    calc(
+      var(--ios-header-safe-top)
+      + 5px
+    ) !important;
 
-<style id="native-black-glass-gold-shell-v1">
-/* =========================================================
-   NATIVE APP — BLACK GLASS + SUBTLE GOLD SHELL
-   فقط حالت اپ گوشی؛ نسخه وب دست‌نخورده می‌ماند.
-   ========================================================= */
-
-@media (max-width: 900px) {
-  html.native-app {
-    --app-media-surface: #020304 !important;
-    --native-shell-black: #020304;
-    --native-shell-black-2: #07090c;
-    --native-shell-gold: rgba(240,185,11,.10);
-    --native-shell-line: rgba(240,185,11,.22);
-  }
-
-  /* پس‌زمینه اصلی همه صفحه‌ها:
-     مشکی شیشه‌ای با هاله طلایی خیلی کم */
-  html.native-app,
-  html.native-app body {
-    background:
-      radial-gradient(
-        circle at 50% 8%,
-        rgba(240,185,11,.13) 0%,
-        rgba(240,185,11,.055) 18%,
-        transparent 38%
-      ),
-      radial-gradient(
-        circle at 50% 92%,
-        rgba(240,185,11,.075) 0%,
-        transparent 34%
-      ),
-      linear-gradient(
-        180deg,
-        #020304 0%,
-        #05070a 42%,
-        #020304 100%
-      ) !important;
-
-    background-color: #020304 !important;
-    background-attachment: fixed !important;
-  }
-
-  /* فضای خالی اطراف و بین سکشن‌ها شفاف بماند
-     تا همان بک‌گراند مشکی/طلایی یکدست دیده شود */
-  html.native-app .wrap {
-    background: transparent !important;
-  }
-
-  html.native-app .view.active {
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.018),
-      inset 0 -1px 0 rgba(240,185,11,.035) !important;
-  }
-
-  /* هدر شیشه‌ای مشکی */
-  html.native-app header {
-    background:
-      linear-gradient(
-        180deg,
-        rgba(7,9,12,.94),
-        rgba(2,4,6,.88)
-      ) !important;
-
-    border-bottom-color: rgba(240,185,11,.24) !important;
-
-    box-shadow:
-      0 12px 34px rgba(0,0,0,.52),
-      0 1px 0 rgba(240,185,11,.05) !important;
-
-    backdrop-filter: blur(20px) saturate(1.08) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(1.08) !important;
-  }
-
-  /* نوار پایین: مشکی شیشه‌ای + طلایی خیلی ملایم */
-  html.native-app .nav {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(11,13,16,.90),
-        rgba(2,4,6,.86)
-      ) !important;
-
-    border-color: rgba(240,185,11,.25) !important;
-
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.035),
-      inset 0 0 24px rgba(240,185,11,.025),
-      0 18px 46px rgba(0,0,0,.58),
-      0 0 16px rgba(240,185,11,.055) !important;
-
-    backdrop-filter: blur(22px) saturate(1.10) !important;
-    -webkit-backdrop-filter: blur(22px) saturate(1.10) !important;
-  }
-
-  /* دکمه‌های غیرفعال نوار پایین */
-  html.native-app .nav button:not(.active) {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(255,255,255,.035),
-        rgba(240,185,11,.018)
-      ) !important;
-
-    border-color: rgba(240,185,11,.10) !important;
-    color: #d9e0e8 !important;
-
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.025) !important;
-  }
-
-  /* صفحات تصویری: رنگ زیر عکس مشکی باشد، نه آبی */
-  html.native-app #transactions,
-  html.native-app #rewards,
-  html.native-app #profile,
-  html.native-app #support,
-  html.native-app #markets,
-  html.native-app .portfolio-overview-scene,
-  html.native-app .portfolio-finance-scene {
-    background-color: #020304 !important;
-  }
-
-  /* در Home / Invest / Portfolio فضای خالی آبی نشود */
-  html.native-app #home,
-  html.native-app #invest,
-  html.native-app #portfolio {
-    background-color: transparent !important;
-  }
+  padding-bottom: 8px !important;
+  box-sizing: border-box !important;
+  align-items: flex-end !important;
+  overflow: visible !important;
 }
 
-@media (max-width: 520px) {
-  html.native-app,
-  html.native-app body {
-    background:
-      radial-gradient(
-        circle at 50% 10%,
-        rgba(240,185,11,.11) 0%,
-        rgba(240,185,11,.04) 20%,
-        transparent 40%
-      ),
-      radial-gradient(
-        circle at 50% 90%,
-        rgba(240,185,11,.06) 0%,
-        transparent 32%
-      ),
-      linear-gradient(
-        180deg,
-        #020304 0%,
-        #050608 46%,
-        #020304 100%
-      ) !important;
-  }
-}
-</style>
-
-
-<style id="native-portfolio-vip-use-invest-image-v1">
-/*
-  Native app only:
-  Quick VIP card in Portfolio uses the same VIP artwork
-  as the VIP section in Invest: plan-vip.webp
-*/
-@media (max-width: 900px) {
-  html.native-app .portfolio-vip-quick {
-    position: relative !important;
-    overflow: hidden !important;
-
-    background-color: #080c11 !important;
-    background-image:
-      linear-gradient(
-        90deg,
-        rgba(5,9,13,.97) 0%,
-        rgba(5,9,13,.90) 48%,
-        rgba(5,9,13,.68) 70%,
-        rgba(5,9,13,.38) 100%
-      ),
-      url("plan-vip.webp") !important;
-
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, 64% center !important;
-    background-size: cover, cover !important;
-
-    border-color: rgba(240,185,11,.42) !important;
-
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.045),
-      inset 0 0 28px rgba(240,185,11,.025),
-      0 16px 42px rgba(0,0,0,.48),
-      0 0 18px rgba(240,185,11,.07) !important;
-  }
-
-  /* Keep every control/text above the artwork */
-  html.native-app .portfolio-vip-quick > * {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  /* Metrics remain dark glass so values stay readable */
-  html.native-app .portfolio-vip-quick .portfolio-vip-metric,
-  html.native-app .portfolio-vip-quick .portfolio-vip-input-row input {
-    background:
-      linear-gradient(
-        145deg,
-        rgba(4,7,10,.82),
-        rgba(12,15,18,.70)
-      ) !important;
-
-    border-color: rgba(240,185,11,.22) !important;
-
-    backdrop-filter: blur(10px) saturate(1.08) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(1.08) !important;
-  }
+/* Keep the three interactive header zones safely tappable. */
+html.ios-web-safe header > .language-trigger,
+html.ios-web-safe header > .head,
+html.ios-web-safe #authButtonsGroup,
+html.ios-web-safe #authButtonsGroup .btn,
+html.ios-web-safe #userHeaderDisplay,
+html.ios-web-safe #userHeaderDisplay .header-logout-btn {
+  position: relative !important;
+  z-index: 120 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(240,185,11,.16);
 }
 
-@media (max-width: 520px) {
-  html.native-app .portfolio-vip-quick {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(5,9,13,.84) 0%,
-        rgba(5,9,13,.74) 44%,
-        rgba(5,9,13,.84) 100%
-      ),
-      url("plan-vip.webp") !important;
-
-    background-position: center center, 64% center !important;
-  }
-}
-</style>
-
-
-<style id="native-portfolio-invest-vip-artwork-final-v2">
-/* Native app only — Portfolio overview + Quick VIP use Invest VIP artwork */
-@media (max-width: 900px) {
-  html.native-app #portfolio .portfolio-overview-scene {
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.20) 0%,
-        rgba(3,6,9,.28) 40%,
-        rgba(3,6,9,.38) 100%
-      ),
-      url("plan-vip.webp?v=20260822-portfolio-v2") !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, center center !important;
-    background-size: cover, cover !important;
-  }
-
-  html.native-app #portfolio .portfolio-vip-quick {
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.58) 0%,
-        rgba(3,6,9,.46) 45%,
-        rgba(3,6,9,.62) 100%
-      ),
-      url("plan-vip.webp?v=20260822-portfolio-v2") !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, center center !important;
-    background-size: cover, cover !important;
-  }
-}
-</style>
-
-
-<style id="native-portfolio-overview-restore-v3">
-/*
-  Native app only:
-  - Portfolio upper/overview area keeps its original artwork.
-  - Only Quick VIP 60-Day Lock uses the VIP/vault artwork from Invest.
-*/
-@media (max-width: 900px) {
-  html.native-app #portfolio .portfolio-overview-scene {
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.08),
-        rgba(3,6,9,.18) 52%,
-        rgba(3,6,9,.12)
-      ),
-      url("portfolio-overview-v2.webp?v=20260822-restore-v3") !important;
-
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center top, center top !important;
-    background-size: 100% 100%, 100% auto !important;
-  }
-
-  html.native-app #portfolio .portfolio-vip-quick {
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.58) 0%,
-        rgba(3,6,9,.46) 45%,
-        rgba(3,6,9,.62) 100%
-      ),
-      url("plan-vip.webp?v=20260822-vip-lock-only-v3") !important;
-
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, 64% center !important;
-    background-size: cover, cover !important;
-  }
+html.ios-web-safe header > .language-trigger,
+html.ios-web-safe #authButtonsGroup .btn,
+html.ios-web-safe #userHeaderDisplay .header-logout-btn {
+  min-height: 38px !important;
 }
 
-@media (max-width: 520px) {
-  html.native-app #portfolio .portfolio-overview-scene {
-    background-position: center top, center top !important;
-    background-size: 100% 100%, 100% auto !important;
-  }
+/* Language and authentication dialogs also respect iPhone safe areas. */
+html.ios-web-safe .language-modal,
+html.ios-web-safe .auth-modal {
+  padding-top:
+    calc(
+      env(safe-area-inset-top, 0px)
+      + 14px
+    ) !important;
 
-  html.native-app #portfolio .portfolio-vip-quick {
-    background-position: center center, 64% center !important;
-    background-size: cover, cover !important;
-  }
-}
-</style>
-
-
-<style id="native-portfolio-upper-through-vip-lock-v4">
-/* Wrapper is layout-neutral on the normal website. */
-.portfolio-upper-original-artwork-zone {
-  display: contents;
+  padding-bottom:
+    calc(
+      env(safe-area-inset-bottom, 0px)
+      + 14px
+    ) !important;
 }
 
-/* Native app only */
-@media (max-width: 900px) {
-  html.native-app #portfolio .portfolio-overview-scene {
-    background-image: none !important;
-    background-color: #05070a !important;
+/* Narrow iPhones get a little more physical separation from the status bar. */
+@media (max-width: 430px) {
+  html.ios-web-safe {
+    --ios-header-safe-top:
+      max(env(safe-area-inset-top, 0px), 22px);
   }
 
-  html.native-app #portfolio .portfolio-upper-original-artwork-zone {
-    display: block !important;
-    position: relative !important;
-    isolation: isolate !important;
-    overflow: hidden !important;
-
-    /* Fill the scene edges so the original artwork starts from the top. */
-    margin: -18px -18px 14px !important;
-    padding: 18px !important;
-
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.08) 0%,
-        rgba(3,6,9,.16) 48%,
-        rgba(3,6,9,.24) 100%
-      ),
-      url("portfolio-overview-v2.webp?v=20260822-upper-through-vip-v4") !important;
-
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center top, center top !important;
-
-    /*
-      The image now follows the full wrapper height, so it continues
-      through the end of VIP 60-Day Locked Capital.
-      Ratio is preserved by cover; no tiling/repetition.
-    */
-    background-size: 100% 100%, cover !important;
-
-    border-radius: 19px 19px 15px 15px !important;
-  }
-
-  html.native-app #portfolio .portfolio-upper-original-artwork-zone > * {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  /* Keep this block on the separate Invest VIP/vault artwork. */
-  html.native-app #portfolio .portfolio-vip-quick {
-    background-color: #05070a !important;
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(3,6,9,.58) 0%,
-        rgba(3,6,9,.46) 45%,
-        rgba(3,6,9,.62) 100%
-      ),
-      url("plan-vip.webp?v=20260822-vip-lock-only-v4") !important;
-
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center center, 64% center !important;
-    background-size: cover, cover !important;
-  }
-}
-
-@media (max-width: 600px) {
-  html.native-app #portfolio .portfolio-upper-original-artwork-zone {
-    margin: -12px -9px 12px !important;
-    padding: 12px 9px !important;
-    background-position: center top, center top !important;
-    background-size: 100% 100%, cover !important;
+  html.ios-web-safe header {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 }
 </style>
@@ -7078,8 +6693,6 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 
 <section id="portfolio" class="view">
 <div class="portfolio-overview-scene">
-<div class="portfolio-upper-original-artwork-zone">
-
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div id="referralPortfolioCard" class="referral-portfolio-card">
@@ -7160,8 +6773,6 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 
 </div>
   
-
-</div><!-- /.portfolio-upper-original-artwork-zone -->
   <div class="portfolio-vip-quick">
     <div class="portfolio-vip-head">
       <div class="portfolio-vip-title">
@@ -8592,15 +8203,6 @@ let pendingAuthStateTimer = null;
  * manual login flow from racing each other and temporarily showing guest UI.
  */
 supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (
-    typeof logoutInProgressUntil !== "undefined" &&
-    Date.now() < logoutInProgressUntil &&
-    event !== "SIGNED_OUT" &&
-    event !== "PASSWORD_RECOVERY"
-  ) {
-    return;
-  }
-
   if (event === "PASSWORD_RECOVERY") {
     openNewPasswordModal();
     return;
@@ -10052,42 +9654,15 @@ function buildAuthenticatedUserFallback(authUser, previousUser = null) {
   };
 }
 
-async function fetchOwnProfileWithTimeout(authUser, timeoutMs = 6500) {
+async function loadAuthenticatedUser(authUser, options = {}) {
   if (!authUser?.id) {
-    return { profile: null, error: new Error("Missing authenticated user") };
-  }
-
-  const controller =
-    typeof AbortController !== "undefined"
-      ? new AbortController()
-      : null;
-
-  const timeoutId = window.setTimeout(() => {
-    try { controller?.abort(); } catch (_) {}
-  }, timeoutMs);
-
-  try {
-    let query = supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", authUser.id)
-      .maybeSingle();
-
-    if (controller && typeof query.abortSignal === "function") {
-      query = query.abortSignal(controller.signal);
+    currentUser = null;
+    updateHeaderAuthUI();
+    if (typeof updateSupportAuthUI === "function") {
+      updateSupportAuthUI();
     }
-
-    const { data, error } = await query;
-    return { profile: data || null, error: error || null };
-  } catch (error) {
-    return { profile: null, error };
-  } finally {
-    clearTimeout(timeoutId);
+    return null;
   }
-}
-
-async function hydrateAuthenticatedUserProfile(authUser, options = {}) {
-  if (!authUser?.id) return null;
 
   if (
     authenticatedUserLoadPromise &&
@@ -10096,51 +9671,42 @@ async function hydrateAuthenticatedUserProfile(authUser, options = {}) {
     return authenticatedUserLoadPromise;
   }
 
+  const previousUser =
+    currentUser?.id === authUser.id ? currentUser : null;
+
+  /* Keep authenticated UI visible while the optional profile request runs. */
+  currentUser = buildAuthenticatedUserFallback(authUser, previousUser);
+  updateHeaderAuthUI();
+
+  if (typeof updateSupportAuthUI === "function") {
+    updateSupportAuthUI();
+  }
+
+  if (previousUser?.__profileLoaded && !options.force) {
+    return currentUser;
+  }
+
   authenticatedUserLoadId = authUser.id;
-
   authenticatedUserLoadPromise = (async () => {
-    const retryDelays = options.force
-      ? [0, 700, 1800, 3500]
-      : [0, 900, 2200];
+    try {
+      const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", authUser.id)
+        .maybeSingle();
 
-    let lastError = null;
-
-    for (const delay of retryDelays) {
-      if (delay) {
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-
-      /* If the user logged out while a retry was waiting, stop immediately. */
-      if (!currentUser?.id || currentUser.id !== authUser.id) {
-        return null;
-      }
-
-      const result =
-        await fetchOwnProfileWithTimeout(authUser, 6500);
-
-      if (result.profile) {
-        const profile = result.profile;
-
+      /* A profile/network failure must never impersonate a logout. */
+      if (error) {
+        console.warn("Profile temporarily unavailable; session preserved:", error);
+      } else if (profile) {
         currentUser = {
           ...currentUser,
           ...profile,
           id: authUser.id,
-          email: authUser.email || currentUser.email || "",
-          username:
-            profile.username ||
-            currentUser.username ||
-            authUser.user_metadata?.username ||
-            authUser.email?.split("@")[0] ||
-            "user",
+          email: authUser.email || currentUser.email,
           fullname:
             profile.full_name ||
-            profile.fullname ||
             currentUser.fullname ||
-            authUser.user_metadata?.full_name ||
-            "",
-          phone:
-            profile.phone ||
-            currentUser.phone ||
             "",
           referralInviteCode:
             authUser.user_metadata?.referral_invite_code ||
@@ -10151,101 +9717,37 @@ async function hydrateAuthenticatedUserProfile(authUser, options = {}) {
           profit: Number(profile.profit || 0),
           __profileLoaded: true
         };
-
-        /* Paint account information immediately. */
-        updateHeaderAuthUI();
-        loadProfile();
-        renderPortfolioLive();
-        calculatePortfolioVipLock();
-
-        /* Heavier network-backed panels refresh in background. */
-        void updatePortfolio();
-        void refreshTwoFactorStatus();
-        void (async () => {
-          try {
-            await applyPendingReferralCode();
-            await loadReferralDashboard();
-          } catch (error) {
-            console.warn(
-              "Non-critical account data could not be refreshed:",
-              error
-            );
-          }
-        })();
-
-        if (typeof updateSupportAuthUI === "function") {
-          updateSupportAuthUI();
-        }
-
-        return currentUser;
       }
 
-      lastError = result.error || lastError;
-      console.warn(
-        "Profile not loaded yet; retrying while session stays active:",
-        result.error || "empty profile"
-      );
-    }
+      updateHeaderAuthUI();
+      loadProfile();
+      void refreshTwoFactorStatus();
 
-    if (lastError) {
-      console.warn(
-        "Profile temporarily unavailable; authenticated session preserved:",
-        lastError
-      );
-    }
+      /* Render the account immediately; load heavier panels in the background. */
+      void updatePortfolio();
+      void (async () => {
+        try {
+          await applyPendingReferralCode();
+          await loadReferralDashboard();
+        } catch (error) {
+          console.warn("Non-critical account data could not be refreshed:", error);
+        }
+      })();
 
-    return currentUser;
+      if (typeof updateSupportAuthUI === "function") {
+        updateSupportAuthUI();
+      }
+
+      return currentUser;
+    } finally {
+      if (authenticatedUserLoadId === authUser.id) {
+        authenticatedUserLoadPromise = null;
+        authenticatedUserLoadId = null;
+      }
+    }
   })();
 
-  try {
-    return await authenticatedUserLoadPromise;
-  } finally {
-    if (authenticatedUserLoadId === authUser.id) {
-      authenticatedUserLoadPromise = null;
-      authenticatedUserLoadId = null;
-    }
-  }
-}
-
-async function loadAuthenticatedUser(authUser, options = {}) {
-  if (!authUser?.id) {
-    currentUser = null;
-    updateHeaderAuthUI();
-
-    if (typeof updateSupportAuthUI === "function") {
-      updateSupportAuthUI();
-    }
-
-    return null;
-  }
-
-  const previousUser =
-    currentUser?.id === authUser.id ? currentUser : null;
-
-  /*
-   * Never make the app wait for a profile/network request before showing
-   * the signed-in state.  Metadata is painted immediately, then Supabase
-   * profile/balance data is hydrated in the background.
-   */
-  currentUser =
-    buildAuthenticatedUserFallback(authUser, previousUser);
-
-  updateHeaderAuthUI();
-  updateProfileAccessUI();
-  renderPortfolioLive();
-
-  if (typeof updateSupportAuthUI === "function") {
-    updateSupportAuthUI();
-  }
-
-  if (previousUser?.__profileLoaded && !options.force) {
-    void updatePortfolio();
-    return currentUser;
-  }
-
-  void hydrateAuthenticatedUserProfile(authUser, options);
-
-  return currentUser;
+  return authenticatedUserLoadPromise;
 }
 
 async function restoreAuthSession() {
@@ -10271,43 +9773,16 @@ async function restoreAuthSession() {
   }
 }
 
-let logoutInProgressUntil = 0;
-
 async function logout() {
-  /*
-   * Logout must feel immediate in the APK. Do not wait for a slow
-   * network request before hiding account information.
-   */
-  logoutInProgressUntil = Date.now() + 15000;
-
+  await supabaseClient.auth.signOut({
+  scope: "local"
+});
   currentUser = null;
   currentTotpFactor = null;
-  pendingTotpFactor = null;
   twofaChallengeOpen = false;
+  document.getElementById("twofaChallengeModal")?.classList.remove("open");
   currentReferralData = null;
-  currentInvestments = [];
-
-  if (portfolioTimer) {
-    clearInterval(portfolioTimer);
-    portfolioTimer = null;
-  }
-
-  document
-    .getElementById("twofaChallengeModal")
-    ?.classList.remove("open");
-
-  document
-    .getElementById("twofaSetupModal")
-    ?.classList.remove("open");
-
-  /* Remove the persisted APK/browser session immediately. */
-  try {
-    localStorage.removeItem("bi_customer_session");
-  } catch (_) {}
-
   updateHeaderAuthUI();
-  updateProfileAccessUI();
-  renderPortfolioLive();
   updatePortfolio();
   loadReferralDashboard();
 
@@ -10316,27 +9791,6 @@ async function logout() {
   }
 
   toast(tr("loggedOut"), "success");
-
-  /*
-   * Finish Supabase sign-out in the background.
-   * The UI and local persisted session are already cleared above.
-   */
-  try {
-    const signOutPromise =
-      supabaseClient.auth.signOut({ scope: "local" });
-
-    await Promise.race([
-      signOutPromise,
-      new Promise(resolve => setTimeout(resolve, 5000))
-    ]);
-  } catch (error) {
-    console.warn(
-      "Remote sign-out finished with a delay; local logout is already complete:",
-      error
-    );
-  } finally {
-    logoutInProgressUntil = 0;
-  }
 }
 
 function updateHeaderAuthUI() {
@@ -11578,22 +11032,8 @@ async function updatePortfolio() {
     portfolioTimer = null;
   }
 
-  /* Show profile balance/invested/profit immediately. */
+  await loadInvestments();
   renderPortfolioLive();
-  calculatePortfolioVipLock();
-
-  /*
-   * Investment history can arrive later. Do not keep the visible
-   * account cards at $0 while that network request is pending.
-   */
-  void loadInvestments()
-    .then(() => {
-      renderPortfolioLive();
-      calculatePortfolioVipLock();
-    })
-    .catch(error => {
-      console.warn("Portfolio investments refresh failed:", error);
-    });
 
   portfolioTimer = setInterval(() => {
     if (
@@ -11601,7 +11041,6 @@ async function updatePortfolio() {
       document.getElementById("portfolio")?.classList.contains("active")
     ) {
       renderPortfolioLive();
-      calculatePortfolioVipLock();
     }
   }, 1000);
 }
@@ -16278,50 +15717,6 @@ document.addEventListener("DOMContentLoaded", function() {
         setInterval(updateOnlineUsers, 2000);
     }
 });
-</script>
-
-
-<script id="native-auth-account-refresh-v2">
-(function () {
-  async function refreshNativeAccountNow() {
-    if (!document.documentElement.classList.contains("native-app")) return;
-    if (typeof logoutInProgressUntil !== "undefined" &&
-        Date.now() < logoutInProgressUntil) return;
-
-    try {
-      const { data, error } =
-        await supabaseClient.auth.getSession();
-
-      if (error || !data?.session?.user) return;
-
-      const authUser = data.session.user;
-
-      if (!currentUser?.id) {
-        await loadAuthenticatedUser(authUser, { force: true });
-      } else if (!currentUser.__profileLoaded) {
-        void hydrateAuthenticatedUserProfile(authUser, { force: true });
-      } else {
-        void hydrateAuthenticatedUserProfile(authUser, { force: true });
-      }
-    } catch (error) {
-      console.warn("Native account refresh skipped:", error);
-    }
-  }
-
-  window.addEventListener("focus", () => {
-    void refreshNativeAccountNow();
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      void refreshNativeAccountNow();
-    }
-  });
-
-  window.setTimeout(() => {
-    void refreshNativeAccountNow();
-  }, 600);
-})();
 </script>
 
 </body>
