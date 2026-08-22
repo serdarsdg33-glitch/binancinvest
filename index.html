@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-15">
+<body data-investment-model="flex-v6-16">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -20485,6 +20485,142 @@ html body #plans > .plan .flex-fixed-plan-notice {
     background-color:rgba(0,0,0,.02) !important;
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v16-vip-clear-no-blur">
+/* =========================================================
+   V16 — VIP ONLY: remove every blur / dark frosted surface
+   so portfolio-vip.webp is clearly visible behind the content.
+   ========================================================= */
+
+/* Outer VIP panel keeps its background image, but no blur layer. */
+#portfolio .portfolio-major-vip{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Remove dark overlay from the VIP panel itself. */
+#portfolio .portfolio-major-vip::before{
+  background:rgba(0,0,0,.015) !important;
+}
+
+/* Both VIP content areas: transparent, not frosted. */
+#portfolio .portfolio-major-vip .vip-single-card,
+#portfolio .portfolio-major-vip .portfolio-vip-quick{
+  background:transparent !important;
+  background-color:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+/* The three summary cards at the top. */
+#portfolio .portfolio-major-vip .vip-single-summary > div{
+  background:rgba(0,0,0,.015) !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.34) !important;
+}
+
+/* Contract list/table: completely clear. */
+#portfolio .portfolio-major-vip .vip-contract-tablebox{
+  background:rgba(0,0,0,.01) !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.30) !important;
+}
+
+#portfolio .portfolio-major-vip .vip-contract-table,
+#portfolio .portfolio-major-vip .vip-contract-table thead,
+#portfolio .portfolio-major-vip .vip-contract-table tbody,
+#portfolio .portfolio-major-vip .vip-contract-table tr{
+  background:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+#portfolio .portfolio-major-vip .vip-contract-table th,
+#portfolio .portfolio-major-vip .vip-contract-table td{
+  background:rgba(0,0,0,.008) !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+/* Quick VIP lock area: all inner boxes transparent. */
+#portfolio .portfolio-major-vip .portfolio-vip-field,
+#portfolio .portfolio-major-vip .portfolio-vip-metric,
+#portfolio .portfolio-major-vip .portfolio-vip-result,
+#portfolio .portfolio-major-vip .portfolio-vip-input-row{
+  background:rgba(0,0,0,.01) !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.30) !important;
+}
+
+/* Amount input / MAX area: no frosted blur. */
+#portfolio .portfolio-major-vip input,
+#portfolio .portfolio-major-vip select{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Remove any pseudo dark veil belonging to VIP inner boxes. */
+#portfolio .portfolio-major-vip .vip-single-card::before,
+#portfolio .portfolio-major-vip .vip-single-card::after,
+#portfolio .portfolio-major-vip .portfolio-vip-quick::before,
+#portfolio .portfolio-major-vip .portfolio-vip-quick::after,
+#portfolio .portfolio-major-vip .vip-contract-tablebox::before,
+#portfolio .portfolio-major-vip .vip-contract-tablebox::after{
+  background:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Keep text readable while allowing the artwork to show. */
+#portfolio .portfolio-major-vip *{
+  text-shadow:
+    0 2px 5px rgba(0,0,0,.98),
+    0 0 4px rgba(0,0,0,.78);
+}
+
+/* Mobile: prevent older rules from bringing blur/dark fill back. */
+@media(max-width:760px){
+  #portfolio .portfolio-major-vip,
+  #portfolio .portfolio-major-vip .vip-single-card,
+  #portfolio .portfolio-major-vip .portfolio-vip-quick,
+  #portfolio .portfolio-major-vip .vip-single-summary > div,
+  #portfolio .portfolio-major-vip .vip-contract-tablebox,
+  #portfolio .portfolio-major-vip .vip-contract-table th,
+  #portfolio .portfolio-major-vip .vip-contract-table td,
+  #portfolio .portfolio-major-vip .portfolio-vip-field,
+  #portfolio .portfolio-major-vip .portfolio-vip-metric{
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+  }
+
+  #portfolio .portfolio-major-vip .vip-single-card,
+  #portfolio .portfolio-major-vip .portfolio-vip-quick{
+    background:transparent !important;
+  }
+
+  #portfolio .portfolio-major-vip .vip-single-summary > div,
+  #portfolio .portfolio-major-vip .vip-contract-tablebox,
+  #portfolio .portfolio-major-vip .vip-contract-table th,
+  #portfolio .portfolio-major-vip .vip-contract-table td,
+  #portfolio .portfolio-major-vip .portfolio-vip-field,
+  #portfolio .portfolio-major-vip .portfolio-vip-metric{
+    background:rgba(0,0,0,.01) !important;
   }
 }
 </style>
