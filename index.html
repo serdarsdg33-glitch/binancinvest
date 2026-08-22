@@ -7430,6 +7430,91 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 }
 </style>
 
+
+<style id="portfolio-three-major-panels-v8">
+/* V8 — Portfolio grouped into three large visual containers */
+#portfolio .portfolio-overview-scene{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+#portfolio .portfolio-major-panel{
+  position:relative;
+  z-index:2;
+  overflow:hidden;
+  padding:20px;
+  border:1px solid rgba(240,185,11,.38);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(10,15,21,.78),rgba(4,8,12,.86));
+  box-shadow:0 20px 48px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+
+#portfolio .portfolio-major-base{
+  border-color:rgba(240,185,11,.42);
+}
+
+#portfolio .portfolio-major-referral{
+  border-color:rgba(240,185,11,.32);
+  padding:0;
+}
+
+#portfolio .portfolio-major-vip{
+  border-color:rgba(240,185,11,.46);
+}
+
+/* The referral card itself becomes the content of the second large panel. */
+#portfolio .portfolio-major-referral .referral-portfolio-card{
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:rgba(4,8,12,.72) !important;
+  box-shadow:none !important;
+  padding:24px !important;
+}
+
+/* VIP list + quick lock now live inside one single large outer panel. */
+#portfolio .portfolio-major-vip .vip-single-card,
+#portfolio .portfolio-major-vip .portfolio-vip-quick{
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:rgba(3,7,11,.56) !important;
+  box-shadow:none !important;
+}
+
+#portfolio .portfolio-major-vip .vip-single-card{
+  padding:4px 2px 20px !important;
+  border-bottom:1px solid rgba(240,185,11,.20) !important;
+}
+
+#portfolio .portfolio-major-vip .portfolio-vip-quick{
+  padding:22px 2px 2px !important;
+}
+
+/* Keep the upper summary and selected-plan capital inside the first major panel. */
+#portfolio .portfolio-major-base .selected-plan-summary-zone{
+  margin:18px 0 0 !important;
+}
+
+#portfolio .portfolio-major-base .withdrawable-plans-total-card{
+  margin-bottom:0;
+}
+
+@media(max-width:760px){
+  #portfolio .portfolio-overview-scene{gap:14px;}
+  #portfolio .portfolio-major-panel{
+    padding:14px;
+    border-radius:20px;
+  }
+  #portfolio .portfolio-major-referral{padding:0;}
+  #portfolio .portfolio-major-referral .referral-portfolio-card{padding:18px 16px !important;}
+  #portfolio .portfolio-major-vip .vip-single-card{padding:2px 0 16px !important;}
+  #portfolio .portfolio-major-vip .portfolio-vip-quick{padding:18px 0 0 !important;}
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-6">
 <header>
@@ -8085,8 +8170,12 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 
 <section id="portfolio" class="view">
 <div class="portfolio-overview-scene">
-  <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
-  <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
+    <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
+    <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+  </div>
+
+  <div class="portfolio-major-panel portfolio-major-referral">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
       <span class="muted" data-t="referralRewardsBalance">Referral rewards added to balance</span>
@@ -8097,6 +8186,9 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       <span data-t="referralBalanceNotice">This reward is included in your available balance and is not active invested capital.</span>
     </div>
   </div>
+  </div>
+
+  <div class="portfolio-major-panel portfolio-major-vip">
 <div id="vipPortfolioSection" class="vip-single-card">
 
   <div class="vip-single-header">
@@ -8202,6 +8294,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       <button class="btn gold portfolio-vip-button" type="button" onclick="openPortfolioVipLockConfirmation()" data-t="lockFromBalance">Lock From Balance</button>
     </div>
     <div id="portfolioVipError" class="portfolio-vip-error"></div>
+  </div>
   </div>
 
 </div>
@@ -18942,12 +19035,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (zone) return zone;
 
-    var referralCard =
+    var basePanel =
       document.getElementById(
-        "referralPortfolioCard"
+        "portfolioBasePanel"
       );
 
-    if (!referralCard) return null;
+    if (!basePanel) return null;
 
     zone =
       document.createElement("div");
@@ -18958,10 +19051,7 @@ document.addEventListener("DOMContentLoaded", function() {
     zone.className =
       "selected-plan-summary-zone";
 
-    referralCard.insertAdjacentElement(
-      "beforebegin",
-      zone
-    );
+    basePanel.appendChild(zone);
 
     return zone;
   }
