@@ -6341,6 +6341,86 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 }
 </style>
 
+
+<style id="native-portfolio-upper-through-vip-lock-v4">
+/* Wrapper is layout-neutral on the normal website. */
+.portfolio-upper-original-artwork-zone {
+  display: contents;
+}
+
+/* Native app only */
+@media (max-width: 900px) {
+  html.native-app #portfolio .portfolio-overview-scene {
+    background-image: none !important;
+    background-color: #05070a !important;
+  }
+
+  html.native-app #portfolio .portfolio-upper-original-artwork-zone {
+    display: block !important;
+    position: relative !important;
+    isolation: isolate !important;
+    overflow: hidden !important;
+
+    /* Fill the scene edges so the original artwork starts from the top. */
+    margin: -18px -18px 14px !important;
+    padding: 18px !important;
+
+    background-color: #05070a !important;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.08) 0%,
+        rgba(3,6,9,.16) 48%,
+        rgba(3,6,9,.24) 100%
+      ),
+      url("portfolio-overview-v2.webp?v=20260822-upper-through-vip-v4") !important;
+
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center top, center top !important;
+
+    /*
+      The image now follows the full wrapper height, so it continues
+      through the end of VIP 60-Day Locked Capital.
+      Ratio is preserved by cover; no tiling/repetition.
+    */
+    background-size: 100% 100%, cover !important;
+
+    border-radius: 19px 19px 15px 15px !important;
+  }
+
+  html.native-app #portfolio .portfolio-upper-original-artwork-zone > * {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Keep this block on the separate Invest VIP/vault artwork. */
+  html.native-app #portfolio .portfolio-vip-quick {
+    background-color: #05070a !important;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.58) 0%,
+        rgba(3,6,9,.46) 45%,
+        rgba(3,6,9,.62) 100%
+      ),
+      url("plan-vip.webp?v=20260822-vip-lock-only-v4") !important;
+
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center center, 64% center !important;
+    background-size: cover, cover !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html.native-app #portfolio .portfolio-upper-original-artwork-zone {
+    margin: -12px -9px 12px !important;
+    padding: 12px 9px !important;
+    background-position: center top, center top !important;
+    background-size: 100% 100%, cover !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -6998,6 +7078,8 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 
 <section id="portfolio" class="view">
 <div class="portfolio-overview-scene">
+<div class="portfolio-upper-original-artwork-zone">
+
   <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
   <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   <div id="referralPortfolioCard" class="referral-portfolio-card">
@@ -7078,6 +7160,8 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 
 </div>
   
+
+</div><!-- /.portfolio-upper-original-artwork-zone -->
   <div class="portfolio-vip-quick">
     <div class="portfolio-vip-head">
       <div class="portfolio-vip-title">
