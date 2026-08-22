@@ -7004,6 +7004,23 @@ html[dir="rtl"] .flex-fixed-plan-notice {
 }
 </style>
 
+
+<style id="vip-hard-lock-v3-style">
+.vip-contract-notice {
+  border-color: rgba(240,185,11,.48) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(240,185,11,.09),
+      rgba(8,12,17,.82)
+    ) !important;
+}
+.vip-contract-notice p {
+  font-weight: 700 !important;
+  line-height: 1.85 !important;
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -7594,10 +7611,8 @@ html[dir="rtl"] .flex-fixed-plan-notice {
       <span>⚠</span>
 
       <p data-t="vipLockNotice">
-        The selected principal remains locked for 60 days.
-        Review all contract conditions before continuing.
-        Displayed calculations are illustrative and do not themselves
-        activate a contract.
+        Unlike the plans above, your capital in this VIP plan is fully locked for 60 days.
+        You cannot withdraw the locked principal before the 60-day contract ends.
       </p>
     </div>
 
@@ -8554,9 +8569,8 @@ Transactions section.
     <div class="vip-contract-notice">
       <span>⚠</span>
       <p data-t="lockConfirmationNotice">
-        The selected principal will remain locked for 60 days.
-        Displayed return calculations are projected values and are
-        separate from your available balance.
+        Unlike the plans above, your capital in this VIP plan is fully locked for 60 days.
+        You cannot withdraw the locked principal before the 60-day contract ends.
       </p>
     </div>
 
@@ -17312,7 +17326,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"Confirm plan", insufficient:"Insufficient principal in your Flexible 1.5% plan.",
       confirmWithdrawal:"Withdraw investment", settleText:"Principal and calculated profit will be moved to your available balance.",
       cancel:"Cancel", confirm:"Confirm withdrawal", success:"Plan activated after your confirmation.",
-      settled:"Investment was moved to your available balance.", processing:"Processing..."
+      settled:"Investment was moved to your available balance.", processing:"Processing...", vipHardLockNotice:"Unlike the plans above, your capital in this VIP plan is fully locked for 60 days. You cannot withdraw the locked principal before the 60-day contract ends."
     },
     fa: {
       kicker:"پلن مادر خودکار", title:"سود روزانه منعطف",
@@ -17330,7 +17344,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"تأیید پلن", insufficient:"سرمایه موجود در پلن منعطف ۱.۵٪ کافی نیست.",
       confirmWithdrawal:"برداشت سرمایه", settleText:"اصل سرمایه و سود محاسبه‌شده به موجودی قابل برداشت شما منتقل می‌شود.",
       cancel:"انصراف", confirm:"تأیید برداشت", success:"پلن با تأیید شما فعال شد.",
-      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش..."
+      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش...", vipHardLockNotice:"در این پلن برخلاف پلن‌های بالا، سرمایه شما به‌طور کامل برای ۶۰ روز قفل خواهد شد و تا پایان قرارداد امکان برداشت از سرمایه قفل‌شده وجود ندارد."
     }
   };
 
@@ -17868,6 +17882,15 @@ document.addEventListener("DOMContentLoaded", function() {
   window.openFlexibleSettlement = function (investmentId) {
     var item = (currentInvestments || []).find(function (investment) { return String(investment.id) === String(investmentId); });
     if (!item) return;
+
+    if (String(item.plan_name || "") === "VIP_LOCK") {
+      var vipEnd = new Date(item.ends_at).getTime();
+      if (Number.isFinite(vipEnd) && Date.now() < vipEnd) {
+        toast(text("vipHardLockNotice"), "error");
+        return;
+      }
+    }
+
     settlementInvestmentId = item.id;
     var payout = Number(item.principal || 0) + (isFlexible(item) ? flexibleProfit(item) : fixedEarlyProfit(item));
     document.getElementById("flexSettleAmount").textContent = formatPortfolioMoney(payout, true);
@@ -17907,11 +17930,18 @@ document.addEventListener("DOMContentLoaded", function() {
   function updateVipCopy() {
     var labels = document.querySelectorAll('[data-t="lockFromBalance"]');
     labels.forEach(function (element) {
-      element.textContent = language() === "fa" ? "انتقال از پلن منعطف" : "Move From Flexible Plan";
+      element.textContent =
+        language() === "fa"
+          ? "انتقال از پلن منعطف"
+          : "Move From Flexible Plan";
     });
-    var descriptions = document.querySelectorAll('[data-t="vipLockNotice"]');
+
+    var descriptions = document.querySelectorAll(
+      '[data-t="vipLockNotice"], [data-t="lockConfirmationNotice"]'
+    );
+
     descriptions.forEach(function (element) {
-      element.textContent = text("fixedNotice");
+      element.textContent = text("vipHardLockNotice");
     });
   }
 
