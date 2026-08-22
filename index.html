@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-12">
+<body data-investment-model="flex-v6-13">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -19981,6 +19981,174 @@ html body #plans > .plan .flex-fixed-plan-notice {
   }
   #portfolio .portfolio-major-selected .selected-plan-summary-card{
     background-position:62% center !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v13-fully-transparent-cards">
+/* =========================================================
+   V13 — Portfolio cards truly transparent
+   No blur. No frosted dark fill. Existing artwork stays visible.
+   ========================================================= */
+
+/* Remove blur everywhere inside Portfolio. */
+#portfolio *,
+#portfolio *::before,
+#portfolio *::after{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Large Portfolio containers: no dark fill. */
+#portfolio .portfolio-major-panel,
+#portfolio .portfolio-major-selected,
+#portfolio .portfolio-major-referral,
+#portfolio .portfolio-major-vip{
+  background-color:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Keep only a very light readability veil on pseudo overlays. */
+#portfolio .portfolio-major-panel::before,
+#portfolio .portfolio-major-base::before{
+  background:rgba(2,5,8,.025) !important;
+}
+
+/* Main FLEX cards: fully transparent. */
+#portfolio .portfolio-major-base .cards .card.stat{
+  background:transparent !important;
+  border-color:rgba(240,185,11,.42) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 6px 16px rgba(0,0,0,.08) !important;
+}
+
+/* Total selected-plan principal card: fully transparent. */
+#portfolio .portfolio-major-selected .withdrawable-plans-total-card{
+  background:transparent !important;
+  border-color:rgba(240,185,11,.42) !important;
+  box-shadow:none !important;
+}
+
+/* Selected-plan cards:
+   keep the actual plan image, remove the heavy dark gradient. */
+#portfolio .portfolio-major-selected .selected-plan-summary-card{
+  background-color:transparent !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.44) !important;
+}
+
+#portfolio .portfolio-major-selected .selected-plan-summary-card.plan-theme-flex{
+  background-image:
+    linear-gradient(90deg,rgba(2,5,8,.16),rgba(2,5,8,.04) 55%,rgba(2,5,8,.00)),
+    url("plan-flex-daily.webp") !important;
+}
+#portfolio .portfolio-major-selected .selected-plan-summary-card.plan-theme-starter{
+  background-image:
+    linear-gradient(90deg,rgba(2,5,8,.16),rgba(2,5,8,.04) 55%,rgba(2,5,8,.00)),
+    url("plan-starter.webp") !important;
+}
+#portfolio .portfolio-major-selected .selected-plan-summary-card.plan-theme-growth{
+  background-image:
+    linear-gradient(90deg,rgba(2,5,8,.16),rgba(2,5,8,.04) 55%,rgba(2,5,8,.00)),
+    url("plan-growth.webp") !important;
+}
+#portfolio .portfolio-major-selected .selected-plan-summary-card.plan-theme-premium{
+  background-image:
+    linear-gradient(90deg,rgba(2,5,8,.16),rgba(2,5,8,.04) 55%,rgba(2,5,8,.00)),
+    url("plan-premium.webp") !important;
+}
+#portfolio .portfolio-major-selected .selected-plan-summary-card.plan-theme-vip{
+  background-image:
+    linear-gradient(90deg,rgba(2,5,8,.16),rgba(2,5,8,.04) 55%,rgba(2,5,8,.00)),
+    url("plan-vip.webp") !important;
+}
+
+/* Kill the old light-orb overlay on selected plans. */
+#portfolio .portfolio-major-selected .selected-plan-summary-card::before{
+  background:transparent !important;
+}
+
+/* Every small metric box inside selected plans: transparent. */
+#portfolio .portfolio-major-selected .selected-plan-summary-metric{
+  background:rgba(0,0,0,.015) !important;
+  border-color:rgba(255,255,255,.14) !important;
+  box-shadow:none !important;
+}
+
+/* Referral card: transparent, only the outer panel artwork remains. */
+#portfolio .portfolio-major-referral .referral-portfolio-card{
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* VIP inner containers: transparent. */
+#portfolio .portfolio-major-vip .vip-single-card,
+#portfolio .portfolio-major-vip .portfolio-vip-quick{
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* VIP small boxes / table / calculator boxes: transparent. */
+#portfolio .portfolio-major-vip .vip-single-summary > div,
+#portfolio .portfolio-major-vip .vip-contract-tablebox,
+#portfolio .portfolio-major-vip .vip-contract-table th,
+#portfolio .portfolio-major-vip .vip-contract-table td,
+#portfolio .portfolio-major-vip .portfolio-vip-field,
+#portfolio .portfolio-major-vip .portfolio-vip-metric,
+#portfolio .portfolio-major-vip .portfolio-vip-result,
+#portfolio .portfolio-major-vip .portfolio-vip-input-row{
+  background:rgba(0,0,0,.015) !important;
+  box-shadow:none !important;
+}
+
+/* Deposit / withdrawal cards: transparent too. */
+#portfolio .portfolio-grid > .card,
+#portfolio .portfolio-finance-guest{
+  background:transparent !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.30) !important;
+}
+
+/* Keep text readable without using blur. */
+#portfolio .portfolio-major-panel *,
+#portfolio .portfolio-grid *{
+  text-shadow:
+    0 2px 5px rgba(0,0,0,.95),
+    0 0 3px rgba(0,0,0,.75);
+}
+
+/* Keep form inputs readable, but no blur effect. */
+#portfolio input,
+#portfolio select,
+#portfolio .custom-select-trigger,
+#portfolio .custom-options,
+#portfolio #payment-info-box{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Mobile: do NOT re-introduce dark fill. */
+@media(max-width:760px){
+  #portfolio .portfolio-major-panel,
+  #portfolio .portfolio-major-selected,
+  #portfolio .portfolio-major-referral,
+  #portfolio .portfolio-major-vip,
+  #portfolio .portfolio-major-base .cards .card.stat,
+  #portfolio .portfolio-major-selected .withdrawable-plans-total-card,
+  #portfolio .portfolio-major-referral .referral-portfolio-card,
+  #portfolio .portfolio-major-vip .vip-single-card,
+  #portfolio .portfolio-major-vip .portfolio-vip-quick,
+  #portfolio .portfolio-grid > .card{
+    background-color:transparent !important;
+  }
+
+  #portfolio .portfolio-major-selected .selected-plan-summary-metric,
+  #portfolio .portfolio-major-vip .vip-single-summary > div,
+  #portfolio .portfolio-major-vip .vip-contract-tablebox,
+  #portfolio .portfolio-major-vip .portfolio-vip-metric{
+    background:rgba(0,0,0,.02) !important;
   }
 }
 </style>
