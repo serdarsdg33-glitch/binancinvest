@@ -6512,6 +6512,459 @@ html[dir="rtl"] .password-flow-close {
 }
 </style>
 
+<style id="premium-dialog-system-v2">
+/* =========================================================
+   Premium dialog system — unified, responsive and accessible
+   ========================================================= */
+:root {
+  --dialog-gold: #f0b90b;
+  --dialog-gold-soft: #ffe58a;
+  --dialog-ink: #070a0f;
+  --dialog-panel: rgba(12, 17, 24, .88);
+  --dialog-panel-strong: rgba(10, 15, 22, .95);
+  --dialog-line: rgba(255, 224, 104, .28);
+  --dialog-copy: #f6f8fb;
+  --dialog-muted: #b9c2cf;
+}
+
+body.dialog-open { overflow: hidden; touch-action: none; }
+
+.modal,
+.email-confirm-modal,
+.password-flow-modal,
+.transaction-success-modal,
+.plan-selection-modal,
+.twofa-modal,
+.support-confirm-modal,
+.premium-logout-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1800;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(14px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom))
+    max(14px, env(safe-area-inset-left));
+  overflow: auto;
+  overscroll-behavior: contain;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(240,185,11,.13), transparent 34%),
+    rgba(1, 4, 8, .82) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.14) !important;
+  backdrop-filter: blur(12px) saturate(1.14) !important;
+}
+
+.modal { z-index: 1750; }
+.email-confirm-modal { z-index: 1810; }
+.password-flow-modal { z-index: 1820; }
+.transaction-success-modal { z-index: 1830; }
+.plan-selection-modal { z-index: 1840; }
+.twofa-modal { z-index: 1850; }
+.support-confirm-modal { z-index: 1860; }
+.premium-logout-modal { z-index: 1900; display: none; }
+.premium-logout-modal.open { display: flex; }
+
+.modalbox,
+.email-confirm-box,
+.password-flow-box,
+.transaction-success-box,
+.plan-selection-box,
+.twofa-box,
+.support-confirm-box,
+.premium-logout-box {
+  position: relative;
+  isolation: isolate;
+  width: min(460px, 100%) !important;
+  max-height: min(88dvh, 760px);
+  overflow: auto;
+  padding: 30px 26px 25px !important;
+  color: var(--dialog-copy) !important;
+  text-align: initial;
+  background:
+    linear-gradient(145deg, rgba(19,27,37,.92), rgba(6,10,15,.96)) padding-box,
+    linear-gradient(135deg, rgba(255,239,159,.82), rgba(240,185,11,.22) 42%, rgba(255,255,255,.08)) border-box !important;
+  border: 1px solid transparent !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 34px 100px rgba(0,0,0,.78),
+    0 0 0 1px rgba(255,255,255,.025) inset,
+    0 1px 0 rgba(255,255,255,.10) inset,
+    0 0 34px rgba(240,185,11,.08) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  backdrop-filter: blur(18px) saturate(1.15);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240,185,11,.36) transparent;
+  animation: premiumDialogEnter .28s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.modalbox::after,
+.email-confirm-box::after,
+.password-flow-box::after,
+.transaction-success-box::after,
+.plan-selection-box::after,
+.twofa-box::after,
+.support-confirm-box::after,
+.premium-logout-box::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 88% 4%, rgba(255,220,73,.12), transparent 28%),
+    linear-gradient(115deg, rgba(255,255,255,.035), transparent 32%);
+}
+
+@keyframes premiumDialogEnter {
+  from { opacity: 0; transform: translateY(14px) scale(.975); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modalbox h2,
+.email-confirm-box h2,
+.password-flow-box h2,
+.transaction-success-box h2,
+.plan-selection-box h2,
+.twofa-box h2,
+.support-confirm-box h3,
+.premium-logout-box h2 {
+  margin: 0 0 10px !important;
+  color: #fff !important;
+  font-size: clamp(22px, 5.2vw, 28px) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.35px;
+}
+
+.modalbox > p,
+.email-confirm-box > p,
+.password-flow-box > p,
+.transaction-success-box > p,
+.plan-selection-box > p,
+.twofa-box > p,
+.support-confirm-box > p,
+.premium-logout-box > p {
+  color: var(--dialog-muted) !important;
+  font-size: 13px !important;
+  line-height: 1.8 !important;
+}
+
+.close,
+.email-confirm-close,
+.password-flow-close,
+.transaction-success-close,
+.plan-selection-close,
+.twofa-close,
+.premium-dialog-close {
+  position: absolute !important;
+  z-index: 8;
+  top: 14px !important;
+  right: 15px !important;
+  left: auto !important;
+  float: none !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center;
+  color: #cbd3dd !important;
+  background: rgba(255,255,255,.045) !important;
+  border: 1px solid rgba(255,255,255,.13) !important;
+  border-radius: 50% !important;
+  font-size: 25px !important;
+  line-height: 1 !important;
+  transition: .2s ease;
+}
+
+html[dir="rtl"] .close,
+html[dir="rtl"] .email-confirm-close,
+html[dir="rtl"] .password-flow-close,
+html[dir="rtl"] .transaction-success-close,
+html[dir="rtl"] .plan-selection-close,
+html[dir="rtl"] .twofa-close,
+html[dir="rtl"] .premium-dialog-close {
+  right: auto !important;
+  left: 15px !important;
+}
+
+.close:hover,
+.email-confirm-close:hover,
+.password-flow-close:hover,
+.transaction-success-close:hover,
+.plan-selection-close:hover,
+.twofa-close:hover,
+.premium-dialog-close:hover {
+  color: #171100 !important;
+  background: var(--dialog-gold) !important;
+  border-color: var(--dialog-gold-soft) !important;
+  transform: rotate(5deg);
+}
+
+.premium-dialog-emblem,
+.email-confirm-icon,
+.password-flow-icon,
+.transaction-success-icon,
+.plan-selection-icon,
+.twofa-login-icon,
+.support-confirm-icon,
+.vip-lock-icon,
+.premium-logout-icon {
+  width: 66px !important;
+  height: 66px !important;
+  margin: 0 auto 17px !important;
+  display: grid !important;
+  place-items: center !important;
+  color: #171100 !important;
+  background:
+    radial-gradient(circle at 30% 22%, #fff7bd 0 12%, #ffd943 34%, #efa900 100%) !important;
+  border: 1px solid rgba(255,235,139,.9) !important;
+  border-radius: 20px !important;
+  box-shadow:
+    0 13px 34px rgba(240,185,11,.22),
+    inset 0 1px 1px rgba(255,255,255,.72) !important;
+}
+
+.premium-dialog-emblem svg,
+.email-confirm-icon svg,
+.password-flow-icon svg,
+.transaction-success-icon svg,
+.plan-selection-icon svg,
+.twofa-login-icon svg,
+.support-confirm-icon svg,
+.vip-lock-icon svg,
+.premium-logout-icon svg {
+  width: 31px;
+  height: 31px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#auth .modalbox { width: min(500px, 100%) !important; }
+#auth .modalbox > .premium-dialog-emblem { margin-top: 2px !important; }
+#authTitle { text-align: center; padding-inline: 44px; }
+#auth .modalbox > .muted { text-align: center; margin-bottom: 20px; }
+
+.form label,
+.password-flow-form label,
+.plan-selection-label,
+.twofa-field label {
+  margin: 15px 0 7px !important;
+  color: #d8dee7 !important;
+  font-size: 12px !important;
+  font-weight: 750;
+}
+
+.form input,
+.form select,
+.password-flow-form input,
+.plan-selection-input,
+.twofa-code {
+  width: 100%;
+  min-height: 49px;
+  color: #fff !important;
+  background: rgba(4,8,13,.58) !important;
+  border: 1px solid rgba(161,175,193,.25) !important;
+  border-radius: 13px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025) !important;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.form input:focus,
+.form select:focus,
+.password-flow-form input:focus,
+.plan-selection-input:focus,
+.twofa-code:focus {
+  background: rgba(5,9,14,.82) !important;
+  border-color: rgba(240,185,11,.78) !important;
+  box-shadow: 0 0 0 3px rgba(240,185,11,.10) !important;
+}
+
+.form input::placeholder,
+.password-flow-form input::placeholder,
+.plan-selection-input::placeholder,
+.twofa-code::placeholder { color: #778291 !important; opacity: 1; }
+
+.password-requirements,
+.plan-selection-notice,
+.transaction-success-note,
+.vip-contract-notice,
+.email-confirm-address,
+.password-flow-email,
+.twofa-secret {
+  color: #d5dbe4 !important;
+  background: rgba(240,185,11,.055) !important;
+  border: 1px solid rgba(240,185,11,.20) !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+}
+
+.email-confirm-address,
+.password-flow-email,
+.twofa-secret { color: var(--dialog-gold-soft) !important; }
+
+.btn {
+  min-height: 44px;
+  border-radius: 12px !important;
+  font-weight: 800;
+}
+
+.modalbox .btn.gold,
+.email-confirm-box .btn.gold,
+.password-flow-box .btn.gold,
+.transaction-success-box .btn.gold,
+.plan-selection-box .btn.gold,
+.twofa-box .btn.gold,
+.support-confirm-submit,
+.premium-logout-confirm {
+  color: #171100 !important;
+  background: linear-gradient(135deg, #ffec91 0%, #ffd33c 32%, #efae00 100%) !important;
+  border: 1px solid #ffe16a !important;
+  box-shadow: 0 10px 25px rgba(240,185,11,.18), inset 0 1px 1px rgba(255,255,255,.64) !important;
+}
+
+.modalbox .btn.gold:hover,
+.email-confirm-box .btn.gold:hover,
+.password-flow-box .btn.gold:hover,
+.transaction-success-box .btn.gold:hover,
+.plan-selection-box .btn.gold:hover,
+.twofa-box .btn.gold:hover,
+.premium-logout-confirm:hover { transform: translateY(-1px); filter: brightness(1.04); }
+
+.password-flow-error,
+.plan-selection-error,
+.twofa-error,
+.withdrawal-error-box {
+  color: #ffd4d8 !important;
+  background: rgba(234,57,67,.13) !important;
+  border: 1px solid rgba(255,91,101,.42) !important;
+  border-radius: 11px !important;
+}
+
+.transaction-success-box { border-color: transparent !important; }
+.transaction-success-icon {
+  color: #06140e !important;
+  background: linear-gradient(135deg,#a1ffdc,#16c784) !important;
+  border-color: rgba(141,255,210,.8) !important;
+  border-radius: 50% !important;
+}
+
+.support-confirm-icon {
+  color: #fff !important;
+  background: linear-gradient(135deg,#ff7a83,#d72b35) !important;
+  border-color: rgba(255,175,181,.6) !important;
+  border-radius: 50% !important;
+  font-size: 0 !important;
+}
+.support-confirm-icon::before { content: "!"; font-size: 31px; font-weight: 950; }
+.support-confirm-submit {
+  color: #fff !important;
+  background: linear-gradient(135deg,#ef5963,#c9232d) !important;
+  border-color: rgba(255,140,147,.7) !important;
+}
+
+.plan-selection-details div,
+.vip-lock-results div {
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 13px !important;
+}
+
+.auth-success-popup {
+  z-index: 1950 !important;
+  background: rgba(1,4,8,.64) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+}
+.auth-success-popup-box {
+  border-radius: 20px !important;
+  background: linear-gradient(145deg,rgba(15,24,30,.96),rgba(6,12,16,.98)) !important;
+  border-color: rgba(22,199,132,.4) !important;
+}
+
+.language-panel {
+  background:
+    linear-gradient(145deg,rgba(18,25,34,.94),rgba(7,11,16,.97)) padding-box,
+    linear-gradient(135deg,rgba(255,234,132,.7),rgba(240,185,11,.15),rgba(255,255,255,.08)) border-box !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 34px 100px rgba(0,0,0,.78), 0 0 30px rgba(240,185,11,.08) !important;
+}
+
+.premium-logout-box { text-align: center; width: min(410px,100%) !important; }
+.premium-logout-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 10px;
+  margin-top: 21px;
+}
+.premium-logout-actions .btn { width: 100%; }
+
+@media (max-width: 600px) {
+  .modal,
+  .email-confirm-modal,
+  .password-flow-modal,
+  .transaction-success-modal,
+  .plan-selection-modal,
+  .twofa-modal,
+  .support-confirm-modal,
+  .premium-logout-modal { align-items: center; padding-inline: 12px; }
+
+  .modalbox,
+  .email-confirm-box,
+  .password-flow-box,
+  .transaction-success-box,
+  .plan-selection-box,
+  .twofa-box,
+  .support-confirm-box,
+  .premium-logout-box {
+    width: 100% !important;
+    max-height: calc(100dvh - max(28px, env(safe-area-inset-top)) - max(28px, env(safe-area-inset-bottom)));
+    padding: 27px 18px 19px !important;
+    border-radius: 21px !important;
+  }
+
+  .premium-dialog-emblem,
+  .email-confirm-icon,
+  .password-flow-icon,
+  .transaction-success-icon,
+  .plan-selection-icon,
+  .twofa-login-icon,
+  .support-confirm-icon,
+  .vip-lock-icon,
+  .premium-logout-icon {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 18px !important;
+  }
+
+  .transaction-success-actions,
+  .plan-selection-actions,
+  .twofa-buttons,
+  .support-confirm-actions,
+  .premium-logout-actions { grid-template-columns: 1fr !important; }
+
+  #auth .modalbox > .muted { padding-inline: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modalbox,
+  .email-confirm-box,
+  .password-flow-box,
+  .transaction-success-box,
+  .plan-selection-box,
+  .twofa-box,
+  .support-confirm-box,
+  .premium-logout-box { animation: none !important; }
+}
+</style>
 </head>
 <body>
 <header>
@@ -6534,7 +6987,7 @@ html[dir="rtl"] .password-flow-close {
         <span id="headerFullName"></span>
         <span id="headerUsername"></span>
       </div>
-      <button class="btn header-logout-btn" onclick="logout()" data-t="logout">Logout</button>
+      <button class="btn header-logout-btn" onclick="requestLogout()" data-t="logout">Logout</button>
     </div>
     <div id="authButtonsGroup">
       <button class="btn login" onclick="openAuth('login')" data-t="login">Sign In</button>
@@ -7693,7 +8146,9 @@ html[dir="rtl"] .password-flow-close {
 
 <div id="twofaChallengeModal" class="twofa-modal" role="dialog" aria-modal="true" aria-labelledby="twofaChallengeTitle">
   <div class="twofa-box twofa-login-box">
-    <div class="twofa-login-icon">⌁</div>
+    <div class="twofa-login-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><rect x="6" y="11" width="20" height="16" rx="4"/><path d="M10 11V8.5a6 6 0 0 1 12 0V11"/><circle cx="16" cy="19" r="2.2"/><path d="M16 21.2V24"/></svg>
+    </div>
     <h2 id="twofaChallengeTitle">Two-step verification</h2>
     <p id="twofaChallengeDescription">Enter the 6-digit code from Google Authenticator to finish signing in.</p>
     <div class="twofa-field">
@@ -7707,9 +8162,12 @@ html[dir="rtl"] .password-flow-close {
   </div>
 </div>
 
-<div class="modal" id="auth">
+<div class="modal" id="auth" role="dialog" aria-modal="true" aria-labelledby="authTitle">
   <div class="modalbox">
     <button class="close" onclick="closeAuth()">×</button>
+    <div class="premium-dialog-emblem" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M16 3.5 27 8v7.4c0 6.7-4.5 11.2-11 13.1C9.5 26.6 5 22.1 5 15.4V8l11-4.5Z"/><path d="m11 16 3.2 3.2L21.5 12"/></svg>
+    </div>
     <h2 id="authTitle">Sign In</h2>
     <p class="muted" data-t="local">Your account information is stored securely.</p>
     <div class="form">
@@ -7764,7 +8222,9 @@ html[dir="rtl"] .password-flow-close {
       aria-label="Close"
     >×</button>
 
-    <div class="password-flow-icon">✉</div>
+    <div class="password-flow-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><rect x="3.5" y="6.5" width="25" height="19" rx="3"/><path d="m5 9 11 9 11-9"/></svg>
+    </div>
 
     <h2 data-t="checkYourEmail">Check your email</h2>
 
@@ -7833,7 +8293,9 @@ html[dir="rtl"] .password-flow-close {
       aria-label="Close"
     >×</button>
 
-    <div class="password-flow-icon">🔒</div>
+    <div class="password-flow-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><rect x="5" y="14" width="22" height="15" rx="3"/><path d="M10 14V9.5a6 6 0 0 1 12 0V14"/><path d="M16 20v4"/></svg>
+    </div>
 
     <h2 data-t="createNewPassword">Create a new password</h2>
 
@@ -7895,7 +8357,9 @@ html[dir="rtl"] .password-flow-close {
       ×
     </button>
 
-    <div class="transaction-success-icon">✓</div>
+    <div class="transaction-success-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M27 14.8V16a11 11 0 1 1-6.5-10"/><path d="m10.5 15.5 4 4L28 6"/></svg>
+    </div>
 
     <h2 id="transactionSuccessTitle">
       Request Submitted
@@ -7939,7 +8403,9 @@ Transactions section.
       ×
     </button>
 
-    <div class="plan-selection-icon">◆</div>
+    <div class="plan-selection-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M16 3.5 27.5 16 16 28.5 4.5 16 16 3.5Z"/><path d="m9.5 12.5 6.5-9 6.5 9-6.5 16-6.5-16Z"/></svg>
+    </div>
 
     <div id="selectedPlanBadge" class="plan-selection-badge" data-t="investmentPlanBadge">
       INVESTMENT PLAN
@@ -8010,8 +8476,8 @@ Transactions section.
     </button>
 
     <div style="text-align:center;">
-      <div class="vip-lock-icon" style="margin:0 auto 14px;">
-        🔒
+      <div class="vip-lock-icon" style="margin:0 auto 14px;" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><rect x="5" y="14" width="22" height="15" rx="3"/><path d="M10 14V9.5a6 6 0 0 1 12 0V14"/><path d="M16 20v4"/></svg>
       </div>
 
       <h2 style="margin-bottom:8px;" data-t="confirm60DayLock">
@@ -8094,6 +8560,20 @@ Transactions section.
     </div>
   </div>
 </div>
+<div id="logoutConfirmModal" class="premium-logout-modal" aria-hidden="true" onclick="handleLogoutBackdrop(event)">
+  <div class="premium-logout-box" role="dialog" aria-modal="true" aria-labelledby="logoutConfirmTitle" aria-describedby="logoutConfirmMessage">
+    <button class="premium-dialog-close" type="button" onclick="closeLogoutConfirm()" aria-label="Close">×</button>
+    <div class="premium-logout-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M14 5H7.5A2.5 2.5 0 0 0 5 7.5v17A2.5 2.5 0 0 0 7.5 27H14"/><path d="M20 9l7 7-7 7"/><path d="M27 16H12"/></svg>
+    </div>
+    <h2 id="logoutConfirmTitle">Sign out?</h2>
+    <p id="logoutConfirmMessage">You can sign in again at any time. Your account data will remain protected.</p>
+    <div class="premium-logout-actions">
+      <button id="logoutCancelBtn" class="btn" type="button" onclick="closeLogoutConfirm()">Cancel</button>
+      <button id="logoutConfirmBtn" class="btn premium-logout-confirm" type="button" onclick="confirmPremiumLogout()">Sign Out</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast" hidden></div>
 <div id="emailConfirmModal" class="email-confirm-modal">
   <div class="email-confirm-box">
@@ -8105,7 +8585,9 @@ Transactions section.
 >
   ×
 </button>
-    <div class="email-confirm-icon">✉</div>
+    <div class="email-confirm-icon" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><rect x="3.5" y="6.5" width="25" height="19" rx="3"/><path d="m5 9 11 9 11-9"/></svg>
+    </div>
 
     <h2 data-t="confirmYourEmail">Confirm your email</h2>
 
@@ -16605,6 +17087,119 @@ document.addEventListener("DOMContentLoaded", function() {
 
   window.paintRecoveryCodeLabel =
     paintRecoveryCodeLabel;
+})();
+</script>
+
+<script id="premium-dialog-behavior-v2">
+(function () {
+  const logoutCopy = {
+    en:["Sign out?","You can sign in again at any time. Your account data will remain protected.","Cancel","Sign Out"],
+    fa:["از حساب خارج می‌شوید؟","هر زمان بخواهید می‌توانید دوباره وارد شوید. اطلاعات حساب شما محفوظ می‌ماند.","انصراف","خروج"],
+    ar:["تسجيل الخروج؟","يمكنك تسجيل الدخول مجددًا في أي وقت. ستظل بيانات حسابك محمية.","إلغاء","تسجيل الخروج"],
+    az:["Hesabdan çıxılsın?","İstənilən vaxt yenidən daxil ola bilərsiniz. Hesab məlumatlarınız qorunacaq.","Ləğv et","Çıxış"],
+    tr:["Çıkış yapılsın mı?","İstediğiniz zaman yeniden giriş yapabilirsiniz. Hesap bilgileriniz korunacaktır.","İptal","Çıkış Yap"],
+    ru:["Выйти из аккаунта?","Вы сможете войти снова в любое время. Данные аккаунта останутся защищёнными.","Отмена","Выйти"],
+    zh:["退出登录？","您可以随时重新登录，账户数据将继续受到保护。","取消","退出"],
+    es:["¿Cerrar sesión?","Puedes volver a iniciar sesión en cualquier momento. Los datos de tu cuenta seguirán protegidos.","Cancelar","Cerrar sesión"],
+    fr:["Se déconnecter ?","Vous pourrez vous reconnecter à tout moment. Les données de votre compte resteront protégées.","Annuler","Se déconnecter"],
+    de:["Abmelden?","Du kannst dich jederzeit wieder anmelden. Deine Kontodaten bleiben geschützt.","Abbrechen","Abmelden"],
+    it:["Uscire dall’account?","Potrai accedere di nuovo in qualsiasi momento. I dati del tuo account resteranno protetti.","Annulla","Esci"],
+    nl:["Uitloggen?","Je kunt op elk moment opnieuw inloggen. Je accountgegevens blijven beschermd.","Annuleren","Uitloggen"],
+    ja:["ログアウトしますか？","いつでも再度ログインできます。アカウント情報は保護されます。","キャンセル","ログアウト"],
+    ko:["로그아웃할까요?","언제든지 다시 로그인할 수 있으며 계정 정보는 안전하게 보호됩니다.","취소","로그아웃"],
+    pt:["Terminar sessão?","Pode iniciar sessão novamente a qualquer momento. Os dados da sua conta permanecerão protegidos.","Cancelar","Terminar sessão"],
+    pl:["Wylogować się?","Możesz zalogować się ponownie w dowolnym momencie. Dane konta pozostaną chronione.","Anuluj","Wyloguj"],
+    ro:["Vă deconectați?","Vă puteți conecta din nou oricând. Datele contului vor rămâne protejate.","Anulează","Deconectare"],
+    uk:["Вийти з облікового запису?","Ви зможете знову увійти будь-коли. Дані облікового запису залишаться захищеними.","Скасувати","Вийти"],
+    id:["Keluar dari akun?","Anda dapat masuk kembali kapan saja. Data akun Anda akan tetap terlindungi.","Batal","Keluar"],
+    ms:["Log keluar?","Anda boleh log masuk semula pada bila-bila masa. Data akaun anda akan kekal dilindungi.","Batal","Log Keluar"],
+    hi:["साइन आउट करें?","आप कभी भी दोबारा साइन इन कर सकते हैं। आपके खाते का डेटा सुरक्षित रहेगा।","रद्द करें","साइन आउट"],
+    ur:["اکاؤنٹ سے باہر نکلیں؟","آپ کسی بھی وقت دوبارہ سائن اِن کر سکتے ہیں۔ آپ کے اکاؤنٹ کی معلومات محفوظ رہیں گی۔","منسوخ","خروج"],
+    bn:["সাইন আউট করবেন?","আপনি যেকোনো সময় আবার সাইন ইন করতে পারবেন। আপনার অ্যাকাউন্টের তথ্য সুরক্ষিত থাকবে।","বাতিল","সাইন আউট"],
+    th:["ออกจากระบบหรือไม่?","คุณสามารถเข้าสู่ระบบอีกครั้งได้ทุกเมื่อ ข้อมูลบัญชีของคุณจะยังคงปลอดภัย","ยกเลิก","ออกจากระบบ"],
+    vi:["Đăng xuất?","Bạn có thể đăng nhập lại bất cứ lúc nào. Dữ liệu tài khoản vẫn được bảo vệ.","Hủy","Đăng xuất"]
+  };
+
+  function currentLanguage() {
+    return (document.documentElement.lang || localStorage.getItem("bi_lang") || "en")
+      .toLowerCase().split("-")[0];
+  }
+
+  function paintLogoutDialog() {
+    const c = logoutCopy[currentLanguage()] || logoutCopy.en;
+    const ids = ["logoutConfirmTitle","logoutConfirmMessage","logoutCancelBtn","logoutConfirmBtn"];
+    ids.forEach((id, index) => {
+      const node = document.getElementById(id);
+      if (node) node.textContent = c[index];
+    });
+  }
+
+  function syncDialogLock() {
+    const selectors = [
+      ".modal", ".email-confirm-modal", ".password-flow-modal",
+      ".transaction-success-modal", ".plan-selection-modal",
+      ".twofa-modal", ".support-confirm-modal", ".premium-logout-modal"
+    ];
+    const open = Array.from(document.querySelectorAll(selectors.join(","))).some((node) => {
+      const style = getComputedStyle(node);
+      return style.display !== "none" && style.visibility !== "hidden";
+    });
+    document.body.classList.toggle("dialog-open", open);
+  }
+
+  window.requestLogout = function () {
+    const modal = document.getElementById("logoutConfirmModal");
+    if (!modal) return window.logout();
+    paintLogoutDialog();
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    syncDialogLock();
+    requestAnimationFrame(() => document.getElementById("logoutConfirmBtn")?.focus());
+  };
+
+  window.closeLogoutConfirm = function () {
+    const modal = document.getElementById("logoutConfirmModal");
+    if (!modal) return;
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    syncDialogLock();
+  };
+
+  window.handleLogoutBackdrop = function (event) {
+    if (event.target?.id === "logoutConfirmModal") closeLogoutConfirm();
+  };
+
+  window.confirmPremiumLogout = async function () {
+    const button = document.getElementById("logoutConfirmBtn");
+    if (button) button.disabled = true;
+    try {
+      await window.logout();
+      closeLogoutConfirm();
+    } finally {
+      if (button) button.disabled = false;
+    }
+  };
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && document.getElementById("logoutConfirmModal")?.classList.contains("open")) {
+      closeLogoutConfirm();
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    paintLogoutDialog();
+    const dialogs = document.querySelectorAll(
+      ".modal,.email-confirm-modal,.password-flow-modal,.transaction-success-modal,.plan-selection-modal,.twofa-modal,.support-confirm-modal,.premium-logout-modal"
+    );
+    const observer = new MutationObserver(syncDialogLock);
+    dialogs.forEach((node) => observer.observe(node, { attributes:true, attributeFilter:["class","style"] }));
+    syncDialogLock();
+  }, { once:true });
+
+  new MutationObserver(paintLogoutDialog).observe(document.documentElement, {
+    attributes:true,
+    attributeFilter:["lang"]
+  });
 })();
 </script>
 
