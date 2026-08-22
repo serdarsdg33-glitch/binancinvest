@@ -7368,6 +7368,68 @@ html[dir="rtl"] .selected-plan-cancel-box{
 
 
 
+
+<style id="plan-activation-success-v7">
+.plan-activation-success-banner{
+  position:relative;
+  z-index:6;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:12px 0 16px;
+  padding:13px 15px;
+  border:1px solid rgba(33,217,154,.42);
+  border-radius:15px;
+  background:linear-gradient(135deg,rgba(10,45,35,.94),rgba(5,18,17,.95));
+  box-shadow:0 14px 34px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.045);
+  opacity:0;
+  transform:translateY(-8px) scale(.985);
+  pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.plan-activation-success-banner.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+.plan-activation-success-icon{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  color:#03140e;
+  background:linear-gradient(135deg,#7dffd0,#20d99a);
+  font-size:23px;
+  font-weight:950;
+  box-shadow:0 8px 22px rgba(33,217,154,.22);
+}
+.plan-activation-success-copy{
+  min-width:0;
+  flex:1;
+}
+.plan-activation-success-copy strong{
+  display:block;
+  margin-bottom:3px;
+  color:#f7fffb;
+  font-size:14px;
+  font-weight:950;
+}
+.plan-activation-success-copy span{
+  display:block;
+  color:#b8d8cd;
+  font-size:12px;
+  line-height:1.6;
+}
+html[dir="rtl"] .plan-activation-success-banner{text-align:right}
+@media(max-width:600px){
+  .plan-activation-success-banner{padding:12px 13px;border-radius:14px;gap:10px}
+  .plan-activation-success-icon{width:38px;height:38px;flex-basis:38px;font-size:21px}
+  .plan-activation-success-copy strong{font-size:13px}
+  .plan-activation-success-copy span{font-size:11px}
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-6">
 <header>
@@ -18119,6 +18181,102 @@ document.addEventListener("DOMContentLoaded", function() {
     })();
   }
 
+
+  function localizedActivatedPlanName(planCode) {
+    var lang = localStorage.getItem("bi_lang") || "en";
+    var index = (plans || []).findIndex(function (plan) {
+      return String(plan && plan[0] || "") === String(planCode || "");
+    });
+
+    if (index >= 0) {
+      return getLocalizedPlanName(index);
+    }
+
+    if (String(planCode || "") === "VIP_LOCK") {
+      return (vipPlanLabels[lang] && vipPlanLabels[lang].title) || "VIP";
+    }
+
+    return String(planCode || "");
+  }
+
+  function planActivationSuccessCopy(planCode, amount) {
+    var lang = localStorage.getItem("bi_lang") || "en";
+    var planName = localizedActivatedPlanName(planCode);
+    var amountText = typeof formatPortfolioMoney === "function"
+      ? formatPortfolioMoney(amount)
+      : "$" + Number(amount || 0).toFixed(2);
+
+    var copy = {
+      fa:["سرمایه‌گذاری با موفقیت فعال شد", planName + " با مبلغ " + amountText + " فعال شد و به سبد شما اضافه شد."],
+      en:["Investment activated successfully", planName + " was activated with " + amountText + " and added to your portfolio."],
+      az:["İnvestisiya uğurla aktivləşdirildi", planName + " " + amountText + " məbləği ilə aktivləşdirildi və portfelinizə əlavə olundu."],
+      tr:["Yatırım başarıyla etkinleştirildi", planName + " " + amountText + " tutarıyla etkinleştirildi ve portföyünüze eklendi."],
+      ru:["Инвестиция успешно активирована", planName + " активирован на сумму " + amountText + " и добавлен в ваш портфель."],
+      ar:["تم تفعيل الاستثمار بنجاح", "تم تفعيل " + planName + " بمبلغ " + amountText + " وإضافته إلى محفظتك."],
+      zh:["投资已成功激活", planName + " 已以 " + amountText + " 激活并添加到您的投资组合。"],
+      es:["Inversión activada correctamente", planName + " se activó con " + amountText + " y se añadió a tu portafolio."],
+      fr:["Investissement activé avec succès", planName + " a été activé avec " + amountText + " et ajouté à votre portefeuille."],
+      de:["Investition erfolgreich aktiviert", planName + " wurde mit " + amountText + " aktiviert und Ihrem Portfolio hinzugefügt."]
+    };
+
+    return copy[lang] || copy.en;
+  }
+
+  function showPlanActivationSuccessAndOpenPortfolio(planCode, amount) {
+    page(
+      "portfolio",
+      document.querySelector('[data-page="portfolio"]')
+    );
+
+    var portfolio = document.getElementById("portfolio");
+    if (!portfolio) return;
+
+    var scene = portfolio.querySelector(".portfolio-overview-scene") || portfolio;
+    var title = scene.querySelector(".title");
+    var banner = document.getElementById("planActivationSuccessBanner");
+
+    if (!banner) {
+      banner = document.createElement("div");
+      banner.id = "planActivationSuccessBanner";
+      banner.className = "plan-activation-success-banner";
+      banner.setAttribute("role", "status");
+      banner.setAttribute("aria-live", "polite");
+      banner.innerHTML = [
+        '<div class="plan-activation-success-icon" aria-hidden="true">✓</div>',
+        '<div class="plan-activation-success-copy">',
+          '<strong id="planActivationSuccessTitle"></strong>',
+          '<span id="planActivationSuccessText"></span>',
+        '</div>'
+      ].join("");
+
+      if (title) {
+        title.insertAdjacentElement("afterend", banner);
+      } else {
+        scene.insertAdjacentElement("afterbegin", banner);
+      }
+    }
+
+    var copy = planActivationSuccessCopy(planCode, amount);
+    var titleElement = document.getElementById("planActivationSuccessTitle");
+    var textElement = document.getElementById("planActivationSuccessText");
+
+    if (titleElement) titleElement.textContent = copy[0];
+    if (textElement) textElement.textContent = copy[1];
+
+    clearTimeout(window.planActivationSuccessTimer);
+    banner.classList.remove("show");
+    void banner.offsetWidth;
+    banner.classList.add("show");
+
+    setTimeout(function () {
+      banner.scrollIntoView({behavior:"smooth", block:"nearest"});
+    }, 80);
+
+    window.planActivationSuccessTimer = setTimeout(function () {
+      banner.classList.remove("show");
+    }, 4500);
+  }
+
   window.continueSelectedPlan = async function () {
     var selectedPlan = plans[selectedPlanIndex];
     var input = document.getElementById("selectedPlanAmount");
@@ -18176,7 +18334,7 @@ document.addEventListener("DOMContentLoaded", function() {
       if (result && result.error) throw result.error;
 
       closePlanSelectionModal();
-      toast(text("success"), "success");
+      showPlanActivationSuccessAndOpenPortfolio(selectedPlan[0], amount);
 
       /*
        * Activation already succeeded on the server. UI refresh is intentionally
@@ -19165,7 +19323,7 @@ document.addEventListener("DOMContentLoaded", function() {
       );
       if (result && result.error) throw result.error;
       closeVipLockConfirmation();
-      toast(text("success"), "success");
+      showPlanActivationSuccessAndOpenPortfolio("VIP_LOCK", amount);
       refreshPortfolioAfterPlanActivation();
     } catch (error) {
       console.error("Confirmed VIP activation error:", error);
