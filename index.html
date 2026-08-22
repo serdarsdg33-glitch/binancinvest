@@ -7670,7 +7670,7 @@ html:not(.native-app) #headerUsername {
           If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.
         </div>
       </div>
-      <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. (Simulated code preview:</span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
+      <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. </span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
       <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
       <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
       <div id="passwordContainer">
@@ -7704,8 +7704,8 @@ html:not(.native-app) #headerUsername {
     ></div>
 
     <div class="password-flow-form" style="margin-top:16px;">
-      <label for="passwordRecoveryOtp" data-t="enterCode">
-        Enter 8-digit verification code
+      <label for="passwordRecoveryOtp" id="passwordRecoveryOtpLabel">
+        Enter the 6-digit code from your email
       </label>
 
       <input
@@ -8132,6 +8132,10 @@ function maskRecoveryEmail(email) {
 }
 
 function openPasswordResetSentModal(email) {
+  if (typeof window.paintRecoveryCodeLabel === "function") {
+    window.paintRecoveryCodeLabel();
+  }
+
   const cleanEmail =
     String(email || "").trim().toLowerCase();
 
@@ -8265,14 +8269,14 @@ async function verifyPasswordRecoveryCode() {
       document.getElementById(
         "passwordRecoveryOtp"
       )?.value || ""
-    ).replace(/\D/g, "").slice(0, 8);
+    ).replace(/\D/g, "").slice(0, 6);
 
   const button =
     document.getElementById(
       "verifyRecoveryCodeBtn"
     );
 
-  if (!email || token.length !== 8) {
+  if (!email || token.length !== 6) {
     showPasswordRecoveryOtpError(
       tr("enterCode")
     );
@@ -8870,7 +8874,7 @@ customTitle:"Custom Investment Plan",customDesc:"Invest any custom amount from $
 dailyProfitLabel:"Daily Profit",monthlyProfitLabel:"Monthly Profit",
 lockNoticeText:"If you lock your money for 60 days or more, your daily profit rate reaches over 7.5% according to the contract agreement.",
 pointsTitle:"Points",pointsSub:"+50 weekly",refTitle:"Referral",vipTitle:"VIP",vipSub:"1,250 pts",streakTitle:"Streak",streakSub:"Active",sec2fa:"2FA",secLogin:"Login protection",secWith:"Withdrawal confirmation",enabled:"Enabled",active:"Active",
-forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"کد بازیابی رمز عبور به ایمیل شما ارسال شد.",enterCode:"کد ۸ رقمی ایمیل را وارد کنید",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
+forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Sign up",haveAccountText:"Already have an account? Sign in",usernameOrEmail:"Username or Email",enterEmailOrUser:"Enter your Username or Registered Email",codeSentNotice:"کد بازیابی رمز عبور به ایمیل شما ارسال شد.",enterCode:"کد ۶ رقمی ایمیل را وارد کنید",sendResetCode:"Send Reset Code",resetPasswordTitle:"Reset Password",newPasswordLabel:"New Password",resetBtn:"Reset Password",
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
 platformStatsTitle:"Platform Statistics", statUsers:"Total registered users on the site", statInvestors:"Investors and active users", statPaid:"Total profit paid to date", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
@@ -8892,7 +8896,7 @@ customTitle:"پلن سرمایه‌گذاری کاستوم (سفارشی)",custo
 dailyProfitLabel:"سود روزانه",monthlyProfitLabel:"سود ماهانه",
 lockNoticeText:"اگر شما پول خودتان را به مدت ۶۰ روز یا بیشتر قفل کنید، سود شما طبق قرارداد به بالای ۷.۵ درصد روزانه می‌رسد.",
 pointsTitle:"امتیاز",pointsSub:"+۵۰ هفتگی",refTitle:"دعوت دوستان",vipTitle:"وی‌آی‌پی",vipSub:"۱۲۵۰ امتیاز",streakTitle:"مداومت",streakSub:"فعال",sec2fa:"تأیید دو مرحله‌ای",secLogin:"محافظت از ورود",secWith:"تأیید برداشت",enabled:"فعال",active:"فعال",
-forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد تأیید به ایمیل شما ارسال شد. (",enterCode:"کد ۸ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
+forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب ندارید؟ ثبت‌نام کنید",haveAccountText:"حساب دارید؟ وارد شوید",usernameOrEmail:"نام کاربری یا ایمیل",enterEmailOrUser:"نام کاربری یا ایمیل ثبت‌شده را وارد کنید",codeSentNotice:"کد بازیابی رمز عبور به ایمیل شما ارسال شد.",enterCode:"کد ۶ رقمی ایمیل را وارد کنید",sendResetCode:"ارسال کد بازیابی",resetPasswordTitle:"بازیابی رمز عبور",newPasswordLabel:"رمز عبور جدید",resetBtn:"تغییر رمز عبور",
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"تعداد کل سرمایه‌گذاران و کاربران ثبت‌شده در سایت", statInvestors:"سرمایه‌گذاران و کاربران آنلاین", statPaid:"کل سود پرداختی تا الان", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
@@ -16427,6 +16431,58 @@ document.addEventListener("DOMContentLoaded", function() {
         setInterval(updateOnlineUsers, 2000);
     }
 });
+</script>
+
+
+<script id="password-recovery-code-copy-v1">
+(function () {
+  const copy = {
+    en: "Enter the 6-digit code from your email",
+    fa: "کد ۶ رقمی ایمیل را وارد کنید",
+    az: "E-poçta göndərilən 6 rəqəmli kodu daxil edin",
+    tr: "E-postanıza gönderilen 6 haneli kodu girin",
+    ru: "Введите 6-значный код из письма",
+    ar: "أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك",
+    zh: "请输入邮件中的 6 位验证码",
+    es: "Introduce el código de 6 dígitos enviado a tu correo",
+    fr: "Saisissez le code à 6 chiffres reçu par e-mail",
+    de: "Gib den 6-stelligen Code aus deiner E-Mail ein"
+  };
+
+  function paintRecoveryCodeLabel() {
+    const label =
+      document.getElementById("passwordRecoveryOtpLabel");
+
+    if (!label) return;
+
+    const lang =
+      (document.documentElement.lang || "en")
+        .toLowerCase()
+        .split("-")[0];
+
+    label.textContent =
+      copy[lang] || copy.en;
+  }
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    paintRecoveryCodeLabel,
+    { once: true }
+  );
+
+  new MutationObserver(
+    paintRecoveryCodeLabel
+  ).observe(
+    document.documentElement,
+    {
+      attributes: true,
+      attributeFilter: ["lang"]
+    }
+  );
+
+  window.paintRecoveryCodeLabel =
+    paintRecoveryCodeLabel;
+})();
 </script>
 
 </body>
