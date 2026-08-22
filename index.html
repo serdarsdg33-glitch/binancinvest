@@ -17944,6 +17944,109 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 
+  function planRpcWithTimeout(promise, milliseconds) {
+    return Promise.race([
+      promise,
+      new Promise(function (_, reject) {
+        setTimeout(function () {
+          var timeoutError = new Error("PLAN_RPC_TIMEOUT");
+          timeoutError.code = "PLAN_RPC_TIMEOUT";
+          reject(timeoutError);
+        }, milliseconds);
+      })
+    ]);
+  }
+
+  function planActivationErrorMessage(error) {
+    var raw = String((error && error.message) || error || "").trim();
+    var lower = raw.toLowerCase();
+
+    if ((error && error.code === "PLAN_RPC_TIMEOUT") || lower.includes("plan_rpc_timeout")) {
+      return language() === "fa"
+        ? "پاسخ سرور طول کشید. برای جلوگیری از ثبت دوباره، ابتدا سبد را تازه کنید و وضعیت پلن را ببینید."
+        : "The server response timed out. Refresh the portfolio before trying again to avoid a duplicate activation.";
+    }
+
+    if (
+      lower.includes("confirm_upgrade_investment") &&
+      (
+        lower.includes("schema cache") ||
+        lower.includes("could not find") ||
+        lower.includes("does not exist") ||
+        lower.includes("function")
+      )
+    ) {
+      return language() === "fa"
+        ? "تابع سرور فعال‌سازی پلن در Supabase در دسترس نیست. SQL مربوط به confirm_upgrade_investment باید در دیتابیس اجرا شود."
+        : "The plan activation RPC is not available in Supabase. The confirm_upgrade_investment SQL must be installed.";
+    }
+
+    if (lower.includes("insufficient principal")) {
+      return language() === "fa"
+        ? "سرمایه موجود در پلن پایه برای این مبلغ کافی نیست."
+        : "There is not enough principal in the base plan for this amount.";
+    }
+
+    if (lower.includes("account is not active") || lower.includes("user account is not active")) {
+      return language() === "fa"
+        ? "حساب کاربری در وضعیت فعال قرار ندارد."
+        : "The account is not active.";
+    }
+
+    if (lower.includes("authentication required") || lower.includes("jwt") || lower.includes("not authenticated")) {
+      return language() === "fa"
+        ? "نشست ورود شما معتبر نیست. یک‌بار خارج و دوباره وارد حساب شوید."
+        : "Your login session is not valid. Sign out and sign in again.";
+    }
+
+    if (lower.includes("amount is outside") || lower.includes("invalid plan")) {
+      return language() === "fa"
+        ? "مبلغ یا پلن انتخاب‌شده با محدوده مجاز مطابقت ندارد."
+        : "The selected amount or plan is outside the allowed range.";
+    }
+
+    if (lower.includes("permission denied") || lower.includes("not allowed") || lower.includes("42501")) {
+      return language() === "fa"
+        ? "دسترسی اجرای تابع فعال‌سازی برای کاربر واردشده در Supabase تنظیم نشده است."
+        : "The authenticated user does not have permission to execute the plan activation RPC.";
+    }
+
+    if (lower.includes("failed to fetch") || lower.includes("network") || lower.includes("load failed")) {
+      return language() === "fa"
+        ? "ارتباط با سرور برقرار نشد. اتصال اینترنت را بررسی کنید و دوباره وضعیت سبد را تازه کنید."
+        : "Could not reach the server. Check the connection and refresh the portfolio.";
+    }
+
+    if (raw) {
+      return language() === "fa"
+        ? "خطای سرور: " + raw
+        : "Server error: " + raw;
+    }
+
+    return language() === "fa"
+      ? "فعال‌سازی پلن انجام نشد."
+      : "Plan activation failed.";
+  }
+
+  function refreshPortfolioAfterPlanActivation() {
+    void (async function () {
+      try {
+        await planRpcWithTimeout(refreshSecureAccount(), 8000);
+        await planRpcWithTimeout(updatePortfolio(), 8000);
+        renderSelectedPlanSummaryCards();
+        renderFlexibleCard();
+        if (typeof calculatePortfolioVipLock === "function") {
+          calculatePortfolioVipLock();
+        }
+      } catch (refreshError) {
+        console.warn("Plan activated but portfolio refresh was delayed:", refreshError);
+        setTimeout(function () {
+          try { void updatePortfolio(); } catch (_) {}
+        }, 1200);
+      }
+    })();
+  }
+
   window.continueSelectedPlan = async function () {
     var selectedPlan = plans[selectedPlanIndex];
     var input = document.getElementById("selectedPlanAmount");
@@ -17977,28 +18080,47 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       return;
     }
+
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.classList.remove("show");
+    }
+
     var button = document.querySelector("#planSelectionModal .plan-selection-actions .gold");
     if (button) {
       button.disabled = true;
       button.textContent = text("processing");
     }
+
     try {
-      var result = await supabaseClient.rpc("confirm_upgrade_investment", {
-        p_plan_name:selectedPlan[0],
-        p_amount:amount
-      });
-      if (result.error) throw result.error;
+      var result = await planRpcWithTimeout(
+        supabaseClient.rpc("confirm_upgrade_investment", {
+          p_plan_name:selectedPlan[0],
+          p_amount:amount
+        }),
+        15000
+      );
+
+      if (result && result.error) throw result.error;
+
       closePlanSelectionModal();
-      await refreshSecureAccount();
-      await updatePortfolio();
-      renderSelectedPlanSummaryCards();
-      renderFlexibleCard();
       toast(text("success"), "success");
+
+      /*
+       * Activation already succeeded on the server. UI refresh is intentionally
+       * detached so a slow profile/investments reload can never turn a successful
+       * investment into the false message "investment failed" or leave the button
+       * stuck in processing state.
+       */
+      refreshPortfolioAfterPlanActivation();
+
     } catch (error) {
       console.error("Confirmed plan activation error:", error);
       if (errorBox) {
-        errorBox.textContent = localizedBackendError(error, "investmentFailed");
+        errorBox.textContent = planActivationErrorMessage(error);
         errorBox.classList.add("show");
+      } else {
+        toast(planActivationErrorMessage(error), "error");
       }
     } finally {
       if (button) {
@@ -18960,16 +19082,17 @@ document.addEventListener("DOMContentLoaded", function() {
     var button = document.getElementById("confirmVipLockBtn");
     if (button) { button.disabled = true; button.textContent = text("processing"); }
     try {
-      var result = await supabaseClient.rpc("confirm_upgrade_investment", {p_plan_name:"VIP_LOCK", p_amount:amount});
-      if (result.error) throw result.error;
+      var result = await planRpcWithTimeout(
+        supabaseClient.rpc("confirm_upgrade_investment", {p_plan_name:"VIP_LOCK", p_amount:amount}),
+        15000
+      );
+      if (result && result.error) throw result.error;
       closeVipLockConfirmation();
-      await refreshSecureAccount();
-      await updatePortfolio();
-      renderFlexibleCard();
       toast(text("success"), "success");
+      refreshPortfolioAfterPlanActivation();
     } catch (error) {
       console.error("Confirmed VIP activation error:", error);
-      toast(localizedBackendError(error, "vipLockFailed"), "error");
+      toast(planActivationErrorMessage(error), "error");
     } finally {
       if (button) { button.disabled = false; button.textContent = tr("confirmLock"); }
     }
