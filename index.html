@@ -109,11 +109,109 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="binancinvest">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/binancinvest-manifest-v2.webmanifest?v=20260822-0807">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260822-0807">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>binancinvest</title>
+
+<script id="ios-install-name-force-v2">
+(function () {
+  const APP_NAME = "binancinvest";
+  const FIX_VERSION = "20260822-0807";
+
+  function setNamedMeta(name, value) {
+    let meta =
+      document.querySelector(`meta[name="${name}"]`);
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", name);
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute("content", value);
+  }
+
+  function applyName() {
+    document.title = APP_NAME;
+    setNamedMeta(
+      "apple-mobile-web-app-title",
+      APP_NAME
+    );
+    setNamedMeta(
+      "application-name",
+      APP_NAME
+    );
+  }
+
+  applyName();
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    applyName,
+    { once: true }
+  );
+
+  const ua = navigator.userAgent || "";
+  const isIOS =
+    /iPhone|iPad|iPod/i.test(ua) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    );
+
+  if (!isIOS) return;
+
+  window.addEventListener("load", async () => {
+    applyName();
+
+    const key =
+      "bi_ios_install_name_fix_" +
+      FIX_VERSION;
+
+    try {
+      if (localStorage.getItem(key) === "1") {
+        return;
+      }
+
+      /*
+        Safari may still have the old page/manifest through the previous
+        service worker. Clear only the iOS web caches once for this update.
+      */
+      if ("serviceWorker" in navigator) {
+        const registrations =
+          await navigator.serviceWorker
+            .getRegistrations();
+
+        await Promise.all(
+          registrations.map(registration =>
+            registration.unregister()
+          )
+        );
+      }
+
+      if ("caches" in window) {
+        const keys = await caches.keys();
+
+        await Promise.all(
+          keys.map(cacheName =>
+            caches.delete(cacheName)
+          )
+        );
+      }
+
+      localStorage.setItem(key, "1");
+    } catch (error) {
+      console.warn(
+        "iOS install-name cache refresh skipped:",
+        error
+      );
+    }
+  });
+})();
+</script>
+
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://cryptologos.cc" crossorigin>
 <link rel="dns-prefetch" href="https://api.binance.com">

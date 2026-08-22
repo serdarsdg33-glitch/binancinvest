@@ -1,18 +1,18 @@
-/*.webp
-  Cache-Control: public, max-age=31536000, immutable
+# iPhone Add-to-Home-Screen metadata: always revalidate
+/
+  Cache-Control: no-cache, no-store, must-revalidate
 
-/*.svg
-  Cache-Control: public, max-age=31536000, immutable
+/index.html
+  Cache-Control: no-cache, no-store, must-revalidate
 
-/*.mp4
-  Cache-Control: public, max-age=31536000, immutable
+/binancinvest-manifest-v2.webmanifest
+  Cache-Control: no-cache, no-store, must-revalidate
 
-/*.webm
-  Cache-Control: public, max-age=31536000, immutable
+/apple-touch-icon.png
+  Cache-Control: public, max-age=300
 
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate
+/app-icon-192.png
+  Cache-Control: public, max-age=300
 
-/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
+/app-icon-512.png
+  Cache-Control: public, max-age=300
