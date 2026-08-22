@@ -7319,8 +7319,15 @@ html[dir="rtl"] .selected-plan-cancel-box{
 }
 </style>
 
+
+<style id="portfolio-remove-duplicate-flex-card-v6-1">
+#portfolio #flexibleYieldCard{
+  display:none !important;
+}
+</style>
+
 </head>
-<body data-investment-model="flex-v6">
+<body data-investment-model="flex-v6-1">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -17760,29 +17767,20 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function ensureFlexibleUI() {
-    if (!document.getElementById("flexibleYieldCard")) {
-      var vipSection = document.getElementById("vipPortfolioSection");
-      if (vipSection) {
-        var html = [
-          '<section id="flexibleYieldCard" class="flex-yield-card">',
-            '<div class="flex-yield-head">',
-              '<div><span class="flex-yield-kicker" id="flexYieldKicker"></span><h2 id="flexYieldTitle"></h2><p id="flexYieldDescription"></p></div>',
-              '<div class="flex-yield-rate"><strong>1.5%</strong><span id="flexYieldRateLabel"></span></div>',
-            '</div>',
-            '<div class="flex-yield-summary">',
-              '<div><span id="flexPrincipalLabel"></span><strong id="flexPrincipal">$0.00</strong></div>',
-              '<div><span id="flexProfitLabel"></span><strong id="flexProfit" class="green">$0.00</strong></div>',
-              '<div><span id="flexWithdrawableLabel"></span><strong id="flexWithdrawable" class="green">$0.00</strong></div>',
-              '<div><span id="flexFixedCountLabel"></span><strong id="flexFixedCount">0</strong></div>',
-            '</div>',
-            '<h3 id="flexContractsTitle" style="position:relative;z-index:1;margin:18px 0 9px"></h3>',
-            '<div class="flex-contracts-wrap"><table class="flex-contract-table"><thead><tr>',
-              '<th id="flexThPlan"></th><th id="flexThAmount"></th><th id="flexThRate"></th><th id="flexThRemaining"></th><th id="flexThEarly"></th><th id="flexThAction"></th>',
-            '</tr></thead><tbody id="flexContractRows"></tbody></table></div>',
-          '</section>'
-        ].join("");
-        vipSection.insertAdjacentHTML("beforebegin", html);
-      }
+    /*
+     * V6.1:
+     * The large lower "automatic mother plan" card has been removed
+     * from the Portfolio. The four main Portfolio cards already show
+     * the FLEX_DAILY 1.5% mother-plan values, so the duplicate card is
+     * no longer needed.
+     *
+     * Remove an old instance too, in case Safari still has stale DOM.
+     */
+    var oldFlexibleCard =
+      document.getElementById("flexibleYieldCard");
+
+    if (oldFlexibleCard) {
+      oldFlexibleCard.remove();
     }
 
     var modalNotice = document.querySelector("#planSelectionModal .plan-selection-notice");
@@ -17827,52 +17825,11 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function renderFlexibleCard() {
+    /*
+     * Compatibility hook: older code still calls this function after
+     * portfolio refreshes. Do not recreate the removed lower card.
+     */
     ensureFlexibleUI();
-    var principal = flexiblePrincipal();
-    var profit = flexibleLiveProfit();
-    var values = {
-      flexPrincipal:formatPortfolioMoney(principal),
-      flexProfit:formatPortfolioMoney(profit, true),
-      flexWithdrawable:formatPortfolioMoney(principal + profit, true),
-      flexFixedCount:String(fixedCount())
-    };
-    Object.keys(values).forEach(function (id) {
-      var element = document.getElementById(id);
-      if (element) element.textContent = values[id];
-    });
-
-    var rows = document.getElementById("flexContractRows");
-    if (!rows) return;
-    if (!currentUser || !currentUser.id) {
-      rows.innerHTML = '<tr><td colspan="6" class="flex-empty">' + escapeHtml(language() === "fa" ? "برای مشاهده پلن‌ها وارد حساب شوید." : "Sign in to view your plans.") + '</td></tr>';
-      return;
-    }
-
-    var investments = (currentInvestments || []).filter(function (item) {
-      return active(item) && isConfirmedRegularPlan(item);
-    });
-    if (!investments.length) {
-      rows.innerHTML = '<tr><td colspan="6" class="flex-empty">' + escapeHtml(text("noContracts")) + '</td></tr>';
-      return;
-    }
-
-    rows.innerHTML = investments.map(function (item) {
-      var principalValue = Number(item.principal || 0);
-      var payout = principalValue + fixedEarlyProfit(item);
-      var planTitle = String(item.plan_name || "");
-      var currentRate = Number(item.daily_rate || 0);
-
-      return [
-        '<tr>',
-          '<td><span class="flex-contract-type">',escapeHtml(planTitle),'</span><br><span class="flex-contract-note">',escapeHtml(text("fixedNotice")),'</span></td>',
-          '<td>',formatPortfolioMoney(principalValue),'</td>',
-          '<td>',currentRate.toFixed(1),'%</td>',
-          '<td>',escapeHtml(remainingText(item)),'</td>',
-          '<td class="flex-contract-payout">',formatPortfolioMoney(payout, true),'</td>',
-          '<td><button class="btn flex-action-btn" type="button" onclick="openSelectedPlanCancel(\'',escapeHtml(item.id),'\')">',escapeHtml(text("cancelContract")),'</button></td>',
-        '</tr>'
-      ].join("");
-    }).join("");
   }
 
   function basePlanMarkup() {
@@ -18380,6 +18337,71 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 
+  function selectedPlanCancelErrorMessage(error) {
+    var raw =
+      String(
+        (error && error.message) ||
+        error ||
+        ""
+      );
+
+    var lower =
+      raw.toLowerCase();
+
+    if (
+      lower.includes("cancel_confirmed_investment") &&
+      (
+        lower.includes("schema cache") ||
+        lower.includes("could not find") ||
+        lower.includes("does not exist") ||
+        lower.includes("function")
+      )
+    ) {
+      return language() === "fa"
+        ? "تابع لغو قرارداد در Supabase هنوز در دسترس نیست. SQL نسخه ۶.۱ را اجرا کنید."
+        : "The cancellation function is not available in Supabase yet. Run the V6.1 SQL.";
+    }
+
+    if (lower.includes("active investment not found")) {
+      return language() === "fa"
+        ? "این قرارداد دیگر فعال نیست. صفحه را تازه‌سازی کنید."
+        : "This contract is no longer active. Refresh the page.";
+    }
+
+    if (lower.includes("already reached maturity")) {
+      return language() === "fa"
+        ? "مدت این قرارداد به پایان رسیده و دیگر لغو زودهنگام محسوب نمی‌شود."
+        : "This contract has already reached maturity.";
+    }
+
+    if (
+      lower.includes("not explicitly confirmed") ||
+      lower.includes("not user-confirmed")
+    ) {
+      return language() === "fa"
+        ? "این قرارداد در وضعیت قابل لغو قرار ندارد."
+        : "This contract is not eligible for cancellation.";
+    }
+
+    if (lower.includes("account is not active")) {
+      return language() === "fa"
+        ? "حساب کاربری در وضعیت فعال قرار ندارد."
+        : "The account is not active.";
+    }
+
+    /*
+     * During testing, surface the real backend diagnostic instead of
+     * incorrectly showing "Investment could not be activated".
+     */
+    if (raw.trim()) {
+      return raw;
+    }
+
+    return language() === "fa"
+      ? "لغو قرارداد انجام نشد."
+      : "Contract cancellation failed.";
+  }
+
   window.confirmSelectedPlanCancel = async function () {
     if (!cancellationInvestmentId) return;
 
@@ -18428,10 +18450,7 @@ document.addEventListener("DOMContentLoaded", function() {
       );
 
       toast(
-        localizedBackendError(
-          error,
-          "investmentFailed"
-        ),
+        selectedPlanCancelErrorMessage(error),
         "error"
       );
 
