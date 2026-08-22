@@ -7613,6 +7613,36 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 }
 </style>
 
+
+<style id="portfolio-top-banner-v10">
+/* V10 — standalone artwork above Portfolio cards */
+#portfolio .portfolio-top-artwork{
+  width:100%;
+  margin:0 0 18px;
+  overflow:hidden;
+  border:1px solid rgba(240,185,11,.46);
+  border-radius:24px;
+  background:#05080c;
+  box-shadow:0 18px 42px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.05);
+}
+#portfolio .portfolio-top-artwork img{
+  display:block;
+  width:100%;
+  height:clamp(180px,31vw,420px);
+  object-fit:cover;
+  object-position:center;
+}
+@media(max-width:760px){
+  #portfolio .portfolio-top-artwork{
+    margin-bottom:14px;
+    border-radius:20px;
+  }
+  #portfolio .portfolio-top-artwork img{
+    height:190px;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-6">
 <header>
@@ -8267,6 +8297,9 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 <div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" value="1000" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$1,000.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
 
 <section id="portfolio" class="view">
+<div class="portfolio-top-artwork" aria-label="Binance Invest portfolio banner">
+  <img src="portfolio-top-banner.png" alt="Binance Invest investment vault banner">
+</div>
 <div class="portfolio-overview-scene">
   <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
     <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
