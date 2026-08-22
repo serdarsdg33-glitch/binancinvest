@@ -6251,6 +6251,42 @@ html[dir="rtl"] .stats-vertical-stack .stat-circle-label {
 }
 </style>
 
+
+<style id="native-portfolio-invest-vip-artwork-final-v2">
+/* Native app only — Portfolio overview + Quick VIP use Invest VIP artwork */
+@media (max-width: 900px) {
+  html.native-app #portfolio .portfolio-overview-scene {
+    background-color: #05070a !important;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.20) 0%,
+        rgba(3,6,9,.28) 40%,
+        rgba(3,6,9,.38) 100%
+      ),
+      url("plan-vip.webp?v=20260822-portfolio-v2") !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center center, center center !important;
+    background-size: cover, cover !important;
+  }
+
+  html.native-app #portfolio .portfolio-vip-quick {
+    background-color: #05070a !important;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3,6,9,.58) 0%,
+        rgba(3,6,9,.46) 45%,
+        rgba(3,6,9,.62) 100%
+      ),
+      url("plan-vip.webp?v=20260822-portfolio-v2") !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center center, center center !important;
+    background-size: cover, cover !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -8418,6 +8454,15 @@ let pendingAuthStateTimer = null;
  * manual login flow from racing each other and temporarily showing guest UI.
  */
 supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (
+    typeof logoutInProgressUntil !== "undefined" &&
+    Date.now() < logoutInProgressUntil &&
+    event !== "SIGNED_OUT" &&
+    event !== "PASSWORD_RECOVERY"
+  ) {
+    return;
+  }
+
   if (event === "PASSWORD_RECOVERY") {
     openNewPasswordModal();
     return;
@@ -9869,15 +9914,42 @@ function buildAuthenticatedUserFallback(authUser, previousUser = null) {
   };
 }
 
-async function loadAuthenticatedUser(authUser, options = {}) {
+async function fetchOwnProfileWithTimeout(authUser, timeoutMs = 6500) {
   if (!authUser?.id) {
-    currentUser = null;
-    updateHeaderAuthUI();
-    if (typeof updateSupportAuthUI === "function") {
-      updateSupportAuthUI();
-    }
-    return null;
+    return { profile: null, error: new Error("Missing authenticated user") };
   }
+
+  const controller =
+    typeof AbortController !== "undefined"
+      ? new AbortController()
+      : null;
+
+  const timeoutId = window.setTimeout(() => {
+    try { controller?.abort(); } catch (_) {}
+  }, timeoutMs);
+
+  try {
+    let query = supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", authUser.id)
+      .maybeSingle();
+
+    if (controller && typeof query.abortSignal === "function") {
+      query = query.abortSignal(controller.signal);
+    }
+
+    const { data, error } = await query;
+    return { profile: data || null, error: error || null };
+  } catch (error) {
+    return { profile: null, error };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function hydrateAuthenticatedUserProfile(authUser, options = {}) {
+  if (!authUser?.id) return null;
 
   if (
     authenticatedUserLoadPromise &&
@@ -9886,42 +9958,51 @@ async function loadAuthenticatedUser(authUser, options = {}) {
     return authenticatedUserLoadPromise;
   }
 
-  const previousUser =
-    currentUser?.id === authUser.id ? currentUser : null;
-
-  /* Keep authenticated UI visible while the optional profile request runs. */
-  currentUser = buildAuthenticatedUserFallback(authUser, previousUser);
-  updateHeaderAuthUI();
-
-  if (typeof updateSupportAuthUI === "function") {
-    updateSupportAuthUI();
-  }
-
-  if (previousUser?.__profileLoaded && !options.force) {
-    return currentUser;
-  }
-
   authenticatedUserLoadId = authUser.id;
-  authenticatedUserLoadPromise = (async () => {
-    try {
-      const { data: profile, error } = await supabaseClient
-        .from("profiles")
-        .select("*")
-        .eq("id", authUser.id)
-        .maybeSingle();
 
-      /* A profile/network failure must never impersonate a logout. */
-      if (error) {
-        console.warn("Profile temporarily unavailable; session preserved:", error);
-      } else if (profile) {
+  authenticatedUserLoadPromise = (async () => {
+    const retryDelays = options.force
+      ? [0, 700, 1800, 3500]
+      : [0, 900, 2200];
+
+    let lastError = null;
+
+    for (const delay of retryDelays) {
+      if (delay) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+
+      /* If the user logged out while a retry was waiting, stop immediately. */
+      if (!currentUser?.id || currentUser.id !== authUser.id) {
+        return null;
+      }
+
+      const result =
+        await fetchOwnProfileWithTimeout(authUser, 6500);
+
+      if (result.profile) {
+        const profile = result.profile;
+
         currentUser = {
           ...currentUser,
           ...profile,
           id: authUser.id,
-          email: authUser.email || currentUser.email,
+          email: authUser.email || currentUser.email || "",
+          username:
+            profile.username ||
+            currentUser.username ||
+            authUser.user_metadata?.username ||
+            authUser.email?.split("@")[0] ||
+            "user",
           fullname:
             profile.full_name ||
+            profile.fullname ||
             currentUser.fullname ||
+            authUser.user_metadata?.full_name ||
+            "",
+          phone:
+            profile.phone ||
+            currentUser.phone ||
             "",
           referralInviteCode:
             authUser.user_metadata?.referral_invite_code ||
@@ -9932,37 +10013,101 @@ async function loadAuthenticatedUser(authUser, options = {}) {
           profit: Number(profile.profit || 0),
           __profileLoaded: true
         };
-      }
 
-      updateHeaderAuthUI();
-      loadProfile();
-      void refreshTwoFactorStatus();
+        /* Paint account information immediately. */
+        updateHeaderAuthUI();
+        loadProfile();
+        renderPortfolioLive();
+        calculatePortfolioVipLock();
 
-      /* Render the account immediately; load heavier panels in the background. */
-      void updatePortfolio();
-      void (async () => {
-        try {
-          await applyPendingReferralCode();
-          await loadReferralDashboard();
-        } catch (error) {
-          console.warn("Non-critical account data could not be refreshed:", error);
+        /* Heavier network-backed panels refresh in background. */
+        void updatePortfolio();
+        void refreshTwoFactorStatus();
+        void (async () => {
+          try {
+            await applyPendingReferralCode();
+            await loadReferralDashboard();
+          } catch (error) {
+            console.warn(
+              "Non-critical account data could not be refreshed:",
+              error
+            );
+          }
+        })();
+
+        if (typeof updateSupportAuthUI === "function") {
+          updateSupportAuthUI();
         }
-      })();
 
-      if (typeof updateSupportAuthUI === "function") {
-        updateSupportAuthUI();
+        return currentUser;
       }
 
-      return currentUser;
-    } finally {
-      if (authenticatedUserLoadId === authUser.id) {
-        authenticatedUserLoadPromise = null;
-        authenticatedUserLoadId = null;
-      }
+      lastError = result.error || lastError;
+      console.warn(
+        "Profile not loaded yet; retrying while session stays active:",
+        result.error || "empty profile"
+      );
     }
+
+    if (lastError) {
+      console.warn(
+        "Profile temporarily unavailable; authenticated session preserved:",
+        lastError
+      );
+    }
+
+    return currentUser;
   })();
 
-  return authenticatedUserLoadPromise;
+  try {
+    return await authenticatedUserLoadPromise;
+  } finally {
+    if (authenticatedUserLoadId === authUser.id) {
+      authenticatedUserLoadPromise = null;
+      authenticatedUserLoadId = null;
+    }
+  }
+}
+
+async function loadAuthenticatedUser(authUser, options = {}) {
+  if (!authUser?.id) {
+    currentUser = null;
+    updateHeaderAuthUI();
+
+    if (typeof updateSupportAuthUI === "function") {
+      updateSupportAuthUI();
+    }
+
+    return null;
+  }
+
+  const previousUser =
+    currentUser?.id === authUser.id ? currentUser : null;
+
+  /*
+   * Never make the app wait for a profile/network request before showing
+   * the signed-in state.  Metadata is painted immediately, then Supabase
+   * profile/balance data is hydrated in the background.
+   */
+  currentUser =
+    buildAuthenticatedUserFallback(authUser, previousUser);
+
+  updateHeaderAuthUI();
+  updateProfileAccessUI();
+  renderPortfolioLive();
+
+  if (typeof updateSupportAuthUI === "function") {
+    updateSupportAuthUI();
+  }
+
+  if (previousUser?.__profileLoaded && !options.force) {
+    void updatePortfolio();
+    return currentUser;
+  }
+
+  void hydrateAuthenticatedUserProfile(authUser, options);
+
+  return currentUser;
 }
 
 async function restoreAuthSession() {
@@ -9988,16 +10133,43 @@ async function restoreAuthSession() {
   }
 }
 
+let logoutInProgressUntil = 0;
+
 async function logout() {
-  await supabaseClient.auth.signOut({
-  scope: "local"
-});
+  /*
+   * Logout must feel immediate in the APK. Do not wait for a slow
+   * network request before hiding account information.
+   */
+  logoutInProgressUntil = Date.now() + 15000;
+
   currentUser = null;
   currentTotpFactor = null;
+  pendingTotpFactor = null;
   twofaChallengeOpen = false;
-  document.getElementById("twofaChallengeModal")?.classList.remove("open");
   currentReferralData = null;
+  currentInvestments = [];
+
+  if (portfolioTimer) {
+    clearInterval(portfolioTimer);
+    portfolioTimer = null;
+  }
+
+  document
+    .getElementById("twofaChallengeModal")
+    ?.classList.remove("open");
+
+  document
+    .getElementById("twofaSetupModal")
+    ?.classList.remove("open");
+
+  /* Remove the persisted APK/browser session immediately. */
+  try {
+    localStorage.removeItem("bi_customer_session");
+  } catch (_) {}
+
   updateHeaderAuthUI();
+  updateProfileAccessUI();
+  renderPortfolioLive();
   updatePortfolio();
   loadReferralDashboard();
 
@@ -10006,6 +10178,27 @@ async function logout() {
   }
 
   toast(tr("loggedOut"), "success");
+
+  /*
+   * Finish Supabase sign-out in the background.
+   * The UI and local persisted session are already cleared above.
+   */
+  try {
+    const signOutPromise =
+      supabaseClient.auth.signOut({ scope: "local" });
+
+    await Promise.race([
+      signOutPromise,
+      new Promise(resolve => setTimeout(resolve, 5000))
+    ]);
+  } catch (error) {
+    console.warn(
+      "Remote sign-out finished with a delay; local logout is already complete:",
+      error
+    );
+  } finally {
+    logoutInProgressUntil = 0;
+  }
 }
 
 function updateHeaderAuthUI() {
@@ -11247,8 +11440,22 @@ async function updatePortfolio() {
     portfolioTimer = null;
   }
 
-  await loadInvestments();
+  /* Show profile balance/invested/profit immediately. */
   renderPortfolioLive();
+  calculatePortfolioVipLock();
+
+  /*
+   * Investment history can arrive later. Do not keep the visible
+   * account cards at $0 while that network request is pending.
+   */
+  void loadInvestments()
+    .then(() => {
+      renderPortfolioLive();
+      calculatePortfolioVipLock();
+    })
+    .catch(error => {
+      console.warn("Portfolio investments refresh failed:", error);
+    });
 
   portfolioTimer = setInterval(() => {
     if (
@@ -11256,6 +11463,7 @@ async function updatePortfolio() {
       document.getElementById("portfolio")?.classList.contains("active")
     ) {
       renderPortfolioLive();
+      calculatePortfolioVipLock();
     }
   }, 1000);
 }
@@ -15932,6 +16140,50 @@ document.addEventListener("DOMContentLoaded", function() {
         setInterval(updateOnlineUsers, 2000);
     }
 });
+</script>
+
+
+<script id="native-auth-account-refresh-v2">
+(function () {
+  async function refreshNativeAccountNow() {
+    if (!document.documentElement.classList.contains("native-app")) return;
+    if (typeof logoutInProgressUntil !== "undefined" &&
+        Date.now() < logoutInProgressUntil) return;
+
+    try {
+      const { data, error } =
+        await supabaseClient.auth.getSession();
+
+      if (error || !data?.session?.user) return;
+
+      const authUser = data.session.user;
+
+      if (!currentUser?.id) {
+        await loadAuthenticatedUser(authUser, { force: true });
+      } else if (!currentUser.__profileLoaded) {
+        void hydrateAuthenticatedUserProfile(authUser, { force: true });
+      } else {
+        void hydrateAuthenticatedUserProfile(authUser, { force: true });
+      }
+    } catch (error) {
+      console.warn("Native account refresh skipped:", error);
+    }
+  }
+
+  window.addEventListener("focus", () => {
+    void refreshNativeAccountNow();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      void refreshNativeAccountNow();
+    }
+  });
+
+  window.setTimeout(() => {
+    void refreshNativeAccountNow();
+  }, 600);
+})();
 </script>
 
 </body>
