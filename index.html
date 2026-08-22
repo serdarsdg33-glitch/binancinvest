@@ -7667,6 +7667,88 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 }
 </style>
 
+
+<style id="portfolio-all-glass-v14-correct">
+/* ONLY CHANGE IN THIS VERSION:
+   make the cards in the Portfolio section transparent/glass.
+   No HTML logic, plans, calculations, images, or other sections are changed. */
+
+/* Three large outer Portfolio panels */
+#portfolio .portfolio-major-panel{
+  background:rgba(4,8,12,.18) !important;
+  backdrop-filter:blur(2px) saturate(108%) !important;
+  -webkit-backdrop-filter:blur(2px) saturate(108%) !important;
+  box-shadow:0 16px 38px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+/* Balance / invested / profit / level cards */
+#portfolio .portfolio-major-base .card,
+#portfolio .portfolio-major-base .stat,
+#portfolio .portfolio-major-base .withdrawable-plans-total-card{
+  background:rgba(3,7,11,.22) !important;
+  border-color:rgba(240,185,11,.30) !important;
+  backdrop-filter:blur(2px) saturate(108%) !important;
+  -webkit-backdrop-filter:blur(2px) saturate(108%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 10px 24px rgba(0,0,0,.16) !important;
+}
+
+/* Referral panel/card */
+#portfolio .portfolio-major-referral,
+#portfolio .portfolio-major-referral .referral-portfolio-card{
+  background:rgba(3,7,11,.18) !important;
+  backdrop-filter:blur(2px) saturate(108%) !important;
+  -webkit-backdrop-filter:blur(2px) saturate(108%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 10px 24px rgba(0,0,0,.15) !important;
+}
+
+/* VIP large panel and the two main VIP areas */
+#portfolio .portfolio-major-vip,
+#portfolio .portfolio-major-vip .vip-single-card,
+#portfolio .portfolio-major-vip .portfolio-vip-quick{
+  background:rgba(3,7,11,.18) !important;
+  backdrop-filter:blur(2px) saturate(108%) !important;
+  -webkit-backdrop-filter:blur(2px) saturate(108%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 10px 24px rgba(0,0,0,.15) !important;
+}
+
+/* VIP statistic boxes / contract table / calculator boxes */
+#portfolio .portfolio-major-vip .vip-single-summary > div,
+#portfolio .portfolio-major-vip .vip-contract-tablebox,
+#portfolio .portfolio-major-vip .vip-contract-table th,
+#portfolio .portfolio-major-vip .vip-contract-table td,
+#portfolio .portfolio-major-vip .portfolio-vip-field,
+#portfolio .portfolio-major-vip .portfolio-vip-metric,
+#portfolio .portfolio-major-vip .portfolio-vip-result,
+#portfolio .portfolio-major-vip .portfolio-vip-input-row,
+#portfolio .portfolio-major-vip input{
+  background:rgba(3,7,11,.20) !important;
+  border-color:rgba(240,185,11,.24) !important;
+  backdrop-filter:blur(1.5px) saturate(106%) !important;
+  -webkit-backdrop-filter:blur(1.5px) saturate(106%) !important;
+  box-shadow:none !important;
+}
+
+/* Keep text readable without hiding artwork */
+#portfolio .portfolio-major-panel *{
+  text-shadow:0 2px 7px rgba(0,0,0,.82);
+}
+
+/* Mobile: a touch more tint, still transparent */
+@media(max-width:600px){
+  #portfolio .portfolio-major-panel,
+  #portfolio .portfolio-major-base .card,
+  #portfolio .portfolio-major-base .stat,
+  #portfolio .portfolio-major-base .withdrawable-plans-total-card,
+  #portfolio .portfolio-major-referral,
+  #portfolio .portfolio-major-referral .referral-portfolio-card,
+  #portfolio .portfolio-major-vip,
+  #portfolio .portfolio-major-vip .vip-single-card,
+  #portfolio .portfolio-major-vip .portfolio-vip-quick{
+    background:rgba(3,7,11,.24) !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-6">
 <header>
