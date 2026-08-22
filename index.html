@@ -113,7 +113,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
-<title>Binance Invest</title>
+<title>binancinvest</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://cryptologos.cc" crossorigin>
 <link rel="dns-prefetch" href="https://api.binance.com">
@@ -6033,6 +6033,27 @@ html.ios-web-safe .auth-modal {
     padding-left: 8px !important;
     padding-right: 8px !important;
   }
+}
+</style>
+
+
+<style id="main-site-hide-header-username-v1">
+/* Main website header: remove the visible username pill/box. */
+html:not(.native-app) #headerUsername {
+  display: none !important;
+}
+
+/* Collapse the identity wrapper so no empty username space remains. */
+html:not(.native-app) .user-header-identity {
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 120px !important;
+  gap: 0 !important;
+}
+
+/* Keep the full name compact if it exists. */
+html:not(.native-app) #headerFullName {
+  margin: 0 !important;
 }
 </style>
 
