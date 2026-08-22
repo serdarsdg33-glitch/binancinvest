@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-16">
+<body data-investment-model="flex-v6-17">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -20620,6 +20620,70 @@ html body #plans > .plan .flex-fixed-plan-notice {
   #portfolio .portfolio-major-vip .vip-contract-table td,
   #portfolio .portfolio-major-vip .portfolio-vip-field,
   #portfolio .portfolio-major-vip .portfolio-vip-metric{
+    background:rgba(0,0,0,.01) !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v17-selected-container-clear">
+/* V17 — ONLY the selected-plans outer container shown in the screenshot */
+
+/* Remove the dark / frosted surface from the OUTER selected-plans box. */
+#portfolio #selectedPlanMajorPanel,
+#portfolio .portfolio-major-selected{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+/* Remove any pseudo overlay that makes this outer box look blurred/dark. */
+#portfolio #selectedPlanMajorPanel::before,
+#portfolio #selectedPlanMajorPanel::after,
+#portfolio .portfolio-major-selected::before,
+#portfolio .portfolio-major-selected::after{
+  background:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+/* The total-principal card itself stays outlined, but its inside is clear. */
+#portfolio #selectedPlanMajorPanel .withdrawable-plans-total-card,
+#portfolio .portfolio-major-selected .withdrawable-plans-total-card{
+  background:rgba(0,0,0,.01) !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+  border-color:rgba(240,185,11,.42) !important;
+}
+
+/* No hidden blur on the selected-plan zone. */
+#portfolio #selectedPlanSummaryZone{
+  background:transparent !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Mobile: force the same clear result over older media rules. */
+@media(max-width:760px){
+  #portfolio #selectedPlanMajorPanel,
+  #portfolio .portfolio-major-selected,
+  #portfolio #selectedPlanMajorPanel .withdrawable-plans-total-card,
+  #portfolio .portfolio-major-selected .withdrawable-plans-total-card{
+    background-color:transparent !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    box-shadow:none !important;
+  }
+
+  #portfolio #selectedPlanMajorPanel .withdrawable-plans-total-card,
+  #portfolio .portfolio-major-selected .withdrawable-plans-total-card{
     background:rgba(0,0,0,.01) !important;
   }
 }
