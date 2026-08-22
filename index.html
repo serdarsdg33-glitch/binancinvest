@@ -7342,7 +7342,7 @@ html[dir="rtl"] .selected-plan-cancel-box{
 
 
 </head>
-<body data-investment-model="flex-v6-7">
+<body data-investment-model="flex-v6-8">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -19742,6 +19742,373 @@ html[dir="rtl"] #portfolio .vip-single-card::after{
 
   #portfolio .portfolio-stat-copy b{
     font-size:clamp(18px,5.6vw,25px) !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-mockup-match-v6-8">
+/* =========================================================
+   PORTFOLIO V6.8 — MATCH THE APPROVED MOCKUP MORE CLOSELY
+   ========================================================= */
+
+#portfolio{
+  border-color:rgba(240,185,11,.16)!important;
+  background:
+    radial-gradient(circle at 84% 7%,rgba(240,185,11,.08),transparent 30%),
+    linear-gradient(180deg,#080a0d 0%,#05070a 100%)!important;
+}
+
+#portfolio .portfolio-overview-scene{
+  padding:20px!important;
+}
+
+/* ---------- Hero: real wallet artwork ---------- */
+#portfolio .portfolio-hero-head{
+  min-height:285px!important;
+  padding:30px 30px!important;
+  grid-template-columns:minmax(0,1fr) minmax(360px,.92fr)!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    linear-gradient(90deg,#07090c 0%,#07090cef 42%,rgba(7,9,12,.66) 61%,rgba(7,9,12,.05) 100%)!important;
+  box-shadow:none!important;
+}
+
+#portfolio .portfolio-hero-head::before{
+  inset:0!important;
+  height:auto!important;
+  background:
+    radial-gradient(circle at 76% 48%,rgba(240,185,11,.16),transparent 29%)!important;
+  filter:none!important;
+}
+
+#portfolio .portfolio-hero-copy{
+  max-width:520px!important;
+}
+
+#portfolio .portfolio-hero-copy h2{
+  font-size:clamp(38px,5vw,58px)!important;
+  margin-bottom:16px!important;
+}
+
+#portfolio .portfolio-hero-subtitle{
+  max-width:440px!important;
+  font-size:16px!important;
+  line-height:1.8!important;
+  color:#c5cbd3!important;
+}
+
+#portfolio .portfolio-hero-side{
+  min-height:220px!important;
+}
+
+#portfolio .portfolio-hero-art{
+  width:100%!important;
+  height:240px!important;
+  max-width:520px!important;
+  margin-inline-start:auto!important;
+  background:
+    linear-gradient(90deg,rgba(7,9,12,.20),rgba(7,9,12,0) 26%),
+    url("portfolio-hero-wallet.webp") center/cover no-repeat!important;
+  border-radius:22px!important;
+  filter:
+    drop-shadow(0 18px 30px rgba(0,0,0,.42))
+    drop-shadow(0 0 20px rgba(240,185,11,.10))!important;
+  overflow:hidden!important;
+}
+
+#portfolio .portfolio-hero-art svg{
+  display:none!important;
+}
+
+/* ---------- Main four cards ---------- */
+#portfolio .portfolio-main-cards{
+  gap:16px!important;
+}
+
+#portfolio .portfolio-main-stat{
+  min-height:155px!important;
+  padding:22px 24px!important;
+  grid-template-columns:64px minmax(0,1fr)!important;
+  gap:18px!important;
+  border:1px solid rgba(240,185,11,.38)!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 92% 15%,rgba(240,185,11,.055),transparent 28%),
+    linear-gradient(145deg,rgba(18,21,25,.89),rgba(6,8,11,.93))!important;
+}
+
+#portfolio .portfolio-stat-icon{
+  width:62px!important;
+  height:62px!important;
+}
+
+#portfolio .portfolio-stat-icon svg{
+  width:31px!important;
+  height:31px!important;
+}
+
+#portfolio .portfolio-stat-copy .muted{
+  font-size:15px!important;
+  margin-bottom:9px!important;
+}
+
+#portfolio .portfolio-stat-copy b{
+  font-size:clamp(26px,3.5vw,38px)!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+}
+
+/* ---------- Selected plans total: use real green shield art ---------- */
+#portfolio .withdrawable-plans-total-card{
+  min-height:205px!important;
+  padding:28px 290px 28px 30px!important;
+  display:block!important;
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(41,222,165,.42)!important;
+  background:
+    linear-gradient(90deg,rgba(3,25,22,.96) 0%,rgba(3,25,22,.88) 48%,rgba(3,25,22,.32) 74%,rgba(3,25,22,.12) 100%),
+    url("portfolio-selected-shield.webp") right center/46% auto no-repeat!important;
+}
+
+html[dir="rtl"] #portfolio .withdrawable-plans-total-card{
+  padding:28px 30px 28px 290px!important;
+  background:
+    linear-gradient(270deg,rgba(3,25,22,.96) 0%,rgba(3,25,22,.88) 48%,rgba(3,25,22,.32) 74%,rgba(3,25,22,.12) 100%),
+    url("portfolio-selected-shield.webp") left center/46% auto no-repeat!important;
+}
+
+#portfolio .withdrawable-plans-total-card::before{
+  display:none!important;
+}
+
+#portfolio .withdrawable-plans-total-card span{
+  display:block!important;
+  max-width:450px!important;
+  font-size:17px!important;
+  line-height:1.7!important;
+  margin-bottom:15px!important;
+}
+
+#portfolio .withdrawable-plans-total-card strong{
+  display:block!important;
+  font-size:44px!important;
+}
+
+/* ---------- Referral: real shopping/wallet art ---------- */
+#portfolio .referral-portfolio-card{
+  min-height:220px!important;
+  padding:30px 360px 30px 30px!important;
+  grid-template-columns:70px minmax(0,1fr)!important;
+  position:relative!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(24,19,6,.97) 0%,rgba(24,19,6,.91) 48%,rgba(24,19,6,.38) 72%,rgba(24,19,6,.10) 100%),
+    url("portfolio-referral-cart.webp") right center/47% auto no-repeat!important;
+}
+
+html[dir="rtl"] #portfolio .referral-portfolio-card{
+  padding:30px 30px 30px 360px!important;
+  background:
+    linear-gradient(270deg,rgba(24,19,6,.97) 0%,rgba(24,19,6,.91) 48%,rgba(24,19,6,.38) 72%,rgba(24,19,6,.10) 100%),
+    url("portfolio-referral-cart.webp") left center/47% auto no-repeat!important;
+}
+
+#portfolio .portfolio-referral-main strong{
+  font-size:40px!important;
+}
+
+#portfolio .referral-portfolio-meta{
+  grid-column:2!important;
+  font-size:14px!important;
+  max-width:520px!important;
+}
+
+/* ---------- VIP: real growth artwork ---------- */
+#portfolio .vip-single-card{
+  min-height:280px!important;
+  padding:32px 360px 32px 32px!important;
+  background:
+    linear-gradient(90deg,rgba(24,18,6,.97) 0%,rgba(24,18,6,.90) 50%,rgba(24,18,6,.36) 73%,rgba(24,18,6,.10) 100%),
+    url("portfolio-vip-growth.webp") right 34px center/42% auto no-repeat!important;
+}
+
+html[dir="rtl"] #portfolio .vip-single-card{
+  padding:32px 32px 32px 360px!important;
+  background:
+    linear-gradient(270deg,rgba(24,18,6,.97) 0%,rgba(24,18,6,.90) 50%,rgba(24,18,6,.36) 73%,rgba(24,18,6,.10) 100%),
+    url("portfolio-vip-growth.webp") left 34px center/42% auto no-repeat!important;
+}
+
+#portfolio .vip-single-card::after{
+  display:none!important;
+}
+
+/* ---------- Mobile ---------- */
+@media(max-width:760px){
+  #portfolio .portfolio-overview-scene{
+    padding:12px!important;
+  }
+
+  #portfolio .portfolio-hero-head{
+    min-height:235px!important;
+    padding:22px 20px!important;
+    grid-template-columns:minmax(0,1fr) 155px!important;
+    gap:10px!important;
+  }
+
+  #portfolio .portfolio-hero-copy h2{
+    font-size:34px!important;
+  }
+
+  #portfolio .portfolio-hero-subtitle{
+    font-size:12px!important;
+    line-height:1.72!important;
+  }
+
+  #portfolio .portfolio-hero-art{
+    width:180px!important;
+    height:150px!important;
+    max-width:none!important;
+    background-position:center!important;
+    border-radius:16px!important;
+  }
+
+  #portfolio .portfolio-main-cards{
+    gap:12px!important;
+  }
+
+  #portfolio .portfolio-main-stat{
+    min-height:138px!important;
+    padding:15px!important;
+    grid-template-columns:42px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+
+  #portfolio .portfolio-stat-icon{
+    width:42px!important;
+    height:42px!important;
+  }
+
+  #portfolio .portfolio-stat-copy .muted{
+    font-size:11px!important;
+  }
+
+  #portfolio .portfolio-stat-copy b{
+    font-size:clamp(18px,5.0vw,25px)!important;
+    letter-spacing:-.45px!important;
+  }
+
+  #portfolio .withdrawable-plans-total-card{
+    min-height:168px!important;
+    padding:22px 150px 22px 22px!important;
+    background-size:auto 100%!important;
+  }
+
+  html[dir="rtl"] #portfolio .withdrawable-plans-total-card{
+    padding:22px 22px 22px 150px!important;
+  }
+
+  #portfolio .withdrawable-plans-total-card span{
+    max-width:230px!important;
+    font-size:12px!important;
+    margin-bottom:10px!important;
+  }
+
+  #portfolio .withdrawable-plans-total-card strong{
+    font-size:31px!important;
+  }
+
+  #portfolio .referral-portfolio-card{
+    min-height:190px!important;
+    padding:20px 160px 20px 18px!important;
+    grid-template-columns:48px minmax(0,1fr)!important;
+    gap:12px!important;
+    background-size:auto 100%!important;
+  }
+
+  html[dir="rtl"] #portfolio .referral-portfolio-card{
+    padding:20px 18px 20px 160px!important;
+  }
+
+  #portfolio .portfolio-referral-main strong{
+    font-size:29px!important;
+  }
+
+  #portfolio .referral-portfolio-meta{
+    grid-column:1 / -1!important;
+    max-width:270px!important;
+    font-size:11px!important;
+    line-height:1.6!important;
+  }
+
+  #portfolio .vip-single-card{
+    min-height:235px!important;
+    padding:24px 160px 24px 20px!important;
+    background-size:auto 88%!important;
+    background-position:right center!important;
+  }
+
+  html[dir="rtl"] #portfolio .vip-single-card{
+    padding:24px 20px 24px 160px!important;
+    background-position:left center!important;
+  }
+}
+
+@media(max-width:430px){
+  #portfolio .portfolio-hero-head{
+    grid-template-columns:minmax(0,1fr) 135px!important;
+    min-height:220px!important;
+  }
+
+  #portfolio .portfolio-hero-art{
+    width:155px!important;
+    height:138px!important;
+  }
+
+  #portfolio .portfolio-main-stat{
+    min-height:130px!important;
+    grid-template-columns:36px minmax(0,1fr)!important;
+  }
+
+  #portfolio .portfolio-stat-icon{
+    width:36px!important;
+    height:36px!important;
+  }
+
+  #portfolio .portfolio-stat-copy b{
+    font-size:clamp(17px,4.8vw,23px)!important;
+  }
+
+  #portfolio .withdrawable-plans-total-card{
+    padding-right:132px!important;
+  }
+
+  html[dir="rtl"] #portfolio .withdrawable-plans-total-card{
+    padding-right:20px!important;
+    padding-left:132px!important;
+  }
+
+  #portfolio .referral-portfolio-card{
+    padding-right:135px!important;
+  }
+
+  html[dir="rtl"] #portfolio .referral-portfolio-card{
+    padding-right:18px!important;
+    padding-left:135px!important;
+  }
+
+  #portfolio .vip-single-card{
+    padding-right:135px!important;
+  }
+
+  html[dir="rtl"] #portfolio .vip-single-card{
+    padding-right:20px!important;
+    padding-left:135px!important;
   }
 }
 </style>
