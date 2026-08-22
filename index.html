@@ -6135,23 +6135,164 @@ html.ios-web-safe .auth-modal {
 </style>
 
 
-<style id="main-site-hide-header-username-v1">
-/* Main website header: remove the visible username pill/box. */
-html:not(.native-app) #headerUsername {
-  display: none !important;
+
+<style id="main-site-header-brand-username-v2">
+/* =========================================================
+   MAIN WEBSITE / iPHONE WEB HEADER
+   - Brand slightly higher and vertically centered
+   - Header matches the black/glass/gold site shell
+   - Username pill is visible again after login
+   ========================================================= */
+
+html:not(.native-app) header {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5,8,12,.97) 0%,
+      rgba(2,4,7,.94) 100%
+    ) !important;
+
+  border-bottom:
+    1px solid rgba(240,185,11,.26) !important;
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.42),
+    inset 0 -1px 0 rgba(240,185,11,.05) !important;
+
+  backdrop-filter: blur(14px) saturate(1.06) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.06) !important;
+
+  align-items: center !important;
 }
 
-/* Collapse the identity wrapper so no empty username space remains. */
-html:not(.native-app) .user-header-identity {
-  min-width: 0 !important;
-  width: auto !important;
-  max-width: 120px !important;
-  gap: 0 !important;
+/* Move logo + Binance Invest slightly upward while keeping it centered vertically. */
+html:not(.native-app) header > .brand {
+  align-self: center !important;
+  display: flex !important;
+  align-items: center !important;
+  transform: translateY(-3px) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-/* Keep the full name compact if it exists. */
-html:not(.native-app) #headerFullName {
+/* Keep the logo/text aligned together as one compact brand block. */
+html:not(.native-app) header > .brand .binance-floating-logo {
+  flex: 0 0 auto !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+html:not(.native-app) header > .brand > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.05 !important;
   margin: 0 !important;
+}
+
+/* Language and account zone stay centered in the same header row. */
+html:not(.native-app) header > .language-trigger,
+html:not(.native-app) header > .head {
+  align-self: center !important;
+}
+
+/* Restore username under/next to the user's name after login. */
+html:not(.native-app) #headerUsername {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  max-width: 100% !important;
+  min-height: 25px !important;
+  padding: 4px 8px !important;
+  margin: 0 !important;
+
+  color: #eef3f8 !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,27,36,.88),
+      rgba(7,11,16,.82)
+    ) !important;
+
+  border:
+    1px solid rgba(240,185,11,.18) !important;
+
+  border-radius: 8px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 4px 12px rgba(0,0,0,.26) !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+/* Let both full name + username fit cleanly. */
+html:not(.native-app) .user-header-identity {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  width: auto !important;
+  min-width: 72px !important;
+  max-width: 110px !important;
+  overflow: visible !important;
+}
+
+/* iPhone website / Add-to-Home-Screen */
+html.ios-web-safe header {
+  /*
+    Keep safe-area protection, but make the top shell more compact
+    and visually consistent with the rest of the site.
+  */
+  min-height:
+    calc(
+      62px
+      + var(--ios-header-safe-top)
+    ) !important;
+
+  padding:
+    calc(var(--ios-header-safe-top) + 4px)
+    8px
+    7px
+    8px !important;
+
+  align-content: center !important;
+}
+
+html.ios-web-safe header > .brand {
+  transform: translateY(-4px) !important;
+}
+
+@media (max-width: 470px) {
+  html:not(.native-app) header > .brand {
+    transform: translateY(-2px) !important;
+  }
+
+  html:not(.native-app) .user-header-identity {
+    min-width: 64px !important;
+    max-width: 88px !important;
+    gap: 3px !important;
+  }
+
+  html:not(.native-app) #headerUsername {
+    min-height: 22px !important;
+    padding: 3px 6px !important;
+    font-size: 9px !important;
+  }
+
+  html.ios-web-safe header {
+    min-height:
+      calc(
+        60px
+        + var(--ios-header-safe-top)
+      ) !important;
+  }
 }
 </style>
 
