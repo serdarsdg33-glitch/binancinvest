@@ -7326,8 +7326,45 @@ html[dir="rtl"] .selected-plan-cancel-box{
 }
 </style>
 
+
+<style id="available-balance-visible-v6-3">
+.available-wallet-balance-card{
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:14px 0 12px;
+  padding:20px 22px;
+  border:1px solid rgba(240,185,11,.42);
+  border-radius:20px;
+  background:
+    linear-gradient(135deg,rgba(42,32,4,.88),rgba(10,15,20,.94));
+  box-shadow:0 16px 38px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,229,138,.08);
+}
+.available-wallet-balance-card span{
+  color:#d4d9e0;
+  font-size:13px;
+  line-height:1.55;
+}
+.available-wallet-balance-card strong{
+  color:#f0b90b;
+  font-size:28px;
+  font-weight:950;
+  white-space:nowrap;
+  text-shadow:0 0 14px rgba(240,185,11,.18);
+}
+@media(max-width:760px){
+  .available-wallet-balance-card{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+</style>
+
 </head>
-<body data-investment-model="flex-v6-1">
+<body data-investment-model="flex-v6-3">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -17632,7 +17669,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"Confirm plan", insufficient:"Insufficient principal in your Flexible 1.5% plan.",
       confirmWithdrawal:"Withdraw investment", settleText:"Principal and calculated profit will be moved to your available balance.",
       cancel:"Cancel", confirm:"Confirm withdrawal", success:"Plan activated after your confirmation.",
-      settled:"Investment was moved to your available balance.", processing:"Processing...", vipHardLockNotice:"Unlike the plans above, your capital in this VIP plan is fully locked for 60 days. You cannot withdraw the locked principal before the 60-day contract ends.", baseLevel:"Flexible · 1.5% Daily", cancelContract:"Cancel contract", cancelProfit:"Profit if contract is cancelled", contractEndProfit:"Total profit at contract end", withdrawablePlansTotal:"Total principal in withdrawable plans", startDate:"Start date", countdown:"Time remaining", cancelTitle:"Cancel selected contract", cancelWarning:"If you cancel before maturity, no profit at the selected plan rate will be credited. Only the base 1.5% daily profit accrued from the contract start until cancellation will be credited together with the principal to your available balance.", cancelBaseProfit:"1.5% cancellation profit", cancelPayout:"Amount returned to available balance", confirmCancel:"Confirm cancellation", cancelledSuccess:"Contract cancelled. Principal and 1.5% accrued profit were moved to your available balance."
+      settled:"Investment was moved to your available balance.", processing:"Processing...", vipHardLockNotice:"Unlike the plans above, your capital in this VIP plan is fully locked for 60 days. You cannot withdraw the locked principal before the 60-day contract ends.", baseLevel:"Flexible · 1.5% Daily", cancelContract:"Cancel contract", cancelProfit:"Profit if contract is cancelled", contractEndProfit:"Total profit at contract end", withdrawablePlansTotal:"Total principal in withdrawable plans", availableWalletBalance:"Available balance", activeSelectedPlansTotal:"Active principal in cancellable selected plans", startDate:"Start date", countdown:"Time remaining", cancelTitle:"Cancel selected contract", cancelWarning:"If you cancel before maturity, no profit at the selected plan rate will be credited. Only the base 1.5% daily profit accrued from the contract start until cancellation will be credited together with the principal to your available balance.", cancelBaseProfit:"1.5% cancellation profit", cancelPayout:"Amount returned to available balance", confirmCancel:"Confirm cancellation", cancelledSuccess:"Contract cancelled. Principal and 1.5% accrued profit were moved to your available balance."
     },
     fa: {
       kicker:"پلن مادر خودکار", title:"سود روزانه منعطف",
@@ -17650,7 +17687,7 @@ document.addEventListener("DOMContentLoaded", function() {
       confirmPlan:"تأیید پلن", insufficient:"سرمایه موجود در پلن منعطف ۱.۵٪ کافی نیست.",
       confirmWithdrawal:"برداشت سرمایه", settleText:"اصل سرمایه و سود محاسبه‌شده به موجودی قابل برداشت شما منتقل می‌شود.",
       cancel:"انصراف", confirm:"تأیید برداشت", success:"پلن با تأیید شما فعال شد.",
-      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش...", vipHardLockNotice:"در این پلن برخلاف پلن‌های بالا، سرمایه شما به‌طور کامل برای ۶۰ روز قفل خواهد شد و تا پایان قرارداد امکان برداشت از سرمایه قفل‌شده وجود ندارد.", baseLevel:"پلن منعطف · روزانه ۱.۵٪", cancelContract:"لغو قرارداد", cancelProfit:"سود در صورت لغو قرارداد", contractEndProfit:"سود کل پایان قرارداد", withdrawablePlansTotal:"کل مبلغ موجود در پلن‌های قابل برداشت", startDate:"تاریخ شروع", countdown:"زمان باقی‌مانده", cancelTitle:"لغو قرارداد انتخابی", cancelWarning:"در صورت لغو قرارداد قبل از پایان دوره، هیچ سودی با نرخ پلن انتخابی به حساب شما واریز نخواهد شد. فقط سود پایه روزانه ۱.۵٪ از لحظه شروع قرارداد تا زمان لغو محاسبه می‌شود و همراه اصل سرمایه به موجودی قابل برداشت شما اضافه خواهد شد.", cancelBaseProfit:"سود ۱.۵٪ در صورت لغو", cancelPayout:"مبلغ بازگشتی به موجودی", confirmCancel:"تأیید لغو قرارداد", cancelledSuccess:"قرارداد لغو شد و اصل سرمایه به‌همراه سود محاسبه‌شده ۱.۵٪ به موجودی قابل برداشت منتقل شد."
+      settled:"سرمایه به موجودی قابل برداشت منتقل شد.", processing:"در حال پردازش...", vipHardLockNotice:"در این پلن برخلاف پلن‌های بالا، سرمایه شما به‌طور کامل برای ۶۰ روز قفل خواهد شد و تا پایان قرارداد امکان برداشت از سرمایه قفل‌شده وجود ندارد.", baseLevel:"پلن منعطف · روزانه ۱.۵٪", cancelContract:"لغو قرارداد", cancelProfit:"سود در صورت لغو قرارداد", contractEndProfit:"سود کل پایان قرارداد", withdrawablePlansTotal:"کل مبلغ موجود در پلن‌های قابل برداشت", availableWalletBalance:"موجودی قابل برداشت", activeSelectedPlansTotal:"اصل سرمایه فعال در پلن‌های انتخابی قابل لغو", startDate:"تاریخ شروع", countdown:"زمان باقی‌مانده", cancelTitle:"لغو قرارداد انتخابی", cancelWarning:"در صورت لغو قرارداد قبل از پایان دوره، هیچ سودی با نرخ پلن انتخابی به حساب شما واریز نخواهد شد. فقط سود پایه روزانه ۱.۵٪ از لحظه شروع قرارداد تا زمان لغو محاسبه می‌شود و همراه اصل سرمایه به موجودی قابل برداشت شما اضافه خواهد شد.", cancelBaseProfit:"سود ۱.۵٪ در صورت لغو", cancelPayout:"مبلغ بازگشتی به موجودی", confirmCancel:"تأیید لغو قرارداد", cancelledSuccess:"قرارداد لغو شد و اصل سرمایه به‌همراه سود محاسبه‌شده ۱.۵٪ به موجودی قابل برداشت منتقل شد."
     }
   };
 
@@ -18075,6 +18112,17 @@ document.addEventListener("DOMContentLoaded", function() {
           snapshot.totalBalance,
           true
         );
+
+      var balanceLabel =
+        balanceElement.parentElement &&
+        balanceElement.parentElement.querySelector(".muted");
+
+      if (balanceLabel) {
+        balanceLabel.textContent =
+          language() === "fa"
+            ? "موجودی پلن منعطف"
+            : "Flexible plan balance";
+      }
     }
 
     if (investedElement) {
@@ -18082,6 +18130,17 @@ document.addEventListener("DOMContentLoaded", function() {
         formatPortfolioMoney(
           snapshot.investedPrincipal
         );
+
+      var investedLabel =
+        investedElement.parentElement &&
+        investedElement.parentElement.querySelector(".muted");
+
+      if (investedLabel) {
+        investedLabel.textContent =
+          language() === "fa"
+            ? "سرمایه پلن منعطف"
+            : "Flexible principal";
+      }
     }
 
     if (profitElement) {
@@ -18090,6 +18149,17 @@ document.addEventListener("DOMContentLoaded", function() {
           snapshot.totalProfit,
           true
         );
+
+      var profitLabel =
+        profitElement.parentElement &&
+        profitElement.parentElement.querySelector(".muted");
+
+      if (profitLabel) {
+        profitLabel.textContent =
+          language() === "fa"
+            ? "سود پلن منعطف"
+            : "Flexible profit";
+      }
     }
 
     if (levelElement) {
@@ -18526,11 +18596,38 @@ document.addEventListener("DOMContentLoaded", function() {
         return total + Number(item.principal || 0);
       }, 0);
 
+    /*
+     * Available balance is the real free/spendable balance in profiles.balance.
+     * Cancelled Starter/Growth/Premium principal + 1.5% cancellation profit
+     * is credited here by cancel_confirmed_investment().
+     */
+    var availableBalance =
+      Math.max(
+        0,
+        Number(currentUser && currentUser.balance || 0)
+      );
+
+    var availableCard = [
+      '<section class="available-wallet-balance-card">',
+        '<span>',
+          escapeHtml(
+            text("availableWalletBalance")
+          ),
+        '</span>',
+        '<strong>',
+          formatPortfolioMoney(
+            availableBalance,
+            true
+          ),
+        '</strong>',
+      '</section>'
+    ].join("");
+
     var totalCard = [
       '<section class="withdrawable-plans-total-card">',
         '<span>',
           escapeHtml(
-            text("withdrawablePlansTotal")
+            text("activeSelectedPlansTotal")
           ),
         '</span>',
         '<strong>',
@@ -18543,11 +18640,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (!plans.length) {
       zone.innerHTML =
+        availableCard +
         totalCard;
       return;
     }
 
     zone.innerHTML =
+      availableCard +
       totalCard +
       plans.map(function (item) {
         var principal =
