@@ -6965,6 +6965,45 @@ html[dir="rtl"] .premium-dialog-close {
   .premium-logout-box { animation: none !important; }
 }
 </style>
+
+<style id="flexible-yield-v2-clarity-fix">
+.flex-fixed-plan-notice {
+  position: relative;
+  z-index: 2;
+  margin: 10px 0 4px;
+  padding: 10px 11px;
+  color: #cbd3dc;
+  background: rgba(8,12,17,.66);
+  border: 1px solid rgba(240,185,11,.18);
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+html[dir="rtl"] .flex-fixed-plan-notice {
+  text-align: right;
+}
+
+.flex-contract-table td:nth-child(5) {
+  min-width: 145px;
+}
+
+@media (max-width: 750px) {
+  .flex-contracts-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .flex-contract-table {
+    min-width: 760px !important;
+  }
+
+  .flex-fixed-plan-notice {
+    font-size: 10.5px;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -11921,7 +11960,7 @@ async function loadInvestments() {
   const { data, error } = await supabaseClient
     .from("investments")
     .select(
-      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at"
+      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at,user_confirmed,activation_source,source_request_id"
     )
     .eq("user_id", currentUser.id)
     .order("created_at", {
@@ -17264,7 +17303,7 @@ document.addEventListener("DOMContentLoaded", function() {
       withdrawable:"Withdrawable now", fixedContracts:"Selected contracts", contracts:"My active plans",
       plan:"Plan", amount:"Principal", rate:"Current rate", remaining:"Time remaining",
       early:"Available if withdrawn now", action:"Action", withdraw:"Withdraw now",
-      noContracts:"No approved deposit or active plan is available yet.",
+      noContracts:"You have not confirmed any fixed-term plan yet.",
       autoTitle:"Flexible 1.5% Plan", autoText:"Activated automatically after every approved deposit",
       noLock:"No fixed term", anyAmount:"Any approved deposit amount", anytime:"Withdraw principal and profit at any time",
       improve:"Choose and confirm another plan to increase your daily rate.",
@@ -17282,7 +17321,7 @@ document.addEventListener("DOMContentLoaded", function() {
       withdrawable:"قابل برداشت در حال حاضر", fixedContracts:"قراردادهای انتخابی", contracts:"پلن‌های فعال من",
       plan:"پلن", amount:"اصل سرمایه", rate:"نرخ فعلی", remaining:"زمان باقی‌مانده",
       early:"مبلغ برداشت زودهنگام", action:"عملیات", withdraw:"برداشت",
-      noContracts:"هنوز واریز تأییدشده یا پلن فعالی وجود ندارد.",
+      noContracts:"هنوز هیچ پلن مدت‌دار را انتخاب و تأیید نکرده‌اید.",
       autoTitle:"پلن منعطف ۱.۵٪", autoText:"پس از تأیید هر واریز به‌صورت خودکار فعال می‌شود",
       noLock:"بدون مدت ثابت", anyAmount:"هر مبلغ واریز تأییدشده", anytime:"برداشت اصل سرمایه و سود در هر زمان",
       improve:"برای افزایش نرخ سود، یکی از پلن‌های دیگر را انتخاب و تأیید کنید.",
@@ -17310,6 +17349,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function isFixed(item) {
     return ["Starter","Growth","Premium","VIP_LOCK"].indexOf(String(item && item.plan_name || "")) !== -1;
+  }
+
+  function isConfirmedRegularPlan(item) {
+    return (
+      ["Starter","Growth","Premium"].indexOf(
+        String(item && item.plan_name || "")
+      ) !== -1 &&
+      item &&
+      item.user_confirmed === true
+    );
   }
 
   function active(item) {
@@ -17355,7 +17404,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function fixedCount() {
     return (currentInvestments || []).filter(function (item) {
-      return active(item) && isFixed(item);
+      return active(item) && isConfirmedRegularPlan(item);
     }).length;
   }
 
@@ -17460,8 +17509,8 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    var investments = (currentInvestments || []).filter(active).filter(function (item) {
-      return isFlexible(item) || ["Starter","Growth","Premium"].indexOf(String(item.plan_name || "")) !== -1;
+    var investments = (currentInvestments || []).filter(function (item) {
+      return active(item) && isConfirmedRegularPlan(item);
     });
     if (!investments.length) {
       rows.innerHTML = '<tr><td colspan="6" class="flex-empty">' + escapeHtml(text("noContracts")) + '</td></tr>';
@@ -17470,12 +17519,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     rows.innerHTML = investments.map(function (item) {
       var principalValue = Number(item.principal || 0);
-      var payout = principalValue + (isFlexible(item) ? flexibleProfit(item) : fixedEarlyProfit(item));
-      var planTitle = isFlexible(item) ? text("autoTitle") : String(item.plan_name || "");
-      var currentRate = isFlexible(item) ? FLEX_RATE : Number(item.daily_rate || 0);
+      var payout = principalValue + fixedEarlyProfit(item);
+      var planTitle = String(item.plan_name || "");
+      var currentRate = Number(item.daily_rate || 0);
+
       return [
         '<tr>',
-          '<td><span class="flex-contract-type">',escapeHtml(planTitle),'</span><br><span class="flex-contract-note">',escapeHtml(isFlexible(item) ? text("noLock") : text("fixedNotice")),'</span></td>',
+          '<td><span class="flex-contract-type">',escapeHtml(planTitle),'</span><br><span class="flex-contract-note">',escapeHtml(text("fixedNotice")),'</span></td>',
           '<td>',formatPortfolioMoney(principalValue),'</td>',
           '<td>',currentRate.toFixed(1),'%</td>',
           '<td>',escapeHtml(remainingText(item)),'</td>',
@@ -17506,11 +17556,34 @@ document.addEventListener("DOMContentLoaded", function() {
   var originalRenderPlans = window.renderPlans;
   window.renderPlans = function () {
     originalRenderPlans();
+
     ["plans","homePlans"].forEach(function (id) {
       var container = document.getElementById(id);
-      if (container && !container.querySelector(".flex-plan-auto")) {
+
+      if (!container) return;
+
+      if (!container.querySelector(".flex-plan-auto")) {
         container.insertAdjacentHTML("afterbegin", basePlanMarkup());
       }
+
+      Array.from(container.querySelectorAll(".plan")).forEach(function (card) {
+        if (card.classList.contains("flex-plan-auto")) return;
+
+        var note = card.querySelector(".flex-fixed-plan-notice");
+
+        if (!note) {
+          note = document.createElement("div");
+          note.className = "flex-fixed-plan-notice";
+          var actionButton = card.querySelector("button");
+          if (actionButton) {
+            actionButton.insertAdjacentElement("beforebegin", note);
+          } else {
+            card.appendChild(note);
+          }
+        }
+
+        note.textContent = text("fixedNotice");
+      });
     });
   };
 
@@ -17628,17 +17701,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
   window.getMainPortfolioSnapshot = function () {
     var mainInvestments = (currentInvestments || []).filter(function (item) {
-      return ["FLEX_DAILY","Starter","Growth","Premium"].indexOf(String(item.plan_name || "")) !== -1 &&
-        (item.status === "active" || item.status === "completed") && Number(item.principal || 0) > 0;
+      if (!active(item)) return false;
+
+      if (isFlexible(item)) return true;
+
+      return isConfirmedRegularPlan(item);
     });
+
     var investedPrincipal = mainInvestments.reduce(function (total, item) {
       return total + Number(item.principal || 0);
     }, 0);
-    var bankedProfit = Math.max(0, Number(currentUser && currentUser.profit || 0));
+
+    var bankedProfit = Math.max(
+      0,
+      Number(currentUser && currentUser.profit || 0)
+    );
+
     var liveProfit = mainInvestments.reduce(function (total, item) {
       return total + calculateInvestmentProfit(item);
     }, 0);
-    var freeBalance = Math.max(0, Number(currentUser && currentUser.balance || 0));
+
+    var freeBalance = Math.max(
+      0,
+      Number(currentUser && currentUser.balance || 0)
+    );
+
     return {
       regularInvestments:mainInvestments,
       investedPrincipal:investedPrincipal,
@@ -17646,7 +17733,15 @@ document.addEventListener("DOMContentLoaded", function() {
       liveProfit:liveProfit,
       totalProfit:bankedProfit + liveProfit,
       freeBalance:freeBalance,
-      totalBalance:freeBalance + investedPrincipal + liveProfit
+
+      /*
+       * Banked/realized profit is already inside profiles.balance.
+       * Do not add it again to Total Balance.
+       */
+      totalBalance:
+        freeBalance +
+        investedPrincipal +
+        liveProfit
     };
   };
 
