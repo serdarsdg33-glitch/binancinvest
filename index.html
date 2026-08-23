@@ -12257,6 +12257,35 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 }
 </style>
 
+
+<style id="diagnostic-no-bottom-video-v1">
+/*
+  DIAGNOSTIC TEST:
+  Only the bottom Why section video is disabled.
+  Its space is preserved, so scrolling/layout stays comparable.
+*/
+.why-binance-video-disabled-test{
+  display:block !important;
+  width:min(1180px,100vw) !important;
+  aspect-ratio:16/9 !important;
+  margin:0 auto 30px !important;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(240,185,11,.08), transparent 42%),
+    linear-gradient(180deg, #05070b, #030507) !important;
+  border:0 !important;
+  box-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
+
+@media(max-width:600px){
+  .why-binance-video-disabled-test{
+    width:100vw !important;
+    margin-left:calc(50% - 50vw) !important;
+    margin-bottom:24px !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -12459,10 +12488,7 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 </section>
 
 <div class="footer-section">
-    <video class="why-binance-video lazy-video" muted loop playsinline preload="none" aria-label="Secure digital asset vault">
-      <source data-src="why-binance-vault.mp4" type="video/mp4">
-      <source data-src="why-binance-vault.webm" type="video/webm">
-    </video>
+    <div class="why-binance-video why-binance-video-disabled-test" aria-hidden="true"></div>
     <h3 data-t="footerTitle">Why Binance Invest?</h3>
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
