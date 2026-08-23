@@ -109,7 +109,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="binancinvest">
-<link rel="manifest" href="/binancinvest-manifest-v2.webmanifest?v=20260822-0807">
+<link rel="manifest" href="/binancinvest-manifest-v3.webmanifest?v=20260823-2242">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260822-0807">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
@@ -11904,6 +11904,41 @@ html[dir="ltr"] #portfolio .withdrawal-level-card{text-align:left}
 html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 </style>
 
+
+<script id="pwa-install-readiness-v37-14">
+(function(){
+  const root = document.documentElement;
+
+  function standalone(){
+    return (
+      window.matchMedia?.("(display-mode: standalone)")?.matches ||
+      window.navigator.standalone === true
+    );
+  }
+
+  if(standalone()){
+    root.dataset.pwaInstalled = "1";
+  }
+
+  window.addEventListener("appinstalled",function(){
+    root.dataset.pwaInstalled = "1";
+  });
+
+  /*
+    Chrome can deliver beforeinstallprompt very early.
+    This capture listener marks the page as installable even before
+    the larger download-section script finishes initializing.
+  */
+  window.addEventListener(
+    "beforeinstallprompt",
+    function(){
+      root.dataset.pwaInstallable = "1";
+    },
+    {capture:true}
+  );
+})();
+</script>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -21150,6 +21185,41 @@ async function deleteAllClosedSupportTickets() {
       return;
     }
 
+    /*
+      V37.14 PWA install fix:
+      Android Chrome gets the real install prompt when available.
+      iPhone/Safari continues to use the manual Home Screen guide.
+    */
+    if (isAndroid && deferredInstallPrompt) {
+      const promptEvent = deferredInstallPrompt;
+      deferredInstallPrompt = null;
+
+      try {
+        await promptEvent.prompt();
+        const choice = await promptEvent.userChoice;
+
+        if (choice?.outcome === "accepted") {
+          status.textContent = "";
+        } else {
+          focusGuide(androidCard);
+          status.textContent = c.waiting;
+        }
+      } catch (error) {
+        console.warn("Android install prompt failed:", error);
+        focusGuide(androidCard);
+        status.textContent = c.waiting;
+      }
+
+      paintCopy();
+      return;
+    }
+
+    if (isAndroid) {
+      focusGuide(androidCard);
+      status.textContent = c.waiting;
+      return;
+    }
+
     focusGuide(iphoneCard);
     status.textContent = "";
   });
@@ -21167,11 +21237,37 @@ async function deleteAllClosedSupportTickets() {
   });
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/sw.js").catch((error) => {
-        console.warn("Service worker registration failed:", error);
-      });
-    });
+    /*
+      Register as early as possible. The previous version waited until
+      window.load, so large images/video could delay PWA eligibility.
+    */
+    (async () => {
+      try {
+        const registration =
+          await navigator.serviceWorker.register(
+            "/sw.js?v=20260823-2242",
+            {
+              scope: "/",
+              updateViaCache: "none"
+            }
+          );
+
+        /*
+          Do not block the UI on this, but ask Chrome to check the
+          latest service worker immediately.
+        */
+        registration.update().catch(() => {});
+
+        await navigator.serviceWorker.ready;
+
+        document.documentElement.dataset.pwaReady = "1";
+      } catch (error) {
+        console.warn(
+          "Service worker registration failed:",
+          error
+        );
+      }
+    })();
   }
 
   paintCopy();
