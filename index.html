@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-28">
+<body data-investment-model="flex-v6-29">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8515,6 +8515,10 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </div>
 
 <div class="portfolio-overview-scene">
+  <div id="selectedPlanMajorPanel" class="portfolio-major-panel portfolio-major-selected">
+    <div id="selectedPlanSummaryZone" class="selected-plan-summary-zone"></div>
+  </div>
+
   <div class="portfolio-major-panel portfolio-major-referral">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
@@ -19492,6 +19496,31 @@ document.addEventListener("DOMContentLoaded", function() {
     return zone;
   }
 
+  function normalizeSelectedPlanPanelLayout() {
+    var selectedPanel = document.getElementById("selectedPlanMajorPanel");
+    var zone = document.getElementById("selectedPlanSummaryZone");
+    if (!selectedPanel || !zone) return;
+
+    selectedPanel.style.height = "auto";
+    selectedPanel.style.minHeight = "0px";
+    selectedPanel.style.marginTop = "0px";
+    selectedPanel.style.marginBottom = "0px";
+    selectedPanel.style.transform = "none";
+
+    zone.style.height = "auto";
+    zone.style.minHeight = "0px";
+    zone.style.marginTop = "0px";
+
+    void selectedPanel.offsetHeight;
+
+    requestAnimationFrame(function () {
+      selectedPanel.style.height = "auto";
+      selectedPanel.style.minHeight = "0px";
+      zone.style.height = "auto";
+      zone.style.minHeight = "0px";
+    });
+  }
+
   function renderSelectedPlanSummaryCards() {
     var zone =
       ensureSelectedPlanSummaryZone();
@@ -19500,6 +19529,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (!currentUser || !currentUser.id) {
       zone.replaceChildren();
+      normalizeSelectedPlanPanelLayout();
       return;
     }
 
@@ -19541,6 +19571,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!plans.length) {
       zone.innerHTML =
         totalCard;
+      normalizeSelectedPlanPanelLayout();
       return;
     }
 
@@ -19719,6 +19750,8 @@ document.addEventListener("DOMContentLoaded", function() {
         ].join("");
       })
       .join("");
+
+    normalizeSelectedPlanPanelLayout();
   }
 
   var originalRenderPortfolioLive =
@@ -21945,6 +21978,63 @@ html body #plans > .plan .flex-fixed-plan-notice {
 
   #portfolio .portfolio-base-independent-shell > #portfolioBasePanel{
     width:100%;
+  }
+}
+</style>
+
+
+<style id="portfolio-v29-selected-plan-gap-fix">
+/* V29 — remove the temporary vertical gap after activating a selected plan */
+
+#portfolio #selectedPlanMajorPanel{
+  display:block !important;
+  position:relative !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:14px !important;
+  box-sizing:border-box !important;
+  align-self:stretch !important;
+  transform:none !important;
+  contain:none !important;
+}
+
+#portfolio #selectedPlanSummaryZone{
+  display:grid !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-content:start !important;
+  transform:none !important;
+}
+
+#portfolio .portfolio-overview-scene{
+  height:auto !important;
+  min-height:0 !important;
+  align-items:stretch !important;
+  align-content:start !important;
+}
+
+#portfolio .portfolio-base-independent-shell{
+  margin-bottom:8px !important;
+}
+
+@media(max-width:760px){
+  #portfolio #selectedPlanMajorPanel{
+    padding:12px !important;
+  }
+
+  #portfolio .portfolio-overview-scene{
+    gap:10px !important;
+    padding-top:8px !important;
+  }
+
+  #portfolio .portfolio-base-independent-shell{
+    margin-bottom:5px !important;
   }
 }
 </style>
