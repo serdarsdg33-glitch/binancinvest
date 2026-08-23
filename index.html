@@ -12210,147 +12210,6 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 }
 </style>
 
-
-<style id="platform-statistics-android-smooth-test-v1">
-/*
-  TEST VERSION — Platform Statistics only.
-  On touch/mobile devices we keep the same artwork, text, borders and
-  general appearance, but stop the four continuous 3D animations that
-  cause expensive GPU composition/repaint while scrolling.
-*/
-@media (max-width: 900px), (hover: none) and (pointer: coarse) {
-  .stats-vertical-stack{
-    perspective:none !important;
-  }
-
-  .stats-vertical-stack .stat-circle-card,
-  .stats-vertical-stack .stat-circle-card:nth-child(1),
-  .stats-vertical-stack .stat-circle-card:nth-child(2),
-  .stats-vertical-stack .stat-circle-card:nth-child(3),
-  .stats-vertical-stack .stat-circle-card:nth-child(4){
-    animation:none !important;
-    transform:none !important;
-    transform-style:flat !important;
-    will-change:auto !important;
-    filter:none !important;
-
-    /*
-      One fixed shadow instead of continuously animating the shadow.
-      Background images and the existing card design remain unchanged.
-    */
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.035),
-      0 13px 30px rgba(0,0,0,.42) !important;
-  }
-
-  /*
-    Remove hover lifting on touch devices, where it provides no useful
-    interaction but may trigger extra compositing on some Android WebViews.
-  */
-  .stats-vertical-stack .stat-circle-card:hover{
-    transform:none !important;
-    filter:none !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.035),
-      0 13px 30px rgba(0,0,0,.42) !important;
-  }
-}
-</style>
-
-
-<style id="live-withdrawals-android-gpu-fix-v1">
-/*
-  TEST VERSION:
-  Keep the same Live Withdrawals layout/image, but remove the most
-  expensive moving backdrop-blur effects on Android/touch devices.
-*/
-@media (max-width: 900px), (hover: none) and (pointer: coarse) {
-  .live-withdrawals-container.has-video .live-withdraw,
-  .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){
-    /*
-      Moving backdrop-filter is very expensive on Android because every
-      animated pill forces blur recomposition over the large background.
-      Simulate glass with translucent gradients instead.
-    */
-    -webkit-backdrop-filter:none !important;
-    backdrop-filter:none !important;
-
-    background:
-      linear-gradient(
-        135deg,
-        rgba(20,25,31,.84) 0%,
-        rgba(13,18,24,.72) 42%,
-        rgba(23,20,10,.62) 100%
-      ) !important;
-
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.10),
-      0 8px 20px rgba(0,0,0,.28),
-      0 0 10px rgba(240,185,11,.04) !important;
-
-    will-change:transform,opacity !important;
-  }
-
-  .live-withdrawals-container.has-video .live-avatar{
-    -webkit-backdrop-filter:none !important;
-    backdrop-filter:none !important;
-    box-shadow:
-      inset 2px 2px 5px rgba(255,255,255,.14),
-      inset -4px -5px 9px rgba(0,0,0,.30),
-      0 0 10px rgba(240,185,11,.18) !important;
-  }
-
-  /*
-    When the section is off-screen, freeze any rows that are still alive
-    instead of letting Android animate them in the background.
-  */
-  .live-withdrawals-container:not(.withdrawals-in-view) .live-withdraw{
-    animation-play-state:paused !important;
-  }
-}
-</style>
-
-<script id="live-withdrawals-viewport-gate-v1">
-(function(){
-  window.__biWithdrawalsInView = false;
-
-  function setup(){
-    const box = document.getElementById("liveWithdrawalsList");
-    if(!box) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        const visible = Boolean(
-          entry &&
-          entry.isIntersecting &&
-          entry.intersectionRatio > 0.01
-        );
-
-        window.__biWithdrawalsInView = visible;
-        box.classList.toggle("withdrawals-in-view", visible);
-      },
-      {
-        /*
-          Start shortly before the user reaches the section, but not
-          hundreds of pixels early.
-        */
-        rootMargin: "100px 0px",
-        threshold: [0, 0.01, 0.15]
-      }
-    );
-
-    observer.observe(box);
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", setup, {once:true});
-  }else{
-    setup();
-  }
-})();
-</script>
-
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15762,8 +15621,7 @@ function addLiveWithdrawal() {
   /* Do not keep rebuilding an invisible feed in background tabs/pages. */
   if (
     document.hidden ||
-    !document.getElementById("home")?.classList.contains("active") ||
-    window.__biWithdrawalsInView === false
+    !document.getElementById("home")?.classList.contains("active")
   ) {
     return;
   }
@@ -15830,13 +15688,7 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 300);
-setInterval(
-  addLiveWithdrawal,
-  (
-    window.matchMedia("(max-width: 900px)").matches ||
-    window.matchMedia("(hover: none) and (pointer: coarse)").matches
-  ) ? 6500 : 3900
-);
+setInterval(addLiveWithdrawal, 3900);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -15849,19 +15701,12 @@ function displayCounters() {
 displayCounters();
 
 setInterval(() => {
-    if (document.hidden) return;
-
     currentUsersCount += Math.floor(Math.random() * 4) + 1;
     currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
     localStorage.setItem("bi_platform_users", currentUsersCount);
     localStorage.setItem("bi_platform_investors", currentInvestorsCount);
     displayCounters();
-},
-(
-  window.matchMedia("(max-width: 900px)").matches ||
-  window.matchMedia("(hover: none) and (pointer: coarse)").matches
-) ? 10000 : 5000
-);
+}, 5000);
 
 function placeToastNearContext(element) {
   element.classList.remove("toast-after-section-title", "toast-in-header");
@@ -21976,18 +21821,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         renderOnlineUsers();
 
-        // On touch/mobile devices update less often to reduce layout work.
-        setInterval(
-            () => {
-                if (!document.hidden) {
-                    updateOnlineUsers();
-                }
-            },
-            (
-              window.matchMedia("(max-width: 900px)").matches ||
-              window.matchMedia("(hover: none) and (pointer: coarse)").matches
-            ) ? 6000 : 2000
-        );
+        // هر 2 ثانیه یک تغییر نرم انجام شود.
+        setInterval(updateOnlineUsers, 2000);
     }
 });
 </script>
