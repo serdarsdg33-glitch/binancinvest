@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-32">
+<body data-investment-model="flex-v6-33">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8472,9 +8472,9 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
     <img class="portfolio-summary-bg" src="portfolio-overview.webp" alt="" aria-hidden="true">
     <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
-    <div class="portfolio-intro-copy" lang="fa" dir="rtl">
-      <strong>مرکز مدیریت سرمایه، سود و قراردادهای شما</strong>
-      <span>سرمایه خود را مدیریت کنید</span>
+    <div class="portfolio-intro-copy">
+      <strong data-t="portfolioIntroTitle">Manage your capital, profits and contracts</strong>
+      <span data-t="portfolioIntroSubtitle">Manage your investments with clarity and control</span>
     </div>
     <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
     <div id="flexCalculationCheck" class="flex-calculation-check" hidden>
@@ -8485,29 +8485,29 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
         aria-expanded="false"
         onclick="toggleFlexCalculationCheck()"
       >
-        <span>بررسی محاسبه پلن پایه</span>
+        <span data-t="flexCheckToggle">Check flexible plan calculation</span>
         <span class="flex-calculation-check-arrow" aria-hidden="true">⌄</span>
       </button>
 
-      <div id="flexCalculationCheckBody" class="flex-calculation-check-body" hidden dir="rtl" lang="fa">
+      <div id="flexCalculationCheckBody" class="flex-calculation-check-body" hidden>
         <div class="flex-check-status">
           <span class="flex-check-dot" aria-hidden="true"></span>
-          <strong>مبنای محاسبه: فقط FLEX_DAILY با نرخ ۱.۵٪</strong>
+          <strong data-t="flexCheckBasis">Calculation basis: FLEX_DAILY only at 1.5% daily</strong>
         </div>
 
         <div class="flex-check-grid">
-          <div><span>اصل سرمایه فعلی</span><b id="flexCheckPrincipal">$0.00000000</b></div>
-          <div><span>نرخ روزانه</span><b id="flexCheckRate">1.5000%</b></div>
-          <div><span>سود هر ثانیه</span><b id="flexCheckSecond">$0.00000000</b></div>
-          <div><span>سود هر دقیقه</span><b id="flexCheckMinute">$0.00000000</b></div>
-          <div><span>سود هر ساعت</span><b id="flexCheckHour">$0.00000000</b></div>
-          <div><span>سود هر روز</span><b id="flexCheckDay">$0.00000000</b></div>
-          <div><span>سود قبلی حفظ‌شده</span><b id="flexCheckPreserved">$0.00000000</b></div>
-          <div><span>سود فعلی پلن پایه</span><b id="flexCheckLive">$0.00000000</b></div>
+          <div><span data-t="flexCheckPrincipalLabel">Current principal</span><b id="flexCheckPrincipal">$0.00000000</b></div>
+          <div><span data-t="flexCheckRateLabel">Daily rate</span><b id="flexCheckRate">1.5000%</b></div>
+          <div><span data-t="flexCheckSecondLabel">Profit per second</span><b id="flexCheckSecond">$0.00000000</b></div>
+          <div><span data-t="flexCheckMinuteLabel">Profit per minute</span><b id="flexCheckMinute">$0.00000000</b></div>
+          <div><span data-t="flexCheckHourLabel">Profit per hour</span><b id="flexCheckHour">$0.00000000</b></div>
+          <div><span data-t="flexCheckDayLabel">Profit per day</span><b id="flexCheckDay">$0.00000000</b></div>
+          <div><span data-t="flexCheckPreservedLabel">Preserved previous profit</span><b id="flexCheckPreserved">$0.00000000</b></div>
+          <div><span data-t="flexCheckLiveLabel">Current flexible plan profit</span><b id="flexCheckLive">$0.00000000</b></div>
         </div>
 
-        <div class="flex-check-note">
-          سود Growth / Starter / Premium / VIP در این سرعت محاسبه وارد نمی‌شود.
+        <div class="flex-check-note" data-t="flexCheckNote">
+          Growth / Starter / Premium / VIP profits are not included in this calculation rate.
         </div>
       </div>
     </div>
@@ -10368,6 +10368,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 });
 const T={
 en:{
+portfolioIntroTitle:'Manage your capital, profits and contracts',portfolioIntroSubtitle:'Manage your investments with clarity and control',flexCheckToggle:'Check flexible plan calculation',flexCheckBasis:'Calculation basis: FLEX_DAILY only at 1.5% daily',flexCheckPrincipalLabel:'Current principal',flexCheckRateLabel:'Daily rate',flexCheckSecondLabel:'Profit per second',flexCheckMinuteLabel:'Profit per minute',flexCheckHourLabel:'Profit per hour',flexCheckDayLabel:'Profit per day',flexCheckPreservedLabel:'Preserved previous profit',flexCheckLiveLabel:'Current flexible plan profit',flexCheckNote:'Growth / Starter / Premium / VIP profits are not included in this calculation rate.',
 brand:"Binance Invest",login:"Sign In",register:"Create Account",logout:"Logout",overview:"Overview",markets:"Markets",invest:"Invest",portfolio:"Portfolio",transactions:"Transactions",rewards:"Rewards",profile:"Profile",
 hero:"Build your future with intelligent investing.",heroDesc:"Explore digital assets, investment plans and portfolio tools in one premium interface.",exploreInvest:"Explore Investments",exploreMarkets:"Explore Markets",
 users:"Platform users",tracked:"Assets tracked",assets:"Digital assets",live:"Live markets",uptime:"Platform uptime",top:"Top Markets",viewAll:"View all",featured:"Featured Investments",
@@ -10390,6 +10391,7 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the s
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
 fa:{
+portfolioIntroTitle:'مرکز مدیریت سرمایه، سود و قراردادهای شما',portfolioIntroSubtitle:'سرمایه خود را با شفافیت و کنترل بیشتر مدیریت کنید',flexCheckToggle:'بررسی محاسبه پلن پایه',flexCheckBasis:'مبنای محاسبه: فقط FLEX_DAILY با نرخ روزانه ۱.۵٪',flexCheckPrincipalLabel:'اصل سرمایه فعلی',flexCheckRateLabel:'نرخ روزانه',flexCheckSecondLabel:'سود هر ثانیه',flexCheckMinuteLabel:'سود هر دقیقه',flexCheckHourLabel:'سود هر ساعت',flexCheckDayLabel:'سود هر روز',flexCheckPreservedLabel:'سود قبلی حفظ\u200cشده',flexCheckLiveLabel:'سود فعلی پلن پایه',flexCheckNote:'سود Growth / Starter / Premium / VIP در سرعت محاسبه پلن پایه وارد نمی\u200cشود.',
 brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
 hero:"آینده خود را هوشمندانه بسازید.",heroDesc:"رمزارزها، پلن‌های سرمایه‌گذاری و ابزارهای مدیریت سبد را در یک محیط حرفه‌ای بررسی کنید.",exploreInvest:"مشاهده سرمایه‌گذاری‌ها",exploreMarkets:"مشاهده بازارها",
 users:"کاربران پلتفرم",tracked:"دارایی‌های تحت پوشش",assets:"رمزارزها",live:"بازار زنده",uptime:"آپ‌تایم",top:"بازارهای برتر",viewAll:"مشاهده همه",featured:"سرمایه‌گذاری‌های ویژه",
@@ -10412,6 +10414,7 @@ paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخا
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
 },
 az:{
+portfolioIntroTitle:'Kapitalınızı, mənfəətinizi və müqavilələrinizi idarə edin',portfolioIntroSubtitle:'İnvestisiyalarınızı aydınlıq və nəzarətlə idarə edin',flexCheckToggle:'Əsas plan hesablamasını yoxla',flexCheckBasis:'Hesablama əsası: yalnız FLEX_DAILY, gündəlik 1.5%',flexCheckPrincipalLabel:'Cari əsas kapital',flexCheckRateLabel:'Gündəlik faiz',flexCheckSecondLabel:'Saniyəlik mənfəət',flexCheckMinuteLabel:'Dəqiqəlik mənfəət',flexCheckHourLabel:'Saatlıq mənfəət',flexCheckDayLabel:'Gündəlik mənfəət',flexCheckPreservedLabel:'Qorunan əvvəlki mənfəət',flexCheckLiveLabel:'Cari əsas plan mənfəəti',flexCheckNote:'Growth / Starter / Premium / VIP mənfəətləri əsas planın bu hesablama sürətinə daxil edilmir.',
 brand:"Binance İnvest",login:"Daxil ol",register:"Hesab yarat",logout:"Çıxış",overview:"Ümumi",markets:"Bazarlar",invest:"İnvestisiya",portfolio:"Portfel",transactions:"Əməliyyatlar",rewards:"Mükafatlar",profil:"Profil",
 hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyutaları və investisiya alətlərini peşəkar interfeysdə kəşf edin.",exploreInvest:"İnvestisiyalara bax",exploreMarkets:"Bazara bax",
 users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
@@ -10434,6 +10437,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağı
 withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
 },
 tr:{
+portfolioIntroTitle:'Sermayenizi, kârınızı ve sözleşmelerinizi yönetin',portfolioIntroSubtitle:'Yatırımlarınızı şeffaflık ve kontrolle yönetin',flexCheckToggle:'Esnek plan hesaplamasını kontrol et',flexCheckBasis:'Hesaplama temeli: yalnızca FLEX_DAILY, günlük %1,5',flexCheckPrincipalLabel:'Mevcut anapara',flexCheckRateLabel:'Günlük oran',flexCheckSecondLabel:'Saniyelik kâr',flexCheckMinuteLabel:'Dakikalık kâr',flexCheckHourLabel:'Saatlik kâr',flexCheckDayLabel:'Günlük kâr',flexCheckPreservedLabel:'Korunan önceki kâr',flexCheckLiveLabel:'Mevcut esnek plan kârı',flexCheckNote:'Growth / Starter / Premium / VIP kârları bu esnek plan hesaplama hızına dahil edilmez.',
 brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çıkış Yap",overview:"Genel Bakış",markets:"Piyasalar",invest:"Yatırım",portfolio:"Portföy",transactions:"İşlemler",rewards:"Ödüller",profile:"Profil",
 hero:"Geleceğinizi akıllı yatırımlarla inşa edin.",heroDesc:"Dijital varlıkları ve yatırım planlarını profesyonel arayüzde keşfedin.",exploreInvest:"Yatırımları İncele",exploreMarkets:"Piyasaları İncele",
 top:"Popüler Piyasalar",viewAll:"Tümünü Gör",featured:"Öne Çıkan Yatırımlar",plans:"Yatırım Planları",illustrative:"Tahmini Getiri",calculator:"Yatırım Hesaplayıcı",amount:"Miktar",plan:"Plan",estimated:"Tahmini Değer",
@@ -10455,6 +10459,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki gü
 withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
 },
 ru:{
+portfolioIntroTitle:'Управляйте капиталом, прибылью и договорами',portfolioIntroSubtitle:'Управляйте инвестициями прозрачно и под контролем',flexCheckToggle:'Проверить расчёт гибкого плана',flexCheckBasis:'Основа расчёта: только FLEX_DAILY, 1,5% в день',flexCheckPrincipalLabel:'Текущий основной капитал',flexCheckRateLabel:'Дневная ставка',flexCheckSecondLabel:'Прибыль в секунду',flexCheckMinuteLabel:'Прибыль в минуту',flexCheckHourLabel:'Прибыль в час',flexCheckDayLabel:'Прибыль в день',flexCheckPreservedLabel:'Сохранённая предыдущая прибыль',flexCheckLiveLabel:'Текущая прибыль гибкого плана',flexCheckNote:'Прибыль Growth / Starter / Premium / VIP не входит в скорость расчёта гибкого плана.',
 brand:"Binance Invest",login:"Войти",register:"Регистрация",logout:"Выйти",overview:"Обзор",markets:"Рынки",invest:"Инвестиции",portfolio:"Портфель",transactions:"Транзакции",rewards:"Награды",profile:"Профиль",
 hero:"Стройте свое будущее с умными инвестициями.",heroDesc:"Изучайте цифровые активы и инвестиционные планы в премиум-интерфейсе.",exploreInvest:"Инвестиции",exploreMarkets:"Рынки",
 top:"Популярные рынки",viewAll:"Все рынки",featured:"Рекомендуемые планы",plans:"Инвестиционные планы",illustrative:"Примерная доходность",calculator:"Калькулятор",amount:"Сумма",plan:"План",estimated:"Оценочная стоимость",
@@ -10476,6 +10481,7 @@ paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Испол�
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
 },
 ar:{
+portfolioIntroTitle:'إدارة رأس المال والأرباح والعقود',portfolioIntroSubtitle:'أدر استثماراتك بوضوح وتحكم أكبر',flexCheckToggle:'مراجعة حساب الخطة المرنة',flexCheckBasis:'أساس الحساب: FLEX_DAILY فقط بنسبة 1.5% يومياً',flexCheckPrincipalLabel:'رأس المال الحالي',flexCheckRateLabel:'النسبة اليومية',flexCheckSecondLabel:'الربح لكل ثانية',flexCheckMinuteLabel:'الربح لكل دقيقة',flexCheckHourLabel:'الربح لكل ساعة',flexCheckDayLabel:'الربح لكل يوم',flexCheckPreservedLabel:'الربح السابق المحفوظ',flexCheckLiveLabel:'الربح الحالي للخطة المرنة',flexCheckNote:'أرباح Growth / Starter / Premium / VIP غير مشمولة في سرعة حساب الخطة المرنة.',
 brand:"بایننس إنفست",login:"تسجيل الدخول",register:"إنشاء حساب",logout:"تسجيل الخروج",overview:"نظرة عامة",markets:"الأسواق",invest:"استثمار",portfolio:"محفظتي",transactions:"المعاملات",rewards:"المكافآت",profile:"الملف الشخصي",
 hero:"ابنِ مستقبلك من خلال الاستثمار الذكي.",heroDesc:"استكشف الأصول الرقمية، وخطط الاستثمار، وأدوات المحفظة في واجهة واحدة متميزة.",exploreInvest:"استكشاف الاستثمارات",exploreMarkets:"استكشاف الأسواق",
 users:"مستخدمو المنصة",tracked:"الأصول المتتبعة",assets:"الأصول الرقمية",live:"الأسواق الحية",uptime:"وقت تشغيل المنصة",top:"أفضل الأسواق",viewAll:"عرض الكل",featured:"استثمارات مميزة",
@@ -10498,6 +10504,7 @@ paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> ير
 withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
 },
 zh:{
+portfolioIntroTitle:'管理您的本金、收益和合约',portfolioIntroSubtitle:'更清晰、更可控地管理您的投资',flexCheckToggle:'检查灵活计划计算',flexCheckBasis:'计算基础：仅 FLEX_DAILY，每日 1.5%',flexCheckPrincipalLabel:'当前本金',flexCheckRateLabel:'每日收益率',flexCheckSecondLabel:'每秒收益',flexCheckMinuteLabel:'每分钟收益',flexCheckHourLabel:'每小时收益',flexCheckDayLabel:'每日收益',flexCheckPreservedLabel:'已保留的历史收益',flexCheckLiveLabel:'当前灵活计划收益',flexCheckNote:'Growth / Starter / Premium / VIP 的收益不会计入灵活计划的此计算速度。',
 brand:"币安投资 (Binance Invest)",login:"登录",register:"注册账户",logout:"登出",overview:"概览",markets:"市场",invest:"投资",portfolio:"资产组合",transactions:"交易记录",rewards:"奖励",profile:"个人资料",
 hero:"通过智能投资构建您的未来。",heroDesc:"在一个高端界面中探索数字资产、投资计划和资产组合工具。",exploreInvest:"探索投资",exploreMarkets:"探索市场",
 users:"平台用户",tracked:"跟踪资产",assets:"数字资产",live:"实时市场",uptime:"正常运行时间",top:"热门市场",viewAll:"查看全部",featured:"精选投资",
@@ -10520,6 +10527,7 @@ paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下�
 withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
 },
 es:{
+portfolioIntroTitle:'Gestiona tu capital, beneficios y contratos',portfolioIntroSubtitle:'Gestiona tus inversiones con claridad y control',flexCheckToggle:'Comprobar cálculo del plan flexible',flexCheckBasis:'Base de cálculo: solo FLEX_DAILY al 1,5% diario',flexCheckPrincipalLabel:'Capital actual',flexCheckRateLabel:'Tasa diaria',flexCheckSecondLabel:'Beneficio por segundo',flexCheckMinuteLabel:'Beneficio por minuto',flexCheckHourLabel:'Beneficio por hora',flexCheckDayLabel:'Beneficio por día',flexCheckPreservedLabel:'Beneficio anterior conservado',flexCheckLiveLabel:'Beneficio actual del plan flexible',flexCheckNote:'Los beneficios de Growth / Starter / Premium / VIP no se incluyen en esta velocidad de cálculo.',
 brand:"Binance Invest",login:"Iniciar sesión",register:"Crear cuenta",logout:"Cerrar sesión",overview:"Resumen",markets:"Mercados",invest:"Invertir",portfolio:"Portafolio",transactions:"Transacciones",rewards:"Recompensas",profile:"Perfil",
 hero:"Construye tu futuro con una inversión inteligente.",heroDesc:"Explora activos digitales, planes de inversión y herramientas de portafolio en una interfaz premium.",exploreInvest:"Explorar inversiones",exploreMarkets:"Explorar mercados",
 users:"Usuarios de la plataforma",tracked:"Activos rastreados",assets:"Activos digitales",live:"Mercados en vivo",uptime:"Tiempo de actividad",top:"Principales mercados",viewAll:"Ver todo",featured:"Inversiones destacadas",
@@ -10542,6 +10550,7 @@ paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el 
 withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
 },
 fr:{
+portfolioIntroTitle:'Gérez votre capital, vos profits et vos contrats',portfolioIntroSubtitle:'Gérez vos investissements avec clarté et contrôle',flexCheckToggle:'Vérifier le calcul du plan flexible',flexCheckBasis:'Base de calcul : FLEX_DAILY uniquement à 1,5 % par jour',flexCheckPrincipalLabel:'Capital actuel',flexCheckRateLabel:'Taux journalier',flexCheckSecondLabel:'Profit par seconde',flexCheckMinuteLabel:'Profit par minute',flexCheckHourLabel:'Profit par heure',flexCheckDayLabel:'Profit par jour',flexCheckPreservedLabel:'Profit précédent conservé',flexCheckLiveLabel:'Profit actuel du plan flexible',flexCheckNote:'Les profits Growth / Starter / Premium / VIP ne sont pas inclus dans cette vitesse de calcul.',
 brand:"Binance Invest",login:"Se connecter",register:"Créer un compte",logout:"Se déconnecter",overview:"Aperçu",markets:"Marchés",invest:"Investir",portfolio:"Portefeuille",transactions:"Transactions",rewards:"Récompenses",profile:"Profil",
 hero:"Construisez votre avenir grâce à l'investissement intelligent.",heroDesc:"Explorez les actifs numériques, les plans d'investissement et les outils de portefeuille.",exploreInvest:"Explorer les investissements",exploreMarkets:"Explorer les marchés",
 users:"Utilisateurs",tracked:"Actifs suivis",assets:"Actifs numériques",live:"Marchés en direct",uptime:"Disponibilité",top:"Principaux marchés",viewAll:"Voir tout",featured:"Investissements en vedette",
@@ -10564,6 +10573,7 @@ paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuille
 withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
 },
 de:{
+portfolioIntroTitle:'Verwalten Sie Kapital, Gewinne und Verträge',portfolioIntroSubtitle:'Verwalten Sie Ihre Investitionen transparent und kontrolliert',flexCheckToggle:'Berechnung des flexiblen Plans prüfen',flexCheckBasis:'Berechnungsbasis: nur FLEX_DAILY mit 1,5 % täglich',flexCheckPrincipalLabel:'Aktuelles Kapital',flexCheckRateLabel:'Tagesrate',flexCheckSecondLabel:'Gewinn pro Sekunde',flexCheckMinuteLabel:'Gewinn pro Minute',flexCheckHourLabel:'Gewinn pro Stunde',flexCheckDayLabel:'Gewinn pro Tag',flexCheckPreservedLabel:'Erhaltener bisheriger Gewinn',flexCheckLiveLabel:'Aktueller Gewinn des flexiblen Plans',flexCheckNote:'Gewinne aus Growth / Starter / Premium / VIP werden nicht in diese Berechnungsgeschwindigkeit einbezogen.',
 brand:"Binance Invest",login:"Anmelden",register:"Konto erstellen",logout:"Abmelden",overview:"Übersicht",markets:"Märkte",invest:"Investieren",portfolio:"Portfolio",transactions:"Transaktionen",rewards:"Belohnungen",profile:"Profil",
 hero:"Bauen Sie Ihre Zukunft durch intelligenten Investieren auf.",heroDesc:"Entdecken Sie digitale Assets, Investitionspläne und Portfolio-Tools in einer Premium-Oberfläche.",exploreInvest:"Investitionen erkunden",exploreMarkets:"Märkte erkunden",
 users:"Benutzer",tracked:"Verfolgte Assets",assets:"Digitale Assets",live:"Live-Märkte",uptime:"Betriebszeit",top:"Top-Märkte",viewAll:"Alle anzeigen",featured:"Empfohlene Investitionen",
