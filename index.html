@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-27">
+<body data-investment-model="flex-v6-28">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8468,8 +8468,8 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 <div class="portfolio-top-artwork" aria-label="Binance Invest portfolio banner">
   <img src="/portfolio-banner.jpg" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='portfolio-banner.jpg';}" alt="Binance Invest investment vault banner">
 </div>
-<div class="portfolio-overview-scene">
-  <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
+<div class="portfolio-base-independent-shell">
+<div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
     <img class="portfolio-summary-bg" src="portfolio-overview.webp" alt="" aria-hidden="true">
     <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
     <div class="portfolio-intro-copy" lang="fa" dir="rtl">
@@ -8512,7 +8512,9 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       </div>
     </div>
   </div>
+</div>
 
+<div class="portfolio-overview-scene">
   <div class="portfolio-major-panel portfolio-major-referral">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
     <div>
@@ -19452,7 +19454,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var basePanel = document.getElementById("portfolioBasePanel");
     if (!basePanel) return null;
 
-    var overviewScene = basePanel.parentElement;
+    var overviewScene =
+      document.querySelector("#portfolio .portfolio-overview-scene");
     var selectedPanel = document.getElementById("selectedPlanMajorPanel");
 
     if (!selectedPanel && overviewScene) {
@@ -21879,6 +21882,69 @@ html body #plans > .plan .flex-fixed-plan-notice {
 
   #portfolio .flex-calculation-check-arrow{
     font-size:15px !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v28-independent-main-basket">
+/* V28 — Main "My Portfolio / basket" is a fully independent panel */
+
+/* Bring the main basket slightly closer to the artwork above it. */
+#portfolio .portfolio-top-artwork{
+  margin-bottom:7px !important;
+}
+
+#portfolio .portfolio-base-independent-shell{
+  display:block;
+  width:100%;
+  margin:0 0 12px;
+  padding:0;
+  position:relative;
+  isolation:isolate;
+}
+
+/* The main basket owns its own dimensions and is no longer part of
+   the selected/referral/VIP container flow. */
+#portfolio .portfolio-base-independent-shell > #portfolioBasePanel{
+  width:100%;
+  box-sizing:border-box;
+  margin:0 !important;
+  flex:none !important;
+  align-self:auto !important;
+}
+
+/* Keep the remaining panels in their own independent scene. */
+#portfolio .portfolio-overview-scene{
+  margin-top:0 !important;
+}
+
+/* Activating a selected plan only grows the selected-plan panel,
+   never the main basket panel. */
+#portfolio #selectedPlanMajorPanel{
+  flex:none !important;
+  width:100%;
+  box-sizing:border-box;
+}
+
+/* Preserve the sharp/clear background treatment. */
+#portfolio .portfolio-base-independent-shell #portfolioBasePanel,
+#portfolio .portfolio-base-independent-shell #portfolioBasePanel::before{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+@media(max-width:760px){
+  #portfolio .portfolio-top-artwork{
+    margin-bottom:5px !important;
+  }
+
+  #portfolio .portfolio-base-independent-shell{
+    margin-bottom:9px;
+  }
+
+  #portfolio .portfolio-base-independent-shell > #portfolioBasePanel{
+    width:100%;
   }
 }
 </style>
