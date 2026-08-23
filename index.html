@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-19">
+<body data-investment-model="flex-v6-20">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -20754,6 +20754,50 @@ html body #plans > .plan .flex-fixed-plan-notice {
 
   #portfolio .portfolio-intro-copy span{
     font-size:11px;
+  }
+}
+</style>
+
+
+<style id="portfolio-v20-main-content-up">
+/* V20 — only move the main "Portfolio / My Basket" content slightly upward */
+
+#portfolio .portfolio-major-base{
+  padding-top:8px !important;
+  padding-bottom:12px !important;
+}
+
+/* Move title, intro copy and the four small cards upward together */
+#portfolio .portfolio-major-base > .title,
+#portfolio .portfolio-major-base > .portfolio-intro-copy,
+#portfolio .portfolio-major-base > .cards{
+  transform:translateY(-10px);
+}
+
+/* Keep spacing between intro text and cards compact */
+#portfolio .portfolio-major-base > .portfolio-intro-copy{
+  margin-bottom:10px !important;
+}
+
+#portfolio .portfolio-major-base > .cards{
+  margin-top:0 !important;
+}
+
+/* Mobile: a slightly stronger lift because the content looked lower there */
+@media(max-width:760px){
+  #portfolio .portfolio-major-base{
+    padding-top:4px !important;
+    padding-bottom:10px !important;
+  }
+
+  #portfolio .portfolio-major-base > .title,
+  #portfolio .portfolio-major-base > .portfolio-intro-copy,
+  #portfolio .portfolio-major-base > .cards{
+    transform:translateY(-14px);
+  }
+
+  #portfolio .portfolio-major-base > .portfolio-intro-copy{
+    margin-bottom:7px !important;
   }
 }
 </style>
