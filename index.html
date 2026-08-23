@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-20">
+<body data-investment-model="flex-v6-21">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -12718,7 +12718,7 @@ async function loadInvestments() {
   const { data, error } = await supabaseClient
     .from("investments")
     .select(
-      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at,user_confirmed,activation_source,source_request_id"
+      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at,realized_profit,user_confirmed,activation_source,source_request_id"
     )
     .eq("user_id", currentUser.id)
     .order("created_at", {
@@ -18148,10 +18148,26 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function flexibleProfitAt(item, atTime) {
-    return (
+    /*
+     * V21:
+     * realized_profit stores FLEX profit already earned BEFORE principal
+     * was moved into a selected plan. From profit_started_at onward,
+     * only the remaining FLEX principal continues at the base 1.5% rate.
+     */
+    var preservedProfit =
+      Math.max(
+        0,
+        Number(item && item.realized_profit || 0)
+      );
+
+    var liveAfterLastPrincipalChange =
       Number(item.principal || 0) *
       (FLEX_RATE / 100) *
-      elapsedDays(item, atTime)
+      elapsedDays(item, atTime);
+
+    return (
+      preservedProfit +
+      liveAfterLastPrincipalChange
     );
   }
 
@@ -18175,6 +18191,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return [
           String(item.id || ""),
           Number(item.principal || 0).toFixed(8),
+          Number(item.realized_profit || 0).toFixed(8),
           String(item.profit_started_at || item.started_at || ""),
           String(item.status || "")
         ].join("|");
