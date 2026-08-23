@@ -12210,6 +12210,53 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 }
 </style>
 
+
+<style id="platform-statistics-android-smooth-test-v1">
+/*
+  TEST VERSION — Platform Statistics only.
+  On touch/mobile devices we keep the same artwork, text, borders and
+  general appearance, but stop the four continuous 3D animations that
+  cause expensive GPU composition/repaint while scrolling.
+*/
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  .stats-vertical-stack{
+    perspective:none !important;
+  }
+
+  .stats-vertical-stack .stat-circle-card,
+  .stats-vertical-stack .stat-circle-card:nth-child(1),
+  .stats-vertical-stack .stat-circle-card:nth-child(2),
+  .stats-vertical-stack .stat-circle-card:nth-child(3),
+  .stats-vertical-stack .stat-circle-card:nth-child(4){
+    animation:none !important;
+    transform:none !important;
+    transform-style:flat !important;
+    will-change:auto !important;
+    filter:none !important;
+
+    /*
+      One fixed shadow instead of continuously animating the shadow.
+      Background images and the existing card design remain unchanged.
+    */
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 13px 30px rgba(0,0,0,.42) !important;
+  }
+
+  /*
+    Remove hover lifting on touch devices, where it provides no useful
+    interaction but may trigger extra compositing on some Android WebViews.
+  */
+  .stats-vertical-stack .stat-circle-card:hover{
+    transform:none !important;
+    filter:none !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.035),
+      0 13px 30px rgba(0,0,0,.42) !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15701,12 +15748,19 @@ function displayCounters() {
 displayCounters();
 
 setInterval(() => {
+    if (document.hidden) return;
+
     currentUsersCount += Math.floor(Math.random() * 4) + 1;
     currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
     localStorage.setItem("bi_platform_users", currentUsersCount);
     localStorage.setItem("bi_platform_investors", currentInvestorsCount);
     displayCounters();
-}, 5000);
+},
+(
+  window.matchMedia("(max-width: 900px)").matches ||
+  window.matchMedia("(hover: none) and (pointer: coarse)").matches
+) ? 10000 : 5000
+);
 
 function placeToastNearContext(element) {
   element.classList.remove("toast-after-section-title", "toast-in-header");
@@ -21821,8 +21875,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         renderOnlineUsers();
 
-        // هر 2 ثانیه یک تغییر نرم انجام شود.
-        setInterval(updateOnlineUsers, 2000);
+        // On touch/mobile devices update less often to reduce layout work.
+        setInterval(
+            () => {
+                if (!document.hidden) {
+                    updateOnlineUsers();
+                }
+            },
+            (
+              window.matchMedia("(max-width: 900px)").matches ||
+              window.matchMedia("(hover: none) and (pointer: coarse)").matches
+            ) ? 6000 : 2000
+        );
     }
 });
 </script>
