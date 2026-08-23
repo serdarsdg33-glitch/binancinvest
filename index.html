@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-22">
+<body data-investment-model="flex-v6-23">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -21034,13 +21034,13 @@ html body #plans > .plan .flex-fixed-plan-notice {
     var wrapper = document.getElementById("flexCalculationCheck");
     if (!wrapper) return;
 
-    var signedIn = !!(window.currentUser && window.currentUser.id);
+    var signedIn = !!(typeof currentUser !== "undefined" && currentUser && currentUser.id);
     wrapper.hidden = !signedIn;
     if (!signedIn) return;
 
     var rows = [];
     try{
-      rows = (window.currentInvestments || []).filter(function(item){
+      rows = ((typeof currentInvestments !== "undefined" ? currentInvestments : []) || []).filter(function(item){
         return item &&
           item.status === "active" &&
           String(item.plan_name || "") === "FLEX_DAILY" &&
@@ -21107,12 +21107,25 @@ html body #plans > .plan .flex-fixed-plan-notice {
     try{ window.renderFlexCalculationCheck(); }catch(_){}
   }
 
+  function startFlexCheckRefresh(){
+    try{ window.renderFlexCalculationCheck(); }catch(_){}
+    setInterval(function(){
+      try{ window.renderFlexCalculationCheck(); }catch(_){}
+    }, 1000);
+  }
+
   if (document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", function(){
-      setTimeout(attachToPortfolioClock, 0);
+      setTimeout(function(){
+        attachToPortfolioClock();
+        startFlexCheckRefresh();
+      }, 0);
     }, {once:true});
   }else{
-    setTimeout(attachToPortfolioClock, 0);
+    setTimeout(function(){
+      attachToPortfolioClock();
+      startFlexCheckRefresh();
+    }, 0);
   }
 })();
 </script>
