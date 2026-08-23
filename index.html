@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-29">
+<body data-investment-model="flex-v6-30">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -18741,60 +18741,244 @@ document.addEventListener("DOMContentLoaded", function() {
     return copy[lang] || copy.en;
   }
 
-  function showPlanActivationSuccessAndOpenPortfolio(planCode, amount) {
-    page(
-      "portfolio",
-      document.querySelector('[data-page="portfolio"]')
-    );
 
-    var portfolio = document.getElementById("portfolio");
-    if (!portfolio) return;
+  var PLAN_ACTIVATION_SUCCESS_KEY =
+    "bi_recent_plan_activation_v30";
 
-    var scene = portfolio.querySelector(".portfolio-overview-scene") || portfolio;
-    var title = scene.querySelector(".title");
-    var banner = document.getElementById("planActivationSuccessBanner");
+  function rememberPlanActivationSuccess(
+    planCode,
+    amount,
+    investmentId
+  ) {
+    var payload = {
+      investmentId: String(investmentId || ""),
+      planCode: String(planCode || ""),
+      amount: Number(amount || 0),
+      createdAt: Date.now()
+    };
 
-    if (!banner) {
-      banner = document.createElement("div");
-      banner.id = "planActivationSuccessBanner";
-      banner.className = "plan-activation-success-banner";
-      banner.setAttribute("role", "status");
-      banner.setAttribute("aria-live", "polite");
-      banner.innerHTML = [
-        '<div class="plan-activation-success-icon" aria-hidden="true">✓</div>',
-        '<div class="plan-activation-success-copy">',
-          '<strong id="planActivationSuccessTitle"></strong>',
-          '<span id="planActivationSuccessText"></span>',
-        '</div>'
-      ].join("");
+    try {
+      sessionStorage.setItem(
+        PLAN_ACTIVATION_SUCCESS_KEY,
+        JSON.stringify(payload)
+      );
+    } catch (_) {}
 
-      if (title) {
-        title.insertAdjacentElement("afterend", banner);
-      } else {
-        scene.insertAdjacentElement("afterbegin", banner);
+    window.__lastPlanSuccessScrollId = "";
+    return payload;
+  }
+
+  function getRecentPlanActivationSuccess() {
+    var raw = null;
+
+    try {
+      raw = sessionStorage.getItem(
+        PLAN_ACTIVATION_SUCCESS_KEY
+      );
+    } catch (_) {}
+
+    if (!raw) return null;
+
+    try {
+      var payload = JSON.parse(raw);
+      var age = Date.now() - Number(payload.createdAt || 0);
+
+      /*
+       * Keep the success mark only briefly.
+       * It is a confirmation state, not a permanent card label.
+       */
+      if (!Number.isFinite(age) || age < 0 || age > 12000) {
+        try {
+          sessionStorage.removeItem(
+            PLAN_ACTIVATION_SUCCESS_KEY
+          );
+        } catch (_) {}
+        return null;
       }
+
+      return payload;
+    } catch (_) {
+      try {
+        sessionStorage.removeItem(
+          PLAN_ACTIVATION_SUCCESS_KEY
+        );
+      } catch (_) {}
+      return null;
+    }
+  }
+
+  function selectedPlanMatchesSuccess(
+    item,
+    payload
+  ) {
+    if (!item || !payload) return false;
+
+    if (
+      payload.investmentId &&
+      String(item.id || "") ===
+        String(payload.investmentId)
+    ) {
+      return true;
     }
 
-    var copy = planActivationSuccessCopy(planCode, amount);
-    var titleElement = document.getElementById("planActivationSuccessTitle");
-    var textElement = document.getElementById("planActivationSuccessText");
+    var samePlan =
+      String(item.plan_name || "") ===
+      String(payload.planCode || "");
 
-    if (titleElement) titleElement.textContent = copy[0];
-    if (textElement) textElement.textContent = copy[1];
+    var sameAmount =
+      Math.abs(
+        Number(item.principal || 0) -
+        Number(payload.amount || 0)
+      ) < 0.005;
 
-    clearTimeout(window.planActivationSuccessTimer);
-    banner.classList.remove("show");
-    void banner.offsetWidth;
-    banner.classList.add("show");
+    var startedAt =
+      new Date(item.started_at || 0).getTime();
+
+    var nearActivationTime =
+      Number.isFinite(startedAt) &&
+      Math.abs(
+        startedAt -
+        Number(payload.createdAt || 0)
+      ) < 120000;
+
+    return (
+      samePlan &&
+      sameAmount &&
+      nearActivationTime
+    );
+  }
+
+  function planSuccessLabel() {
+    var lang =
+      localStorage.getItem("bi_lang") || "en";
+
+    var labels = {
+      fa:"پلن با موفقیت فعال شد",
+      en:"Plan activated successfully",
+      az:"Plan uğurla aktivləşdirildi",
+      tr:"Plan başarıyla etkinleştirildi",
+      ru:"План успешно активирован",
+      ar:"تم تفعيل الخطة بنجاح",
+      zh:"计划已成功激活",
+      es:"Plan activado correctamente",
+      fr:"Plan activé avec succès",
+      de:"Plan erfolgreich aktiviert"
+    };
+
+    return labels[lang] || labels.en;
+  }
+
+  function focusActivatedPlanCard(payload) {
+    if (!payload) return;
+
+    var id = String(payload.investmentId || "");
+
+    if (
+      id &&
+      window.__lastPlanSuccessScrollId === id
+    ) {
+      return;
+    }
+
+    var card = null;
+
+    if (id) {
+      card = document.querySelector(
+        '#selectedPlanSummaryZone ' +
+        '[data-plan-id="' +
+        (window.CSS && CSS.escape
+          ? CSS.escape(id)
+          : id.replace(/"/g, '\\"')) +
+        '"]'
+      );
+    }
+
+    if (!card) {
+      var cards =
+        document.querySelectorAll(
+          "#selectedPlanSummaryZone " +
+          ".selected-plan-summary-card"
+        );
+
+      Array.from(cards).some(function (candidate) {
+        var planCode =
+          candidate.getAttribute(
+            "data-plan-code"
+          ) || "";
+
+        var principal =
+          Number(
+            candidate.getAttribute(
+              "data-plan-principal"
+            ) || 0
+          );
+
+        if (
+          planCode ===
+            String(payload.planCode || "") &&
+          Math.abs(
+            principal -
+            Number(payload.amount || 0)
+          ) < 0.005
+        ) {
+          card = candidate;
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    if (!card) return;
+
+    window.__lastPlanSuccessScrollId =
+      id ||
+      (
+        String(payload.planCode || "") +
+        ":" +
+        String(payload.amount || "")
+      );
 
     setTimeout(function () {
-      banner.scrollIntoView({behavior:"smooth", block:"nearest"});
-    }, 80);
-
-    window.planActivationSuccessTimer = setTimeout(function () {
-      banner.classList.remove("show");
-    }, 4500);
+      try {
+        card.scrollIntoView({
+          behavior:"smooth",
+          block:"center"
+        });
+      } catch (_) {}
+    }, 120);
   }
+
+  window.showPlanActivationSuccessAndOpenPortfolio =
+    function (
+      planCode,
+      amount,
+      investmentId
+    ) {
+      rememberPlanActivationSuccess(
+        planCode,
+        amount,
+        investmentId
+      );
+
+      page(
+        "portfolio",
+        document.querySelector(
+          '[data-page="portfolio"]'
+        )
+      );
+
+      /*
+       * Do NOT insert a separate success banner into the Portfolio scene.
+       * That old dynamic banner was one of the elements that could leave
+       * temporary vertical space on iPhone Safari.
+       *
+       * The success state is now painted directly on the activated card.
+       */
+      try {
+        renderSelectedPlanSummaryCards();
+      } catch (_) {}
+    };
 
   window.continueSelectedPlan = async function () {
     var selectedPlan = plans[selectedPlanIndex];
@@ -18852,8 +19036,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
       if (result && result.error) throw result.error;
 
+      var activatedInvestmentId =
+        result &&
+        result.data &&
+        result.data.investment_id
+          ? result.data.investment_id
+          : "";
+
       closePlanSelectionModal();
-      showPlanActivationSuccessAndOpenPortfolio(selectedPlan[0], amount);
+
+      window.showPlanActivationSuccessAndOpenPortfolio(
+        selectedPlan[0],
+        amount,
+        activatedInvestmentId
+      );
 
       /*
        * Activation already succeeded on the server. UI refresh is intentionally
@@ -19548,6 +19744,9 @@ document.addEventListener("DOMContentLoaded", function() {
           );
         });
 
+    var recentActivation =
+      getRecentPlanActivationSuccess();
+
     var totalPrincipal =
       plans.reduce(function (total, item) {
         return total + Number(item.principal || 0);
@@ -19616,11 +19815,44 @@ document.addEventListener("DOMContentLoaded", function() {
             ? "بالانس پلن"
             : "Plan balance";
 
+        var isJustActivated =
+          selectedPlanMatchesSuccess(
+            item,
+            recentActivation
+          );
+
+        var successMarkup =
+          isJustActivated
+            ? [
+                '<div class="selected-plan-card-success" role="status" aria-live="polite">',
+                  '<span class="selected-plan-card-success-check" aria-hidden="true">✓</span>',
+                  '<strong>',
+                    escapeHtml(
+                      planSuccessLabel()
+                    ),
+                  '</strong>',
+                '</div>'
+              ].join("")
+            : "";
+
         return [
           '<section class="selected-plan-summary-card ',
           selectedPlanThemeClass(item),
+          isJustActivated
+            ? ' selected-plan-just-activated'
+            : '',
           '" data-plan-id="',
           escapeHtml(item.id),
+          '" data-plan-code="',
+          escapeHtml(
+            String(item.plan_name || "")
+          ),
+          '" data-plan-principal="',
+          escapeHtml(
+            String(
+              Number(item.principal || 0)
+            )
+          ),
           '">',
 
             '<div class="selected-plan-summary-head">',
@@ -19658,6 +19890,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 ),
               '</div>',
             '</div>',
+
+            successMarkup,
 
             '<div class="selected-plan-summary-grid">',
 
@@ -19752,6 +19986,9 @@ document.addEventListener("DOMContentLoaded", function() {
       .join("");
 
     normalizeSelectedPlanPanelLayout();
+    focusActivatedPlanCard(
+      recentActivation
+    );
   }
 
   var originalRenderPortfolioLive =
@@ -19895,8 +20132,21 @@ document.addEventListener("DOMContentLoaded", function() {
         15000
       );
       if (result && result.error) throw result.error;
+      var activatedVipInvestmentId =
+        result &&
+        result.data &&
+        result.data.investment_id
+          ? result.data.investment_id
+          : "";
+
       closeVipLockConfirmation();
-      showPlanActivationSuccessAndOpenPortfolio("VIP_LOCK", amount);
+
+      window.showPlanActivationSuccessAndOpenPortfolio(
+        "VIP_LOCK",
+        amount,
+        activatedVipInvestmentId
+      );
+
       refreshPortfolioAfterPlanActivation();
     } catch (error) {
       console.error("Confirmed VIP activation error:", error);
@@ -21801,23 +22051,31 @@ html body #plans > .plan .flex-fixed-plan-notice {
       try { await refreshSecureAccount(); } catch(_){}
       try { await updatePortfolio(); } catch(_){}
 
-      var localized =
-        typeof getLocalizedPlanName === "function"
-          ? getLocalizedPlanName(tier.index)
-          : tier.code;
-
-      toast(
-        customLang() === "fa"
-          ? "قرارداد سفارشی " + localized + " برای " + term + " روز فعال شد."
-          : "Custom " + localized + " contract activated for " + term + " days.",
-        "success"
-      );
+      var activatedCustomInvestmentId =
+        result &&
+        result.data &&
+        result.data.investment_id
+          ? result.data.investment_id
+          : "";
 
       try {
-        page(
-          "portfolio",
-          document.querySelector('[data-page="portfolio"]')
-        );
+        if (
+          typeof window.showPlanActivationSuccessAndOpenPortfolio ===
+          "function"
+        ) {
+          window.showPlanActivationSuccessAndOpenPortfolio(
+            tier.code,
+            amount,
+            activatedCustomInvestmentId
+          );
+        } else {
+          page(
+            "portfolio",
+            document.querySelector(
+              '[data-page="portfolio"]'
+            )
+          );
+        }
       } catch(_){}
 
     } catch(error) {
@@ -22035,6 +22293,96 @@ html body #plans > .plan .flex-fixed-plan-notice {
 
   #portfolio .portfolio-base-independent-shell{
     margin-bottom:5px !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v30-success-on-exact-plan">
+/* V30 — success feedback belongs to the exact activated plan card */
+
+#portfolio .selected-plan-summary-card{
+  transition:
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+#portfolio .selected-plan-summary-card.selected-plan-just-activated{
+  border-color:rgba(32,211,142,.78) !important;
+  box-shadow:
+    0 0 0 1px rgba(32,211,142,.14),
+    0 0 24px rgba(32,211,142,.11),
+    inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+#portfolio .selected-plan-card-success{
+  position:relative;
+  z-index:3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  width:max-content;
+  max-width:100%;
+  margin:10px 0 12px;
+  padding:7px 11px;
+  border:1px solid rgba(32,211,142,.32);
+  border-radius:10px;
+  background:rgba(8,53,39,.24);
+  color:#4ce2a8;
+  font-size:11.5px;
+  line-height:1.35;
+  font-weight:750;
+  box-shadow:none;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html[dir="rtl"] #portfolio .selected-plan-card-success{
+  margin-left:auto;
+  margin-right:0;
+}
+
+html[dir="ltr"] #portfolio .selected-plan-card-success{
+  margin-right:auto;
+  margin-left:0;
+}
+
+#portfolio .selected-plan-card-success-check{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  border-radius:50%;
+  background:rgba(32,211,142,.18);
+  color:#63efb6;
+  font-size:12px;
+  font-weight:900;
+}
+
+/*
+ * The old floating success banner is intentionally disabled.
+ * This also prevents it from reserving temporary vertical space
+ * between Portfolio panels in iPhone Safari.
+ */
+#portfolio #planActivationSuccessBanner,
+#portfolio .plan-activation-success-banner{
+  display:none !important;
+  height:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  overflow:hidden !important;
+}
+
+@media(max-width:760px){
+  #portfolio .selected-plan-card-success{
+    margin:8px 0 10px;
+    padding:6px 9px;
+    font-size:10.5px;
   }
 }
 </style>
