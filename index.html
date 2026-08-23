@@ -11751,6 +11751,49 @@ html[dir="ltr"] #portfolio .portfolio-banner-slogan{
   }
 }
 </style>
+
+<style id="portfolio-v37-9-green-text-clean-glass">
+/* V37.9 — remove dark/black edging from the main green banner line */
+
+#portfolio .portfolio-banner-slogan strong{
+  color:#aefac6 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #effff4 0%,
+      #c8ffd8 18%,
+      #8df4ad 42%,
+      #45d77c 66%,
+      #78ec9d 84%,
+      #5adb8b 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  /* Remove every dark outline/shadow from previous versions */
+  -webkit-text-stroke:0 !important;
+  text-shadow:none !important;
+
+  /* Keep only a clean green-glass highlight/glow */
+  filter:
+    drop-shadow(0 1px 0 rgba(238,255,244,.30))
+    drop-shadow(0 0 7px rgba(84,229,134,.28))
+    drop-shadow(0 0 14px rgba(54,207,112,.12)) !important;
+}
+
+/* Slightly cleaner on mobile */
+@media(max-width:760px){
+  #portfolio .portfolio-banner-slogan strong{
+    filter:
+      drop-shadow(0 1px 0 rgba(238,255,244,.26))
+      drop-shadow(0 0 6px rgba(84,229,134,.25)) !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
