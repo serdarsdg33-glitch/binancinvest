@@ -23272,5 +23272,212 @@ a[style*="var(--gold"][class*="btn"]{
 }
 </style>
 
+
+<style id="v37-1-deposit-submit-readable">
+/* V37.1 — only improve readability of the Deposit submit button */
+
+#portfolio button[data-t="depSubmitBtn"]{
+  border:1px solid rgba(255,214,83,.50) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.22),
+      rgba(240,185,11,.10)
+    ) !important;
+
+  color:#fff3bf !important;
+  font-size:14px !important;
+  font-weight:700 !important;
+  line-height:1.4 !important;
+  letter-spacing:0 !important;
+
+  -webkit-text-fill-color:#fff3bf !important;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.82),
+    0 0 8px rgba(0,0,0,.36) !important;
+
+  -webkit-backdrop-filter:blur(5px) saturate(1.05) !important;
+  backdrop-filter:blur(5px) saturate(1.05) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 7px 20px rgba(0,0,0,.20) !important;
+}
+
+#portfolio button[data-t="depSubmitBtn"]::before{
+  opacity:.55 !important;
+}
+
+#portfolio button[data-t="depSubmitBtn"]:hover,
+#portfolio button[data-t="depSubmitBtn"]:focus-visible{
+  color:#fff7d6 !important;
+  -webkit-text-fill-color:#fff7d6 !important;
+  border-color:rgba(255,220,98,.68) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.28),
+      rgba(240,185,11,.13)
+    ) !important;
+}
+
+@media(max-width:600px){
+  #portfolio button[data-t="depSubmitBtn"]{
+    font-size:13px !important;
+    font-weight:700 !important;
+    min-height:44px !important;
+  }
+}
+</style>
+
+
+<style id="v37-2-glass-lock-stickers">
+/* V37.2 — only restyle existing lock stickers/icons across the site */
+
+/* Shared glass material for all visible lock stickers */
+.portfolio-finance-guest-icon,
+.portfolio-vip-mini-icon,
+.vip-lock-icon,
+.safu-lock{
+  position:relative;
+  overflow:hidden;
+  display:grid !important;
+  place-items:center !important;
+
+  border:1px solid rgba(255,221,118,.42) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,221,118,.18),
+      rgba(240,185,11,.08)
+    ) !important;
+
+  color:#ffe48a !important;
+
+  -webkit-backdrop-filter:blur(7px) saturate(1.08) !important;
+  backdrop-filter:blur(7px) saturate(1.08) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(240,185,11,.06),
+    0 8px 24px rgba(0,0,0,.22),
+    0 0 18px rgba(240,185,11,.10) !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.55),
+    0 0 8px rgba(255,220,100,.18) !important;
+}
+
+/* Soft glass highlight */
+.portfolio-finance-guest-icon::before,
+.portfolio-vip-mini-icon::before,
+.vip-lock-icon::before,
+.safu-lock::before{
+  content:"";
+  position:absolute;
+  inset:1px 1px auto 1px;
+  height:42%;
+  border-radius:inherit;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.16),
+      rgba(255,255,255,0)
+    );
+  pointer-events:none;
+}
+
+/* Guest finance lock: slightly larger, premium glass tile */
+.portfolio-finance-guest-icon{
+  width:64px !important;
+  height:64px !important;
+  margin:0 auto 14px !important;
+  border-radius:18px !important;
+  font-size:26px !important;
+}
+
+/* Main VIP lock icon */
+.vip-lock-icon{
+  width:62px !important;
+  height:62px !important;
+  border-radius:18px !important;
+  font-size:26px !important;
+}
+
+/* Quick VIP small lock */
+.portfolio-vip-mini-icon{
+  width:42px !important;
+  height:42px !important;
+  border-radius:12px !important;
+  font-size:18px !important;
+}
+
+/* SAFU lock was previously just plain emoji; make it a small glass badge */
+.safu-lock{
+  width:34px !important;
+  height:34px !important;
+  margin:0 auto 3px !important;
+  border-radius:10px !important;
+  font-size:16px !important;
+  line-height:1 !important;
+}
+
+/* Subtle interaction polish where icons sit inside actionable areas */
+.portfolio-finance-guest:hover .portfolio-finance-guest-icon,
+.portfolio-vip-quick:hover .portfolio-vip-mini-icon,
+.vip-lock-card:hover .vip-lock-icon{
+  border-color:rgba(255,226,130,.58) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,221,118,.22),
+      rgba(240,185,11,.11)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 10px 28px rgba(0,0,0,.23),
+    0 0 20px rgba(240,185,11,.13) !important;
+}
+
+/* Keep the large surrounding cards sharp; only the lock sticker itself is blurred */
+.portfolio-finance-guest,
+.portfolio-vip-quick,
+.vip-lock-card,
+.safu-badge{
+  -webkit-backdrop-filter:inherit;
+  backdrop-filter:inherit;
+}
+
+@media(max-width:600px){
+  .portfolio-finance-guest-icon{
+    width:58px !important;
+    height:58px !important;
+    border-radius:16px !important;
+    font-size:24px !important;
+  }
+
+  .vip-lock-icon{
+    width:56px !important;
+    height:56px !important;
+    border-radius:16px !important;
+    font-size:24px !important;
+  }
+
+  .portfolio-vip-mini-icon{
+    width:38px !important;
+    height:38px !important;
+    border-radius:11px !important;
+    font-size:17px !important;
+  }
+
+  .safu-lock{
+    width:31px !important;
+    height:31px !important;
+    border-radius:9px !important;
+    font-size:15px !important;
+  }
+}
+</style>
+
 </body>
 </html>
