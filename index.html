@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-33">
+<body data-investment-model="flex-v6-34">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -22655,6 +22655,170 @@ html[dir="rtl"] #portfolio .selected-plan-end-payout-values{
 
   html[dir="rtl"] #portfolio .selected-plan-end-payout-values{
     text-align:right;
+  }
+}
+</style>
+
+
+<style id="language-direction-v34">
+/* ==========================================================
+   V34 — Preserve LTR / RTL layout with the selected language
+   LTR: EN / AZ / TR / RU / ZH / ES / FR / DE
+   RTL: FA / AR
+   ========================================================== */
+
+/* ---------- Portfolio: text blocks ---------- */
+html[dir="ltr"] #portfolio .portfolio-intro-copy,
+html[dir="ltr"] #portfolio .portfolio-major-base .cards .card.stat,
+html[dir="ltr"] #portfolio .flex-calculation-check-body,
+html[dir="ltr"] #portfolio .flex-check-status,
+html[dir="ltr"] #portfolio .flex-check-grid > div,
+html[dir="ltr"] #portfolio .flex-check-note,
+html[dir="ltr"] #portfolio .withdrawable-plans-total-card,
+html[dir="ltr"] #portfolio .selected-plan-summary-card,
+html[dir="ltr"] #portfolio .selected-plan-summary-metric,
+html[dir="ltr"] #portfolio .selected-plan-end-payout-copy,
+html[dir="ltr"] #portfolio .selected-plan-card-success,
+html[dir="ltr"] #portfolio .referral-portfolio-card,
+html[dir="ltr"] #portfolio .referral-portfolio-meta,
+html[dir="ltr"] #portfolio .vip-single-card,
+html[dir="ltr"] #portfolio .portfolio-vip-quick,
+html[dir="ltr"] #portfolio .portfolio-vip-title,
+html[dir="ltr"] #portfolio .portfolio-vip-field,
+html[dir="ltr"] #portfolio .portfolio-vip-error{
+  text-align:left !important;
+}
+
+html[dir="rtl"] #portfolio .portfolio-intro-copy,
+html[dir="rtl"] #portfolio .portfolio-major-base .cards .card.stat,
+html[dir="rtl"] #portfolio .flex-calculation-check-body,
+html[dir="rtl"] #portfolio .flex-check-status,
+html[dir="rtl"] #portfolio .flex-check-grid > div,
+html[dir="rtl"] #portfolio .flex-check-note,
+html[dir="rtl"] #portfolio .withdrawable-plans-total-card,
+html[dir="rtl"] #portfolio .selected-plan-summary-card,
+html[dir="rtl"] #portfolio .selected-plan-summary-metric,
+html[dir="rtl"] #portfolio .selected-plan-end-payout-copy,
+html[dir="rtl"] #portfolio .selected-plan-card-success,
+html[dir="rtl"] #portfolio .referral-portfolio-card,
+html[dir="rtl"] #portfolio .referral-portfolio-meta,
+html[dir="rtl"] #portfolio .vip-single-card,
+html[dir="rtl"] #portfolio .portfolio-vip-quick,
+html[dir="rtl"] #portfolio .portfolio-vip-title,
+html[dir="rtl"] #portfolio .portfolio-vip-field,
+html[dir="rtl"] #portfolio .portfolio-vip-error{
+  text-align:right !important;
+}
+
+/* The calculation-check control itself was previously always pushed right.
+   It now follows the active language direction. */
+html[dir="ltr"] #portfolio .flex-calculation-check-toggle{
+  margin-left:0 !important;
+  margin-right:auto !important;
+  justify-content:flex-start !important;
+  text-align:left !important;
+}
+
+html[dir="rtl"] #portfolio .flex-calculation-check-toggle{
+  margin-right:0 !important;
+  margin-left:auto !important;
+  justify-content:flex-start !important;
+  text-align:right !important;
+}
+
+/* Keep the arrow on the natural end of the translated label. */
+html[dir="ltr"] #portfolio .flex-calculation-check-toggle{
+  flex-direction:row !important;
+}
+html[dir="rtl"] #portfolio .flex-calculation-check-toggle{
+  flex-direction:row !important;
+}
+
+/* ---------- Selected-plan card header / actions ---------- */
+html[dir="ltr"] #portfolio .selected-plan-summary-head,
+html[dir="ltr"] #portfolio .selected-plan-summary-actions,
+html[dir="ltr"] #portfolio .selected-plan-end-payout-card{
+  direction:ltr;
+}
+
+html[dir="rtl"] #portfolio .selected-plan-summary-head,
+html[dir="rtl"] #portfolio .selected-plan-summary-actions,
+html[dir="rtl"] #portfolio .selected-plan-end-payout-card{
+  direction:rtl;
+}
+
+/* Numeric/currency strings remain visually stable in both directions. */
+#portfolio .portfolio-major-base .cards .card.stat b,
+#portfolio .withdrawable-plans-total-card strong,
+#portfolio .selected-plan-summary-metric strong,
+#portfolio .selected-plan-end-payout-values,
+#portfolio .referral-portfolio-card strong,
+#portfolio .portfolio-vip-metric strong,
+#portfolio .flex-check-grid b{
+  direction:ltr;
+  unicode-bidi:isolate;
+}
+
+/* ---------- Referral text: fix old inverted rules ---------- */
+html[dir="ltr"] .referral-portfolio-meta,
+html[dir="ltr"] .referral-reward-detail{
+  text-align:left !important;
+}
+
+html[dir="rtl"] .referral-portfolio-meta,
+html[dir="rtl"] .referral-reward-detail{
+  text-align:right !important;
+}
+
+/* ---------- Custom Investment: newly-added V26 block ---------- */
+html[dir="ltr"] #invest #customInvestmentCard,
+html[dir="ltr"] #invest .custom-investment-head,
+html[dir="ltr"] #invest .custom-field,
+html[dir="ltr"] #invest .custom-preview-main,
+html[dir="ltr"] #invest .custom-profit-grid > div,
+html[dir="ltr"] #invest .custom-contract-summary > div,
+html[dir="ltr"] #invest .custom-preview-note,
+html[dir="ltr"] #invest .custom-investment-error{
+  text-align:left !important;
+}
+
+html[dir="rtl"] #invest #customInvestmentCard,
+html[dir="rtl"] #invest .custom-investment-head,
+html[dir="rtl"] #invest .custom-field,
+html[dir="rtl"] #invest .custom-preview-main,
+html[dir="rtl"] #invest .custom-profit-grid > div,
+html[dir="rtl"] #invest .custom-contract-summary > div,
+html[dir="rtl"] #invest .custom-preview-note,
+html[dir="rtl"] #invest .custom-investment-error{
+  text-align:right !important;
+}
+
+#invest #customInvestmentCard input,
+#invest #customInvestmentCard .green,
+#invest #customInvestmentCard #customResult,
+#invest #customInvestmentCard #customSummaryAmount,
+#invest #customInvestmentCard #customSummaryRate{
+  direction:ltr;
+  unicode-bidi:isolate;
+}
+
+/* Mobile referral rules in the older stylesheet forced LEFT on every language.
+   These final rules intentionally win over them. */
+@media(max-width:760px){
+  html[dir="ltr"] #portfolio .referral-portfolio-meta{
+    text-align:left !important;
+  }
+  html[dir="rtl"] #portfolio .referral-portfolio-meta{
+    text-align:right !important;
+  }
+}
+
+@media(max-width:650px){
+  html[dir="ltr"] .referral-reward-detail{
+    text-align:left !important;
+  }
+  html[dir="rtl"] .referral-reward-detail{
+    text-align:right !important;
   }
 }
 </style>
