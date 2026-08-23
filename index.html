@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-18">
+<body data-investment-model="flex-v6-19">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8410,6 +8410,10 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
   <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
     <img class="portfolio-summary-bg" src="portfolio-overview.webp" alt="" aria-hidden="true">
     <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
+    <div class="portfolio-intro-copy" lang="fa" dir="rtl">
+      <strong>مرکز مدیریت سرمایه، سود و قراردادهای شما</strong>
+      <span>سرمایه خود را مدیریت کنید</span>
+    </div>
     <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
   </div>
 
@@ -20705,6 +20709,51 @@ html body #plans > .plan .flex-fixed-plan-notice {
   #portfolio button[data-t="depSubmitBtn"]{
     font-size:13.5px !important;
     font-weight:650 !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v19-intro-copy">
+/* V19 — Portfolio intro text under the basket title */
+#portfolio .portfolio-intro-copy{
+  position:relative;
+  z-index:3;
+  margin:2px 0 18px;
+  padding:0 2px;
+  text-align:right;
+}
+
+#portfolio .portfolio-intro-copy strong{
+  display:block;
+  margin:0 0 5px;
+  color:#f4f7fb;
+  font-size:15px;
+  line-height:1.7;
+  font-weight:800;
+  text-shadow:0 2px 7px rgba(0,0,0,.82);
+}
+
+#portfolio .portfolio-intro-copy span{
+  display:block;
+  color:#b8c1cc;
+  font-size:12px;
+  line-height:1.7;
+  font-weight:500;
+  text-shadow:0 2px 6px rgba(0,0,0,.75);
+}
+
+@media(max-width:600px){
+  #portfolio .portfolio-intro-copy{
+    margin-bottom:14px;
+  }
+
+  #portfolio .portfolio-intro-copy strong{
+    font-size:13.5px;
+  }
+
+  #portfolio .portfolio-intro-copy span{
+    font-size:11px;
   }
 }
 </style>
