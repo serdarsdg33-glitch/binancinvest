@@ -10397,7 +10397,7 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the s
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
 fa:{
-portfolioBannerSlogan1:"مسیر رشد شما، از اینجا آغاز می‌شود",portfolioBannerSlogan2:"با دیدی روشن‌تر، آینده خود را بسازید",
+portfolioBannerSlogan1:"مسیر رشد شما از اینجا آغاز می‌شود",portfolioBannerSlogan2:"با دیدی روشن‌تر آینده خود را بسازید",
 portfolioBannerSlogan:'با ما رشد کنید، آینده خود را بسازید',
 portfolioIntroTitle:'مرکز مدیریت سرمایه، سود و قراردادهای شما',portfolioIntroSubtitle:'سرمایه خود را با شفافیت و کنترل بیشتر مدیریت کنید',flexCheckToggle:'بررسی محاسبه پلن پایه',flexCheckBasis:'مبنای محاسبه: فقط FLEX_DAILY با نرخ روزانه ۱.۵٪',flexCheckPrincipalLabel:'اصل سرمایه فعلی',flexCheckRateLabel:'نرخ روزانه',flexCheckSecondLabel:'سود هر ثانیه',flexCheckMinuteLabel:'سود هر دقیقه',flexCheckHourLabel:'سود هر ساعت',flexCheckDayLabel:'سود هر روز',flexCheckPreservedLabel:'سود قبلی حفظ\u200cشده',flexCheckLiveLabel:'سود فعلی پلن پایه',flexCheckNote:'سود Growth / Starter / Premium / VIP در سرعت محاسبه پلن پایه وارد نمی\u200cشود.',
 brand:"بایننس اینوست",login:"ورود",register:"ساخت حساب",logout:"خروج",overview:"نمای کلی",markets:"بازارها",invest:"سرمایه‌گذاری",portfolio:"سبد من",transactions:"تراکنش‌ها",rewards:"جوایز",profile:"پروفایل",
@@ -23979,6 +23979,164 @@ html[dir="ltr"] #portfolio .portfolio-banner-slogan{
     right:4.5% !important;
     width:56% !important;
     max-width:56% !important;
+  }
+
+  #portfolio .portfolio-banner-slogan strong{
+    font-size:15px !important;
+  }
+
+  #portfolio .portfolio-banner-slogan span{
+    font-size:10.5px !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v37-6-banner-slogan-top-center-gold">
+/* V37.6 — top-center metallic/glass-gold slogan, no box */
+
+#portfolio .portfolio-banner-slogan{
+  position:absolute !important;
+  top:6.5% !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  z-index:4 !important;
+
+  transform:translateX(-50%) !important;
+
+  width:88% !important;
+  max-width:920px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:5px !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+  background:none !important;
+
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+
+  box-shadow:none !important;
+  text-align:center !important;
+}
+
+/* Remove any decorative box/line from earlier versions */
+#portfolio .portfolio-banner-slogan::before,
+#portfolio .portfolio-banner-slogan::after{
+  content:none !important;
+  display:none !important;
+}
+
+/* Main line — stronger metallic gold, logo-like */
+#portfolio .portfolio-banner-slogan strong{
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  font-size:clamp(20px, 2.55vw, 34px) !important;
+  font-weight:900 !important;
+  line-height:1.20 !important;
+  letter-spacing:-.018em !important;
+
+  color:#f7d875 !important;
+  background:
+    linear-gradient(
+      180deg,
+      #fff1b8 0%,
+      #f6d56a 26%,
+      #d89b25 52%,
+      #ffe28b 73%,
+      #b97712 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  -webkit-text-stroke:.25px rgba(255,231,150,.28);
+
+  filter:
+    drop-shadow(0 1px 0 rgba(255,242,188,.20))
+    drop-shadow(0 2px 2px rgba(0,0,0,.88))
+    drop-shadow(0 0 9px rgba(230,169,45,.18)) !important;
+}
+
+/* Second line — smaller, softer champagne-gold */
+#portfolio .portfolio-banner-slogan span{
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  font-size:clamp(12px, 1.45vw, 18px) !important;
+  font-weight:650 !important;
+  line-height:1.40 !important;
+  letter-spacing:-.006em !important;
+
+  color:#e9ca74 !important;
+  background:
+    linear-gradient(
+      180deg,
+      #f8e8ae 0%,
+      #dfbd62 48%,
+      #b77b20 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.90))
+    drop-shadow(0 0 7px rgba(220,160,38,.13)) !important;
+}
+
+/* Keep both RTL and LTR languages centered at the top */
+html[dir="rtl"] #portfolio .portfolio-banner-slogan,
+html[dir="ltr"] #portfolio .portfolio-banner-slogan{
+  text-align:center !important;
+  align-items:center !important;
+}
+
+html[dir="rtl"] #portfolio .portfolio-banner-slogan{
+  direction:rtl !important;
+}
+
+html[dir="ltr"] #portfolio .portfolio-banner-slogan{
+  direction:ltr !important;
+}
+
+/* Mobile */
+@media(max-width:760px){
+  #portfolio .portfolio-banner-slogan{
+    top:5.5% !important;
+    width:92% !important;
+    max-width:92% !important;
+    gap:4px !important;
+  }
+
+  #portfolio .portfolio-banner-slogan strong{
+    font-size:clamp(16px, 4.7vw, 23px) !important;
+    line-height:1.22 !important;
+  }
+
+  #portfolio .portfolio-banner-slogan span{
+    font-size:clamp(10px, 3.1vw, 14px) !important;
+    line-height:1.38 !important;
+  }
+}
+
+@media(max-width:420px){
+  #portfolio .portfolio-banner-slogan{
+    top:5% !important;
+    width:94% !important;
   }
 
   #portfolio .portfolio-banner-slogan strong{
