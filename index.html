@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-23">
+<body data-investment-model="flex-v6-26">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8303,7 +8303,9 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
         min="10"
         max="10000"
         step="1"
-        value="500"
+        placeholder="500"
+        inputmode="decimal"
+        autocomplete="off"
         oninput="calculateVipLock()"
       >
 
@@ -8321,17 +8323,17 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
     <div class="vip-lock-results">
       <div>
         <span data-t="dailyCalculation">Daily calculation</span>
-        <strong id="vipDailyProfit">$27.50</strong>
+        <strong id="vipDailyProfit">$0.00</strong>
       </div>
 
       <div>
         <span data-t="calculation60">60-day calculation</span>
-        <strong id="vipTotalProfit">$1,650.00</strong>
+        <strong id="vipTotalProfit">$0.00</strong>
       </div>
 
       <div>
         <span data-t="principalCalculation">Principal + calculation</span>
-        <strong id="vipFinalValue">$2,150.00</strong>
+        <strong id="vipFinalValue">$0.00</strong>
       </div>
     </div>
 
@@ -8364,43 +8366,103 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </div>
   </div>
 </div>
-<div class="card form" style="margin-top:20px">
-    <h2 data-t="customTitle">Custom Investment Plan</h2>
-    <p class="muted" data-t="customAutoDesc">Enter an amount from $10 to $10,000. The appropriate investment plan, daily rate and term will be selected automatically.</p>
-    <div class="two">
-        <div>
-  <label data-t="investmentAmountRange">Investment Amount ($10 - $10,000)</label>
-  <input
-    id="customAmount"
-    type="number"
-    value="500"
-    min="10"
-    max="10000"
-    step="0.01"
-    oninput="calcCustom()"
-  >
-</div>
-        <div>
-  <label data-t="termAuto">Term (Automatically selected)</label>
-  <input
-    id="customTerm"
-    type="number"
-    value="60"
-    readonly
-  >
-</div>
+<div id="customInvestmentCard" class="card form custom-investment-pro" style="margin-top:20px">
+    <div class="custom-investment-head">
+      <div>
+        <h2 data-t="customTitle">Custom Investment Plan</h2>
+        <p class="muted" data-t="customAutoDesc">Enter the amount and duration yourself. The daily rate is selected from the amount tier and the projection is calculated instantly.</p>
+      </div>
+      <span class="custom-investment-badge">CUSTOM</span>
     </div>
-    <div style="margin-top:20px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-        <div><span class="muted" data-t="estimated">Estimated value</span><div id="customResult" style="font-size:26px;font-weight:900">$0.00</div></div>
-        <div><span class="muted" data-t="dailyProfitLabel">Daily Profit</span><div id="customDaily" class="green" style="font-size:20px;font-weight:700">$0.00</div></div>
-        <div><span class="muted" data-t="monthlyProfitLabel">Monthly Profit</span><div id="customMonthly" class="green" style="font-size:20px;font-weight:700">$0.00</div></div>
+
+    <div class="custom-input-grid">
+      <div class="custom-field">
+        <label data-t="investmentAmountRange">Investment Amount ($10 - $10,000)</label>
+        <input
+          id="customAmount"
+          type="number"
+          placeholder="500"
+          inputmode="decimal"
+          autocomplete="off"
+          min="10"
+          max="10000"
+          step="0.01"
+          oninput="calcCustom()"
+        >
+      </div>
+
+      <div class="custom-field">
+        <label data-t="customTermLabel">Term (Days)</label>
+        <input
+          id="customTerm"
+          type="number"
+          placeholder="60"
+          inputmode="numeric"
+          autocomplete="off"
+          min="1"
+          step="1"
+          oninput="calcCustom()"
+        >
+      </div>
     </div>
-    <div style="margin-top:10px"><span id="customProfit" class="green" style="font-size:13px">$0.00 total profit</span></div>
-    <div id="lockNotice" style="margin-top:12px; font-size:12px; color:var(--gold2); background:rgba(240,185,11,0.1); padding:10px; border-radius:8px; border:1px solid rgba(240,185,11,0.2);"></div>
-    <button class="btn gold" style="width:100%;margin-top:15px" onclick="investCustom()" data-t="investCustomBtn">Invest Custom Amount</button>
+
+    <div class="custom-preview-panel">
+      <div class="custom-preview-top">
+        <div class="custom-preview-main">
+          <span class="muted" data-t="estimated">Estimated value</span>
+          <strong id="customResult">$0.00</strong>
+        </div>
+
+        <div class="custom-preview-main">
+          <span class="muted" data-t="profitTotal">Total profit</span>
+          <strong id="customProfit" class="green">$0.00</strong>
+        </div>
+      </div>
+
+      <div class="custom-profit-grid">
+        <div>
+          <span class="muted" data-t="dailyProfitLabel">Daily Profit</span>
+          <b id="customDaily" class="green">$0.00</b>
+        </div>
+        <div>
+          <span class="muted" data-t="monthlyProfitLabel">Monthly Profit</span>
+          <b id="customMonthly" class="green">$0.00</b>
+        </div>
+      </div>
+
+      <div class="custom-contract-summary">
+        <div>
+          <span data-t="amount">Amount</span>
+          <b id="customSummaryAmount">$0.00</b>
+        </div>
+        <div>
+          <span data-t="investmentTerm">Investment term</span>
+          <b id="customSummaryTerm">—</b>
+        </div>
+        <div>
+          <span data-t="dailyRate">Daily rate</span>
+          <b id="customSummaryRate">—</b>
+        </div>
+        <div>
+          <span data-t="planWord">Plan</span>
+          <b id="customSummaryPlan">—</b>
+        </div>
+      </div>
+
+      <div id="lockNotice" class="custom-preview-note"></div>
+      <div id="customInvestmentError" class="custom-investment-error"></div>
+    </div>
+
+    <button
+      id="customInvestButton"
+      class="btn gold custom-invest-button"
+      type="button"
+      onclick="investCustom()"
+      data-t="investCustomBtn"
+    >Invest Custom Amount</button>
 </div>
 
-<div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" value="1000" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$1,000.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
+<div class="card form"><h2 data-t="calculator">Investment Calculator</h2><div class="two"><div><label data-t="amount">Amount</label><input id="amount" type="number" placeholder="1000" inputmode="decimal" autocomplete="off" oninput="calc()"></div><div><label data-t="plan">Plan</label><select id="planSelect" onchange="calc()"></select></div></div><div style="margin-top:20px"><span class="muted" data-t="estimated">Estimated value</span><div id="calcResult" style="font-size:38px;font-weight:900">$0.00</div><span id="calcProfit" class="green">$0.00</span></div></div></section>
 
 <section id="portfolio" class="view">
 <div class="portfolio-top-artwork" aria-label="Binance Invest portfolio banner">
@@ -8549,7 +8611,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       <div class="portfolio-vip-field">
         <label for="portfolioVipLockAmount" data-t="amountToLock">Amount to lock ($10 – $10,000)</label>
         <div class="portfolio-vip-input-row">
-          <input id="portfolioVipLockAmount" type="number" min="10" max="10000" step="1" value="500" oninput="calculatePortfolioVipLock()">
+          <input id="portfolioVipLockAmount" type="number" min="10" max="10000" step="1" placeholder="500" inputmode="decimal" autocomplete="off" oninput="calculatePortfolioVipLock()">
           <button class="btn" type="button" onclick="setPortfolioVipMaximum()" data-t="max">MAX</button>
         </div>
       </div>
@@ -8560,11 +8622,11 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       </div>
       <div class="portfolio-vip-metric">
         <span data-t="dailyCalculation">Daily calculation</span>
-        <strong id="portfolioVipDaily">$27.50</strong>
+        <strong id="portfolioVipDaily">$0.00</strong>
       </div>
       <div class="portfolio-vip-metric">
         <span data-t="calculation60">60-day calculation</span>
-        <strong id="portfolioVipTotal">$1,650.00</strong>
+        <strong id="portfolioVipTotal">$0.00</strong>
       </div>
 
       <button class="btn gold portfolio-vip-button" type="button" onclick="openPortfolioVipLockConfirmation()" data-t="lockFromBalance">Lock From Balance</button>
@@ -8590,7 +8652,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       
       <div style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depAmountLabel">Amount (USD):</label>
-          <input type="number" id="deposit-amount" placeholder="100" oninput="clearFieldError('deposit-amount')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <input type="number" id="deposit-amount" placeholder="100" inputmode="decimal" autocomplete="off" oninput="clearFieldError('deposit-amount')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
       </div>
 
       <div style="margin-bottom: 15px;">
@@ -8676,6 +8738,8 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
   min="0.01"
   step="0.01"
   placeholder="50"
+  inputmode="decimal"
+  autocomplete="off"
   oninput="clearWithdrawalError()"
   style="width:100%;padding:11px;background:#1a222c;border:1px solid #474d57;color:#fff;border-radius:8px;margin-bottom:8px;"
 >
@@ -12062,7 +12126,18 @@ function calculateVipLock() {
 
   if (!input) return;
 
-  const amount = Number(input.value);
+  const rawAmount = String(input.value || "").trim();
+
+  if (rawAmount === "") {
+    errorBox.textContent = "";
+    errorBox.classList.remove("show");
+    document.getElementById("vipDailyProfit").textContent = "$0.00";
+    document.getElementById("vipTotalProfit").textContent = "$0.00";
+    document.getElementById("vipFinalValue").textContent = "$0.00";
+    return;
+  }
+
+  const amount = Number(rawAmount);
 
   const isValid =
     Number.isFinite(amount) &&
@@ -12144,12 +12219,24 @@ function calculatePortfolioVipLock() {
 
   if (!input || !dailyElement || !totalElement) return;
 
-  const amount = Number(input.value);
+  const rawAmount = String(input.value || "").trim();
   const availableBalance = getMainAvailableBalance();
 
   if (availableElement) {
     availableElement.textContent = formatPortfolioMoney(availableBalance);
   }
+
+  if (rawAmount === "") {
+    dailyElement.textContent = "$0.00";
+    totalElement.textContent = "$0.00";
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.classList.remove("show");
+    }
+    return;
+  }
+
+  const amount = Number(rawAmount);
 
   if (
     !Number.isFinite(amount) ||
@@ -12354,7 +12441,7 @@ await updatePortfolio();
 
 document.getElementById(
   "vipLockAmount"
-).value = "500";
+).value = "";
 
 calculateVipLock();
 
@@ -12363,7 +12450,7 @@ const portfolioVipInput = document.getElementById(
 );
 
 if (portfolioVipInput) {
-  portfolioVipInput.value = "500";
+  portfolioVipInput.value = "";
 }
 
 calculatePortfolioVipLock();
@@ -12477,7 +12564,17 @@ function openPlanSelectionModal(index) {
 
   amountInput.min = minimum;
   amountInput.max = maximum;
-  amountInput.value = Math.ceil(minimum);
+
+  /*
+   * V24 — do not force the minimum amount into the field.
+   * On iPhone this made Growth/Premium feel "locked", because the user
+   * had to select the whole prefilled value before entering a new one.
+   * Keep the range as a placeholder instead and let the field start empty.
+   */
+  amountInput.value = "";
+  amountInput.placeholder = String(Math.ceil(minimum));
+  amountInput.setAttribute("inputmode", "decimal");
+  amountInput.setAttribute("autocomplete", "off");
 
   const errorBox =
     document.getElementById("selectedPlanError");
@@ -12495,6 +12592,27 @@ function closePlanSelectionModal() {
     "planSelectionModal"
   ).classList.remove("open");
 }
+
+/* V24 — natural amount editing on mobile/iPhone */
+(function(){
+  var amountField = document.getElementById("selectedPlanAmount");
+  if (!amountField) return;
+
+  amountField.addEventListener("input", function(){
+    var errorBox = document.getElementById("selectedPlanError");
+    if (errorBox) {
+      errorBox.textContent = "";
+      errorBox.classList.remove("show");
+    }
+  });
+
+  amountField.addEventListener("focus", function(){
+    /*
+     * Do not auto-select, clamp, restore or replace the user's text.
+     * The user can erase one digit at a time or enter a completely new value.
+     */
+  });
+})();
 
 function continueSelectedPlan() {
   const selectedPlan = plans[selectedPlanIndex];
@@ -13330,9 +13448,18 @@ function openVipPlanDetails() {
 }
 
 function calc(){
-  let a = +document.getElementById("amount").value;
+  const amountField = document.getElementById("amount");
+  const rawAmount = String(amountField?.value || "").trim();
   let idx = +document.getElementById("planSelect").value;
   let p = plans[idx];
+
+  if (rawAmount === "") {
+    document.getElementById("calcResult").textContent = "$0.00";
+    document.getElementById("calcProfit").textContent = "$0.00";
+    return;
+  }
+
+  let a = Number(rawAmount);
   let total = a * (1 + (p[3]/100)*p[4]);
   let profit = total - a;
   document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -14555,14 +14682,14 @@ const LANGUAGE_MODAL_TEXT = {
 const COMPLETE_SITE_TEXT = {
   en:{
     support:"Support",friendReferralReward:"FRIEND REFERRAL REWARD",inviteFriendsEarn:"Invite Friends and Earn $10",referralAutoCredit:"$10 will automatically be added to your available balance.",viewReferralCode:"View Referral Code",liveSaved:"Live + Saved",verified:"Verified",safu:"SAFU",securityProtection:"Security Protection",networkProtection:"Network Protection",sslCertificate:"SSL Certificate",securityStandard:"Security Standard",onlineChat:"Online Chat",footerAbout:"A multilingual digital investment interface built to make account activity, investment plans, rewards and support easier to understand and manage from one secure experience.",platform:"Platform",companyHelp:"Company & Help",aboutUs:"About Us",referralRewards:"Referral Rewards",helpSupport:"Help & Support",legal:"Legal",termsConditions:"Terms & Conditions",privacyPolicy:"Privacy Policy",accountSecurity:"Account Security",riskDisclosure:"Risk Disclosure",footerRights:"© 2026 Binance Invest. All rights reserved.",terms:"Terms",privacy:"Privacy",about:"About",
-    vipLockContract:"VIP LOCK CONTRACT",capitalLock60:"60-Day Capital Lock",capitalLockDesc:"Lock a selected amount for 60 days and calculate returns using the displayed 5.5% daily rate.",daily:"Daily",amountToLock:"Amount to lock ($10 – $10,000)",max:"MAX",dailyCalculation:"Daily calculation",calculation60:"60-day calculation",principalCalculation:"Principal + calculation",vipLockNotice:"The selected balance remains locked for 60 days. The displayed return is calculated from the contract rate.",lockFromBalance:"Lock From Balance",makeNewDeposit:"Make New Deposit",customAutoDesc:"Enter an amount from $10 to $10,000. The appropriate plan, daily rate and term are selected automatically.",investmentAmountRange:"Investment Amount ($10 – $10,000)",termAuto:"Term (Automatically selected)",totalBalance:"Total Balance",referralRewardsBalance:"Referral rewards added to balance",referralBalanceNotice:"This reward is included in your available balance and is not active invested capital.",vipLockContracts:"VIP LOCK CONTRACTS",vipLockedCapital:"VIP 60-Day Locked Capital",vipListDesc:"All VIP contracts are displayed in one unified list.",lockedCapital:"Locked capital",projectedCalculation:"Projected calculation",activeContracts:"Active contracts",timeRemaining:"Time Remaining",dailyRate:"Daily Rate",totalCalculation:"Total Calculation",status:"Status",started:"Started",ends:"Ends",noVipContracts:"No VIP lock contracts found.",quickVipLock:"Quick VIP 60-Day Lock",quickVipDesc:"Lock available balance directly from your portfolio.",availableBalance:"Available balance",financeLoginTitle:"Sign in to access deposits and withdrawals",financeLoginDesc:"Wallet addresses and financial tools are available only to authenticated account holders.",signInSecurely:"Sign In Securely",
+    vipLockContract:"VIP LOCK CONTRACT",capitalLock60:"60-Day Capital Lock",capitalLockDesc:"Lock a selected amount for 60 days and calculate returns using the displayed 5.5% daily rate.",daily:"Daily",amountToLock:"Amount to lock ($10 – $10,000)",max:"MAX",dailyCalculation:"Daily calculation",calculation60:"60-day calculation",principalCalculation:"Principal + calculation",vipLockNotice:"The selected balance remains locked for 60 days. The displayed return is calculated from the contract rate.",lockFromBalance:"Lock From Balance",makeNewDeposit:"Make New Deposit",customAutoDesc:"Enter the amount and duration yourself. The daily rate is selected from the amount tier and the projected return is calculated instantly.",investmentAmountRange:"Investment Amount ($10 – $10,000)",termAuto:"Term (Days)",totalBalance:"Total Balance",referralRewardsBalance:"Referral rewards added to balance",referralBalanceNotice:"This reward is included in your available balance and is not active invested capital.",vipLockContracts:"VIP LOCK CONTRACTS",vipLockedCapital:"VIP 60-Day Locked Capital",vipListDesc:"All VIP contracts are displayed in one unified list.",lockedCapital:"Locked capital",projectedCalculation:"Projected calculation",activeContracts:"Active contracts",timeRemaining:"Time Remaining",dailyRate:"Daily Rate",totalCalculation:"Total Calculation",status:"Status",started:"Started",ends:"Ends",noVipContracts:"No VIP lock contracts found.",quickVipLock:"Quick VIP 60-Day Lock",quickVipDesc:"Lock available balance directly from your portfolio.",availableBalance:"Available balance",financeLoginTitle:"Sign in to access deposits and withdrawals",financeLoginDesc:"Wallet addresses and financial tools are available only to authenticated account holders.",signInSecurely:"Sign In Securely",
     personalReferral:"YOUR PERSONAL REFERRAL",personalReferralDesc:"Share your personal code. When your friend completes the first approved investment, a $10 reward is added to your available balance.",referralHistoryHint:"Review every referral's registration, investment and reward status below.",yourReferralCode:"YOUR REFERRAL CODE",signInToView:"Sign in to view",copyCode:"Copy Code",copyInvitationLink:"Copy Invitation Link",totalRegistrations:"Total registrations",successfulReferrals:"Successful referrals",totalRewards:"Total rewards",howItWorks:"How it works",referralStep1:"Share your personal code or invitation link.",referralStep2:"Your friend registers using your referral code.",referralStep3:"Your friend completes their first approved investment.",referralStep4:"$10 is automatically added to your available balance.",haveInvitationCode:"Have an invitation code?",apply:"Apply",referralApplyNotice:"A referral code can only be registered before your first investment.",referralActivity:"Referral Activity",referralActivityDesc:"Track each invited account from registration through reward payment.",refreshStatus:"Refresh Status",signInReferralActivity:"Sign in to view referral activity.",registered:"Registered",investmentPending:"Investment pending",investmentConfirmed:"Investment confirmed",rewardPaid:"$10 reward paid",supportTitle:"Support Center",supportGuestNotice:"Please sign in to create and manage your support tickets.",newTicket:"Create New Ticket",submitTicket:"Submit Ticket",myTickets:"My Tickets",
     basic:"Basic",starterLevel:"Starter · 2.5% Daily",growthLevel:"Growth · 3.5% Daily",premiumLevel:"Premium · 4.5% Daily",completed:"Completed",principalLocked:"Principal locked",unknown:"Unknown",contractCompleted:"Contract period completed",daysShort:"d",hoursShort:"h",minutesShort:"m",secondsShort:"s",loading:"Loading...",noTransactions:"No financial requests found.",signInTransactions:"Please sign in to view transaction history.",date:"Date",type:"Type",assetNetwork:"Asset / Network",invitedUser:"Invited User",notCompleted:"Not completed",credited:"credited",rewardAfterInvestment:"Reward will be paid after the first approved investment.",successfulReferral:"successful referral",successfulReferralsCount:"successful referrals",
     referralCodeLabel:"Referral Code",optional:"(Optional)",referralCodeHelp:"If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.",passwordRequirements:"Your password must contain at least 8 characters, including an uppercase letter, a lowercase letter and a number.",checkYourEmail:"Check your email",recoveryLinkSent:"We sent a password recovery code to:",recoveryEmailHelp:"Enter the 6-digit code from your email. Also check your Spam or Junk folder.",resendRecoveryEmail:"Resend code",createNewPassword:"Create a new password",newPasswordHelp:"Enter a strong new password for your account.",newPassword:"New password",confirmNewPassword:"Confirm new password",saveNewPassword:"Save new password",transactionStatusNote:"You can monitor the latest status of your request from the Transactions section.",viewTransactions:"View Transactions",investmentPlanBadge:"INVESTMENT PLAN",investmentTerm:"Investment term",investmentAmount:"Investment amount",planActivationNotice:"After payment confirmation and administrator approval, your selected plan will be activated automatically and profit calculation will begin.",cancel:"Cancel",continueDeposit:"Continue to Deposit",confirm60DayLock:"Confirm 60-Day Lock",reviewLockAmount:"Review the selected amount before locking it from your available balance.",amountToLockShort:"Amount to lock",availableAfterLock:"Available after lock",lockConfirmationNotice:"The selected principal will remain locked for 60 days. Displayed return calculations are projected values and are separate from your available balance.",confirmLock:"Confirm Lock",confirmYourEmail:"Confirm your email",confirmationLinkSent:"We sent a secure confirmation link to:",confirmationEmailHelp:"Open your email and click the confirmation link. This window will close automatically after confirmation.",resendConfirmationEmail:"Resend confirmation email",changeEmailAddress:"Change email address",checkSpamFolder:"Also check your Spam or Junk folder.",depositSubmittedTitle:"Deposit Request Submitted",depositSubmittedMessage:"Your deposit request has been securely registered and is awaiting review. Once verified, the approved amount will be credited to your balance.",withdrawSubmittedTitle:"Withdrawal Request Submitted",withdrawSubmittedMessage:"Your withdrawal request has been securely registered and is awaiting review. Once approved, payment will be sent to the selected address.",saving:"Saving...",sending:"Sending...",activating:"Activating...",emailSent:"Email sent successfully",recoveryResent:"Recovery email sent again",confirmationResent:"Confirmation email sent again",passwordMismatch:"The passwords do not match.",passwordChanged:"Password changed. You are now signed in.",invalidDepositAmount:"Please enter a valid deposit amount",gatewayReferenceRequired:"Complete the gateway payment, then submit its reference",txidRequired:"Please enter the transaction hash / TXID",walletAddressRequired:"Please enter the destination wallet address",validAmountRange:"Enter an amount between $10 and $10,000.",invalidVipAmount:"Invalid VIP lock amount",invalidInvestmentPlan:"Invalid investment plan",insufficientBalance:"Insufficient available balance",loggedOut:"Logged out successfully",profileUpdated:"Profile updated successfully!",fullNameRequired:"Please enter your full name",usernameRequirements:"Username must contain 3–30 English letters, numbers or _",validEmail:"Please enter a valid email",passwordRuleError:"Password needs uppercase, lowercase, number and 8 characters",validReferralCode:"Please enter a valid referral code",registeredEmailRequired:"Enter your registered email address",writeMessage:"Please write your message",writeReply:"Please write your reply",selectTicket:"Please select a ticket",ticketSubmitted:"Ticket submitted successfully",ticketClosed:"Ticket closed successfully",ticketIsClosed:"This ticket is closed",ticketLoadError:"Tickets could not be loaded.",conversationLoadError:"Conversation could not be loaded.",supportTicket:"Support Ticket",signInFirst:"Please sign in first.",noMessages:"No messages found.",totalProfitText:"total profit",registrationSuccessful:"Registration Successful",registrationConfirmEmail:"Your account was created successfully. Please confirm your email to continue.",accountCreatedSignedIn:"Your account has been created and you are now signed in.",welcomeBack:"Welcome Back",signedInSuccessfully:"You have signed in successfully.",authenticationFailed:"Authentication failed",invalidCredentials:"Invalid email or password.",emailNotConfirmed:"Please confirm your email before signing in.",accountAlreadyExists:"An account with this email already exists.",depositRequestFailed:"Deposit request failed.",validWithdrawalAmount:"Please enter a valid withdrawal amount.",withdrawRequestFailed:"Withdrawal request failed.",smallerWithdrawalAmount:"Your available balance is {amount}. Please enter a smaller withdrawal amount.",supportRequestFailed:"The support request could not be completed."
   },
   fa:{
     support:"پشتیبانی",friendReferralReward:"پاداش دعوت از دوستان",inviteFriendsEarn:"دوستانتان را دعوت کنید و ۱۰ دلار بگیرید",referralAutoCredit:"۱۰ دلار به‌صورت خودکار به موجودی قابل‌برداشت شما افزوده می‌شود.",viewReferralCode:"مشاهده کد دعوت",liveSaved:"زنده و ثبت‌شده",verified:"تأییدشده",safu:"محافظت SAFU",securityProtection:"محافظت امنیتی",networkProtection:"محافظت شبکه",sslCertificate:"گواهی SSL",securityStandard:"استاندارد امنیتی",onlineChat:"گفت‌وگوی آنلاین",footerAbout:"یک پلتفرم چندزبانه سرمایه‌گذاری دیجیتال برای مدیریت ساده و امن حساب، پلن‌ها، جوایز و پشتیبانی.",platform:"پلتفرم",companyHelp:"شرکت و راهنما",aboutUs:"درباره ما",referralRewards:"پاداش دعوت",helpSupport:"راهنما و پشتیبانی",legal:"قوانین",termsConditions:"شرایط و ضوابط",privacyPolicy:"سیاست حفظ حریم خصوصی",accountSecurity:"امنیت حساب",riskDisclosure:"افشای ریسک",footerRights:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",terms:"شرایط",privacy:"حریم خصوصی",about:"درباره ما",
-    vipLockContract:"قرارداد قفل VIP",capitalLock60:"قفل سرمایه ۶۰ روزه",capitalLockDesc:"مبلغ انتخابی را برای ۶۰ روز قفل کنید؛ محاسبات با نرخ روزانه ۵٫۵٪ نمایش داده می‌شود.",daily:"روزانه",amountToLock:"مبلغ قفل‌شونده (۱۰ تا ۱۰٬۰۰۰ دلار)",max:"حداکثر",dailyCalculation:"محاسبه روزانه",calculation60:"محاسبه ۶۰ روزه",principalCalculation:"اصل سرمایه + محاسبه",vipLockNotice:"در این پلن برخلاف پلن‌های دیگر، سرمایه شما تا ۶۰ روز کامل قفل خواهد شد و حق برداشت ندارید.",lockFromBalance:"قفل از موجودی",makeNewDeposit:"واریز جدید",customAutoDesc:"مبلغی بین ۱۰ تا ۱۰٬۰۰۰ دلار وارد کنید؛ پلن، نرخ روزانه و مدت به‌صورت خودکار انتخاب می‌شود.",investmentAmountRange:"مبلغ سرمایه‌گذاری (۱۰ تا ۱۰٬۰۰۰ دلار)",termAuto:"مدت (انتخاب خودکار)",totalBalance:"موجودی کل",referralRewardsBalance:"پاداش دعوت افزوده‌شده به موجودی",referralBalanceNotice:"این پاداش در موجودی قابل‌استفاده شما قرار دارد و سرمایه‌گذاری فعال محسوب نمی‌شود.",vipLockContracts:"قراردادهای قفل VIP",vipLockedCapital:"سرمایه قفل‌شده ۶۰ روزه VIP",vipListDesc:"تمام قراردادهای VIP در یک فهرست یکپارچه نمایش داده می‌شوند.",lockedCapital:"سرمایه قفل‌شده",projectedCalculation:"محاسبه پیش‌بینی‌شده",activeContracts:"قراردادهای فعال",timeRemaining:"زمان باقی‌مانده",dailyRate:"نرخ روزانه",totalCalculation:"محاسبه کل",status:"وضعیت",started:"شروع",ends:"پایان",noVipContracts:"هیچ قرارداد قفل VIP پیدا نشد.",quickVipLock:"قفل سریع ۶۰ روزه VIP",quickVipDesc:"موجودی قابل‌استفاده را مستقیماً از سبد خود قفل کنید.",availableBalance:"موجودی قابل‌استفاده",financeLoginTitle:"برای واریز و برداشت وارد حساب شوید",financeLoginDesc:"آدرس کیف‌پول و ابزارهای مالی فقط برای کاربران واردشده نمایش داده می‌شوند.",signInSecurely:"ورود امن",
+    vipLockContract:"قرارداد قفل VIP",capitalLock60:"قفل سرمایه ۶۰ روزه",capitalLockDesc:"مبلغ انتخابی را برای ۶۰ روز قفل کنید؛ محاسبات با نرخ روزانه ۵٫۵٪ نمایش داده می‌شود.",daily:"روزانه",amountToLock:"مبلغ قفل‌شونده (۱۰ تا ۱۰٬۰۰۰ دلار)",max:"حداکثر",dailyCalculation:"محاسبه روزانه",calculation60:"محاسبه ۶۰ روزه",principalCalculation:"اصل سرمایه + محاسبه",vipLockNotice:"در این پلن برخلاف پلن‌های دیگر، سرمایه شما تا ۶۰ روز کامل قفل خواهد شد و حق برداشت ندارید.",lockFromBalance:"قفل از موجودی",makeNewDeposit:"واریز جدید",customAutoDesc:"مبلغ و مدت سرمایه‌گذاری را خودتان وارد کنید؛ نرخ روزانه بر اساس بازه مبلغ انتخاب می‌شود و سود دوره همان لحظه محاسبه می‌شود.",investmentAmountRange:"مبلغ سرمایه‌گذاری (۱۰ تا ۱۰٬۰۰۰ دلار)",termAuto:"مدت (روز)",totalBalance:"موجودی کل",referralRewardsBalance:"پاداش دعوت افزوده‌شده به موجودی",referralBalanceNotice:"این پاداش در موجودی قابل‌استفاده شما قرار دارد و سرمایه‌گذاری فعال محسوب نمی‌شود.",vipLockContracts:"قراردادهای قفل VIP",vipLockedCapital:"سرمایه قفل‌شده ۶۰ روزه VIP",vipListDesc:"تمام قراردادهای VIP در یک فهرست یکپارچه نمایش داده می‌شوند.",lockedCapital:"سرمایه قفل‌شده",projectedCalculation:"محاسبه پیش‌بینی‌شده",activeContracts:"قراردادهای فعال",timeRemaining:"زمان باقی‌مانده",dailyRate:"نرخ روزانه",totalCalculation:"محاسبه کل",status:"وضعیت",started:"شروع",ends:"پایان",noVipContracts:"هیچ قرارداد قفل VIP پیدا نشد.",quickVipLock:"قفل سریع ۶۰ روزه VIP",quickVipDesc:"موجودی قابل‌استفاده را مستقیماً از سبد خود قفل کنید.",availableBalance:"موجودی قابل‌استفاده",financeLoginTitle:"برای واریز و برداشت وارد حساب شوید",financeLoginDesc:"آدرس کیف‌پول و ابزارهای مالی فقط برای کاربران واردشده نمایش داده می‌شوند.",signInSecurely:"ورود امن",
     personalReferral:"کد دعوت شخصی شما",personalReferralDesc:"کد خود را به اشتراک بگذارید. پس از نخستین سرمایه‌گذاری تأییدشده دوست شما، ۱۰ دلار به موجودی‌تان افزوده می‌شود.",referralHistoryHint:"وضعیت ثبت‌نام، سرمایه‌گذاری و پاداش همه دعوت‌ها را در پایین همین صفحه ببینید.",yourReferralCode:"کد دعوت شما",signInToView:"برای مشاهده وارد شوید",copyCode:"کپی کد",copyInvitationLink:"کپی لینک دعوت",totalRegistrations:"کل ثبت‌نام‌ها",successfulReferrals:"دعوت‌های موفق",totalRewards:"کل پاداش‌ها",howItWorks:"نحوه کار",referralStep1:"کد شخصی یا لینک دعوت خود را به اشتراک بگذارید.",referralStep2:"دوست شما با کد دعوت ثبت‌نام می‌کند.",referralStep3:"نخستین سرمایه‌گذاری او تأیید می‌شود.",referralStep4:"۱۰ دلار خودکار به موجودی قابل‌استفاده شما افزوده می‌شود.",haveInvitationCode:"کد دعوت دارید؟",apply:"ثبت",referralApplyNotice:"کد دعوت فقط پیش از نخستین سرمایه‌گذاری قابل ثبت است.",referralActivity:"فعالیت دعوت‌ها",referralActivityDesc:"مسیر هر دعوت را از ثبت‌نام تا پرداخت پاداش دنبال کنید.",refreshStatus:"به‌روزرسانی وضعیت",signInReferralActivity:"برای مشاهده فعالیت دعوت‌ها وارد شوید.",registered:"ثبت‌نام‌شده",investmentPending:"سرمایه‌گذاری در انتظار",investmentConfirmed:"سرمایه‌گذاری تأییدشده",rewardPaid:"پاداش ۱۰ دلاری پرداخت شد",supportTitle:"مرکز پشتیبانی",supportGuestNotice:"برای ایجاد و مدیریت تیکت‌های پشتیبانی وارد شوید.",newTicket:"ایجاد تیکت جدید",submitTicket:"ارسال تیکت",myTickets:"تیکت‌های من",
     basic:"پایه",starterLevel:"استارتر · روزانه ۲٫۵٪",growthLevel:"رشد · روزانه ۳٫۵٪",premiumLevel:"پریمیوم · روزانه ۴٫۵٪",completed:"تکمیل‌شده",principalLocked:"اصل سرمایه قفل است",unknown:"نامشخص",contractCompleted:"دوره قرارداد پایان یافت",daysShort:"روز",hoursShort:"ساعت",minutesShort:"دقیقه",secondsShort:"ثانیه",loading:"در حال بارگذاری...",noTransactions:"هیچ درخواست مالی پیدا نشد.",signInTransactions:"برای مشاهده تاریخچه تراکنش‌ها وارد شوید.",date:"تاریخ",type:"نوع",assetNetwork:"دارایی / شبکه",invitedUser:"کاربر دعوت‌شده",notCompleted:"تکمیل‌نشده",credited:"به موجودی افزوده شد",rewardAfterInvestment:"پاداش پس از نخستین سرمایه‌گذاری تأییدشده پرداخت می‌شود.",successfulReferral:"دعوت موفق",successfulReferralsCount:"دعوت موفق",
     referralCodeLabel:"کد دعوت",optional:"(اختیاری)",referralCodeHelp:"اگر دوستی شما را دعوت کرده است، کد او را اینجا وارد کنید. دعوت پس از تأیید حساب شما ثبت می‌شود.",passwordRequirements:"رمز عبور باید حداقل ۸ نویسه و شامل حرف بزرگ، حرف کوچک و عدد باشد.",checkYourEmail:"ایمیل خود را بررسی کنید",recoveryLinkSent:"لینک امن بازیابی رمز به این ایمیل ارسال شد:",recoveryEmailHelp:"ایمیل را باز کنید و روی لینک بازیابی بزنید. پوشه هرزنامه را نیز بررسی کنید.",resendRecoveryEmail:"ارسال دوباره کد",createNewPassword:"ایجاد رمز عبور جدید",newPasswordHelp:"یک رمز عبور جدید و قوی برای حساب خود وارد کنید.",newPassword:"رمز عبور جدید",confirmNewPassword:"تکرار رمز عبور جدید",saveNewPassword:"ذخیره رمز جدید",transactionStatusNote:"آخرین وضعیت درخواست خود را از بخش تراکنش‌ها پیگیری کنید.",viewTransactions:"مشاهده تراکنش‌ها",investmentPlanBadge:"پلن سرمایه‌گذاری",investmentTerm:"مدت سرمایه‌گذاری",investmentAmount:"مبلغ سرمایه‌گذاری",planActivationNotice:"پس از تأیید پرداخت و مدیر، پلن انتخابی خودکار فعال می‌شود و محاسبه سود آغاز خواهد شد.",cancel:"انصراف",continueDeposit:"ادامه برای واریز",confirm60DayLock:"تأیید قفل ۶۰ روزه",reviewLockAmount:"پیش از قفل‌کردن از موجودی، مبلغ انتخابی را بررسی کنید.",amountToLockShort:"مبلغ قفل‌شونده",availableAfterLock:"موجودی پس از قفل",lockConfirmationNotice:"اصل سرمایه انتخابی ۶۰ روز قفل می‌ماند. بازده‌های نمایش‌داده‌شده پیش‌بینی هستند و از موجودی قابل‌استفاده جدا محسوب می‌شوند.",confirmLock:"تأیید قفل",confirmYourEmail:"ایمیل خود را تأیید کنید",confirmationLinkSent:"لینک امن تأیید به این ایمیل ارسال شد:",confirmationEmailHelp:"ایمیل را باز کنید و روی لینک تأیید بزنید. این پنجره پس از تأیید خودکار بسته می‌شود.",resendConfirmationEmail:"ارسال دوباره ایمیل تأیید",changeEmailAddress:"تغییر نشانی ایمیل",checkSpamFolder:"پوشه هرزنامه را نیز بررسی کنید.",depositSubmittedTitle:"درخواست واریز ثبت شد",depositSubmittedMessage:"درخواست واریز شما به‌صورت امن ثبت شده و در انتظار بررسی است. پس از تأیید، مبلغ مصوب به موجودی شما افزوده می‌شود.",withdrawSubmittedTitle:"درخواست برداشت ثبت شد",withdrawSubmittedMessage:"درخواست برداشت شما به‌صورت امن ثبت شده و در انتظار بررسی است. پس از تأیید، پرداخت به نشانی انتخاب‌شده ارسال می‌شود.",saving:"در حال ذخیره...",sending:"در حال ارسال...",activating:"در حال فعال‌سازی...",emailSent:"ایمیل با موفقیت ارسال شد",recoveryResent:"ایمیل بازیابی دوباره ارسال شد",confirmationResent:"ایمیل تأیید دوباره ارسال شد",passwordMismatch:"رمزهای عبور یکسان نیستند.",passwordChanged:"رمز عبور تغییر کرد و اکنون وارد حساب هستید.",invalidDepositAmount:"مبلغ واریز معتبر وارد کنید",gatewayReferenceRequired:"ابتدا پرداخت درگاه را تکمیل و سپس شناسه آن را ثبت کنید",txidRequired:"هش تراکنش یا TXID را وارد کنید",walletAddressRequired:"نشانی کیف‌پول مقصد را وارد کنید",validAmountRange:"مبلغی بین ۱۰ تا ۱۰٬۰۰۰ دلار وارد کنید.",invalidVipAmount:"مبلغ قفل VIP معتبر نیست",invalidInvestmentPlan:"پلن سرمایه‌گذاری معتبر نیست",insufficientBalance:"موجودی قابل‌استفاده کافی نیست",loggedOut:"با موفقیت خارج شدید",profileUpdated:"پروفایل با موفقیت به‌روزرسانی شد!",fullNameRequired:"نام و نام خانوادگی را وارد کنید",usernameRequirements:"نام کاربری باید ۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط داشته باشد",validEmail:"یک ایمیل معتبر وارد کنید",passwordRuleError:"رمز عبور باید ۸ نویسه و شامل حرف بزرگ، حرف کوچک و عدد باشد",validReferralCode:"یک کد دعوت معتبر وارد کنید",registeredEmailRequired:"ایمیل ثبت‌شده خود را وارد کنید",writeMessage:"پیام خود را بنویسید",writeReply:"پاسخ خود را بنویسید",selectTicket:"یک تیکت را انتخاب کنید",ticketSubmitted:"تیکت با موفقیت ارسال شد",ticketClosed:"تیکت با موفقیت بسته شد",ticketIsClosed:"این تیکت بسته شده است",ticketLoadError:"تیکت‌ها بارگذاری نشدند.",conversationLoadError:"گفت‌وگو بارگذاری نشد.",supportTicket:"تیکت پشتیبانی",signInFirst:"ابتدا وارد حساب شوید.",noMessages:"پیامی وجود ندارد.",totalProfitText:"سود کل",registrationSuccessful:"ثبت‌نام موفق",registrationConfirmEmail:"حساب شما ساخته شد. برای ادامه، ایمیل خود را تأیید کنید.",accountCreatedSignedIn:"حساب شما ساخته شد و اکنون وارد شده‌اید.",welcomeBack:"خوش آمدید",signedInSuccessfully:"با موفقیت وارد حساب شدید.",authenticationFailed:"ورود یا ثبت‌نام انجام نشد.",invalidCredentials:"ایمیل یا رمز عبور نادرست است.",emailNotConfirmed:"پیش از ورود، ایمیل خود را تأیید کنید.",accountAlreadyExists:"حسابی با این ایمیل از قبل وجود دارد.",depositRequestFailed:"درخواست واریز انجام نشد.",validWithdrawalAmount:"مبلغ برداشت معتبر وارد کنید.",withdrawRequestFailed:"درخواست برداشت انجام نشد.",smallerWithdrawalAmount:"موجودی قابل‌استفاده شما {amount} است. مبلغ کمتری وارد کنید.",supportRequestFailed:"درخواست پشتیبانی انجام نشد."
@@ -19622,7 +19749,15 @@ document.addEventListener("DOMContentLoaded", function() {
     var input = document.getElementById("vipLockAmount");
     var errorBox = document.getElementById("vipLockError");
     if (!input) return;
-    var amount = Number(input.value);
+    var rawAmount = String(input.value || "").trim();
+    if (rawAmount === "") {
+      if (errorBox) { errorBox.textContent = ""; errorBox.classList.remove("show"); }
+      ["vipDailyProfit","vipTotalProfit","vipFinalValue"].forEach(function (id) {
+        var element = document.getElementById(id); if (element) element.textContent = "$0.00";
+      });
+      return;
+    }
+    var amount = Number(rawAmount);
     var valid = Number.isFinite(amount) && amount >= VIP_LOCK_MINIMUM && amount <= VIP_LOCK_MAXIMUM;
     if (!valid) {
       if (errorBox) { errorBox.textContent = tr("validAmountRange"); errorBox.classList.add("show"); }
@@ -19652,8 +19787,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var available = document.getElementById("portfolioVipAvailable");
     var errorBox = document.getElementById("portfolioVipError");
     if (!input || !daily || !total) return;
-    var amount = Number(input.value);
+    var rawAmount = String(input.value || "").trim();
     if (available) available.textContent = formatPortfolioMoney(vipAmount());
+    if (rawAmount === "") {
+      daily.textContent = "$0.00"; total.textContent = "$0.00";
+      if (errorBox) { errorBox.textContent = ""; errorBox.classList.remove("show"); }
+      return;
+    }
+    var amount = Number(rawAmount);
     if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM) {
       daily.textContent = "$0.00"; total.textContent = "$0.00";
       if (errorBox) { errorBox.textContent = tr("validAmountRange"); errorBox.classList.add("show"); }
@@ -21126,6 +21267,571 @@ html body #plans > .plan .flex-fixed-plan-notice {
       attachToPortfolioClock();
       startFlexCheckRefresh();
     }, 0);
+  }
+})();
+</script>
+
+
+<style id="custom-investment-v26-style">
+/* V26 — professional Custom Investment card with user-entered duration */
+#invest #customInvestmentCard{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(240,185,11,.32);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(240,185,11,.10), transparent 34%),
+    linear-gradient(145deg, rgba(15,18,22,.96), rgba(7,9,12,.97));
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+#invest #customInvestmentCard::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:3px;
+  background:linear-gradient(180deg, rgba(240,185,11,.9), rgba(240,185,11,.05));
+  pointer-events:none;
+}
+
+#invest .custom-investment-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+#invest .custom-investment-head h2{
+  margin:0 0 7px;
+}
+
+#invest .custom-investment-head p{
+  margin:0;
+  max-width:760px;
+  line-height:1.75;
+}
+
+#invest .custom-investment-badge{
+  flex:0 0 auto;
+  padding:6px 10px;
+  border:1px solid rgba(240,185,11,.32);
+  border-radius:999px;
+  background:rgba(240,185,11,.07);
+  color:var(--gold2);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.8px;
+}
+
+#invest .custom-input-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+#invest .custom-field{
+  min-width:0;
+}
+
+#invest .custom-field label{
+  display:block;
+  margin-bottom:7px;
+  color:rgba(231,235,240,.72);
+  font-size:12px;
+  font-weight:650;
+}
+
+#invest .custom-field input{
+  width:100%;
+  box-sizing:border-box;
+  min-height:48px;
+  padding:11px 13px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:rgba(0,0,0,.22);
+  color:#fff;
+  outline:none;
+  font-size:16px;
+  font-weight:650;
+  font-variant-numeric:tabular-nums;
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+#invest .custom-field input:focus{
+  border-color:rgba(240,185,11,.72);
+  background:rgba(0,0,0,.30);
+  box-shadow:0 0 0 3px rgba(240,185,11,.09);
+}
+
+#invest .custom-field input::placeholder{
+  color:rgba(210,215,223,.34);
+  font-weight:500;
+}
+
+#invest .custom-preview-panel{
+  margin-top:14px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+  background:rgba(0,0,0,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+#invest .custom-preview-top{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+#invest .custom-preview-main{
+  padding:12px;
+  border:1px solid rgba(240,185,11,.15);
+  border-radius:13px;
+  background:rgba(240,185,11,.025);
+}
+
+#invest .custom-preview-main span,
+#invest .custom-profit-grid span{
+  display:block;
+  margin-bottom:5px;
+  font-size:11px;
+}
+
+#invest .custom-preview-main strong{
+  display:block;
+  font-size:24px;
+  line-height:1.25;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+}
+
+#invest .custom-profit-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+
+#invest .custom-profit-grid > div{
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;
+  background:rgba(255,255,255,.018);
+}
+
+#invest .custom-profit-grid b{
+  display:block;
+  font-size:17px;
+  font-weight:750;
+  font-variant-numeric:tabular-nums;
+}
+
+#invest .custom-contract-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+
+#invest .custom-contract-summary > div{
+  min-width:0;
+  padding:8px 9px;
+  border-radius:10px;
+  background:rgba(255,255,255,.018);
+}
+
+#invest .custom-contract-summary span{
+  display:block;
+  margin-bottom:4px;
+  color:rgba(196,204,215,.55);
+  font-size:9.5px;
+  font-weight:550;
+}
+
+#invest .custom-contract-summary b{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#f5f7fa;
+  font-size:11.5px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+
+#invest .custom-preview-note{
+  margin-top:10px;
+  padding:9px 10px;
+  border:1px solid rgba(240,185,11,.13);
+  border-radius:10px;
+  background:rgba(240,185,11,.035);
+  color:rgba(236,202,105,.78);
+  font-size:10.5px;
+  line-height:1.55;
+}
+
+#invest .custom-preview-note:empty{
+  display:none;
+}
+
+#invest .custom-investment-error{
+  display:none;
+  margin-top:9px;
+  color:#ff7c7c;
+  font-size:11px;
+  line-height:1.5;
+}
+
+#invest .custom-investment-error.show{
+  display:block;
+}
+
+#invest .custom-invest-button{
+  width:100%;
+  margin-top:14px;
+  min-height:46px;
+}
+
+@media(max-width:700px){
+  #invest #customInvestmentCard{
+    border-radius:17px;
+  }
+
+  #invest .custom-investment-head{
+    margin-bottom:14px;
+  }
+
+  #invest .custom-investment-badge{
+    padding:5px 8px;
+    font-size:9px;
+  }
+
+  #invest .custom-input-grid,
+  #invest .custom-preview-top,
+  #invest .custom-profit-grid{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  #invest .custom-contract-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px;
+  }
+
+  #invest .custom-preview-panel{
+    padding:10px;
+  }
+
+  #invest .custom-preview-main{
+    padding:10px;
+  }
+
+  #invest .custom-preview-main strong{
+    font-size:19px;
+  }
+
+  #invest .custom-profit-grid b{
+    font-size:14px;
+  }
+}
+
+@media(max-width:420px){
+  #invest .custom-input-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+
+<script id="custom-investment-v26-script">
+(function(){
+  var CUSTOM_MIN_AMOUNT = 10;
+  var CUSTOM_MAX_AMOUNT = 10000;
+  var CUSTOM_MAX_TERM_DAYS = 36500;
+
+  function customLang(){
+    return localStorage.getItem("bi_lang") || "en";
+  }
+
+  function customMoney(value){
+    var n = Number(value || 0);
+    if (!Number.isFinite(n)) n = 0;
+    return "$" + n.toLocaleString(undefined,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+  }
+
+  function customTier(amount){
+    if (amount >= 10 && amount <= 100) {
+      return {code:"Starter", index:0, rate:2.5};
+    }
+    if (amount > 100 && amount <= 1000) {
+      return {code:"Growth", index:1, rate:3.5};
+    }
+    if (amount > 1000 && amount <= 10000) {
+      return {code:"Premium", index:2, rate:4.5};
+    }
+    return null;
+  }
+
+  function customError(message){
+    var box = document.getElementById("customInvestmentError");
+    if (!box) return;
+    box.textContent = message || "";
+    box.classList.toggle("show", !!message);
+  }
+
+  window.calcCustom = function(){
+    var amountInput = document.getElementById("customAmount");
+    var termInput = document.getElementById("customTerm");
+
+    var amountRaw = String(amountInput && amountInput.value || "").trim();
+    var termRaw = String(termInput && termInput.value || "").trim();
+
+    var amount = Number(amountRaw);
+    var term = Number(termRaw);
+    var tier = customTier(amount);
+
+    var validTerm =
+      termRaw !== "" &&
+      Number.isInteger(term) &&
+      term >= 1 &&
+      term <= CUSTOM_MAX_TERM_DAYS;
+
+    var valid =
+      amountRaw !== "" &&
+      tier &&
+      validTerm;
+
+    var rate = tier ? tier.rate : 0;
+    var dailyProfit = tier ? amount * (rate / 100) : 0;
+    var monthlyProfit = tier ? dailyProfit * 30 : 0;
+    var totalProfit = valid ? dailyProfit * term : 0;
+    var estimatedValue = valid ? amount + totalProfit : 0;
+
+    var planName =
+      tier && typeof getLocalizedPlanName === "function"
+        ? getLocalizedPlanName(tier.index)
+        : (tier ? tier.code : "—");
+
+    var setText = function(id,value){
+      var el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+
+    setText("customResult", customMoney(estimatedValue));
+    setText("customProfit", customMoney(totalProfit));
+    setText("customDaily", customMoney(tier ? dailyProfit : 0));
+    setText("customMonthly", customMoney(tier ? monthlyProfit : 0));
+
+    setText(
+      "customSummaryAmount",
+      amountRaw !== "" && Number.isFinite(amount)
+        ? customMoney(amount)
+        : "$0.00"
+    );
+
+    setText(
+      "customSummaryTerm",
+      validTerm
+        ? term.toLocaleString() + " " + tr("daysShort")
+        : "—"
+    );
+
+    setText(
+      "customSummaryRate",
+      tier ? rate.toFixed(1) + "%" : "—"
+    );
+
+    setText(
+      "customSummaryPlan",
+      tier ? planName : "—"
+    );
+
+    var note = document.getElementById("lockNotice");
+    if (note) {
+      if (amountRaw === "" && termRaw === "") {
+        note.textContent =
+          customLang() === "fa"
+            ? "مبلغ و مدت را وارد کنید تا جزئیات قرارداد و سود دوره نمایش داده شود."
+            : "Enter an amount and duration to preview the contract and projected return.";
+      } else if (!tier) {
+        note.textContent =
+          customLang() === "fa"
+            ? "مبلغ باید بین ۱۰ تا ۱۰٬۰۰۰ دلار باشد."
+            : "Amount must be between $10 and $10,000.";
+      } else if (!validTerm) {
+        note.textContent =
+          customLang() === "fa"
+            ? "مدت را به‌صورت تعداد روز کامل وارد کنید."
+            : "Enter the duration as a whole number of days.";
+      } else {
+        note.textContent =
+          customLang() === "fa"
+            ? "نرخ روزانه بر اساس مبلغ انتخاب شده است؛ مدت قرارداد را شما تعیین می‌کنید."
+            : "The daily rate is based on the amount tier; you choose the contract duration.";
+      }
+    }
+
+    customError("");
+  };
+
+  window.investCustom = async function(){
+    var amountInput = document.getElementById("customAmount");
+    var termInput = document.getElementById("customTerm");
+    var button = document.getElementById("customInvestButton");
+
+    if (!currentUser || !currentUser.id) {
+      openAuth("login");
+      return;
+    }
+
+    var amountRaw = String(amountInput && amountInput.value || "").trim();
+    var termRaw = String(termInput && termInput.value || "").trim();
+    var amount = Number(amountRaw);
+    var term = Number(termRaw);
+    var tier = customTier(amount);
+
+    if (!tier) {
+      customError(
+        customLang() === "fa"
+          ? "مبلغ باید بین ۱۰ تا ۱۰٬۰۰۰ دلار باشد."
+          : "Amount must be between $10 and $10,000."
+      );
+      return;
+    }
+
+    if (
+      termRaw === "" ||
+      !Number.isInteger(term) ||
+      term < 1 ||
+      term > CUSTOM_MAX_TERM_DAYS
+    ) {
+      customError(
+        customLang() === "fa"
+          ? "مدت قرارداد را به‌صورت تعداد روز کامل وارد کنید."
+          : "Enter the contract duration as a whole number of days."
+      );
+      return;
+    }
+
+    var available =
+      typeof window.getFlexibleAvailablePrincipal === "function"
+        ? Number(window.getFlexibleAvailablePrincipal() || 0)
+        : 0;
+
+    if (amount > available) {
+      customError(
+        (customLang() === "fa"
+          ? "سرمایه قابل‌استفاده پلن پایه کافی نیست. موجودی قابل انتقال: "
+          : "Insufficient flexible principal. Available: ") +
+        customMoney(available)
+      );
+      return;
+    }
+
+    customError("");
+
+    var oldText = button ? button.textContent : "";
+    if (button) {
+      button.disabled = true;
+      button.textContent =
+        customLang() === "fa"
+          ? "در حال فعال‌سازی..."
+          : "Activating...";
+    }
+
+    try {
+      var result = await supabaseClient.rpc(
+        "confirm_custom_investment",
+        {
+          p_amount: amount,
+          p_term_days: term
+        }
+      );
+
+      if (result && result.error) throw result.error;
+
+      if (amountInput) amountInput.value = "";
+      if (termInput) termInput.value = "";
+      window.calcCustom();
+
+      try { await refreshSecureAccount(); } catch(_){}
+      try { await updatePortfolio(); } catch(_){}
+
+      var localized =
+        typeof getLocalizedPlanName === "function"
+          ? getLocalizedPlanName(tier.index)
+          : tier.code;
+
+      toast(
+        customLang() === "fa"
+          ? "قرارداد سفارشی " + localized + " برای " + term + " روز فعال شد."
+          : "Custom " + localized + " contract activated for " + term + " days.",
+        "success"
+      );
+
+      try {
+        page(
+          "portfolio",
+          document.querySelector('[data-page="portfolio"]')
+        );
+      } catch(_){}
+
+    } catch(error) {
+      console.error("Custom investment activation error:", error);
+
+      var message =
+        error && (error.message || error.details || error.hint)
+          ? String(error.message || error.details || error.hint)
+          : "";
+
+      if (
+        message.toLowerCase().includes("confirm_custom_investment") ||
+        message.toLowerCase().includes("could not find the function") ||
+        message.toLowerCase().includes("schema cache")
+      ) {
+        message =
+          customLang() === "fa"
+            ? "تابع قرارداد سفارشی در Supabase نصب نشده است. SQL نسخه V26 را اجرا کنید."
+            : "The custom investment RPC is not installed. Run the V26 SQL in Supabase.";
+      }
+
+      customError(
+        message ||
+        (customLang() === "fa"
+          ? "فعال‌سازی قرارداد سفارشی انجام نشد."
+          : "The custom contract could not be activated.")
+      );
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = oldText || tr("investCustomBtn");
+      }
+    }
+  };
+
+  function initCustomV26(){
+    var term = document.getElementById("customTerm");
+    if (term) {
+      term.removeAttribute("readonly");
+      term.value = "";
+      term.placeholder = "60";
+      term.setAttribute("inputmode","numeric");
+    }
+    try { window.calcCustom(); } catch(_){}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCustomV26, {once:true});
+  } else {
+    initCustomV26();
   }
 })();
 </script>
