@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-21">
+<body data-investment-model="flex-v6-22">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -8415,6 +8415,40 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
       <span>سرمایه خود را مدیریت کنید</span>
     </div>
     <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+    <div id="flexCalculationCheck" class="flex-calculation-check" hidden>
+      <button
+        id="flexCalculationCheckToggle"
+        class="flex-calculation-check-toggle"
+        type="button"
+        aria-expanded="false"
+        onclick="toggleFlexCalculationCheck()"
+      >
+        <span>بررسی محاسبه پلن پایه</span>
+        <span class="flex-calculation-check-arrow" aria-hidden="true">⌄</span>
+      </button>
+
+      <div id="flexCalculationCheckBody" class="flex-calculation-check-body" hidden dir="rtl" lang="fa">
+        <div class="flex-check-status">
+          <span class="flex-check-dot" aria-hidden="true"></span>
+          <strong>مبنای محاسبه: فقط FLEX_DAILY با نرخ ۱.۵٪</strong>
+        </div>
+
+        <div class="flex-check-grid">
+          <div><span>اصل سرمایه فعلی</span><b id="flexCheckPrincipal">$0.00000000</b></div>
+          <div><span>نرخ روزانه</span><b id="flexCheckRate">1.5000%</b></div>
+          <div><span>سود هر ثانیه</span><b id="flexCheckSecond">$0.00000000</b></div>
+          <div><span>سود هر دقیقه</span><b id="flexCheckMinute">$0.00000000</b></div>
+          <div><span>سود هر ساعت</span><b id="flexCheckHour">$0.00000000</b></div>
+          <div><span>سود هر روز</span><b id="flexCheckDay">$0.00000000</b></div>
+          <div><span>سود قبلی حفظ‌شده</span><b id="flexCheckPreserved">$0.00000000</b></div>
+          <div><span>سود فعلی پلن پایه</span><b id="flexCheckLive">$0.00000000</b></div>
+        </div>
+
+        <div class="flex-check-note">
+          سود Growth / Starter / Premium / VIP در این سرعت محاسبه وارد نمی‌شود.
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="portfolio-major-panel portfolio-major-referral">
@@ -20818,6 +20852,270 @@ html body #plans > .plan .flex-fixed-plan-notice {
   }
 }
 </style>
+
+
+<style id="portfolio-v22-flex-calculation-check">
+/* V22 — optional FLEX calculation verifier; collapsed by default */
+#portfolio .flex-calculation-check{
+  position:relative;
+  z-index:5;
+  width:100%;
+  margin:5px 0 0;
+}
+
+#portfolio .flex-calculation-check-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:7px;
+  margin-left:auto;
+  border:0;
+  padding:3px 2px;
+  background:transparent;
+  color:rgba(235,239,245,.58);
+  font:inherit;
+  font-size:10.5px;
+  font-weight:550;
+  line-height:1.35;
+  cursor:pointer;
+  box-shadow:none;
+  text-shadow:none;
+}
+
+#portfolio .flex-calculation-check-toggle:hover{
+  color:rgba(245,248,252,.82);
+}
+
+#portfolio .flex-calculation-check-arrow{
+  display:inline-block;
+  font-size:13px;
+  line-height:1;
+  transition:transform .18s ease;
+}
+
+#portfolio .flex-calculation-check-toggle[aria-expanded="true"] .flex-calculation-check-arrow{
+  transform:rotate(180deg);
+}
+
+#portfolio .flex-calculation-check-body{
+  margin-top:7px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:12px;
+  background:rgba(0,0,0,.04);
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none;
+  color:#f3f6fa;
+}
+
+#portfolio .flex-check-status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:9px;
+  font-size:10.5px;
+  line-height:1.55;
+  color:rgba(240,244,249,.78);
+}
+
+#portfolio .flex-check-dot{
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  flex:0 0 7px;
+  background:#36c97b;
+  box-shadow:0 0 8px rgba(54,201,123,.42);
+}
+
+#portfolio .flex-check-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+}
+
+#portfolio .flex-check-grid > div{
+  min-width:0;
+  padding:7px 8px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+  background:rgba(0,0,0,.025);
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+#portfolio .flex-check-grid span{
+  display:block;
+  margin-bottom:3px;
+  color:rgba(205,214,225,.62);
+  font-size:9px;
+  line-height:1.4;
+  font-weight:500;
+  text-shadow:none;
+}
+
+#portfolio .flex-check-grid b{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#f6f8fb;
+  font-size:10.5px;
+  line-height:1.4;
+  font-variant-numeric:tabular-nums;
+  font-weight:650;
+  text-shadow:none;
+}
+
+#portfolio .flex-check-note{
+  margin-top:8px;
+  color:rgba(192,202,214,.55);
+  font-size:9px;
+  line-height:1.55;
+  text-align:right;
+}
+
+@media(max-width:760px){
+  #portfolio .flex-calculation-check{
+    margin-top:2px;
+  }
+
+  #portfolio .flex-calculation-check-toggle{
+    font-size:9.5px;
+  }
+
+  #portfolio .flex-calculation-check-body{
+    padding:8px;
+  }
+
+  #portfolio .flex-check-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:5px;
+  }
+
+  #portfolio .flex-check-grid > div{
+    padding:6px 7px;
+  }
+
+  #portfolio .flex-check-grid span{
+    font-size:8.5px;
+  }
+
+  #portfolio .flex-check-grid b{
+    font-size:9.5px;
+  }
+}
+</style>
+
+
+<script id="portfolio-v22-flex-calculation-check-js">
+(function(){
+  var DAY_MS_V22 = 86400000;
+  var FLEX_RATE_V22 = 1.5;
+
+  function money8(value){
+    var n = Number(value || 0);
+    if (!Number.isFinite(n)) n = 0;
+    return "$" + n.toFixed(8);
+  }
+
+  window.toggleFlexCalculationCheck = function(){
+    var toggle = document.getElementById("flexCalculationCheckToggle");
+    var body = document.getElementById("flexCalculationCheckBody");
+    if (!toggle || !body) return;
+
+    var isOpen = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", isOpen ? "false" : "true");
+    body.hidden = isOpen;
+    if (!isOpen) renderFlexCalculationCheck();
+  };
+
+  window.renderFlexCalculationCheck = function(){
+    var wrapper = document.getElementById("flexCalculationCheck");
+    if (!wrapper) return;
+
+    var signedIn = !!(window.currentUser && window.currentUser.id);
+    wrapper.hidden = !signedIn;
+    if (!signedIn) return;
+
+    var rows = [];
+    try{
+      rows = (window.currentInvestments || []).filter(function(item){
+        return item &&
+          item.status === "active" &&
+          String(item.plan_name || "") === "FLEX_DAILY" &&
+          Number(item.principal || 0) > 0;
+      });
+    }catch(_){
+      rows = [];
+    }
+
+    var principal = rows.reduce(function(total,item){
+      return total + Number(item.principal || 0);
+    },0);
+
+    var preserved = rows.reduce(function(total,item){
+      return total + Math.max(0, Number(item.realized_profit || 0));
+    },0);
+
+    var perDay = principal * (FLEX_RATE_V22 / 100);
+    var perHour = perDay / 24;
+    var perMinute = perDay / 1440;
+    var perSecond = perDay / 86400;
+
+    var liveProfit = 0;
+    try{
+      if (typeof window.getMainPortfolioSnapshot === "function"){
+        var snap = window.getMainPortfolioSnapshot();
+        liveProfit = Number(snap && snap.totalProfit || 0);
+      } else if (typeof stableFlexibleLiveProfit === "function"){
+        liveProfit = Number(stableFlexibleLiveProfit() || 0);
+      }
+    }catch(_){
+      liveProfit = preserved;
+    }
+
+    var values = {
+      flexCheckPrincipal: money8(principal),
+      flexCheckRate: FLEX_RATE_V22.toFixed(4) + "%",
+      flexCheckSecond: money8(perSecond),
+      flexCheckMinute: money8(perMinute),
+      flexCheckHour: money8(perHour),
+      flexCheckDay: money8(perDay),
+      flexCheckPreserved: money8(preserved),
+      flexCheckLive: money8(liveProfit)
+    };
+
+    Object.keys(values).forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.textContent = values[id];
+    });
+  };
+
+  function attachToPortfolioClock(){
+    var oldRender = window.renderPortfolioLive;
+    if (typeof oldRender === "function" && !oldRender.__v22FlexCheckWrapped){
+      var wrapped = function(){
+        var result = oldRender.apply(this, arguments);
+        try{ window.renderFlexCalculationCheck(); }catch(_){}
+        return result;
+      };
+      wrapped.__v22FlexCheckWrapped = true;
+      window.renderPortfolioLive = wrapped;
+    }
+
+    try{ window.renderFlexCalculationCheck(); }catch(_){}
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){
+      setTimeout(attachToPortfolioClock, 0);
+    }, {once:true});
+  }else{
+    setTimeout(attachToPortfolioClock, 0);
+  }
+})();
+</script>
 
 </body>
 </html>
