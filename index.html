@@ -17401,6 +17401,18 @@ async function updatePortfolio() {
   await loadInvestments();
   renderPortfolioLive();
 
+  /*
+   * V37.13 — Withdrawal card refreshes immediately after the fresh
+   * FLEX_DAILY investments arrive instead of waiting for its timer.
+   */
+  if (typeof window.renderWithdrawalLimitFromCurrentInvestments === "function") {
+    window.renderWithdrawalLimitFromCurrentInvestments();
+  }
+
+  if (typeof window.refreshWithdrawalLimitCard === "function") {
+    void window.refreshWithdrawalLimitCard();
+  }
+
   portfolioTimer = setInterval(() => {
     if (
       !document.hidden &&
@@ -19338,6 +19350,10 @@ async function syncFinancialStateFromServer() {
 
     if (typeof loadTransactions === "function") {
       await loadTransactions();
+    }
+
+    if (typeof window.refreshWithdrawalLimitCard === "function") {
+      void window.refreshWithdrawalLimitCard();
     }
   } catch (error) {
     console.warn(
@@ -24570,10 +24586,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-<script id="withdrawal-level-v37-11">
+<script id="withdrawal-level-v37-13">
 (function(){
   var withdrawalLimitState = null;
   var withdrawalLimitRefreshTimer = null;
+  var withdrawalLimitRequestRunning = false;
 
   function tierKey(code){
     switch(String(code || "").toUpperCase()){
@@ -24587,6 +24604,44 @@ document.addEventListener("DOMContentLoaded", function() {
   function put(id,value){
     var el=document.getElementById(id);
     if(el) el.textContent=value;
+  }
+
+  function tierFromCapital(capital){
+    var amount=Math.max(0,Number(capital||0));
+
+    if(amount>10000){
+      return {tier_code:"VIP",withdrawal_percent:40};
+    }
+
+    if(amount>1000){
+      return {tier_code:"PREMIUM",withdrawal_percent:30};
+    }
+
+    if(amount>100){
+      return {tier_code:"GROWTH",withdrawal_percent:25};
+    }
+
+    if(amount>0){
+      return {tier_code:"BASE",withdrawal_percent:20};
+    }
+
+    return {tier_code:"BASE",withdrawal_percent:0};
+  }
+
+  function getLocalFlexPrincipal(){
+    try{
+      return (currentInvestments||[]).reduce(function(sum,item){
+        if(
+          String(item && item.status || "")==="active" &&
+          String(item && item.plan_name || "")==="FLEX_DAILY"
+        ){
+          return sum+Math.max(0,Number(item.principal||0));
+        }
+        return sum;
+      },0);
+    }catch(_){
+      return 0;
+    }
   }
 
   function render(data){
@@ -24604,13 +24659,70 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var percent=Number(data && data.withdrawal_percent || 0);
-    put("withdrawalLevelName",tr(tierKey(data && data.tier_code)));
-    put("withdrawalLevelPercent",percent>0?percent.toFixed(0)+"%":"—");
-    put("withdrawalCapitalBase",formatPortfolioMoney(Number(data && data.capital_base || 0)));
-    put("withdrawalDailyLimit",formatPortfolioMoney(Number(data && data.daily_limit || 0)));
-    put("withdrawalUsed24h",formatPortfolioMoney(Number(data && data.used_24h || 0)));
-    put("withdrawalRemaining24h",formatPortfolioMoney(Number(data && data.remaining_24h || 0)));
+
+    put(
+      "withdrawalLevelName",
+      tr(tierKey(data && data.tier_code))
+    );
+
+    put(
+      "withdrawalLevelPercent",
+      percent>0 ? percent.toFixed(0)+"%" : "—"
+    );
+
+    put(
+      "withdrawalCapitalBase",
+      formatPortfolioMoney(Number(data && data.capital_base || 0))
+    );
+
+    put(
+      "withdrawalDailyLimit",
+      formatPortfolioMoney(Number(data && data.daily_limit || 0))
+    );
+
+    put(
+      "withdrawalUsed24h",
+      formatPortfolioMoney(Number(data && data.used_24h || 0))
+    );
+
+    put(
+      "withdrawalRemaining24h",
+      formatPortfolioMoney(Number(data && data.remaining_24h || 0))
+    );
   }
+
+  /*
+   * V37.13 — instant render:
+   * As soon as currentInvestments contains the fresh FLEX_DAILY row,
+   * show the capital/level/limit locally with no network wait.
+   * The server RPC follows immediately to confirm used/remaining 24h values.
+   */
+  window.renderWithdrawalLimitFromCurrentInvestments=function(){
+    if(!currentUser || !currentUser.id){
+      render(null);
+      return;
+    }
+
+    var capital=getLocalFlexPrincipal();
+    var tier=tierFromCapital(capital);
+    var used=Math.max(
+      0,
+      Number(withdrawalLimitState && withdrawalLimitState.used_24h || 0)
+    );
+    var daily=capital*tier.withdrawal_percent/100;
+    var remaining=Math.max(0,daily-used);
+
+    var localData={
+      tier_code:tier.tier_code,
+      withdrawal_percent:tier.withdrawal_percent,
+      capital_base:capital,
+      daily_limit:daily,
+      used_24h:used,
+      remaining_24h:remaining
+    };
+
+    render(localData);
+  };
 
   window.refreshWithdrawalLimitCard=async function(){
     if(!currentUser || !currentUser.id){
@@ -24619,54 +24731,86 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
+    /* Never leave the card waiting for the RPC before showing FLEX capital. */
+    window.renderWithdrawalLimitFromCurrentInvestments();
+
+    if(withdrawalLimitRequestRunning){
+      return;
+    }
+
+    withdrawalLimitRequestRunning=true;
+
     try{
       var r=await supabaseClient.rpc("get_my_withdrawal_limit");
-      if(r && r.error) throw r.error;
+
+      if(r && r.error){
+        throw r.error;
+      }
+
       withdrawalLimitState=r ? r.data : null;
       render(withdrawalLimitState);
     }catch(err){
       console.error("Withdrawal limit load error:",err);
 
-      var capital=0;
-      try{
-        capital=(currentInvestments||[]).reduce(function(sum,item){
-          if(
-            String(item && item.status || "")==="active" &&
-            String(item && item.plan_name || "")==="FLEX_DAILY"
-          ){
-            return sum+Number(item.principal||0);
-          }
-          return sum;
-        },0);
-      }catch(_){}
-
-      var pct=capital>10000?40:capital>1000?30:capital>100?25:capital>0?20:0;
-      var tier=capital>10000?"VIP":capital>1000?"PREMIUM":capital>100?"GROWTH":"BASE";
-
-      render({
-        tier_code:tier,
-        withdrawal_percent:pct,
-        capital_base:capital,
-        daily_limit:capital*pct/100,
-        used_24h:0,
-        remaining_24h:capital*pct/100
-      });
+      /*
+       * Keep the already-rendered local FLEX amount visible if the
+       * network is temporarily slow. Do not replace it with zero.
+       */
+      window.renderWithdrawalLimitFromCurrentInvestments();
+    }finally{
+      withdrawalLimitRequestRunning=false;
     }
   };
 
   window.getWithdrawalRemaining24h=function(){
-    if(!withdrawalLimitState) return null;
+    if(!withdrawalLimitState){
+      /*
+       * Before the first RPC finishes, calculate the safe local ceiling
+       * from FLEX principal. The server still enforces the exact limit.
+       */
+      var capital=getLocalFlexPrincipal();
+      var tier=tierFromCapital(capital);
+      return Math.max(0,capital*tier.withdrawal_percent/100);
+    }
+
     var v=Number(withdrawalLimitState.remaining_24h);
     return Number.isFinite(v)?Math.max(0,v):null;
   };
 
   function start(){
-    try{window.refreshWithdrawalLimitCard();}catch(_){}
-    if(withdrawalLimitRefreshTimer) clearInterval(withdrawalLimitRefreshTimer);
+    try{
+      window.renderWithdrawalLimitFromCurrentInvestments();
+      void window.refreshWithdrawalLimitCard();
+    }catch(_){}
+
+    if(withdrawalLimitRefreshTimer){
+      clearInterval(withdrawalLimitRefreshTimer);
+    }
+
+    /*
+     * Old version waited 30 seconds. V37.13 checks every 2 seconds,
+     * only while the tab is visible. Initial/current FLEX amount is
+     * still rendered instantly from currentInvestments.
+     */
     withdrawalLimitRefreshTimer=setInterval(function(){
-      try{window.refreshWithdrawalLimitCard();}catch(_){}
-    },30000);
+      if(document.hidden){
+        return;
+      }
+
+      try{
+        void window.refreshWithdrawalLimitCard();
+      }catch(_){}
+    },2000);
   }
+
+  document.addEventListener("visibilitychange",function(){
+    if(!document.hidden){
+      try{
+        window.renderWithdrawalLimitFromCurrentInvestments();
+        void window.refreshWithdrawalLimitCard();
+      }catch(_){}
+    }
+  });
 
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",start,{once:true});
