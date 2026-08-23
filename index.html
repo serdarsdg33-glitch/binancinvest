@@ -12041,6 +12041,175 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 }
 </style>
 
+
+<style id="live-withdrawals-full-glass-pills-v2">
+/* Whole Live Withdrawal item = one single glass oval */
+.live-withdrawals-container.has-video .live-withdraw,
+.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+
+  padding:9px 15px 9px 9px !important;
+  min-height:66px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.14) 0%,
+      rgba(255,255,255,.055) 36%,
+      rgba(240,185,11,.055) 100%
+    ) !important;
+
+  border:1px solid rgba(255,229,138,.30) !important;
+  border-radius:999px !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 -1px 0 rgba(240,185,11,.05),
+    0 10px 28px rgba(0,0,0,.30),
+    0 0 16px rgba(240,185,11,.055) !important;
+
+  backdrop-filter:blur(13px) saturate(1.18) !important;
+  -webkit-backdrop-filter:blur(13px) saturate(1.18) !important;
+
+  overflow:hidden !important;
+}
+
+/* Soft shine across the entire oval */
+.live-withdrawals-container.has-video .live-withdraw::before{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  border-radius:inherit !important;
+  background:
+    linear-gradient(
+      110deg,
+      rgba(255,255,255,.10),
+      transparent 26%,
+      transparent 72%,
+      rgba(240,185,11,.045)
+    ) !important;
+}
+
+/* Inner left group stays transparent because the parent is the glass pill */
+.live-withdrawals-container.has-video .live-withdraw>div:first-child{
+  position:relative !important;
+  z-index:1 !important;
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  filter:none !important;
+}
+
+/* Remove previous "name-only" glass box */
+.live-withdrawals-container.has-video .live-info{
+  display:block !important;
+  min-width:0 !important;
+  margin:0 0 0 12px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+.live-withdrawals-container.has-video .live-info b{
+  display:block !important;
+  max-width:none !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+  color:#fff9dc !important;
+}
+
+.live-withdrawals-container.has-video .live-info span{
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+/* Amount is inside the SAME oval, no separate capsule */
+.live-withdrawals-container.has-video .live-amount{
+  position:relative !important;
+  z-index:1 !important;
+  flex:0 0 auto !important;
+  margin:0 !important;
+  padding:0 !important;
+
+  color:#72f3ba !important;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+
+  font-weight:950 !important;
+  white-space:nowrap !important;
+  text-shadow:
+    0 0 12px rgba(22,199,132,.56),
+    0 2px 8px rgba(0,0,0,.9) !important;
+}
+
+/* Avatar/sticker remains part of the same pill */
+.live-withdrawals-container.has-video .live-avatar{
+  position:relative !important;
+  z-index:1 !important;
+  flex:0 0 auto !important;
+}
+
+/* RTL support */
+html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
+  margin:0 12px 0 0 !important;
+}
+
+/* Mobile */
+@media(max-width:600px){
+  .live-withdrawals-container.has-video .live-withdraw,
+  .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){
+    width:calc(100% - 14px) !important;
+    min-height:58px !important;
+    gap:7px !important;
+    padding:7px 10px 7px 7px !important;
+  }
+
+  .live-withdrawals-container.has-video .live-info{
+    margin-left:8px !important;
+  }
+
+  html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
+    margin:0 8px 0 0 !important;
+  }
+
+  .live-withdrawals-container.has-video .live-info b{
+    font-size:11px !important;
+  }
+
+  .live-withdrawals-container.has-video .live-info span{
+    font-size:8px !important;
+  }
+
+  .live-withdrawals-container.has-video .live-amount{
+    font-size:11px !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
