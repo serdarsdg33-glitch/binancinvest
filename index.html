@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-35">
+<body data-investment-model="flex-v6-37">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -22949,6 +22949,324 @@ html[dir="rtl"]:not(.account-signed-in) #portfolio .portfolio-vip-button{
     max-width:210px !important;
     min-height:38px !important;
     padding:8px 15px !important;
+    font-size:10.5px !important;
+  }
+}
+</style>
+
+
+<style id="site-v36-glass-gold-actions">
+/* ==========================================================
+   V36 — Professional translucent / lightly blurred gold actions
+   Applies to yellow action buttons across the site.
+   ========================================================== */
+
+:root{
+  --v36-gold-glass-bg:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.20),
+      rgba(240,185,11,.095)
+    );
+  --v36-gold-glass-border:
+    rgba(255,211,77,.42);
+  --v36-gold-glass-text:
+    #ffe082;
+}
+
+/* Main gold buttons: Sign In, Create Account, submit/confirm buttons, etc. */
+.btn.gold,
+button.btn.gold,
+a.btn.gold,
+input.btn.gold,
+#portfolio #portfolioAuthBtn,
+#portfolio .portfolio-vip-button,
+.plan-selection-confirm,
+.vip-lock-confirm,
+[class*="gold"][role="button"]{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--v36-gold-glass-border) !important;
+  background:var(--v36-gold-glass-bg) !important;
+  color:var(--v36-gold-glass-text) !important;
+  -webkit-backdrop-filter:blur(6px) saturate(1.08) !important;
+  backdrop-filter:blur(6px) saturate(1.08) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    inset 0 -1px 0 rgba(240,185,11,.06),
+    0 8px 24px rgba(0,0,0,.20) !important;
+  text-shadow:0 1px 5px rgba(0,0,0,.48) !important;
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease !important;
+}
+
+/* Thin glass highlight, without making the button look solid yellow. */
+.btn.gold::before,
+button.btn.gold::before,
+a.btn.gold::before,
+#portfolio #portfolioAuthBtn::before,
+#portfolio .portfolio-vip-button::before,
+.plan-selection-confirm::before,
+.vip-lock-confirm::before{
+  content:"";
+  position:absolute;
+  inset:1px 1px auto 1px;
+  height:42%;
+  border-radius:inherit;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.11),
+      rgba(255,255,255,0)
+    );
+  pointer-events:none;
+}
+
+/* Slightly brighter interaction state. */
+.btn.gold:hover,
+button.btn.gold:hover,
+a.btn.gold:hover,
+#portfolio #portfolioAuthBtn:hover,
+#portfolio .portfolio-vip-button:hover,
+.plan-selection-confirm:hover,
+.vip-lock-confirm:hover,
+.btn.gold:focus-visible,
+button.btn.gold:focus-visible,
+a.btn.gold:focus-visible{
+  border-color:rgba(255,218,91,.64) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.27),
+      rgba(240,185,11,.125)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 10px 28px rgba(0,0,0,.23),
+    0 0 0 2px rgba(240,185,11,.055) !important;
+}
+
+/* Tactile mobile press. */
+.btn.gold:active,
+button.btn.gold:active,
+a.btn.gold:active,
+#portfolio #portfolioAuthBtn:active,
+#portfolio .portfolio-vip-button:active,
+.plan-selection-confirm:active,
+.vip-lock-confirm:active{
+  transform:translateY(1px) scale(.992) !important;
+}
+
+/* Keep disabled actions visually disabled, not bright yellow. */
+.btn.gold:disabled,
+button.btn.gold:disabled,
+.plan-selection-confirm:disabled,
+.vip-lock-confirm:disabled{
+  opacity:.48 !important;
+  filter:saturate(.72) !important;
+  cursor:not-allowed !important;
+}
+
+/* Header authentication actions specifically:
+   compact glass pills, consistent with the reference screenshot. */
+header .btn.gold,
+.header .btn.gold,
+.nav .btn.gold,
+#authArea .btn.gold,
+#headerAuth .btn.gold{
+  border-radius:14px !important;
+  padding-inline:14px !important;
+  min-height:38px;
+}
+
+/* Portfolio guest Sign In styling from V35:
+   keep it compact, but now use the same glass language. */
+html:not(.account-signed-in) #portfolio #portfolioAuthBtn{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.17),
+      rgba(240,185,11,.07)
+    ) !important;
+  border-color:rgba(255,211,77,.40) !important;
+  color:#ffe38a !important;
+  -webkit-backdrop-filter:blur(6px) saturate(1.08) !important;
+  backdrop-filter:blur(6px) saturate(1.08) !important;
+}
+
+/* Guest Quick VIP Sign In should use the same compact glass treatment. */
+html:not(.account-signed-in) #portfolio .portfolio-vip-button,
+html:not(.account-signed-in) #portfolio .portfolio-vip-button.portfolio-vip-guest-action{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.16),
+      rgba(240,185,11,.065)
+    ) !important;
+  border-color:rgba(255,211,77,.38) !important;
+  color:#ffe38a !important;
+  -webkit-backdrop-filter:blur(6px) saturate(1.08) !important;
+  backdrop-filter:blur(6px) saturate(1.08) !important;
+}
+
+/* Some site actions use inline yellow backgrounds instead of .btn.gold.
+   Match only button-like controls; do not change gold cards/illustrations. */
+button[style*="#f0b90b"],
+button[style*="var(--gold"],
+a[style*="#f0b90b"][class*="btn"],
+a[style*="var(--gold"][class*="btn"]{
+  border:1px solid var(--v36-gold-glass-border) !important;
+  background:var(--v36-gold-glass-bg) !important;
+  color:var(--v36-gold-glass-text) !important;
+  -webkit-backdrop-filter:blur(6px) saturate(1.08) !important;
+  backdrop-filter:blur(6px) saturate(1.08) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 8px 24px rgba(0,0,0,.20) !important;
+  text-shadow:0 1px 5px rgba(0,0,0,.45) !important;
+}
+
+/* Do not blur the large content/cards themselves — only the action controls. */
+#portfolio .portfolio-major-panel,
+#portfolio .selected-plan-summary-card,
+#portfolio .referral-portfolio-card,
+#portfolio .vip-single-card{
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+
+@media(max-width:760px){
+  .btn.gold,
+  button.btn.gold,
+  a.btn.gold,
+  #portfolio #portfolioAuthBtn,
+  #portfolio .portfolio-vip-button,
+  .plan-selection-confirm,
+  .vip-lock-confirm{
+    -webkit-backdrop-filter:blur(5px) saturate(1.06) !important;
+    backdrop-filter:blur(5px) saturate(1.06) !important;
+  }
+}
+</style>
+
+
+<style id="site-v37-top-scroll-glass">
+/* V37 — top horizontal page navigation / scroll bar */
+
+/* The horizontal navigation at the top of the page becomes
+   the same translucent lightly-blurred glass as the new buttons. */
+.wrap > .nav{
+  position:relative;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  gap:5px !important;
+  padding:5px 6px 7px !important;
+  margin-bottom:16px !important;
+  border:1px solid rgba(255,211,77,.16) !important;
+  border-radius:15px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20,23,27,.52),
+      rgba(7,10,14,.34)
+    ) !important;
+  -webkit-backdrop-filter:blur(7px) saturate(1.08) !important;
+  backdrop-filter:blur(7px) saturate(1.08) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.055),
+    0 8px 24px rgba(0,0,0,.15) !important;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(240,185,11,.38) rgba(255,255,255,.025);
+}
+
+/* Individual top navigation items stay subtle. */
+.wrap > .nav > button{
+  flex:0 0 auto;
+  min-height:36px;
+  padding:8px 13px !important;
+  border:1px solid transparent !important;
+  border-radius:10px !important;
+  background:rgba(255,255,255,.018) !important;
+  color:rgba(210,217,227,.72) !important;
+  border-bottom:1px solid transparent !important;
+  text-shadow:0 1px 4px rgba(0,0,0,.45);
+  transition:
+    color .18s ease,
+    border-color .18s ease,
+    background .18s ease,
+    box-shadow .18s ease !important;
+}
+
+/* Current section: transparent gold glass, not a solid yellow tab. */
+.wrap > .nav > button.active{
+  color:#ffe184 !important;
+  border-color:rgba(255,211,77,.34) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(240,185,11,.16),
+      rgba(240,185,11,.055)
+    ) !important;
+  -webkit-backdrop-filter:blur(5px) !important;
+  backdrop-filter:blur(5px) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 5px 15px rgba(0,0,0,.12) !important;
+}
+
+/* Hover/focus without turning it into a bright solid button. */
+.wrap > .nav > button:hover,
+.wrap > .nav > button:focus-visible{
+  color:#fff !important;
+  border-color:rgba(240,185,11,.20) !important;
+  background:rgba(240,185,11,.045) !important;
+}
+
+/* The actual horizontal scrollbar itself gets a restrained gold-glass look. */
+.wrap > .nav::-webkit-scrollbar{
+  height:4px;
+}
+
+.wrap > .nav::-webkit-scrollbar-track{
+  background:rgba(255,255,255,.018);
+  border-radius:999px;
+}
+
+.wrap > .nav::-webkit-scrollbar-thumb{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(240,185,11,.20),
+      rgba(255,218,96,.46),
+      rgba(240,185,11,.20)
+    );
+  border-radius:999px;
+}
+
+.wrap > .nav::-webkit-scrollbar-thumb:hover{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(240,185,11,.28),
+      rgba(255,224,120,.62),
+      rgba(240,185,11,.28)
+    );
+}
+
+@media(max-width:760px){
+  .wrap > .nav{
+    padding:4px 5px 6px !important;
+    border-radius:13px !important;
+    -webkit-backdrop-filter:blur(6px) saturate(1.06) !important;
+    backdrop-filter:blur(6px) saturate(1.06) !important;
+  }
+
+  .wrap > .nav > button{
+    min-height:33px;
+    padding:7px 11px !important;
     font-size:10.5px !important;
   }
 }
