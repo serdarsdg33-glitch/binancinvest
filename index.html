@@ -11794,6 +11794,85 @@ html[dir="ltr"] #portfolio .portfolio-banner-slogan{
 }
 </style>
 
+
+<style id="portfolio-v37-10-green-darker-gold-clean">
+/* V37.10
+   Main line: deeper green glass
+   Subtitle: clean glass gold with all black/dark edging removed
+*/
+
+/* Main line — deeper, richer green; not neon/light */
+#portfolio .portfolio-banner-slogan strong{
+  color:#2fbf6d !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #7be49f 0%,
+      #46cb79 20%,
+      #23995a 48%,
+      #126f42 70%,
+      #2faf68 88%,
+      #1d8a50 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  -webkit-text-stroke:0 !important;
+  text-shadow:none !important;
+
+  filter:
+    drop-shadow(0 1px 0 rgba(153,239,180,.16))
+    drop-shadow(0 0 6px rgba(39,170,95,.18))
+    drop-shadow(0 0 12px rgba(21,123,69,.10)) !important;
+}
+
+/* Subtitle — clean glass gold, no black/dark parts */
+#portfolio .portfolio-banner-slogan span{
+  color:#e3b844 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff0a9 0%,
+      #f6d46e 24%,
+      #dcae39 50%,
+      #b47b17 72%,
+      #e4b649 88%,
+      #c88d22 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  -webkit-text-stroke:0 !important;
+  text-shadow:none !important;
+
+  filter:
+    drop-shadow(0 1px 0 rgba(255,239,170,.18))
+    drop-shadow(0 0 5px rgba(220,167,49,.16))
+    drop-shadow(0 0 10px rgba(171,115,23,.08)) !important;
+}
+
+/* Mobile: keep both clean and readable without dark edging */
+@media(max-width:760px){
+  #portfolio .portfolio-banner-slogan strong{
+    filter:
+      drop-shadow(0 1px 0 rgba(153,239,180,.14))
+      drop-shadow(0 0 5px rgba(39,170,95,.16)) !important;
+  }
+
+  #portfolio .portfolio-banner-slogan span{
+    filter:
+      drop-shadow(0 1px 0 rgba(255,239,170,.16))
+      drop-shadow(0 0 4px rgba(220,167,49,.14)) !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
