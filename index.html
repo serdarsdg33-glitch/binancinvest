@@ -11939,6 +11939,122 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 })();
 </script>
 
+
+<!-- V37.15 Web Performance -->
+<link rel="preconnect" href="https://zpwxvngrowhqquwpovuf.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="//zpwxvngrowhqquwpovuf.supabase.co">
+<link rel="preload" href="/hero-background.webp" as="image" fetchpriority="high">
+
+<style id="web-performance-v37-15">
+/*
+  Adaptive Lite Mode is used only on weak devices, Save-Data, or slow
+  connections. Strong devices keep the current visual design.
+*/
+html.web-lite .homepage-vault-video{
+  background:
+    linear-gradient(rgba(2,4,7,.08),rgba(2,4,7,.18)),
+    url("/hero-background.webp") center/cover no-repeat !important;
+}
+
+html.web-lite #homepageVaultVideo,
+html.web-lite .why-binance-video,
+html.web-lite .live-withdrawals-video{
+  visibility:hidden !important;
+}
+
+html.web-lite .live-withdrawals-container.has-video{
+  background:
+    radial-gradient(circle at 68% 18%,rgba(240,185,11,.09),transparent 38%),
+    linear-gradient(160deg,#05080c,#0a0f15 58%,#05080c) !important;
+}
+
+html.web-lite .orb,
+html.web-lite .floating-logo,
+html.web-lite .hero-orb,
+html.web-lite .coin-logo.floating{
+  animation:none !important;
+}
+
+/* Reduce expensive effects only in lite mode; layout stays unchanged. */
+html.web-lite .btn,
+html.web-lite .nav,
+html.web-lite .withdrawal-level-card,
+html.web-lite .portfolio-finance-guest-icon,
+html.web-lite .portfolio-vip-mini-icon,
+html.web-lite .vip-lock-icon,
+html.web-lite .safu-lock{
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+}
+
+/* Let the browser skip paint/layout for off-screen heavy sections. */
+@supports (content-visibility:auto){
+  #home .withdrawals-showcase,
+  #home .footer-section,
+  #downloadAppSection{
+    content-visibility:auto;
+    contain-intrinsic-size:1px 720px;
+  }
+}
+
+/* Respect users/phones that explicitly request less motion. */
+@media (prefers-reduced-motion: reduce){
+  .orb,
+  .floating-logo,
+  .hero-orb,
+  .coin-logo.floating{
+    animation:none !important;
+  }
+}
+</style>
+
+<script id="web-performance-runtime-v37-15">
+(function(){
+  const root=document.documentElement;
+
+  function evaluate(){
+    const c =
+      navigator.connection ||
+      navigator.mozConnection ||
+      navigator.webkitConnection;
+
+    const type =
+      c && c.effectiveType
+        ? String(c.effectiveType).toLowerCase()
+        : "";
+
+    const saveData=!!(c && c.saveData);
+    const slowNetwork=
+      saveData ||
+      type==="slow-2g" ||
+      type==="2g" ||
+      type==="3g";
+
+    const cores=Number(navigator.hardwareConcurrency || 0);
+    const memory=Number(navigator.deviceMemory || 0);
+
+    const weakCpu=cores>0 && cores<=4;
+    const weakMemory=memory>0 && memory<=4;
+
+    const lite=slowNetwork || weakCpu || weakMemory;
+
+    root.classList.toggle("web-lite",lite);
+    root.dataset.webPerformance=lite ? "lite" : "full";
+  }
+
+  evaluate();
+
+  const c =
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
+
+  if(c && typeof c.addEventListener==="function"){
+    c.addEventListener("change",evaluate);
+  }
+})();
+</script>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -12006,7 +12122,7 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 
 <section id="home" class="view active">
 <div class="homepage-vault-video">
-  <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
+  <video id="homepageVaultVideo" muted loop playsinline webkit-playsinline preload="none" poster="hero-background.webp" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
 
@@ -12123,13 +12239,13 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
-  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video"
-    autoplay muted loop playsinline webkit-playsinline
-    preload="auto"
+  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video lazy-video"
+    muted loop playsinline webkit-playsinline
+    preload="none"
     poster="live-withdrawals-demo.jpg"
     disablepictureinpicture disableremoteplayback
     aria-hidden="true">
-    <source src="live-withdrawals-smooth.mp4" type="video/mp4">
+    <source data-src="live-withdrawals-smooth.mp4" type="video/mp4">
   </video>
   <div class="live-withdrawals-overlay-title">
     <h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2>
@@ -12221,7 +12337,7 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 
     <div class="pwa-install-actions">
       <div class="install-banner-wrap">
-        <img src="app-download-banner.webp" alt="Binancinvest app download banner with iPhone and Android installation options" class="install-banner-image">
+        <img src="app-download-banner.webp" alt="Binancinvest app download banner with iPhone and Android installation options" class="install-banner-image" loading="lazy" decoding="async" fetchpriority="low">
         <button id="installAppBtn" class="install-banner-action" type="button" aria-label="Install Web App on iPhone">Install App</button>
         <a id="androidApkBtn" class="install-banner-action" href="binancinvest.apk" download aria-label="Download Binancinvest APK for Android"></a>
       </div>
@@ -12515,11 +12631,11 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
     <strong data-t="portfolioBannerSlogan1">Your path to growth starts here</strong>
     <span data-t="portfolioBannerSlogan2">Build your future with a clearer vision</span>
   </div>
-  <img src="/portfolio-banner.jpg" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='portfolio-banner.jpg';}" alt="Binance Invest investment vault banner">
+  <img src="/portfolio-banner.jpg" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='portfolio-banner.jpg';}" alt="Binance Invest investment vault banner" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 <div class="portfolio-base-independent-shell">
 <div id="portfolioBasePanel" class="portfolio-major-panel portfolio-major-base">
-    <img class="portfolio-summary-bg" src="portfolio-overview.webp" alt="" aria-hidden="true">
+    <img class="portfolio-summary-bg" src="portfolio-overview.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" fetchpriority="low">
     <div class="title"><h2 data-t="portfolio">Portfolio</h2><button id="portfolioAuthBtn" class="btn gold" onclick="openAuth('login')" data-t="login">Sign In</button></div>
     <div class="portfolio-intro-copy">
       <strong data-t="portfolioIntroTitle">Manage your capital, profits and contracts</strong>
@@ -12723,22 +12839,22 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
           <div class="custom-select-wrapper" id="depositCryptoCustomSelect">
               <div class="custom-select-trigger" onclick="toggleCustomSelect('deposit')">
                   <span id="depositSelectedText" style="display:flex; align-items:center;">
-    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
+    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" loading="lazy" decoding="async" fetchpriority="low"> TRX / Tether (TRC20)
 </span>
                   <span>▼</span>
               </div>
               <div class="custom-options" id="depositCustomOptions">
                <div class="custom-option" onclick="selectDepositCrypto('trx_usdt_trc20', 'TRX / Tether (TRC20)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')">
-    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
+    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" loading="lazy" decoding="async" fetchpriority="low"> TRX / Tether (TRC20)
 </div>
                   <div class="custom-option" onclick="selectDepositCrypto('bnb_usdt_bep20', 'BNB / Tether (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB / Tether (BEP20)
+                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB" loading="lazy" decoding="async" fetchpriority="low"> BNB / Tether (BEP20)
                   </div>
                   <div class="custom-option" onclick="selectDepositCrypto('eth_usdt_erc20', 'Ethereum / Tether (ERC20)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum / Tether (ERC20)
+                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH" loading="lazy" decoding="async" fetchpriority="low"> Ethereum / Tether (ERC20)
                   </div>
                   <div class="custom-option" onclick="selectDepositCrypto('btc', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)
+                      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" loading="lazy" decoding="async" fetchpriority="low"> Bitcoin (BTC)
                   </div>
               </div>
           </div>
@@ -12798,21 +12914,21 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
       <div class="custom-select-wrapper" id="withdrawCryptoCustomSelect" style="margin-bottom:15px;">
           <div class="custom-select-trigger" onclick="toggleCustomSelect('withdraw')">
               <span id="withdrawSelectedText" style="display:flex; align-items:center;">
-                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)
+                  <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" loading="lazy" decoding="async" fetchpriority="low"> USDT (TRC20)
               </span>
               <span>▼</span>
           </div>
           <div class="custom-options" id="withdrawCustomOptions">
-              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (BEP20)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (ERC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (ERC20)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum (ETH)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('BNB (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB (Smart Chain)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')"><img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRON (TRX)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('Solana (SOL)', 'https://cryptologos.cc/logos/solana-sol-logo.svg')"><img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="SOL"> Solana (SOL)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('Litecoin (LTC)', 'https://cryptologos.cc/logos/litecoin-ltc-logo.svg')"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg" alt="LTC"> Litecoin (LTC)</div>
-              <div class="custom-option" onclick="selectWithdrawCrypto('Dogecoin (DOGE)', 'https://cryptologos.cc/logos/dogecoin-doge-logo.svg')"><img src="https://cryptologos.cc/logos/dogecoin-doge-logo.svg" alt="DOGE"> Dogecoin (DOGE)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" loading="lazy" decoding="async" fetchpriority="low"> USDT (TRC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" loading="lazy" decoding="async" fetchpriority="low"> USDT (BEP20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('USDT (ERC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" loading="lazy" decoding="async" fetchpriority="low"> USDT (ERC20)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" loading="lazy" decoding="async" fetchpriority="low"> Bitcoin (BTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH" loading="lazy" decoding="async" fetchpriority="low"> Ethereum (ETH)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('BNB (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB" loading="lazy" decoding="async" fetchpriority="low"> BNB (Smart Chain)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')"><img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" loading="lazy" decoding="async" fetchpriority="low"> TRON (TRX)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Solana (SOL)', 'https://cryptologos.cc/logos/solana-sol-logo.svg')"><img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="SOL" loading="lazy" decoding="async" fetchpriority="low"> Solana (SOL)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Litecoin (LTC)', 'https://cryptologos.cc/logos/litecoin-ltc-logo.svg')"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg" alt="LTC" loading="lazy" decoding="async" fetchpriority="low"> Litecoin (LTC)</div>
+              <div class="custom-option" onclick="selectWithdrawCrypto('Dogecoin (DOGE)', 'https://cryptologos.cc/logos/dogecoin-doge-logo.svg')"><img src="https://cryptologos.cc/logos/dogecoin-doge-logo.svg" alt="DOGE" loading="lazy" decoding="async" fetchpriority="low"> Dogecoin (DOGE)</div>
           </div>
       </div>
       <input type="hidden" id="withdrawCrypto" value="USDT (TRC20)">
@@ -15416,7 +15532,16 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 300);
-setInterval(addLiveWithdrawal, 3900);
+setInterval(() => {
+  if (
+    !document.hidden &&
+    document.getElementById("home")?.classList.contains("active")
+  ) {
+    addLiveWithdrawal();
+  }
+},
+document.documentElement.classList.contains("web-lite") ? 8000 : 5000
+);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -19093,6 +19218,16 @@ function initializeLazyVideos() {
   if (!videos.length) return;
 
   const loadVideo = video => {
+    if (
+      document.documentElement.classList.contains("web-lite")
+    ) {
+      try {
+        video.pause();
+        video.preload = "none";
+      } catch (_) {}
+      return;
+    }
+
     if (!video.dataset.loaded) {
       video.querySelectorAll("source[data-src]").forEach(source => {
         source.src = source.dataset.src;
@@ -19121,7 +19256,7 @@ function initializeLazyVideos() {
       }
     });
   }, {
-    rootMargin: "650px 0px",
+    rootMargin: "180px 0px",
     threshold: 0.01
   });
 
@@ -19131,6 +19266,15 @@ function initializeLazyVideos() {
 function initializeHomepageVaultVideo() {
   const video = document.getElementById("homepageVaultVideo");
   if (!video || video.dataset.playbackGuard === "true") return;
+
+  if (
+    document.documentElement.classList.contains("web-lite")
+  ) {
+    video.dataset.playbackGuard = "true";
+    video.preload = "none";
+    try { video.pause(); } catch (_) {}
+    return;
+  }
 
   video.dataset.playbackGuard = "true";
   video.muted = true;
@@ -19172,13 +19316,20 @@ function initializeHomepageVaultVideo() {
   window.addEventListener("touchstart", safePlay, { passive: true });
 
   window.setInterval(() => {
-    if (video.paused && !video.ended) safePlay();
-  }, 2500);
+    if (
+      !document.hidden &&
+      !document.documentElement.classList.contains("web-lite") &&
+      video.paused &&
+      !video.ended
+    ) {
+      safePlay();
+    }
+  }, 7000);
 
   safePlay();
 }
 
-window.onload = async function(){
+async function initializeBinancinvestSite(){
   initializeLazyVideos();
   initializeHomepageVaultVideo();
   captureReferralCodeFromUrl();
@@ -19211,14 +19362,29 @@ if (IS_PASSWORD_RECOVERY_LINK) {
 restoreEmailConfirmationNotice();
 
   updateHeaderAuthUI();
-  setInterval(fetchRealPrices, 15000);
+  setInterval(
+    fetchRealPrices,
+    document.documentElement.classList.contains("web-lite")
+      ? 60000
+      : (window.matchMedia("(max-width: 760px)").matches ? 30000 : 15000)
+  );
 
   if (currentUser) {
     loadProfile();
   }
 
     updateSupportAuthUI();
-};
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => { void initializeBinancinvestSite(); },
+    { once: true }
+  );
+} else {
+  void initializeBinancinvestSite();
+}
 
 /* Total Profit Counter */
 const BASE_PROFIT = 8452000;
@@ -19248,7 +19414,14 @@ function updateProfitCounter() {
 
 updateProfitCounter();
 
-setInterval(updateProfitCounter, 1000);
+setInterval(() => {
+  if (
+    !document.hidden &&
+    document.getElementById("home")?.classList.contains("active")
+  ) {
+    updateProfitCounter();
+  }
+}, 1000);
 </script>
 
 <script>
@@ -19401,8 +19574,13 @@ async function syncFinancialStateFromServer() {
 }
 
 setInterval(() => {
+  if (document.hidden) return;
   void syncFinancialStateFromServer();
-}, 5000);
+},
+document.documentElement.classList.contains("web-lite")
+  ? 20000
+  : (window.matchMedia("(max-width: 760px)").matches ? 12000 : 7000)
+);
 
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
@@ -21699,7 +21877,10 @@ document.addEventListener("DOMContentLoaded", function() {
         renderOnlineUsers();
 
         // هر 2 ثانیه یک تغییر نرم انجام شود.
-        setInterval(updateOnlineUsers, 2000);
+        setInterval(
+          updateOnlineUsers,
+          document.documentElement.classList.contains("web-lite") ? 8000 : 4000
+        );
     }
 });
 </script>
@@ -24310,6 +24491,13 @@ document.addEventListener("DOMContentLoaded", function() {
   function startFlexCheckRefresh(){
     try{ window.renderFlexCalculationCheck(); }catch(_){}
     setInterval(function(){
+      if (
+        document.hidden ||
+        !document.getElementById("portfolio")?.classList.contains("active")
+      ) {
+        return;
+      }
+
       try{ window.renderFlexCalculationCheck(); }catch(_){}
     }, 1000);
   }
@@ -24896,7 +25084,11 @@ document.addEventListener("DOMContentLoaded", function() {
       try{
         void window.refreshWithdrawalLimitCard();
       }catch(_){}
-    },2000);
+    },
+    document.documentElement.classList.contains("web-lite")
+      ? 15000
+      : (window.matchMedia("(max-width: 760px)").matches ? 8000 : 5000)
+    );
   }
 
   document.addEventListener("visibilitychange",function(){
