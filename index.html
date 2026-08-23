@@ -24149,5 +24149,107 @@ html[dir="ltr"] #portfolio .portfolio-banner-slogan{
 }
 </style>
 
+
+<style id="portfolio-v37-7-banner-slogan-green-gold">
+/* V37.7 — brighter glass-green main line + glass-gold subtitle */
+
+#portfolio .portfolio-banner-slogan{
+  top:5.7% !important;
+  gap:7px !important;
+}
+
+/* Main line — luminous glass green */
+#portfolio .portfolio-banner-slogan strong{
+  font-size:clamp(21px, 2.65vw, 35px) !important;
+  font-weight:850 !important;
+  line-height:1.24 !important;
+  letter-spacing:-.01em !important;
+
+  color:#a8ffbf !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #e8fff0 0%,
+      #b9ffd0 18%,
+      #75efa0 42%,
+      #27c86d 65%,
+      #8df6b1 84%,
+      #55d98a 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  -webkit-text-stroke:.18px rgba(210,255,225,.30) !important;
+
+  filter:
+    drop-shadow(0 1px 0 rgba(235,255,242,.26))
+    drop-shadow(0 2px 3px rgba(0,0,0,.52))
+    drop-shadow(0 0 10px rgba(74,224,126,.24)) !important;
+}
+
+/* Second line — smaller glass gold */
+#portfolio .portfolio-banner-slogan span{
+  font-size:clamp(10.5px, 1.12vw, 14.5px) !important;
+  font-weight:600 !important;
+  line-height:1.42 !important;
+  letter-spacing:0 !important;
+
+  color:#f4d980 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff5c6 0%,
+      #f7dc84 32%,
+      #e8b84b 62%,
+      #c58a20 100%
+    ) !important;
+
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+
+  -webkit-text-stroke:.12px rgba(255,239,178,.22) !important;
+
+  filter:
+    drop-shadow(0 1px 0 rgba(255,248,210,.18))
+    drop-shadow(0 2px 2px rgba(0,0,0,.54))
+    drop-shadow(0 0 7px rgba(235,180,58,.16)) !important;
+}
+
+/* Mobile refinement */
+@media(max-width:760px){
+  #portfolio .portfolio-banner-slogan{
+    top:5.1% !important;
+    gap:5px !important;
+  }
+
+  #portfolio .portfolio-banner-slogan strong{
+    font-size:clamp(16px, 4.6vw, 23px) !important;
+  }
+
+  #portfolio .portfolio-banner-slogan span{
+    font-size:clamp(9.5px, 2.75vw, 13px) !important;
+  }
+}
+
+@media(max-width:420px){
+  #portfolio .portfolio-banner-slogan{
+    top:4.8% !important;
+  }
+
+  #portfolio .portfolio-banner-slogan strong{
+    font-size:15px !important;
+  }
+
+  #portfolio .portfolio-banner-slogan span{
+    font-size:10px !important;
+  }
+}
+</style>
+
 </body>
 </html>
