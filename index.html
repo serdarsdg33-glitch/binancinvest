@@ -11939,6 +11939,56 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 })();
 </script>
 
+
+<style id="live-withdrawals-static-image-v1">
+/* Live Withdrawals: approved static image replaces the old video completely. */
+.live-withdrawals-container.has-video{
+  background:#020304 !important;
+}
+
+.live-withdrawals-static-image{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:contain;
+  object-position:center;
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  background:#020304;
+}
+
+/* Keep withdrawal names/amounts readable while leaving the image clearly visible. */
+.live-withdrawals-container.has-video::before{
+  z-index:1 !important;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2,4,7,.16),
+      rgba(2,4,7,.03) 24%,
+      rgba(2,4,7,.03) 76%,
+      rgba(2,4,7,.16)
+    ),
+    linear-gradient(
+      0deg,
+      rgba(2,4,7,.20),
+      transparent 22%,
+      transparent 78%,
+      rgba(2,4,7,.16)
+    ) !important;
+}
+
+/* Old video element is intentionally gone. */
+#liveWithdrawalsVideo,
+.live-withdrawals-video,
+.live-withdrawals-video-bg{
+  display:none !important;
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -12123,14 +12173,15 @@ html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 
 <section class="withdrawals-showcase" aria-labelledby="liveWithdrawalsHeading">
 <div class="live-withdrawals-container has-video" id="liveWithdrawalsList">
-  <video id="liveWithdrawalsVideo" class="live-withdrawals-video performance-video"
-    autoplay muted loop playsinline webkit-playsinline
-    preload="auto"
-    poster="live-withdrawals-demo.jpg"
-    disablepictureinpicture disableremoteplayback
-    aria-hidden="true">
-    <source src="live-withdrawals-smooth.mp4" type="video/mp4">
-  </video>
+  <img
+    id="liveWithdrawalsBackgroundImage"
+    class="live-withdrawals-static-image"
+    src="live-withdrawals-background.png"
+    alt=""
+    aria-hidden="true"
+    decoding="async"
+    fetchpriority="low"
+  >
   <div class="live-withdrawals-overlay-title">
     <h2 id="liveWithdrawalsHeading" data-t="liveWithdrawalsTitle">Live Withdrawals</h2>
   </div>
@@ -21437,155 +21488,6 @@ async function deleteAllClosedSupportTickets() {
   }
 })();
 </script>
-
-
-<script id="live-withdrawals-video-performance-v2">
-(function () {
-  const video = document.getElementById("liveWithdrawalsVideo");
-  const section = document.querySelector(".live-withdrawals-container.has-video");
-  const home = document.getElementById("home");
-
-  if (!video || !section) return;
-
-  video.muted = true;
-  video.playsInline = true;
-
-  let inViewport = false;
-  let retryTimer = null;
-  let lastReloadAt = 0;
-
-  function homeIsActive() {
-    return !home || home.classList.contains("active");
-  }
-
-  async function safePlay() {
-    if (
-      document.hidden ||
-      !inViewport ||
-      !homeIsActive()
-    ) {
-      return;
-    }
-
-    try {
-      const result = video.play();
-      if (result && typeof result.catch === "function") {
-        await result.catch(() => {});
-      }
-    } catch (_) {}
-  }
-
-  function pauseWhenNotNeeded() {
-    if (
-      document.hidden ||
-      !inViewport ||
-      !homeIsActive()
-    ) {
-      video.pause();
-      return true;
-    }
-    return false;
-  }
-
-  const observer = new IntersectionObserver(
-    entries => {
-      const entry = entries[0];
-      inViewport = Boolean(
-        entry &&
-        entry.isIntersecting &&
-        entry.intersectionRatio > 0.06
-      );
-
-      if (!pauseWhenNotNeeded()) {
-        safePlay();
-      }
-    },
-    {
-      threshold: [0, 0.06, 0.2]
-    }
-  );
-
-  observer.observe(section);
-
-  document.addEventListener("visibilitychange", () => {
-    if (!pauseWhenNotNeeded()) {
-      safePlay();
-    }
-  });
-
-  /* If WebView/Safari temporarily stalls, first try a cheap resume.
-     Only reload after a longer repeated stall, and never repeatedly. */
-  function recoverFromStall() {
-    clearTimeout(retryTimer);
-
-    retryTimer = window.setTimeout(async () => {
-      if (pauseWhenNotNeeded()) return;
-
-      if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
-        await safePlay();
-        return;
-      }
-
-      const now = Date.now();
-
-      if (now - lastReloadAt > 12000) {
-        lastReloadAt = now;
-        const keepTime = Number.isFinite(video.currentTime)
-          ? video.currentTime
-          : 0;
-
-        try {
-          video.load();
-
-          video.addEventListener(
-            "loadedmetadata",
-            () => {
-              try {
-                if (
-                  keepTime > 0 &&
-                  Number.isFinite(video.duration) &&
-                  keepTime < video.duration
-                ) {
-                  video.currentTime = keepTime;
-                }
-              } catch (_) {}
-
-              safePlay();
-            },
-            { once: true }
-          );
-        } catch (_) {
-          safePlay();
-        }
-      } else {
-        safePlay();
-      }
-    }, 900);
-  }
-
-  video.addEventListener("waiting", recoverFromStall);
-  video.addEventListener("stalled", recoverFromStall);
-  video.addEventListener("suspend", () => {
-    if (!document.hidden && inViewport) safePlay();
-  });
-
-  video.addEventListener("canplay", () => {
-    clearTimeout(retryTimer);
-    safePlay();
-  });
-
-  video.addEventListener("ended", () => {
-    try { video.currentTime = 0; } catch (_) {}
-    safePlay();
-  });
-})();
-</script>
-
-
-
-
-
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     
