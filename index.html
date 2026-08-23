@@ -19717,10 +19717,15 @@ document.addEventListener("DOMContentLoaded", function() {
       renderSelectedPlanSummaryCards();
       renderFlexibleCard();
 
-      toast(
-        text("cancelledSuccess"),
-        "success"
+      setSelectedPlanCancelInlineSuccess(
+        result && result.data
+          ? result.data
+          : {}
       );
+
+      renderSelectedPlanSummaryCards();
+      normalizeSelectedPlanPanelLayout();
+      focusInlineCancelSuccess();
 
     } catch (error) {
       console.error(
@@ -19822,6 +19827,100 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
+  var selectedPlanCancelInlineState = null;
+  var selectedPlanCancelInlineTimer = null;
+
+  function setSelectedPlanCancelInlineSuccess(payload) {
+    selectedPlanCancelInlineState = {
+      payload: payload || {},
+      expiresAt: Date.now() + 8000
+    };
+
+    if (selectedPlanCancelInlineTimer) {
+      clearTimeout(selectedPlanCancelInlineTimer);
+    }
+
+    selectedPlanCancelInlineTimer = setTimeout(function () {
+      selectedPlanCancelInlineState = null;
+
+      try {
+        renderSelectedPlanSummaryCards();
+      } catch (_) {}
+    }, 8200);
+  }
+
+  function selectedPlanCancelInlineMarkup() {
+    if (
+      !selectedPlanCancelInlineState ||
+      Date.now() >
+        Number(selectedPlanCancelInlineState.expiresAt || 0)
+    ) {
+      selectedPlanCancelInlineState = null;
+      return "";
+    }
+
+    var payload =
+      selectedPlanCancelInlineState.payload || {};
+
+    var planName =
+      String(payload.plan_name || "").trim();
+
+    var payout =
+      Number(payload.payout || 0);
+
+    return [
+      '<div id="selectedPlanCancelInlineSuccess" class="selected-plan-cancel-inline-success" role="status" aria-live="polite">',
+        '<span class="selected-plan-cancel-inline-check" aria-hidden="true">✓</span>',
+        '<div class="selected-plan-cancel-inline-copy">',
+          '<strong>',
+            escapeHtml(
+              text("cancelledSuccess")
+            ),
+          '</strong>',
+          (
+            planName
+              ? [
+                  '<small>',
+                    escapeHtml(planName),
+                    (
+                      Number.isFinite(payout) && payout > 0
+                        ? ' · ' + escapeHtml(
+                            formatPortfolioMoney(
+                              payout,
+                              true
+                            )
+                          )
+                        : ''
+                    ),
+                  '</small>'
+                ].join("")
+              : ''
+          ),
+        '</div>',
+      '</div>'
+    ].join("");
+  }
+
+  function focusInlineCancelSuccess() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        var box =
+          document.getElementById(
+            "selectedPlanCancelInlineSuccess"
+          );
+
+        if (!box) return;
+
+        try {
+          box.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+          });
+        } catch (_) {}
+      });
+    });
+  }
+
   function renderSelectedPlanSummaryCards() {
     var zone =
       ensureSelectedPlanSummaryZone();
@@ -19857,6 +19956,9 @@ document.addEventListener("DOMContentLoaded", function() {
         return total + Number(item.principal || 0);
       }, 0);
 
+    var cancelSuccessMarkup =
+      selectedPlanCancelInlineMarkup();
+
     var totalCard = [
       '<section class="withdrawable-plans-total-card">',
         '<span>',
@@ -19874,13 +19976,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (!plans.length) {
       zone.innerHTML =
-        totalCard;
+        totalCard +
+        cancelSuccessMarkup;
       normalizeSelectedPlanPanelLayout();
       return;
     }
 
     zone.innerHTML =
       totalCard +
+      cancelSuccessMarkup +
       plans.map(function (item) {
         var principal =
           Number(item.principal || 0);
@@ -23475,6 +23579,149 @@ a[style*="var(--gold"][class*="btn"]{
     height:31px !important;
     border-radius:9px !important;
     font-size:15px !important;
+  }
+}
+</style>
+
+
+<style id="v37-3-flex-check-and-inline-cancel-success">
+/* V37.3 — clearer FLEX calculation toggle */
+#portfolio .flex-calculation-check-toggle{
+  border:1px solid rgba(240,185,11,.34) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,17,22,.54),
+      rgba(4,8,12,.42)
+    ) !important;
+  color:rgba(250,251,253,.96) !important;
+
+  -webkit-backdrop-filter:
+    blur(7px) saturate(1.07) !important;
+  backdrop-filter:
+    blur(7px) saturate(1.07) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    0 7px 20px rgba(0,0,0,.20) !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.80),
+    0 0 7px rgba(0,0,0,.42) !important;
+}
+
+#portfolio .flex-calculation-check-toggle:hover,
+#portfolio .flex-calculation-check-toggle:focus-visible{
+  border-color:rgba(240,185,11,.50) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,23,28,.62),
+      rgba(7,11,15,.48)
+    ) !important;
+}
+
+#portfolio .flex-calculation-check-arrow{
+  color:#f0c443 !important;
+  text-shadow:none !important;
+}
+
+/* Cancellation success is shown INSIDE the active-plans area,
+   not as a global/top toast. */
+#portfolio .selected-plan-cancel-inline-success{
+  grid-column:1 / -1;
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  box-sizing:border-box;
+  margin:0 0 12px;
+  padding:11px 13px;
+
+  border:1px solid rgba(35,217,154,.34);
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19,77,58,.28),
+      rgba(5,22,17,.22)
+    );
+
+  -webkit-backdrop-filter:
+    blur(7px) saturate(1.05);
+  backdrop-filter:
+    blur(7px) saturate(1.05);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 8px 22px rgba(0,0,0,.18);
+
+  color:#dffbf0;
+}
+
+#portfolio .selected-plan-cancel-inline-check{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  flex:0 0 24px;
+
+  border:1px solid rgba(35,217,154,.38);
+  border-radius:50%;
+
+  background:rgba(35,217,154,.12);
+  color:#4ce2aa;
+
+  font-size:14px;
+  font-weight:900;
+}
+
+#portfolio .selected-plan-cancel-inline-copy{
+  min-width:0;
+}
+
+#portfolio .selected-plan-cancel-inline-copy strong{
+  display:block;
+  color:#effcf7;
+  font-size:12px;
+  line-height:1.4;
+  font-weight:800;
+}
+
+#portfolio .selected-plan-cancel-inline-copy small{
+  display:block;
+  margin-top:3px;
+  color:rgba(198,224,214,.68);
+  font-size:9.5px;
+  line-height:1.4;
+  font-weight:550;
+}
+
+/* Respect current language direction. */
+html[dir="ltr"] #portfolio .selected-plan-cancel-inline-success{
+  text-align:left;
+  direction:ltr;
+}
+
+html[dir="rtl"] #portfolio .selected-plan-cancel-inline-success{
+  text-align:right;
+  direction:rtl;
+}
+
+@media(max-width:760px){
+  #portfolio .flex-calculation-check-toggle{
+    -webkit-backdrop-filter:
+      blur(6px) saturate(1.05) !important;
+    backdrop-filter:
+      blur(6px) saturate(1.05) !important;
+  }
+
+  #portfolio .selected-plan-cancel-inline-success{
+    padding:10px 11px;
+    margin-bottom:10px;
   }
 }
 </style>
