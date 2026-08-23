@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-26">
+<body data-investment-model="flex-v6-27">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -21835,6 +21835,53 @@ html body #plans > .plan .flex-fixed-plan-notice {
   }
 })();
 </script>
+
+
+<style id="portfolio-v27-flex-check-more-visible">
+/* V27 — make "بررسی محاسبه پلن پایه" clearer and easier to notice */
+#portfolio .flex-calculation-check{
+  margin-top:8px !important;
+}
+
+#portfolio .flex-calculation-check-toggle{
+  min-height:32px;
+  padding:6px 10px !important;
+  border:1px solid rgba(240,185,11,.16) !important;
+  border-radius:10px !important;
+  background:rgba(0,0,0,.035) !important;
+  color:rgba(246,248,251,.90) !important;
+  font-size:13px !important;
+  font-weight:650 !important;
+  letter-spacing:0 !important;
+  text-shadow:0 1px 5px rgba(0,0,0,.45) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+#portfolio .flex-calculation-check-toggle:hover,
+#portfolio .flex-calculation-check-toggle:focus{
+  color:#fff !important;
+  border-color:rgba(240,185,11,.32) !important;
+  background:rgba(240,185,11,.04) !important;
+}
+
+#portfolio .flex-calculation-check-arrow{
+  color:rgba(240,185,11,.88) !important;
+  font-size:16px !important;
+}
+
+@media(max-width:760px){
+  #portfolio .flex-calculation-check-toggle{
+    min-height:30px;
+    padding:6px 9px !important;
+    font-size:12.5px !important;
+  }
+
+  #portfolio .flex-calculation-check-arrow{
+    font-size:15px !important;
+  }
+}
+</style>
 
 </body>
 </html>
