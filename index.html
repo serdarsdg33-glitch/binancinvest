@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-34">
+<body data-investment-model="flex-v6-35">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -12083,6 +12083,10 @@ function updateHeaderAuthUI() {
   }
 
   updateProfileAccessUI();
+
+  if (typeof window.updateVipCopy === "function") {
+    window.updateVipCopy();
+  }
 }
 
 function updateProfileAccessUI() {
@@ -18274,7 +18278,7 @@ document.addEventListener("DOMContentLoaded", function() {
       autoTitle:"پلن پایه ۱.۵٪", autoText:"پس از تأیید هر واریز به‌صورت خودکار فعال می‌شود",
       noLock:"بدون مدت ثابت", anyAmount:"هر مبلغ واریز تأییدشده", anytime:"برداشت اصل سرمایه و سود در هر زمان",
       improve:"می‌توانید برای افزایش سود پلن‌های دیگر را انتخاب کنید.",
-      fixedNotice:"اصل سرمایه شما برای همیشه قفل نمی‌شود. اگر قبل از پایان قرارداد برداشت کنید، سود با نرخ روزانه ۱.۵٪ محاسبه می‌شود؛ در صورت تکمیل دوره، نرخ پلن انتخابی اعمال خواهد شد.",
+      fixedNotice:"اصل سرمایه شما قفل نمی‌شود. اگر قبل از پایان قرارداد برداشت کنید، سود با نرخ روزانه ۱.۵٪ محاسبه می‌شود؛ در صورت تکمیل دوره، نرخ پلن انتخابی اعمال خواهد شد.",
       consent:"مدت قرارداد و شرایط برداشت زودهنگام را مطالعه کردم و انتقال این مبلغ از پلن پایه ۱.۵٪ به پلن انتخابی را صریحاً تأیید می‌کنم.",
       confirmPlan:"تأیید پلن", insufficient:"سرمایه موجود در پلن پایه ۱.۵٪ کافی نیست.",
       confirmWithdrawal:"برداشت سرمایه", settleText:"اصل سرمایه و سود محاسبه‌شده به موجودی قابل برداشت شما منتقل می‌شود.",
@@ -20342,10 +20346,32 @@ document.addEventListener("DOMContentLoaded", function() {
   function updateVipCopy() {
     var labels = document.querySelectorAll('[data-t="lockFromBalance"]');
     labels.forEach(function (element) {
-      element.textContent =
-        language() === "fa"
-          ? "انتقال از پلن پایه"
-          : "Move From Flexible Plan";
+      var signedIn =
+        !!(
+          typeof currentUser !== "undefined" &&
+          currentUser &&
+          currentUser.id
+        );
+
+      if (!signedIn) {
+        element.textContent =
+          typeof tr === "function"
+            ? tr("login")
+            : "Sign In";
+
+        element.classList.add(
+          "portfolio-vip-guest-action"
+        );
+      } else {
+        element.textContent =
+          language() === "fa"
+            ? "انتقال از پلن پایه"
+            : "Move From Flexible Plan";
+
+        element.classList.remove(
+          "portfolio-vip-guest-action"
+        );
+      }
     });
 
     var descriptions = document.querySelectorAll(
@@ -20356,6 +20382,8 @@ document.addEventListener("DOMContentLoaded", function() {
       element.textContent = text("vipHardLockNotice");
     });
   }
+
+  window.updateVipCopy = updateVipCopy;
 
   document.addEventListener("DOMContentLoaded", function () {
     ensureFlexibleUI();
@@ -22819,6 +22847,109 @@ html[dir="rtl"] #invest .custom-investment-error{
   }
   html[dir="rtl"] .referral-reward-detail{
     text-align:right !important;
+  }
+}
+</style>
+
+
+<style id="portfolio-v35-guest-button-refine">
+/* V35 — guest Portfolio action buttons */
+
+/* Keep the Portfolio heading row clean and compact for guests. */
+html:not(.account-signed-in) #portfolio .portfolio-major-base > .title{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+}
+
+html:not(.account-signed-in) #portfolio #portfolioAuthBtn{
+  position:relative !important;
+  inset:auto !important;
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  min-height:34px !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:7px 13px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(240,185,11,.42) !important;
+  background:rgba(240,185,11,.10) !important;
+  color:#f6d765 !important;
+  font-size:11.5px !important;
+  line-height:1.2 !important;
+  font-weight:750 !important;
+  letter-spacing:0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  white-space:nowrap !important;
+}
+
+html:not(.account-signed-in) #portfolio #portfolioAuthBtn:active{
+  transform:scale(.98);
+}
+
+/*
+ * Guests do not yet have Flexible principal to move.
+ * Show a compact sign-in action instead of a large bright
+ * "Move From Flexible Plan" bar.
+ */
+html:not(.account-signed-in) #portfolio .portfolio-vip-button,
+html:not(.account-signed-in) #portfolio .portfolio-vip-button.portfolio-vip-guest-action{
+  justify-self:center !important;
+  align-self:center !important;
+  width:auto !important;
+  min-width:150px !important;
+  max-width:240px !important;
+  min-height:40px !important;
+  height:auto !important;
+  padding:9px 18px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(240,185,11,.40) !important;
+  background:rgba(240,185,11,.08) !important;
+  color:#f3d46e !important;
+  font-size:11.5px !important;
+  line-height:1.25 !important;
+  font-weight:750 !important;
+  letter-spacing:0 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+  white-space:nowrap !important;
+}
+
+/* Preserve normal full action styling after sign-in. */
+html.account-signed-in #portfolio .portfolio-vip-button{
+  width:auto;
+}
+
+/* Direction follows the active site language. */
+html[dir="ltr"]:not(.account-signed-in) #portfolio #portfolioAuthBtn,
+html[dir="ltr"]:not(.account-signed-in) #portfolio .portfolio-vip-button{
+  direction:ltr;
+}
+
+html[dir="rtl"]:not(.account-signed-in) #portfolio #portfolioAuthBtn,
+html[dir="rtl"]:not(.account-signed-in) #portfolio .portfolio-vip-button{
+  direction:rtl;
+}
+
+@media(max-width:760px){
+  html:not(.account-signed-in) #portfolio #portfolioAuthBtn{
+    min-height:32px !important;
+    padding:6px 11px !important;
+    font-size:10.5px !important;
+  }
+
+  html:not(.account-signed-in) #portfolio .portfolio-vip-button,
+  html:not(.account-signed-in) #portfolio .portfolio-vip-button.portfolio-vip-guest-action{
+    grid-column:1 / -1 !important;
+    width:auto !important;
+    min-width:138px !important;
+    max-width:210px !important;
+    min-height:38px !important;
+    padding:8px 15px !important;
+    font-size:10.5px !important;
   }
 }
 </style>
