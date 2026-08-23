@@ -12258,33 +12258,98 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 </style>
 
 
-<style id="diagnostic-no-bottom-video-v1">
+<style id="live-withdrawals-android-gpu-fix-v1">
 /*
-  DIAGNOSTIC TEST:
-  Only the bottom Why section video is disabled.
-  Its space is preserved, so scrolling/layout stays comparable.
+  TEST VERSION:
+  Keep the same Live Withdrawals layout/image, but remove the most
+  expensive moving backdrop-blur effects on Android/touch devices.
 */
-.why-binance-video-disabled-test{
-  display:block !important;
-  width:min(1180px,100vw) !important;
-  aspect-ratio:16/9 !important;
-  margin:0 auto 30px !important;
-  background:
-    radial-gradient(circle at 50% 30%, rgba(240,185,11,.08), transparent 42%),
-    linear-gradient(180deg, #05070b, #030507) !important;
-  border:0 !important;
-  box-shadow:none !important;
-  mix-blend-mode:normal !important;
-}
+@media (max-width: 900px), (hover: none) and (pointer: coarse) {
+  .live-withdrawals-container.has-video .live-withdraw,
+  .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){
+    /*
+      Moving backdrop-filter is very expensive on Android because every
+      animated pill forces blur recomposition over the large background.
+      Simulate glass with translucent gradients instead.
+    */
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
 
-@media(max-width:600px){
-  .why-binance-video-disabled-test{
-    width:100vw !important;
-    margin-left:calc(50% - 50vw) !important;
-    margin-bottom:24px !important;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(20,25,31,.84) 0%,
+        rgba(13,18,24,.72) 42%,
+        rgba(23,20,10,.62) 100%
+      ) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.10),
+      0 8px 20px rgba(0,0,0,.28),
+      0 0 10px rgba(240,185,11,.04) !important;
+
+    will-change:transform,opacity !important;
+  }
+
+  .live-withdrawals-container.has-video .live-avatar{
+    -webkit-backdrop-filter:none !important;
+    backdrop-filter:none !important;
+    box-shadow:
+      inset 2px 2px 5px rgba(255,255,255,.14),
+      inset -4px -5px 9px rgba(0,0,0,.30),
+      0 0 10px rgba(240,185,11,.18) !important;
+  }
+
+  /*
+    When the section is off-screen, freeze any rows that are still alive
+    instead of letting Android animate them in the background.
+  */
+  .live-withdrawals-container:not(.withdrawals-in-view) .live-withdraw{
+    animation-play-state:paused !important;
   }
 }
 </style>
+
+<script id="live-withdrawals-viewport-gate-v1">
+(function(){
+  window.__biWithdrawalsInView = false;
+
+  function setup(){
+    const box = document.getElementById("liveWithdrawalsList");
+    if(!box) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const visible = Boolean(
+          entry &&
+          entry.isIntersecting &&
+          entry.intersectionRatio > 0.01
+        );
+
+        window.__biWithdrawalsInView = visible;
+        box.classList.toggle("withdrawals-in-view", visible);
+      },
+      {
+        /*
+          Start shortly before the user reaches the section, but not
+          hundreds of pixels early.
+        */
+        rootMargin: "100px 0px",
+        threshold: [0, 0.01, 0.15]
+      }
+    );
+
+    observer.observe(box);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", setup, {once:true});
+  }else{
+    setup();
+  }
+})();
+</script>
 
 </head>
 <body data-investment-model="flex-v6-37-8">
@@ -12488,7 +12553,10 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 </section>
 
 <div class="footer-section">
-    <div class="why-binance-video why-binance-video-disabled-test" aria-hidden="true"></div>
+    <video class="why-binance-video lazy-video" muted loop playsinline preload="none" aria-label="Secure digital asset vault">
+      <source data-src="why-binance-vault.mp4" type="video/mp4">
+      <source data-src="why-binance-vault.webm" type="video/webm">
+    </video>
     <h3 data-t="footerTitle">Why Binance Invest?</h3>
     <p data-t="footerDesc">We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.</p>
     <div style="margin-top: 35px;">
@@ -15694,7 +15762,8 @@ function addLiveWithdrawal() {
   /* Do not keep rebuilding an invisible feed in background tabs/pages. */
   if (
     document.hidden ||
-    !document.getElementById("home")?.classList.contains("active")
+    !document.getElementById("home")?.classList.contains("active") ||
+    window.__biWithdrawalsInView === false
   ) {
     return;
   }
@@ -15761,7 +15830,13 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 300);
-setInterval(addLiveWithdrawal, 3900);
+setInterval(
+  addLiveWithdrawal,
+  (
+    window.matchMedia("(max-width: 900px)").matches ||
+    window.matchMedia("(hover: none) and (pointer: coarse)").matches
+  ) ? 6500 : 3900
+);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
