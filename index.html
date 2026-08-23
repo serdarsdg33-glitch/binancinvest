@@ -7750,7 +7750,7 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
 </style>
 
 </head>
-<body data-investment-model="flex-v6-30">
+<body data-investment-model="flex-v6-31">
 <header>
   <div class="brand">
     <div class="binance-floating-logo">
@@ -18688,6 +18688,16 @@ document.addEventListener("DOMContentLoaded", function() {
         await planRpcWithTimeout(updatePortfolio(), 8000);
         renderSelectedPlanSummaryCards();
         renderFlexibleCard();
+
+        var recentActivation =
+          getRecentPlanActivationSuccess();
+
+        if (recentActivation) {
+          focusActivatedPlanCardWithRetry(
+            recentActivation
+          );
+        }
+
         if (typeof calculatePortfolioVipLock === "function") {
           calculatePortfolioVipLock();
         }
@@ -18868,43 +18878,35 @@ document.addEventListener("DOMContentLoaded", function() {
     return labels[lang] || labels.en;
   }
 
-  function focusActivatedPlanCard(payload) {
-    if (!payload) return;
+  function findActivatedPlanCard(payload) {
+    if (!payload) return null;
 
     var id = String(payload.investmentId || "");
-
-    if (
-      id &&
-      window.__lastPlanSuccessScrollId === id
-    ) {
-      return;
-    }
-
     var card = null;
 
     if (id) {
+      var safeId =
+        window.CSS && CSS.escape
+          ? CSS.escape(id)
+          : id.replace(/"/g, '\\"');
+
       card = document.querySelector(
         '#selectedPlanSummaryZone ' +
         '[data-plan-id="' +
-        (window.CSS && CSS.escape
-          ? CSS.escape(id)
-          : id.replace(/"/g, '\\"')) +
+        safeId +
         '"]'
       );
     }
 
     if (!card) {
-      var cards =
-        document.querySelectorAll(
-          "#selectedPlanSummaryZone " +
-          ".selected-plan-summary-card"
-        );
+      var cards = document.querySelectorAll(
+        "#selectedPlanSummaryZone " +
+        ".selected-plan-summary-card"
+      );
 
       Array.from(cards).some(function (candidate) {
         var planCode =
-          candidate.getAttribute(
-            "data-plan-code"
-          ) || "";
+          candidate.getAttribute("data-plan-code") || "";
 
         var principal =
           Number(
@@ -18914,11 +18916,9 @@ document.addEventListener("DOMContentLoaded", function() {
           );
 
         if (
-          planCode ===
-            String(payload.planCode || "") &&
+          planCode === String(payload.planCode || "") &&
           Math.abs(
-            principal -
-            Number(payload.amount || 0)
+            principal - Number(payload.amount || 0)
           ) < 0.005
         ) {
           card = candidate;
@@ -18929,24 +18929,108 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
 
-    if (!card) return;
+    return card;
+  }
 
-    window.__lastPlanSuccessScrollId =
-      id ||
+  function scrollActivatedPlanCardIntoCenter(card) {
+    if (!card) return false;
+
+    /*
+     * iPhone Safari can ignore scrollIntoView while Portfolio is
+     * still changing height. Calculate the final page position
+     * ourselves after layout has settled.
+     */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        try {
+          var rect = card.getBoundingClientRect();
+          var viewportHeight =
+            window.innerHeight ||
+            document.documentElement.clientHeight ||
+            0;
+
+          var targetY =
+            window.pageYOffset +
+            rect.top -
+            Math.max(
+              16,
+              (viewportHeight - rect.height) / 2
+            );
+
+          window.scrollTo({
+            top: Math.max(0, targetY),
+            behavior: "smooth"
+          });
+        } catch (_) {
+          try {
+            card.scrollIntoView({
+              behavior: "smooth",
+              block: "center"
+            });
+          } catch (_) {}
+        }
+      });
+    });
+
+    return true;
+  }
+
+  function focusActivatedPlanCard(payload) {
+    if (!payload) return false;
+
+    var card = findActivatedPlanCard(payload);
+    if (!card) return false;
+
+    var focusKey =
+      String(payload.investmentId || "") ||
       (
         String(payload.planCode || "") +
         ":" +
         String(payload.amount || "")
       );
 
-    setTimeout(function () {
+    window.__lastPlanSuccessScrollId = focusKey;
+
+    scrollActivatedPlanCardIntoCenter(card);
+    return true;
+  }
+
+  function focusActivatedPlanCardWithRetry(payload) {
+    if (!payload) return;
+
+    var attempts = 0;
+    var maxAttempts = 18;
+
+    function tryFocus() {
+      attempts += 1;
+
+      /*
+       * Re-render before searching so a freshly downloaded investment
+       * becomes a card immediately.
+       */
       try {
-        card.scrollIntoView({
-          behavior:"smooth",
-          block:"center"
-        });
+        renderSelectedPlanSummaryCards();
       } catch (_) {}
-    }, 120);
+
+      if (focusActivatedPlanCard(payload)) {
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        return;
+      }
+
+      var delay =
+        attempts < 4
+          ? 120
+          : attempts < 9
+            ? 250
+            : 500;
+
+      setTimeout(tryFocus, delay);
+    }
+
+    setTimeout(tryFocus, 80);
   }
 
   window.showPlanActivationSuccessAndOpenPortfolio =
@@ -18978,6 +19062,13 @@ document.addEventListener("DOMContentLoaded", function() {
       try {
         renderSelectedPlanSummaryCards();
       } catch (_) {}
+
+      var payload =
+        getRecentPlanActivationSuccess();
+
+      focusActivatedPlanCardWithRetry(
+        payload
+      );
     };
 
   window.continueSelectedPlan = async function () {
@@ -19986,9 +20077,6 @@ document.addEventListener("DOMContentLoaded", function() {
       .join("");
 
     normalizeSelectedPlanPanelLayout();
-    focusActivatedPlanCard(
-      recentActivation
-    );
   }
 
   var originalRenderPortfolioLive =
@@ -22384,6 +22472,25 @@ html[dir="ltr"] #portfolio .selected-plan-card-success{
     padding:6px 9px;
     font-size:10.5px;
   }
+}
+</style>
+
+
+<style id="portfolio-v31-exact-card-focus">
+#portfolio .selected-plan-summary-card.selected-plan-just-activated{
+  scroll-margin-top:18px !important;
+  scroll-margin-bottom:18px !important;
+}
+
+#portfolio .selected-plan-summary-card.selected-plan-just-activated::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  box-shadow:
+    inset 0 0 0 1px rgba(32,211,142,.12),
+    0 0 26px rgba(32,211,142,.08);
 }
 </style>
 
