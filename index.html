@@ -12461,6 +12461,62 @@ html.web-android
 }
 </style>
 
+
+<style id="apk-startup-video-auth-fix-v3">
+/* APK keeps the Android-web performance profile, but its top UI must
+   always remain above media surfaces and receive touch events. */
+html.apk-live-shell header{
+  z-index:5000 !important;
+  pointer-events:auto !important;
+}
+
+html.apk-live-shell header .brand,
+html.apk-live-shell header .head,
+html.apk-live-shell #authButtonsGroup,
+html.apk-live-shell #authButtonsGroup .btn,
+html.apk-live-shell #languageTrigger{
+  position:relative !important;
+  z-index:5001 !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+}
+
+/* The homepage video is decorative, so it should never consume taps. */
+html.apk-live-shell .homepage-vault-video,
+html.apk-live-shell #homepageVaultVideo{
+  pointer-events:none !important;
+}
+
+/* Hide Android WebView's native "play" overlay during startup.
+   The video becomes visible only after a real playing/timeupdate event. */
+html.apk-live-shell #homepageVaultVideo{
+  opacity:0 !important;
+  visibility:hidden !important;
+}
+
+html.apk-live-shell #homepageVaultVideo.apk-video-ready{
+  opacity:1 !important;
+  visibility:visible !important;
+  transition:opacity .16s ease !important;
+}
+
+/* Keep the frame dark while the first actual video frame is loading. */
+html.apk-live-shell .homepage-vault-video{
+  background:#030405 !important;
+}
+
+/* Auth modal must always appear above the header/video layer. */
+html.apk-live-shell #auth.modal{
+  z-index:20000 !important;
+  pointer-events:auto !important;
+}
+
+html.apk-live-shell #auth .modalbox,
+html.apk-live-shell #auth .modalbox *{
+  pointer-events:auto !important;
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -25412,65 +25468,27 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
-<script id="apk-auth-touch-bridge-v1">
+
+
+<script id="apk-auth-touch-fallback-v3">
 (function () {
-  function isApkShell() {
+  function isApk() {
     return document.documentElement.classList.contains("apk-live-shell");
   }
 
-  function openAuthReliably(mode) {
-    try {
-      if (typeof window.openAuth === "function") {
-        window.openAuth(mode);
-        return true;
-      }
+  function open(mode) {
+    if (typeof window.openAuth === "function") {
+      window.openAuth(mode);
+      return;
+    }
 
-      /*
-        Emergency UI fallback. This is only used if a WebView delays exposing
-        the page's normal openAuth function. The normal auth code remains the
-        primary path.
-      */
-      const modal = document.getElementById("auth");
-      if (!modal) return false;
-
-      const registerFields = document.getElementById("registerFields");
-      const loginFields = document.getElementById("loginFields");
-      const forgotFields = document.getElementById("forgotFields");
-      const passwordContainer = document.getElementById("passwordContainer");
-      const title = document.getElementById("authTitle");
-      const submit = document.getElementById("authSubmitBtn");
-
-      if (registerFields) {
-        registerFields.style.display = mode === "register" ? "block" : "none";
-      }
-
-      if (loginFields) {
-        loginFields.style.display = mode === "login" ? "block" : "none";
-      }
-
-      if (forgotFields) forgotFields.style.display = "none";
-      if (passwordContainer) passwordContainer.style.display = "block";
-
-      if (title) {
-        title.textContent =
-          mode === "register" ? "Create Account" : "Sign In";
-      }
-
-      if (submit) {
-        submit.textContent =
-          mode === "register" ? "Create Account" : "Continue";
-      }
-
-      modal.style.display = "flex";
-      return true;
-    } catch (error) {
-      console.error("APK auth open failed:", error);
-      return false;
+    if (typeof openAuth === "function") {
+      openAuth(mode);
     }
   }
 
-  function bind() {
-    if (!isApkShell()) return;
+  function bindAuth() {
+    if (!isApk()) return;
 
     const group = document.getElementById("authButtonsGroup");
     if (!group) return;
@@ -25482,52 +25500,83 @@ document.addEventListener("DOMContentLoaded", function() {
       [login, "login"],
       [register, "register"]
     ].forEach(([button, mode]) => {
-      if (!button || button.dataset.apkAuthBound === "1") return;
+      if (!button || button.dataset.apkTouchFallback === "1") return;
 
-      button.dataset.apkAuthBound = "1";
+      button.dataset.apkTouchFallback = "1";
       button.setAttribute("type", "button");
 
       /*
-        pointerup is more reliable than relying only on an inline onclick
-        inside some Android System WebView builds.
+        Normal click/onclick remains untouched.
+        This only supplies a fallback for Android WebViews that occasionally
+        fail to dispatch the synthetic click after a touch.
       */
       button.addEventListener(
-        "pointerup",
+        "touchend",
         function (event) {
-          if (!isApkShell()) return;
-
+          if (!isApk()) return;
           event.preventDefault();
-          event.stopPropagation();
-
-          openAuthReliably(mode);
+          open(mode);
         },
-        { passive: false }
-      );
-
-      /*
-        Prevent the synthetic click after pointerup from opening the modal
-        twice. Normal website/iPhone behavior is unaffected.
-      */
-      button.addEventListener(
-        "click",
-        function (event) {
-          if (!isApkShell()) return;
-
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        },
-        true
+        { passive:false }
       );
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bind, { once: true });
-  } else {
-    bind();
+  function bindVideo() {
+    if (!isApk()) return;
+
+    const video = document.getElementById("homepageVaultVideo");
+    if (!video || video.dataset.apkStartupFix === "1") return;
+
+    video.dataset.apkStartupFix = "1";
+    video.controls = false;
+    video.removeAttribute("controls");
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    try {
+      video.disablePictureInPicture = true;
+    } catch (_) {}
+
+    const reveal = function () {
+      if (
+        video.currentTime > 0 ||
+        (!video.paused && video.readyState >= 2)
+      ) {
+        video.classList.add("apk-video-ready");
+      }
+    };
+
+    video.addEventListener("playing", reveal);
+    video.addEventListener("timeupdate", reveal);
+    video.addEventListener("loadeddata", function () {
+      const p = video.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(function () {});
+      }
+    });
+
+    const p = video.play();
+    if (p && typeof p.catch === "function") {
+      p.catch(function () {});
+    }
   }
 
-  window.addEventListener("pageshow", bind);
+  function start() {
+    bindAuth();
+    bindVideo();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once:true });
+  } else {
+    start();
+  }
+
+  window.addEventListener("pageshow", start);
 })();
 </script>
 
