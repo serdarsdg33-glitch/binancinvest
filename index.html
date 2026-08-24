@@ -12645,188 +12645,112 @@ html.apk-live-shell[dir="rtl"] header > .head{
 </style>
 
 
+<style id="platform-stat-badges-bottom-transparent-final">
+/* FINAL — Platform Statistics only.
+   Move Live + Saved / Verified / SAFU badges to the bottom.
+   Remove ALL blur/tint from those badge boxes so the card artwork stays visible. */
 
-<style id="platform-stat-badges-bottom-v1">
-/* Platform Statistics badges: keep the same side, move from top to bottom.
-   This applies to iPhone web/PWA, Android web/APK, and native shells. */
-.stats-vertical-stack .stat-circle-card {
+html .stats-vertical-stack .stat-circle-card {
   position: relative !important;
   padding-top: 18px !important;
-  padding-bottom: 34px !important;
+  padding-bottom: 42px !important;
 }
 
-.stats-vertical-stack .stat-badge-tag {
+html .stats-vertical-stack .stat-badge-tag,
+html .stats-vertical-stack .safu-badge,
+html.web-android .stats-vertical-stack .stat-badge-tag,
+html.web-ios .stats-vertical-stack .stat-badge-tag,
+html.native-app .stats-vertical-stack .stat-badge-tag,
+html.apk-live-shell .stats-vertical-stack .stat-badge-tag {
   position: absolute !important;
   top: auto !important;
-  bottom: 10px !important;
+  bottom: 9px !important;
   right: 22px !important;
   left: auto !important;
-  z-index: 6 !important;
+  z-index: 10 !important;
   margin: 0 !important;
   transform: none !important;
+
+  /* Fully transparent — background image is visible directly */
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+
+  /* Absolutely no blur */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+
+  /* Keep only a light outline so the label remains defined */
+  border: 1px solid rgba(255,224,120,.52) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.045),
+    0 2px 8px rgba(0,0,0,.14) !important;
 }
 
-html[dir="rtl"] .stats-vertical-stack .stat-badge-tag {
+/* Remove every haze/highlight overlay from the small badge boxes */
+html .stats-vertical-stack .stat-badge-tag::before,
+html .stats-vertical-stack .stat-badge-tag::after,
+html .stats-vertical-stack .safu-badge::before,
+html .stats-vertical-stack .safu-badge::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+/* SAFU lock tile: transparent too, no blur */
+html .stats-vertical-stack .safu-lock,
+html.web-android .stats-vertical-stack .safu-lock,
+html.web-ios .stats-vertical-stack .safu-lock,
+html.native-app .stats-vertical-stack .safu-lock,
+html.apk-live-shell .stats-vertical-stack .safu-lock {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+  border: 1px solid rgba(255,224,120,.46) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.035) !important;
+}
+
+html .stats-vertical-stack .safu-lock::before,
+html .stats-vertical-stack .safu-lock::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
+
+html[dir="rtl"] .stats-vertical-stack .stat-badge-tag,
+html[dir="rtl"] .stats-vertical-stack .safu-badge {
   right: auto !important;
   left: 22px !important;
 }
 
 @media (max-width: 600px) {
-  .stats-vertical-stack .stat-circle-card {
+  html .stats-vertical-stack .stat-circle-card {
     min-height: 116px !important;
     padding-top: 14px !important;
-    padding-bottom: 40px !important;
+    padding-bottom: 43px !important;
   }
 
-  .stats-vertical-stack .stat-badge-tag {
+  html .stats-vertical-stack .stat-badge-tag,
+  html .stats-vertical-stack .safu-badge,
+  html.web-android .stats-vertical-stack .stat-badge-tag,
+  html.web-ios .stats-vertical-stack .stat-badge-tag,
+  html.native-app .stats-vertical-stack .stat-badge-tag,
+  html.apk-live-shell .stats-vertical-stack .stat-badge-tag {
     top: auto !important;
     bottom: 7px !important;
     right: 10px !important;
     left: auto !important;
   }
 
-  html[dir="rtl"] .stats-vertical-stack .stat-badge-tag {
+  html[dir="rtl"] .stats-vertical-stack .stat-badge-tag,
+  html[dir="rtl"] .stats-vertical-stack .safu-badge {
     right: auto !important;
     left: 10px !important;
-  }
-}
-</style>
-
-
-<style id="platform-stat-badges-glass-v1">
-/* Make the bottom badges clear glass so the artwork behind remains visible. */
-.stats-vertical-stack .stat-badge-tag{
-  display:inline-flex !important;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  min-height:34px;
-  padding:7px 13px !important;
-  color:inherit;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.075),
-      rgba(255,255,255,.02)
-    ) !important;
-  background-color:rgba(7,10,14,.12) !important;
-  border:1px solid rgba(255,221,118,.34) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.18),
-    inset 0 -1px 0 rgba(255,255,255,.03),
-    0 8px 22px rgba(0,0,0,.20),
-    0 0 14px rgba(240,185,11,.07) !important;
-  backdrop-filter:blur(10px) saturate(118%) !important;
-  -webkit-backdrop-filter:blur(10px) saturate(118%) !important;
-}
-
-.stats-vertical-stack .stat-badge-tag span{
-  position:relative;
-  z-index:1;
-}
-
-.stats-vertical-stack .stat-badge-tag::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  pointer-events:none;
-  background:linear-gradient(
-    120deg,
-    rgba(255,255,255,.13),
-    transparent 32%,
-    transparent 72%,
-    rgba(255,225,91,.06)
-  );
-}
-
-.stats-vertical-stack .safu-badge{
-  gap:4px;
-  min-width:88px;
-  padding:8px 12px 7px !important;
-}
-
-.stats-vertical-stack .safu-lock{
-  font-size:17px;
-  line-height:1;
-}
-
-@media (max-width: 600px){
-  .stats-vertical-stack .stat-badge-tag{
-    min-height:30px;
-    padding:6px 10px !important;
-    backdrop-filter:blur(8px) saturate(115%) !important;
-    -webkit-backdrop-filter:blur(8px) saturate(115%) !important;
-  }
-
-  .stats-vertical-stack .safu-badge{
-    min-width:74px;
-    padding:7px 10px 6px !important;
-  }
-}
-</style>
-
-
-<style id="platform-badge-pill-clear-glass-v2">
-/* Only the small label boxes: Live + Saved / Verified / SAFU */
-.stats-vertical-stack .stat-badge-tag,
-.stats-vertical-stack .safu-badge{
-  position: absolute !important;
-  overflow: hidden !important;
-  isolation: isolate;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.08) 0%,
-      rgba(255,255,255,.025) 38%,
-      rgba(14,10,5,.16) 100%
-    ) !important;
-  background-color: rgba(8,10,14,.14) !important;
-  border: 1px solid rgba(255,224,120,.34) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.20),
-    inset 0 -1px 0 rgba(255,255,255,.04),
-    0 8px 22px rgba(0,0,0,.18),
-    0 0 16px rgba(240,185,11,.08) !important;
-  backdrop-filter: blur(16px) saturate(135%) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
-}
-
-.stats-vertical-stack .stat-badge-tag::before,
-.stats-vertical-stack .safu-badge::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  pointer-events:none;
-  background:
-    linear-gradient(
-      115deg,
-      rgba(255,255,255,.16) 0%,
-      rgba(255,255,255,.06) 20%,
-      transparent 42%,
-      transparent 78%,
-      rgba(255,225,91,.07) 100%
-    );
-  z-index:0;
-}
-
-.stats-vertical-stack .stat-badge-tag > *,
-.stats-vertical-stack .safu-badge > *{
-  position:relative;
-  z-index:1;
-}
-
-.stats-vertical-stack .safu-badge{
-  min-width: 90px !important;
-}
-
-@media (max-width:600px){
-  .stats-vertical-stack .stat-badge-tag,
-  .stats-vertical-stack .safu-badge{
-    background-color: rgba(8,10,14,.12) !important;
-    backdrop-filter: blur(12px) saturate(128%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(128%) !important;
   }
 }
 </style>
