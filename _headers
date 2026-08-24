@@ -1,24 +1,6 @@
-/sw.js
-  Cache-Control: no-cache, no-store, must-revalidate
-  Service-Worker-Allowed: /
-
-/binancinvest-manifest-v5.webmanifest
+/binancinvest-v37.mobileconfig
+  Content-Type: application/x-apple-aspen-config
   Cache-Control: no-cache, no-store, must-revalidate
 
-/binancinvest-icon-v37-192.png
-  Cache-Control: no-cache, must-revalidate
-
-/binancinvest-icon-v37-512.png
-  Cache-Control: no-cache, must-revalidate
-
-/binancinvest-icon-v37-maskable-512.png
-  Cache-Control: no-cache, must-revalidate
-
-/binancinvest-apple-touch-v37.png
-  Cache-Control: no-cache, must-revalidate
-
-/install-web.html
-  Cache-Control: no-cache, must-revalidate
-
-/offline.html
+/install-iphone.html
   Cache-Control: no-cache, must-revalidate
