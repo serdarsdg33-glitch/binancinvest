@@ -4,6 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
+<script id="apk-viewport-contain-fix-v1">
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("apk") !== "1") return;
+
+    const viewport = document.querySelector('meta[name="viewport"]');
+
+    if (viewport) {
+      /*
+        Do not allow the APK WebView page to paint behind the Android
+        camera cutout/status-bar area.
+      */
+      viewport.setAttribute(
+        "content",
+        "width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=contain"
+      );
+    }
+
+    document.documentElement.classList.add("apk-safe-frame");
+  } catch (_) {}
+})();
+</script>
+
+
 <script id="ios-web-safe-area-detector">
 (function () {
   try {
@@ -12514,6 +12540,25 @@ html.apk-live-shell #auth.modal{
 html.apk-live-shell #auth .modalbox,
 html.apk-live-shell #auth .modalbox *{
   pointer-events:auto !important;
+}
+</style>
+
+
+<style id="apk-safe-frame-fallback-v1">
+/*
+  Fallback for WebViews that still report a display cutout inset even with
+  viewport-fit=contain. On ordinary browser/iPhone pages this does nothing.
+*/
+html.apk-live-shell.apk-safe-frame body{
+  padding-top:env(safe-area-inset-top, 0px) !important;
+  padding-left:env(safe-area-inset-left, 0px) !important;
+  padding-right:env(safe-area-inset-right, 0px) !important;
+  padding-bottom:env(safe-area-inset-bottom, 0px) !important;
+  min-height:100dvh;
+}
+
+html.apk-live-shell.apk-safe-frame header{
+  top:env(safe-area-inset-top, 0px) !important;
 }
 </style>
 
