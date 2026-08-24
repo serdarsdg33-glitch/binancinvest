@@ -12755,6 +12755,130 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
 }
 </style>
 
+
+<style id="download-options-v37-3-final">
+/* Keep the two clickable banner zones aligned with the image buttons. */
+#downloadAppSection .install-banner-wrap > #iphoneProfileBtn,
+#downloadAppSection .install-banner-wrap > #androidApkBtn{
+  position:absolute !important;
+  top:82.31% !important;
+  bottom:auto !important;
+  height:7.35% !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:18px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:.001 !important;
+  z-index:30 !important;
+  display:block !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+  cursor:pointer !important;
+  touch-action:manipulation !important;
+}
+
+#downloadAppSection .install-banner-wrap > #iphoneProfileBtn{
+  left:9.27% !important;
+  right:auto !important;
+  width:35.83% !important;
+}
+
+#downloadAppSection .install-banner-wrap > #androidApkBtn{
+  left:53.92% !important;
+  right:auto !important;
+  width:36.27% !important;
+}
+
+/* Always show both platform choices so the user decides. */
+#downloadAppSection .install-help-boxes.install-choice-boxes{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+  width:min(100%,1000px) !important;
+  margin:18px auto 0 !important;
+}
+
+#downloadAppSection .install-platform-card{
+  min-width:0 !important;
+}
+
+#downloadAppSection .install-choice-actions{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:9px !important;
+  margin:15px 0 5px !important;
+}
+
+#downloadAppSection .install-choice-btn{
+  width:100% !important;
+  min-height:44px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:11px 12px !important;
+  border-radius:11px !important;
+  text-decoration:none !important;
+  text-align:center !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  line-height:1.25 !important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease !important;
+}
+
+#downloadAppSection .install-choice-primary{
+  color:#171100 !important;
+  background:linear-gradient(135deg,#fff09a,#f0b90b 62%,#d99a00) !important;
+  border:1px solid #ffd83d !important;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.55),
+    0 7px 20px rgba(240,185,11,.15) !important;
+}
+
+#downloadAppSection .install-choice-secondary{
+  color:#ffe58a !important;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(240,185,11,.035)) !important;
+  border:1px solid rgba(240,185,11,.32) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+
+#downloadAppSection .install-choice-btn:hover{
+  transform:translateY(-1px) !important;
+  border-color:rgba(255,229,138,.65) !important;
+}
+
+/* The old script-only install button must never become visible. */
+#downloadAppSection #installAppBtn[hidden]{
+  display:none !important;
+}
+
+/* Keep the existing device instructions beneath the choices. */
+#downloadAppSection .install-steps{
+  margin-top:14px !important;
+}
+
+@media(max-width:860px){
+  #downloadAppSection .install-help-boxes.install-choice-boxes{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+    padding:0 8px !important;
+  }
+
+  #downloadAppSection .install-banner-wrap > #iphoneProfileBtn,
+  #downloadAppSection .install-banner-wrap > #androidApkBtn{
+    top:82.31% !important;
+    height:7.35% !important;
+    border-radius:14px !important;
+  }
+
+  #downloadAppSection .install-choice-btn{
+    min-height:42px !important;
+    font-size:11.5px !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -13029,47 +13153,129 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
 
 
 
+
 <section id="downloadAppSection" aria-labelledby="downloadAppTitle">
   <div class="pwa-install-card">
     <div class="install-app-head">
       <h2 id="downloadAppTitle">Download binancinvest</h2>
-      <p id="downloadAppDescription" class="install-app-description">Install on iPhone or Android in a few simple steps.</p>
+      <p id="downloadAppDescription" class="install-app-description">
+        Choose the installed version or the Web App version for your device.
+      </p>
     </div>
 
     <div class="pwa-install-actions">
       <div class="install-banner-wrap">
-        <img src="app-download-banner.webp" alt="Binancinvest app download banner with iPhone and Android installation options" class="install-banner-image">
-        <button id="installAppBtn" class="install-banner-action" type="button" aria-label="Install Web App on iPhone">Install App</button>
-        <a id="androidApkBtn" class="install-banner-action" href="binancinvest.apk" download aria-label="Download Binancinvest APK for Android"></a>
+        <img
+          src="app-download-banner.webp"
+          alt="binancinvest download options for iPhone and Android"
+          class="install-banner-image"
+        >
+
+        <!-- Left button drawn inside the banner: iPhone installed profile -->
+        <a
+          id="iphoneProfileBtn"
+          class="install-banner-action"
+          href="https://binancinvest.com/install-iphone.html"
+          aria-label="Install binancinvest profile on iPhone"
+        ></a>
+
+        <!-- Right button drawn inside the banner: Android APK -->
+        <a
+          id="androidApkBtn"
+          class="install-banner-action"
+          href="binancinvest-v37-3.apk"
+          download="binancinvest-v37-3.apk"
+          aria-label="Download binancinvest-v37-3 APK for Android"
+        ></a>
       </div>
+
       <div id="installAppStatus" role="status" aria-live="polite"></div>
     </div>
 
-    <div class="install-help-boxes">
+    <div class="install-help-boxes install-choice-boxes">
       <article id="iphoneInstallCard" class="install-platform-card">
         <div class="install-platform-badge">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35-.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09M12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35-.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09M12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25"/>
+          </svg>
           <span id="iphonePlatformName">iPhone</span>
         </div>
-        <h3 id="iphoneInstallTitle">Install on iPhone</h3>
-        <p id="iphoneInstallShort" class="install-platform-short">Use Safari and add the website to your Home Screen.</p>
+
+        <h3 id="iphoneInstallTitle">iPhone</h3>
+        <p id="iphoneInstallShort" class="install-platform-short">
+          Choose Profile Install or Web App.
+        </p>
+
+        <div class="install-choice-actions">
+          <a
+            class="install-choice-btn install-choice-primary"
+            href="https://binancinvest.com/install-iphone.html"
+          >
+            Install iPhone Profile
+          </a>
+
+          <a
+            class="install-choice-btn install-choice-secondary"
+            href="https://binancinvest.com/install-web.html"
+          >
+            Add iPhone Web App
+          </a>
+        </div>
+
         <ol id="iphoneInstallSteps" class="install-steps"></ol>
         <div id="iphoneInstallNote" class="install-platform-note"></div>
       </article>
 
       <article id="androidInstallCard" class="install-platform-card">
         <div class="install-platform-badge">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 9.48l1.43-2.48a.75.75 0 10-1.3-.75l-1.47 2.55A9.03 9.03 0 0012 8c-1.6 0-3.11.42-4.42 1.16L6.1 6.25a.75.75 0 10-1.3.75L6.24 9.5A7.02 7.02 0 003 15v4.25c0 .41.34.75.75.75h1.5a.75.75 0 00.75-.75V18h12v1.25c0 .41.34.75.75.75h1.5c.41 0 .75-.34.75-.75V15a7 7 0 00-3.4-5.52zM8.5 13.25a1 1 0 110-2 1 1 0 010 2zm7 0a1 1 0 110-2 1 1 0 010 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.6 9.48l1.43-2.48a.75.75 0 10-1.3-.75l-1.47 2.55A9.03 9.03 0 0012 8c-1.6 0-3.11.42-4.42 1.16L6.1 6.25a.75.75 0 10-1.3.75L6.24 9.5A7.02 7.02 0 003 15v4.25c0 .41.34.75.75.75h1.5a.75.75 0 00.75-.75V18h12v1.25c0 .41.34.75.75.75h1.5c.41 0 .75-.34.75-.75V15a7 7 0 00-3.4-5.52zM8.5 13.25a1 1 0 110-2 1 1 0 010 2zm7 0a1 1 0 110-2 1 1 0 010 2z"/>
+          </svg>
           <span id="androidPlatformName">Android</span>
         </div>
-        <h3 id="androidInstallTitle">Install on Android</h3>
-        <p id="androidInstallShort" class="install-platform-short">Use Chrome and choose Install app or Add to Home screen.</p>
+
+        <h3 id="androidInstallTitle">Android</h3>
+        <p id="androidInstallShort" class="install-platform-short">
+          Choose APK Download or Web App.
+        </p>
+
+        <div class="install-choice-actions">
+          <a
+            class="install-choice-btn install-choice-primary"
+            href="binancinvest-v37-3.apk"
+            download="binancinvest-v37-3.apk"
+          >
+            Download Android APK
+          </a>
+
+          <a
+            class="install-choice-btn install-choice-secondary"
+            href="https://binancinvest.com/install-web.html"
+          >
+            Add Android Web App
+          </a>
+        </div>
+
         <ol id="androidInstallSteps" class="install-steps"></ol>
         <div id="androidInstallNote" class="install-platform-note"></div>
       </article>
     </div>
+
+    <!-- Kept only so the existing PWA/service-worker script continues to work. -->
+    <button
+      id="installAppBtn"
+      type="button"
+      hidden
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      Install App
+    </button>
+
+    <div id="installLanguageTitle" class="install-language-title"></div>
   </div>
 </section>
+
 
     <footer class="site-footer">
       <div class="site-footer-inner">
