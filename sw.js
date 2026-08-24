@@ -1,9 +1,10 @@
-const CACHE_NAME = "binancinvest-live-pwa-v4-20260824-1115";
+const CACHE_NAME = "binancinvest-live-pwa-v5-20260824-1131";
 const STATIC_FILES = [
-  "/app-icon-192.png",
-  "/app-icon-512.png",
-  "/apple-touch-icon.png",
-  "/binancinvest-manifest-v4.webmanifest",
+  "/binancinvest-icon-v37-192.png?v=20260824-1131",
+  "/binancinvest-icon-v37-512.png?v=20260824-1131",
+  "/binancinvest-icon-v37-maskable-512.png?v=20260824-1131",
+  "/binancinvest-apple-touch-v37.png?v=20260824-1131",
+  "/binancinvest-manifest-v5.webmanifest?v=20260824-1131",
   "/offline.html"
 ];
 
@@ -17,7 +18,6 @@ self.addEventListener("install", (event) => {
       }
     })
   );
-
   self.skipWaiting();
 });
 
@@ -31,58 +31,46 @@ self.addEventListener("activate", (event) => {
       )
     )
   );
-
   self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
-
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-
-  // Never interfere with Supabase/APIs/cross-origin account traffic.
   if (url.origin !== self.location.origin) return;
 
-  // Every page navigation is NETWORK FIRST and HTML is never stored in
-  // our PWA cache. This is what lets website changes appear automatically.
+  // Always load live HTML from network.
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request).catch(() => caches.match("/offline.html"))
+      fetch(request, { cache: "no-store" })
+        .catch(() => caches.match("/offline.html"))
     );
     return;
   }
 
-  // Cache only stable install identity files.
-  if (
-    url.pathname === "/app-icon-192.png" ||
-    url.pathname === "/app-icon-512.png" ||
-    url.pathname === "/apple-touch-icon.png" ||
-    url.pathname === "/binancinvest-manifest-v4.webmanifest" ||
-    url.pathname === "/offline.html"
-  ) {
+  const staticPaths = new Set([
+    "/binancinvest-icon-v37-192.png",
+    "/binancinvest-icon-v37-512.png",
+    "/binancinvest-icon-v37-maskable-512.png",
+    "/binancinvest-apple-touch-v37.png",
+    "/binancinvest-manifest-v5.webmanifest",
+    "/offline.html"
+  ]);
+
+  if (staticPaths.has(url.pathname)) {
     event.respondWith(
-      caches.match(request).then((cached) => {
-        const network = fetch(request)
-          .then((response) => {
-            if (response && response.ok) {
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(request, response.clone());
-              });
-            }
-            return response;
-          })
-          .catch(() => cached);
-
-        return cached || network;
-      })
+      fetch(request, { cache: "reload" })
+        .then((response) => {
+          if (response && response.ok) {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, response.clone());
+            });
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
-  }
-});
-
-self.addEventListener("message", (event) => {
-  if (event.data === "SKIP_WAITING") {
-    self.skipWaiting();
   }
 });
