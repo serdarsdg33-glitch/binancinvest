@@ -12645,26 +12645,50 @@ html.apk-live-shell[dir="rtl"] header > .head{
 </style>
 
 
-<style id="apk-bottom-video-startup-fix-v1">
-/*
-  APK ONLY:
-  Hide the lower decorative video surface until Android WebView is
-  actually playing real frames. This prevents the native Play overlay
-  from flashing for a moment during startup/loading.
-*/
-html.apk-live-shell .why-binance-video{
-  pointer-events:none !important;
+
+<style id="platform-stat-badges-bottom-v1">
+/* Platform Statistics badges: keep the same side, move from top to bottom.
+   This applies to iPhone web/PWA, Android web/APK, and native shells. */
+.stats-vertical-stack .stat-circle-card {
+  position: relative !important;
+  padding-top: 18px !important;
+  padding-bottom: 34px !important;
 }
 
-html.apk-live-shell .why-binance-video:not(.apk-bottom-video-ready){
-  opacity:0 !important;
-  visibility:hidden !important;
+.stats-vertical-stack .stat-badge-tag {
+  position: absolute !important;
+  top: auto !important;
+  bottom: 10px !important;
+  right: 22px !important;
+  left: auto !important;
+  z-index: 6 !important;
+  margin: 0 !important;
+  transform: none !important;
 }
 
-html.apk-live-shell .why-binance-video.apk-bottom-video-ready{
-  opacity:1 !important;
-  visibility:visible !important;
-  transition:opacity .16s ease !important;
+html[dir="rtl"] .stats-vertical-stack .stat-badge-tag {
+  right: auto !important;
+  left: 22px !important;
+}
+
+@media (max-width: 600px) {
+  .stats-vertical-stack .stat-circle-card {
+    min-height: 116px !important;
+    padding-top: 14px !important;
+    padding-bottom: 40px !important;
+  }
+
+  .stats-vertical-stack .stat-badge-tag {
+    top: auto !important;
+    bottom: 7px !important;
+    right: 10px !important;
+    left: auto !important;
+  }
+
+  html[dir="rtl"] .stats-vertical-stack .stat-badge-tag {
+    right: auto !important;
+    left: 10px !important;
+  }
 }
 </style>
 
@@ -25728,72 +25752,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   window.addEventListener("pageshow", start);
-})();
-</script>
-
-
-<script id="apk-bottom-video-startup-fix-script-v1">
-(function () {
-  function isApk() {
-    return document.documentElement.classList.contains("apk-live-shell");
-  }
-
-  function bind() {
-    if (!isApk()) return;
-
-    const video = document.querySelector("video.why-binance-video.lazy-video");
-    if (!video || video.dataset.apkBottomVideoFix === "1") return;
-
-    video.dataset.apkBottomVideoFix = "1";
-
-    /* Never allow Android WebView to expose native media controls. */
-    video.controls = false;
-    video.removeAttribute("controls");
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
-    video.setAttribute("disableremoteplayback", "");
-
-    try {
-      video.disablePictureInPicture = true;
-    } catch (_) {}
-
-    const reveal = function () {
-      if (
-        video.currentTime > 0 ||
-        (!video.paused && video.readyState >= 2)
-      ) {
-        video.classList.add("apk-bottom-video-ready");
-      }
-    };
-
-    /*
-      Reveal only after real playback has started.
-      Until then the video element stays invisible, so Android's temporary
-      native Play icon cannot flash on top of the page.
-    */
-    video.addEventListener("playing", reveal);
-    video.addEventListener("timeupdate", reveal);
-
-    /*
-      If the lazy-loader pauses the video because it leaves the viewport,
-      keep the last frame hidden only before the first successful play.
-      Once it has played, normal pause/resume behavior remains unchanged.
-    */
-    video.addEventListener("loadeddata", function () {
-      if (!video.paused) reveal();
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bind, { once:true });
-  } else {
-    bind();
-  }
-
-  window.addEventListener("pageshow", bind);
 })();
 </script>
 
