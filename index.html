@@ -12544,21 +12544,103 @@ html.apk-live-shell #auth .modalbox *{
 </style>
 
 
-<style id="apk-safe-frame-fallback-v1">
-/*
-  Fallback for WebViews that still report a display cutout inset even with
-  viewport-fit=contain. On ordinary browser/iPhone pages this does nothing.
-*/
-html.apk-live-shell.apk-safe-frame body{
-  padding-top:env(safe-area-inset-top, 0px) !important;
-  padding-left:env(safe-area-inset-left, 0px) !important;
-  padding-right:env(safe-area-inset-right, 0px) !important;
-  padding-bottom:env(safe-area-inset-bottom, 0px) !important;
-  min-height:100dvh;
+
+
+<style id="apk-v37-3-header-language-position-fix">
+/* APK ONLY: brand | language | auth stay on one header row. */
+html.apk-live-shell header{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 52px minmax(0,1fr) !important;
+  grid-template-rows:76px !important;
+  align-items:center !important;
+
+  height:76px !important;
+  min-height:76px !important;
+  max-height:76px !important;
+
+  padding:0 10px !important;
+  column-gap:5px !important;
+  overflow:visible !important;
 }
 
-html.apk-live-shell.apk-safe-frame header{
-  top:env(safe-area-inset-top, 0px) !important;
+html.apk-live-shell header > .brand{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:center !important;
+  justify-self:start !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+
+html.apk-live-shell header > .language-trigger{
+  position:static !important;
+
+  grid-column:2 !important;
+  grid-row:1 !important;
+
+  align-self:center !important;
+  justify-self:center !important;
+
+  top:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+  left:auto !important;
+
+  width:52px !important;
+  min-width:52px !important;
+  max-width:52px !important;
+  height:30px !important;
+
+  margin:0 !important;
+  padding:0 5px !important;
+  transform:none !important;
+}
+
+html.apk-live-shell header > .language-trigger:hover{
+  transform:none !important;
+}
+
+html.apk-live-shell header > .head{
+  grid-column:3 !important;
+  grid-row:1 !important;
+
+  align-self:center !important;
+  justify-self:end !important;
+
+  width:min(100%,94px) !important;
+  max-width:94px !important;
+  min-width:0 !important;
+
+  margin:0 !important;
+  overflow:visible !important;
+}
+
+html.apk-live-shell #authButtonsGroup:not([hidden]){
+  width:94px !important;
+  max-width:94px !important;
+  margin:0 !important;
+}
+
+html.apk-live-shell #authButtonsGroup .btn{
+  width:94px !important;
+  min-width:94px !important;
+  max-width:94px !important;
+}
+
+/* RTL must not move the three APK header zones. */
+html.apk-live-shell[dir="rtl"] header > .brand{
+  grid-column:1 !important;
+  justify-self:start !important;
+}
+
+html.apk-live-shell[dir="rtl"] header > .language-trigger{
+  grid-column:2 !important;
+  justify-self:center !important;
+}
+
+html.apk-live-shell[dir="rtl"] header > .head{
+  grid-column:3 !important;
+  justify-self:end !important;
 }
 </style>
 
