@@ -13154,9 +13154,10 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
 
 
 
+
 <section id="downloadAppSection" aria-labelledby="downloadAppTitle">
-  <div class="pwa-install-card">
-    <div class="install-app-head">
+  <div class="pwa-install-card download-ui-card">
+    <div class="install-app-head bi-visually-hidden" aria-hidden="true">
       <h2 id="downloadAppTitle">Download binancinvest</h2>
       <p id="downloadAppDescription" class="install-app-description">
         Choose the installed version or the Web App version for your device.
@@ -13164,104 +13165,31 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
     </div>
 
     <div class="pwa-install-actions">
-      <div class="install-banner-wrap">
+      <div class="install-banner-wrap custom-download-banner">
         <img
-          src="app-download-banner.webp"
+          src="app-download-banner-fixed.png"
           alt="binancinvest download options for iPhone and Android"
           class="install-banner-image"
         >
 
-        <!-- Left button drawn inside the banner: iPhone installed profile -->
-        <a
+        <button
           id="iphoneProfileBtn"
           class="install-banner-action"
-          href="https://binancinvest.com/install-iphone.html"
-          aria-label="Install binancinvest profile on iPhone"
-        ></a>
+          type="button"
+          aria-label="Open iPhone download options"
+        ></button>
 
-        <!-- Right button drawn inside the banner: Android APK -->
-        <a
+        <button
           id="androidApkBtn"
           class="install-banner-action"
-          href="binancinvest-v37-3.apk"
-          download="binancinvest-v37-3.apk"
-          aria-label="Download binancinvest-v37-3 APK for Android"
-        ></a>
+          type="button"
+          aria-label="Open Android download options"
+        ></button>
       </div>
 
-      <div id="installAppStatus" role="status" aria-live="polite"></div>
+      <div id="installAppStatus" role="status" aria-live="polite" class="bi-visually-hidden"></div>
     </div>
 
-    <div class="install-help-boxes install-choice-boxes">
-      <article id="iphoneInstallCard" class="install-platform-card">
-        <div class="install-platform-badge">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35-.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09M12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25"/>
-          </svg>
-          <span id="iphonePlatformName">iPhone</span>
-        </div>
-
-        <h3 id="iphoneInstallTitle">iPhone</h3>
-        <p id="iphoneInstallShort" class="install-platform-short">
-          Choose Profile Install or Web App.
-        </p>
-
-        <div class="install-choice-actions">
-          <a
-            class="install-choice-btn install-choice-primary"
-            href="https://binancinvest.com/install-iphone.html"
-          >
-            Install iPhone Profile
-          </a>
-
-          <a
-            class="install-choice-btn install-choice-secondary"
-            href="https://binancinvest.com/install-web.html"
-          >
-            Add iPhone Web App
-          </a>
-        </div>
-
-        <ol id="iphoneInstallSteps" class="install-steps"></ol>
-        <div id="iphoneInstallNote" class="install-platform-note"></div>
-      </article>
-
-      <article id="androidInstallCard" class="install-platform-card">
-        <div class="install-platform-badge">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M17.6 9.48l1.43-2.48a.75.75 0 10-1.3-.75l-1.47 2.55A9.03 9.03 0 0012 8c-1.6 0-3.11.42-4.42 1.16L6.1 6.25a.75.75 0 10-1.3.75L6.24 9.5A7.02 7.02 0 003 15v4.25c0 .41.34.75.75.75h1.5a.75.75 0 00.75-.75V18h12v1.25c0 .41.34.75.75.75h1.5c.41 0 .75-.34.75-.75V15a7 7 0 00-3.4-5.52zM8.5 13.25a1 1 0 110-2 1 1 0 010 2zm7 0a1 1 0 110-2 1 1 0 010 2z"/>
-          </svg>
-          <span id="androidPlatformName">Android</span>
-        </div>
-
-        <h3 id="androidInstallTitle">Android</h3>
-        <p id="androidInstallShort" class="install-platform-short">
-          Choose APK Download or Web App.
-        </p>
-
-        <div class="install-choice-actions">
-          <a
-            class="install-choice-btn install-choice-primary"
-            href="binancinvest-v37-3.apk"
-            download="binancinvest-v37-3.apk"
-          >
-            Download Android APK
-          </a>
-
-          <a
-            class="install-choice-btn install-choice-secondary"
-            href="https://binancinvest.com/install-web.html"
-          >
-            Add Android Web App
-          </a>
-        </div>
-
-        <ol id="androidInstallSteps" class="install-steps"></ol>
-        <div id="androidInstallNote" class="install-platform-note"></div>
-      </article>
-    </div>
-
-    <!-- Kept only so the existing PWA/service-worker script continues to work. -->
     <button
       id="installAppBtn"
       type="button"
@@ -13272,9 +13200,41 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
       Install App
     </button>
 
-    <div id="installLanguageTitle" class="install-language-title"></div>
+    <div id="installLanguageTitle" class="install-language-title bi-visually-hidden"></div>
   </div>
 </section>
+
+<div id="biDownloadChoiceModal" class="bi-modal" aria-hidden="true" hidden>
+  <div class="bi-modal-backdrop" data-close-modal></div>
+  <div class="bi-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="biChoiceModalTitle">
+    <button type="button" class="bi-modal-close" aria-label="Close" data-close-modal>&times;</button>
+    <div class="bi-modal-content">
+      <div class="bi-modal-badge" id="biChoiceModalBadge">Download</div>
+      <h3 id="biChoiceModalTitle" class="bi-modal-title">Select version</h3>
+      <p id="biChoiceModalDesc" class="bi-modal-desc">Choose the version you want to use on your device.</p>
+      <div id="biChoiceButtons" class="bi-choice-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="biInstallGuideModal" class="bi-modal" aria-hidden="true" hidden>
+  <div class="bi-modal-backdrop" data-close-install-modal></div>
+  <div class="bi-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="biInstallModalTitle">
+    <button type="button" class="bi-modal-close" aria-label="Close" data-close-install-modal>&times;</button>
+    <div class="bi-modal-content">
+      <div class="bi-modal-badge" id="biInstallModalBadge">Install</div>
+      <h3 id="biInstallModalTitle" class="bi-modal-title">Install guide</h3>
+      <p id="biInstallModalDesc" class="bi-modal-desc"></p>
+      <ol id="biInstallSteps" class="bi-install-steps"></ol>
+      <div class="bi-install-note" id="biInstallNote"></div>
+      <div class="bi-modal-actions">
+        <a id="biInstallPrimaryAction" class="bi-modal-btn bi-modal-btn-primary" href="#">Continue</a>
+        <button type="button" class="bi-modal-btn bi-modal-btn-secondary" data-close-install-modal>Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
     <footer class="site-footer">
@@ -26021,6 +25981,452 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   window.addEventListener("pageshow", start);
+})();
+</script>
+
+
+<style id="download-app-modal-custom-v1">
+#downloadAppSection{
+  padding:0 12px !important;
+}
+#downloadAppSection .download-ui-card{
+  max-width:1120px !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:26px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+#downloadAppSection .pwa-install-actions{
+  max-width:100% !important;
+  margin:0 !important;
+}
+#downloadAppSection .custom-download-banner{
+  position:relative !important;
+  width:100% !important;
+  max-width:1120px !important;
+  margin:0 auto !important;
+  border-radius:26px !important;
+  overflow:hidden !important;
+  background:linear-gradient(180deg,#040608,#080b0f) !important;
+  box-shadow:0 22px 60px rgba(0,0,0,.34), 0 0 0 1px rgba(240,185,11,.09) inset !important;
+}
+#downloadAppSection .install-banner-image{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  border-radius:26px !important;
+}
+#downloadAppSection .install-banner-wrap > .install-banner-action{
+  position:absolute !important;
+  top:82.25% !important;
+  height:7.45% !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:18px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  opacity:.001 !important;
+  z-index:30 !important;
+  cursor:pointer !important;
+  -webkit-tap-highlight-color:transparent !important;
+}
+#downloadAppSection .install-banner-wrap > #iphoneProfileBtn{
+  left:9.25% !important;
+  width:35.95% !important;
+}
+#downloadAppSection .install-banner-wrap > #androidApkBtn{
+  left:53.9% !important;
+  width:36.1% !important;
+}
+#downloadAppSection .install-help-boxes,
+#downloadAppSection .install-choice-boxes,
+#downloadAppSection .install-platform-grid,
+#downloadAppSection .install-platform-card,
+#downloadAppSection .install-language-title{
+  display:none !important;
+}
+.bi-visually-hidden{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  padding:0 !important;
+  margin:-1px !important;
+  overflow:hidden !important;
+  clip:rect(0,0,0,0) !important;
+  white-space:nowrap !important;
+  border:0 !important;
+}
+.bi-modal[hidden]{
+  display:none !important;
+}
+.bi-modal{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+.bi-modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(2,4,7,.72);
+  backdrop-filter:blur(9px);
+  -webkit-backdrop-filter:blur(9px);
+}
+.bi-modal-dialog{
+  position:relative;
+  z-index:1;
+  width:min(100%, 520px);
+  border-radius:24px;
+  border:1px solid rgba(240,185,11,.28);
+  background:linear-gradient(180deg, rgba(13,18,26,.98), rgba(6,10,15,.985));
+  box-shadow:0 28px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
+  overflow:hidden;
+}
+.bi-modal-content{
+  padding:26px 22px 22px;
+}
+.bi-modal-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(240,185,11,.26);
+  border-radius:50%;
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+}
+.bi-modal-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:34px;
+  padding:6px 14px;
+  margin-bottom:12px;
+  border-radius:999px;
+  border:1px solid rgba(240,185,11,.34);
+  background:rgba(240,185,11,.08);
+  color:#ffe58a;
+  font-size:13px;
+  font-weight:850;
+}
+.bi-modal-title{
+  margin:0 0 8px;
+  color:#fff;
+  font-size:26px;
+  font-weight:900;
+  line-height:1.2;
+}
+.bi-modal-desc{
+  margin:0 0 18px;
+  color:#c2ccd9;
+  font-size:14px;
+  line-height:1.8;
+}
+.bi-choice-grid{
+  display:grid;
+  gap:12px;
+}
+.bi-choice-btn,
+.bi-modal-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:12px 16px;
+  border-radius:14px;
+  text-decoration:none;
+  text-align:center;
+  font-size:15px;
+  font-weight:900;
+  border:1px solid rgba(240,185,11,.26);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.bi-choice-btn{
+  color:#171100;
+  background:linear-gradient(135deg,#fff3a1,#f0b90b 60%,#df9f00);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 10px 24px rgba(240,185,11,.14);
+}
+.bi-choice-btn:hover,
+.bi-modal-btn:hover{
+  transform:translateY(-1px);
+}
+.bi-install-steps{
+  margin:0 0 16px;
+  padding-left:20px;
+  color:#eef3f9;
+  display:grid;
+  gap:9px;
+  font-size:14px;
+  line-height:1.75;
+}
+html[dir="rtl"] .bi-install-steps{
+  padding-left:0;
+  padding-right:20px;
+}
+.bi-install-note{
+  color:#96a3b4;
+  font-size:12.5px;
+  line-height:1.8;
+  margin-bottom:16px;
+}
+.bi-modal-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.bi-modal-btn-primary{
+  color:#171100;
+  background:linear-gradient(135deg,#fff3a1,#f0b90b 60%,#df9f00);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 10px 24px rgba(240,185,11,.14);
+}
+.bi-modal-btn-secondary{
+  color:#ffe58a;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(240,185,11,.24);
+  cursor:pointer;
+}
+body.bi-modal-open{
+  overflow:hidden;
+}
+@media (max-width: 860px){
+  #downloadAppSection .custom-download-banner,
+  #downloadAppSection .install-banner-image{
+    border-radius:20px !important;
+  }
+  #downloadAppSection .install-banner-wrap > .install-banner-action{
+    top:82.2% !important;
+    height:7.5% !important;
+    border-radius:14px !important;
+  }
+}
+@media (max-width: 640px){
+  #downloadAppSection{
+    padding:0 8px !important;
+  }
+  .bi-modal{
+    padding:14px;
+  }
+  .bi-modal-dialog{
+    width:min(100%, 100%);
+    border-radius:20px;
+  }
+  .bi-modal-content{
+    padding:22px 16px 16px;
+  }
+  .bi-modal-title{
+    font-size:22px;
+  }
+  .bi-modal-actions{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+<script id="download-app-modal-custom-script-v1">
+(() => {
+  const choiceModal = document.getElementById('biDownloadChoiceModal');
+  const installModal = document.getElementById('biInstallGuideModal');
+  const choiceButtons = document.getElementById('biChoiceButtons');
+  const choiceTitle = document.getElementById('biChoiceModalTitle');
+  const choiceDesc = document.getElementById('biChoiceModalDesc');
+  const choiceBadge = document.getElementById('biChoiceModalBadge');
+
+  const installTitle = document.getElementById('biInstallModalTitle');
+  const installDesc = document.getElementById('biInstallModalDesc');
+  const installBadge = document.getElementById('biInstallModalBadge');
+  const installSteps = document.getElementById('biInstallSteps');
+  const installNote = document.getElementById('biInstallNote');
+  const installPrimary = document.getElementById('biInstallPrimaryAction');
+
+  const iphoneTrigger = document.getElementById('iphoneProfileBtn');
+  const androidTrigger = document.getElementById('androidApkBtn');
+
+  if (!choiceModal || !installModal || !choiceButtons || !iphoneTrigger || !androidTrigger) return;
+
+  const choiceConfig = {
+    iphone: {
+      badge: 'iPhone',
+      title: 'دانلود برای iPhone',
+      desc: 'یکی از دو گزینه زیر را انتخاب کنید.',
+      options: [
+        { key: 'iphone-web', label: 'نسخه وب' },
+        { key: 'iphone-profile', label: 'پروفایل' }
+      ]
+    },
+    android: {
+      badge: 'Android',
+      title: 'دانلود برای Android',
+      desc: 'یکی از دو گزینه زیر را انتخاب کنید.',
+      options: [
+        { key: 'android-web', label: 'نسخه وب' },
+        { key: 'android-apk', label: 'APK' }
+      ]
+    }
+  };
+
+  const installConfig = {
+    'iphone-web': {
+      badge: 'iPhone • Web App',
+      title: 'نصب نسخه وب روی iPhone',
+      desc: 'برای نصب نسخه وب، صفحه نصب باز می‌شود و می‌توانید سایت را به صفحه اصلی آیفون اضافه کنید.',
+      steps: [
+        'روی دکمه ادامه بزنید تا صفحه راهنمای نسخه وب باز شود.',
+        'سایت را در Safari باز کنید.',
+        'روی Share بزنید و گزینه Add to Home Screen را انتخاب کنید.',
+        'در پایان روی Add بزنید تا آیکون برنامه روی صفحه اصلی اضافه شود.'
+      ],
+      note: 'اگر گزینه Add to Home Screen را نمی‌بینید، در منوی Share پایین بروید یا Edit Actions را باز کنید.',
+      primaryLabel: 'باز کردن نسخه وب',
+      href: 'https://binancinvest.com/install-web.html'
+    },
+    'iphone-profile': {
+      badge: 'iPhone • Profile',
+      title: 'نصب پروفایل روی iPhone',
+      desc: 'با این گزینه صفحه نصب پروفایل آیفون باز می‌شود تا مراحل نصب را کامل کنید.',
+      steps: [
+        'روی دکمه ادامه بزنید تا صفحه نصب پروفایل باز شود.',
+        'در صفحه بعدی گزینه نصب پروفایل را انتخاب کنید.',
+        'اگر آیفون اجازه خواست، مراحل تأیید را کامل کنید.',
+        'پس از پایان نصب، دوباره به سایت برگردید و از برنامه استفاده کنید.'
+      ],
+      note: 'در صورت نیاز به تأیید پروفایل، از بخش Settings > Profile Downloaded مراحل را کامل کنید.',
+      primaryLabel: 'باز کردن صفحه پروفایل',
+      href: 'https://binancinvest.com/install-iphone.html'
+    },
+    'android-web': {
+      badge: 'Android • Web App',
+      title: 'نصب نسخه وب روی Android',
+      desc: 'برای استفاده بدون APK می‌توانید نسخه وب را از طریق Chrome نصب کنید.',
+      steps: [
+        'روی دکمه ادامه بزنید تا صفحه نسخه وب باز شود.',
+        'صفحه را در Chrome باز کنید.',
+        'از منوی سه‌نقطه گزینه Install app یا Add to Home screen را بزنید.',
+        'در پایان Install یا Add را تأیید کنید.'
+      ],
+      note: 'نام گزینه ممکن است بسته به مدل گوشی و نسخه Chrome کمی متفاوت باشد.',
+      primaryLabel: 'باز کردن نسخه وب',
+      href: 'https://binancinvest.com/install-web.html'
+    },
+    'android-apk': {
+      badge: 'Android • APK',
+      title: 'نصب فایل APK روی Android',
+      desc: 'با این گزینه فایل APK دانلود می‌شود و می‌توانید نصب را روی گوشی اندروید کامل کنید.',
+      steps: [
+        'روی دکمه دانلود APK بزنید.',
+        'پس از پایان دانلود، فایل را باز کنید.',
+        'اگر پیام امنیتی دیدید، اجازه نصب از منبع ناشناس را فقط برای همین فایل فعال کنید.',
+        'مراحل نصب را کامل کنید و سپس برنامه را اجرا کنید.'
+      ],
+      note: 'اگر مرورگر یا گوشی پیام امنیتی نمایش داد، فقط در صورت اطمینان از فایل رسمی نصب را ادامه دهید.',
+      primaryLabel: 'دانلود APK',
+      href: 'binancinvest-v37-3.apk',
+      download: 'binancinvest-v37-3.apk'
+    }
+  };
+
+  function openModal(modal) {
+    modal.hidden = false;
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('bi-modal-open');
+  }
+
+  function closeModal(modal) {
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden', 'true');
+    if (choiceModal.hidden && installModal.hidden) {
+      document.body.classList.remove('bi-modal-open');
+    }
+  }
+
+  function renderChoice(platform) {
+    const cfg = choiceConfig[platform];
+    if (!cfg) return;
+
+    choiceBadge.textContent = cfg.badge;
+    choiceTitle.textContent = cfg.title;
+    choiceDesc.textContent = cfg.desc;
+    choiceButtons.replaceChildren();
+
+    cfg.options.forEach((option) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bi-choice-btn';
+      btn.textContent = option.label;
+      btn.addEventListener('click', () => {
+        closeModal(choiceModal);
+        renderInstall(option.key);
+      });
+      choiceButtons.appendChild(btn);
+    });
+
+    openModal(choiceModal);
+  }
+
+  function renderInstall(key) {
+    const cfg = installConfig[key];
+    if (!cfg) return;
+
+    installBadge.textContent = cfg.badge;
+    installTitle.textContent = cfg.title;
+    installDesc.textContent = cfg.desc;
+    installNote.textContent = cfg.note || '';
+
+    installSteps.replaceChildren(...cfg.steps.map((step) => {
+      const li = document.createElement('li');
+      li.textContent = step;
+      return li;
+    }));
+
+    installPrimary.textContent = cfg.primaryLabel || 'Continue';
+    installPrimary.setAttribute('href', cfg.href || '#');
+
+    if (cfg.download) {
+      installPrimary.setAttribute('download', cfg.download);
+    } else {
+      installPrimary.removeAttribute('download');
+    }
+
+    installPrimary.setAttribute('target', '_blank');
+    installPrimary.setAttribute('rel', 'noopener noreferrer');
+
+    openModal(installModal);
+  }
+
+  iphoneTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    renderChoice('iphone');
+  });
+
+  androidTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    renderChoice('android');
+  });
+
+  document.querySelectorAll('[data-close-modal]').forEach((el) => {
+    el.addEventListener('click', () => closeModal(choiceModal));
+  });
+
+  document.querySelectorAll('[data-close-install-modal]').forEach((el) => {
+    el.addEventListener('click', () => closeModal(installModal));
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (!choiceModal.hidden) closeModal(choiceModal);
+    if (!installModal.hidden) closeModal(installModal);
+  });
 })();
 </script>
 
