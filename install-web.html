@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0e11">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="binancinvest">
+<link rel="manifest" href="/binancinvest-manifest-v4.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Install binancinvest</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#493a08 0,#10130f 20%,#05070b 62%);color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+main{min-height:100vh;display:grid;place-items:center;padding:22px}
+.card{width:min(470px,100%);padding:26px 20px;border:1px solid rgba(240,185,11,.30);border-radius:24px;background:rgba(9,13,18,.94);box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.logo{width:84px;height:84px;margin:0 auto 16px;display:block;border-radius:20px}
+h1{text-align:center;margin:0 0 8px;font-size:26px}
+.intro{text-align:center;color:#aab4c0;line-height:1.7;margin:0 0 20px}
+button{width:100%;border:0;border-radius:13px;padding:14px 16px;font-weight:900;font-size:15px;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b 60%,#d99a00);box-shadow:0 8px 22px rgba(240,185,11,.18)}
+button:disabled{opacity:.55}
+.guide{margin-top:18px;padding:15px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:rgba(255,255,255,.025);color:#c7ced8;line-height:1.75}
+.guide b{color:#ffe58a}
+.status{min-height:22px;text-align:center;margin-top:12px;color:#8f9aaa;font-size:12px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+<section class="card">
+  <img class="logo" src="/apple-touch-icon.png" alt="">
+  <h1>binancinvest</h1>
+  <p class="intro">Install the web app. It always opens the current website, so normal website changes appear automatically without reinstalling it.</p>
+
+  <button id="installBtn" type="button">Install Web App</button>
+  <div id="status" class="status"></div>
+
+  <div id="androidGuide" class="guide hidden">
+    <b>Android:</b><br>
+    Open this page in Chrome. Tap the button above. If Chrome does not show the install prompt, open the Chrome menu (⋮) and choose <b>Install app</b> or <b>Add to Home screen</b>.
+  </div>
+
+  <div id="iosGuide" class="guide hidden">
+    <b>iPhone / iPad:</b><br>
+    Open this page in Safari, tap <b>Share</b>, then choose <b>Add to Home Screen</b> and confirm <b>Add</b>.
+  </div>
+</section>
+</main>
+
+<script>
+(function () {
+  const root = document.documentElement;
+  const ua = navigator.userAgent || "";
+  const isIOS =
+    /iPhone|iPad|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  const installed =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    navigator.standalone === true;
+
+  const btn = document.getElementById("installBtn");
+  const status = document.getElementById("status");
+  const androidGuide = document.getElementById("androidGuide");
+  const iosGuide = document.getElementById("iosGuide");
+
+  let deferredPrompt = null;
+
+  if (isIOS) iosGuide.classList.remove("hidden");
+  if (isAndroid) androidGuide.classList.remove("hidden");
+
+  if (installed) {
+    btn.disabled = true;
+    btn.textContent = "Installed";
+    status.textContent = "The web app is already installed.";
+  }
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    btn.disabled = false;
+    status.textContent = "";
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    btn.disabled = true;
+    btn.textContent = "Installed";
+    status.textContent = "Installation completed.";
+  });
+
+  btn.addEventListener("click", async () => {
+    if (installed) return;
+
+    if (isAndroid && deferredPrompt) {
+      const prompt = deferredPrompt;
+      deferredPrompt = null;
+
+      try {
+        await prompt.prompt();
+        const choice = await prompt.userChoice;
+
+        if (choice && choice.outcome === "accepted") {
+          status.textContent = "Installation started.";
+        } else {
+          status.textContent = "Use Chrome menu → Install app.";
+        }
+      } catch (_) {
+        status.textContent = "Use Chrome menu → Install app.";
+      }
+
+      return;
+    }
+
+    if (isIOS) {
+      status.textContent = "Safari → Share → Add to Home Screen";
+      return;
+    }
+
+    if (isAndroid) {
+      status.textContent = "Chrome menu (⋮) → Install app / Add to Home screen";
+      return;
+    }
+
+    status.textContent = "Use your browser's Install app option.";
+  });
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js", {
+      scope: "/",
+      updateViaCache: "none"
+    }).catch(() => {});
+  }
+})();
+</script>
+</body>
+</html>

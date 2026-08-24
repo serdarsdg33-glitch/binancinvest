@@ -1,31 +1,20 @@
-const CACHE_NAME = "binancinvest-pwa-v3-20260823";
-
-const CORE = [
-  "/",
-  "/binancinvest-manifest-v3.webmanifest",
+const CACHE_NAME = "binancinvest-live-pwa-v4-20260824-1115";
+const STATIC_FILES = [
   "/app-icon-192.png",
   "/app-icon-512.png",
-  "/apple-touch-icon.png"
+  "/apple-touch-icon.png",
+  "/binancinvest-manifest-v4.webmanifest",
+  "/offline.html"
 ];
 
 self.addEventListener("install", (event) => {
-  /*
-    Cache items one by one. One missing optional file must never make
-    the whole service-worker installation fail.
-  */
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
-      await Promise.all(
-        CORE.map(async (url) => {
-          try {
-            await cache.add(
-              new Request(url, { cache: "reload" })
-            );
-          } catch (error) {
-            console.warn("PWA precache skipped:", url);
-          }
-        })
-      );
+      for (const url of STATIC_FILES) {
+        try {
+          await cache.add(new Request(url, { cache: "reload" }));
+        } catch (_) {}
+      }
     })
   );
 
@@ -34,21 +23,16 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    (async () => {
-      const names = await caches.keys();
-
-      await Promise.all(
-        names
-          .filter((name) =>
-            name.startsWith("binancinvest-pwa-") &&
-            name !== CACHE_NAME
-          )
-          .map((name) => caches.delete(name))
-      );
-
-      await self.clients.claim();
-    })()
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
+    )
   );
+
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
@@ -58,64 +42,47 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  /*
-    Never intercept Supabase/API or other third-party account traffic.
-  */
+  // Never interfere with Supabase/APIs/cross-origin account traffic.
   if (url.origin !== self.location.origin) return;
 
-  /*
-    Page navigation: network first, cached home shell only if offline.
-  */
+  // Every page navigation is NETWORK FIRST and HTML is never stored in
+  // our PWA cache. This is what lets website changes appear automatically.
   if (request.mode === "navigate") {
     event.respondWith(
-      (async () => {
-        try {
-          const response = await fetch(request);
-
-          if (response && response.ok) {
-            const cache = await caches.open(CACHE_NAME);
-            cache.put("/", response.clone()).catch(() => {});
-          }
-
-          return response;
-        } catch (error) {
-          return (
-            (await caches.match(request)) ||
-            (await caches.match("/")) ||
-            Response.error()
-          );
-        }
-      })()
+      fetch(request).catch(() => caches.match("/offline.html"))
     );
-
     return;
   }
 
-  /*
-    PWA identity files: cache first and refresh in the background.
-  */
+  // Cache only stable install identity files.
   if (
-    url.pathname === "/binancinvest-manifest-v3.webmanifest" ||
     url.pathname === "/app-icon-192.png" ||
     url.pathname === "/app-icon-512.png" ||
-    url.pathname === "/apple-touch-icon.png"
+    url.pathname === "/apple-touch-icon.png" ||
+    url.pathname === "/binancinvest-manifest-v4.webmanifest" ||
+    url.pathname === "/offline.html"
   ) {
     event.respondWith(
-      (async () => {
-        const cached = await caches.match(request);
-
-        const freshPromise = fetch(request)
-          .then(async (response) => {
+      caches.match(request).then((cached) => {
+        const network = fetch(request)
+          .then((response) => {
             if (response && response.ok) {
-              const cache = await caches.open(CACHE_NAME);
-              await cache.put(request, response.clone());
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(request, response.clone());
+              });
             }
             return response;
           })
-          .catch(() => null);
+          .catch(() => cached);
 
-        return cached || (await freshPromise) || Response.error();
-      })()
+        return cached || network;
+      })
     );
+  }
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") {
+    self.skipWaiting();
   }
 });

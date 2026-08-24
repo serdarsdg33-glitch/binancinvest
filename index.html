@@ -158,25 +158,46 @@
 })();
 </script>
 
+
+<script id="pwa-web-mode-force-v1">
+(function () {
+  try {
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+
+    if (!isStandalone) return;
+
+    /*
+      Installed web apps must use the same optimized web layouts:
+      Android PWA -> web-android
+      iPhone PWA  -> web-ios
+      They must never inherit the native Capacitor layout.
+    */
+    document.documentElement.classList.remove("native-app");
+    document.documentElement.classList.add("normal-web");
+    document.documentElement.dataset.runtime = "web";
+  } catch (_) {}
+})();
+</script>
+
 <meta name="theme-color" content="#0b0e11">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="binancinvest">
-<link rel="manifest" href="/binancinvest-manifest-v3.webmanifest?v=20260823-2242">
+<link rel="manifest" href="/binancinvest-manifest-v4.webmanifest?v=20260824-1115">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260822-0807">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>binancinvest</title>
 
-<script id="ios-install-name-force-v2">
+<script id="ios-install-name-force-v3">
 (function () {
   const APP_NAME = "binancinvest";
-  const FIX_VERSION = "20260822-0807";
 
   function setNamedMeta(name, value) {
-    let meta =
-      document.querySelector(`meta[name="${name}"]`);
+    let meta = document.querySelector(`meta[name="${name}"]`);
 
     if (!meta) {
       meta = document.createElement("meta");
@@ -189,14 +210,8 @@
 
   function applyName() {
     document.title = APP_NAME;
-    setNamedMeta(
-      "apple-mobile-web-app-title",
-      APP_NAME
-    );
-    setNamedMeta(
-      "application-name",
-      APP_NAME
-    );
+    setNamedMeta("apple-mobile-web-app-title", APP_NAME);
+    setNamedMeta("application-name", APP_NAME);
   }
 
   applyName();
@@ -206,63 +221,6 @@
     applyName,
     { once: true }
   );
-
-  const ua = navigator.userAgent || "";
-  const isIOS =
-    /iPhone|iPad|iPod/i.test(ua) ||
-    (
-      navigator.platform === "MacIntel" &&
-      navigator.maxTouchPoints > 1
-    );
-
-  if (!isIOS) return;
-
-  window.addEventListener("load", async () => {
-    applyName();
-
-    const key =
-      "bi_ios_install_name_fix_" +
-      FIX_VERSION;
-
-    try {
-      if (localStorage.getItem(key) === "1") {
-        return;
-      }
-
-      /*
-        Safari may still have the old page/manifest through the previous
-        service worker. Clear only the iOS web caches once for this update.
-      */
-      if ("serviceWorker" in navigator) {
-        const registrations =
-          await navigator.serviceWorker
-            .getRegistrations();
-
-        await Promise.all(
-          registrations.map(registration =>
-            registration.unregister()
-          )
-        );
-      }
-
-      if ("caches" in window) {
-        const keys = await caches.keys();
-
-        await Promise.all(
-          keys.map(cacheName =>
-            caches.delete(cacheName)
-          )
-        );
-      }
-
-      localStorage.setItem(key, "1");
-    } catch (error) {
-      console.warn(
-        "iOS install-name cache refresh skipped:",
-        error
-      );
-    }
-  });
 })();
 </script>
 
@@ -21745,7 +21703,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260823-2242",
+            "/sw.js?v=20260824-1115",
             {
               scope: "/",
               updateViaCache: "none"
