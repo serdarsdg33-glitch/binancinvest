@@ -12766,6 +12766,71 @@ html[dir="rtl"] .stats-vertical-stack .stat-badge-tag {
 }
 </style>
 
+
+<style id="platform-badge-pill-clear-glass-v2">
+/* Only the small label boxes: Live + Saved / Verified / SAFU */
+.stats-vertical-stack .stat-badge-tag,
+.stats-vertical-stack .safu-badge{
+  position: absolute !important;
+  overflow: hidden !important;
+  isolation: isolate;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.08) 0%,
+      rgba(255,255,255,.025) 38%,
+      rgba(14,10,5,.16) 100%
+    ) !important;
+  background-color: rgba(8,10,14,.14) !important;
+  border: 1px solid rgba(255,224,120,.34) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 -1px 0 rgba(255,255,255,.04),
+    0 8px 22px rgba(0,0,0,.18),
+    0 0 16px rgba(240,185,11,.08) !important;
+  backdrop-filter: blur(16px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(135%) !important;
+}
+
+.stats-vertical-stack .stat-badge-tag::before,
+.stats-vertical-stack .safu-badge::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,.16) 0%,
+      rgba(255,255,255,.06) 20%,
+      transparent 42%,
+      transparent 78%,
+      rgba(255,225,91,.07) 100%
+    );
+  z-index:0;
+}
+
+.stats-vertical-stack .stat-badge-tag > *,
+.stats-vertical-stack .safu-badge > *{
+  position:relative;
+  z-index:1;
+}
+
+.stats-vertical-stack .safu-badge{
+  min-width: 90px !important;
+}
+
+@media (max-width:600px){
+  .stats-vertical-stack .stat-badge-tag,
+  .stats-vertical-stack .safu-badge{
+    background-color: rgba(8,10,14,.12) !important;
+    backdrop-filter: blur(12px) saturate(128%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(128%) !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
