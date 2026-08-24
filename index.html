@@ -26430,5 +26430,150 @@ body.bi-modal-open{
 })();
 </script>
 
+
+<style id="download-modal-ios-visibility-fix-v2">
+/* iPhone/Safari-safe modal layer: no backdrop-filter stacking bug. */
+#biDownloadChoiceModal.bi-modal,
+#biInstallGuideModal.bi-modal{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483000 !important;
+  display:none !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:18px !important;
+  background:rgba(0,0,0,.84) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  filter:none !important;
+  transform:none !important;
+}
+#biDownloadChoiceModal.bi-modal.bi-open,
+#biInstallGuideModal.bi-modal.bi-open{
+  display:flex !important;
+}
+#biDownloadChoiceModal .bi-modal-backdrop,
+#biInstallGuideModal .bi-modal-backdrop{
+  display:none !important;
+}
+#biDownloadChoiceModal .bi-modal-dialog,
+#biInstallGuideModal .bi-modal-dialog{
+  position:relative !important;
+  z-index:2147483640 !important;
+  display:block !important;
+  width:min(100%,520px) !important;
+  max-height:calc(100dvh - 36px) !important;
+  overflow:auto !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  filter:none !important;
+  transform:none !important;
+  color:#fff !important;
+  background:linear-gradient(180deg,#111821 0%,#090e14 100%) !important;
+  border:1px solid rgba(240,185,11,.58) !important;
+  border-radius:24px !important;
+  box-shadow:0 24px 70px rgba(0,0,0,.72),0 0 30px rgba(240,185,11,.11) !important;
+  -webkit-overflow-scrolling:touch;
+}
+#biDownloadChoiceModal .bi-modal-content,
+#biInstallGuideModal .bi-modal-content{
+  display:block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  padding:28px 20px 20px !important;
+}
+#biDownloadChoiceModal .bi-modal-title,
+#biInstallGuideModal .bi-modal-title{
+  display:block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  color:#fff !important;
+}
+#biDownloadChoiceModal .bi-modal-desc,
+#biInstallGuideModal .bi-modal-desc,
+#biInstallGuideModal .bi-install-note{
+  display:block !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+#biDownloadChoiceModal .bi-choice-grid,
+#biInstallGuideModal .bi-modal-actions,
+#biInstallGuideModal .bi-install-steps{
+  display:grid !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+#biDownloadChoiceModal .bi-choice-btn,
+#biInstallGuideModal .bi-modal-btn{
+  position:relative !important;
+  z-index:2 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+#biDownloadChoiceModal .bi-modal-close,
+#biInstallGuideModal .bi-modal-close{
+  position:absolute !important;
+  top:10px !important;
+  right:10px !important;
+  z-index:10 !important;
+  display:grid !important;
+  place-items:center !important;
+  width:40px !important;
+  height:40px !important;
+  padding:0 !important;
+  border-radius:50% !important;
+  border:1px solid rgba(240,185,11,.45) !important;
+  background:#151b23 !important;
+  color:#fff !important;
+  font-size:28px !important;
+  line-height:1 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+@media(max-width:600px){
+  #biDownloadChoiceModal.bi-modal,
+  #biInstallGuideModal.bi-modal{
+    align-items:flex-end !important;
+    padding:12px !important;
+  }
+  #biDownloadChoiceModal .bi-modal-dialog,
+  #biInstallGuideModal .bi-modal-dialog{
+    width:100% !important;
+    max-height:82dvh !important;
+    border-radius:22px !important;
+  }
+  #biDownloadChoiceModal .bi-modal-content,
+  #biInstallGuideModal .bi-modal-content{
+    padding:26px 16px 16px !important;
+  }
+}
+</style>
+
+<script id="download-modal-ios-visibility-script-v2">
+(() => {
+  const modals = [
+    document.getElementById('biDownloadChoiceModal'),
+    document.getElementById('biInstallGuideModal')
+  ].filter(Boolean);
+
+  const sync = (modal) => {
+    if (!modal) return;
+    const isOpen = !modal.hidden;
+    modal.classList.toggle('bi-open', isOpen);
+    modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+  };
+
+  modals.forEach((modal) => {
+    sync(modal);
+    new MutationObserver(() => sync(modal)).observe(modal, {
+      attributes:true,
+      attributeFilter:['hidden','aria-hidden']
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
