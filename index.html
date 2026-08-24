@@ -12756,240 +12756,454 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
 </style>
 
 
-<style id="download-options-v38-final">
-/* The supplied artwork is the complete download card. */
-#downloadAppSection{
-  padding-inline:clamp(8px,2vw,24px) !important;
-}
-
-#downloadAppSection .pwa-install-card,
-#downloadAppSection .pwa-install-actions{
-  width:100% !important;
-  max-width:1160px !important;
-  margin-inline:auto !important;
-  padding:0 !important;
-  border:0 !important;
-  background:transparent !important;
-  box-shadow:none !important;
-}
-
-#downloadAppSection .install-banner-wrap{
-  position:relative !important;
-  width:100% !important;
-  max-width:1160px !important;
-  margin:0 auto !important;
-  overflow:hidden !important;
-  border-radius:clamp(22px,4vw,52px) !important;
-  background:#030303 !important;
-}
-
-#downloadAppSection .install-banner-image{
-  display:block !important;
-  width:100% !important;
-  height:auto !important;
-  max-width:100% !important;
-  object-fit:contain !important;
-  object-position:center !important;
-}
-
-/* Exact transparent hit areas over the two yellow Download labels in the image. */
-#downloadAppSection .install-banner-wrap > .download-image-hotspot{
+<style id="download-options-v37-3-final">
+/* Keep the two clickable banner zones aligned with the image buttons. */
+#downloadAppSection .install-banner-wrap > #iphoneProfileBtn,
+#downloadAppSection .install-banner-wrap > #androidApkBtn{
   position:absolute !important;
-  top:85.2% !important;
+  top:82.31% !important;
   bottom:auto !important;
-  height:8.0% !important;
+  height:7.35% !important;
   margin:0 !important;
   padding:0 !important;
   border:0 !important;
-  border-radius:clamp(13px,2vw,25px) !important;
+  border-radius:18px !important;
   background:transparent !important;
   box-shadow:none !important;
+  opacity:.001 !important;
   z-index:30 !important;
   display:block !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
   cursor:pointer !important;
   touch-action:manipulation !important;
-  -webkit-tap-highlight-color:transparent !important;
 }
 
-#downloadAppSection .install-banner-wrap > #iphoneDownloadHotspot{
-  left:9.0% !important;
-  width:34.5% !important;
+#downloadAppSection .install-banner-wrap > #iphoneProfileBtn{
+  left:9.27% !important;
+  right:auto !important;
+  width:35.83% !important;
 }
 
-#downloadAppSection .install-banner-wrap > #androidDownloadHotspot{
-  left:53.5% !important;
-  width:35.15% !important;
+#downloadAppSection .install-banner-wrap > #androidApkBtn{
+  left:53.92% !important;
+  right:auto !important;
+  width:36.27% !important;
 }
 
-#downloadAppSection .download-image-hotspot:focus-visible{
-  outline:3px solid #fff3a0 !important;
-  outline-offset:-5px !important;
-  box-shadow:0 0 0 7px rgba(240,185,11,.32) !important;
+/* Always show both platform choices so the user decides. */
+#downloadAppSection .install-help-boxes.install-choice-boxes{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+  width:min(100%,1000px) !important;
+  margin:18px auto 0 !important;
 }
 
-/* Old cards and controls below the artwork are intentionally removed. */
-#downloadAppSection .install-help-boxes,
-#downloadAppSection #installAppStatus,
-#downloadAppSection #installLanguageTitle,
-#downloadAppSection .install-app-head,
-#downloadAppSection #installAppBtn{
+#downloadAppSection .install-platform-card{
+  min-width:0 !important;
+}
+
+#downloadAppSection .install-choice-actions{
+  display:grid !important;
+  grid-template-columns:1fr !important;
+  gap:9px !important;
+  margin:15px 0 5px !important;
+}
+
+#downloadAppSection .install-choice-btn{
+  width:100% !important;
+  min-height:44px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:11px 12px !important;
+  border-radius:11px !important;
+  text-decoration:none !important;
+  text-align:center !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  line-height:1.25 !important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease !important;
+}
+
+#downloadAppSection .install-choice-primary{
+  color:#171100 !important;
+  background:linear-gradient(135deg,#fff09a,#f0b90b 62%,#d99a00) !important;
+  border:1px solid #ffd83d !important;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.55),
+    0 7px 20px rgba(240,185,11,.15) !important;
+}
+
+#downloadAppSection .install-choice-secondary{
+  color:#ffe58a !important;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(240,185,11,.035)) !important;
+  border:1px solid rgba(240,185,11,.32) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+
+#downloadAppSection .install-choice-btn:hover{
+  transform:translateY(-1px) !important;
+  border-color:rgba(255,229,138,.65) !important;
+}
+
+/* The old script-only install button must never become visible. */
+#downloadAppSection #installAppBtn[hidden]{
   display:none !important;
 }
 
-.download-modal{
+/* Keep the existing device instructions beneath the choices. */
+#downloadAppSection .install-steps{
+  margin-top:14px !important;
+}
+
+@media(max-width:860px){
+  #downloadAppSection .install-help-boxes.install-choice-boxes{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+    padding:0 8px !important;
+  }
+
+  #downloadAppSection .install-banner-wrap > #iphoneProfileBtn,
+  #downloadAppSection .install-banner-wrap > #androidApkBtn{
+    top:82.31% !important;
+    height:7.35% !important;
+    border-radius:14px !important;
+  }
+
+  #downloadAppSection .install-choice-btn{
+    min-height:42px !important;
+    font-size:11.5px !important;
+  }
+}
+</style>
+
+
+<style id="download-showcase-modals-v1">
+/* =========================================================
+   DOWNLOAD SHOWCASE
+   Uses the exact user-provided image as the visible interface.
+   ========================================================= */
+
+#downloadAppSection{
+  width:100% !important;
+  margin:38px auto 16px !important;
+  padding:0 !important;
+}
+
+#downloadAppSection .download-showcase-shell{
+  width:min(1120px,100%) !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+.download-install-compat-hidden{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  margin:-1px !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  clip:rect(0 0 0 0) !important;
+  clip-path:inset(50%) !important;
+  white-space:nowrap !important;
+  border:0 !important;
+}
+
+#downloadAppSection .download-showcase-wrap{
+  position:relative !important;
+  width:100% !important;
+  margin:0 auto !important;
+  overflow:hidden !important;
+  border-radius:26px !important;
+  background:#030405 !important;
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.46),
+    0 0 26px rgba(240,185,11,.06) !important;
+}
+
+#downloadAppSection .download-showcase-image{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+  user-select:none !important;
+  -webkit-user-drag:none !important;
+  pointer-events:none !important;
+}
+
+/*
+  Click zones exactly over the two yellow Download buttons
+  that are already part of the supplied image.
+*/
+#downloadAppSection .download-showcase-hitbox{
+  position:absolute !important;
+  top:84.20% !important;
+  height:8.25% !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:20px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  outline:0 !important;
+  opacity:.001 !important;
+  cursor:pointer !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+  -webkit-tap-highlight-color:transparent !important;
+  z-index:5 !important;
+}
+
+#downloadAppSection .download-showcase-hitbox-iphone{
+  left:8.95% !important;
+  width:34.55% !important;
+}
+
+#downloadAppSection .download-showcase-hitbox-android{
+  left:53.45% !important;
+  width:34.60% !important;
+}
+
+/* =========================================================
+   TWO-STAGE DOWNLOAD WINDOWS
+   ========================================================= */
+
+.download-option-modal{
   position:fixed;
   inset:0;
-  z-index:100000;
+  z-index:30000;
   display:none;
   align-items:center;
   justify-content:center;
   padding:18px;
-  background:rgba(0,0,0,.78);
-  -webkit-backdrop-filter:blur(8px);
-  backdrop-filter:blur(8px);
+  background:rgba(0,0,0,.80);
+  backdrop-filter:blur(13px);
+  -webkit-backdrop-filter:blur(13px);
 }
 
-.download-modal.is-open{
+.download-option-modal.open{
   display:flex;
+  animation:downloadModalFade .18s ease;
 }
 
-.download-modal-card{
+.download-option-dialog{
   position:relative;
-  width:min(100%,480px);
-  max-height:min(90vh,720px);
-  overflow:auto;
-  padding:30px 24px 24px;
-  border:1px solid rgba(255,207,57,.58);
-  border-radius:26px;
-  color:#fff;
+  width:min(430px,100%);
+  padding:28px 22px 22px;
+  color:#f7f9fc;
+  text-align:center;
   background:
-    radial-gradient(circle at 50% 0,rgba(240,185,11,.18),transparent 42%),
-    linear-gradient(160deg,#121212,#050505 70%);
-  box-shadow:0 28px 90px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);
+    radial-gradient(circle at 50% -10%,rgba(240,185,11,.13),transparent 38%),
+    linear-gradient(145deg,#151c25,#080c11 76%);
+  border:1px solid rgba(255,216,61,.44);
+  border-radius:22px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 30px 90px rgba(0,0,0,.74),
+    0 0 28px rgba(240,185,11,.09);
+  animation:downloadDialogIn .22s ease;
 }
 
-.download-modal-close{
+.download-option-close{
   position:absolute;
   top:12px;
-  right:12px;
-  width:38px;
-  height:38px;
-  border:1px solid rgba(255,255,255,.18);
+  right:13px;
+  width:35px;
+  height:35px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  color:#d8dee8;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.14);
   border-radius:50%;
-  color:#fff;
-  background:rgba(255,255,255,.06);
-  font:300 28px/1 Arial,sans-serif;
+  font-size:24px;
+  line-height:1;
   cursor:pointer;
-  display:grid;
-  place-items:center;
 }
 
-html[dir="rtl"] .download-modal-close{
+.download-option-close:hover{
+  color:#fff;
+  border-color:rgba(255,216,61,.58);
+  background:rgba(240,185,11,.10);
+}
+
+html[dir="rtl"] .download-option-close{
   right:auto;
-  left:12px;
+  left:13px;
 }
 
-.download-modal-icon{
-  width:58px;
-  height:58px;
-  margin:0 auto 14px;
-  border:1px solid rgba(255,210,64,.5);
-  border-radius:17px;
-  display:grid;
-  place-items:center;
-  color:#111;
-  background:linear-gradient(145deg,#ffe875,#f0b90b 70%,#c88700);
-  box-shadow:0 10px 32px rgba(240,185,11,.22);
-  font-size:29px;
-  font-weight:900;
+.download-option-kicker{
+  margin:0 0 7px;
+  color:#f0b90b;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
 }
 
-.download-modal-icon svg{
-  width:34px;
-  height:34px;
-  display:block;
-  fill:currentColor;
-}
-
-.download-modal-card h3{
-  margin:0 44px 7px;
-  text-align:center;
+.download-option-dialog h3{
+  margin:0;
   color:#fff;
-  font-size:clamp(21px,4vw,28px);
+  font-size:24px;
+  font-weight:950;
 }
 
-.download-modal-card p{
-  margin:0 0 20px;
-  text-align:center;
-  color:rgba(255,255,255,.72);
-  line-height:1.65;
+.download-option-subtitle{
+  margin:9px auto 18px;
+  max-width:340px;
+  color:#b9c3d0;
+  font-size:13px;
+  line-height:1.7;
 }
 
-.download-modal-options{
+.download-option-buttons{
   display:grid;
-  gap:12px;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 
-.download-modal-option,
-.download-install-confirm{
-  width:100%;
-  min-height:56px;
-  padding:14px 16px;
-  border:1px solid rgba(240,185,11,.45);
+.download-method-btn{
+  min-height:82px;
+  padding:12px 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  color:#fff;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.065),
+      rgba(240,185,11,.035)
+    );
+  border:1px solid rgba(240,185,11,.30);
   border-radius:15px;
-  color:#171100;
-  background:linear-gradient(135deg,#fff09a,#f0b90b 65%,#d99a00);
-  font:900 15px/1.3 inherit;
-  text-align:center;
-  text-decoration:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
   cursor:pointer;
+}
+
+.download-method-btn:hover{
+  border-color:rgba(255,229,138,.68);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,229,138,.11),
+      rgba(240,185,11,.05)
+    );
+}
+
+.download-method-btn strong{
+  color:#ffe58a;
+  font-size:15px;
+  font-weight:950;
+}
+
+.download-method-btn span{
+  color:#aeb9c7;
+  font-size:10px;
+  line-height:1.4;
+}
+
+.download-confirm-dialog{
+  width:min(410px,100%);
+}
+
+.download-final-action{
+  width:100%;
+  min-height:49px;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:10px;
+  padding:12px 16px;
+  color:#171100;
+  text-decoration:none;
+  background:
+    linear-gradient(
+      135deg,
+      #fff09a,
+      #f0b90b 62%,
+      #d99a00
+    );
+  border:1px solid #ffd83d;
+  border-radius:12px;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.58),
+    0 9px 24px rgba(240,185,11,.18);
+  font-size:14px;
+  font-weight:950;
 }
 
-.download-modal-option.secondary{
-  color:#ffe889;
-  background:rgba(240,185,11,.07);
+.download-final-action:hover{
+  filter:brightness(1.035);
+  transform:translateY(-1px);
 }
 
-.download-install-steps{
-  margin:0 0 20px;
-  padding:0;
-  list-style:none;
-  display:grid;
-  gap:10px;
+@keyframes downloadModalFade{
+  from{opacity:0}
+  to{opacity:1}
 }
 
-.download-install-steps li{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  color:rgba(255,255,255,.88);
-  line-height:1.55;
-}
-
-.download-install-steps span{
-  flex:0 0 27px;
-  width:27px;
-  height:27px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  color:#111;
-  background:#f0b90b;
-  font-weight:900;
-}
-
-body.download-modal-open{
-  overflow:hidden !important;
+@keyframes downloadDialogIn{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 @media(max-width:600px){
-  .download-modal{padding:12px;}
-  .download-modal-card{padding:27px 17px 18px;border-radius:22px;}
-  .download-modal-option,.download-install-confirm{min-height:52px;font-size:14px;}
+  #downloadAppSection{
+    margin-top:28px !important;
+  }
+
+  #downloadAppSection .download-showcase-wrap{
+    width:100vw !important;
+    margin-left:calc(50% - 50vw) !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+  }
+
+  #downloadAppSection .download-showcase-hitbox{
+    top:84.20% !important;
+    height:8.25% !important;
+    border-radius:15px !important;
+  }
+
+  .download-option-modal{
+    padding:12px;
+  }
+
+  .download-option-dialog{
+    padding:26px 15px 17px;
+    border-radius:19px;
+  }
+
+  .download-option-dialog h3{
+    font-size:21px;
+  }
+
+  .download-option-buttons{
+    gap:8px;
+  }
+
+  .download-method-btn{
+    min-height:76px;
+    padding:10px 7px;
+  }
+
+  .download-method-btn strong{
+    font-size:13px;
+  }
 }
 </style>
 
@@ -13268,50 +13482,125 @@ body.download-modal-open{
 
 
 
+
 <section id="downloadAppSection" aria-labelledby="downloadAppTitle">
-  <div class="pwa-install-card">
-    <h2 id="downloadAppTitle" class="install-app-head">Download binancinvest</h2>
-    <p id="downloadAppDescription" class="install-app-head">Choose a version for your device.</p>
-    <div class="pwa-install-actions">
-      <div class="install-banner-wrap">
-        <img
-          src="app-download-banner.jpeg"
-          alt="binancinvest download options for iPhone and Android"
-          class="install-banner-image"
-          width="1160"
-          height="1356"
-          loading="lazy"
-        >
-        <button id="iphoneDownloadHotspot" class="download-image-hotspot" type="button" aria-label="iPhone download options"></button>
-        <button id="androidDownloadHotspot" class="download-image-hotspot" type="button" aria-label="Android download options"></button>
-      </div>
-      <div id="installAppStatus" role="status" aria-live="polite"></div>
+  <div class="download-showcase-shell">
+
+    <!-- Hidden compatibility nodes for the existing PWA script. -->
+    <h2 id="downloadAppTitle" class="download-install-compat-hidden">Download binancinvest</h2>
+    <p id="downloadAppDescription" class="download-install-compat-hidden">
+      Choose the installed version or the Web App version for your device.
+    </p>
+
+    <div class="download-showcase-wrap">
+      <img
+        src="app-download-showcase.png"
+        alt="Download binancinvest for iPhone and Android"
+        class="download-showcase-image"
+        decoding="async"
+      >
+
+      <!-- The visible yellow buttons are already drawn inside the image. -->
+      <button
+        id="downloadShowcaseIphoneBtn"
+        class="download-showcase-hitbox download-showcase-hitbox-iphone"
+        type="button"
+        aria-label="Choose iPhone download option"
+      ></button>
+
+      <button
+        id="downloadShowcaseAndroidBtn"
+        class="download-showcase-hitbox download-showcase-hitbox-android"
+        type="button"
+        aria-label="Choose Android download option"
+      ></button>
     </div>
-    <button id="installAppBtn" type="button" hidden aria-hidden="true" tabindex="-1">Install App</button>
-    <div id="installLanguageTitle" class="install-language-title"></div>
+
+    <!-- Existing PWA script compatibility. This stays hidden. -->
+    <button
+      id="installAppBtn"
+      type="button"
+      hidden
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      Install App
+    </button>
+
+    <div
+      id="installAppStatus"
+      class="download-install-compat-hidden"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+    <div
+      id="installLanguageTitle"
+      class="download-install-compat-hidden"
+    ></div>
   </div>
 </section>
 
-<div id="downloadChoiceModal" class="download-modal" role="dialog" aria-modal="true" aria-labelledby="downloadChoiceTitle" aria-hidden="true">
-  <div class="download-modal-card" role="document">
-    <button class="download-modal-close" type="button" data-close-download-modal aria-label="Close">×</button>
-    <div id="downloadChoiceIcon" class="download-modal-icon" aria-hidden="true"></div>
-    <h3 id="downloadChoiceTitle">Choose a version</h3>
-    <p id="downloadChoiceText">Select how you want to install binancinvest.</p>
-    <div id="downloadChoiceOptions" class="download-modal-options"></div>
+<!-- First window: platform download choices -->
+<div
+  id="downloadChoiceModal"
+  class="download-option-modal"
+  aria-hidden="true"
+>
+  <div
+    class="download-option-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="downloadChoiceTitle"
+  >
+    <button
+      id="downloadChoiceClose"
+      class="download-option-close"
+      type="button"
+      aria-label="Close"
+    >×</button>
+
+    <div class="download-option-kicker" id="downloadChoicePlatform"></div>
+    <h3 id="downloadChoiceTitle">Choose download type</h3>
+    <p id="downloadChoiceSubtitle" class="download-option-subtitle"></p>
+
+    <div id="downloadChoiceButtons" class="download-option-buttons"></div>
   </div>
 </div>
 
-<div id="downloadInstallModal" class="download-modal" role="dialog" aria-modal="true" aria-labelledby="downloadInstallTitle" aria-hidden="true">
-  <div class="download-modal-card" role="document">
-    <button class="download-modal-close" type="button" data-close-download-modal aria-label="Close">×</button>
-    <div id="downloadInstallIcon" class="download-modal-icon" aria-hidden="true"></div>
-    <h3 id="downloadInstallTitle">Install binancinvest</h3>
-    <p id="downloadInstallText"></p>
-    <ol id="downloadInstallSteps" class="download-install-steps"></ol>
-    <a id="downloadInstallConfirm" class="download-install-confirm" href="#">Continue</a>
+<!-- Second window: final download / install action -->
+<div
+  id="downloadConfirmModal"
+  class="download-option-modal"
+  aria-hidden="true"
+>
+  <div
+    class="download-option-dialog download-confirm-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="downloadConfirmTitle"
+  >
+    <button
+      id="downloadConfirmClose"
+      class="download-option-close"
+      type="button"
+      aria-label="Close"
+    >×</button>
+
+    <div class="download-option-kicker" id="downloadConfirmPlatform"></div>
+    <h3 id="downloadConfirmTitle">Ready to continue</h3>
+    <p id="downloadConfirmText" class="download-option-subtitle"></p>
+
+    <a
+      id="downloadConfirmAction"
+      class="download-final-action"
+      href="#"
+    >
+      Continue
+    </a>
   </div>
 </div>
+
 
 
     <footer class="site-footer">
@@ -22146,170 +22435,6 @@ async function deleteAllClosedSupportTickets() {
 </script>
 
 
-<script id="download-choice-modal-script">
-(() => {
-  const choiceModal = document.getElementById("downloadChoiceModal");
-  const installModal = document.getElementById("downloadInstallModal");
-  const choiceTitle = document.getElementById("downloadChoiceTitle");
-  const choiceText = document.getElementById("downloadChoiceText");
-  const choiceIcon = document.getElementById("downloadChoiceIcon");
-  const choiceOptions = document.getElementById("downloadChoiceOptions");
-  const installTitle = document.getElementById("downloadInstallTitle");
-  const installText = document.getElementById("downloadInstallText");
-  const installIcon = document.getElementById("downloadInstallIcon");
-  const installSteps = document.getElementById("downloadInstallSteps");
-  const installConfirm = document.getElementById("downloadInstallConfirm");
-  let lastTrigger = null;
-
-  const liveOrigin = /^https?:$/.test(window.location.protocol)
-    ? window.location.origin
-    : "https://binancinvest.com";
-
-  const appleLogo = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35-.07 2.29.74 3.08.79 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09M12.03 7.25C11.88 5.02 13.69 3.18 15.77 3c.29 2.58-2.34 4.5-3.74 4.25"/></svg>`;
-  const androidLogo = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.6 9.48l1.43-2.48a.75.75 0 1 0-1.3-.75l-1.47 2.55A9.03 9.03 0 0 0 12 8c-1.6 0-3.11.42-4.42 1.16L6.1 6.25A.75.75 0 1 0 4.8 7l1.44 2.5A7.02 7.02 0 0 0 3 15v4.25c0 .41.34.75.75.75h1.5a.75.75 0 0 0 .75-.75V18h12v1.25c0 .41.34.75.75.75h1.5c.41 0 .75-.34.75-.75V15a7 7 0 0 0-3.4-5.52ZM8.5 13.25a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>`;
-
-  const installs = {
-    iphoneWeb: {
-      title: "Install Web App on iPhone",
-      text: "Add binancinvest to your iPhone Home Screen and open it like an app.",
-      steps: ["Open the next page in Safari.", "Tap Share, then Add to Home Screen.", "Tap Add to finish the installation."],
-      label: "Open Web App installation",
-      href: `${liveOrigin}/install-web.html`,
-      logo: appleLogo
-    },
-    iphoneProfile: {
-      title: "Install iPhone Profile",
-      text: "Continue to the iPhone profile installation page.",
-      steps: ["Open the profile installation page.", "Allow the profile download when iPhone asks.", "Open Settings and complete the installation."],
-      label: "Continue to Profile Install",
-      href: `${liveOrigin}/install-iphone.html`,
-      logo: appleLogo
-    },
-    androidWeb: {
-      title: "Install Web App on Android",
-      text: "Add binancinvest to your Android Home Screen without downloading an APK.",
-      steps: ["Open the next page in Chrome.", "Open the browser menu.", "Choose Install app or Add to Home screen."],
-      label: "Open Web App installation",
-      href: `${liveOrigin}/install-web.html`,
-      logo: androidLogo
-    },
-    androidApk: {
-      title: "Install Android APK",
-      text: "Download the binancinvest APK and install it on your Android phone.",
-      steps: ["Download the APK file.", "Open the downloaded file.", "Allow installation from your browser if Android asks, then tap Install."],
-      label: "Download APK",
-      href: `${liveOrigin}/binancinvest-v37-3.apk`,
-      logo: androidLogo,
-      download: "binancinvest-v37-3.apk"
-    }
-  };
-
-  function openModal(modal, trigger) {
-    lastTrigger = trigger || document.activeElement;
-    document.querySelectorAll(".download-modal.is-open").forEach(item => {
-      item.classList.remove("is-open");
-      item.setAttribute("aria-hidden", "true");
-    });
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.classList.add("download-modal-open");
-    requestAnimationFrame(() => modal.querySelector(".download-modal-close")?.focus());
-  }
-
-  function closeModals(restoreFocus = true) {
-    document.querySelectorAll(".download-modal.is-open").forEach(item => {
-      item.classList.remove("is-open");
-      item.setAttribute("aria-hidden", "true");
-    });
-    document.body.classList.remove("download-modal-open");
-    if (restoreFocus) lastTrigger?.focus?.();
-  }
-
-  function optionLink(label, type, secondary = false) {
-    const link = document.createElement("a");
-    link.className = `download-modal-option${secondary ? " secondary" : ""}`;
-    link.textContent = label;
-    link.href = installs[type].href;
-    link.setAttribute("data-install-type", type);
-    link.addEventListener("click", event => {
-      event.preventDefault();
-      window.openBinancinvestInstall(type, link);
-    });
-    return link;
-  }
-
-  function showChoices(platform, trigger) {
-    choiceOptions.replaceChildren();
-    if (platform === "iphone") {
-      choiceIcon.innerHTML = appleLogo;
-      choiceTitle.textContent = "Download for iPhone";
-      choiceText.textContent = "Choose Web App or iPhone Profile.";
-      choiceOptions.append(
-        optionLink("Web App version", "iphoneWeb"),
-        optionLink("iPhone Profile", "iphoneProfile", true)
-      );
-    } else {
-      choiceIcon.innerHTML = androidLogo;
-      choiceTitle.textContent = "Download for Android";
-      choiceText.textContent = "Choose Web App or Android APK.";
-      choiceOptions.append(
-        optionLink("Web App version", "androidWeb"),
-        optionLink("Android APK", "androidApk", true)
-      );
-    }
-    openModal(choiceModal, trigger);
-  }
-
-  function showInstall(type, trigger) {
-    const item = installs[type];
-    if (!item) return;
-    installTitle.textContent = item.title;
-    installText.textContent = item.text;
-    installIcon.innerHTML = item.logo;
-    installSteps.replaceChildren(...item.steps.map((step, index) => {
-      const li = document.createElement("li");
-      const number = document.createElement("span");
-      number.textContent = String(index + 1);
-      li.append(number, document.createTextNode(step));
-      return li;
-    }));
-    installConfirm.textContent = item.label;
-    installConfirm.href = item.href;
-    installConfirm.target = "_self";
-    if (item.download) installConfirm.setAttribute("download", item.download);
-    else installConfirm.removeAttribute("download");
-    openModal(installModal, trigger);
-  }
-
-  window.openBinancinvestInstall = function(type, trigger) {
-    showInstall(type, trigger || document.activeElement);
-  };
-
-  document.getElementById("iphoneDownloadHotspot")?.addEventListener("click", event => showChoices("iphone", event.currentTarget));
-  document.getElementById("androidDownloadHotspot")?.addEventListener("click", event => showChoices("android", event.currentTarget));
-
-  document.querySelectorAll("[data-close-download-modal]").forEach(button => {
-    button.addEventListener("click", () => closeModals());
-  });
-
-  [choiceModal, installModal].forEach(modal => {
-    modal?.addEventListener("click", event => {
-      if (event.target === modal) closeModals();
-    });
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && document.querySelector(".download-modal.is-open")) closeModals();
-  });
-
-  installConfirm?.addEventListener("click", () => {
-    /* Keep the default anchor navigation. This direct fallback is reliable in
-       Safari, standalone web apps and Android WebViews. */
-    window.setTimeout(() => closeModals(false), 80);
-  });
-})();
-</script>
-
 <script id="pwa-install-script">
 (() => {
   let deferredInstallPrompt = null;
@@ -26222,6 +26347,205 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   window.addEventListener("pageshow", start);
+})();
+</script>
+
+
+<script id="download-showcase-modals-script-v1">
+(function () {
+  const choiceModal = document.getElementById("downloadChoiceModal");
+  const confirmModal = document.getElementById("downloadConfirmModal");
+
+  const iphoneButton = document.getElementById("downloadShowcaseIphoneBtn");
+  const androidButton = document.getElementById("downloadShowcaseAndroidBtn");
+
+  const choiceClose = document.getElementById("downloadChoiceClose");
+  const confirmClose = document.getElementById("downloadConfirmClose");
+
+  const choicePlatform = document.getElementById("downloadChoicePlatform");
+  const choiceTitle = document.getElementById("downloadChoiceTitle");
+  const choiceSubtitle = document.getElementById("downloadChoiceSubtitle");
+  const choiceButtons = document.getElementById("downloadChoiceButtons");
+
+  const confirmPlatform = document.getElementById("downloadConfirmPlatform");
+  const confirmTitle = document.getElementById("downloadConfirmTitle");
+  const confirmText = document.getElementById("downloadConfirmText");
+  const confirmAction = document.getElementById("downloadConfirmAction");
+
+  if (
+    !choiceModal ||
+    !confirmModal ||
+    !iphoneButton ||
+    !androidButton ||
+    !choiceButtons ||
+    !confirmAction
+  ) {
+    return;
+  }
+
+  const downloadOptions = {
+    iphone: {
+      platform: "iPhone",
+      subtitle: "Choose Web App or Profile Install.",
+      options: [
+        {
+          key: "iphone-web",
+          title: "Web App",
+          note: "Install from Safari",
+          finalTitle: "iPhone Web App",
+          finalText: "Open the Web App installation page in Safari.",
+          actionText: "Open Web Install",
+          href: "https://binancinvest.com/install-web.html",
+          download: ""
+        },
+        {
+          key: "iphone-profile",
+          title: "Profile",
+          note: "Install iPhone profile",
+          finalTitle: "iPhone Profile",
+          finalText: "Open the iPhone profile installation page.",
+          actionText: "Open Profile Install",
+          href: "https://binancinvest.com/install-iphone.html",
+          download: ""
+        }
+      ]
+    },
+
+    android: {
+      platform: "Android",
+      subtitle: "Choose APK or Web App.",
+      options: [
+        {
+          key: "android-apk",
+          title: "APK",
+          note: "Direct Android file",
+          finalTitle: "Android APK",
+          finalText: "Download the Android APK file to your device.",
+          actionText: "Download APK",
+          href: "binancinvest-v37-3.apk",
+          download: "binancinvest-v37-3.apk"
+        },
+        {
+          key: "android-web",
+          title: "Web App",
+          note: "Install from Chrome",
+          finalTitle: "Android Web App",
+          finalText: "Open the Web App installation page in Chrome.",
+          actionText: "Open Web Install",
+          href: "https://binancinvest.com/install-web.html",
+          download: ""
+        }
+      ]
+    }
+  };
+
+  function openModal(modal) {
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modal) {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+
+    if (
+      !choiceModal.classList.contains("open") &&
+      !confirmModal.classList.contains("open")
+    ) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  function closeAll() {
+    closeModal(choiceModal);
+    closeModal(confirmModal);
+  }
+
+  function openChoice(platformKey) {
+    const config = downloadOptions[platformKey];
+    if (!config) return;
+
+    choicePlatform.textContent = config.platform;
+    choiceTitle.textContent = "Choose download type";
+    choiceSubtitle.textContent = config.subtitle;
+
+    choiceButtons.innerHTML = "";
+
+    config.options.forEach(option => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "download-method-btn";
+
+      const title = document.createElement("strong");
+      title.textContent = option.title;
+
+      const note = document.createElement("span");
+      note.textContent = option.note;
+
+      button.append(title, note);
+
+      button.addEventListener("click", function () {
+        closeModal(choiceModal);
+        openConfirm(config.platform, option);
+      });
+
+      choiceButtons.appendChild(button);
+    });
+
+    openModal(choiceModal);
+  }
+
+  function openConfirm(platform, option) {
+    confirmPlatform.textContent = platform;
+    confirmTitle.textContent = option.finalTitle;
+    confirmText.textContent = option.finalText;
+
+    confirmAction.textContent = option.actionText;
+    confirmAction.href = option.href;
+
+    if (option.download) {
+      confirmAction.setAttribute("download", option.download);
+    } else {
+      confirmAction.removeAttribute("download");
+    }
+
+    openModal(confirmModal);
+  }
+
+  iphoneButton.addEventListener("click", function () {
+    openChoice("iphone");
+  });
+
+  androidButton.addEventListener("click", function () {
+    openChoice("android");
+  });
+
+  choiceClose.addEventListener("click", function () {
+    closeModal(choiceModal);
+  });
+
+  confirmClose.addEventListener("click", function () {
+    closeModal(confirmModal);
+  });
+
+  choiceModal.addEventListener("click", function (event) {
+    if (event.target === choiceModal) {
+      closeModal(choiceModal);
+    }
+  });
+
+  confirmModal.addEventListener("click", function (event) {
+    if (event.target === confirmModal) {
+      closeModal(confirmModal);
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeAll();
+    }
+  });
 })();
 </script>
 
