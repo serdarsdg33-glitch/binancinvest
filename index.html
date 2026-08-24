@@ -12356,7 +12356,7 @@ html.web-android .brand > span {
 </style>
 
 
-<style id="apk-live-shell-auth-withdrawals-fix-v1">
+<style id="apk-auth-touch-layer-v2">
 /* =========================================================
    APK LIVE-SITE FIX
    - Android APK keeps the optimized Android web profile.
@@ -12389,16 +12389,20 @@ html.apk-live-shell #auth .modalbox,
 html.apk-live-shell #auth .modalbox * {
   pointer-events: auto !important;
 }
+</style>
 
-/* ---------------------------------------------------------
-   Live Withdrawals = iPhone appearance inside the APK.
-   This intentionally overrides only the Android lightweight
-   withdrawal styling, not the rest of Android performance mode.
-   --------------------------------------------------------- */
-html.web-android.apk-live-shell
-.live-withdrawals-container.has-video .live-withdraw,
-html.web-android.apk-live-shell
-.live-withdrawals-container.has-video .live-withdraw:nth-of-type(n) {
+
+
+
+<style id="android-live-withdrawals-iphone-parity-v2">
+/*
+  Android Live Withdrawals = iPhone Live Withdrawals.
+  Only this section is unified; the rest of Android performance mode stays intact.
+*/
+
+/* Exact final glass oval values from the iPhone/base full-glass style. */
+html.web-android .live-withdrawals-container.has-video .live-withdraw,
+html.web-android .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n){
   background:
     linear-gradient(
       135deg,
@@ -12407,8 +12411,8 @@ html.web-android.apk-live-shell
       rgba(240,185,11,.055) 100%
     ) !important;
 
-  border: 1px solid rgba(255,229,138,.30) !important;
-  border-radius: 999px !important;
+  border:1px solid rgba(255,229,138,.30) !important;
+  border-radius:999px !important;
 
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.16),
@@ -12416,21 +12420,20 @@ html.web-android.apk-live-shell
     0 10px 28px rgba(0,0,0,.30),
     0 0 16px rgba(240,185,11,.055) !important;
 
-  backdrop-filter: blur(13px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(13px) saturate(1.18) !important;
+  backdrop-filter:blur(13px) saturate(1.18) !important;
+  -webkit-backdrop-filter:blur(13px) saturate(1.18) !important;
 
-  animation-play-state: running !important;
+  animation-play-state:running !important;
 }
 
-/* Restore the same soft glass shine as iPhone. */
-html.web-android.apk-live-shell
-.live-withdrawals-container.has-video .live-withdraw::before {
-  content: "" !important;
-  display: block !important;
-  position: absolute !important;
-  inset: 0 !important;
-  pointer-events: none !important;
-  border-radius: inherit !important;
+/* Same soft shine as iPhone/base. */
+html.web-android .live-withdrawals-container.has-video .live-withdraw::before{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  pointer-events:none !important;
+  border-radius:inherit !important;
   background:
     linear-gradient(
       110deg,
@@ -12441,22 +12444,22 @@ html.web-android.apk-live-shell
     ) !important;
 }
 
-/* Restore the iPhone avatar glass. */
-html.web-android.apk-live-shell
-.live-withdrawals-container.has-video .live-avatar {
-  backdrop-filter: blur(9px) !important;
-  -webkit-backdrop-filter: blur(9px) !important;
+/*
+  iPhone/base currently has avatar backdrop blur disabled by the shared
+  performance rule. Keep Android identical instead of adding extra blur.
+*/
+html.web-android .live-withdrawals-container.has-video .live-avatar{
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
 }
 
-/* The APK must not inherit the Android off-screen animation pause. */
-html.web-android.apk-live-shell
+/* Android must not freeze rows outside/near the observer boundary. */
+html.web-android
 .live-withdrawals-container:not(.withdrawals-in-view)
-.live-withdraw {
-  animation-play-state: running !important;
+.live-withdraw{
+  animation-play-state:running !important;
 }
 </style>
-
-
 
 </head>
 <body data-investment-model="flex-v6-37-8">
@@ -15869,12 +15872,7 @@ function addLiveWithdrawal() {
   /* Do not keep rebuilding an invisible feed in background tabs/pages. */
   if (
     document.hidden ||
-    !document.getElementById("home")?.classList.contains("active") ||
-    (
-      document.documentElement.classList.contains("web-android") &&
-      !document.documentElement.classList.contains("apk-live-shell") &&
-      window.__biAndroidWithdrawalsInView === false
-    )
+    !document.getElementById("home")?.classList.contains("active")
   ) {
     return;
   }
@@ -15943,13 +15941,7 @@ function addLiveWithdrawal() {
 setTimeout(addLiveWithdrawal, 300);
 setInterval(
   addLiveWithdrawal,
-  document.documentElement.classList.contains("apk-live-shell")
-    ? 3900
-    : (
-        document.documentElement.classList.contains("web-android")
-          ? 6500
-          : 3900
-      )
+  3900
 );
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
@@ -25371,18 +25363,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <script id="android-live-withdrawals-viewport-gate-v1">
 (function () {
-  window.__biAndroidWithdrawalsInView =
-    !document.documentElement.classList.contains("web-android") ||
-    document.documentElement.classList.contains("apk-live-shell");
+  window.__biAndroidWithdrawalsInView = true;
 
   function start() {
-    if (
-      !document.documentElement.classList.contains("web-android") ||
-      document.documentElement.classList.contains("apk-live-shell")
-    ) {
-      window.__biAndroidWithdrawalsInView = true;
-      return;
-    }
+    /*
+      Live Withdrawals now intentionally behave identically on iPhone
+      and Android, so there is no Android-only viewport pause/gate.
+    */
+    window.__biAndroidWithdrawalsInView = true;
+    return;
 
     const box = document.getElementById("liveWithdrawalsList");
     if (!box) return;
