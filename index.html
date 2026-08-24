@@ -104,6 +104,60 @@
 })();
 </script>
 
+
+<script id="web-platform-detector-v1">
+(function () {
+  try {
+    const root = document.documentElement;
+    const ua = navigator.userAgent || "";
+
+    const isNativeApp = root.classList.contains("native-app");
+
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(ua) ||
+      (
+        navigator.platform === "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+    const isAndroid = /Android/i.test(ua);
+
+    root.classList.remove(
+      "web-ios",
+      "web-android",
+      "web-desktop",
+      "web-mobile"
+    );
+
+    if (isNativeApp) {
+      root.dataset.webPlatform = "native";
+      window.BI_WEB_PLATFORM = "native";
+      return;
+    }
+
+    if (isIOS) {
+      root.classList.add("web-ios", "web-mobile");
+      root.dataset.webPlatform = "ios";
+      window.BI_WEB_PLATFORM = "ios";
+      return;
+    }
+
+    if (isAndroid) {
+      root.classList.add("web-android", "web-mobile");
+      root.dataset.webPlatform = "android";
+      window.BI_WEB_PLATFORM = "android";
+      return;
+    }
+
+    root.classList.add("web-desktop");
+    root.dataset.webPlatform = "desktop";
+    window.BI_WEB_PLATFORM = "desktop";
+  } catch (error) {
+    console.warn("Web platform detection failed:", error);
+  }
+})();
+</script>
+
 <meta name="theme-color" content="#0b0e11">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12210,6 +12264,133 @@ html[dir="rtl"] .live-withdrawals-container.has-video .live-info{
 }
 </style>
 
+
+<style id="android-web-performance-profile-v1">
+/*
+  WEB PLATFORM SEPARATION
+  - iPhone/iPad web: current full visual version
+  - Desktop web: current full visual version
+  - Android web: same layout/content, lighter GPU/compositing behavior
+*/
+
+/* Sticky blurred surfaces are expensive during Android scrolling. */
+html.web-android header {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(5,7,11,.985) !important;
+}
+
+html.web-android .nav,
+html.web-android .nav button {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Platform Statistics: preserve images/text/layout, remove continuous GPU work. */
+html.web-android .stats-vertical-stack {
+  perspective: none !important;
+}
+
+html.web-android .stats-vertical-stack .stat-circle-card,
+html.web-android .stats-vertical-stack .stat-circle-card:nth-child(1),
+html.web-android .stats-vertical-stack .stat-circle-card:nth-child(2),
+html.web-android .stats-vertical-stack .stat-circle-card:nth-child(3),
+html.web-android .stats-vertical-stack .stat-circle-card:nth-child(4) {
+  animation: none !important;
+  transform: none !important;
+  transform-style: flat !important;
+  transition: none !important;
+  will-change: auto !important;
+  filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 12px 28px rgba(0,0,0,.40) !important;
+  contain: paint;
+}
+
+html.web-android .stats-vertical-stack .stat-circle-card::after {
+  display: none !important;
+  animation: none !important;
+}
+
+html.web-android .stats-vertical-stack .stat-badge-tag {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,34,39,.92),
+      rgba(40,31,7,.78)
+    ) !important;
+}
+
+/* No hover-lift/compositing on touch Android. */
+html.web-android .stats-vertical-stack .stat-circle-card:hover {
+  transform: none !important;
+  filter: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 12px 28px rgba(0,0,0,.40) !important;
+}
+
+/*
+  Live Withdrawals:
+  keep the same oval design and motion when visible,
+  but avoid moving backdrop blur on Android.
+*/
+html.web-android .live-withdrawals-container.has-video .live-withdraw,
+html.web-android .live-withdrawals-container.has-video .live-withdraw:nth-of-type(n) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(22,27,33,.90) 0%,
+      rgba(13,18,24,.82) 48%,
+      rgba(37,29,8,.72) 100%
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 20px rgba(0,0,0,.28),
+    0 0 10px rgba(240,185,11,.035) !important;
+}
+
+html.web-android .live-withdrawals-container.has-video .live-avatar {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html.web-android
+.live-withdrawals-container:not(.withdrawals-in-view)
+.live-withdraw {
+  animation-play-state: paused !important;
+}
+
+/* Lower-page glass cards: keep their look without live background blur. */
+html.web-android .security-brands-grid .security-brand-card,
+html.web-android .security-brands-grid .security-brand-circle {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Decorative continuous animations are reduced only on Android web. */
+html.web-android .binance-floating-logo svg,
+html.web-android .brand > span {
+  animation-duration: 8s !important;
+}
+
+/* Prevent accidental costly hover transforms on touch devices. */
+@media (hover: none) and (pointer: coarse) {
+  html.web-android .card:hover,
+  html.web-android .plan:hover,
+  html.web-android .live-withdraw:hover .live-avatar {
+    transform: none !important;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15621,7 +15802,11 @@ function addLiveWithdrawal() {
   /* Do not keep rebuilding an invisible feed in background tabs/pages. */
   if (
     document.hidden ||
-    !document.getElementById("home")?.classList.contains("active")
+    !document.getElementById("home")?.classList.contains("active") ||
+    (
+      document.documentElement.classList.contains("web-android") &&
+      window.__biAndroidWithdrawalsInView === false
+    )
   ) {
     return;
   }
@@ -15688,7 +15873,12 @@ function addLiveWithdrawal() {
 }
 
 setTimeout(addLiveWithdrawal, 300);
-setInterval(addLiveWithdrawal, 3900);
+setInterval(
+  addLiveWithdrawal,
+  document.documentElement.classList.contains("web-android")
+    ? 6500
+    : 3900
+);
 
 let currentUsersCount = parseInt(localStorage.getItem("bi_platform_users")) || 1284901;
 let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors")) || 450231;
@@ -15701,12 +15891,18 @@ function displayCounters() {
 displayCounters();
 
 setInterval(() => {
+    if (document.hidden) return;
+
     currentUsersCount += Math.floor(Math.random() * 4) + 1;
     currentInvestorsCount += Math.floor(Math.random() * 2) + 1;
     localStorage.setItem("bi_platform_users", currentUsersCount);
     localStorage.setItem("bi_platform_investors", currentInvestorsCount);
     displayCounters();
-}, 5000);
+},
+document.documentElement.classList.contains("web-android")
+  ? 10000
+  : 5000
+);
 
 function placeToastNearContext(element) {
   element.classList.remove("toast-after-section-title", "toast-in-header");
@@ -19383,6 +19579,9 @@ function initializeLazyVideos() {
     return;
   }
 
+  const isAndroidWeb =
+    document.documentElement.classList.contains("web-android");
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const video = entry.target;
@@ -19393,7 +19592,7 @@ function initializeLazyVideos() {
       }
     });
   }, {
-    rootMargin: "650px 0px",
+    rootMargin: isAndroidWeb ? "100px 0px" : "650px 0px",
     threshold: 0.01
   });
 
@@ -19445,7 +19644,7 @@ function initializeHomepageVaultVideo() {
 
   window.setInterval(() => {
     if (video.paused && !video.ended) safePlay();
-  }, 2500);
+  }, document.documentElement.classList.contains("web-android") ? 7000 : 2500);
 
   safePlay();
 }
@@ -19483,7 +19682,12 @@ if (IS_PASSWORD_RECOVERY_LINK) {
 restoreEmailConfirmationNotice();
 
   updateHeaderAuthUI();
-  setInterval(fetchRealPrices, 15000);
+  setInterval(
+    fetchRealPrices,
+    document.documentElement.classList.contains("web-android")
+      ? 30000
+      : 15000
+  );
 
   if (currentUser) {
     loadProfile();
@@ -19520,7 +19724,12 @@ function updateProfitCounter() {
 
 updateProfitCounter();
 
-setInterval(updateProfitCounter, 1000);
+setInterval(
+  updateProfitCounter,
+  document.documentElement.classList.contains("web-android")
+    ? 3000
+    : 1000
+);
 </script>
 
 <script>
@@ -19655,11 +19864,26 @@ async function syncFinancialStateFromServer() {
   try {
     await refreshSecureAccount();
 
-    if (typeof loadTransactions === "function") {
+    const isAndroidWeb =
+      document.documentElement.classList.contains("web-android");
+
+    if (
+      typeof loadTransactions === "function" &&
+      (
+        !isAndroidWeb ||
+        document.getElementById("transactions")?.classList.contains("active")
+      )
+    ) {
       await loadTransactions();
     }
 
-    if (typeof window.refreshWithdrawalLimitCard === "function") {
+    if (
+      typeof window.refreshWithdrawalLimitCard === "function" &&
+      (
+        !isAndroidWeb ||
+        document.getElementById("portfolio")?.classList.contains("active")
+      )
+    ) {
       void window.refreshWithdrawalLimitCard();
     }
   } catch (error) {
@@ -19674,7 +19898,11 @@ async function syncFinancialStateFromServer() {
 
 setInterval(() => {
   void syncFinancialStateFromServer();
-}, 5000);
+},
+document.documentElement.classList.contains("web-android")
+  ? 12000
+  : 5000
+);
 
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
@@ -21821,8 +22049,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         renderOnlineUsers();
 
-        // هر 2 ثانیه یک تغییر نرم انجام شود.
-        setInterval(updateOnlineUsers, 2000);
+        // Android web uses a lighter visual refresh cadence.
+        setInterval(
+          updateOnlineUsers,
+          document.documentElement.classList.contains("web-android")
+            ? 6000
+            : 2000
+        );
     }
 });
 </script>
@@ -24433,8 +24666,21 @@ document.addEventListener("DOMContentLoaded", function() {
   function startFlexCheckRefresh(){
     try{ window.renderFlexCalculationCheck(); }catch(_){}
     setInterval(function(){
+      if (document.hidden) return;
+
+      if (
+        document.documentElement.classList.contains("web-android") &&
+        !document.getElementById("portfolio")?.classList.contains("active")
+      ) {
+        return;
+      }
+
       try{ window.renderFlexCalculationCheck(); }catch(_){}
-    }, 1000);
+    },
+    document.documentElement.classList.contains("web-android")
+      ? 2500
+      : 1000
+    );
   }
 
   if (document.readyState === "loading"){
@@ -25016,10 +25262,21 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
       }
 
+      if(
+        document.documentElement.classList.contains("web-android") &&
+        !document.getElementById("portfolio")?.classList.contains("active")
+      ){
+        return;
+      }
+
       try{
         void window.refreshWithdrawalLimitCard();
       }catch(_){}
-    },2000);
+    },
+    document.documentElement.classList.contains("web-android")
+      ? 8000
+      : 2000
+    );
   }
 
   document.addEventListener("visibilitychange",function(){
@@ -25034,6 +25291,55 @@ document.addEventListener("DOMContentLoaded", function() {
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",start,{once:true});
   }else{
+    start();
+  }
+})();
+</script>
+
+
+<script id="android-live-withdrawals-viewport-gate-v1">
+(function () {
+  window.__biAndroidWithdrawalsInView =
+    !document.documentElement.classList.contains("web-android");
+
+  function start() {
+    if (!document.documentElement.classList.contains("web-android")) {
+      return;
+    }
+
+    const box = document.getElementById("liveWithdrawalsList");
+    if (!box) return;
+
+    if (!("IntersectionObserver" in window)) {
+      window.__biAndroidWithdrawalsInView = true;
+      box.classList.add("withdrawals-in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        const entry = entries[0];
+        const visible = Boolean(
+          entry &&
+          entry.isIntersecting &&
+          entry.intersectionRatio > 0.01
+        );
+
+        window.__biAndroidWithdrawalsInView = visible;
+        box.classList.toggle("withdrawals-in-view", visible);
+      },
+      {
+        rootMargin: "120px 0px",
+        threshold: [0, 0.01, 0.15]
+      }
+    );
+
+    observer.observe(box);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
     start();
   }
 })();
