@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- BINANCINVEST ADMIN FLEX V8 — corrected admin panel — 2026-08-25 -->
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
@@ -116,7 +117,7 @@
 
   <div id="reviewModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Review financial request</h3><button class="x" data-close>×</button></div><div id="reviewSummary" class="summary"></div><div class="field"><label>Transaction hash (optional)</label><input id="reviewHash" class="input"></div><div class="field"><label>Admin note</label><textarea id="reviewNote" class="input" rows="3"></textarea></div><div class="modal-actions"><button class="btn ghost" data-close>Cancel</button><button id="rejectBtn" class="btn red">Reject</button><button id="approveBtn" class="btn green">Approve</button></div></div></div>
   <div id="balanceModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Adjust available balance</h3><button class="x" data-close>×</button></div><div id="balanceUser" class="summary"></div><div class="field"><label>Adjustment (+ credit / − debit)</label><input id="balanceDelta" class="input" type="number" step="0.01" placeholder="0.00"></div><div class="field"><label>Required audit reason</label><input id="balanceReason" class="input" maxlength="300"></div><div class="modal-actions"><button class="btn ghost" data-close>Cancel</button><button id="adjustBtn" class="btn">Apply adjustment</button></div></div></div>
-  <div id="cancelPlanModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Cancel investment contract</h3><button class="x" data-close>×</button></div><div id="cancelPlanSummary" class="summary"></div><div class="field"><label>Credit method</label><select id="cancelCreditMode" class="input"><option value="principal">Return principal to available balance</option><option value="principal_plus_accrued">Return principal + calculated profit</option><option value="none">Cancel without wallet credit</option></select></div><div class="field"><label>Required cancellation reason</label><textarea id="cancelPlanReason" class="input" rows="3" maxlength="500"></textarea></div><div class="error">This action cancels the contract, updates the account balances and creates a permanent audit record. It also supports VIP contracts.</div><div class="modal-actions"><button class="btn ghost" data-close>Keep contract</button><button id="confirmCancelPlan" class="btn red">Cancel contract</button></div></div></div>
+  <div id="cancelPlanModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Cancel investment contract</h3><button class="x" data-close>×</button></div><div id="cancelPlanSummary" class="summary"></div><div class="field"><label>Return method</label><select id="cancelCreditMode" class="input"><option value="principal">Return principal to Flexible mother plan</option><option value="principal_plus_accrued">Return principal + base 1.5% profit to Flexible</option><option value="none">Cancel without returning funds</option></select></div><div class="field"><label>Required cancellation reason</label><textarea id="cancelPlanReason" class="input" rows="3" maxlength="500"></textarea></div><div class="error">The returned amount creates a new FLEX_DAILY mother-plan entry at 1.5% daily. It is not credited to the free wallet balance. Every action is audited.</div><div class="modal-actions"><button class="btn ghost" data-close>Keep contract</button><button id="confirmCancelPlan" class="btn red">Cancel contract</button></div></div></div>
   <div id="toast" class="toast hidden"></div>
 
   <script>
@@ -334,7 +335,9 @@
       });
       $('#userContracts').innerHTML=sorted.map(i=>{
         const profit=investmentProfit(i),payout=num(i.principal)+profit,vip=isVip(i),active=isActive(i),state=contractState(i);
-        return `<article class="contract ${vip?'vip-contract':''}"><div class="contract-head"><div><h3>${esc(i.plan_name||'Investment')}</h3><p>#${esc(text(i.id).slice(0,12))} · ${esc(i.activation_source||'standard')}</p></div><div>${vip?'<span class="badge vip">VIP</span> ':''}<span class="badge ${esc(state)}">${esc(state)}</span></div></div><div class="contract-metrics"><div><span>Principal</span><b>${money(i.principal)}</b></div><div><span>Daily rate</span><b>${isFlexible(i)?'1.50%':num(i.daily_rate).toFixed(2)+'%'}</b></div><div><span>Live profit</span><b style="color:var(--green)">${money(profit)}</b></div><div><span>Current payout</span><b>${money(payout)}</b></div><div><span>Term</span><b>${isFlexible(i)?'Flexible':`${num(i.term_days)||'Flexible'}${i.term_days?' days':''}`}</b></div><div><span>Confirmed</span><b>${isFlexible(i)?'Mother plan':(i.user_confirmed===false?'No':'Yes')}</b></div></div><div class="contract-foot"><div class="contract-time">${date(i.started_at)} → ${isFlexible(i)?'No fixed end':date(i.ends_at)}<br>${esc(remaining(i))}</div>${active?`<button class="btn red sm" onclick="openCancelPlan('${esc(i.id)}')">Cancel ${vip?'VIP ':''}contract</button>`:''}</div>${isFlexibleActive(i)?'<div class="muted" style="margin-top:12px">Active component of the Flexible mother plan · withdrawable with accrued 1.5% daily profit.</div>':''}${i.cancellation_reason?`<div class="error" style="margin-top:12px">Cancelled: ${esc(i.cancellation_reason)} · credited ${money(i.cancellation_credit)}</div>`:''}</article>`;
+        const repairable=!isFlexible(i)&&state==='cancelled'&&num(i.cancellation_credit)>0&&!i.return_flex_investment_id;
+        const action=active?`<button class="btn red sm" onclick="openCancelPlan('${esc(i.id)}')">Cancel ${vip?'VIP ':''}contract</button>`:(repairable?`<button class="btn sm" onclick="repairCancelToFlexible('${esc(i.id)}')">Move payout to Flexible</button>`:'');
+        return `<article class="contract ${vip?'vip-contract':''}"><div class="contract-head"><div><h3>${esc(i.plan_name||'Investment')}</h3><p>#${esc(text(i.id).slice(0,12))} · ${esc(i.activation_source||'standard')}</p></div><div>${vip?'<span class="badge vip">VIP</span> ':''}<span class="badge ${esc(state)}">${esc(state)}</span></div></div><div class="contract-metrics"><div><span>Principal</span><b>${money(i.principal)}</b></div><div><span>Daily rate</span><b>${isFlexible(i)?'1.50%':num(i.daily_rate).toFixed(2)+'%'}</b></div><div><span>Live profit</span><b style="color:var(--green)">${money(profit)}</b></div><div><span>Current payout</span><b>${money(payout)}</b></div><div><span>Term</span><b>${isFlexible(i)?'Flexible':`${num(i.term_days)||'Flexible'}${i.term_days?' days':''}`}</b></div><div><span>Confirmed</span><b>${isFlexible(i)?'Mother plan':(i.user_confirmed===false?'No':'Yes')}</b></div></div><div class="contract-foot"><div class="contract-time">${date(i.started_at)} → ${isFlexible(i)?'No fixed end':date(i.ends_at)}<br>${esc(remaining(i))}</div>${action}</div>${isFlexibleActive(i)?'<div class="muted" style="margin-top:12px">Active component of the Flexible mother plan · withdrawable with accrued 1.5% daily profit.</div>':''}${i.cancellation_reason?`<div class="error" style="margin-top:12px">Cancelled: ${esc(i.cancellation_reason)} · returned ${money(i.cancellation_credit)}${i.return_flex_investment_id?' to Flexible':' to wallet (repair available)'}</div>`:''}</article>`;
       }).join('')||'<div class="empty" style="grid-column:1/-1">This user has no investment contracts.</div>';
     }
     function renderUserProfile(p){
@@ -361,8 +364,18 @@
       if(!selectedInvestment)return; const reason=$('#cancelPlanReason').value.trim(); if(!reason)return toast('Enter a cancellation reason.','error');
       const button=$('#confirmCancelPlan');button.disabled=true;
       const {data,error}=await db.rpc('admin_cancel_investment',{p_investment_id:selectedInvestment.id,p_reason:reason,p_credit_mode:$('#cancelCreditMode').value});
-      button.disabled=false;if(error)return fail(error,'Contract cancellation failed');closeModals();toast(`Contract cancelled. Credited ${money(data?.credited_amount)}`,'success');
+      button.disabled=false;if(error)return fail(error,'Contract cancellation failed');closeModals();toast(`Contract cancelled. ${money(data?.credited_amount)} returned to Flexible mother plan.`,'success');
       const userId=selectedInvestment.user_id;await loadAll();await openUser360(userId);
+    };
+
+    window.repairCancelToFlexible=async investmentId=>{
+      const item=investments.find(i=>String(i.id)===String(investmentId))||selectedUser?.__detail?.investments?.find(i=>String(i.id)===String(investmentId));
+      if(!item)return;
+      if(!confirm(`Move the previously credited ${money(item.cancellation_credit)} from the free wallet into the Flexible mother plan?`))return;
+      const {data,error}=await db.rpc('admin_repair_cancel_to_flexible',{p_investment_id:item.id});
+      if(error)return fail(error,'Previous cancellation could not be repaired');
+      toast(`${money(data?.moved_to_flexible)} moved to Flexible mother plan.`,'success');
+      const userId=item.user_id;await loadAll();await openUser360(userId);
     };
 
     window.openReview=id=>{
