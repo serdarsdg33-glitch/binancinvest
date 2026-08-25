@@ -11943,6 +11943,12 @@ html[dir="ltr"] #portfolio .portfolio-banner-slogan{
 #portfolio .withdrawal-level-grid span{display:block;margin-bottom:4px;color:rgba(190,200,212,.56);font-size:8.8px;line-height:1.35;font-weight:550}
 #portfolio .withdrawal-level-grid b{display:block;color:#f6f8fb;font-size:12px;line-height:1.35;font-weight:750;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
 #portfolio .withdrawal-level-grid b.green{color:#29db9b}
+#portfolio .withdrawal-level-grid .withdrawal-available{
+  grid-column:1/-1;
+  border-color:rgba(41,219,155,.24);
+  background:linear-gradient(135deg,rgba(41,219,155,.075),rgba(0,0,0,.10))
+}
+#portfolio .withdrawal-level-grid .withdrawal-available b{color:#29db9b;font-size:14px}
 #portfolio .withdrawal-level-note{margin-top:9px;color:rgba(190,200,212,.52);font-size:8.8px;line-height:1.5}
 html[dir="ltr"] #portfolio .withdrawal-level-card{text-align:left}
 html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
@@ -13886,6 +13892,10 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
             <span data-t="withdrawalRemaining24h">Remaining limit</span>
             <b id="withdrawalRemaining24h" class="green">$0.00</b>
           </div>
+          <div class="withdrawal-available">
+            <span data-t="withdrawalAvailableBalance">Withdrawable total balance</span>
+            <b id="withdrawalAvailableBalance">$0.00</b>
+          </div>
         </div>
 
         <div class="withdrawal-level-note" data-t="withdrawalLevelAutoNote">
@@ -15551,7 +15561,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 });
 const T={
 en:{
-withdrawalLevel:"Withdrawal level",withdrawalCapitalBase:"Base Plan capital",withdrawalDailyLimit:"24-hour limit",withdrawalUsed24h:"Used in last 24h",withdrawalRemaining24h:"Remaining limit",withdrawalLevelAutoNote:"Your withdrawal level is based only on your current Base Plan capital and updates automatically as it changes.",withdrawalTierBase:"Basic",withdrawalTierGrowth:"Growth",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Your remaining 24-hour withdrawal limit is {amount}.",
+withdrawalLevel:"Withdrawal level",withdrawalCapitalBase:"Base Plan capital",withdrawalDailyLimit:"24-hour limit",withdrawalUsed24h:"Used in last 24h",withdrawalRemaining24h:"Remaining limit",withdrawalAvailableBalance:"Withdrawable total balance",withdrawalLevelAutoNote:"Your withdrawal level is based only on your current Base Plan capital and updates automatically as it changes.",withdrawalTierBase:"Basic",withdrawalTierGrowth:"Growth",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Your remaining 24-hour withdrawal limit is {amount}.",
 portfolioBannerSlogan1:"Your path to growth starts here",portfolioBannerSlogan2:"Build your future with a clearer vision",
 portfolioBannerSlogan:'Grow with us. Build your future.',
 portfolioIntroTitle:'Manage your capital, profits and contracts',portfolioIntroSubtitle:'Manage your investments with clarity and control',flexCheckToggle:'Check flexible plan calculation',flexCheckBasis:'Calculation basis: FLEX_DAILY only at 1.5% daily',flexCheckPrincipalLabel:'Current principal',flexCheckRateLabel:'Daily rate',flexCheckSecondLabel:'Profit per second',flexCheckMinuteLabel:'Profit per minute',flexCheckHourLabel:'Profit per hour',flexCheckDayLabel:'Profit per day',flexCheckPreservedLabel:'Preserved previous profit',flexCheckLiveLabel:'Current flexible plan profit',flexCheckNote:'Growth / Starter / Premium / VIP profits are not included in this calculation rate.',
@@ -15577,7 +15587,7 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the s
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
 fa:{
-withdrawalLevel:"سطح برداشت",withdrawalCapitalBase:"سرمایه پلن پایه",withdrawalDailyLimit:"سقف برداشت ۲۴ ساعته",withdrawalUsed24h:"برداشت استفاده‌شده در ۲۴ ساعت",withdrawalRemaining24h:"سقف باقی‌مانده",withdrawalLevelAutoNote:"سطح برداشت فقط بر اساس سرمایه فعلی پلن پایه شما محاسبه می‌شود و با افزایش یا کاهش آن خودکار تغییر می‌کند.",withdrawalTierBase:"پایه",withdrawalTierGrowth:"رشد",withdrawalTierPremium:"پرمیوم",withdrawalTierVip:"وی‌آی‌پی",withdrawalDailyLimitExceeded:"سقف باقی‌مانده برداشت شما در ۲۴ ساعت {amount} است.",
+withdrawalLevel:"سطح برداشت",withdrawalCapitalBase:"سرمایه پلن پایه",withdrawalDailyLimit:"سقف برداشت ۲۴ ساعته",withdrawalUsed24h:"برداشت استفاده‌شده در ۲۴ ساعت",withdrawalRemaining24h:"سقف باقی‌مانده",withdrawalAvailableBalance:"موجودی کل قابل برداشت",withdrawalLevelAutoNote:"سطح برداشت فقط بر اساس سرمایه فعلی پلن پایه شما محاسبه می‌شود و با افزایش یا کاهش آن خودکار تغییر می‌کند.",withdrawalTierBase:"پایه",withdrawalTierGrowth:"رشد",withdrawalTierPremium:"پرمیوم",withdrawalTierVip:"وی‌آی‌پی",withdrawalDailyLimitExceeded:"سقف باقی‌مانده برداشت شما در ۲۴ ساعت {amount} است.",
 portfolioBannerSlogan1:"مسیر رشد شما از اینجا آغاز می‌شود",portfolioBannerSlogan2:"با دیدی روشن‌تر آینده خود را بسازید",
 portfolioBannerSlogan:'با ما رشد کنید، آینده خود را بسازید',
 portfolioIntroTitle:'مرکز مدیریت سرمایه، سود و قراردادهای شما',portfolioIntroSubtitle:'سرمایه خود را با شفافیت و کنترل بیشتر مدیریت کنید',flexCheckToggle:'بررسی محاسبه پلن پایه',flexCheckBasis:'مبنای محاسبه: فقط FLEX_DAILY با نرخ روزانه ۱.۵٪',flexCheckPrincipalLabel:'اصل سرمایه فعلی',flexCheckRateLabel:'نرخ روزانه',flexCheckSecondLabel:'سود هر ثانیه',flexCheckMinuteLabel:'سود هر دقیقه',flexCheckHourLabel:'سود هر ساعت',flexCheckDayLabel:'سود هر روز',flexCheckPreservedLabel:'سود قبلی حفظ\u200cشده',flexCheckLiveLabel:'سود فعلی پلن پایه',flexCheckNote:'سود Growth / Starter / Premium / VIP در سرعت محاسبه پلن پایه وارد نمی\u200cشود.',
@@ -15603,7 +15613,7 @@ paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخا
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
 },
 az:{
-withdrawalLevel:"Çıxarış səviyyəsi",withdrawalCapitalBase:"Baza plan kapitalı",withdrawalDailyLimit:"24 saatlıq limit",withdrawalUsed24h:"Son 24 saatda istifadə edilib",withdrawalRemaining24h:"Qalan limit",withdrawalLevelAutoNote:"Cari kapitalınız artdıqca və ya azaldıqca çıxarış səviyyəniz avtomatik dəyişir.",withdrawalTierBase:"Baza",withdrawalTierGrowth:"Artım",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Qalan 24 saatlıq çıxarış limitiniz {amount}-dır.",
+withdrawalLevel:"Çıxarış səviyyəsi",withdrawalCapitalBase:"Baza plan kapitalı",withdrawalDailyLimit:"24 saatlıq limit",withdrawalUsed24h:"Son 24 saatda istifadə edilib",withdrawalRemaining24h:"Qalan limit",withdrawalAvailableBalance:"Çıxarıla bilən ümumi balans",withdrawalLevelAutoNote:"Cari kapitalınız artdıqca və ya azaldıqca çıxarış səviyyəniz avtomatik dəyişir.",withdrawalTierBase:"Baza",withdrawalTierGrowth:"Artım",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Qalan 24 saatlıq çıxarış limitiniz {amount}-dır.",
 portfolioBannerSlogan1:"İnkişaf yolunuz buradan başlayır",portfolioBannerSlogan2:"Daha aydın baxışla gələcəyinizi qurun",
 portfolioBannerSlogan:'Bizimlə böyüyün, gələcəyinizi qurun',
 portfolioIntroTitle:'Kapitalınızı, mənfəətinizi və müqavilələrinizi idarə edin',portfolioIntroSubtitle:'İnvestisiyalarınızı aydınlıq və nəzarətlə idarə edin',flexCheckToggle:'Əsas plan hesablamasını yoxla',flexCheckBasis:'Hesablama əsası: yalnız FLEX_DAILY, gündəlik 1.5%',flexCheckPrincipalLabel:'Cari əsas kapital',flexCheckRateLabel:'Gündəlik faiz',flexCheckSecondLabel:'Saniyəlik mənfəət',flexCheckMinuteLabel:'Dəqiqəlik mənfəət',flexCheckHourLabel:'Saatlıq mənfəət',flexCheckDayLabel:'Gündəlik mənfəət',flexCheckPreservedLabel:'Qorunan əvvəlki mənfəət',flexCheckLiveLabel:'Cari əsas plan mənfəəti',flexCheckNote:'Growth / Starter / Premium / VIP mənfəətləri əsas planın bu hesablama sürətinə daxil edilmir.',
@@ -15629,7 +15639,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağı
 withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
 },
 tr:{
-withdrawalLevel:"Çekim seviyesi",withdrawalCapitalBase:"Temel plan sermayesi",withdrawalDailyLimit:"24 saatlik limit",withdrawalUsed24h:"Son 24 saatte kullanıldı",withdrawalRemaining24h:"Kalan limit",withdrawalLevelAutoNote:"Mevcut sermayeniz arttıkça veya azaldıkça çekim seviyeniz otomatik değişir.",withdrawalTierBase:"Temel",withdrawalTierGrowth:"Büyüme",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Kalan 24 saatlik çekim limitiniz {amount}.",
+withdrawalLevel:"Çekim seviyesi",withdrawalCapitalBase:"Temel plan sermayesi",withdrawalDailyLimit:"24 saatlik limit",withdrawalUsed24h:"Son 24 saatte kullanıldı",withdrawalRemaining24h:"Kalan limit",withdrawalAvailableBalance:"Çekilebilir toplam bakiye",withdrawalLevelAutoNote:"Mevcut sermayeniz arttıkça veya azaldıkça çekim seviyeniz otomatik değişir.",withdrawalTierBase:"Temel",withdrawalTierGrowth:"Büyüme",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Kalan 24 saatlik çekim limitiniz {amount}.",
 portfolioBannerSlogan1:"Büyüme yolculuğunuz burada başlıyor",portfolioBannerSlogan2:"Daha net bir vizyonla geleceğinizi inşa edin",
 portfolioBannerSlogan:'Bizimle büyüyün, geleceğinizi inşa edin',
 portfolioIntroTitle:'Sermayenizi, kârınızı ve sözleşmelerinizi yönetin',portfolioIntroSubtitle:'Yatırımlarınızı şeffaflık ve kontrolle yönetin',flexCheckToggle:'Esnek plan hesaplamasını kontrol et',flexCheckBasis:'Hesaplama temeli: yalnızca FLEX_DAILY, günlük %1,5',flexCheckPrincipalLabel:'Mevcut anapara',flexCheckRateLabel:'Günlük oran',flexCheckSecondLabel:'Saniyelik kâr',flexCheckMinuteLabel:'Dakikalık kâr',flexCheckHourLabel:'Saatlik kâr',flexCheckDayLabel:'Günlük kâr',flexCheckPreservedLabel:'Korunan önceki kâr',flexCheckLiveLabel:'Mevcut esnek plan kârı',flexCheckNote:'Growth / Starter / Premium / VIP kârları bu esnek plan hesaplama hızına dahil edilmez.',
@@ -15654,7 +15664,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki gü
 withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
 },
 ru:{
-withdrawalLevel:"Уровень вывода",withdrawalCapitalBase:"Капитал базового плана",withdrawalDailyLimit:"Лимит на 24 часа",withdrawalUsed24h:"Использовано за 24 часа",withdrawalRemaining24h:"Оставшийся лимит",withdrawalLevelAutoNote:"Уровень вывода автоматически меняется при изменении вашего текущего капитала.",withdrawalTierBase:"Базовый",withdrawalTierGrowth:"Рост",withdrawalTierPremium:"Премиум",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ваш оставшийся лимит вывода на 24 часа: {amount}.",
+withdrawalLevel:"Уровень вывода",withdrawalCapitalBase:"Капитал базового плана",withdrawalDailyLimit:"Лимит на 24 часа",withdrawalUsed24h:"Использовано за 24 часа",withdrawalRemaining24h:"Оставшийся лимит",withdrawalAvailableBalance:"Доступный для вывода общий баланс",withdrawalLevelAutoNote:"Уровень вывода автоматически меняется при изменении вашего текущего капитала.",withdrawalTierBase:"Базовый",withdrawalTierGrowth:"Рост",withdrawalTierPremium:"Премиум",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ваш оставшийся лимит вывода на 24 часа: {amount}.",
 portfolioBannerSlogan1:"Ваш путь к росту начинается здесь",portfolioBannerSlogan2:"Создавайте своё будущее с более ясным взглядом",
 portfolioBannerSlogan:'Растите вместе с нами. Создавайте своё будущее.',
 portfolioIntroTitle:'Управляйте капиталом, прибылью и договорами',portfolioIntroSubtitle:'Управляйте инвестициями прозрачно и под контролем',flexCheckToggle:'Проверить расчёт гибкого плана',flexCheckBasis:'Основа расчёта: только FLEX_DAILY, 1,5% в день',flexCheckPrincipalLabel:'Текущий основной капитал',flexCheckRateLabel:'Дневная ставка',flexCheckSecondLabel:'Прибыль в секунду',flexCheckMinuteLabel:'Прибыль в минуту',flexCheckHourLabel:'Прибыль в час',flexCheckDayLabel:'Прибыль в день',flexCheckPreservedLabel:'Сохранённая предыдущая прибыль',flexCheckLiveLabel:'Текущая прибыль гибкого плана',flexCheckNote:'Прибыль Growth / Starter / Premium / VIP не входит в скорость расчёта гибкого плана.',
@@ -15679,7 +15689,7 @@ paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Испол�
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
 },
 ar:{
-withdrawalLevel:"مستوى السحب",withdrawalCapitalBase:"رأس مال الخطة الأساسية",withdrawalDailyLimit:"حد السحب خلال 24 ساعة",withdrawalUsed24h:"المستخدم خلال آخر 24 ساعة",withdrawalRemaining24h:"الحد المتبقي",withdrawalLevelAutoNote:"يتغير مستوى السحب تلقائياً مع ارتفاع أو انخفاض رأس مالك الحالي.",withdrawalTierBase:"أساسي",withdrawalTierGrowth:"نمو",withdrawalTierPremium:"بريميوم",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"حد السحب المتبقي خلال 24 ساعة هو {amount}.",
+withdrawalLevel:"مستوى السحب",withdrawalCapitalBase:"رأس مال الخطة الأساسية",withdrawalDailyLimit:"حد السحب خلال 24 ساعة",withdrawalUsed24h:"المستخدم خلال آخر 24 ساعة",withdrawalRemaining24h:"الحد المتبقي",withdrawalAvailableBalance:"إجمالي الرصيد القابل للسحب",withdrawalLevelAutoNote:"يتغير مستوى السحب تلقائياً مع ارتفاع أو انخفاض رأس مالك الحالي.",withdrawalTierBase:"أساسي",withdrawalTierGrowth:"نمو",withdrawalTierPremium:"بريميوم",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"حد السحب المتبقي خلال 24 ساعة هو {amount}.",
 portfolioBannerSlogan1:"طريق نموك يبدأ من هنا",portfolioBannerSlogan2:"ابنِ مستقبلك برؤية أكثر وضوحاً",
 portfolioBannerSlogan:'انمُ معنا وابنِ مستقبلك',
 portfolioIntroTitle:'إدارة رأس المال والأرباح والعقود',portfolioIntroSubtitle:'أدر استثماراتك بوضوح وتحكم أكبر',flexCheckToggle:'مراجعة حساب الخطة المرنة',flexCheckBasis:'أساس الحساب: FLEX_DAILY فقط بنسبة 1.5% يومياً',flexCheckPrincipalLabel:'رأس المال الحالي',flexCheckRateLabel:'النسبة اليومية',flexCheckSecondLabel:'الربح لكل ثانية',flexCheckMinuteLabel:'الربح لكل دقيقة',flexCheckHourLabel:'الربح لكل ساعة',flexCheckDayLabel:'الربح لكل يوم',flexCheckPreservedLabel:'الربح السابق المحفوظ',flexCheckLiveLabel:'الربح الحالي للخطة المرنة',flexCheckNote:'أرباح Growth / Starter / Premium / VIP غير مشمولة في سرعة حساب الخطة المرنة.',
@@ -15705,7 +15715,7 @@ paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> ير
 withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
 },
 zh:{
-withdrawalLevel:"提现等级",withdrawalCapitalBase:"基础计划本金",withdrawalDailyLimit:"24小时限额",withdrawalUsed24h:"过去24小时已使用",withdrawalRemaining24h:"剩余额度",withdrawalLevelAutoNote:"您的提现等级会随着当前资本的增加或减少自动变化。",withdrawalTierBase:"基础",withdrawalTierGrowth:"成长",withdrawalTierPremium:"高级",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"您剩余的24小时提现额度为 {amount}。",
+withdrawalLevel:"提现等级",withdrawalCapitalBase:"基础计划本金",withdrawalDailyLimit:"24小时限额",withdrawalUsed24h:"过去24小时已使用",withdrawalRemaining24h:"剩余额度",withdrawalAvailableBalance:"可提现总余额",withdrawalLevelAutoNote:"您的提现等级会随着当前资本的增加或减少自动变化。",withdrawalTierBase:"基础",withdrawalTierGrowth:"成长",withdrawalTierPremium:"高级",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"您剩余的24小时提现额度为 {amount}。",
 portfolioBannerSlogan1:"您的成长之路从这里开始",portfolioBannerSlogan2:"以更清晰的视野创造未来",
 portfolioBannerSlogan:'与我们共同成长，创造你的未来',
 portfolioIntroTitle:'管理您的本金、收益和合约',portfolioIntroSubtitle:'更清晰、更可控地管理您的投资',flexCheckToggle:'检查灵活计划计算',flexCheckBasis:'计算基础：仅 FLEX_DAILY，每日 1.5%',flexCheckPrincipalLabel:'当前本金',flexCheckRateLabel:'每日收益率',flexCheckSecondLabel:'每秒收益',flexCheckMinuteLabel:'每分钟收益',flexCheckHourLabel:'每小时收益',flexCheckDayLabel:'每日收益',flexCheckPreservedLabel:'已保留的历史收益',flexCheckLiveLabel:'当前灵活计划收益',flexCheckNote:'Growth / Starter / Premium / VIP 的收益不会计入灵活计划的此计算速度。',
@@ -15731,7 +15741,7 @@ paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下�
 withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
 },
 es:{
-withdrawalLevel:"Nivel de retiro",withdrawalCapitalBase:"Capital del plan base",withdrawalDailyLimit:"Límite de 24 horas",withdrawalUsed24h:"Usado en las últimas 24 h",withdrawalRemaining24h:"Límite restante",withdrawalLevelAutoNote:"Tu nivel de retiro cambia automáticamente cuando aumenta o disminuye tu capital actual.",withdrawalTierBase:"Básico",withdrawalTierGrowth:"Crecimiento",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Tu límite de retiro restante para 24 horas es {amount}.",
+withdrawalLevel:"Nivel de retiro",withdrawalCapitalBase:"Capital del plan base",withdrawalDailyLimit:"Límite de 24 horas",withdrawalUsed24h:"Usado en las últimas 24 h",withdrawalRemaining24h:"Límite restante",withdrawalAvailableBalance:"Saldo total retirable",withdrawalLevelAutoNote:"Tu nivel de retiro cambia automáticamente cuando aumenta o disminuye tu capital actual.",withdrawalTierBase:"Básico",withdrawalTierGrowth:"Crecimiento",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Tu límite de retiro restante para 24 horas es {amount}.",
 portfolioBannerSlogan1:"Tu camino hacia el crecimiento comienza aquí",portfolioBannerSlogan2:"Construye tu futuro con una visión más clara",
 portfolioBannerSlogan:'Crece con nosotros. Construye tu futuro.',
 portfolioIntroTitle:'Gestiona tu capital, beneficios y contratos',portfolioIntroSubtitle:'Gestiona tus inversiones con claridad y control',flexCheckToggle:'Comprobar cálculo del plan flexible',flexCheckBasis:'Base de cálculo: solo FLEX_DAILY al 1,5% diario',flexCheckPrincipalLabel:'Capital actual',flexCheckRateLabel:'Tasa diaria',flexCheckSecondLabel:'Beneficio por segundo',flexCheckMinuteLabel:'Beneficio por minuto',flexCheckHourLabel:'Beneficio por hora',flexCheckDayLabel:'Beneficio por día',flexCheckPreservedLabel:'Beneficio anterior conservado',flexCheckLiveLabel:'Beneficio actual del plan flexible',flexCheckNote:'Los beneficios de Growth / Starter / Premium / VIP no se incluyen en esta velocidad de cálculo.',
@@ -15757,7 +15767,7 @@ paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el 
 withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
 },
 fr:{
-withdrawalLevel:"Niveau de retrait",withdrawalCapitalBase:"Capital du plan de base",withdrawalDailyLimit:"Limite sur 24 h",withdrawalUsed24h:"Utilisé sur les dernières 24 h",withdrawalRemaining24h:"Limite restante",withdrawalLevelAutoNote:"Votre niveau de retrait évolue automatiquement avec votre capital actuel.",withdrawalTierBase:"Base",withdrawalTierGrowth:"Croissance",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Votre limite de retrait restante sur 24 h est de {amount}.",
+withdrawalLevel:"Niveau de retrait",withdrawalCapitalBase:"Capital du plan de base",withdrawalDailyLimit:"Limite sur 24 h",withdrawalUsed24h:"Utilisé sur les dernières 24 h",withdrawalRemaining24h:"Limite restante",withdrawalAvailableBalance:"Solde total retirable",withdrawalLevelAutoNote:"Votre niveau de retrait évolue automatiquement avec votre capital actuel.",withdrawalTierBase:"Base",withdrawalTierGrowth:"Croissance",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Votre limite de retrait restante sur 24 h est de {amount}.",
 portfolioBannerSlogan1:"Votre chemin vers la croissance commence ici",portfolioBannerSlogan2:"Construisez votre avenir avec une vision plus claire",
 portfolioBannerSlogan:'Grandissez avec nous. Construisez votre avenir.',
 portfolioIntroTitle:'Gérez votre capital, vos profits et vos contrats',portfolioIntroSubtitle:'Gérez vos investissements avec clarté et contrôle',flexCheckToggle:'Vérifier le calcul du plan flexible',flexCheckBasis:'Base de calcul : FLEX_DAILY uniquement à 1,5 % par jour',flexCheckPrincipalLabel:'Capital actuel',flexCheckRateLabel:'Taux journalier',flexCheckSecondLabel:'Profit par seconde',flexCheckMinuteLabel:'Profit par minute',flexCheckHourLabel:'Profit par heure',flexCheckDayLabel:'Profit par jour',flexCheckPreservedLabel:'Profit précédent conservé',flexCheckLiveLabel:'Profit actuel du plan flexible',flexCheckNote:'Les profits Growth / Starter / Premium / VIP ne sont pas inclus dans cette vitesse de calcul.',
@@ -15783,7 +15793,7 @@ paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuille
 withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
 },
 de:{
-withdrawalLevel:"Auszahlungsstufe",withdrawalCapitalBase:"Kapital des Basisplans",withdrawalDailyLimit:"24-Stunden-Limit",withdrawalUsed24h:"In den letzten 24 Std. genutzt",withdrawalRemaining24h:"Verbleibendes Limit",withdrawalLevelAutoNote:"Ihre Auszahlungsstufe passt sich automatisch an, wenn sich Ihr aktuelles Kapital erhöht oder verringert.",withdrawalTierBase:"Basis",withdrawalTierGrowth:"Wachstum",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ihr verbleibendes 24-Stunden-Auszahlungslimit beträgt {amount}.",
+withdrawalLevel:"Auszahlungsstufe",withdrawalCapitalBase:"Kapital des Basisplans",withdrawalDailyLimit:"24-Stunden-Limit",withdrawalUsed24h:"In den letzten 24 Std. genutzt",withdrawalRemaining24h:"Verbleibendes Limit",withdrawalAvailableBalance:"Auszahlbares Gesamtguthaben",withdrawalLevelAutoNote:"Ihre Auszahlungsstufe passt sich automatisch an, wenn sich Ihr aktuelles Kapital erhöht oder verringert.",withdrawalTierBase:"Basis",withdrawalTierGrowth:"Wachstum",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ihr verbleibendes 24-Stunden-Auszahlungslimit beträgt {amount}.",
 portfolioBannerSlogan1:"Ihr Weg zum Wachstum beginnt hier",portfolioBannerSlogan2:"Gestalten Sie Ihre Zukunft mit klarerem Blick",
 portfolioBannerSlogan:'Wachsen Sie mit uns. Gestalten Sie Ihre Zukunft.',
 portfolioIntroTitle:'Verwalten Sie Kapital, Gewinne und Verträge',portfolioIntroSubtitle:'Verwalten Sie Ihre Investitionen transparent und kontrolliert',flexCheckToggle:'Berechnung des flexiblen Plans prüfen',flexCheckBasis:'Berechnungsbasis: nur FLEX_DAILY mit 1,5 % täglich',flexCheckPrincipalLabel:'Aktuelles Kapital',flexCheckRateLabel:'Tagesrate',flexCheckSecondLabel:'Gewinn pro Sekunde',flexCheckMinuteLabel:'Gewinn pro Minute',flexCheckHourLabel:'Gewinn pro Stunde',flexCheckDayLabel:'Gewinn pro Tag',flexCheckPreservedLabel:'Erhaltener bisheriger Gewinn',flexCheckLiveLabel:'Aktueller Gewinn des flexiblen Plans',flexCheckNote:'Gewinne aus Growth / Starter / Premium / VIP werden nicht in diese Berechnungsgeschwindigkeit einbezogen.',
@@ -20505,6 +20515,15 @@ async function syncFinancialStateFromServer() {
   try {
     await refreshSecureAccount();
 
+    /*
+     * A forced profile refresh alone is not enough: FLEX_DAILY and VIP
+     * amounts live in investments. Wait for those rows too so deposits,
+     * withdrawals and admin decisions repaint without a page reload.
+     */
+    if (typeof updatePortfolio === "function") {
+      await updatePortfolio();
+    }
+
     const isAndroidWeb =
       document.documentElement.classList.contains("web-android");
 
@@ -20786,7 +20805,7 @@ if (amount > availableBalance) {
 
   await refreshSecureAccount();
   await loadTransactions();
-  updatePortfolio();
+  await updatePortfolio();
 
   try {
     await window.refreshWithdrawalLimitCard();
@@ -24069,10 +24088,22 @@ document.addEventListener("DOMContentLoaded", function() {
         balanceElement.parentElement.querySelector(".muted");
 
       if (balanceLabel) {
+        var totalBalanceLabels = {
+          en:"Total balance + profit",
+          fa:"موجودی کل + سود",
+          az:"Ümumi balans + gəlir",
+          tr:"Toplam bakiye + kâr",
+          ru:"Общий баланс + прибыль",
+          ar:"إجمالي الرصيد + الربح",
+          zh:"总余额 + 收益",
+          es:"Saldo total + ganancias",
+          fr:"Solde total + bénéfices",
+          de:"Gesamtguthaben + Gewinn"
+        };
+
         balanceLabel.textContent =
-          language() === "fa"
-            ? "موجودی پلن پایه"
-            : "Flexible plan balance";
+          totalBalanceLabels[language()] ||
+          totalBalanceLabels.en;
       }
     }
 
@@ -24997,6 +25028,15 @@ document.addEventListener("DOMContentLoaded", function() {
      * Lower FLEX card + list stays in place.
      */
     renderFlexibleCard();
+
+    /* Keep the VIP usable balance synchronized with fresh FLEX rows. */
+    if (typeof window.calculatePortfolioVipLock === "function") {
+      window.calculatePortfolioVipLock();
+    }
+
+    if (typeof window.renderWithdrawalLimitFromCurrentInvestments === "function") {
+      window.renderWithdrawalLimitFromCurrentInvestments();
+    }
   };
 
   function vipAmount() {
@@ -25847,6 +25887,7 @@ document.addEventListener("DOMContentLoaded", function() {
       put("withdrawalDailyLimit","$0.00");
       put("withdrawalUsed24h","$0.00");
       put("withdrawalRemaining24h","$0.00");
+      put("withdrawalAvailableBalance","$0.00");
       return;
     }
 
@@ -25880,6 +25921,16 @@ document.addEventListener("DOMContentLoaded", function() {
     put(
       "withdrawalRemaining24h",
       formatPortfolioMoney(Number(data && data.remaining_24h || 0))
+    );
+
+    put(
+      "withdrawalAvailableBalance",
+      formatPortfolioMoney(
+        typeof window.getMainAvailableBalance === "function"
+          ? Number(window.getMainAvailableBalance() || 0)
+          : 0,
+        true
+      )
     );
   }
 
