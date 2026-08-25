@@ -2549,7 +2549,18 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .referral-rules {padding:22px}.referral-rules ul {margin:13px 0 0;padding-left:19px;color:#aeb7c3;line-height:2}.referral-apply {margin-top:15px;padding-top:15px;border-top:1px solid #ffffff0d}.referral-apply-row {display:grid;grid-template-columns:1fr auto;gap:8px}.referral-apply-row input {min-width:0;width:100%;text-transform:uppercase}
 .referral-history-card {margin-top:14px;padding:22px;border-color:rgba(240,185,11,.2)}
 .referral-history-head {display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:16px}.referral-history-head h2 {margin:0 0 5px}.referral-history-head p {margin:0;font-size:11px;line-height:1.6}.referral-history-list {display:flex;flex-direction:column;gap:9px}
-.referral-history-item {display:grid;grid-template-columns:minmax(130px,1fr) minmax(145px,1fr) minmax(170px,1.2fr);align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.075);border-radius:12px}
+.referral-network-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.referral-network-stat{padding:11px 10px;text-align:center;background:rgba(255,255,255,.025);border:1px solid rgba(240,185,11,.17);border-radius:11px}
+.referral-network-stat span,.referral-network-stat strong{display:block}.referral-network-stat span{min-height:28px;color:#aeb7c3;font-size:9px;line-height:1.45}.referral-network-stat strong{margin-top:5px;color:var(--gold2);font-size:19px;font-weight:950}
+.referral-history-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
+.referral-history-filter{min-height:34px;padding:7px 11px;color:#bec7d3;background:rgba(8,13,19,.72);border:1px solid rgba(255,255,255,.11);border-radius:999px;font-size:9px;font-weight:850;cursor:pointer}
+.referral-history-filter.active{color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b);border-color:transparent;box-shadow:0 6px 18px rgba(240,185,11,.16)}
+.referral-history-item {display:grid;grid-template-columns:minmax(180px,1.25fr) minmax(170px,1fr) minmax(170px,1fr);align-items:start;gap:13px;padding:15px;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.075);border-radius:12px}
+.referral-user-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.referral-user-head .referral-user-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.referral-level-chip{flex:0 0 auto;padding:5px 8px;color:#ffe58a;background:rgba(240,185,11,.09);border:1px solid rgba(240,185,11,.28);border-radius:999px;font-size:8px;font-weight:950;white-space:nowrap}
+.referral-parent-line,.referral-path-line,.referral-investment-line{display:block;margin-top:7px;color:#c7d0dc;font-size:9px;line-height:1.55}
+.referral-path-line{padding:7px 8px;color:#96a4b5;background:rgba(0,0,0,.18);border-radius:8px;word-break:break-word}
+.referral-parent-line b,.referral-investment-line b{color:#eef3f8}
 .referral-user-name {display:block;color:#fff;font-size:13px;font-weight:850}.referral-small-date {display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}.referral-status-badge {display:inline-flex;align-items:center;gap:6px;width:fit-content;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:900;white-space:nowrap}.referral-status-badge::before {content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 7px currentColor}
 .referral-status-registered {color:#aeb7c3;background:rgba(139,151,167,.08);border:1px solid rgba(139,151,167,.24)}
 .referral-status-pending {color:var(--gold2);background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.26)}
@@ -2565,7 +2576,7 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 @media(max-width:900px){.referral-home-levels{grid-template-columns:1fr}.referral-home-level{padding:10px 11px}}
 @media(max-width:760px){.referral-home-card{grid-template-columns:105px minmax(0,1fr);gap:12px}.referral-home-gift{width:105px;height:105px}.referral-home-action{grid-column:1/-1;width:100%}.referral-dashboard{grid-template-columns:1fr}.referral-stats{grid-template-columns:1fr}.referral-portfolio-card{align-items:flex-start;flex-direction:column}.referral-portfolio-meta{text-align:left!important}.referral-actions{grid-template-columns:1fr}}
 @media(max-width:420px){.referral-home-card{grid-template-columns:1fr}.referral-home-gift{margin:auto}.referral-home-content{text-align:center}}
-@media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}}
+@media(max-width:650px){.referral-history-card{padding:16px 12px}.referral-network-summary{grid-template-columns:1fr 1fr}.referral-network-stat span{min-height:0}.referral-history-item{grid-template-columns:1fr;gap:10px}.referral-reward-detail{text-align:left!important;padding-top:9px;border-top:1px solid #ffffff0b}.referral-history-head{flex-direction:column}.referral-history-head .btn{width:100%}.referral-history-filters{display:grid;grid-template-columns:1fr 1fr}.referral-history-filter{width:100%}}
 @media(max-width:850px){.portfolio-vip-grid{grid-template-columns:1fr 1fr}.portfolio-vip-field{grid-column:1/-1}.portfolio-vip-button{grid-column:1/-1;width:100%}}
 @media(max-width:480px){.portfolio-vip-quick{padding:14px 12px}.portfolio-vip-head{align-items:flex-start}.portfolio-vip-grid{grid-template-columns:1fr}.portfolio-vip-field,.portfolio-vip-button{grid-column:auto}.portfolio-vip-badge{font-size:8px}.portfolio-vip-metric{min-height:52px}}
 
@@ -14141,8 +14152,8 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       </div>
 
       <div class="referral-stats">
-        <div class="referral-stat"><span data-t="totalRegistrations">Total registrations</span><strong id="referralTotalInvited">0</strong></div>
-        <div class="referral-stat"><span data-t="successfulReferrals">Successful referrals</span><strong id="referralQualified">0</strong></div>
+        <div class="referral-stat"><span data-t="networkMembers">All network members</span><strong id="referralTotalInvited">0</strong></div>
+        <div class="referral-stat"><span data-t="rewardedMembers">Rewarded members</span><strong id="referralQualified">0</strong></div>
         <div class="referral-stat reward"><span data-t="totalRewards">Total rewards</span><strong id="referralTotalReward">$0.00</strong></div>
       </div>
     </div>
@@ -14179,6 +14190,20 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       <button class="btn" type="button" onclick="loadReferralHistory()" data-t="refreshStatus">Refresh Status</button>
     </div>
 
+    <div class="referral-network-summary" aria-label="Referral network summary">
+      <div class="referral-network-stat"><span data-t="allReferralLevels">All levels</span><strong id="referralHistoryAllCount">0</strong></div>
+      <div class="referral-network-stat"><span data-t="directInvites">Your invites</span><strong id="referralHistoryLevelOneCount">0</strong></div>
+      <div class="referral-network-stat"><span data-t="friendsInvites">Your friends' invites</span><strong id="referralHistoryLevelTwoCount">0</strong></div>
+      <div class="referral-network-stat"><span data-t="extendedReferralNetwork">Friends of friends</span><strong id="referralHistoryLevelThreeCount">0</strong></div>
+    </div>
+
+    <div class="referral-history-filters" role="group" aria-label="Referral level filter">
+      <button class="referral-history-filter active" type="button" data-referral-filter="all" onclick="setReferralHistoryFilter('all',this)" data-t="allReferralLevels">All levels</button>
+      <button class="referral-history-filter" type="button" data-referral-filter="1" onclick="setReferralHistoryFilter('1',this)" data-t="directInvites">Your invites</button>
+      <button class="referral-history-filter" type="button" data-referral-filter="2" onclick="setReferralHistoryFilter('2',this)" data-t="friendsInvites">Your friends' invites</button>
+      <button class="referral-history-filter" type="button" data-referral-filter="3plus" onclick="setReferralHistoryFilter('3plus',this)" data-t="extendedReferralNetwork">Friends of friends</button>
+    </div>
+
     <div id="referralHistoryList" class="referral-history-list">
       <div class="referral-history-empty" data-t="signInReferralActivity">Sign in to view referral activity.</div>
     </div>
@@ -14187,7 +14212,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       <span class="referral-status-badge referral-status-registered" data-t="registered">Registered</span>
       <span class="referral-status-badge referral-status-pending" data-t="investmentPending">Investment pending</span>
       <span class="referral-status-badge referral-status-confirmed" data-t="investmentConfirmed">Investment confirmed</span>
-      <span class="referral-status-badge referral-status-paid" data-t="rewardPaid">$10 reward paid</span>
+      <span class="referral-status-badge referral-status-paid" data-t="rewardPaidStatus">Reward paid</span>
     </div>
   </div>
 </section>
@@ -18990,6 +19015,8 @@ async function clearTx(){
 
 const PENDING_REFERRAL_CODE_KEY = "bi_pending_referral_code";
 let currentReferralData = null;
+let currentReferralHistoryRows = [];
+let currentReferralHistoryFilter = "all";
 
 function captureReferralCodeFromUrl() {
   const url = new URL(window.location.href);
@@ -19084,6 +19111,8 @@ async function loadReferralDashboard() {
 
   if (!currentUser?.id) {
     currentReferralData = null;
+    currentReferralHistoryRows = [];
+    updateReferralHistorySummary();
     if (codeElement) codeElement.textContent = tr("signInToView");
     if (linkElement) linkElement.textContent = "";
     setReferralDashboardValues(0, 0, 0);
@@ -19174,7 +19203,7 @@ function getReferralStatusPresentation(status) {
       className: "referral-status-confirmed"
     },
     reward_paid: {
-      label: tr("rewardPaid"),
+      label: tr("rewardPaidStatus"),
       className: "referral-status-paid"
     }
   };
@@ -19182,40 +19211,101 @@ function getReferralStatusPresentation(status) {
   return statusMap[status] || statusMap.registered;
 }
 
-async function loadReferralHistory() {
-  if (!currentUser?.id) {
-    renderReferralHistoryEmpty(
-      tr("signInReferralActivity")
-    );
-    return;
+function normalizeReferralPath(value) {
+  if (Array.isArray(value)) {
+    return value.map(item => String(item || "").trim()).filter(Boolean);
   }
-
-  renderReferralHistoryEmpty(tr("loading"));
-
-  const { data, error } = await supabaseClient.rpc(
-    "get_my_referral_history"
-  );
-
-  if (error) {
-    console.error("Referral history error:", error);
-    renderReferralHistoryEmpty(
-      tr("referralActivity")
-    );
-    return;
+  if (typeof value !== "string" || !value.trim()) return [];
+  const normalized = value.trim();
+  if (normalized.startsWith("[") && normalized.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(normalized);
+      if (Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+    } catch (_) {}
   }
+  return normalized
+    .replace(/^\{|\}$/g, "")
+    .split(",")
+    .map(item => item.replace(/^"|"$/g, "").trim())
+    .filter(Boolean);
+}
 
-  if (!data?.length) {
-    renderReferralHistoryEmpty(
-      `${tr("totalRegistrations")}: 0`
+function getReferralHistoryLevelGroup(levelValue) {
+  const level = Math.max(1, Number.parseInt(levelValue, 10) || 1);
+  if (level === 1) return "1";
+  if (level === 2) return "2";
+  return "3plus";
+}
+
+function getReferralNetworkLevelLabel(levelValue) {
+  const level = Math.max(1, Number.parseInt(levelValue, 10) || 1);
+  return String(tr("networkLevel")).replace("{level}", String(level));
+}
+
+function updateReferralHistorySummary(rows = []) {
+  const summary = {all: 0, levelOne: 0, levelTwo: 0, levelThree: 0};
+  (Array.isArray(rows) ? rows : []).forEach(item => {
+    summary.all += 1;
+    const group = getReferralHistoryLevelGroup(item?.network_level);
+    if (group === "1") summary.levelOne += 1;
+    else if (group === "2") summary.levelTwo += 1;
+    else summary.levelThree += 1;
+  });
+
+  const values = {
+    referralHistoryAllCount: summary.all,
+    referralHistoryLevelOneCount: summary.levelOne,
+    referralHistoryLevelTwoCount: summary.levelTwo,
+    referralHistoryLevelThreeCount: summary.levelThree
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = String(value);
+  });
+}
+
+function setReferralHistoryFilter(filter, button) {
+  const validFilters = new Set(["all", "1", "2", "3plus"]);
+  currentReferralHistoryFilter = validFilters.has(String(filter))
+    ? String(filter)
+    : "all";
+  document.querySelectorAll("[data-referral-filter]").forEach(item => {
+    item.classList.toggle(
+      "active",
+      item.dataset.referralFilter === currentReferralHistoryFilter
     );
-    return;
-  }
+  });
+  if (button) button.blur();
+  renderReferralHistoryRows();
+}
 
+function renderReferralHistoryRows() {
   const list = document.getElementById("referralHistoryList");
   if (!list) return;
+
+  const rows = currentReferralHistoryFilter === "all"
+    ? currentReferralHistoryRows
+    : currentReferralHistoryRows.filter(item =>
+        getReferralHistoryLevelGroup(item?.network_level) ===
+        currentReferralHistoryFilter
+      );
+
+  if (!rows.length) {
+    renderReferralHistoryEmpty(
+      currentReferralHistoryRows.length
+        ? tr("noReferralLevelActivity")
+        : `${tr("networkMembers")}: 0`
+    );
+    return;
+  }
+
   list.replaceChildren();
 
-  data.forEach(item => {
+  rows.forEach(item => {
+    const networkLevel = Math.max(
+      1,
+      Number.parseInt(item.network_level, 10) || 1
+    );
     const presentation = getReferralStatusPresentation(
       String(item.referral_status || "registered")
     );
@@ -19224,14 +19314,42 @@ async function loadReferralHistory() {
     row.className = "referral-history-item";
 
     const userColumn = document.createElement("div");
+    const userHead = document.createElement("div");
+    userHead.className = "referral-user-head";
     const userName = document.createElement("strong");
     userName.className = "referral-user-name";
     userName.textContent = item.invited_user || tr("invitedUser");
+    const levelChip = document.createElement("span");
+    levelChip.className = "referral-level-chip";
+    levelChip.textContent = getReferralNetworkLevelLabel(networkLevel);
+    userHead.append(userName, levelChip);
+
     const registeredDate = document.createElement("span");
     registeredDate.className = "referral-small-date";
     registeredDate.textContent =
       `${tr("registered")}: ${formatReferralDate(item.registered_at)}`;
-    userColumn.append(userName, registeredDate);
+
+    const parentLine = document.createElement("span");
+    parentLine.className = "referral-parent-line";
+    const parentLabel = document.createElement("b");
+    parentLabel.textContent = `${tr("invitedBy")}: `;
+    parentLine.append(
+      parentLabel,
+      document.createTextNode(
+        networkLevel === 1
+          ? tr("you")
+          : (item.invited_by_user || tr("invitedUser"))
+      )
+    );
+
+    const pathLine = document.createElement("span");
+    pathLine.className = "referral-path-line";
+    const path = normalizeReferralPath(item.referral_path);
+    pathLine.textContent = `${tr("referralPath")}: ${[
+      tr("you"),
+      ...path
+    ].join(" → ")}`;
+    userColumn.append(userHead, registeredDate, parentLine, pathLine);
 
     const statusColumn = document.createElement("div");
     const badge = document.createElement("span");
@@ -19243,7 +19361,20 @@ async function loadReferralHistory() {
     investmentDate.textContent = item.invested_at
       ? `${tr("invest")}: ${formatReferralDate(item.invested_at)}`
       : `${tr("invest")}: ${tr("notCompleted")}`;
-    statusColumn.append(badge, investmentDate);
+    const investmentAmount = document.createElement("span");
+    investmentAmount.className = "referral-investment-line";
+    const investmentAmountLabel = document.createElement("b");
+    investmentAmountLabel.textContent = `${tr("qualifyingInvestment")}: `;
+    const qualifyingAmount = Number(item.qualifying_investment_amount || 0);
+    investmentAmount.append(
+      investmentAmountLabel,
+      document.createTextNode(
+        qualifyingAmount > 0
+          ? formatPortfolioMoney(qualifyingAmount)
+          : tr("notCompleted")
+      )
+    );
+    statusColumn.append(badge, investmentDate, investmentAmount);
 
     const rewardColumn = document.createElement("div");
     rewardColumn.className = "referral-reward-detail";
@@ -19251,7 +19382,7 @@ async function loadReferralHistory() {
     const rewardValue = document.createElement("strong");
     rewardValue.textContent = rewardAmount > 0
       ? `${formatPortfolioMoney(rewardAmount)} ${tr("credited")}`
-      : `$0.00 ${tr("credited")}`;
+      : tr("rewardPending");
     const rewardDate = document.createElement("span");
     rewardDate.textContent = item.reward_paid_at
       ? `${tr("balance")}: ${formatReferralDate(item.reward_paid_at)}`
@@ -19261,6 +19392,31 @@ async function loadReferralHistory() {
     row.append(userColumn, statusColumn, rewardColumn);
     list.appendChild(row);
   });
+}
+
+async function loadReferralHistory() {
+  if (!currentUser?.id) {
+    currentReferralHistoryRows = [];
+    updateReferralHistorySummary();
+    renderReferralHistoryEmpty(tr("signInReferralActivity"));
+    return;
+  }
+
+  renderReferralHistoryEmpty(tr("loading"));
+
+  const { data, error } = await supabaseClient.rpc(
+    "get_my_referral_history"
+  );
+
+  if (error) {
+    console.error("Referral history error:", error);
+    renderReferralHistoryEmpty(tr("referralActivity"));
+    return;
+  }
+
+  currentReferralHistoryRows = Array.isArray(data) ? data : [];
+  updateReferralHistorySummary(currentReferralHistoryRows);
+  renderReferralHistoryRows();
 }
 
 function setReferralDashboardValues(totalInvited, qualified, totalReward) {
@@ -20304,6 +20460,43 @@ LANGUAGE_CATALOG.forEach(([code])=>{
   d.personalReferralDesc=originalReferralIntro;
 });
 
+const REFERRAL_HISTORY_TRANSLATIONS = {
+  en:{referralActivityDesc:"View every referral across all levels, including the inviter, full chain path, registration, qualifying investment and reward.",allReferralLevels:"All levels",directInvites:"Level 1 · Your invites",friendsInvites:"Level 2 · Your friends' invites",extendedReferralNetwork:"Level 3+ · Friends of friends",networkMembers:"All network members",rewardedMembers:"Rewarded members",networkLevel:"Level {level}",invitedBy:"Invited by",referralPath:"Referral path",you:"You",qualifyingInvestment:"Qualifying investment",rewardPending:"Reward pending",rewardPaidStatus:"Reward paid",noReferralLevelActivity:"No referrals at this level."},
+  fa:{referralActivityDesc:"تمام دعوت‌ها را در همه سطح‌ها همراه با معرف، مسیر کامل زنجیره، زمان ثبت‌نام، سرمایه‌گذاری واجد شرایط و جزئیات پاداش ببینید.",allReferralLevels:"همه سطح‌ها",directInvites:"سطح اول · دعوت‌های شما",friendsInvites:"سطح دوم · دعوت دوستان شما",extendedReferralNetwork:"سطح سوم به بعد · دوست‌های دوستان",networkMembers:"تمام اعضای زنجیره",rewardedMembers:"اعضای پاداش‌گرفته",networkLevel:"سطح {level}",invitedBy:"دعوت‌شده توسط",referralPath:"مسیر دعوت",you:"شما",qualifyingInvestment:"سرمایه‌گذاری واجد شرایط",rewardPending:"پاداش در انتظار سرمایه‌گذاری",rewardPaidStatus:"پاداش پرداخت شد",noReferralLevelActivity:"در این سطح هنوز دعوتی وجود ندارد."},
+  az:{referralActivityDesc:"Bütün səviyyələrdəki dəvətləri dəvət edən şəxs, tam zəncir yolu, qeydiyyat, uyğun investisiya və mükafat detalları ilə görün.",allReferralLevels:"Bütün səviyyələr",directInvites:"Səviyyə 1 · Sizin dəvətləriniz",friendsInvites:"Səviyyə 2 · Dostlarınızın dəvətləri",extendedReferralNetwork:"Səviyyə 3+ · Dostların dostları",networkMembers:"Bütün şəbəkə üzvləri",rewardedMembers:"Mükafat alan üzvlər",networkLevel:"Səviyyə {level}",invitedBy:"Dəvət edən",referralPath:"Dəvət yolu",you:"Siz",qualifyingInvestment:"Uyğun investisiya",rewardPending:"Mükafat investisiyanı gözləyir",rewardPaidStatus:"Mükafat ödənildi",noReferralLevelActivity:"Bu səviyyədə hələ dəvət yoxdur."},
+  tr:{referralActivityDesc:"Tüm seviyelerdeki davetleri; davet eden kişi, tam zincir yolu, kayıt, uygun yatırım ve ödül ayrıntılarıyla görüntüleyin.",allReferralLevels:"Tüm seviyeler",directInvites:"Seviye 1 · Sizin davetleriniz",friendsInvites:"Seviye 2 · Arkadaşlarınızın davetleri",extendedReferralNetwork:"Seviye 3+ · Arkadaşların arkadaşları",networkMembers:"Tüm ağ üyeleri",rewardedMembers:"Ödül kazandıran üyeler",networkLevel:"Seviye {level}",invitedBy:"Davet eden",referralPath:"Davet yolu",you:"Siz",qualifyingInvestment:"Uygun yatırım",rewardPending:"Ödül yatırım bekliyor",rewardPaidStatus:"Ödül ödendi",noReferralLevelActivity:"Bu seviyede henüz davet yok."},
+  ru:{referralActivityDesc:"Просматривайте приглашения всех уровней: кто пригласил, полный путь цепочки, регистрацию, подходящую инвестицию и награду.",allReferralLevels:"Все уровни",directInvites:"Уровень 1 · Ваши приглашения",friendsInvites:"Уровень 2 · Приглашения друзей",extendedReferralNetwork:"Уровень 3+ · Друзья друзей",networkMembers:"Все участники сети",rewardedMembers:"Участники с наградой",networkLevel:"Уровень {level}",invitedBy:"Кто пригласил",referralPath:"Путь приглашения",you:"Вы",qualifyingInvestment:"Подходящая инвестиция",rewardPending:"Награда ожидает инвестиции",rewardPaidStatus:"Награда выплачена",noReferralLevelActivity:"На этом уровне пока нет приглашений."},
+  ar:{referralActivityDesc:"شاهد جميع الدعوات في كل المستويات مع الداعي ومسار السلسلة الكامل والتسجيل والاستثمار المؤهل وتفاصيل المكافأة.",allReferralLevels:"جميع المستويات",directInvites:"المستوى 1 · دعواتك",friendsInvites:"المستوى 2 · دعوات أصدقائك",extendedReferralNetwork:"المستوى 3+ · أصدقاء الأصدقاء",networkMembers:"جميع أعضاء الشبكة",rewardedMembers:"الأعضاء الحاصلون على مكافأة",networkLevel:"المستوى {level}",invitedBy:"تمت دعوته بواسطة",referralPath:"مسار الدعوة",you:"أنت",qualifyingInvestment:"الاستثمار المؤهل",rewardPending:"المكافأة بانتظار الاستثمار",rewardPaidStatus:"تم دفع المكافأة",noReferralLevelActivity:"لا توجد دعوات في هذا المستوى بعد."},
+  zh:{referralActivityDesc:"查看所有层级的邀请详情，包括邀请人、完整推荐路径、注册时间、合格投资和奖励。",allReferralLevels:"所有层级",directInvites:"第 1 级 · 您的邀请",friendsInvites:"第 2 级 · 好友的邀请",extendedReferralNetwork:"第 3 级及以上 · 好友的好友",networkMembers:"全部网络成员",rewardedMembers:"已产生奖励的成员",networkLevel:"第 {level} 级",invitedBy:"邀请人",referralPath:"推荐路径",you:"您",qualifyingInvestment:"合格投资",rewardPending:"奖励等待投资",rewardPaidStatus:"奖励已支付",noReferralLevelActivity:"此层级暂无邀请。"},
+  es:{referralActivityDesc:"Consulta las invitaciones de todos los niveles con el invitador, la ruta completa, el registro, la inversión válida y la recompensa.",allReferralLevels:"Todos los niveles",directInvites:"Nivel 1 · Tus invitaciones",friendsInvites:"Nivel 2 · Invitaciones de tus amigos",extendedReferralNetwork:"Nivel 3+ · Amigos de amigos",networkMembers:"Todos los miembros de la red",rewardedMembers:"Miembros con recompensa",networkLevel:"Nivel {level}",invitedBy:"Invitado por",referralPath:"Ruta de invitación",you:"Tú",qualifyingInvestment:"Inversión válida",rewardPending:"Recompensa pendiente de inversión",rewardPaidStatus:"Recompensa pagada",noReferralLevelActivity:"Aún no hay invitaciones en este nivel."},
+  fr:{referralActivityDesc:"Consultez les invitations de tous les niveaux avec le parrain, le parcours complet, l'inscription, l'investissement éligible et la récompense.",allReferralLevels:"Tous les niveaux",directInvites:"Niveau 1 · Vos invitations",friendsInvites:"Niveau 2 · Invitations de vos amis",extendedReferralNetwork:"Niveau 3+ · Amis de vos amis",networkMembers:"Tous les membres du réseau",rewardedMembers:"Membres récompensés",networkLevel:"Niveau {level}",invitedBy:"Invité par",referralPath:"Parcours d'invitation",you:"Vous",qualifyingInvestment:"Investissement éligible",rewardPending:"Récompense en attente d'investissement",rewardPaidStatus:"Récompense versée",noReferralLevelActivity:"Aucune invitation à ce niveau pour le moment."},
+  de:{referralActivityDesc:"Zeigen Sie Einladungen aller Stufen mit Einladendem, vollständigem Kettenpfad, Registrierung, qualifizierter Investition und Prämie an.",allReferralLevels:"Alle Stufen",directInvites:"Stufe 1 · Ihre Einladungen",friendsInvites:"Stufe 2 · Einladungen Ihrer Freunde",extendedReferralNetwork:"Stufe 3+ · Freunde von Freunden",networkMembers:"Alle Netzwerkmitglieder",rewardedMembers:"Mitglieder mit Prämie",networkLevel:"Stufe {level}",invitedBy:"Eingeladen von",referralPath:"Einladungspfad",you:"Sie",qualifyingInvestment:"Qualifizierte Investition",rewardPending:"Prämie wartet auf Investition",rewardPaidStatus:"Prämie ausgezahlt",noReferralLevelActivity:"Auf dieser Stufe gibt es noch keine Einladungen."}
+};
+
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const d=T[code]||T.en;
+  const levelWord=d.level||"Level";
+  const rewardsWord=d.rewards||"Rewards";
+  const referralWord=d.refTitle||rewardsWord;
+  Object.assign(d,{
+    referralActivityDesc:`${referralWord} · ${d.register} · ${d.invest||d.plans} · ${rewardsWord}`,
+    allReferralLevels:`${levelWord} · ${d.all||"All"}`,
+    directInvites:`${levelWord} 1`,
+    friendsInvites:`${levelWord} 2`,
+    extendedReferralNetwork:`${levelWord} 3+`,
+    networkMembers:d.users||d.statUsers||referralWord,
+    rewardedMembers:rewardsWord,
+    networkLevel:`${levelWord} {level}`,
+    invitedBy:referralWord,
+    referralPath:referralWord,
+    you:d.account||"You",
+    qualifyingInvestment:d.invest||d.plans,
+    rewardPending:`${rewardsWord} · ${d.pending||d.active}`,
+    rewardPaidStatus:`${rewardsWord} · ${d.completed||d.active}`,
+    noReferralLevelActivity:`${referralWord}: 0`
+  },REFERRAL_HISTORY_TRANSLATIONS[code]||{});
+});
+
 const SHORT_TIME_UNITS={
   en:["d","h","m","s"],fa:["روز","ساعت","دقیقه","ثانیه"],az:["g","s","dəq","san"],tr:["g","sa","dk","sn"],ru:["д","ч","м","с"],ar:["ي","س","د","ث"],zh:["天","时","分","秒"],es:["d","h","min","s"],fr:["j","h","min","s"],de:["T","Std","Min","Sek"],it:["g","h","min","s"],pt:["d","h","min","s"],nl:["d","u","min","s"],pl:["d","godz","min","s"],uk:["д","год","хв","с"],ro:["z","h","min","s"],id:["h","j","mnt","dtk"],ms:["h","j","min","s"],hi:["दि","घं","मि","से"],ur:["دن","گھن","منٹ","سیک"],ja:["日","時","分","秒"],ko:["일","시","분","초"],vi:["ng","giờ","phút","giây"],th:["ว","ชม","นาที","วิ"],el:["η","ω","λ","δ"]
 };
@@ -20450,6 +20643,7 @@ function setLang(lang){
   updateHeaderAuthUI();
   applyTwoFactorLanguage();
   renderPortfolioLive();
+  if(currentReferralHistoryRows.length) renderReferralHistoryRows();
   if(document.getElementById("transactions")?.classList.contains("active")) loadTransactions();
 }
 
