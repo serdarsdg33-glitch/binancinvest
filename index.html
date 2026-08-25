@@ -13242,7 +13242,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
         <a
           id="androidApkBtn"
           class="install-banner-action"
-          href="binancinvest-v37-3.apk"
+          href="/binancinvest-v37-3.apk"
           download="binancinvest-v37-3.apk"
           aria-label="Download binancinvest-v37-3 APK for Android"
         ></a>
@@ -13307,11 +13307,9 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
           <a
             id="androidApkChoiceBtn"
             class="install-choice-btn install-choice-primary"
-            href="binancinvest-v37-3.apk"
+            href="/binancinvest-v37-3.apk"
             download="binancinvest-v37-3.apk"
-            aria-controls="androidGuidePanel"
-            aria-expanded="false"
-            onclick="return prepareInstallChoice(event,'android')"
+            onclick="closeInstallGuide('android')"
           >
             Download Android APK
           </a>
@@ -22293,7 +22291,7 @@ async function deleteAllClosedSupportTickets() {
     const panel = card.querySelector(".install-guide-panel");
     panel?.setAttribute("aria-hidden", String(!open));
 
-    card.querySelectorAll(".install-choice-btn").forEach((link) => {
+    card.querySelectorAll(".install-choice-btn[aria-controls]").forEach((link) => {
       link.setAttribute("aria-expanded", String(open));
     });
   }
