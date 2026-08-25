@@ -20635,12 +20635,15 @@ window.submitDepositRequest = async function () {
  await loadTransactions();
 showTransactionSuccessModal("deposit");
 };
-function showWithdrawalError(message) {
+function showWithdrawalError(message, titleKey = "insufficientBalance") {
   const box =
     document.getElementById("withdrawalError");
 
   const messageElement =
     document.getElementById("withdrawalErrorMessage");
+
+  const titleElement =
+    document.getElementById("withdrawalErrorTitle");
 
   const amountInput =
     document.getElementById("withdrawAmount");
@@ -20651,6 +20654,9 @@ function showWithdrawalError(message) {
   }
 
   messageElement.textContent = message;
+  if (titleElement) {
+    titleElement.textContent = tr(titleKey);
+  }
   box.classList.add("show");
   amountInput.classList.add("withdrawal-input-error");
 
@@ -20706,6 +20712,13 @@ window.withdraw = async function () {
   return;
 }
 
+/* Read the same fresh limit that the visible withdrawal card uses. */
+if (typeof window.refreshWithdrawalLimitCard === "function") {
+  try {
+    await window.refreshWithdrawalLimitCard();
+  } catch (_) {}
+}
+
 const remaining24h =
   typeof window.getWithdrawalRemaining24h === "function"
     ? window.getWithdrawalRemaining24h()
@@ -20718,7 +20731,8 @@ if (
   showWithdrawalError(
     tr("withdrawalDailyLimitExceeded", {
       amount: formatPortfolioMoney(remaining24h)
-    })
+    }),
+    "withdrawalLevel"
   );
   return;
 }
@@ -20777,7 +20791,8 @@ if (amount > availableBalance) {
             ? Number(remaining)
             : 0
         )
-      })
+      }),
+      "withdrawalLevel"
     );
   } else if (
     errorMessage.toLowerCase().includes(
@@ -23963,29 +23978,13 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   window.getMainAvailableBalance = function () {
-    var freeBalance =
-      Math.max(
-        0,
-        Number(
-          currentUser &&
-          currentUser.balance ||
-          0
-        )
-      );
-
     /*
-     * FLEX_DAILY is withdrawable at any time.
-     * Therefore the real withdrawable amount is:
-     *
-     * free balance
-     * + FLEX principal
-     * + FLEX live profit
-     *
-     * Starter/Growth/Premium are NOT added here; they must be
-     * cancelled/settled first.
+     * Single-balance model:
+     * - real account balance = FLEX_DAILY principal
+     * - withdrawable total = FLEX principal + FLEX accrued profit
+     * The legacy profiles.balance wallet is intentionally excluded.
      */
     return (
-      freeBalance +
       flexiblePrincipal() +
       flexibleLiveProfit()
     );
@@ -24030,18 +24029,13 @@ document.addEventListener("DOMContentLoaded", function() {
     var liveProfit =
       stableFlexibleLiveProfit();
 
-    var freeBalance = Math.max(
-      0,
-      Number(currentUser && currentUser.balance || 0)
-    );
-
     return {
       regularInvestments:flexInvestments,
       investedPrincipal:investedPrincipal,
       bankedProfit:0,
       liveProfit:liveProfit,
       totalProfit:liveProfit,
-      freeBalance:freeBalance,
+      freeBalance:0,
 
       /*
        * Main Total Balance = mother-plan principal + mother-plan profit.
