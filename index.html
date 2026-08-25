@@ -13481,6 +13481,28 @@ html.native-app #rewards{
   }
 }
 </style>
+<style id="rewards-personal-card-image-fit-v1">
+/* Second Rewards panel: show the complete custom artwork without cover zoom or cropping. */
+#rewards .referral-personal-card{
+  --rewards-card-art:url("rewards-second-card-1080x1536.jpg") !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.60) 0%,rgba(3,7,11,.39) 50%,rgba(3,7,11,.07) 100%),
+    var(--rewards-card-art) !important;
+  background-size:100% 100%,100% 100% !important;
+  background-position:center,center !important;
+  background-repeat:no-repeat,no-repeat !important;
+}
+
+@media(max-width:760px){
+  #rewards .referral-personal-card{
+    background-image:
+      linear-gradient(90deg,rgba(3,7,11,.55),rgba(3,7,11,.28)),
+      var(--rewards-card-art) !important;
+    background-size:100% 100%,100% 100% !important;
+    background-position:center,center !important;
+  }
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
