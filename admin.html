@@ -1,63 +1,384 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080b10">
   <title>Binanc Invest — Admin Control</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <style>
-    :root{--bg:#07090d;--panel:#0d1118;--panel2:#121823;--line:#202938;--text:#edf2f7;--muted:#8490a2;--gold:#f4c44e;--gold2:#a97913;--green:#26c281;--red:#ff5b68;--blue:#5b8cff;--shadow:0 24px 70px #0008}
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,#34270e55,transparent 34%),var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}.hidden{display:none!important}
-    .login{min-height:100vh;display:grid;place-items:center;padding:24px}.login-card{width:min(440px,100%);padding:34px;border:1px solid #2a303b;border-radius:28px;background:linear-gradient(145deg,#111722f2,#090c12f5);box-shadow:var(--shadow)}.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#9b6800);color:#111;font-weight:950;box-shadow:0 8px 30px #f4c44e33}.brand b{font-size:18px}.brand span{display:block;color:var(--muted);font-size:11px;letter-spacing:.16em;text-transform:uppercase}.login-card h1{font-size:30px;margin:34px 0 8px}.sub{color:var(--muted);line-height:1.7;margin:0 0 24px}.field{display:grid;gap:8px;margin:14px 0}.field label{font-size:12px;color:#b9c2cf;font-weight:700}.input{width:100%;border:1px solid var(--line);border-radius:13px;background:#090d13;color:#fff;padding:13px 14px;outline:none}.input:focus{border-color:#d6aa42;box-shadow:0 0 0 3px #f4c44e16}.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer;color:#111;background:linear-gradient(135deg,#ffd96a,#d59b1e)}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.ghost{color:#dce3ed;background:#171d27;border:1px solid #2b3442}.btn.red{background:#3a171d;color:#ff8992;border:1px solid #6a252e}.btn.green{background:#123a2b;color:#75e3b3;border:1px solid #236448}.login-card .btn{width:100%;margin-top:10px;padding:14px}.error{color:#ff8790;background:#38151b;border:1px solid #63242d;padding:10px 12px;border-radius:11px;margin-top:14px}
-    .app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:250px;border-right:1px solid var(--line);background:#090c12ee;backdrop-filter:blur(18px);padding:22px 16px;z-index:10}.sidebar .brand{padding:0 8px 25px}.nav{display:grid;gap:6px}.nav button{width:100%;display:flex;align-items:center;gap:12px;border:0;border-radius:12px;background:transparent;color:#9aa6b6;padding:12px 13px;text-align:left;cursor:pointer}.nav button:hover,.nav button.active{background:#171d27;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--gold)}.ico{width:22px;text-align:center}.count{margin-left:auto;border-radius:999px;background:#32270d;color:#ffd86e;font-size:11px;padding:3px 7px}.side-foot{position:absolute;bottom:18px;left:16px;right:16px}.admin-mini{padding:12px;border:1px solid var(--line);border-radius:14px;background:#10151e}.admin-mini b,.admin-mini span{display:block;overflow:hidden;text-overflow:ellipsis}.admin-mini span{color:var(--muted);font-size:11px;margin-top:4px}.admin-mini button{margin-top:10px;width:100%}
-    .main{margin-left:250px;min-height:100vh}.top{height:78px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;background:#080b10df;backdrop-filter:blur(18px);z-index:5}.top h2{font-size:18px;margin:0}.top small{color:var(--muted)}.top-actions{display:flex;gap:10px}.mobile-menu{display:none}.content{padding:26px;max-width:1600px;margin:auto}.view{display:none}.view.active{display:block}.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:20px}.page-head h1{font-size:28px;margin:0 0 5px}.page-head p{color:var(--muted);margin:0}.refresh{min-width:105px}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.stat{border:1px solid var(--line);background:linear-gradient(145deg,#111722,#0b0f16);border-radius:18px;padding:18px}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.stat .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}.stat strong{font-size:28px;display:block;margin:14px 0 5px}.stat small{color:var(--muted)}
-    .grid2{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}.card{border:1px solid var(--line);background:#0c1118;border-radius:18px;overflow:hidden}.card-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.card-head h3{margin:0;font-size:15px}.card-body{padding:16px 18px}.queue{display:grid;gap:10px}.queue-item{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #202938;border-radius:13px;background:#101620}.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#212b3a;color:#ffd76a;font-weight:900}.grow{min-width:0;flex:1}.grow b,.grow small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.grow small{color:var(--muted);margin-top:4px}.amount{font-weight:900}.badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:800;text-transform:capitalize}.pending{color:#ffd76a;background:#392e12}.approved,.active,.answered{color:#77e5b7;background:#12382b}.rejected,.suspended{color:#ff8e96;background:#3c171d}.open{color:#8fb0ff;background:#17274c}.closed{color:#aab4c3;background:#252b34}
-    .toolbar{display:flex;gap:10px;align-items:center;margin:0 0 14px}.toolbar .input{max-width:360px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}table{width:100%;border-collapse:collapse;min-width:820px;background:#0c1118}th{text-align:left;color:#7f8c9f;font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:#0f141d}th,td{padding:13px 14px;border-bottom:1px solid #1d2531}tr:last-child td{border:0}tbody tr:hover{background:#111823}.actions{display:flex;gap:7px}.actions .btn{padding:7px 10px;font-size:11px}.muted{color:var(--muted)}
-    .ticket-layout{display:grid;grid-template-columns:340px 1fr;gap:14px;height:calc(100vh - 175px)}.ticket-list,.chat{border:1px solid var(--line);border-radius:17px;background:#0c1118;overflow:hidden}.ticket-list{overflow:auto}.ticket{padding:14px;border-bottom:1px solid var(--line);cursor:pointer}.ticket:hover,.ticket.selected{background:#141b26}.ticket-top{display:flex;justify-content:space-between;gap:10px}.ticket p{color:var(--muted);margin:6px 0 0;font-size:12px}.chat{display:flex;flex-direction:column}.chat-empty{margin:auto;color:var(--muted)}.messages{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px}.msg{max-width:72%;padding:11px 13px;border-radius:14px;background:#18202c;line-height:1.55}.msg.admin{align-self:flex-end;background:#3a2d0d;color:#fff4d0}.msg small{display:block;opacity:.55;margin-top:5px}.composer{display:flex;gap:10px;padding:14px;border-top:1px solid var(--line)}.composer .input{resize:none;height:47px}.empty{color:var(--muted);padding:30px;text-align:center}
-    .modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:20px;z-index:50}.modal-box{width:min(520px,100%);max-height:90vh;overflow:auto;border:1px solid #2b3442;border-radius:20px;background:#101620;padding:22px;box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.x{border:0;background:transparent;color:#aab4c3;font-size:24px;cursor:pointer}.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.summary div{padding:11px;border-radius:11px;background:#0a0e14}.summary small,.summary b{display:block}.summary small{color:var(--muted);margin-bottom:5px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.toast{position:fixed;right:22px;bottom:22px;z-index:80;padding:12px 15px;border-radius:12px;background:#1a2430;border:1px solid #314054;box-shadow:var(--shadow)}
-    @media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.ticket-layout{grid-template-columns:300px 1fr}}
-    @media(max-width:760px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.main{margin:0}.mobile-menu{display:inline-flex}.top{padding:0 16px}.content{padding:18px 13px}.stats{grid-template-columns:1fr 1fr}.stat strong{font-size:22px}.page-head{align-items:flex-start}.ticket-layout{display:block;height:auto}.ticket-list{height:260px;margin-bottom:12px}.chat{height:520px}.toolbar{flex-wrap:wrap}.toolbar .input{max-width:none}.msg{max-width:88%}}
+    :root{--bg:#06080c;--panel:#0c1118;--panel2:#111824;--panel3:#151e2b;--line:#202b3a;--text:#f3f6fa;--muted:#8693a6;--gold:#f0b90b;--gold-soft:#ffe27a;--green:#2bd492;--red:#ff6571;--blue:#6f99ff;--purple:#aa88ff;--shadow:0 26px 80px rgba(0,0,0,.48)}
+    *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--text);background:radial-gradient(circle at 80% -10%,rgba(240,185,11,.13),transparent 28%),var(--bg);font:14px Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}.hidden{display:none!important}.muted{color:var(--muted)}
+    .btn{min-height:40px;border:1px solid transparent;border-radius:12px;padding:9px 14px;color:#171100;background:linear-gradient(135deg,#ffe477,var(--gold));font-weight:850;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-1px);filter:brightness(1.05)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btn.ghost{color:#e5ebf3;background:#151d29;border-color:#2a3647}.btn.red{color:#ffabb1;background:#35171e;border-color:#702a34}.btn.green{color:#7ef0bd;background:#12382b;border-color:#256d50}.btn.blue{color:#afc5ff;background:#17264b;border-color:#2b488b}.btn.sm{min-height:33px;padding:6px 10px;border-radius:9px;font-size:11px}
+    .login{min-height:100vh;display:grid;place-items:center;padding:24px}.login-card{width:min(450px,100%);padding:34px;border:1px solid #2b3441;border-radius:28px;background:linear-gradient(150deg,rgba(17,24,35,.97),rgba(7,10,15,.98));box-shadow:var(--shadow)}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;color:#111;background:linear-gradient(135deg,#ffe777,var(--gold) 72%,#b67900);box-shadow:0 10px 32px rgba(240,185,11,.2);font-weight:950}.brand b{display:block;font-size:18px}.brand span{display:block;margin-top:3px;color:var(--muted);font-size:10px;letter-spacing:.16em;text-transform:uppercase}.login-card h1{margin:32px 0 8px;font-size:30px}.sub{margin:0 0 24px;color:var(--muted);line-height:1.7}.field{display:grid;gap:8px;margin:14px 0}.field label{color:#c1cad7;font-size:12px;font-weight:750}.input{width:100%;min-height:43px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;outline:0;color:#fff;background:#080c12}.input:focus{border-color:#c99a16;box-shadow:0 0 0 3px rgba(240,185,11,.11)}textarea.input{resize:vertical}.login-card .btn{width:100%;margin-top:10px;min-height:49px}.error{margin-top:14px;padding:11px 12px;border:1px solid #682833;border-radius:11px;color:#ff9ba3;background:#38171d}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:260px;padding:22px 16px;border-right:1px solid var(--line);z-index:20;background:rgba(8,11,16,.94);backdrop-filter:blur(20px)}.sidebar .brand{padding:0 8px 25px}.nav{display:grid;gap:6px}.nav button{width:100%;display:flex;align-items:center;gap:11px;padding:12px 13px;border:0;border-radius:12px;color:#98a5b6;background:transparent;text-align:left;cursor:pointer}.nav button:hover,.nav button.active{color:#fff;background:#151d29}.nav button.active{box-shadow:inset 3px 0 var(--gold)}.ico{width:23px;text-align:center;font-size:17px}.count{margin-left:auto;padding:3px 7px;border-radius:999px;color:#ffe282;background:#3a2d0d;font-size:10px}.side-foot{position:absolute;right:16px;bottom:18px;left:16px}.admin-mini{padding:13px;border:1px solid var(--line);border-radius:14px;background:#0f151e}.admin-mini b,.admin-mini span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.admin-mini span{margin-top:4px;color:var(--muted);font-size:11px}.admin-mini .btn{width:100%;margin-top:10px}
+    .main{min-height:100vh;margin-left:260px}.top{position:sticky;top:0;height:78px;padding:0 28px;border-bottom:1px solid var(--line);z-index:10;display:flex;align-items:center;justify-content:space-between;background:rgba(7,10,15,.87);backdrop-filter:blur(18px)}.top h2{margin:0;font-size:18px}.top small{display:block;margin-top:4px;color:var(--muted)}.top-actions{display:flex;gap:9px}.mobile-menu{display:none}.content{max-width:1600px;margin:auto;padding:26px}.view{display:none}.view.active{display:block}.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}.page-head h1{margin:0 0 5px;font-size:28px}.page-head p{margin:0;color:var(--muted)}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:20px}.stat{min-width:0;padding:17px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#111824,#0a0e15)}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.stat strong{display:block;margin:12px 0 4px;overflow:hidden;text-overflow:ellipsis;font-size:25px}.stat small{color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 13px var(--green)}
+    .grid2{display:grid;grid-template-columns:1.3fr .7fr;gap:15px}.card{overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--panel)}.card-head{min-height:56px;padding:14px 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.card-head h3{margin:0;font-size:15px}.card-body{padding:16px 17px}.queue{display:grid;gap:9px}.queue-item{display:flex;align-items:center;gap:11px;padding:11px;border:1px solid #1f2a38;border-radius:13px;background:#0f1620}.avatar{width:39px;height:39px;flex:0 0 39px;border-radius:12px;display:grid;place-items:center;color:#ffe27a;background:#222c3a;font-weight:900}.grow{min-width:0;flex:1}.grow b,.grow small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.grow small{margin-top:4px;color:var(--muted);font-size:11px}.amount{font-weight:900}.badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:850;text-transform:capitalize}.pending{color:#ffe283;background:#3a2e10}.approved,.active,.answered,.completed{color:#83efc0;background:#12382b}.rejected,.suspended,.cancelled{color:#ff9aa3;background:#3b171e}.open{color:#a9c0ff;background:#19294e}.closed{color:#b7c0cd;background:#282e38}.vip{color:#171100;background:linear-gradient(135deg,#ffe77a,var(--gold))}
+    .toolbar{display:flex;align-items:center;gap:9px;margin-bottom:13px}.toolbar .input{max-width:360px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}table{width:100%;min-width:880px;border-collapse:collapse;background:var(--panel)}th,td{padding:13px 14px;border-bottom:1px solid #1b2532;text-align:left;vertical-align:middle}th{color:#7f8da0;background:#0e141d;font-size:10px;letter-spacing:.08em;text-transform:uppercase}tbody tr{transition:.16s}tbody tr:hover{background:#111a26}tr:last-child td{border-bottom:0}.user-link{border:0;padding:0;color:#fff;background:none;font-weight:850;cursor:pointer;text-align:left}.user-link:hover{color:var(--gold-soft)}.actions{display:flex;gap:7px}.empty{padding:30px;color:var(--muted);text-align:center}
+    .ticket-layout{display:grid;grid-template-columns:340px 1fr;gap:14px;height:calc(100vh - 175px)}.ticket-list,.chat{overflow:hidden;border:1px solid var(--line);border-radius:17px;background:var(--panel)}.ticket-list{overflow:auto}.ticket{padding:14px;border-bottom:1px solid var(--line);cursor:pointer}.ticket:hover,.ticket.selected{background:#141d29}.ticket-top{display:flex;justify-content:space-between;gap:9px}.ticket p{margin:6px 0 0;color:var(--muted);font-size:11px}.chat{display:flex;flex-direction:column}.chat-empty{margin:auto;color:var(--muted)}.messages{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:11px}.msg{max-width:72%;padding:11px 13px;border-radius:14px;background:#182231;line-height:1.55}.msg.admin{align-self:flex-end;color:#fff4cd;background:#3a2d0d}.msg small{display:block;margin-top:5px;opacity:.55}.composer{display:flex;gap:9px;padding:13px;border-top:1px solid var(--line)}.composer textarea{height:46px;min-height:46px}
+    .modal{position:fixed;inset:0;padding:18px;z-index:100;display:grid;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(8px)}.modal-box{width:min(540px,100%);max-height:92vh;overflow:auto;padding:22px;border:1px solid #2b3747;border-radius:21px;background:#0f1620;box-shadow:var(--shadow)}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.modal-head h3{margin:0}.x{width:38px;height:38px;border:1px solid #2b3747;border-radius:50%;display:grid;place-items:center;color:#c0c9d6;background:#151d29;font-size:24px;cursor:pointer}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0}.summary>div{padding:11px;border-radius:11px;background:#080d13}.summary small,.summary b{display:block}.summary small{margin-bottom:5px;color:var(--muted)}
+    .user360{align-items:stretch;padding:14px}.user360-box{width:min(1320px,100%);height:calc(100vh - 28px);max-height:none;padding:0;display:flex;flex-direction:column}.user360-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}.user360-head .avatar{width:52px;height:52px;flex-basis:52px;border-radius:16px;font-size:18px}.user360-title{min-width:0;flex:1}.user360-title h2{margin:0 0 4px;font-size:22px}.user360-title p{margin:0;color:var(--muted)}.user360-body{min-height:0;overflow:auto;padding:18px 20px}.user-metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}.metric{padding:14px;border:1px solid var(--line);border-radius:14px;background:#0a0f16}.metric span,.metric strong{display:block}.metric span{margin-bottom:8px;color:var(--muted);font-size:10px}.metric strong{font-size:18px;overflow:hidden;text-overflow:ellipsis}.metric.gold strong{color:var(--gold-soft)}.metric.green strong{color:var(--green)}
+    .tabs{display:flex;gap:6px;overflow:auto;margin-bottom:14px;padding:5px;border:1px solid var(--line);border-radius:14px;background:#090e14}.tab{flex:0 0 auto;padding:9px 13px;border:0;border-radius:10px;color:#9ca9b9;background:transparent;font-weight:800;cursor:pointer}.tab.active{color:#171100;background:linear-gradient(135deg,#ffe474,var(--gold))}.user-tab{display:none}.user-tab.active{display:block}.contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.contract{position:relative;overflow:hidden;padding:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#111a26,#090e14)}.contract.vip-contract{border-color:rgba(240,185,11,.48);background:radial-gradient(circle at 100% 0,rgba(240,185,11,.15),transparent 40%),linear-gradient(145deg,#161b21,#090d12)}.contract-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.contract-head h3{margin:0 0 5px;font-size:17px}.contract-head p{margin:0;color:var(--muted);font-size:11px}.contract-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.contract-metrics div{padding:10px;border-radius:10px;background:rgba(255,255,255,.035)}.contract-metrics span,.contract-metrics b{display:block}.contract-metrics span{margin-bottom:5px;color:var(--muted);font-size:9px}.contract-metrics b{font-size:13px}.contract-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}.contract-time{color:var(--muted);font-size:10px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px}.section-title h3{margin:0}.profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.profile-item{padding:13px;border:1px solid var(--line);border-radius:12px;background:#0a0f16}.profile-item span,.profile-item b{display:block}.profile-item span{margin-bottom:6px;color:var(--muted);font-size:10px}.danger-zone{margin-top:16px;padding:15px;border:1px solid #5e2530;border-radius:15px;background:#281219}.danger-zone h3{margin:0 0 6px;color:#ffabb2}.danger-zone p{margin:0 0 12px;color:#ca8d93}.toast{position:fixed;right:20px;bottom:20px;max-width:min(420px,calc(100% - 40px));z-index:150;padding:12px 15px;border:1px solid #314054;border-radius:12px;background:#172230;box-shadow:var(--shadow)}
+    @media(max-width:1250px){.stats{grid-template-columns:repeat(3,1fr)}.user-metrics{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:1050px){.grid2{grid-template-columns:1fr}.ticket-layout{grid-template-columns:300px 1fr}.contract-grid{grid-template-columns:1fr}}
+    @media(max-width:780px){.sidebar{transform:translateX(-100%);transition:.2s}.sidebar.open{transform:none}.main{margin-left:0}.mobile-menu{display:inline-flex}.top{padding:0 14px}.content{padding:18px 12px}.stats{grid-template-columns:1fr 1fr}.page-head{align-items:flex-start}.toolbar{flex-wrap:wrap}.toolbar .input{max-width:none}.ticket-layout{display:block;height:auto}.ticket-list{height:260px;margin-bottom:12px}.chat{height:520px}.msg{max-width:88%}.user360{padding:0}.user360-box{height:100vh;border:0;border-radius:0}.user360-head{padding:13px}.user360-body{padding:13px}.user-metrics{grid-template-columns:1fr 1fr}.contract-metrics{grid-template-columns:1fr 1fr}.profile-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.stats,.user-metrics,.profile-grid{grid-template-columns:1fr}.stat strong{font-size:22px}.top-actions .btn:not(.mobile-menu){display:none}.modal{padding:10px}.modal-box{padding:17px}.summary{grid-template-columns:1fr}.contract-metrics{grid-template-columns:1fr}.modal-actions{flex-direction:column-reverse}.modal-actions .btn{width:100%}}
   </style>
 </head>
 <body>
-<section id="login" class="login"><form id="loginForm" class="login-card"><div class="brand"><div class="logo">BI</div><div><b>Binanc Invest</b><span>Secure administration</span></div></div><h1>Admin sign in</h1><p class="sub">Access is limited to accounts with the admin role. All financial actions are recorded.</p><div class="field"><label>Email</label><input id="email" class="input" type="email" autocomplete="username" required></div><div class="field"><label>Password</label><input id="password" class="input" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="btn">Sign in securely</button><div id="loginError" class="error hidden"></div></form></section>
-<section id="app" class="app hidden"><aside id="sidebar" class="sidebar"><div class="brand"><div class="logo">BI</div><div><b>Admin Control</b><span>Operations center</span></div></div><nav class="nav"><button class="active" data-view="overview"><span class="ico">◫</span>Overview</button><button data-view="users"><span class="ico">◎</span>Users</button><button data-view="requests"><span class="ico">⇄</span>Deposits & withdrawals <span id="requestCount" class="count">0</span></button><button data-view="tickets"><span class="ico">◌</span>Support tickets <span id="ticketCount" class="count">0</span></button><button data-view="audit"><span class="ico">≡</span>Audit log</button></nav><div class="side-foot"><div class="admin-mini"><b id="adminName">Administrator</b><span id="adminEmail"></span><button id="logoutBtn" class="btn ghost">Sign out</button></div></div></aside>
-<main class="main"><header class="top"><div><h2 id="topTitle">Overview</h2><small id="clock"></small></div><div class="top-actions"><button id="mobileMenu" class="btn ghost mobile-menu">Menu</button><button id="refreshBtn" class="btn ghost">Refresh</button></div></header><div class="content">
-  <section id="overview" class="view active"><div class="page-head"><div><h1>Operations overview</h1><p>Live account, payment and support activity.</p></div><span class="badge active">● System online</span></div><div class="stats"><div class="stat"><div class="stat-top"><span>Total users</span><i class="dot"></i></div><strong id="sUsers">—</strong><small id="sNew">Loading…</small></div><div class="stat"><div class="stat-top"><span>Available balances</span><i class="dot"></i></div><strong id="sBalance">—</strong><small>Across all user accounts</small></div><div class="stat"><div class="stat-top"><span>Pending financial</span><i class="dot"></i></div><strong id="sPending">—</strong><small>Requires your decision</small></div><div class="stat"><div class="stat-top"><span>Open tickets</span><i class="dot"></i></div><strong id="sTickets">—</strong><small>Waiting or in progress</small></div></div><div class="grid2"><div class="card"><div class="card-head"><h3>Financial approval queue</h3><button class="btn ghost" data-go="requests">View all</button></div><div id="quickRequests" class="card-body queue"></div></div><div class="card"><div class="card-head"><h3>Recent users</h3><button class="btn ghost" data-go="users">Manage</button></div><div id="quickUsers" class="card-body queue"></div></div></div></section>
-  <section id="users" class="view"><div class="page-head"><div><h1>User management</h1><p>Profiles, balances and account access.</p></div></div><div class="toolbar"><input id="userSearch" class="input" placeholder="Search name, username or email"><select id="userStatus" class="input"><option value="all">All statuses</option><option value="active">Active</option><option value="suspended">Suspended</option></select></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Username</th><th>Balance</th><th>Held</th><th>Invested</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="usersBody"></tbody></table></div></section>
-  <section id="requests" class="view"><div class="page-head"><div><h1>Financial requests</h1><p>Nothing changes without an authenticated admin decision.</p></div></div><div class="toolbar"><input id="requestSearch" class="input" placeholder="Search email, network, wallet or reference"><select id="requestType" class="input"><option value="all">Deposit & withdrawal</option><option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option></select><select id="requestStatus" class="input"><option value="pending">Pending</option><option value="all">All statuses</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></div><div class="table-wrap"><table><thead><tr><th>Reference</th><th>User</th><th>Type</th><th>Amount</th><th>Network</th><th>Status</th><th>Created</th><th>Action</th></tr></thead><tbody id="requestsBody"></tbody></table></div></section>
-  <section id="tickets" class="view"><div class="page-head"><div><h1>Support center</h1><p>Read, reply and close customer tickets.</p></div></div><div class="ticket-layout"><div id="ticketList" class="ticket-list"></div><div id="chat" class="chat"><div id="chatEmpty" class="chat-empty">Select a ticket to open the conversation.</div><div id="messages" class="messages hidden"></div><form id="composer" class="composer hidden"><textarea id="replyBody" class="input" placeholder="Write a reply…" required></textarea><button class="btn">Send</button><button id="closeTicket" type="button" class="btn ghost">Close</button></form></div></div></section>
-  <section id="audit" class="view"><div class="page-head"><div><h1>Audit log</h1><p>Permanent record of sensitive administrator actions.</p></div></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Action</th><th>Target</th><th>Administrator</th><th>Details</th></tr></thead><tbody id="auditBody"></tbody></table></div></section>
-</div></main></section>
-<div id="reviewModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Review financial request</h3><button class="x" data-close>×</button></div><div id="reviewSummary" class="summary"></div><div class="field"><label>Transaction hash (optional)</label><input id="reviewHash" class="input"></div><div class="field"><label>Admin note</label><textarea id="reviewNote" class="input" rows="3"></textarea></div><div class="modal-actions"><button class="btn ghost" data-close>Cancel</button><button id="rejectBtn" class="btn red">Reject</button><button id="approveBtn" class="btn green">Approve</button></div></div></div>
-<div id="userModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Manage user</h3><button class="x" data-close>×</button></div><div id="userSummary" class="summary"></div><div class="field"><label>Balance adjustment (+ credit / − debit)</label><input id="balanceDelta" class="input" type="number" step="0.01" placeholder="0.00"></div><div class="field"><label>Required reason</label><input id="balanceReason" class="input" placeholder="Reason for audit log"></div><div class="modal-actions"><button id="statusBtn" class="btn ghost"></button><button id="adjustBtn" class="btn">Apply adjustment</button></div></div></div><div id="toast" class="toast hidden"></div>
-<script>
-const cfg=window.ADMIN_CONFIG||{};const db=supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);let me=null,profiles=[],requests=[],tickets=[],audit=[],selectedRequest=null,selectedUser=null,selectedTicket=null;
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n||0));const date=x=>x?new Date(x).toLocaleString():"—";const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-function toast(m){$('#toast').textContent=m;$('#toast').classList.remove('hidden');setTimeout(()=>$('#toast').classList.add('hidden'),3200)}function fail(e){console.error(e);toast(e?.message||'Something went wrong')}
-async function boot(){const {data:{session}}=await db.auth.getSession();if(!session)return showLogin();const {data:p,error}=await db.from('profiles').select('*').eq('id',session.user.id).single();if(error||p?.role!=='admin'){await db.auth.signOut();return showLogin('This account does not have administrator access.')}me=p;$('#adminName').textContent=p.full_name||p.username||'Administrator';$('#adminEmail').textContent=p.email||session.user.email;$('#login').classList.add('hidden');$('#app').classList.remove('hidden');await loadAll();subscribe()}
-function showLogin(msg=''){$('#app').classList.add('hidden');$('#login').classList.remove('hidden');$('#loginError').textContent=msg;$('#loginError').classList.toggle('hidden',!msg)}
-$('#loginForm').addEventListener('submit',async e=>{e.preventDefault();$('#loginBtn').disabled=true;$('#loginError').classList.add('hidden');const {error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});$('#loginBtn').disabled=false;if(error)return showLogin(error.message);boot()});$('#logoutBtn').onclick=async()=>{await db.auth.signOut();location.reload()};
-async function loadAll(){await Promise.all([loadProfiles(),loadRequests(),loadTickets(),loadAudit()]);renderOverview()}
-async function loadProfiles(){const {data,error}=await db.from('profiles').select('*').order('created_at',{ascending:false});if(error)throw error;profiles=data||[];renderUsers()}
-async function loadRequests(){const {data,error}=await db.from('financial_requests').select('*').order('created_at',{ascending:false});if(error)throw error;requests=(data||[]).map(r=>({...r,profile:profiles.find(p=>p.id===r.user_id)}));renderRequests()}
-async function loadTickets(){const {data,error}=await db.from('support_tickets').select('*').order('updated_at',{ascending:false});if(error)throw error;tickets=(data||[]).map(t=>({...t,profile:profiles.find(p=>p.id===t.user_id)}));renderTickets()}
-async function loadAudit(){const {data,error}=await db.from('admin_audit_logs').select('*').order('created_at',{ascending:false}).limit(250);if(error)throw error;audit=data||[];renderAudit()}
-function renderOverview(){const pending=requests.filter(r=>r.status==='pending'),open=tickets.filter(t=>t.status!=='closed');$('#sUsers').textContent=profiles.length;$('#sNew').textContent=`${profiles.filter(p=>Date.now()-new Date(p.created_at)<6048e5).length} joined this week`;$('#sBalance').textContent=money(profiles.reduce((a,p)=>a+Number(p.balance||0),0));$('#sPending').textContent=pending.length;$('#sTickets').textContent=open.length;$('#requestCount').textContent=pending.length;$('#ticketCount').textContent=tickets.reduce((a,t)=>a+Number(t.admin_unread||0),0);$('#quickRequests').innerHTML=pending.slice(0,6).map(r=>`<div class="queue-item"><div class="avatar">${r.request_type==='deposit'?'↓':'↑'}</div><div class="grow"><b>${esc(r.profile?.email||'Unknown user')}</b><small>${esc(r.network)} · ${date(r.created_at)}</small></div><div><div class="amount">${money(r.amount)}</div><span class="badge pending">${r.request_type}</span></div></div>`).join('')||'<div class="empty">Approval queue is clear.</div>';$('#quickUsers').innerHTML=profiles.slice(0,6).map(p=>`<div class="queue-item"><div class="avatar">${esc((p.full_name||p.email||'?')[0].toUpperCase())}</div><div class="grow"><b>${esc(p.full_name||p.username||'Unnamed')}</b><small>${esc(p.email)}</small></div><div class="amount">${money(p.balance)}</div></div>`).join('')||'<div class="empty">No users found.</div>'}
-function renderUsers(){const q=$('#userSearch')?.value.toLowerCase()||'',st=$('#userStatus')?.value||'all';const rows=profiles.filter(p=>(st==='all'||p.account_status===st)&&[p.full_name,p.username,p.email].some(x=>String(x||'').toLowerCase().includes(q)));$('#usersBody').innerHTML=rows.map(p=>`<tr><td><b>${esc(p.full_name||'Unnamed')}</b><div class="muted">${esc(p.email)}</div></td><td>${esc(p.username||'—')}</td><td>${money(p.balance)}</td><td>${money(p.held_balance)}</td><td>${money(p.invested)}</td><td><span class="badge ${p.account_status}">${p.account_status}</span></td><td>${date(p.created_at)}</td><td><div class="actions"><button class="btn ghost" onclick="openUser('${p.id}')">Manage</button></div></td></tr>`).join('')||'<tr><td colspan="8" class="empty">No matching users.</td></tr>'}
-function renderRequests(){const q=$('#requestSearch')?.value.toLowerCase()||'',ty=$('#requestType')?.value||'all',st=$('#requestStatus')?.value||'pending';const rows=requests.filter(r=>(ty==='all'||r.request_type===ty)&&(st==='all'||r.status===st)&&[r.id,r.network,r.wallet_address,r.tx_hash,r.profile?.email].some(x=>String(x||'').toLowerCase().includes(q)));$('#requestsBody').innerHTML=rows.map(r=>`<tr><td><b>#${r.id.slice(0,8)}</b><div class="muted">${esc(r.asset)}</div></td><td>${esc(r.profile?.full_name||r.profile?.username||'Unknown')}<div class="muted">${esc(r.profile?.email||'')}</div></td><td>${r.request_type}</td><td><b>${money(r.amount)}</b></td><td>${esc(r.network)}<div class="muted">${esc(r.wallet_address||r.tx_hash||'—')}</div></td><td><span class="badge ${r.status}">${r.status}</span></td><td>${date(r.created_at)}</td><td>${r.status==='pending'?`<button class="btn" onclick="openReview('${r.id}')">Review</button>`:'—'}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">No matching requests.</td></tr>'}
-function renderTickets(){const unread=tickets.reduce((a,t)=>a+Number(t.admin_unread||0),0);$('#ticketCount').textContent=unread;$('#ticketList').innerHTML=tickets.map(t=>`<div class="ticket ${selectedTicket?.id===t.id?'selected':''}" onclick="openTicket('${t.id}')"><div class="ticket-top"><b>${esc(t.subject)}</b><span class="badge ${t.status}">${t.status}</span></div><p>${esc(t.profile?.email||'Unknown user')} · ${esc(t.category)} · ${date(t.updated_at)} ${t.admin_unread?`· ${t.admin_unread} new`:''}</p></div>`).join('')||'<div class="empty">No support tickets.</div>'}
-function renderAudit(){$('#auditBody').innerHTML=audit.map(a=>`<tr><td>${date(a.created_at)}</td><td><b>${esc(a.action.replaceAll('_',' '))}</b></td><td>${esc(a.target_type)}<div class="muted">${esc(a.target_id.slice(0,16))}</div></td><td>${esc(profiles.find(p=>p.id===a.admin_id)?.email||a.admin_id.slice(0,8))}</td><td class="muted">${esc(JSON.stringify(a.details))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No administrator actions yet.</td></tr>'}
-window.openReview=id=>{selectedRequest=requests.find(r=>r.id===id);const r=selectedRequest;$('#reviewSummary').innerHTML=`<div><small>User</small><b>${esc(r.profile?.email||'Unknown')}</b></div><div><small>Amount</small><b>${money(r.amount)}</b></div><div><small>Type</small><b>${r.request_type}</b></div><div><small>Network</small><b>${esc(r.network)}</b></div><div style="grid-column:1/-1"><small>${r.request_type==='withdrawal'?'Destination wallet':'Submitted transaction hash'}</small><b>${esc(r.wallet_address||r.tx_hash||'Not provided')}</b></div>`;$('#reviewModal').classList.remove('hidden')};
-async function decide(decision){if(!selectedRequest)return;const btn=decision==='approved'?$('#approveBtn'):$('#rejectBtn');btn.disabled=true;const {error}=await db.rpc('admin_review_financial_request',{p_request_id:selectedRequest.id,p_decision:decision,p_admin_note:$('#reviewNote').value||null,p_tx_hash:$('#reviewHash').value||null});btn.disabled=false;if(error)return fail(error);closeModals();toast(`Request ${decision}`);await loadAll()}
-$('#approveBtn').onclick=()=>decide('approved');$('#rejectBtn').onclick=()=>decide('rejected');
-window.openUser=id=>{selectedUser=profiles.find(p=>p.id===id);const p=selectedUser;$('#userSummary').innerHTML=`<div><small>Name</small><b>${esc(p.full_name||'Unnamed')}</b></div><div><small>Email</small><b>${esc(p.email)}</b></div><div><small>Available</small><b>${money(p.balance)}</b></div><div><small>Held</small><b>${money(p.held_balance)}</b></div>`;$('#statusBtn').textContent=p.account_status==='active'?'Suspend account':'Reactivate account';$('#userModal').classList.remove('hidden')};
-$('#statusBtn').onclick=async()=>{const st=selectedUser.account_status==='active'?'suspended':'active';const {error}=await db.rpc('admin_set_account_status',{p_user_id:selectedUser.id,p_status:st});if(error)return fail(error);closeModals();toast(`Account ${st}`);await loadAll()};$('#adjustBtn').onclick=async()=>{const delta=Number($('#balanceDelta').value),reason=$('#balanceReason').value.trim();if(!delta||!reason)return toast('Enter an amount and reason');const {error}=await db.rpc('admin_adjust_balance',{p_user_id:selectedUser.id,p_delta:delta,p_reason:reason});if(error)return fail(error);closeModals();toast('Balance adjusted');await loadAll()};
-window.openTicket=async id=>{selectedTicket=tickets.find(t=>t.id===id);renderTickets();$('#chatEmpty').classList.add('hidden');$('#messages').classList.remove('hidden');$('#composer').classList.remove('hidden');await db.rpc('mark_ticket_read_by_admin',{p_ticket_id:id});const {data,error}=await db.from('support_messages').select('*').eq('ticket_id',id).order('created_at');if(error)return fail(error);$('#messages').innerHTML=(data||[]).map(m=>`<div class="msg ${m.sender_role==='admin'?'admin':''}">${esc(m.body)}<small>${m.sender_role} · ${date(m.created_at)}</small></div>`).join('')||'<div class="empty">No messages yet.</div>';$('#messages').scrollTop=$('#messages').scrollHeight;selectedTicket.admin_unread=0;renderOverview()};
-$('#composer').addEventListener('submit',async e=>{e.preventDefault();const body=$('#replyBody').value.trim();if(!body||!selectedTicket)return;const {error}=await db.from('support_messages').insert({ticket_id:selectedTicket.id,sender_id:me.id,body,sender_role:'admin'});if(error)return fail(error);$('#replyBody').value='';await loadTickets();await openTicket(selectedTicket.id)});$('#closeTicket').onclick=async()=>{if(!selectedTicket)return;const {error}=await db.from('support_tickets').update({status:'closed'}).eq('id',selectedTicket.id);if(error)return fail(error);toast('Ticket closed');await loadTickets();await openTicket(selectedTicket.id)};
-function closeModals(){$$('.modal').forEach(x=>x.classList.add('hidden'));$('#reviewNote').value=$('#reviewHash').value=$('#balanceDelta').value=$('#balanceReason').value=''}$$('[data-close]').forEach(b=>b.onclick=closeModals);$$('.modal').forEach(m=>m.onclick=e=>{if(e.target===m)closeModals()});
-function view(id){$$('.view').forEach(x=>x.classList.toggle('active',x.id===id));$$('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===id));$('#topTitle').textContent={overview:'Overview',users:'Users',requests:'Financial requests',tickets:'Support tickets',audit:'Audit log'}[id];$('#sidebar').classList.remove('open')}$$('.nav button').forEach(b=>b.onclick=()=>view(b.dataset.view));$$('[data-go]').forEach(b=>b.onclick=()=>view(b.dataset.go));$('#mobileMenu').onclick=()=>$('#sidebar').classList.toggle('open');$('#refreshBtn').onclick=async()=>{try{await loadAll();toast('Data refreshed')}catch(e){fail(e)}};['userSearch','userStatus'].forEach(id=>$('#'+id).addEventListener('input',renderUsers));['requestSearch','requestType','requestStatus'].forEach(id=>$('#'+id).addEventListener('input',renderRequests));
-function subscribe(){db.channel('admin-live').on('postgres_changes',{event:'*',schema:'public',table:'financial_requests'},async()=>{await loadProfiles();await loadRequests();renderOverview()}).on('postgres_changes',{event:'*',schema:'public',table:'support_tickets'},async()=>{await loadTickets();renderOverview()}).on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages'},async()=>{await loadTickets();if(selectedTicket)await openTicket(selectedTicket.id)}).subscribe()}
-setInterval(()=>$('#clock').textContent=new Date().toLocaleString(),1000);boot().catch(e=>showLogin(e.message));
-</script></body></html>
+  <section id="login" class="login">
+    <form id="loginForm" class="login-card">
+      <div class="brand"><div class="logo">BI</div><div><b>Binanc Invest</b><span>Secure administration</span></div></div>
+      <h1>Admin sign in</h1><p class="sub">Access is limited to verified administrator accounts. Every financial action is recorded.</p>
+      <div class="field"><label for="email">Email</label><input id="email" class="input" type="email" autocomplete="username" required></div>
+      <div class="field"><label for="password">Password</label><input id="password" class="input" type="password" autocomplete="current-password" required></div>
+      <button id="loginBtn" class="btn">Sign in securely</button><div id="loginError" class="error hidden"></div>
+    </form>
+  </section>
+
+  <section id="app" class="hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand"><div class="logo">BI</div><div><b>Admin Control</b><span>Operations center</span></div></div>
+      <nav class="nav">
+        <button class="active" data-view="overview"><span class="ico">◫</span>Overview</button>
+        <button data-view="users"><span class="ico">◎</span>Users & plans</button>
+        <button data-view="requests"><span class="ico">⇄</span>Financial requests <span id="requestCount" class="count">0</span></button>
+        <button data-view="tickets"><span class="ico">◌</span>Support tickets <span id="ticketCount" class="count">0</span></button>
+        <button data-view="audit"><span class="ico">≡</span>Audit log</button>
+      </nav>
+      <div class="side-foot"><div class="admin-mini"><b id="adminName">Administrator</b><span id="adminEmail"></span><button id="logoutBtn" class="btn ghost">Sign out</button></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="top"><div><h2 id="topTitle">Overview</h2><small id="clock"></small></div><div class="top-actions"><button id="mobileMenu" class="btn ghost mobile-menu">Menu</button><button id="refreshBtn" class="btn ghost">Refresh</button></div></header>
+      <div class="content">
+        <section id="overview" class="view active">
+          <div class="page-head"><div><h1>Operations overview</h1><p>Users, balances, contracts, payments and support in one view.</p></div><span class="badge active">● System online</span></div>
+          <div class="stats">
+            <div class="stat"><div class="stat-top"><span>Total users</span><i class="dot"></i></div><strong id="sUsers">—</strong><small id="sNew">Loading…</small></div>
+            <div class="stat"><div class="stat-top"><span>Available balances</span><i class="dot"></i></div><strong id="sBalance">—</strong><small>Across user wallets</small></div>
+            <div class="stat"><div class="stat-top"><span>Active capital</span><i class="dot"></i></div><strong id="sInvested">—</strong><small id="sContracts">Active contracts</small></div>
+            <div class="stat"><div class="stat-top"><span>Live profit</span><i class="dot"></i></div><strong id="sProfit">—</strong><small>Calculated from active plans</small></div>
+            <div class="stat"><div class="stat-top"><span>Pending requests</span><i class="dot"></i></div><strong id="sPending">—</strong><small id="sTickets">Open support tickets</small></div>
+          </div>
+          <div class="grid2">
+            <div class="card"><div class="card-head"><h3>Financial approval queue</h3><button class="btn ghost sm" data-go="requests">View all</button></div><div id="quickRequests" class="card-body queue"></div></div>
+            <div class="card"><div class="card-head"><h3>Recent users</h3><button class="btn ghost sm" data-go="users">Manage</button></div><div id="quickUsers" class="card-body queue"></div></div>
+          </div>
+        </section>
+
+        <section id="users" class="view">
+          <div class="page-head"><div><h1>User management</h1><p>Click a user to open balances, profits, all plans and VIP contracts.</p></div></div>
+          <div class="toolbar"><input id="userSearch" class="input" placeholder="Search name, username or email"><select id="userStatus" class="input"><option value="all">All account statuses</option><option value="active">Active</option><option value="suspended">Suspended</option></select><select id="userPlanFilter" class="input"><option value="all">All plan states</option><option value="active">Has active plan</option><option value="vip">Has VIP</option><option value="none">No active plan</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>User</th><th>Available</th><th>Invested</th><th>Stored profit</th><th>Active plans</th><th>VIP</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead><tbody id="usersBody"></tbody></table></div>
+        </section>
+
+        <section id="requests" class="view">
+          <div class="page-head"><div><h1>Financial requests</h1><p>Review deposits and withdrawals with a permanent audit trail.</p></div></div>
+          <div class="toolbar"><input id="requestSearch" class="input" placeholder="Search user, network, wallet or reference"><select id="requestType" class="input"><option value="all">Deposit & withdrawal</option><option value="deposit">Deposits</option><option value="withdrawal">Withdrawals</option></select><select id="requestStatus" class="input"><option value="pending">Pending</option><option value="all">All statuses</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></div>
+          <div class="table-wrap"><table><thead><tr><th>Reference</th><th>User</th><th>Type</th><th>Amount</th><th>Network</th><th>Status</th><th>Created</th><th>Action</th></tr></thead><tbody id="requestsBody"></tbody></table></div>
+        </section>
+
+        <section id="tickets" class="view">
+          <div class="page-head"><div><h1>Support center</h1><p>Read, answer and close customer tickets.</p></div></div>
+          <div class="ticket-layout"><div id="ticketList" class="ticket-list"></div><div id="chat" class="chat"><div id="chatEmpty" class="chat-empty">Select a ticket to open the conversation.</div><div id="messages" class="messages hidden"></div><form id="composer" class="composer hidden"><textarea id="replyBody" class="input" placeholder="Write a reply…" required></textarea><button class="btn">Send</button><button id="closeTicket" type="button" class="btn ghost">Close</button></form></div></div>
+        </section>
+
+        <section id="audit" class="view">
+          <div class="page-head"><div><h1>Audit log</h1><p>Permanent record of administrator actions.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Time</th><th>Action</th><th>Target</th><th>Administrator</th><th>Details</th></tr></thead><tbody id="auditBody"></tbody></table></div>
+        </section>
+      </div>
+    </main>
+  </section>
+
+  <div id="user360Modal" class="modal user360 hidden" role="dialog" aria-modal="true" aria-labelledby="user360Name">
+    <div class="modal-box user360-box">
+      <div class="user360-head"><div id="user360Avatar" class="avatar">U</div><div class="user360-title"><h2 id="user360Name">User</h2><p id="user360Identity"></p></div><span id="user360Status" class="badge active">active</span><button class="x" data-close aria-label="Close">×</button></div>
+      <div class="user360-body">
+        <div id="userMetrics" class="user-metrics"></div>
+        <div class="tabs"><button class="tab active" data-user-tab="contracts">All contracts</button><button class="tab" data-user-tab="profile">Profile</button><button class="tab" data-user-tab="finance">Financial history</button><button class="tab" data-user-tab="support">Support</button><button class="tab" data-user-tab="tools">Account tools</button></div>
+        <section id="userTabContracts" class="user-tab active"><div class="section-title"><h3>Investment contracts</h3><div id="contractFilterText" class="muted"></div></div><div id="userContracts" class="contract-grid"></div></section>
+        <section id="userTabProfile" class="user-tab"><div id="userProfileGrid" class="profile-grid"></div></section>
+        <section id="userTabFinance" class="user-tab"><div class="section-title"><h3>Deposit and withdrawal requests</h3></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Network</th><th>Status</th><th>Reference</th></tr></thead><tbody id="userFinanceBody"></tbody></table></div><div class="section-title" style="margin-top:18px"><h3>Transactions</h3></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th><th>Reference</th></tr></thead><tbody id="userTransactionsBody"></tbody></table></div></section>
+        <section id="userTabSupport" class="user-tab"><div class="table-wrap"><table><thead><tr><th>Updated</th><th>Subject</th><th>Category</th><th>Status</th></tr></thead><tbody id="userTicketsBody"></tbody></table></div></section>
+        <section id="userTabTools" class="user-tab"><div class="profile-grid"><div class="profile-item"><span>Available balance adjustment</span><b>Credit or debit with a required audit reason.</b><button id="openBalanceBtn" class="btn sm" style="margin-top:12px">Adjust balance</button></div><div class="profile-item"><span>Account access</span><b id="accountToolStatus">Active</b><button id="statusBtn" class="btn ghost sm" style="margin-top:12px">Suspend account</button></div><div class="profile-item"><span>Refresh user data</span><b>Reload the latest profile, contracts and history.</b><button id="refreshUserBtn" class="btn ghost sm" style="margin-top:12px">Refresh user</button></div></div><div class="danger-zone"><h3>Contract administration</h3><p>Active standard and VIP contracts can be cancelled from the All contracts tab. A reason and credit method are required and recorded.</p></div></section>
+      </div>
+    </div>
+  </div>
+
+  <div id="reviewModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Review financial request</h3><button class="x" data-close>×</button></div><div id="reviewSummary" class="summary"></div><div class="field"><label>Transaction hash (optional)</label><input id="reviewHash" class="input"></div><div class="field"><label>Admin note</label><textarea id="reviewNote" class="input" rows="3"></textarea></div><div class="modal-actions"><button class="btn ghost" data-close>Cancel</button><button id="rejectBtn" class="btn red">Reject</button><button id="approveBtn" class="btn green">Approve</button></div></div></div>
+  <div id="balanceModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Adjust available balance</h3><button class="x" data-close>×</button></div><div id="balanceUser" class="summary"></div><div class="field"><label>Adjustment (+ credit / − debit)</label><input id="balanceDelta" class="input" type="number" step="0.01" placeholder="0.00"></div><div class="field"><label>Required audit reason</label><input id="balanceReason" class="input" maxlength="300"></div><div class="modal-actions"><button class="btn ghost" data-close>Cancel</button><button id="adjustBtn" class="btn">Apply adjustment</button></div></div></div>
+  <div id="cancelPlanModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3>Cancel investment contract</h3><button class="x" data-close>×</button></div><div id="cancelPlanSummary" class="summary"></div><div class="field"><label>Credit method</label><select id="cancelCreditMode" class="input"><option value="principal">Return principal to available balance</option><option value="principal_plus_accrued">Return principal + calculated profit</option><option value="none">Cancel without wallet credit</option></select></div><div class="field"><label>Required cancellation reason</label><textarea id="cancelPlanReason" class="input" rows="3" maxlength="500"></textarea></div><div class="error">This action cancels the contract, updates the account balances and creates a permanent audit record. It also supports VIP contracts.</div><div class="modal-actions"><button class="btn ghost" data-close>Keep contract</button><button id="confirmCancelPlan" class="btn red">Cancel contract</button></div></div></div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+  (()=>{
+    'use strict';
+    const cfg=window.ADMIN_CONFIG||{};
+    const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+    const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:8}).format(Number(n||0));
+    const date=x=>x?new Date(x).toLocaleString():'—';
+    const num=n=>Number.isFinite(Number(n))?Number(n):0;
+    const text=v=>String(v??'');
+    const esc=s=>text(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    const DAY=86400000;
+
+    let db=null,me=null,profiles=[],investments=[],requests=[],tickets=[],audit=[],transactions=[];
+    let selectedRequest=null,selectedUser=null,selectedTicket=null,selectedInvestment=null,liveChannel=null;
+
+    function toast(message,type='info'){
+      const el=$('#toast'); el.textContent=message; el.classList.remove('hidden');
+      el.style.borderColor=type==='error'?'#6e2934':type==='success'?'#276f52':'#314054';
+      clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.add('hidden'),3600);
+    }
+    function fail(error,fallback='Something went wrong'){
+      console.error(error); toast(error?.message||fallback,'error');
+    }
+    function profileOf(userId){return profiles.find(p=>String(p.id)===String(userId));}
+    function userInvestments(userId){return investments.filter(i=>String(i.user_id)===String(userId));}
+    function isActive(i){return ['active','pending'].includes(text(i?.status).toLowerCase());}
+    function isVip(i){return text(i?.plan_name).toUpperCase()==='VIP_LOCK'||text(i?.plan_name).toUpperCase().includes('VIP');}
+    function investmentProfit(i,at=Date.now()){
+      const realized=Math.max(0,num(i?.realized_profit));
+      if(!isActive(i)) return realized;
+      const start=new Date(i.profit_started_at||i.started_at||i.created_at).getTime();
+      if(!Number.isFinite(start)) return realized;
+      const endValue=new Date(i.ends_at).getTime();
+      const stop=Number.isFinite(endValue)?Math.min(at,endValue):at;
+      const days=Math.max(0,(stop-start)/DAY);
+      return realized+Math.max(0,num(i.principal)*(num(i.daily_rate)/100)*days);
+    }
+    function remaining(i){
+      if(!isActive(i)) return text(i.status||'unknown');
+      const end=new Date(i.ends_at).getTime();
+      if(!Number.isFinite(end)) return 'No fixed end';
+      const ms=end-Date.now(); if(ms<=0)return 'Matured';
+      const d=Math.floor(ms/DAY),h=Math.floor(ms%DAY/36e5),m=Math.floor(ms%36e5/6e4);
+      return `${d}d ${h}h ${m}m remaining`;
+    }
+    function initials(p){return text(p?.full_name||p?.username||p?.email||'?').trim().slice(0,1).toUpperCase()||'?';}
+    function safeJson(value){try{return JSON.stringify(value??{},null,0)}catch{return '{}'}}
+
+    function showLogin(message=''){
+      $('#app').classList.add('hidden'); $('#login').classList.remove('hidden');
+      $('#loginError').textContent=message; $('#loginError').classList.toggle('hidden',!message);
+    }
+    async function boot(){
+      if(!cfg.supabaseUrl||!cfg.supabaseAnonKey){return showLogin('config.js is missing Supabase URL or anon key.');}
+      db=supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+      const {data:{session},error}=await db.auth.getSession(); if(error)throw error;
+      if(!session)return showLogin();
+      const {data:profile,error:profileError}=await db.from('profiles').select('*').eq('id',session.user.id).single();
+      if(profileError||text(profile?.role).toLowerCase()!=='admin'){
+        await db.auth.signOut(); return showLogin('This account does not have administrator access.');
+      }
+      me=profile; $('#adminName').textContent=profile.full_name||profile.username||'Administrator';
+      $('#adminEmail').textContent=profile.email||session.user.email||'';
+      $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+      await loadAll(); subscribe();
+    }
+
+    $('#loginForm').addEventListener('submit',async event=>{
+      event.preventDefault(); if(!db){if(!cfg.supabaseUrl||!cfg.supabaseAnonKey)return showLogin('Complete config.js first.');db=supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);}
+      const button=$('#loginBtn'); button.disabled=true; $('#loginError').classList.add('hidden');
+      const {error}=await db.auth.signInWithPassword({email:$('#email').value.trim(),password:$('#password').value});
+      button.disabled=false; if(error)return showLogin(error.message); boot().catch(e=>showLogin(e.message));
+    });
+    $('#logoutBtn').onclick=async()=>{if(liveChannel)await db.removeChannel(liveChannel);await db.auth.signOut();location.reload();};
+
+    async function queryRequired(table,order='created_at'){
+      const {data,error}=await db.from(table).select('*').order(order,{ascending:false}); if(error)throw error; return data||[];
+    }
+    async function queryOptional(table,order='created_at'){
+      const {data,error}=await db.from(table).select('*').order(order,{ascending:false});
+      if(error){console.warn(`${table} could not be loaded`,error);return [];} return data||[];
+    }
+    async function loadAll(){
+      const [p,i,r,t,a,x]=await Promise.all([
+        queryRequired('profiles'),queryRequired('investments'),queryRequired('financial_requests'),
+        queryRequired('support_tickets','updated_at'),queryOptional('admin_audit_logs'),queryOptional('transactions')
+      ]);
+      profiles=p;investments=i;requests=r;tickets=t;audit=a.slice(0,250);transactions=x;
+      renderAll();
+    }
+    function renderAll(){renderOverview();renderUsers();renderRequests();renderTickets();renderAudit();}
+
+    function renderOverview(){
+      const active=investments.filter(isActive),pending=requests.filter(r=>text(r.status).toLowerCase()==='pending');
+      const open=tickets.filter(t=>text(t.status).toLowerCase()!=='closed');
+      $('#sUsers').textContent=profiles.length;
+      $('#sNew').textContent=`${profiles.filter(p=>Date.now()-new Date(p.created_at).getTime()<7*DAY).length} joined this week`;
+      $('#sBalance').textContent=money(profiles.reduce((sum,p)=>sum+num(p.balance),0));
+      $('#sInvested').textContent=money(active.reduce((sum,i)=>sum+num(i.principal),0));
+      $('#sContracts').textContent=`${active.length} active · ${active.filter(isVip).length} VIP`;
+      $('#sProfit').textContent=money(active.reduce((sum,i)=>sum+investmentProfit(i),0));
+      $('#sPending').textContent=pending.length; $('#sTickets').textContent=`${open.length} open support tickets`;
+      $('#requestCount').textContent=pending.length; $('#ticketCount').textContent=tickets.reduce((sum,t)=>sum+num(t.admin_unread),0);
+      $('#quickRequests').innerHTML=pending.slice(0,7).map(r=>{const p=profileOf(r.user_id);return `<div class="queue-item"><div class="avatar">${text(r.request_type)==='deposit'?'↓':'↑'}</div><div class="grow"><b>${esc(p?.email||'Unknown user')}</b><small>${esc(r.network||r.asset||'—')} · ${date(r.created_at)}</small></div><div><div class="amount">${money(r.amount)}</div><span class="badge pending">${esc(r.request_type)}</span></div></div>`}).join('')||'<div class="empty">Approval queue is clear.</div>';
+      $('#quickUsers').innerHTML=profiles.slice(0,7).map(p=>`<button class="queue-item" style="width:100%;color:inherit;text-align:left;cursor:pointer" onclick="openUser360('${esc(p.id)}')"><div class="avatar">${esc(initials(p))}</div><div class="grow"><b>${esc(p.full_name||p.username||'Unnamed')}</b><small>${esc(p.email||'')}</small></div><div class="amount">${money(p.balance)}</div></button>`).join('')||'<div class="empty">No users found.</div>';
+    }
+
+    function renderUsers(){
+      const q=text($('#userSearch')?.value).toLowerCase(),status=$('#userStatus')?.value||'all',planFilter=$('#userPlanFilter')?.value||'all';
+      const rows=profiles.filter(p=>{
+        const plans=userInvestments(p.id).filter(isActive),hasVip=plans.some(isVip);
+        const search=[p.full_name,p.username,p.email,p.id].some(v=>text(v).toLowerCase().includes(q));
+        const statusOk=status==='all'||text(p.account_status||'active').toLowerCase()===status;
+        const planOk=planFilter==='all'||(planFilter==='active'&&plans.length)||(planFilter==='vip'&&hasVip)||(planFilter==='none'&&!plans.length);
+        return search&&statusOk&&planOk;
+      });
+      $('#usersBody').innerHTML=rows.map(p=>{
+        const plans=userInvestments(p.id).filter(isActive),vip=plans.filter(isVip).length;
+        return `<tr><td><button class="user-link" onclick="openUser360('${esc(p.id)}')">${esc(p.full_name||'Unnamed')}</button><div class="muted">${esc(p.email||'')} · @${esc(p.username||'—')}</div></td><td><b>${money(p.balance)}</b></td><td>${money(p.invested||plans.reduce((s,i)=>s+num(i.principal),0))}</td><td class="muted">${money(p.profit)}</td><td><span class="badge ${plans.length?'active':'closed'}">${plans.length}</span></td><td>${vip?`<span class="badge vip">VIP × ${vip}</span>`:'—'}</td><td><span class="badge ${esc(p.account_status||'active')}">${esc(p.account_status||'active')}</span></td><td>${date(p.created_at)}</td><td><button class="btn ghost sm" onclick="openUser360('${esc(p.id)}')">Open 360°</button></td></tr>`;
+      }).join('')||'<tr><td colspan="9" class="empty">No matching users.</td></tr>';
+    }
+
+    function renderRequests(){
+      const q=text($('#requestSearch')?.value).toLowerCase(),type=$('#requestType')?.value||'all',status=$('#requestStatus')?.value||'pending';
+      const rows=requests.filter(r=>{
+        const p=profileOf(r.user_id);
+        return (type==='all'||r.request_type===type)&&(status==='all'||r.status===status)&&[r.id,r.network,r.wallet_address,r.tx_hash,p?.email,p?.username].some(v=>text(v).toLowerCase().includes(q));
+      });
+      $('#requestsBody').innerHTML=rows.map(r=>{const p=profileOf(r.user_id);return `<tr><td><b>#${esc(text(r.id).slice(0,8))}</b><div class="muted">${esc(r.asset||'')}</div></td><td><button class="user-link" onclick="openUser360('${esc(r.user_id)}')">${esc(p?.full_name||p?.username||'Unknown')}</button><div class="muted">${esc(p?.email||'')}</div></td><td>${esc(r.request_type)}</td><td><b>${money(r.amount)}</b></td><td>${esc(r.network||'—')}<div class="muted">${esc(r.wallet_address||r.tx_hash||'—')}</div></td><td><span class="badge ${esc(r.status)}">${esc(r.status)}</span></td><td>${date(r.created_at)}</td><td>${r.status==='pending'?`<button class="btn sm" onclick="openReview('${esc(r.id)}')">Review</button>`:'—'}</td></tr>`}).join('')||'<tr><td colspan="8" class="empty">No matching requests.</td></tr>';
+    }
+
+    function renderTickets(){
+      $('#ticketCount').textContent=tickets.reduce((sum,t)=>sum+num(t.admin_unread),0);
+      $('#ticketList').innerHTML=tickets.map(t=>{const p=profileOf(t.user_id);return `<div class="ticket ${selectedTicket?.id===t.id?'selected':''}" onclick="openTicket('${esc(t.id)}')"><div class="ticket-top"><b>${esc(t.subject||'No subject')}</b><span class="badge ${esc(t.status)}">${esc(t.status)}</span></div><p>${esc(p?.email||'Unknown user')} · ${esc(t.category||'General')} · ${date(t.updated_at)} ${t.admin_unread?`· ${num(t.admin_unread)} new`:''}</p></div>`}).join('')||'<div class="empty">No support tickets.</div>';
+    }
+    function renderAudit(){
+      $('#auditBody').innerHTML=audit.map(a=>`<tr><td>${date(a.created_at)}</td><td><b>${esc(text(a.action).replaceAll('_',' '))}</b></td><td>${esc(a.target_type||'—')}<div class="muted">${esc(text(a.target_id).slice(0,24))}</div></td><td>${esc(profileOf(a.admin_id)?.email||text(a.admin_id).slice(0,10))}</td><td class="muted">${esc(safeJson(a.details))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No administrator actions yet.</td></tr>';
+    }
+
+    function userDetailFallback(userId){
+      return {profile:profileOf(userId),investments:userInvestments(userId),financial_requests:requests.filter(r=>String(r.user_id)===String(userId)),transactions:transactions.filter(t=>String(t.user_id)===String(userId)),tickets:tickets.filter(t=>String(t.user_id)===String(userId))};
+    }
+    async function getUserDetail(userId){
+      const {data,error}=await db.rpc('admin_get_user_360',{p_user_id:userId});
+      if(error){console.warn('admin_get_user_360 unavailable, using already loaded data',error);return userDetailFallback(userId);}
+      return data;
+    }
+    window.openUser360=async userId=>{
+      const base=profileOf(userId); if(!base)return;
+      selectedUser={...base,__detail:userDetailFallback(userId)}; paintUser360(selectedUser.__detail); $('#user360Modal').classList.remove('hidden');
+      try{const detail=await getUserDetail(userId);selectedUser={...(detail.profile||base),__detail:detail};paintUser360(detail);}catch(error){fail(error,'User details could not be loaded');}
+    };
+    function paintUser360(detail){
+      const p=detail.profile||{},plans=detail.investments||[],active=plans.filter(isActive),liveProfit=active.reduce((s,i)=>s+investmentProfit(i),0),principal=active.reduce((s,i)=>s+num(i.principal),0);
+      $('#user360Avatar').textContent=initials(p); $('#user360Name').textContent=p.full_name||p.username||'Unnamed user';
+      $('#user360Identity').textContent=`${p.email||'No email'} · @${p.username||'—'} · ${p.id||''}`;
+      $('#user360Status').textContent=p.account_status||'active'; $('#user360Status').className=`badge ${p.account_status||'active'}`;
+      $('#userMetrics').innerHTML=`<div class="metric gold"><span>Available balance</span><strong>${money(p.balance)}</strong></div><div class="metric"><span>Profile invested</span><strong>${money(p.invested)}</strong></div><div class="metric"><span>Active principal</span><strong>${money(principal)}</strong></div><div class="metric green"><span>Live plan profit</span><strong>${money(liveProfit)}</strong></div><div class="metric green"><span>Stored profit</span><strong>${money(p.profit)}</strong></div><div class="metric"><span>Total account value</span><strong>${money(num(p.balance)+principal+liveProfit+num(p.profit))}</strong></div>`;
+      $('#contractFilterText').textContent=`${active.length} active · ${plans.filter(isVip).length} VIP · ${plans.length} total`;
+      renderUserContracts(plans); renderUserProfile(p); renderUserFinance(detail); renderUserSupport(detail.tickets||[]);
+      $('#accountToolStatus').textContent=p.account_status||'active'; $('#statusBtn').textContent=text(p.account_status).toLowerCase()==='suspended'?'Reactivate account':'Suspend account';
+    }
+    function renderUserContracts(plans){
+      $('#userContracts').innerHTML=plans.map(i=>{
+        const profit=investmentProfit(i),payout=num(i.principal)+profit,vip=isVip(i),active=isActive(i);
+        return `<article class="contract ${vip?'vip-contract':''}"><div class="contract-head"><div><h3>${esc(i.plan_name||'Investment')}</h3><p>#${esc(text(i.id).slice(0,12))} · ${esc(i.activation_source||'standard')}</p></div><div>${vip?'<span class="badge vip">VIP</span> ':''}<span class="badge ${esc(i.status||'closed')}">${esc(i.status||'unknown')}</span></div></div><div class="contract-metrics"><div><span>Principal</span><b>${money(i.principal)}</b></div><div><span>Daily rate</span><b>${num(i.daily_rate).toFixed(2)}%</b></div><div><span>Live profit</span><b style="color:var(--green)">${money(profit)}</b></div><div><span>Current payout</span><b>${money(payout)}</b></div><div><span>Term</span><b>${num(i.term_days)||'Flexible'}${i.term_days?' days':''}</b></div><div><span>Confirmed</span><b>${i.user_confirmed===false?'No':'Yes'}</b></div></div><div class="contract-foot"><div class="contract-time">${date(i.started_at)} → ${date(i.ends_at)}<br>${esc(remaining(i))}</div>${active?`<button class="btn red sm" onclick="openCancelPlan('${esc(i.id)}')">Cancel ${vip?'VIP ':''}contract</button>`:''}</div>${i.cancellation_reason?`<div class="error" style="margin-top:12px">Cancelled: ${esc(i.cancellation_reason)} · credited ${money(i.cancellation_credit)}</div>`:''}</article>`;
+      }).join('')||'<div class="empty" style="grid-column:1/-1">This user has no investment contracts.</div>';
+    }
+    function renderUserProfile(p){
+      const fields=[['Full name',p.full_name],['Username',p.username],['Email',p.email],['User ID',p.id],['Role',p.role],['Account status',p.account_status],['Available balance',money(p.balance)],['Held balance',money(p.held_balance)],['Invested',money(p.invested)],['Stored profit',money(p.profit)],['Account level',p.level||p.account_level],['Referral code',p.referral_code],['Referred by',p.referred_by],['Created',date(p.created_at)],['Updated',date(p.updated_at)]];
+      $('#userProfileGrid').innerHTML=fields.map(([label,value])=>`<div class="profile-item"><span>${esc(label)}</span><b>${esc(value??'—')}</b></div>`).join('');
+    }
+    function renderUserFinance(detail){
+      const rows=detail.financial_requests||[];
+      $('#userFinanceBody').innerHTML=rows.map(r=>`<tr><td>${date(r.created_at)}</td><td>${esc(r.request_type||r.type||'—')}</td><td><b>${money(r.amount)}</b></td><td>${esc(r.network||r.asset||'—')}</td><td><span class="badge ${esc(r.status||'pending')}">${esc(r.status||'pending')}</span></td><td>${esc(r.tx_hash||r.wallet_address||text(r.id).slice(0,10))}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No financial requests.</td></tr>';
+      const tx=detail.transactions||[];
+      $('#userTransactionsBody').innerHTML=tx.map(t=>`<tr><td>${date(t.created_at)}</td><td>${esc(t.type||t.transaction_type||'—')}</td><td><b>${money(t.amount)}</b></td><td><span class="badge ${esc(t.status||'completed')}">${esc(t.status||'completed')}</span></td><td>${esc(t.reference||t.tx_hash||text(t.id).slice(0,10))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No transaction rows.</td></tr>';
+    }
+    function renderUserSupport(rows){
+      $('#userTicketsBody').innerHTML=rows.map(t=>`<tr><td>${date(t.updated_at)}</td><td>${esc(t.subject||'—')}</td><td>${esc(t.category||'—')}</td><td><span class="badge ${esc(t.status||'open')}">${esc(t.status||'open')}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">No support tickets.</td></tr>';
+    }
+
+    window.openCancelPlan=investmentId=>{
+      selectedInvestment=investments.find(i=>String(i.id)===String(investmentId))||selectedUser?.__detail?.investments?.find(i=>String(i.id)===String(investmentId)); if(!selectedInvestment)return;
+      const p=profileOf(selectedInvestment.user_id)||selectedUser;
+      $('#cancelPlanSummary').innerHTML=`<div><small>User</small><b>${esc(p?.email||'Unknown')}</b></div><div><small>Plan</small><b>${esc(selectedInvestment.plan_name)}</b></div><div><small>Principal</small><b>${money(selectedInvestment.principal)}</b></div><div><small>Calculated profit</small><b>${money(investmentProfit(selectedInvestment))}</b></div>`;
+      $('#cancelPlanReason').value=''; $('#cancelCreditMode').value='principal'; $('#cancelPlanModal').classList.remove('hidden');
+    };
+    $('#confirmCancelPlan').onclick=async()=>{
+      if(!selectedInvestment)return; const reason=$('#cancelPlanReason').value.trim(); if(!reason)return toast('Enter a cancellation reason.','error');
+      const button=$('#confirmCancelPlan');button.disabled=true;
+      const {data,error}=await db.rpc('admin_cancel_investment',{p_investment_id:selectedInvestment.id,p_reason:reason,p_credit_mode:$('#cancelCreditMode').value});
+      button.disabled=false;if(error)return fail(error,'Contract cancellation failed');closeModals();toast(`Contract cancelled. Credited ${money(data?.credited_amount)}`,'success');
+      const userId=selectedInvestment.user_id;await loadAll();await openUser360(userId);
+    };
+
+    window.openReview=id=>{
+      selectedRequest=requests.find(r=>String(r.id)===String(id));if(!selectedRequest)return;const p=profileOf(selectedRequest.user_id);
+      $('#reviewSummary').innerHTML=`<div><small>User</small><b>${esc(p?.email||'Unknown')}</b></div><div><small>Amount</small><b>${money(selectedRequest.amount)}</b></div><div><small>Type</small><b>${esc(selectedRequest.request_type)}</b></div><div><small>Network</small><b>${esc(selectedRequest.network||'—')}</b></div><div style="grid-column:1/-1"><small>${selectedRequest.request_type==='withdrawal'?'Destination wallet':'Submitted transaction hash'}</small><b>${esc(selectedRequest.wallet_address||selectedRequest.tx_hash||'Not provided')}</b></div>`;
+      $('#reviewModal').classList.remove('hidden');
+    };
+    async function decide(decision){
+      if(!selectedRequest)return;const button=decision==='approved'?$('#approveBtn'):$('#rejectBtn');button.disabled=true;
+      const {error}=await db.rpc('admin_review_financial_request',{p_request_id:selectedRequest.id,p_decision:decision,p_admin_note:$('#reviewNote').value||null,p_tx_hash:$('#reviewHash').value||null});
+      button.disabled=false;if(error)return fail(error);closeModals();toast(`Request ${decision}`,'success');await loadAll();
+    }
+    $('#approveBtn').onclick=()=>decide('approved');$('#rejectBtn').onclick=()=>decide('rejected');
+
+    $('#openBalanceBtn').onclick=()=>{
+      if(!selectedUser)return;$('#balanceUser').innerHTML=`<div><small>User</small><b>${esc(selectedUser.email||selectedUser.username)}</b></div><div><small>Current balance</small><b>${money(selectedUser.balance)}</b></div>`;$('#balanceDelta').value='';$('#balanceReason').value='';$('#balanceModal').classList.remove('hidden');
+    };
+    $('#adjustBtn').onclick=async()=>{
+      if(!selectedUser)return;const delta=Number($('#balanceDelta').value),reason=$('#balanceReason').value.trim();if(!delta||!reason)return toast('Enter a non-zero amount and reason.','error');
+      const button=$('#adjustBtn');button.disabled=true;const {error}=await db.rpc('admin_adjust_balance',{p_user_id:selectedUser.id,p_delta:delta,p_reason:reason});button.disabled=false;
+      if(error)return fail(error);closeModals();toast('Balance adjusted.','success');const id=selectedUser.id;await loadAll();await openUser360(id);
+    };
+    $('#statusBtn').onclick=async()=>{
+      if(!selectedUser)return;const status=text(selectedUser.account_status).toLowerCase()==='suspended'?'active':'suspended';
+      const {error}=await db.rpc('admin_set_account_status',{p_user_id:selectedUser.id,p_status:status});if(error)return fail(error);toast(`Account ${status}.`,'success');const id=selectedUser.id;await loadAll();await openUser360(id);
+    };
+    $('#refreshUserBtn').onclick=async()=>{if(!selectedUser)return;const id=selectedUser.id;await loadAll();await openUser360(id);toast('User data refreshed.','success');};
+
+    window.openTicket=async id=>{
+      selectedTicket=tickets.find(t=>String(t.id)===String(id));renderTickets();$('#chatEmpty').classList.add('hidden');$('#messages').classList.remove('hidden');$('#composer').classList.remove('hidden');
+      const mark=await db.rpc('mark_ticket_read_by_admin',{p_ticket_id:id});if(mark.error)console.warn(mark.error);
+      const {data,error}=await db.from('support_messages').select('*').eq('ticket_id',id).order('created_at');if(error)return fail(error);
+      $('#messages').innerHTML=(data||[]).map(m=>`<div class="msg ${m.sender_role==='admin'?'admin':''}">${esc(m.body)}<small>${esc(m.sender_role)} · ${date(m.created_at)}</small></div>`).join('')||'<div class="empty">No messages yet.</div>';$('#messages').scrollTop=$('#messages').scrollHeight;selectedTicket.admin_unread=0;renderOverview();
+    };
+    $('#composer').addEventListener('submit',async event=>{
+      event.preventDefault();const body=$('#replyBody').value.trim();if(!body||!selectedTicket)return;
+      const {error}=await db.from('support_messages').insert({ticket_id:selectedTicket.id,sender_id:me.id,body,sender_role:'admin'});if(error)return fail(error);$('#replyBody').value='';await loadAll();await openTicket(selectedTicket.id);
+    });
+    $('#closeTicket').onclick=async()=>{if(!selectedTicket)return;const {error}=await db.from('support_tickets').update({status:'closed'}).eq('id',selectedTicket.id);if(error)return fail(error);toast('Ticket closed.','success');await loadAll();await openTicket(selectedTicket.id);};
+
+    function closeModals(){
+      $$('.modal').forEach(modal=>modal.classList.add('hidden'));
+      $('#reviewNote').value=$('#reviewHash').value=$('#balanceDelta').value=$('#balanceReason').value=$('#cancelPlanReason').value='';
+    }
+    $$('[data-close]').forEach(button=>button.onclick=closeModals);$$('.modal').forEach(modal=>modal.onclick=event=>{if(event.target===modal)closeModals();});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModals();});
+
+    function view(id){
+      $$('.view').forEach(item=>item.classList.toggle('active',item.id===id));$$('.nav button').forEach(button=>button.classList.toggle('active',button.dataset.view===id));
+      $('#topTitle').textContent={overview:'Overview',users:'Users & plans',requests:'Financial requests',tickets:'Support tickets',audit:'Audit log'}[id]||id;$('#sidebar').classList.remove('open');
+    }
+    $$('.nav button').forEach(button=>button.onclick=()=>view(button.dataset.view));$$('[data-go]').forEach(button=>button.onclick=()=>view(button.dataset.go));
+    $$('.tab').forEach(button=>button.onclick=()=>{$$('.tab').forEach(x=>x.classList.toggle('active',x===button));$$('.user-tab').forEach(x=>x.classList.toggle('active',x.id===`userTab${button.dataset.userTab[0].toUpperCase()+button.dataset.userTab.slice(1)}`));});
+    $('#mobileMenu').onclick=()=>$('#sidebar').classList.toggle('open');
+    $('#refreshBtn').onclick=async()=>{try{await loadAll();toast('Data refreshed.','success')}catch(error){fail(error)}};
+    ['userSearch','userStatus','userPlanFilter'].forEach(id=>$('#'+id).addEventListener('input',renderUsers));
+    ['requestSearch','requestType','requestStatus'].forEach(id=>$('#'+id).addEventListener('input',renderRequests));
+
+    function subscribe(){
+      liveChannel=db.channel('admin-control-live')
+        .on('postgres_changes',{event:'*',schema:'public',table:'profiles'},loadAll)
+        .on('postgres_changes',{event:'*',schema:'public',table:'investments'},loadAll)
+        .on('postgres_changes',{event:'*',schema:'public',table:'financial_requests'},loadAll)
+        .on('postgres_changes',{event:'*',schema:'public',table:'support_tickets'},loadAll)
+        .on('postgres_changes',{event:'INSERT',schema:'public',table:'support_messages'},async()=>{await loadAll();if(selectedTicket)await openTicket(selectedTicket.id)})
+        .subscribe();
+    }
+    setInterval(()=>{$('#clock').textContent=new Date().toLocaleString()},1000);
+    setInterval(()=>{if(!$('#app').classList.contains('hidden')){renderOverview();if(selectedUser?.__detail)paintUser360(selectedUser.__detail);}},30000);
+    boot().catch(error=>showLogin(error.message));
+  })();
+  </script>
+</body>
+</html>
