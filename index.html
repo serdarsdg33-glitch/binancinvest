@@ -13094,20 +13094,26 @@ html.native-app #rewards{
 #rewards .rewards-banner-motto{
   position:absolute;
   z-index:2;
-  left:4.2%;
-  bottom:7.5%;
-  width:40%;
+  left:3.7%;
+  top:67.2%;
+  bottom:auto;
+  width:41.5%;
   margin:0;
   padding:0;
-  color:#ffe58a;
-  font-size:clamp(15px,1.72vw,28px);
+  color:#f5c84b;
+  font-size:clamp(14px,1.46vw,23px);
   font-weight:900;
-  line-height:1.5;
+  line-height:1.42;
   text-align:center;
   text-wrap:balance;
+  white-space:pre-line;
   unicode-bidi:plaintext;
   pointer-events:none;
-  text-shadow:0 2px 5px rgba(0,0,0,.98),0 0 13px rgba(240,185,11,.34);
+  background:linear-gradient(180deg,rgba(255,249,215,.98) 0%,rgba(255,226,120,.96) 34%,rgba(240,185,11,.94) 70%,rgba(255,232,143,.94) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.96)) drop-shadow(0 0 7px rgba(240,185,11,.28));
 }
 
 #rewards .referral-section-card{
@@ -13259,12 +13265,13 @@ html.native-app #rewards{
     object-position:center;
   }
   #rewards .rewards-banner-motto{
-    left:3.2%;
-    bottom:7%;
-    width:44%;
+    left:2.5%;
+    top:67.5%;
+    bottom:auto;
+    width:46%;
     padding:0;
-    font-size:clamp(11.5px,3.15vw,14.5px);
-    line-height:1.42;
+    font-size:clamp(10px,2.72vw,12px);
+    line-height:1.38;
   }
   #rewards .rewards-section-grid{gap:14px}
   #rewards .referral-section-card{border-radius:18px !important}
@@ -20893,7 +20900,7 @@ const REFERRAL_LEVEL_TRANSLATIONS = {
 };
 
 const REWARDS_BANNER_MOTTO_TRANSLATIONS = {
-  en:"Start with one invitation; build a chain of opportunities and rewards.",
+  en:"Start with one invitation;\nbuild a chain of opportunities and rewards.",
   de:"Beginnen Sie mit einer Einladung und schaffen Sie eine Kette voller Chancen und Prämien.",
   it:"Inizia con un invito e crea una catena di opportunità e premi.",
   ru:"Начните с одного приглашения — создайте цепочку возможностей и наград.",
@@ -20903,7 +20910,7 @@ const REWARDS_BANNER_MOTTO_TRANSLATIONS = {
   nl:"Begin met één uitnodiging en bouw een keten van kansen en beloningen.",
   fr:"Commencez par une invitation et créez une chaîne d’opportunités et de récompenses.",
   ko:"한 번의 초대로 시작해 기회와 보상의 연결고리를 만드세요.",
-  fa:"از یک دعوت شروع کن؛ زنجیره‌ای از فرصت و پاداش بساز.",
+  fa:"از یک دعوت شروع کن؛\nزنجیره‌ای از فرصت و پاداش بساز.",
   ar:"ابدأ بدعوة واحدة؛ وابنِ سلسلة من الفرص والمكافآت.",
   az:"Bir dəvətlə başla; fürsətlər və mükafatlar zənciri qur.",
   el:"Ξεκινήστε με μία πρόσκληση και δημιουργήστε μια αλυσίδα ευκαιριών και ανταμοιβών.",
