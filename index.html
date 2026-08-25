@@ -12858,6 +12858,65 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
   margin-top:14px !important;
 }
 
+/* Installation guides stay collapsed until the related install button is tapped. */
+#downloadAppSection .install-guide-panel{
+  display:none !important;
+  position:relative !important;
+  margin-top:14px !important;
+  padding:42px 14px 14px !important;
+  border:1px solid rgba(240,185,11,.22) !important;
+  border-radius:16px !important;
+  background:rgba(2,7,18,.48) !important;
+  text-align:start !important;
+}
+
+#downloadAppSection .install-platform-card.install-guide-open .install-guide-panel{
+  display:block !important;
+  animation:installGuideReveal .22s ease both !important;
+}
+
+#downloadAppSection .install-guide-panel h3{
+  margin:0 0 7px !important;
+}
+
+#downloadAppSection .install-guide-close{
+  position:absolute !important;
+  top:9px !important;
+  right:9px !important;
+  width:30px !important;
+  height:30px !important;
+  display:grid !important;
+  place-items:center !important;
+  padding:0 !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:50% !important;
+  background:rgba(255,255,255,.06) !important;
+  color:#dce3ed !important;
+  font-size:22px !important;
+  line-height:1 !important;
+  cursor:pointer !important;
+  z-index:3 !important;
+  -webkit-tap-highlight-color:transparent !important;
+}
+
+html[dir="rtl"] #downloadAppSection .install-guide-close{
+  right:auto !important;
+  left:9px !important;
+}
+
+#downloadAppSection .install-guide-close:hover,
+#downloadAppSection .install-guide-close:focus-visible{
+  color:#fff !important;
+  border-color:rgba(240,185,11,.65) !important;
+  background:rgba(240,185,11,.13) !important;
+  outline:none !important;
+}
+
+@keyframes installGuideReveal{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
 @media(max-width:860px){
   #downloadAppSection .install-help-boxes.install-choice-boxes{
     grid-template-columns:1fr !important;
@@ -13201,15 +13260,13 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
           <span id="iphonePlatformName">iPhone</span>
         </div>
 
-        <h3 id="iphoneInstallTitle">iPhone</h3>
-        <p id="iphoneInstallShort" class="install-platform-short">
-          Choose Profile Install or Web App.
-        </p>
-
         <div class="install-choice-actions">
           <a
             class="install-choice-btn install-choice-primary"
             href="https://binancinvest.com/install-iphone.html"
+            aria-controls="iphoneGuidePanel"
+            aria-expanded="false"
+            onclick="return prepareInstallChoice(event,'iphone')"
           >
             Install iPhone Profile
           </a>
@@ -13217,13 +13274,23 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
           <a
             class="install-choice-btn install-choice-secondary"
             href="https://binancinvest.com/install-web.html"
+            aria-controls="iphoneGuidePanel"
+            aria-expanded="false"
+            onclick="return prepareInstallChoice(event,'iphone')"
           >
             Add iPhone Web App
           </a>
         </div>
 
-        <ol id="iphoneInstallSteps" class="install-steps"></ol>
-        <div id="iphoneInstallNote" class="install-platform-note"></div>
+        <div id="iphoneGuidePanel" class="install-guide-panel" aria-hidden="true">
+          <button class="install-guide-close" type="button" aria-label="Close installation guide" onclick="closeInstallGuide('iphone')">×</button>
+          <h3 id="iphoneInstallTitle">iPhone</h3>
+          <p id="iphoneInstallShort" class="install-platform-short">
+            Choose Profile Install or Web App.
+          </p>
+          <ol id="iphoneInstallSteps" class="install-steps"></ol>
+          <div id="iphoneInstallNote" class="install-platform-note"></div>
+        </div>
       </article>
 
       <article id="androidInstallCard" class="install-platform-card">
@@ -13234,16 +13301,14 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
           <span id="androidPlatformName">Android</span>
         </div>
 
-        <h3 id="androidInstallTitle">Android</h3>
-        <p id="androidInstallShort" class="install-platform-short">
-          Choose APK Download or Web App.
-        </p>
-
         <div class="install-choice-actions">
           <a
             class="install-choice-btn install-choice-primary"
             href="binancinvest-v37-3.apk"
             download="binancinvest-v37-3.apk"
+            aria-controls="androidGuidePanel"
+            aria-expanded="false"
+            onclick="return prepareInstallChoice(event,'android')"
           >
             Download Android APK
           </a>
@@ -13251,13 +13316,23 @@ html[dir="rtl"] .stats-vertical-stack .safu-badge {
           <a
             class="install-choice-btn install-choice-secondary"
             href="https://binancinvest.com/install-web.html"
+            aria-controls="androidGuidePanel"
+            aria-expanded="false"
+            onclick="return prepareInstallChoice(event,'android')"
           >
             Add Android Web App
           </a>
         </div>
 
-        <ol id="androidInstallSteps" class="install-steps"></ol>
-        <div id="androidInstallNote" class="install-platform-note"></div>
+        <div id="androidGuidePanel" class="install-guide-panel" aria-hidden="true">
+          <button class="install-guide-close" type="button" aria-label="Close installation guide" onclick="closeInstallGuide('android')">×</button>
+          <h3 id="androidInstallTitle">Android</h3>
+          <p id="androidInstallShort" class="install-platform-short">
+            Choose APK Download or Web App.
+          </p>
+          <ol id="androidInstallSteps" class="install-steps"></ol>
+          <div id="androidInstallNote" class="install-platform-note"></div>
+        </div>
       </article>
     </div>
 
@@ -22171,6 +22246,46 @@ async function deleteAllClosedSupportTickets() {
     );
   }
 
+  function setGuideState(card, open) {
+    if (!card) return;
+
+    card.classList.toggle("install-guide-open", open);
+
+    const panel = card.querySelector(".install-guide-panel");
+    panel?.setAttribute("aria-hidden", String(!open));
+
+    card.querySelectorAll(".install-choice-btn").forEach((link) => {
+      link.setAttribute("aria-expanded", String(open));
+    });
+  }
+
+  function openInstallGuide(card) {
+    setGuideState(iphoneCard, card === iphoneCard);
+    setGuideState(androidCard, card === androidCard);
+
+    card?.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+  window.prepareInstallChoice = function prepareInstallChoice(event, platform) {
+    const card = platform === "android" ? androidCard : iphoneCard;
+
+    if (!card?.classList.contains("install-guide-open")) {
+      event?.preventDefault();
+      openInstallGuide(card);
+      return false;
+    }
+
+    return true;
+  };
+
+  window.closeInstallGuide = function closeInstallGuide(platform) {
+    const card = platform === "android" ? androidCard : iphoneCard;
+    setGuideState(card, false);
+  };
+
   function setActiveDeviceCard() {
     iphoneCard?.classList.toggle("install-platform-active", isiOS);
     androidCard?.classList.toggle("install-platform-active", isAndroid);
@@ -22218,11 +22333,8 @@ async function deleteAllClosedSupportTickets() {
 
     document.getElementById("downloadAppSection")?.classList.add("show-install-guides");
 
+    openInstallGuide(card);
     card.classList.add("install-platform-active");
-    card.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
 
     window.setTimeout(() => {
       setActiveDeviceCard();
