@@ -13094,14 +13094,15 @@ html.native-app #rewards{
 #rewards .rewards-banner-motto{
   position:absolute;
   z-index:2;
-  left:3.7%;
+  left:17.5%;
   top:67.2%;
   bottom:auto;
-  width:41.5%;
+  width:34%;
+  transform:translateX(-50%);
   margin:0;
   padding:0;
   color:#f5c84b;
-  font-size:clamp(14px,1.46vw,23px);
+  font-size:clamp(12px,1.20vw,19px);
   font-weight:900;
   line-height:1.42;
   text-align:center;
@@ -13265,12 +13266,12 @@ html.native-app #rewards{
     object-position:center;
   }
   #rewards .rewards-banner-motto{
-    left:2.5%;
-    top:67.5%;
+    left:17.5%;
+    top:67.2%;
     bottom:auto;
-    width:46%;
+    width:34%;
     padding:0;
-    font-size:clamp(10px,2.72vw,12px);
+    font-size:clamp(8.5px,2.35vw,10.5px);
     line-height:1.38;
   }
   #rewards .rewards-section-grid{gap:14px}
@@ -13477,6 +13478,47 @@ html.native-app #rewards{
   #profile .profile-contact-glass{
     -webkit-backdrop-filter:blur(3px) saturate(1.08) !important;
     backdrop-filter:blur(3px) saturate(1.08) !important;
+  }
+}
+</style>
+<style id="rewards-first-two-images-position-v4">
+/* Position the focal artwork itself: the Level Guide emblem sits in the marked center gap. */
+#rewards .referral-level-guide-card{
+  background-color:#05070a !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.54),rgba(3,7,11,.34) 52%,rgba(3,7,11,.08)),
+    url("rewards-level-guide.jpeg?v=20260826-3412") !important;
+  background-size:100% 100%,auto 100% !important;
+  background-position:center center,56% center !important;
+  background-repeat:no-repeat,no-repeat !important;
+}
+
+#rewards .referral-personal-card{
+  --rewards-card-art:url("rewards-personal-code.jpeg?v=20260826-3412") !important;
+  background-color:#05070a !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.60) 0%,rgba(3,7,11,.39) 50%,rgba(3,7,11,.07) 100%),
+    var(--rewards-card-art) !important;
+  background-size:100% 100%,auto 100% !important;
+  background-position:center center,center center !important;
+  background-repeat:no-repeat,no-repeat !important;
+}
+
+@media(max-width:760px){
+  #rewards .referral-level-guide-card{
+    background-image:
+      linear-gradient(rgba(3,7,11,.45),rgba(3,7,11,.56)),
+      url("rewards-level-guide.jpeg?v=20260826-3412") !important;
+    background-size:100% 100%,auto 100% !important;
+    background-position:center center,56% center !important;
+  }
+
+  #rewards .referral-personal-card{
+    background-image:
+      linear-gradient(90deg,rgba(3,7,11,.55),rgba(3,7,11,.28)),
+      var(--rewards-card-art) !important;
+    background-size:100% 100%,auto 100% !important;
+    background-position:center center,center center !important;
   }
 }
 </style>
@@ -23465,7 +23507,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260824-1131",
+            "/sw.js?v=20260826-3412-rewards-v4",
             {
               scope: "/",
               updateViaCache: "none"
