@@ -13271,6 +13271,180 @@ html.native-app #rewards{
   #rewards .referral-apply-row .btn{width:100%}
 }
 </style>
+
+<style id="major-panels-clear-glass-v1">
+/* Keep the Rewards banner tight to the first content panel. */
+#rewards .rewards-top-artwork{
+  margin-bottom:7px !important;
+}
+
+#rewards .rewards-auth-row{
+  display:flex;
+  justify-content:flex-end;
+  min-height:0;
+  margin:0 0 3px;
+}
+
+#rewards .rewards-auth-row:empty{
+  display:none;
+  margin:0;
+}
+
+#rewards .rewards-auth-row #rewardsAuthBtn[style*="display: none"]{
+  margin:0;
+}
+
+/* Main Rewards panels: transparent image glass instead of dark solid cards. */
+#rewards .referral-section-card{
+  background-color:rgba(3,7,11,.06) !important;
+  border-color:rgba(255,222,92,.39) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 15px 38px rgba(0,0,0,.25) !important;
+}
+
+#rewards .referral-level-guide-card{
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.54),rgba(3,7,11,.34) 52%,rgba(3,7,11,.08)),
+    url("rewards-level-guide.webp") !important;
+}
+
+#rewards .referral-personal-card{
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.60) 0%,rgba(3,7,11,.39) 50%,rgba(3,7,11,.07) 100%),
+    url("rewards-personal-code.webp") !important;
+}
+
+#rewards .referral-rules-card{
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.59) 0%,rgba(3,7,11,.38) 54%,rgba(3,7,11,.07) 100%),
+    url("rewards-how-it-works.webp") !important;
+}
+
+#rewards .referral-activity-card{
+  background-image:
+    linear-gradient(90deg,rgba(3,7,11,.60),rgba(3,7,11,.40) 58%,rgba(3,7,11,.10)),
+    url("rewards-activity.webp") !important;
+}
+
+/* Every inner Rewards box remains readable while showing its artwork. */
+#rewards .rewards-guide-level,
+#rewards .referral-code-box,
+#rewards .referral-stat,
+#rewards .referral-history-hint,
+#rewards .referral-network-stat,
+#rewards .referral-history-filter,
+#rewards .referral-history-item,
+#rewards .referral-history-empty,
+#rewards .referral-apply{
+  background:linear-gradient(145deg,rgba(7,12,18,.25),rgba(3,7,11,.12)) !important;
+  border-color:rgba(255,229,138,.25) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 7px 18px rgba(0,0,0,.14) !important;
+  -webkit-backdrop-filter:blur(5px) saturate(1.10) !important;
+  backdrop-filter:blur(5px) saturate(1.10) !important;
+}
+
+#rewards .referral-history-filter.active{
+  color:#171100 !important;
+  background:linear-gradient(135deg,rgba(255,240,154,.94),rgba(240,185,11,.91)) !important;
+  border-color:transparent !important;
+}
+
+#rewards input{
+  background:rgba(2,6,10,.18) !important;
+  border-color:rgba(255,255,255,.17) !important;
+  -webkit-backdrop-filter:blur(4px) saturate(1.08) !important;
+  backdrop-filter:blur(4px) saturate(1.08) !important;
+}
+
+/* Support main panels and marked form controls. */
+#support .support-compose,
+#support .support-tickets,
+#support .support-chat,
+#support #supportChatPlaceholder,
+#support #supportGuestNotice{
+  background:linear-gradient(145deg,rgba(8,14,21,.20),rgba(2,6,10,.08)) !important;
+  border:1px solid rgba(255,222,92,.38) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 14px 34px rgba(0,0,0,.23) !important;
+  -webkit-backdrop-filter:blur(6px) saturate(1.13) !important;
+  backdrop-filter:blur(6px) saturate(1.13) !important;
+}
+
+#support .support-compose input,
+#support .support-compose select,
+#support .support-compose textarea,
+#support .support-reply-box textarea,
+#support .support-ticket-item{
+  background:linear-gradient(145deg,rgba(5,10,16,.24),rgba(2,6,10,.11)) !important;
+  border-color:rgba(255,255,255,.16) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055) !important;
+  -webkit-backdrop-filter:blur(4px) saturate(1.08) !important;
+  backdrop-filter:blur(4px) saturate(1.08) !important;
+}
+
+/* Profile account, security and contact areas. */
+#profile #profileAuthenticatedContent > .two > .card,
+#profile .profile-security-card{
+  background:linear-gradient(145deg,rgba(7,12,18,.19),rgba(2,6,10,.075)) !important;
+  border-color:rgba(255,222,92,.39) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 14px 34px rgba(0,0,0,.22) !important;
+  -webkit-backdrop-filter:blur(5px) saturate(1.12) !important;
+  backdrop-filter:blur(5px) saturate(1.12) !important;
+}
+
+#profile .twofa-security-card,
+#profile .profile-contact-glass{
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(3,7,11,.075)) !important;
+  border:1px solid rgba(255,222,92,.32) !important;
+  border-radius:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 8px 22px rgba(0,0,0,.15) !important;
+  -webkit-backdrop-filter:blur(4px) saturate(1.10) !important;
+  backdrop-filter:blur(4px) saturate(1.10) !important;
+}
+
+#profile .profile-contact-glass{
+  margin-top:18px !important;
+  padding:18px 12px 14px !important;
+}
+
+#profile input,
+#profile select{
+  background:rgba(2,6,10,.17) !important;
+  border-color:rgba(255,255,255,.16) !important;
+  -webkit-backdrop-filter:blur(4px) saturate(1.08) !important;
+  backdrop-filter:blur(4px) saturate(1.08) !important;
+}
+
+@media(max-width:760px){
+  #rewards .rewards-top-artwork{margin-bottom:5px !important}
+  #rewards .rewards-auth-row{margin-bottom:2px}
+  #rewards .referral-level-guide-card{
+    background-image:linear-gradient(rgba(3,7,11,.45),rgba(3,7,11,.56)),url("rewards-level-guide.webp") !important;
+  }
+  #rewards .referral-personal-card,
+  #rewards .referral-rules-card{
+    background-image:linear-gradient(90deg,rgba(3,7,11,.55),rgba(3,7,11,.28)),var(--rewards-card-art) !important;
+  }
+  #rewards .referral-activity-card{
+    background-image:linear-gradient(90deg,rgba(3,7,11,.57),rgba(3,7,11,.31)),url("rewards-activity.webp") !important;
+  }
+  #rewards .rewards-guide-level,
+  #rewards .referral-code-box,
+  #rewards .referral-stat,
+  #rewards .referral-history-hint,
+  #rewards .referral-network-stat,
+  #rewards .referral-history-filter,
+  #rewards .referral-history-item,
+  #rewards .referral-history-empty,
+  #support .support-compose,
+  #support .support-tickets,
+  #support .support-chat,
+  #profile #profileAuthenticatedContent > .two > .card,
+  #profile .twofa-security-card,
+  #profile .profile-contact-glass{
+    -webkit-backdrop-filter:blur(3px) saturate(1.08) !important;
+    backdrop-filter:blur(3px) saturate(1.08) !important;
+  }
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -14343,9 +14517,8 @@ html.native-app #rewards{
   <div class="rewards-top-artwork" aria-label="Binance Invest referral rewards network banner">
     <img src="rewards-top-banner.webp" alt="Referral rewards and shared growth network">
   </div>
-  <div class="title">
-    <h2 data-t="rewards">Rewards</h2>
-      <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
+  <div class="rewards-auth-row">
+    <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
   </div>
 
   <div class="rewards-section-grid">
@@ -14621,7 +14794,7 @@ html.native-app #rewards{
           <button id="twofaDisableBtn" type="button" class="btn" style="display:none" onclick="startTwoFactorDisable()">Disable two-factor authentication</button>
         </div>
       </div>
-      <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
+      <div class="profile-contact-glass" style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
         <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">support@binancinvest.com</a>
