@@ -13073,6 +13073,7 @@ html.native-app #rewards{
 }
 
 #rewards .rewards-top-artwork{
+  position:relative;
   width:100%;
   margin:0 0 18px;
   overflow:hidden;
@@ -13088,6 +13089,32 @@ html.native-app #rewards{
   height:clamp(190px,31vw,420px);
   object-fit:cover;
   object-position:center;
+}
+
+#rewards .rewards-banner-motto{
+  position:absolute;
+  z-index:2;
+  inset-inline-start:clamp(22px,5vw,92px);
+  bottom:clamp(18px,3vw,42px);
+  width:min(560px,42%);
+  margin:0;
+  padding:10px 14px;
+  color:#ffe58a;
+  font-size:clamp(17px,2vw,31px);
+  font-weight:900;
+  line-height:1.55;
+  text-align:start;
+  text-wrap:balance;
+  text-shadow:0 2px 5px rgba(0,0,0,.96),0 0 18px rgba(240,185,11,.30);
+  border-inline-start:3px solid rgba(240,185,11,.84);
+  border-radius:8px;
+  background:linear-gradient(90deg,rgba(2,4,7,.74),rgba(2,4,7,.22) 78%,transparent);
+  -webkit-backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
+}
+
+html[dir="rtl"] #rewards .rewards-banner-motto{
+  background:linear-gradient(270deg,rgba(2,4,7,.74),rgba(2,4,7,.22) 78%,transparent);
 }
 
 #rewards .referral-section-card{
@@ -13237,6 +13264,19 @@ html.native-app #rewards{
   #rewards .rewards-top-artwork img{
     height:190px;
     object-position:center;
+  }
+  #rewards .rewards-banner-motto{
+    inset-inline:12px;
+    bottom:10px;
+    width:auto;
+    padding:7px 10px;
+    font-size:clamp(13px,3.8vw,17px);
+    line-height:1.45;
+    border-inline-start-width:2px;
+    background:linear-gradient(90deg,rgba(2,4,7,.78),rgba(2,4,7,.35) 82%,transparent);
+  }
+  html[dir="rtl"] #rewards .rewards-banner-motto{
+    background:linear-gradient(270deg,rgba(2,4,7,.78),rgba(2,4,7,.35) 82%,transparent);
   }
   #rewards .rewards-section-grid{gap:14px}
   #rewards .referral-section-card{border-radius:18px !important}
@@ -14516,6 +14556,7 @@ html.native-app #rewards{
 <section id="rewards" class="view">
   <div class="rewards-top-artwork" aria-label="Binance Invest referral rewards network banner">
     <img src="rewards-top-banner.webp" alt="Referral rewards and shared growth network">
+    <p class="rewards-banner-motto" data-t="rewardsBannerMotto">Start with one invitation; build a chain of opportunities and rewards.</p>
   </div>
   <div class="rewards-auth-row">
     <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
@@ -20863,6 +20904,34 @@ const REFERRAL_LEVEL_TRANSLATIONS = {
   de:{inviteFriendsEarn:"Freunde einladen und auf allen Stufen verdienen",personalReferralDesc:"Bauen Sie Ihr Empfehlungsnetzwerk auf und erhalten Sie Prämien aus jeder qualifizierten Stufe.",referralRewardsBalance:"Gesamte Empfehlungsprämien im Basisplan",referralLevelOne:"Stufe 1 · Ihre Einladungen",referralLevelTwo:"Stufe 2 · Einladungen Ihrer Freunde",referralLevelThreePlus:"Stufe 3+ · Freunde von Freunden",referralLevelOneExplain:"Direkt von Ihnen eingeladene Nutzer; nach deren qualifizierter Investition erhalten Sie 10 $.",referralLevelTwoExplain:"Von Ihren Freunden eingeladene Nutzer; nach deren qualifizierter Investition erhalten Sie 2 $.",referralLevelThreeExplain:"Freunde von Freunden und alle weiteren Stufen; nach jeder qualifizierten Investition erhalten Sie 1 $.",referralQualificationNote:"In allen diesen Fällen erhalten Sie eine Prämie, sie wird jedoch erst gutgeschrieben, wenn der eingeladene Nutzer investiert. Die vollständige Einladungskette können Sie im Bereich „Prämien“ am unteren Ende der Website ansehen und prüfen.",referralPayments:"Prämienzahlungen",referralBalanceNotice:"Alle Empfehlungsprämien werden Ihrem Basisplan gutgeschrieben und zählen zum auszahlbaren Guthaben."}
 };
 
+const REWARDS_BANNER_MOTTO_TRANSLATIONS = {
+  en:"Start with one invitation; build a chain of opportunities and rewards.",
+  de:"Beginnen Sie mit einer Einladung und schaffen Sie eine Kette voller Chancen und Prämien.",
+  it:"Inizia con un invito e crea una catena di opportunità e premi.",
+  ru:"Начните с одного приглашения — создайте цепочку возможностей и наград.",
+  ja:"ひとつの招待から始めて、チャンスと報酬の輪を広げよう。",
+  tr:"Tek bir davetle başla; fırsatlar ve ödüller zinciri oluştur.",
+  zh:"从一次邀请开始，打造机会与奖励的链条。",
+  nl:"Begin met één uitnodiging en bouw een keten van kansen en beloningen.",
+  fr:"Commencez par une invitation et créez une chaîne d’opportunités et de récompenses.",
+  ko:"한 번의 초대로 시작해 기회와 보상의 연결고리를 만드세요.",
+  fa:"از یک دعوت شروع کن؛ زنجیره‌ای از فرصت و پاداش بساز.",
+  ar:"ابدأ بدعوة واحدة؛ وابنِ سلسلة من الفرص والمكافآت.",
+  az:"Bir dəvətlə başla; fürsətlər və mükafatlar zənciri qur.",
+  el:"Ξεκινήστε με μία πρόσκληση και δημιουργήστε μια αλυσίδα ευκαιριών και ανταμοιβών.",
+  hi:"एक आमंत्रण से शुरुआत करें; अवसरों और पुरस्कारों की एक श्रृंखला बनाएँ।",
+  id:"Mulai dengan satu undangan; bangun rangkaian peluang dan hadiah.",
+  ms:"Mulakan dengan satu jemputan; bina rangkaian peluang dan ganjaran.",
+  pl:"Zacznij od jednego zaproszenia i zbuduj łańcuch możliwości oraz nagród.",
+  pt:"Comece com um convite e construa uma cadeia de oportunidades e recompensas.",
+  ro:"Începe cu o invitație și construiește un lanț de oportunități și recompense.",
+  es:"Empieza con una invitación y crea una cadena de oportunidades y recompensas.",
+  th:"เริ่มจากคำเชิญหนึ่งครั้ง แล้วสร้างเครือข่ายแห่งโอกาสและรางวัล",
+  uk:"Почніть з одного запрошення та створіть ланцюг можливостей і винагород.",
+  ur:"ایک دعوت سے آغاز کریں؛ مواقع اور انعامات کی ایک زنجیر بنائیں۔",
+  vi:"Bắt đầu từ một lời mời; xây dựng chuỗi cơ hội và phần thưởng."
+};
+
 LANGUAGE_CATALOG.forEach(([code])=>{
   const d=T[code]||T.en;
   const levelWord=d.level||"Level";
@@ -20884,6 +20953,7 @@ LANGUAGE_CATALOG.forEach(([code])=>{
   },referralLevelCopy);
   d.referralHomeTitle=referralLevelCopy.inviteFriendsEarn||`${referralWord} · $10 / $2 / $1`;
   d.referralHomeIntro=referralLevelCopy.personalReferralDesc||referralWord;
+  d.rewardsBannerMotto=REWARDS_BANNER_MOTTO_TRANSLATIONS[code]||REWARDS_BANNER_MOTTO_TRANSLATIONS.en;
   d.inviteFriendsEarn=originalInviteTitle;
   d.personalReferralDesc=originalReferralIntro;
 });
