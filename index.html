@@ -3200,7 +3200,7 @@ html[dir="rtl"] .footer-section>.site-footer{text-align:right}
   border-radius:25px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 58px rgba(0,0,0,.42);
 }
-#rewards{background-image:linear-gradient(180deg,rgba(3,6,9,.10),rgba(3,6,9,.25) 48%,rgba(3,6,9,.14)),url("rewards-page-background-hq.webp")}
+#rewards{background-image:none}
 #profile{background-image:linear-gradient(180deg,rgba(3,6,9,.16),rgba(3,6,9,.32) 50%,rgba(3,6,9,.20)),url("profile-page-background.webp")}
 #support{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.31) 50%,rgba(3,6,9,.20)),url("support-page-background.webp")}
 #transactions{background-image:linear-gradient(180deg,rgba(3,6,9,.14),rgba(3,6,9,.30) 50%,rgba(3,6,9,.20)),url("transactions-page-background.webp")}
@@ -13054,6 +13054,197 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
   #portfolio .referral-level-count{text-align:end}
 }
 </style>
+<style id="rewards-four-section-layout-style">
+/* Rewards is a clean page containing four independent illustrated sections. */
+#rewards,
+html.native-app #rewards{
+  background:#05070a !important;
+  background-image:none !important;
+  background-size:auto !important;
+  background-repeat:no-repeat !important;
+  border-color:rgba(240,185,11,.14) !important;
+}
+
+#rewards .rewards-section-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:18px;
+  width:100%;
+}
+
+#rewards .referral-section-card{
+  position:relative;
+  isolation:isolate;
+  width:100%;
+  margin:0 !important;
+  overflow:hidden;
+  border:1px solid rgba(240,185,11,.34) !important;
+  border-radius:22px !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 18px 42px rgba(0,0,0,.38) !important;
+  background-color:#070a0e !important;
+  background-attachment:scroll !important;
+}
+
+#rewards .referral-section-card > *{
+  position:relative;
+  z-index:2;
+}
+
+#rewards .referral-level-guide-card{
+  min-height:350px;
+  padding:clamp(22px,4vw,44px) !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,6,9,.90),rgba(3,6,9,.74) 52%,rgba(3,6,9,.42)),
+    url("rewards-level-guide.webp") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+#rewards .referral-level-guide-card > h2{
+  max-width:780px;
+  margin:8px 0 9px;
+  font-size:clamp(24px,3.2vw,38px);
+}
+
+#rewards .referral-level-guide-card > p{
+  max-width:760px;
+  margin:0;
+  color:#d2dae4;
+  line-height:1.75;
+}
+
+#rewards .rewards-guide-levels{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:20px;
+}
+
+#rewards .rewards-guide-level{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:13px;
+  min-width:0;
+  padding:14px;
+  background:linear-gradient(145deg,rgba(8,13,19,.84),rgba(16,21,28,.62));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:15px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+#rewards .rewards-guide-level[data-level="1"]{border-color:rgba(22,199,132,.36)}
+#rewards .rewards-guide-level[data-level="2"]{border-color:rgba(240,185,11,.40)}
+#rewards .rewards-guide-level[data-level="3plus"]{border-color:rgba(143,167,255,.34)}
+#rewards .rewards-guide-level div{min-width:0}
+#rewards .rewards-guide-level strong,
+#rewards .rewards-guide-level small{display:block}
+#rewards .rewards-guide-level strong{color:#fff;font-size:12px;line-height:1.45}
+#rewards .rewards-guide-level small{margin-top:7px;color:#b7c1ce;font-size:10px;line-height:1.55}
+#rewards .rewards-guide-level > b{flex:0 0 auto;color:var(--green);font-size:25px;font-weight:950}
+
+#rewards .rewards-guide-note{
+  margin-top:12px;
+  padding:12px 14px;
+  color:#ffe58a;
+  font-size:11px;
+  font-weight:750;
+  line-height:1.75;
+  background:rgba(240,185,11,.075);
+  border:1px solid rgba(240,185,11,.22);
+  border-radius:12px;
+}
+
+#rewards .referral-personal-card{
+  min-height:430px;
+  padding:clamp(22px,4vw,42px) !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,6,9,.96) 0%,rgba(3,6,9,.88) 50%,rgba(3,6,9,.38) 100%),
+    url("rewards-personal-code.webp") !important;
+  background-size:cover !important;
+  background-position:center,right center !important;
+  background-repeat:no-repeat !important;
+}
+
+#rewards .referral-personal-card > :not(.referral-stats){max-width:720px}
+#rewards .referral-personal-card .referral-stats{max-width:850px}
+
+#rewards .referral-rules-card{
+  min-height:360px;
+  padding:clamp(22px,4vw,42px) !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,6,9,.96) 0%,rgba(3,6,9,.87) 54%,rgba(3,6,9,.36) 100%),
+    url("rewards-how-it-works.webp") !important;
+  background-size:cover !important;
+  background-position:center,right center !important;
+  background-repeat:no-repeat !important;
+}
+
+#rewards .referral-rules-card > *{max-width:720px}
+#rewards .referral-rules-card .referral-apply{max-width:720px}
+
+/* The activity art repeats vertically at a fixed proportional size. It can
+   grow with any number of rows without stretching or cover-zoom distortion. */
+#rewards .referral-activity-card{
+  min-height:520px;
+  padding:clamp(20px,3vw,34px) !important;
+  background-image:
+    linear-gradient(90deg,rgba(3,6,9,.96),rgba(3,6,9,.86) 58%,rgba(3,6,9,.48)),
+    url("rewards-activity.webp") !important;
+  background-size:100% 100%,auto 720px !important;
+  background-position:center,right top !important;
+  background-repeat:no-repeat,repeat-y !important;
+}
+
+#rewards .referral-code-box,
+#rewards .referral-stat,
+#rewards .referral-history-hint,
+#rewards .referral-network-stat,
+#rewards .referral-history-item,
+#rewards .referral-history-empty{
+  background:linear-gradient(145deg,rgba(6,10,15,.82),rgba(13,18,25,.65)) !important;
+  border-color:rgba(255,229,138,.21) !important;
+  backdrop-filter:blur(8px) saturate(1.05) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(1.05) !important;
+}
+
+@media(max-width:760px){
+  #rewards{padding:12px 9px !important}
+  #rewards .rewards-section-grid{gap:14px}
+  #rewards .referral-section-card{border-radius:18px !important}
+  #rewards .referral-level-guide-card,
+  #rewards .referral-personal-card,
+  #rewards .referral-rules-card{
+    padding:20px 15px !important;
+    background-position:center,72% center !important;
+  }
+  #rewards .referral-level-guide-card{
+    background-image:linear-gradient(rgba(3,6,9,.78),rgba(3,6,9,.88)),url("rewards-level-guide.webp") !important;
+  }
+  #rewards .referral-personal-card,
+  #rewards .referral-rules-card{
+    background-image:linear-gradient(90deg,rgba(3,6,9,.94),rgba(3,6,9,.72)),var(--rewards-card-art) !important;
+  }
+  #rewards .referral-personal-card{--rewards-card-art:url("rewards-personal-code.webp")}
+  #rewards .referral-rules-card{--rewards-card-art:url("rewards-how-it-works.webp")}
+  #rewards .rewards-guide-levels{grid-template-columns:1fr}
+  #rewards .rewards-guide-level{padding:12px}
+  #rewards .referral-activity-card{
+    padding:18px 12px !important;
+    background-size:100% 100%,auto 620px !important;
+    background-position:center,82% top !important;
+  }
+}
+
+@media(max-width:420px){
+  #rewards .referral-level-guide-card > h2{font-size:24px}
+  #rewards .rewards-guide-level > b{font-size:22px}
+  #rewards .referral-apply-row{grid-template-columns:1fr}
+  #rewards .referral-apply-row .btn{width:100%}
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -14128,13 +14319,35 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
   </div>
 
-  <div class="referral-dashboard">
-    <div class="card referral-main-card">
+  <div class="rewards-section-grid">
+    <div class="card referral-section-card referral-level-guide-card">
+      <span class="referral-home-kicker" data-t="friendReferralReward">FRIEND REFERRAL REWARD</span>
+      <h2 data-t="referralHomeTitle">Invite friends and earn across every level</h2>
+      <p class="muted" data-t="referralHomeIntro">Build your referral network and earn from every qualifying level.</p>
+
+      <div class="rewards-guide-levels">
+        <div class="rewards-guide-level" data-level="1">
+          <div><strong data-t="referralLevelOne">Level 1 · Your invites</strong><small data-t="referralLevelOneExplain">People you invite directly.</small></div>
+          <b>$10</b>
+        </div>
+        <div class="rewards-guide-level" data-level="2">
+          <div><strong data-t="referralLevelTwo">Level 2 · Your friends' invites</strong><small data-t="referralLevelTwoExplain">People invited by your friends.</small></div>
+          <b>$2</b>
+        </div>
+        <div class="rewards-guide-level" data-level="3plus">
+          <div><strong data-t="referralLevelThreePlus">Level 3+ · Friends of friends</strong><small data-t="referralLevelThreeExplain">Friends of friends and every deeper level.</small></div>
+          <b>$1</b>
+        </div>
+      </div>
+
+      <div class="rewards-guide-note" data-t="referralQualificationNote">Rewards are credited only when invited users invest. Review the complete referral chain in the Referral Activity section below.</div>
+    </div>
+
+    <div class="card referral-main-card referral-section-card referral-personal-card">
       <span class="referral-home-kicker" data-t="personalReferral">YOUR PERSONAL REFERRAL</span>
-      <h2 style="margin:7px 0 8px;" data-t="inviteFriendsEarn">Invite Friends and Earn $10</h2>
-      <p class="muted" style="line-height:1.75;margin:0;" data-t="personalReferralDesc">
-        Invite friends with your personal code. You receive $10 after each
-        referred friend completes their first approved investment.
+      <h2 style="margin:7px 0 8px;" data-t="referralCodeNetworkTitle">Your invitation code and network</h2>
+      <p class="muted" style="line-height:1.75;margin:0;" data-t="referralCodeNetworkDesc">
+        Share your personal code and review the complete growth and rewards of your invitation network.
       </p>
       <div class="referral-history-hint">
         <span>ⓘ</span>
@@ -14158,7 +14371,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       </div>
     </div>
 
-    <div class="card referral-rules">
+    <div class="card referral-rules referral-section-card referral-rules-card">
       <h2 style="margin-top:0;" data-t="howItWorks">How it works</h2>
       <ul>
         <li data-t="referralStep1">Share your personal code or invitation link.</li>
@@ -14176,9 +14389,8 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
         <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;" data-t="referralApplyNotice">A referral code can only be registered before your first investment.</p>
       </div>
     </div>
-  </div>
 
-  <div class="card referral-history-card">
+  <div class="card referral-history-card referral-section-card referral-activity-card">
     <div class="referral-history-head">
       <div>
         <h2 data-t="referralActivity">Referral Activity</h2>
@@ -14214,6 +14426,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
       <span class="referral-status-badge referral-status-confirmed" data-t="investmentConfirmed">Investment confirmed</span>
       <span class="referral-status-badge referral-status-paid" data-t="rewardPaidStatus">Reward paid</span>
     </div>
+  </div>
   </div>
 </section>
 
@@ -20495,6 +20708,29 @@ LANGUAGE_CATALOG.forEach(([code])=>{
     rewardPaidStatus:`${rewardsWord} · ${d.completed||d.active}`,
     noReferralLevelActivity:`${referralWord}: 0`
   },REFERRAL_HISTORY_TRANSLATIONS[code]||{});
+});
+
+const REFERRAL_REWARDS_LAYOUT_TRANSLATIONS = {
+  en:{referralCodeNetworkTitle:"Your invitation code and network",referralCodeNetworkDesc:"Share your personal code and review the complete growth, investment status and rewards of your invitation network.",referralStep4:"After a qualifying investment, you receive $10 for level 1, $2 for level 2 and $1 for every level from 3 onward."},
+  fa:{referralCodeNetworkTitle:"کد دعوت و شبکه شما",referralCodeNetworkDesc:"کد شخصی خود را به اشتراک بگذارید و رشد کامل شبکه، وضعیت سرمایه‌گذاری‌ها و تمام پاداش‌های خود را بررسی کنید.",referralStep4:"پس از سرمایه‌گذاری واجد شرایط، برای سطح اول ۱۰ دلار، سطح دوم ۲ دلار و سطح سوم به بعد ۱ دلار پاداش پرداخت می‌شود."},
+  az:{referralCodeNetworkTitle:"Dəvət kodunuz və şəbəkəniz",referralCodeNetworkDesc:"Şəxsi kodunuzu paylaşın və dəvət şəbəkənizin tam artımını, investisiya vəziyyətini və mükafatlarını izləyin.",referralStep4:"Uyğun investisiyadan sonra 1-ci səviyyə üçün $10, 2-ci səviyyə üçün $2, 3-cü və sonrakı hər səviyyə üçün $1 alırsınız."},
+  tr:{referralCodeNetworkTitle:"Davet kodunuz ve ağınız",referralCodeNetworkDesc:"Kişisel kodunuzu paylaşın; davet ağınızın büyümesini, yatırım durumunu ve tüm ödüllerini inceleyin.",referralStep4:"Uygun yatırımdan sonra 1. seviye için $10, 2. seviye için $2, 3. seviye ve sonrası için $1 alırsınız."},
+  ru:{referralCodeNetworkTitle:"Ваш код приглашения и сеть",referralCodeNetworkDesc:"Поделитесь личным кодом и отслеживайте рост сети, статус инвестиций и все награды.",referralStep4:"После подходящей инвестиции вы получаете $10 за уровень 1, $2 за уровень 2 и $1 за каждый уровень начиная с 3-го."},
+  ar:{referralCodeNetworkTitle:"رمز دعوتك وشبكتك",referralCodeNetworkDesc:"شارك رمزك الشخصي وراجع نمو شبكة الدعوات وحالة الاستثمارات وجميع المكافآت.",referralStep4:"بعد الاستثمار المؤهل تحصل على 10 دولارات للمستوى الأول، ودولارين للمستوى الثاني، ودولار واحد لكل مستوى بدءًا من الثالث."},
+  zh:{referralCodeNetworkTitle:"您的邀请码和推荐网络",referralCodeNetworkDesc:"分享您的个人邀请码，并查看推荐网络的完整增长、投资状态和全部奖励。",referralStep4:"完成合格投资后，第 1 级奖励 10 美元，第 2 级奖励 2 美元，第 3 级及以后每级奖励 1 美元。"},
+  es:{referralCodeNetworkTitle:"Tu código de invitación y tu red",referralCodeNetworkDesc:"Comparte tu código personal y revisa el crecimiento, las inversiones y todas las recompensas de tu red.",referralStep4:"Tras una inversión válida, recibes $10 por el nivel 1, $2 por el nivel 2 y $1 por cada nivel desde el 3 en adelante."},
+  fr:{referralCodeNetworkTitle:"Votre code d'invitation et votre réseau",referralCodeNetworkDesc:"Partagez votre code personnel et suivez la croissance, les investissements et toutes les récompenses de votre réseau.",referralStep4:"Après un investissement éligible, vous recevez 10 $ au niveau 1, 2 $ au niveau 2 et 1 $ pour chaque niveau à partir du niveau 3."},
+  de:{referralCodeNetworkTitle:"Ihr Einladungscode und Netzwerk",referralCodeNetworkDesc:"Teilen Sie Ihren persönlichen Code und prüfen Sie Wachstum, Investitionsstatus und alle Prämien Ihres Netzwerks.",referralStep4:"Nach einer qualifizierten Investition erhalten Sie 10 $ für Stufe 1, 2 $ für Stufe 2 und 1 $ für jede Stufe ab Stufe 3."}
+};
+
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const d=T[code]||T.en;
+  const referralWord=d.refTitle||d.rewards||"Rewards";
+  Object.assign(d,{
+    referralCodeNetworkTitle:`${referralWord} · ${d.account}`,
+    referralCodeNetworkDesc:`${referralWord} · ${d.users||d.statUsers} · ${d.rewards}`,
+    referralStep4:`$10 · $2 · $1 · ${d.invest||d.plans}`
+  },REFERRAL_REWARDS_LAYOUT_TRANSLATIONS[code]||{});
 });
 
 const SHORT_TIME_UNITS={
