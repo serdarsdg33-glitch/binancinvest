@@ -1,138 +1,113 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0e11">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="binancinvest">
-<link rel="manifest" href="/binancinvest-manifest-v5.webmanifest?v=20260824-1131">
-<link rel="apple-touch-icon" href="/binancinvest-apple-touch-v37.png?v=20260824-1131">
-<title>Install binancinvest</title>
+<meta name="theme-color" content="#05070b">
+<title>Install Web App | binancinvest</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#493a08 0,#10130f 20%,#05070b 62%);color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-main{min-height:100vh;display:grid;place-items:center;padding:22px}
-.card{width:min(470px,100%);padding:26px 20px;border:1px solid rgba(240,185,11,.30);border-radius:24px;background:rgba(9,13,18,.94);box-shadow:0 24px 70px rgba(0,0,0,.55)}
-.logo{width:84px;height:84px;margin:0 auto 16px;display:block;border-radius:20px}
-h1{text-align:center;margin:0 0 8px;font-size:26px}
-.intro{text-align:center;color:#aab4c0;line-height:1.7;margin:0 0 20px}
-button{width:100%;border:0;border-radius:13px;padding:14px 16px;font-weight:900;font-size:15px;color:#171100;background:linear-gradient(135deg,#fff09a,#f0b90b 60%,#d99a00);box-shadow:0 8px 22px rgba(240,185,11,.18)}
-button:disabled{opacity:.55}
-.guide{margin-top:18px;padding:15px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:rgba(255,255,255,.025);color:#c7ced8;line-height:1.75}
-.guide b{color:#ffe58a}
-.status{min-height:22px;text-align:center;margin-top:12px;color:#8f9aaa;font-size:12px}
-.hidden{display:none}
+html,body{margin:0;min-height:100%;background:#030507;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{background:radial-gradient(circle at 50% -10%,rgba(240,185,11,.18),transparent 34%),linear-gradient(180deg,#030507,#05070b)}
+main{min-height:100vh;display:grid;place-items:center;padding:34px 16px}
+.card{width:min(440px,100%);position:relative;padding:46px 22px 28px;border:1px solid rgba(240,185,11,.28);border-radius:28px;background:linear-gradient(180deg,rgba(17,22,29,.96),rgba(8,12,17,.98));box-shadow:0 28px 80px rgba(0,0,0,.58);text-align:center}
+.close-btn{position:absolute;top:14px;right:14px;width:42px;height:42px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(255,255,255,.055);color:#d8dee8;font-size:31px;font-weight:300;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.18s ease}
+html[dir="rtl"] .close-btn{right:auto;left:14px}
+.close-btn:hover,.close-btn:focus-visible{color:#fff;border-color:rgba(240,185,11,.65);background:rgba(240,185,11,.12);outline:none;transform:scale(1.05)}
+.app-icon{width:96px;height:96px;margin:0 auto 18px;display:block;border-radius:24px;box-shadow:0 0 28px rgba(240,185,11,.2)}
+h1{margin:0 0 14px;font-size:30px}.description{margin:0 auto 22px;color:#aab4c0;line-height:1.75;font-size:16px;max-width:360px}
+.btn{width:100%;min-height:56px;padding:13px 18px;border:0;border-radius:999px;color:#171100;font-size:17px;font-weight:900;background:linear-gradient(135deg,#fff09a,#f0b90b 58%,#d99a00);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.status{min-height:22px;margin:12px 0 0;color:#ffe58a;font-size:13px;line-height:1.6}
+.guide{margin-top:20px;padding:18px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.025);text-align:start}
+.guide h2{margin:0 0 12px;color:#ffe58a;font-size:17px}.steps{margin:0;padding-inline-start:22px;color:#c1c9d4;line-height:1.85;font-size:14px}.steps li+li{margin-top:5px}.steps b{color:#ffe58a}
+@media(max-width:520px){main{padding:28px 14px}.card{padding:44px 18px 22px;border-radius:24px}.description{font-size:15px}.guide{padding:15px}}
 </style>
 </head>
 <body>
 <main>
-<section class="card">
-  <img class="logo" src="/binancinvest-apple-touch-v37.png?v=20260824-1131" alt="">
-  <h1>binancinvest</h1>
-  <p class="intro">Install the web app. It always opens the current website, so normal website changes appear automatically without reinstalling it.</p>
-
-  <button id="installBtn" type="button">Install Web App</button>
-  <div id="status" class="status"></div>
-
-  <div id="androidGuide" class="guide hidden">
-    <b>Android:</b><br>
-    Open this page in Chrome. Tap the button above. If Chrome does not show the install prompt, open the Chrome menu (⋮) and choose <b>Install app</b> or <b>Add to Home screen</b>.
-  </div>
-
-  <div id="iosGuide" class="guide hidden">
-    <b>iPhone / iPad:</b><br>
-    Open this page in Safari, tap <b>Share</b>, then choose <b>Add to Home Screen</b> and confirm <b>Add</b>.
-  </div>
-</section>
+  <section class="card">
+    <button id="closeBtn" class="close-btn" type="button" aria-label="Close">×</button>
+    <img class="app-icon" src="/binancinvest-iphone-icon-180.png" alt="binancinvest">
+    <h1>binancinvest</h1>
+    <p id="description" class="description"></p>
+    <button id="installBtn" class="btn" type="button"></button>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div class="guide">
+      <h2 id="guideTitle"></h2>
+      <ol id="steps" class="steps"></ol>
+    </div>
+  </section>
 </main>
-
 <script>
-(function () {
-  const root = document.documentElement;
-  const ua = navigator.userAgent || "";
-  const isIOS =
-    /iPhone|iPad|iPod/i.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const isAndroid = /Android/i.test(ua);
+(() => {
+  const copy = {
+    en:{pageTitle:"Install Web App",desc:"Install the web app. It always opens the current website, so normal website changes appear automatically without reinstalling it.",button:"Install Web App",iosTitle:"iPhone / iPad",iosSteps:["Open this page in Safari.","Tap Share.","Choose Add to Home Screen.","Confirm Add."],androidTitle:"Android",androidSteps:["Open this page in Chrome.","Open the three-dot menu.","Choose Install app or Add to Home screen.","Confirm Install or Add."],waiting:"Follow the steps below to complete installation.",installed:"The web app is already installed.",close:"Close and return to the website"},
+    fa:{pageTitle:"نصب برنامه وب",desc:"برنامه وب را نصب کنید. این برنامه همیشه نسخه فعلی سایت را باز می‌کند و تغییرات سایت بدون نصب دوباره نمایش داده می‌شوند.",button:"نصب برنامه وب",iosTitle:"آیفون / آیپد",iosSteps:["این صفحه را در Safari باز کنید.","روی Share بزنید.","گزینه Add to Home Screen را انتخاب کنید.","در پایان Add را تأیید کنید."],androidTitle:"اندروید",androidSteps:["این صفحه را در Chrome باز کنید.","منوی سه‌نقطه را باز کنید.","Install app یا Add to Home screen را انتخاب کنید.","Install یا Add را تأیید کنید."],waiting:"برای تکمیل نصب، مراحل پایین را انجام دهید.",installed:"برنامه وب قبلاً نصب شده است.",close:"بستن و بازگشت به سایت"},
+    az:{pageTitle:"Veb tətbiqini quraşdır",desc:"Veb tətbiqini quraşdırın. O, həmişə saytın cari versiyasını açır və sayt dəyişiklikləri yenidən quraşdırmadan görünür.",button:"Veb tətbiqini quraşdır",iosTitle:"iPhone / iPad",iosSteps:["Bu səhifəni Safari-də açın.","Share düyməsinə toxunun.","Add to Home Screen seçin.","Sonda Add düyməsini təsdiqləyin."],androidTitle:"Android",androidSteps:["Bu səhifəni Chrome-da açın.","Üç nöqtəli menyunu açın.","Install app və ya Add to Home screen seçin.","Install və ya Add seçimini təsdiqləyin."],waiting:"Quraşdırmanı tamamlamaq üçün aşağıdakı addımları izləyin.",installed:"Veb tətbiqi artıq quraşdırılıb.",close:"Bağla və sayta qayıt"},
+    tr:{pageTitle:"Web Uygulamasını Yükle",desc:"Web uygulamasını yükleyin. Her zaman sitenin güncel sürümünü açar ve değişiklikler yeniden yükleme gerektirmeden görünür.",button:"Web Uygulamasını Yükle",iosTitle:"iPhone / iPad",iosSteps:["Bu sayfayı Safari'de açın.","Paylaş düğmesine dokunun.","Ana Ekrana Ekle seçeneğini seçin.","Ekle düğmesini onaylayın."],androidTitle:"Android",androidSteps:["Bu sayfayı Chrome'da açın.","Üç noktalı menüyü açın.","Uygulamayı yükle veya Ana ekrana ekle seçeneğini seçin.","Yükle veya Ekle işlemini onaylayın."],waiting:"Kurulumu tamamlamak için aşağıdaki adımları izleyin.",installed:"Web uygulaması zaten yüklü.",close:"Kapat ve siteye dön"},
+    ru:{pageTitle:"Установить веб-приложение",desc:"Установите веб-приложение. Оно всегда открывает текущую версию сайта, поэтому обновления появляются без повторной установки.",button:"Установить веб-приложение",iosTitle:"iPhone / iPad",iosSteps:["Откройте эту страницу в Safari.","Нажмите «Поделиться».","Выберите «На экран Домой».","Подтвердите добавление."],androidTitle:"Android",androidSteps:["Откройте эту страницу в Chrome.","Откройте меню с тремя точками.","Выберите установку приложения или добавление на главный экран.","Подтвердите установку."],waiting:"Следуйте инструкциям ниже, чтобы завершить установку.",installed:"Веб-приложение уже установлено.",close:"Закрыть и вернуться на сайт"},
+    ar:{pageTitle:"تثبيت تطبيق الويب",desc:"ثبّت تطبيق الويب. يفتح دائماً الإصدار الحالي من الموقع، لذلك تظهر التغييرات دون الحاجة إلى إعادة التثبيت.",button:"تثبيت تطبيق الويب",iosTitle:"iPhone / iPad",iosSteps:["افتح هذه الصفحة في Safari.","اضغط على مشاركة.","اختر إضافة إلى الشاشة الرئيسية.","أكد الإضافة."],androidTitle:"Android",androidSteps:["افتح هذه الصفحة في Chrome.","افتح قائمة النقاط الثلاث.","اختر تثبيت التطبيق أو الإضافة إلى الشاشة الرئيسية.","أكد التثبيت أو الإضافة."],waiting:"اتبع الخطوات أدناه لإكمال التثبيت.",installed:"تطبيق الويب مثبت بالفعل.",close:"إغلاق والعودة إلى الموقع"},
+    zh:{pageTitle:"安装网页应用",desc:"安装网页应用。它始终打开网站的当前版本，因此网站更新无需重新安装即可显示。",button:"安装网页应用",iosTitle:"iPhone / iPad",iosSteps:["在 Safari 中打开此页面。","点击分享。","选择添加到主屏幕。","确认添加。"],androidTitle:"Android",androidSteps:["在 Chrome 中打开此页面。","打开三点菜单。","选择安装应用或添加到主屏幕。","确认安装或添加。"],waiting:"请按照以下步骤完成安装。",installed:"网页应用已安装。",close:"关闭并返回网站"},
+    es:{pageTitle:"Instalar aplicación web",desc:"Instala la aplicación web. Siempre abre la versión actual del sitio, por lo que los cambios aparecen sin reinstalarla.",button:"Instalar aplicación web",iosTitle:"iPhone / iPad",iosSteps:["Abre esta página en Safari.","Toca Compartir.","Selecciona Añadir a pantalla de inicio.","Confirma Añadir."],androidTitle:"Android",androidSteps:["Abre esta página en Chrome.","Abre el menú de tres puntos.","Selecciona Instalar aplicación o Añadir a pantalla de inicio.","Confirma la instalación."],waiting:"Sigue los pasos para completar la instalación.",installed:"La aplicación web ya está instalada.",close:"Cerrar y volver al sitio"},
+    fr:{pageTitle:"Installer l’application web",desc:"Installez l’application web. Elle ouvre toujours la version actuelle du site et affiche les changements sans réinstallation.",button:"Installer l’application web",iosTitle:"iPhone / iPad",iosSteps:["Ouvrez cette page dans Safari.","Touchez Partager.","Choisissez Sur l’écran d’accueil.","Confirmez Ajouter."],androidTitle:"Android",androidSteps:["Ouvrez cette page dans Chrome.","Ouvrez le menu à trois points.","Choisissez Installer l’application ou Ajouter à l’écran d’accueil.","Confirmez l’installation."],waiting:"Suivez les étapes ci-dessous pour terminer l’installation.",installed:"L’application web est déjà installée.",close:"Fermer et revenir au site"},
+    de:{pageTitle:"Web-App installieren",desc:"Installieren Sie die Web-App. Sie öffnet immer die aktuelle Website, sodass Änderungen ohne erneute Installation erscheinen.",button:"Web-App installieren",iosTitle:"iPhone / iPad",iosSteps:["Öffnen Sie diese Seite in Safari.","Tippen Sie auf Teilen.","Wählen Sie Zum Home-Bildschirm.","Bestätigen Sie Hinzufügen."],androidTitle:"Android",androidSteps:["Öffnen Sie diese Seite in Chrome.","Öffnen Sie das Drei-Punkte-Menü.","Wählen Sie App installieren oder Zum Startbildschirm hinzufügen.","Bestätigen Sie die Installation."],waiting:"Folgen Sie den Schritten, um die Installation abzuschließen.",installed:"Die Web-App ist bereits installiert.",close:"Schließen und zur Website zurückkehren"}
+  };
 
-  const installed =
-    window.matchMedia("(display-mode: standalone)").matches ||
-    navigator.standalone === true;
-
-  const btn = document.getElementById("installBtn");
-  const status = document.getElementById("status");
-  const androidGuide = document.getElementById("androidGuide");
-  const iosGuide = document.getElementById("iosGuide");
-
+  const params = new URLSearchParams(location.search);
+  const requested = (params.get("lang") || localStorage.getItem("bi_lang") || navigator.language || "en").toLowerCase().split("-")[0];
+  const lang = copy[requested] ? requested : "en";
+  const c = copy[lang];
+  const rtl = lang === "fa" || lang === "ar";
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = matchMedia?.("(display-mode: standalone)")?.matches || navigator.standalone === true;
   let deferredPrompt = null;
 
-  if (isIOS) iosGuide.classList.remove("hidden");
-  if (isAndroid) androidGuide.classList.remove("hidden");
+  document.documentElement.lang = lang;
+  document.documentElement.dir = rtl ? "rtl" : "ltr";
+  localStorage.setItem("bi_lang", lang);
+  document.title = c.pageTitle + " | binancinvest";
+  document.getElementById("description").textContent = c.desc;
+  document.getElementById("installBtn").textContent = c.button;
+  document.getElementById("guideTitle").textContent = isiOS ? c.iosTitle : c.androidTitle;
+  document.getElementById("closeBtn").setAttribute("aria-label", c.close);
+  document.getElementById("closeBtn").setAttribute("title", c.close);
 
-  if (installed) {
-    btn.disabled = true;
-    btn.textContent = "Installed";
-    status.textContent = "The web app is already installed.";
-  }
+  const steps = isiOS ? c.iosSteps : c.androidSteps;
+  document.getElementById("steps").replaceChildren(...steps.map((text) => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    return li;
+  }));
+
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else location.href = "/?lang=" + encodeURIComponent(lang);
+  });
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredPrompt = event;
-    btn.disabled = false;
-    status.textContent = "";
+    document.getElementById("status").textContent = "";
   });
 
-  window.addEventListener("appinstalled", () => {
-    deferredPrompt = null;
-    btn.disabled = true;
-    btn.textContent = "Installed";
-    status.textContent = "Installation completed.";
-  });
-
-  btn.addEventListener("click", async () => {
-    if (installed) return;
-
-    if (isAndroid && deferredPrompt) {
+  document.getElementById("installBtn").addEventListener("click", async () => {
+    const status = document.getElementById("status");
+    if (isStandalone) {
+      status.textContent = c.installed;
+      return;
+    }
+    if (deferredPrompt) {
       const prompt = deferredPrompt;
       deferredPrompt = null;
-
       try {
         await prompt.prompt();
-        const choice = await prompt.userChoice;
-
-        if (choice && choice.outcome === "accepted") {
-          status.textContent = "Installation started.";
-        } else {
-          status.textContent = "Use Chrome menu → Install app.";
-        }
-      } catch (_) {
-        status.textContent = "Use Chrome menu → Install app.";
-      }
-
+        await prompt.userChoice;
+      } catch (_) {}
       return;
     }
-
-    if (isIOS) {
-      status.textContent = "Safari → Share → Add to Home Screen";
-      return;
-    }
-
-    if (isAndroid) {
-      status.textContent = "Chrome menu (⋮) → Install app / Add to Home screen";
-      return;
-    }
-
-    status.textContent = "Use your browser's Install app option.";
+    status.textContent = c.waiting;
+    document.querySelector(".guide")?.scrollIntoView({behavior:"smooth",block:"center"});
   });
-
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js", {
-      scope: "/",
-      updateViaCache: "none"
-    }).catch(() => {});
-  }
 })();
 </script>
 </body>

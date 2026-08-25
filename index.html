@@ -13234,7 +13234,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
         <a
           id="iphoneProfileBtn"
           class="install-banner-action"
-          href="https://binancinvest.com/install-iphone.html"
+          href="install-iphone.html"
           aria-label="Install binancinvest profile on iPhone"
         ></a>
 
@@ -13262,8 +13262,9 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
 
         <div class="install-choice-actions">
           <a
+            id="iphoneProfileChoiceBtn"
             class="install-choice-btn install-choice-primary"
-            href="https://binancinvest.com/install-iphone.html"
+            href="install-iphone.html"
             aria-controls="iphoneGuidePanel"
             aria-expanded="false"
             onclick="return prepareInstallChoice(event,'iphone')"
@@ -13272,8 +13273,9 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
           </a>
 
           <a
+            id="iphoneWebChoiceBtn"
             class="install-choice-btn install-choice-secondary"
-            href="https://binancinvest.com/install-web.html"
+            href="install-web.html"
             aria-controls="iphoneGuidePanel"
             aria-expanded="false"
             onclick="return prepareInstallChoice(event,'iphone')"
@@ -13303,6 +13305,7 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
 
         <div class="install-choice-actions">
           <a
+            id="androidApkChoiceBtn"
             class="install-choice-btn install-choice-primary"
             href="binancinvest-v37-3.apk"
             download="binancinvest-v37-3.apk"
@@ -13314,8 +13317,9 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
           </a>
 
           <a
+            id="androidWebChoiceBtn"
             class="install-choice-btn install-choice-secondary"
-            href="https://binancinvest.com/install-web.html"
+            href="install-web.html"
             aria-controls="androidGuidePanel"
             aria-expanded="false"
             onclick="return prepareInstallChoice(event,'android')"
@@ -22206,11 +22210,30 @@ async function deleteAllClosedSupportTickets() {
   const androidSteps = document.getElementById("androidInstallSteps");
   const androidNote = document.getElementById("androidInstallNote");
 
+  const iphoneProfileChoiceBtn = document.getElementById("iphoneProfileChoiceBtn");
+  const iphoneWebChoiceBtn = document.getElementById("iphoneWebChoiceBtn");
+  const androidApkChoiceBtn = document.getElementById("androidApkChoiceBtn");
+  const androidWebChoiceBtn = document.getElementById("androidWebChoiceBtn");
+  const iphoneProfileBannerBtn = document.getElementById("iphoneProfileBtn");
+
   const languageTitle = document.getElementById("installLanguageTitle");
 
   if (!btn || !status || !title || !desc) return;
 
   const copy = {"en":{"title":"Download App","desc":"Install the mobile version on iPhone or Android. It uses the same online account and keeps website features and updates.","button":"Install App","installed":"The app is already installed on this device.","waiting":"If the install prompt does not appear, follow the steps below for your device.","iphoneTitle":"Install on iPhone","iphoneShort":"Use Safari and add the website to your Home Screen.","iphoneSteps":["Open this website in Safari.","Tap Share. If you see the More button first, tap More → Share.","Scroll and choose Add to Home Screen.","Tap Add to finish."],"iphoneNote":"If Add to Home Screen is hidden, scroll to the bottom of the Share sheet, tap Edit Actions, then add it.","androidTitle":"Install on Android","androidShort":"Use Chrome and choose Install app or Add to Home screen.","androidSteps":["Open this website in Chrome.","Tap the three-dot browser menu.","Choose Install app or Add to Home screen / Create shortcut.","Confirm Install or Add."],"androidNote":"The exact menu wording can vary by Chrome version and device.","langs":"Instructions automatically match the selected site language."},"fa":{"title":"دانلود برنامه","desc":"نسخه موبایل را روی آیفون یا اندروید نصب کنید. برنامه همان حساب آنلاین، امکانات و بروزرسانی‌های سایت را نمایش می‌دهد.","button":"نصب برنامه","installed":"برنامه روی این دستگاه نصب شده است.","waiting":"اگر پنجره نصب نمایش داده نشد، راهنمای مخصوص گوشی خود را در پایین دنبال کنید.","iphoneTitle":"نصب روی آیفون","iphoneShort":"با Safari سایت را به صفحه اصلی آیفون اضافه کنید.","iphoneSteps":["این سایت را داخل Safari باز کنید.","روی Share بزنید. اگر اول دکمه More را می‌بینید، More → Share را انتخاب کنید.","در فهرست پایین بروید و Add to Home Screen را بزنید.","در مرحله آخر روی Add بزنید."],"iphoneNote":"اگر Add to Home Screen را نمی‌بینید، انتهای فهرست Share روی Edit Actions بزنید و آن را اضافه کنید.","androidTitle":"نصب روی اندروید","androidShort":"سایت را در Chrome باز کنید و Install app یا Add to Home screen را بزنید.","androidSteps":["این سایت را داخل Chrome باز کنید.","منوی سه‌نقطه مرورگر را باز کنید.","Install app یا Add to Home screen / Create shortcut را انتخاب کنید.","Install یا Add را تأیید کنید."],"androidNote":"نام گزینه ممکن است با توجه به نسخه Chrome و مدل گوشی کمی متفاوت باشد.","langs":"راهنما به‌صورت خودکار با زبان انتخاب‌شده سایت تغییر می‌کند."},"az":{"title":"Tətbiqi yüklə","desc":"Mobil versiyanı iPhone və ya Android telefonunuza quraşdırın. Eyni onlayn hesab, sayt funksiyaları və yeniləmələr qalır.","button":"Tətbiqi quraşdır","installed":"Tətbiq artıq bu cihazda quraşdırılıb.","waiting":"Quraşdırma pəncərəsi görünmürsə, aşağıdakı cihaz təlimatını izləyin.","iphoneTitle":"iPhone-da quraşdırma","iphoneShort":"Safari ilə saytı əsas ekrana əlavə edin.","iphoneSteps":["Bu saytı Safari-də açın.","Share düyməsinə toxunun. Əvvəl More görünürsə, More → Share seçin.","Aşağı sürüşdürüb Add to Home Screen seçin.","Sonda Add düyməsinə toxunun."],"iphoneNote":"Add to Home Screen görünmürsə, Share siyahısının sonunda Edit Actions seçib onu əlavə edin.","androidTitle":"Android-də quraşdırma","androidShort":"Saytı Chrome-da açın və Install app və ya Add to Home screen seçin.","androidSteps":["Bu saytı Chrome-da açın.","Brauzerin üç nöqtəli menyusunu açın.","Install app və ya Add to Home screen / Create shortcut seçin.","Install və ya Add düyməsini təsdiqləyin."],"androidNote":"Menyu adı Chrome versiyasına və cihazınıza görə bir qədər fərqli ola bilər.","langs":"Təlimatlar saytın seçilmiş dilinə avtomatik uyğunlaşır."},"tr":{"title":"Uygulamayı İndir","desc":"Mobil sürümü iPhone veya Android telefonunuza yükleyin. Aynı çevrimiçi hesap, site özellikleri ve güncellemeler korunur.","button":"Uygulamayı Yükle","installed":"Uygulama bu cihazda zaten yüklü.","waiting":"Yükleme penceresi görünmezse aşağıdaki cihaz adımlarını izleyin.","iphoneTitle":"iPhone'a yükleme","iphoneShort":"Safari ile siteyi Ana Ekrana ekleyin.","iphoneSteps":["Bu siteyi Safari'de açın.","Paylaş düğmesine dokunun. Önce Daha Fazla görünüyorsa Daha Fazla → Paylaş seçin.","Aşağı kaydırıp Ana Ekrana Ekle seçeneğini seçin.","Son olarak Ekle'ye dokunun."],"iphoneNote":"Ana Ekrana Ekle görünmüyorsa Paylaş listesinin altındaki Eylemleri Düzenle bölümünden ekleyin.","androidTitle":"Android'e yükleme","androidShort":"Siteyi Chrome'da açın ve Uygulamayı yükle veya Ana ekrana ekle seçeneğini kullanın.","androidSteps":["Bu siteyi Chrome'da açın.","Üç noktalı tarayıcı menüsünü açın.","Uygulamayı yükle veya Ana ekrana ekle / Kısayol oluştur seçeneğini seçin.","Yükle veya Ekle işlemini onaylayın."],"androidNote":"Menü adı Chrome sürümüne ve cihaza göre değişebilir.","langs":"Talimatlar seçili site diline otomatik olarak uyarlanır."},"ru":{"title":"Скачать приложение","desc":"Установите мобильную версию на iPhone или Android. Используется тот же онлайн-аккаунт, функции сайта и обновления.","button":"Установить приложение","installed":"Приложение уже установлено на этом устройстве.","waiting":"Если окно установки не появилось, выполните инструкции ниже для вашего устройства.","iphoneTitle":"Установка на iPhone","iphoneShort":"Откройте сайт в Safari и добавьте его на экран «Домой».","iphoneSteps":["Откройте этот сайт в Safari.","Нажмите «Поделиться». Если сначала видите «Еще», выберите «Еще» → «Поделиться».","Прокрутите список и выберите «На экран Домой».","Нажмите «Добавить»."],"iphoneNote":"Если пункта «На экран Домой» нет, внизу меню «Поделиться» откройте «Изменить действия» и добавьте его.","androidTitle":"Установка на Android","androidShort":"Откройте сайт в Chrome и выберите установку или добавление на главный экран.","androidSteps":["Откройте этот сайт в Chrome.","Откройте меню с тремя точками.","Выберите «Установить приложение» или «Добавить на главный экран / Создать ярлык».","Подтвердите установку или добавление."],"androidNote":"Название пункта меню может отличаться в зависимости от версии Chrome и устройства.","langs":"Инструкция автоматически меняется вместе с выбранным языком сайта."},"ar":{"title":"تحميل التطبيق","desc":"ثبّت نسخة الهاتف على iPhone أو Android. ستستخدم نفس الحساب عبر الإنترنت وتحافظ على ميزات الموقع وتحديثاته.","button":"تثبيت التطبيق","installed":"التطبيق مثبت بالفعل على هذا الجهاز.","waiting":"إذا لم تظهر نافذة التثبيت، اتبع تعليمات جهازك أدناه.","iphoneTitle":"التثبيت على iPhone","iphoneShort":"افتح الموقع في Safari وأضفه إلى الشاشة الرئيسية.","iphoneSteps":["افتح هذا الموقع في Safari.","اضغط مشاركة. إذا ظهر زر المزيد أولاً، اختر المزيد ← مشاركة.","مرّر لأسفل واختر إضافة إلى الشاشة الرئيسية.","اضغط إضافة لإكمال العملية."],"iphoneNote":"إذا لم يظهر خيار إضافة إلى الشاشة الرئيسية، افتح تحرير الإجراءات من أسفل قائمة المشاركة وأضفه.","androidTitle":"التثبيت على Android","androidShort":"افتح الموقع في Chrome واختر تثبيت التطبيق أو الإضافة إلى الشاشة الرئيسية.","androidSteps":["افتح هذا الموقع في Chrome.","افتح قائمة النقاط الثلاث في المتصفح.","اختر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية / إنشاء اختصار.","أكد التثبيت أو الإضافة."],"androidNote":"قد يختلف اسم الخيار قليلاً حسب إصدار Chrome ونوع الجهاز.","langs":"تتغير التعليمات تلقائيًا حسب لغة الموقع المحددة."},"zh":{"title":"下载应用","desc":"在 iPhone 或 Android 手机上安装移动版本。它会继续使用同一个在线账户，并保留网站功能和更新。","button":"安装应用","installed":"此设备已安装应用。","waiting":"如果没有出现安装提示，请按照下方对应设备的步骤操作。","iphoneTitle":"在 iPhone 上安装","iphoneShort":"使用 Safari 将网站添加到主屏幕。","iphoneSteps":["在 Safari 中打开本网站。","点击“分享”。如果先看到“更多”，请选择“更多”→“分享”。","向下滚动并选择“添加到主屏幕”。","点击“添加”完成。"],"iphoneNote":"如果看不到“添加到主屏幕”，请在分享菜单底部打开“编辑操作”并将其添加。","androidTitle":"在 Android 上安装","androidShort":"使用 Chrome，选择“安装应用”或“添加到主屏幕”。","androidSteps":["在 Chrome 中打开本网站。","点击浏览器的三点菜单。","选择“安装应用”或“添加到主屏幕 / 创建快捷方式”。","确认“安装”或“添加”。"],"androidNote":"菜单文字可能会因 Chrome 版本和设备而略有不同。","langs":"安装说明会自动跟随当前选择的网站语言。"},"es":{"title":"Descargar aplicación","desc":"Instala la versión móvil en iPhone o Android. Usa la misma cuenta en línea y mantiene las funciones y actualizaciones del sitio.","button":"Instalar aplicación","installed":"La aplicación ya está instalada en este dispositivo.","waiting":"Si no aparece el aviso de instalación, sigue los pasos de tu dispositivo.","iphoneTitle":"Instalar en iPhone","iphoneShort":"Usa Safari y añade el sitio a la pantalla de inicio.","iphoneSteps":["Abre este sitio en Safari.","Toca Compartir. Si primero aparece Más, selecciona Más → Compartir.","Desplázate y elige Añadir a pantalla de inicio.","Toca Añadir para terminar."],"iphoneNote":"Si no aparece Añadir a pantalla de inicio, abre Editar acciones al final del menú Compartir y añádelo.","androidTitle":"Instalar en Android","androidShort":"Usa Chrome y selecciona Instalar aplicación o Añadir a pantalla de inicio.","androidSteps":["Abre este sitio en Chrome.","Abre el menú de tres puntos.","Selecciona Instalar aplicación o Añadir a pantalla de inicio / Crear acceso directo.","Confirma Instalar o Añadir."],"androidNote":"El nombre de la opción puede variar según la versión de Chrome y el dispositivo.","langs":"Las instrucciones cambian automáticamente con el idioma seleccionado del sitio."},"fr":{"title":"Télécharger l’application","desc":"Installez la version mobile sur iPhone ou Android. Elle utilise le même compte en ligne et conserve les fonctions et mises à jour du site.","button":"Installer l’application","installed":"L’application est déjà installée sur cet appareil.","waiting":"Si l’invite d’installation n’apparaît pas, suivez les étapes correspondant à votre appareil.","iphoneTitle":"Installer sur iPhone","iphoneShort":"Utilisez Safari et ajoutez le site à l’écran d’accueil.","iphoneSteps":["Ouvrez ce site dans Safari.","Touchez Partager. Si le bouton Plus apparaît d’abord, choisissez Plus → Partager.","Faites défiler puis choisissez Sur l’écran d’accueil.","Touchez Ajouter pour terminer."],"iphoneNote":"Si Sur l’écran d’accueil n’apparaît pas, ouvrez Modifier les actions en bas du menu Partager et ajoutez-le.","androidTitle":"Installer sur Android","androidShort":"Utilisez Chrome puis choisissez Installer l’application ou Ajouter à l’écran d’accueil.","androidSteps":["Ouvrez ce site dans Chrome.","Ouvrez le menu à trois points.","Choisissez Installer l’application ou Ajouter à l’écran d’accueil / Créer un raccourci.","Confirmez Installer ou Ajouter."],"androidNote":"Le libellé exact peut varier selon la version de Chrome et l’appareil.","langs":"Les instructions s’adaptent automatiquement à la langue sélectionnée sur le site."},"de":{"title":"App herunterladen","desc":"Installieren Sie die mobile Version auf iPhone oder Android. Dasselbe Online-Konto sowie Website-Funktionen und Updates bleiben erhalten.","button":"App installieren","installed":"Die App ist auf diesem Gerät bereits installiert.","waiting":"Wenn kein Installationsfenster erscheint, folgen Sie den Schritten für Ihr Gerät.","iphoneTitle":"Auf dem iPhone installieren","iphoneShort":"Öffnen Sie die Website in Safari und fügen Sie sie zum Home-Bildschirm hinzu.","iphoneSteps":["Öffnen Sie diese Website in Safari.","Tippen Sie auf Teilen. Wenn zuerst „Mehr“ erscheint, wählen Sie Mehr → Teilen.","Scrollen Sie nach unten und wählen Sie „Zum Home-Bildschirm“.","Tippen Sie zum Abschluss auf „Hinzufügen“."],"iphoneNote":"Wenn „Zum Home-Bildschirm“ fehlt, öffnen Sie unten im Teilen-Menü „Aktionen bearbeiten“ und fügen Sie es hinzu.","androidTitle":"Auf Android installieren","androidShort":"Öffnen Sie die Website in Chrome und wählen Sie App installieren oder Zum Startbildschirm hinzufügen.","androidSteps":["Öffnen Sie diese Website in Chrome.","Öffnen Sie das Drei-Punkte-Menü.","Wählen Sie App installieren oder Zum Startbildschirm hinzufügen / Verknüpfung erstellen.","Bestätigen Sie Installieren oder Hinzufügen."],"androidNote":"Die genaue Bezeichnung kann je nach Chrome-Version und Gerät variieren.","langs":"Die Anleitung passt sich automatisch an die ausgewählte Website-Sprache an."}};
+
+  const installChoiceCopy = {
+    en:{iphoneProfile:"Install iPhone Profile",iphoneWeb:"Add iPhone Web App",androidApk:"Download Android APK",androidWeb:"Add Android Web App",close:"Close installation guide"},
+    fa:{iphoneProfile:"نصب پروفایل آیفون",iphoneWeb:"افزودن برنامه وب آیفون",androidApk:"دانلود برنامه اندروید",androidWeb:"افزودن برنامه وب اندروید",close:"بستن راهنمای نصب"},
+    az:{iphoneProfile:"iPhone profilini quraşdır",iphoneWeb:"iPhone veb tətbiqini əlavə et",androidApk:"Android APK-nı yüklə",androidWeb:"Android veb tətbiqini əlavə et",close:"Quraşdırma təlimatını bağla"},
+    tr:{iphoneProfile:"iPhone Profilini Yükle",iphoneWeb:"iPhone Web Uygulamasını Ekle",androidApk:"Android APK'yı İndir",androidWeb:"Android Web Uygulamasını Ekle",close:"Kurulum kılavuzunu kapat"},
+    ru:{iphoneProfile:"Установить профиль iPhone",iphoneWeb:"Добавить веб-приложение iPhone",androidApk:"Скачать Android APK",androidWeb:"Добавить веб-приложение Android",close:"Закрыть инструкцию"},
+    ar:{iphoneProfile:"تثبيت ملف تعريف iPhone",iphoneWeb:"إضافة تطبيق الويب على iPhone",androidApk:"تنزيل تطبيق Android",androidWeb:"إضافة تطبيق الويب على Android",close:"إغلاق دليل التثبيت"},
+    zh:{iphoneProfile:"安装 iPhone 描述文件",iphoneWeb:"添加 iPhone 网页应用",androidApk:"下载 Android APK",androidWeb:"添加 Android 网页应用",close:"关闭安装说明"},
+    es:{iphoneProfile:"Instalar perfil de iPhone",iphoneWeb:"Añadir aplicación web en iPhone",androidApk:"Descargar APK para Android",androidWeb:"Añadir aplicación web en Android",close:"Cerrar guía de instalación"},
+    fr:{iphoneProfile:"Installer le profil iPhone",iphoneWeb:"Ajouter l’app web sur iPhone",androidApk:"Télécharger l’APK Android",androidWeb:"Ajouter l’app web sur Android",close:"Fermer le guide d’installation"},
+    de:{iphoneProfile:"iPhone-Profil installieren",iphoneWeb:"iPhone-Web-App hinzufügen",androidApk:"Android-APK herunterladen",androidWeb:"Android-Web-App hinzufügen",close:"Installationsanleitung schließen"}
+  };
 
   const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isAndroid = /android/i.test(navigator.userAgent);
@@ -22224,6 +22247,22 @@ async function deleteAllClosedSupportTickets() {
     const stored = (localStorage.getItem("bi_lang") || "").toLowerCase().split("-")[0];
     const lang = direct || stored || "en";
     return copy[lang] ? lang : "en";
+  }
+
+  function installPageUrl(path, lang) {
+    const url = new URL(path, window.location.href);
+    url.searchParams.set("lang", lang);
+    return url.href;
+  }
+
+  function syncInstallPageLinks(lang) {
+    const iphoneUrl = installPageUrl("install-iphone.html", lang);
+    const webUrl = installPageUrl("install-web.html", lang);
+
+    if (iphoneProfileBannerBtn) iphoneProfileBannerBtn.href = iphoneUrl;
+    if (iphoneProfileChoiceBtn) iphoneProfileChoiceBtn.href = iphoneUrl;
+    if (iphoneWebChoiceBtn) iphoneWebChoiceBtn.href = webUrl;
+    if (androidWebChoiceBtn) androidWebChoiceBtn.href = webUrl;
   }
 
   function renderSteps(element, steps) {
@@ -22292,7 +22331,9 @@ async function deleteAllClosedSupportTickets() {
   }
 
   function paintCopy() {
-    const c = copy[activeLanguage()] || copy.en;
+    const lang = activeLanguage();
+    const c = copy[lang] || copy.en;
+    const choices = installChoiceCopy[lang] || installChoiceCopy.en;
 
     title.textContent = c.title;
     desc.textContent = c.desc;
@@ -22305,6 +22346,18 @@ async function deleteAllClosedSupportTickets() {
     if (androidTitle) androidTitle.textContent = c.androidTitle;
     if (androidShort) androidShort.textContent = c.androidShort;
     if (androidNote) androidNote.textContent = c.androidNote;
+
+    if (iphoneProfileChoiceBtn) iphoneProfileChoiceBtn.textContent = choices.iphoneProfile;
+    if (iphoneWebChoiceBtn) iphoneWebChoiceBtn.textContent = choices.iphoneWeb;
+    if (androidApkChoiceBtn) androidApkChoiceBtn.textContent = choices.androidApk;
+    if (androidWebChoiceBtn) androidWebChoiceBtn.textContent = choices.androidWeb;
+
+    document.querySelectorAll("#downloadAppSection .install-guide-close").forEach((button) => {
+      button.setAttribute("aria-label", choices.close);
+      button.setAttribute("title", choices.close);
+    });
+
+    syncInstallPageLinks(lang);
 
     if (languageTitle) languageTitle.textContent = c.langs;
 

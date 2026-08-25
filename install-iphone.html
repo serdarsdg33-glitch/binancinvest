@@ -1,192 +1,66 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05070b">
 <title>Install binancinvest</title>
-
 <style>
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  min-height:100%;
-  background:#030507;
-  color:#f4f7fb;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
-
-body{
-  background:
-    radial-gradient(circle at 50% -10%,rgba(240,185,11,.18),transparent 34%),
-    linear-gradient(180deg,#030507,#05070b);
-}
-
-main{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:34px 16px;
-}
-
-.card{
-  width:min(440px,100%);
-  position:relative;
-  padding:72px 22px 28px;
-  border:1px solid rgba(240,185,11,.28);
-  border-radius:28px;
-  background:linear-gradient(180deg,rgba(17,22,29,.96),rgba(8,12,17,.98));
-  box-shadow:0 28px 80px rgba(0,0,0,.58);
-  text-align:center;
-}
-
-/* دکمه بستن */
-.close-btn{
-  position:absolute;
-  top:15px;
-  right:15px;
-  z-index:10;
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:50%;
-  background:rgba(255,255,255,.055);
-  color:#d8dee8;
-  text-decoration:none;
-  font-size:31px;
-  font-weight:300;
-  line-height:1;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
-  transition:.18s ease;
-}
-
-.close-btn:hover,
-.close-btn:focus{
-  color:#fff;
-  border-color:rgba(240,185,11,.65);
-  background:rgba(240,185,11,.12);
-  transform:scale(1.05);
-  outline:none;
-}
-
-.close-btn:active{
-  transform:scale(.94);
-}
-
-.icon{
-  position:absolute;
-  top:-52px;
-  left:50%;
-  transform:translateX(-50%);
-  width:116px;
-  height:116px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(145deg,rgba(240,185,11,.22),rgba(255,255,255,.04));
-  border:1px solid rgba(255,229,138,.32);
-}
-
-.icon img{
-  width:88px;
-  height:88px;
-  border-radius:22px;
-}
-
-h1{
-  margin:0 0 12px;
-  font-size:30px;
-}
-
-.meta{
-  color:#aab4c0;
-  line-height:1.7;
-}
-
-.qr{
-  width:210px;
-  margin:20px auto;
-  padding:12px;
-  border-radius:18px;
-  background:#fff;
-}
-
-.qr img{
-  width:100%;
-  display:block;
-}
-
-.btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  min-height:54px;
-  border-radius:999px;
-  color:#171100;
-  text-decoration:none;
-  font-size:17px;
-  font-weight:900;
-  background:linear-gradient(135deg,#fff09a,#f0b90b 58%,#d99a00);
-}
-
-.note{
-  margin-top:18px;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.07);
-  background:rgba(255,255,255,.025);
-  color:#b4bdc9;
-  text-align:left;
-  line-height:1.8;
-  font-size:13px;
-}
-
-.note b{
-  color:#ffe58a;
-}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#030507;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{background:radial-gradient(circle at 50% -10%,rgba(240,185,11,.18),transparent 34%),linear-gradient(180deg,#030507,#05070b)}
+main{min-height:100vh;display:grid;place-items:center;padding:34px 16px}.card{width:min(440px,100%);position:relative;padding:72px 22px 28px;border:1px solid rgba(240,185,11,.28);border-radius:28px;background:linear-gradient(180deg,rgba(17,22,29,.96),rgba(8,12,17,.98));box-shadow:0 28px 80px rgba(0,0,0,.58);text-align:center}
+.close-btn{position:absolute;top:15px;right:15px;z-index:10;width:42px;height:42px;display:grid;place-items:center;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(255,255,255,.055);color:#d8dee8;font-size:31px;font-weight:300;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.18s ease}
+html[dir="rtl"] .close-btn{right:auto;left:15px}.close-btn:hover,.close-btn:focus-visible{color:#fff;border-color:rgba(240,185,11,.65);background:rgba(240,185,11,.12);outline:none;transform:scale(1.05)}
+.icon{position:absolute;top:-52px;left:50%;transform:translateX(-50%);width:116px;height:116px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,rgba(240,185,11,.22),rgba(255,255,255,.04));border:1px solid rgba(255,229,138,.32)}.icon img{width:88px;height:88px;border-radius:22px}
+h1{margin:0 0 12px;font-size:30px}.meta{color:#aab4c0;line-height:1.7}.qr{width:210px;margin:20px auto;padding:12px;border-radius:18px;background:#fff}.qr img{width:100%;display:block}.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;border-radius:999px;color:#171100;text-decoration:none;font-size:17px;font-weight:900;background:linear-gradient(135deg,#fff09a,#f0b90b 58%,#d99a00)}
+.note{margin-top:18px;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);color:#b4bdc9;text-align:start;line-height:1.8;font-size:13px}.note b{display:block;margin-bottom:5px;color:#ffe58a;font-size:14px}.steps{margin:0;padding-inline-start:22px}.steps li+li{margin-top:3px}
 </style>
 </head>
-
 <body>
-<main>
-  <section class="card">
-
-    <a class="close-btn" href="/" aria-label="Cancel and return to homepage">×</a>
-
-    <div class="icon">
-      <img src="/binancinvest-iphone-icon-180.png" alt="">
-    </div>
-
-    <h1>binancinvest</h1>
-
-    <div class="meta">
-      iPhone Profile Install<br>
-      Full-screen Home Screen access
-    </div>
-
-    <div class="qr">
-      <img src="/binancinvest-install-qr.png" alt="QR">
-    </div>
-
-    <a class="btn" href="/binancinvest-v37.mobileconfig">
-      Download Profile
-    </a>
-
-    <div class="note">
-      <b>Installation:</b><br>
-      1. Open this page in Safari.<br>
-      2. Tap <b>Download Profile</b> → <b>Allow</b>.<br>
-      3. Open <b>Settings</b> → <b>Profile Downloaded</b>.<br>
-      4. Tap <b>Install</b>.
-    </div>
-
-  </section>
-</main>
+<main><section class="card">
+<button id="closeBtn" class="close-btn" type="button" aria-label="Close">×</button>
+<div class="icon"><img src="/binancinvest-iphone-icon-180.png" alt=""></div>
+<h1>binancinvest</h1>
+<div id="meta" class="meta"></div>
+<div class="qr"><img src="/binancinvest-install-qr.png" alt="QR"></div>
+<a id="downloadBtn" class="btn" href="/binancinvest-v37.mobileconfig"></a>
+<div class="note"><b id="guideTitle"></b><ol id="steps" class="steps"></ol></div>
+</section></main>
+<script>
+(() => {
+  const copy = {
+    en:{title:"Install iPhone Profile",meta:"iPhone Profile Install<br>Full-screen Home Screen access",button:"Download Profile",guide:"Installation",steps:["Open this page in Safari.","Tap Download Profile, then Allow.","Open Settings, then Profile Downloaded.","Tap Install."],close:"Close and return to the website"},
+    fa:{title:"نصب پروفایل آیفون",meta:"نصب پروفایل آیفون<br>دسترسی تمام‌صفحه از صفحه اصلی",button:"دانلود پروفایل",guide:"راهنمای نصب",steps:["این صفحه را در Safari باز کنید.","روی دانلود پروفایل و سپس Allow بزنید.","Settings را باز کرده و وارد Profile Downloaded شوید.","روی Install بزنید."],close:"بستن و بازگشت به سایت"},
+    az:{title:"iPhone profilini quraşdır",meta:"iPhone profilinin quraşdırılması<br>Əsas ekrandan tam ekran giriş",button:"Profili yüklə",guide:"Quraşdırma",steps:["Bu səhifəni Safari-də açın.","Profili yüklə, sonra Allow düyməsinə toxunun.","Settings bölməsində Profile Downloaded hissəsini açın.","Install düyməsinə toxunun."],close:"Bağla və sayta qayıt"},
+    tr:{title:"iPhone Profilini Yükle",meta:"iPhone profil kurulumu<br>Ana ekrandan tam ekran erişim",button:"Profili İndir",guide:"Kurulum",steps:["Bu sayfayı Safari'de açın.","Profili İndir, ardından İzin Ver'e dokunun.","Ayarlar'da Profil İndirildi bölümünü açın.","Yükle'ye dokunun."],close:"Kapat ve siteye dön"},
+    ru:{title:"Установить профиль iPhone",meta:"Установка профиля iPhone<br>Полноэкранный доступ с главного экрана",button:"Скачать профиль",guide:"Установка",steps:["Откройте эту страницу в Safari.","Нажмите «Скачать профиль», затем «Разрешить».","Откройте Настройки и раздел «Профиль загружен».","Нажмите «Установить»."],close:"Закрыть и вернуться на сайт"},
+    ar:{title:"تثبيت ملف تعريف iPhone",meta:"تثبيت ملف تعريف iPhone<br>وصول بملء الشاشة من الشاشة الرئيسية",button:"تنزيل ملف التعريف",guide:"التثبيت",steps:["افتح هذه الصفحة في Safari.","اضغط تنزيل ملف التعريف ثم السماح.","افتح الإعدادات ثم ملف التعريف الذي تم تنزيله.","اضغط تثبيت."],close:"إغلاق والعودة إلى الموقع"},
+    zh:{title:"安装 iPhone 描述文件",meta:"安装 iPhone 描述文件<br>从主屏幕全屏访问",button:"下载描述文件",guide:"安装步骤",steps:["在 Safari 中打开此页面。","点击下载描述文件，然后点击允许。","打开设置，然后进入已下载的描述文件。","点击安装。"],close:"关闭并返回网站"},
+    es:{title:"Instalar perfil de iPhone",meta:"Instalación del perfil de iPhone<br>Acceso a pantalla completa desde Inicio",button:"Descargar perfil",guide:"Instalación",steps:["Abre esta página en Safari.","Toca Descargar perfil y después Permitir.","Abre Ajustes y entra en Perfil descargado.","Toca Instalar."],close:"Cerrar y volver al sitio"},
+    fr:{title:"Installer le profil iPhone",meta:"Installation du profil iPhone<br>Accès plein écran depuis l’accueil",button:"Télécharger le profil",guide:"Installation",steps:["Ouvrez cette page dans Safari.","Touchez Télécharger le profil, puis Autoriser.","Ouvrez Réglages, puis Profil téléchargé.","Touchez Installer."],close:"Fermer et revenir au site"},
+    de:{title:"iPhone-Profil installieren",meta:"iPhone-Profilinstallation<br>Vollbildzugriff über den Home-Bildschirm",button:"Profil herunterladen",guide:"Installation",steps:["Öffnen Sie diese Seite in Safari.","Tippen Sie auf Profil herunterladen und dann auf Erlauben.","Öffnen Sie Einstellungen und Profil geladen.","Tippen Sie auf Installieren."],close:"Schließen und zur Website zurückkehren"}
+  };
+  const params = new URLSearchParams(location.search);
+  const requested = (params.get("lang") || localStorage.getItem("bi_lang") || navigator.language || "en").toLowerCase().split("-")[0];
+  const lang = copy[requested] ? requested : "en";
+  const c = copy[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "fa" || lang === "ar" ? "rtl" : "ltr";
+  localStorage.setItem("bi_lang", lang);
+  document.title = c.title + " | binancinvest";
+  document.getElementById("meta").innerHTML = c.meta;
+  document.getElementById("downloadBtn").textContent = c.button;
+  document.getElementById("guideTitle").textContent = c.guide;
+  document.getElementById("closeBtn").setAttribute("aria-label", c.close);
+  document.getElementById("closeBtn").setAttribute("title", c.close);
+  document.getElementById("steps").replaceChildren(...c.steps.map((text) => {
+    const li = document.createElement("li"); li.textContent = text; return li;
+  }));
+  document.getElementById("closeBtn").addEventListener("click", () => {
+    if (history.length > 1) history.back();
+    else location.href = "/?lang=" + encodeURIComponent(lang);
+  });
+})();
+</script>
 </body>
 </html>
