@@ -13072,6 +13072,24 @@ html.native-app #rewards{
   width:100%;
 }
 
+#rewards .rewards-top-artwork{
+  width:100%;
+  margin:0 0 18px;
+  overflow:hidden;
+  border:1px solid rgba(240,185,11,.48);
+  border-radius:24px;
+  background:#120f0a;
+  box-shadow:0 18px 42px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.45);
+}
+
+#rewards .rewards-top-artwork img{
+  display:block;
+  width:100%;
+  height:clamp(190px,31vw,420px);
+  object-fit:cover;
+  object-position:center;
+}
+
 #rewards .referral-section-card{
   position:relative;
   isolation:isolate;
@@ -13094,7 +13112,7 @@ html.native-app #rewards{
   min-height:350px;
   padding:clamp(22px,4vw,44px) !important;
   background-image:
-    linear-gradient(90deg,rgba(3,6,9,.90),rgba(3,6,9,.74) 52%,rgba(3,6,9,.42)),
+    linear-gradient(90deg,rgba(5,10,14,.82),rgba(5,10,14,.68) 52%,rgba(5,10,14,.34)),
     url("rewards-level-guide.webp") !important;
   background-size:cover !important;
   background-position:center !important;
@@ -13161,7 +13179,7 @@ html.native-app #rewards{
   min-height:430px;
   padding:clamp(22px,4vw,42px) !important;
   background-image:
-    linear-gradient(90deg,rgba(3,6,9,.96) 0%,rgba(3,6,9,.88) 50%,rgba(3,6,9,.38) 100%),
+    linear-gradient(90deg,rgba(4,9,13,.88) 0%,rgba(4,9,13,.76) 50%,rgba(4,9,13,.28) 100%),
     url("rewards-personal-code.webp") !important;
   background-size:cover !important;
   background-position:center,right center !important;
@@ -13175,7 +13193,7 @@ html.native-app #rewards{
   min-height:360px;
   padding:clamp(22px,4vw,42px) !important;
   background-image:
-    linear-gradient(90deg,rgba(3,6,9,.96) 0%,rgba(3,6,9,.87) 54%,rgba(3,6,9,.36) 100%),
+    linear-gradient(90deg,rgba(4,9,13,.88) 0%,rgba(4,9,13,.75) 54%,rgba(4,9,13,.28) 100%),
     url("rewards-how-it-works.webp") !important;
   background-size:cover !important;
   background-position:center,right center !important;
@@ -13191,7 +13209,7 @@ html.native-app #rewards{
   min-height:520px;
   padding:clamp(20px,3vw,34px) !important;
   background-image:
-    linear-gradient(90deg,rgba(3,6,9,.96),rgba(3,6,9,.86) 58%,rgba(3,6,9,.48)),
+    linear-gradient(90deg,rgba(4,9,13,.90),rgba(4,9,13,.77) 58%,rgba(4,9,13,.36)),
     url("rewards-activity.webp") !important;
   background-size:100% 100%,auto 720px !important;
   background-position:center,right top !important;
@@ -13212,6 +13230,14 @@ html.native-app #rewards{
 
 @media(max-width:760px){
   #rewards{padding:12px 9px !important}
+  #rewards .rewards-top-artwork{
+    margin-bottom:14px;
+    border-radius:19px;
+  }
+  #rewards .rewards-top-artwork img{
+    height:190px;
+    object-position:center;
+  }
   #rewards .rewards-section-grid{gap:14px}
   #rewards .referral-section-card{border-radius:18px !important}
   #rewards .referral-level-guide-card,
@@ -13221,11 +13247,11 @@ html.native-app #rewards{
     background-position:center,72% center !important;
   }
   #rewards .referral-level-guide-card{
-    background-image:linear-gradient(rgba(3,6,9,.78),rgba(3,6,9,.88)),url("rewards-level-guide.webp") !important;
+    background-image:linear-gradient(rgba(4,9,13,.74),rgba(4,9,13,.82)),url("rewards-level-guide.webp") !important;
   }
   #rewards .referral-personal-card,
   #rewards .referral-rules-card{
-    background-image:linear-gradient(90deg,rgba(3,6,9,.94),rgba(3,6,9,.72)),var(--rewards-card-art) !important;
+    background-image:linear-gradient(90deg,rgba(4,9,13,.88),rgba(4,9,13,.68)),var(--rewards-card-art) !important;
   }
   #rewards .referral-personal-card{--rewards-card-art:url("rewards-personal-code.webp")}
   #rewards .referral-rules-card{--rewards-card-art:url("rewards-how-it-works.webp")}
@@ -14314,6 +14340,9 @@ html.native-app #rewards{
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn clear-history-btn" type="button" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
 
 <section id="rewards" class="view">
+  <div class="rewards-top-artwork" aria-label="Binance Invest referral rewards network banner">
+    <img src="rewards-top-banner.webp" alt="Referral rewards and shared growth network">
+  </div>
   <div class="title">
     <h2 data-t="rewards">Rewards</h2>
       <button id="rewardsAuthBtn" class="btn gold" type="button" onclick="openAuth('login')" data-t="login">Sign In</button>
