@@ -12944,6 +12944,98 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
 }
 </style>
 
+<style id="referral-level-breakdown-style">
+#portfolio .portfolio-major-referral .referral-portfolio-card{
+  display:block !important;
+  width:100%;
+}
+#portfolio .referral-portfolio-summary{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:14px;
+}
+#portfolio .referral-portfolio-summary-main strong{
+  display:block;
+  margin-top:6px;
+  color:var(--green);
+  font-size:clamp(25px,3vw,38px);
+  line-height:1;
+}
+#portfolio .referral-level-breakdown{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  width:100%;
+}
+#portfolio .referral-level-card{
+  min-width:0;
+  padding:13px 12px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(8,13,18,.82),rgba(16,22,29,.66));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 22px rgba(0,0,0,.2);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+#portfolio .referral-level-card[data-level="1"]{border-color:rgba(22,199,132,.32)}
+#portfolio .referral-level-card[data-level="2"]{border-color:rgba(240,185,11,.34)}
+#portfolio .referral-level-card[data-level="3+"]{border-color:rgba(143,167,255,.3)}
+#portfolio .referral-level-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+#portfolio .referral-level-card-head span{
+  color:#f5f7fa;
+  font-size:12px;
+  font-weight:900;
+}
+#portfolio .referral-level-rate{
+  flex:0 0 auto;
+  padding:4px 7px;
+  border-radius:999px;
+  color:#10140d;
+  background:linear-gradient(135deg,#fff09a,#f0b90b);
+  font-size:10px;
+  font-style:normal;
+  font-weight:950;
+}
+#portfolio .referral-level-amount{
+  display:block;
+  margin-top:12px;
+  color:var(--green);
+  font-size:22px;
+  font-weight:950;
+  line-height:1;
+  overflow-wrap:anywhere;
+}
+#portfolio .referral-level-count{
+  display:block;
+  margin-top:8px;
+  color:#aeb7c3;
+  font-size:10px;
+  line-height:1.5;
+}
+#portfolio .referral-level-count b{color:#fff;font-size:11px}
+#portfolio .referral-level-note{
+  margin:12px 0 0;
+  color:#aeb7c3;
+  font-size:10px;
+  line-height:1.7;
+}
+@media(max-width:650px){
+  #portfolio .referral-portfolio-summary{display:block}
+  #portfolio .referral-portfolio-meta{margin-top:10px !important;text-align:inherit !important}
+  #portfolio .referral-level-breakdown{grid-template-columns:1fr}
+  #portfolio .referral-level-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:12px}
+  #portfolio .referral-level-card-head{grid-column:1/-1}
+  #portfolio .referral-level-amount{font-size:20px}
+  #portfolio .referral-level-count{text-align:end}
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -13676,14 +13768,46 @@ html[dir="rtl"] #downloadAppSection .install-guide-close{
 
   <div class="portfolio-major-panel portfolio-major-referral">
   <div id="referralPortfolioCard" class="referral-portfolio-card">
-    <div>
-      <span class="muted" data-t="referralRewardsBalance">Referral rewards added to balance</span>
-      <strong id="portfolioReferralReward">$0.00</strong>
+    <div class="referral-portfolio-summary">
+      <div class="referral-portfolio-summary-main">
+        <span class="muted" data-t="referralRewardsBalance">Total referral rewards in Base Plan</span>
+        <strong id="portfolioReferralReward">$0.00</strong>
+      </div>
+      <div class="referral-portfolio-meta">
+        <b id="portfolioQualifiedReferrals" style="color:#fff;">0 successful referrals</b>
+      </div>
     </div>
-    <div class="referral-portfolio-meta">
-      <b id="portfolioQualifiedReferrals" style="color:#fff;">0 successful referrals</b><br>
-      <span data-t="referralBalanceNotice">This reward is included in your available balance and is not active invested capital.</span>
+
+    <div class="referral-level-breakdown" aria-label="Referral reward breakdown">
+      <article class="referral-level-card" data-level="1">
+        <div class="referral-level-card-head">
+          <span data-t="referralLevelOne">Level 1 · Direct</span>
+          <em class="referral-level-rate">$10</em>
+        </div>
+        <strong id="portfolioReferralLevelOneAmount" class="referral-level-amount">$0.00</strong>
+        <small class="referral-level-count"><b id="portfolioReferralLevelOneCount">0</b> <span data-t="referralPayments">reward payments</span></small>
+      </article>
+
+      <article class="referral-level-card" data-level="2">
+        <div class="referral-level-card-head">
+          <span data-t="referralLevelTwo">Level 2</span>
+          <em class="referral-level-rate">$2</em>
+        </div>
+        <strong id="portfolioReferralLevelTwoAmount" class="referral-level-amount">$0.00</strong>
+        <small class="referral-level-count"><b id="portfolioReferralLevelTwoCount">0</b> <span data-t="referralPayments">reward payments</span></small>
+      </article>
+
+      <article class="referral-level-card" data-level="3+">
+        <div class="referral-level-card-head">
+          <span data-t="referralLevelThreePlus">Level 3 and above</span>
+          <em class="referral-level-rate">$1</em>
+        </div>
+        <strong id="portfolioReferralLevelThreeAmount" class="referral-level-amount">$0.00</strong>
+        <small class="referral-level-count"><b id="portfolioReferralLevelThreeCount">0</b> <span data-t="referralPayments">reward payments</span></small>
+      </article>
     </div>
+
+    <p class="referral-level-note" data-t="referralBalanceNotice">All referral rewards are added to your Base Plan and included in your withdrawable balance.</p>
   </div>
   </div>
 
@@ -18941,18 +19065,34 @@ async function loadReferralDashboard() {
     if (codeElement) codeElement.textContent = tr("signInToView");
     if (linkElement) linkElement.textContent = "";
     setReferralDashboardValues(0, 0, 0);
+    setReferralLevelBreakdownValues();
     renderReferralHistoryEmpty(tr("signInReferralActivity"));
     return;
   }
 
-  const { data, error } = await supabaseClient.rpc(
-    "get_my_referral_dashboard"
-  );
+  const [dashboardResult, levelRewardsResult] = await Promise.all([
+    supabaseClient.rpc("get_my_referral_dashboard"),
+    supabaseClient
+      .from("referral_rewards")
+      .select("amount,level_depth,status")
+      .eq("referrer_id", currentUser.id)
+      .eq("status", "paid")
+  ]);
+
+  const { data, error } = dashboardResult;
+  const levelRewards = Array.isArray(levelRewardsResult?.data)
+    ? levelRewardsResult.data
+    : [];
 
   if (error) {
     console.error("Referral dashboard error:", error);
     if (codeElement) codeElement.textContent = tr("unknown");
+    setReferralLevelBreakdownValues();
     return;
+  }
+
+  if (levelRewardsResult?.error) {
+    console.error("Referral level breakdown error:", levelRewardsResult.error);
   }
 
   const row = Array.isArray(data) ? data[0] : data;
@@ -18967,12 +19107,14 @@ async function loadReferralDashboard() {
     totalInvited,
     qualified,
     totalReward,
+    levelRewards,
     link
   };
 
   if (codeElement) codeElement.textContent = referralCode || tr("unknown");
   if (linkElement) linkElement.textContent = link;
   setReferralDashboardValues(totalInvited, qualified, totalReward);
+  setReferralLevelBreakdownValues(levelRewards);
   await loadReferralHistory();
 }
 
@@ -19113,6 +19255,50 @@ function setReferralDashboardValues(totalInvited, qualified, totalReward) {
   if (portfolioQualified) {
     portfolioQualified.textContent = `${qualified} ${tr(qualified === 1 ? "successfulReferral" : "successfulReferralsCount")}`;
   }
+}
+
+function setReferralLevelBreakdownValues(rewardRows = []) {
+  const summary = {
+    levelOneAmount: 0,
+    levelOneCount: 0,
+    levelTwoAmount: 0,
+    levelTwoCount: 0,
+    levelThreeAmount: 0,
+    levelThreeCount: 0
+  };
+
+  (Array.isArray(rewardRows) ? rewardRows : []).forEach((reward) => {
+    if (String(reward?.status || "paid") !== "paid") return;
+
+    const amount = Number(reward?.amount || 0);
+    const depth = Math.max(1, Number.parseInt(reward?.level_depth, 10) || 1);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+
+    if (depth === 1) {
+      summary.levelOneAmount += amount;
+      summary.levelOneCount += 1;
+    } else if (depth === 2) {
+      summary.levelTwoAmount += amount;
+      summary.levelTwoCount += 1;
+    } else {
+      summary.levelThreeAmount += amount;
+      summary.levelThreeCount += 1;
+    }
+  });
+
+  const values = {
+    portfolioReferralLevelOneAmount: formatPortfolioMoney(summary.levelOneAmount),
+    portfolioReferralLevelOneCount: String(summary.levelOneCount),
+    portfolioReferralLevelTwoAmount: formatPortfolioMoney(summary.levelTwoAmount),
+    portfolioReferralLevelTwoCount: String(summary.levelTwoCount),
+    portfolioReferralLevelThreeAmount: formatPortfolioMoney(summary.levelThreeAmount),
+    portfolioReferralLevelThreeCount: String(summary.levelThreeCount)
+  };
+
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  });
 }
 
 async function copyReferralCode() {
@@ -20056,6 +20242,33 @@ const NAV_SUPPORT_TEXT = {en:"Support",fa:"پشتیبانی",az:"Dəstək",tr:"D
 
 LANGUAGE_CATALOG.forEach(([code])=>{
   T[code]={...T.en,...(T[code]||{}),...buildLocalizedSiteText(code),...(COMPLETE_SITE_TEXT[code]||{})};
+});
+
+const REFERRAL_LEVEL_TRANSLATIONS = {
+  en:{referralRewardsBalance:"Total referral rewards in Base Plan",referralLevelOne:"Level 1 · Direct",referralLevelTwo:"Level 2",referralLevelThreePlus:"Level 3 and above",referralPayments:"reward payments",referralBalanceNotice:"All referral rewards are added to your Base Plan and included in your withdrawable balance."},
+  fa:{referralRewardsBalance:"کل پاداش دعوت افزوده‌شده به پلن پایه",referralLevelOne:"سطح اول · دعوت مستقیم",referralLevelTwo:"سطح دوم",referralLevelThreePlus:"سطح سوم به بالا",referralPayments:"پرداخت پاداش",referralBalanceNotice:"تمام پاداش‌های دعوت به پلن پایه شما افزوده می‌شوند و در موجودی قابل برداشت قرار می‌گیرند."},
+  az:{referralRewardsBalance:"Əsas plana əlavə olunan ümumi dəvət mükafatları",referralLevelOne:"Səviyyə 1 · Birbaşa",referralLevelTwo:"Səviyyə 2",referralLevelThreePlus:"Səviyyə 3 və yuxarı",referralPayments:"mükafat ödənişi",referralBalanceNotice:"Bütün dəvət mükafatları Əsas Planınıza əlavə edilir və çıxarıla bilən balansınıza daxildir."},
+  tr:{referralRewardsBalance:"Ana plana eklenen toplam davet ödülü",referralLevelOne:"Seviye 1 · Doğrudan",referralLevelTwo:"Seviye 2",referralLevelThreePlus:"Seviye 3 ve üzeri",referralPayments:"ödül ödemesi",referralBalanceNotice:"Tüm davet ödülleri Ana Planınıza eklenir ve çekilebilir bakiyenize dahil edilir."},
+  ru:{referralRewardsBalance:"Общие реферальные награды в базовом плане",referralLevelOne:"Уровень 1 · Прямые",referralLevelTwo:"Уровень 2",referralLevelThreePlus:"Уровень 3 и выше",referralPayments:"выплат наград",referralBalanceNotice:"Все реферальные награды добавляются в базовый план и входят в доступный для вывода баланс."},
+  ar:{referralRewardsBalance:"إجمالي مكافآت الدعوة في الخطة الأساسية",referralLevelOne:"المستوى 1 · مباشر",referralLevelTwo:"المستوى 2",referralLevelThreePlus:"المستوى 3 وما فوق",referralPayments:"دفعات مكافأة",referralBalanceNotice:"تُضاف جميع مكافآت الدعوة إلى خطتك الأساسية وتدخل ضمن الرصيد القابل للسحب."},
+  zh:{referralRewardsBalance:"基础计划中的推荐奖励总额",referralLevelOne:"第 1 级 · 直接邀请",referralLevelTwo:"第 2 级",referralLevelThreePlus:"第 3 级及以上",referralPayments:"笔奖励",referralBalanceNotice:"所有推荐奖励都会加入基础计划，并计入可提现余额。"},
+  es:{referralRewardsBalance:"Recompensas totales por referidos en el plan base",referralLevelOne:"Nivel 1 · Directo",referralLevelTwo:"Nivel 2",referralLevelThreePlus:"Nivel 3 y superiores",referralPayments:"pagos de recompensa",referralBalanceNotice:"Todas las recompensas por referidos se añaden a tu plan base y se incluyen en el saldo retirable."},
+  fr:{referralRewardsBalance:"Total des récompenses de parrainage dans le plan de base",referralLevelOne:"Niveau 1 · Direct",referralLevelTwo:"Niveau 2",referralLevelThreePlus:"Niveau 3 et plus",referralPayments:"paiements de récompense",referralBalanceNotice:"Toutes les récompenses de parrainage sont ajoutées à votre plan de base et incluses dans le solde retirable."},
+  de:{referralRewardsBalance:"Gesamte Empfehlungsprämien im Basisplan",referralLevelOne:"Stufe 1 · Direkt",referralLevelTwo:"Stufe 2",referralLevelThreePlus:"Stufe 3 und höher",referralPayments:"Prämienzahlungen",referralBalanceNotice:"Alle Empfehlungsprämien werden Ihrem Basisplan gutgeschrieben und zählen zum auszahlbaren Guthaben."}
+};
+
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const d=T[code]||T.en;
+  const levelWord=d.level||"Level";
+  const referralWord=d.refTitle||d.rewards||"Rewards";
+  Object.assign(d,{
+    referralRewardsBalance:`${referralWord} · ${d.balance||d.portfolio}`,
+    referralLevelOne:`${levelWord} 1 · ${referralWord}`,
+    referralLevelTwo:`${levelWord} 2`,
+    referralLevelThreePlus:`${levelWord} 3+`,
+    referralPayments:d.rewards||"Rewards",
+    referralBalanceNotice:`${d.rewards||"Rewards"} → FLEX_DAILY · ${d.withdraw||d.balance}`
+  },REFERRAL_LEVEL_TRANSLATIONS[code]||{});
 });
 
 const SHORT_TIME_UNITS={
