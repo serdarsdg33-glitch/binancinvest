@@ -17567,14 +17567,22 @@ async function loadAuthenticatedUser(authUser, options = {}) {
 
       /* Render the account immediately; load heavier panels in the background. */
       void updatePortfolio();
-      void (async () => {
-        try {
-          await applyPendingReferralCode();
-          await loadReferralDashboard();
-        } catch (error) {
-          console.warn("Non-critical account data could not be refreshed:", error);
-        }
-      })();
+
+      /*
+       * Referral data is independent from the five-second financial sync.
+       * Keeping it out of that loop prevents the Rewards activity list from
+       * being replaced and changing page height while the user is reading it.
+       */
+      if (!options.skipReferralSync) {
+        void (async () => {
+          try {
+            await applyPendingReferralCode();
+            await loadReferralDashboard();
+          } catch (error) {
+            console.warn("Non-critical account data could not be refreshed:", error);
+          }
+        })();
+      }
 
       if (typeof updateSupportAuthUI === "function") {
         updateSupportAuthUI();
@@ -19615,7 +19623,10 @@ async function loadReferralHistory() {
     return;
   }
 
-  renderReferralHistoryEmpty(tr("loading"));
+  /* Preserve rendered rows during refresh so the card height stays stable. */
+  if (!currentReferralHistoryRows.length) {
+    renderReferralHistoryEmpty(tr("loading"));
+  }
 
   const { data, error } = await supabaseClient.rpc(
     "get_my_referral_history"
@@ -19623,7 +19634,9 @@ async function loadReferralHistory() {
 
   if (error) {
     console.error("Referral history error:", error);
-    renderReferralHistoryEmpty(tr("referralActivity"));
+    if (!currentReferralHistoryRows.length) {
+      renderReferralHistoryEmpty(tr("referralActivity"));
+    }
     return;
   }
 
@@ -21164,7 +21177,10 @@ async function refreshSecureAccount() {
      */
     await loadAuthenticatedUser(
       sessionData.session.user,
-      { force: true }
+      {
+        force: true,
+        skipReferralSync: true
+      }
     );
   }
 }
