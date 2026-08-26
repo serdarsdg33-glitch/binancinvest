@@ -24496,8 +24496,100 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function activeFlexibleRows() {
     return (currentInvestments || []).filter(function (item) {
-      return active(item) && isFlexible(item);
+      return (
+        item &&
+        item.status === "active" &&
+        isFlexible(item) &&
+        (
+          Number(item.principal || 0) > 0 ||
+          Number(item.realized_profit || 0) > 0
+        )
+      );
     });
+  }
+
+  function activeReservedPlanRows() {
+    return (currentInvestments || []).filter(function (item) {
+      if (!active(item) || !isFixed(item)) return false;
+
+      if (String(item.plan_name || "") === "VIP_LOCK") {
+        return item.user_confirmed !== false;
+      }
+
+      return isConfirmedRegularPlan(item);
+    });
+  }
+
+  function rawFlexiblePrincipal() {
+    return activeFlexibleRows().reduce(function (total, item) {
+      return total + Math.max(0, Number(item.principal || 0));
+    }, 0);
+  }
+
+  function reservedPlanPrincipal() {
+    return activeReservedPlanRows().reduce(function (total, item) {
+      return total + Math.max(0, Number(item.principal || 0));
+    }, 0);
+  }
+
+  function reconciledFlexiblePrincipal() {
+    var raw = rawFlexiblePrincipal();
+    var accountCapital = Number(currentUser && currentUser.invested);
+
+    /*
+     * profiles.invested is the account's total active capital.  If an older
+     * server function created a selected contract without debiting FLEX, the
+     * sum of FLEX + selected principal becomes larger than this capital.
+     * Clamp only that duplicated overlap; a correctly debited account remains
+     * unchanged because raw FLEX already equals capital - selected principal.
+     */
+    if (!Number.isFinite(accountCapital) || accountCapital < 0) {
+      return raw;
+    }
+
+    return Math.max(
+      0,
+      Math.min(
+        raw,
+        Math.max(0, accountCapital - reservedPlanPrincipal())
+      )
+    );
+  }
+
+  function duplicatedFlexiblePrincipal() {
+    return Math.max(
+      0,
+      rawFlexiblePrincipal() - reconciledFlexiblePrincipal()
+    );
+  }
+
+  function duplicatedBaseProfitAfterTransfer(atTime) {
+    var remainingOverlap = duplicatedFlexiblePrincipal();
+    var correction = 0;
+
+    activeReservedPlanRows()
+      .slice()
+      .sort(function (a, b) {
+        return startedTime(a) - startedTime(b);
+      })
+      .some(function (item) {
+        if (remainingOverlap <= 0) return true;
+
+        var allocated = Math.min(
+          remainingOverlap,
+          Math.max(0, Number(item.principal || 0))
+        );
+        var start = startedTime(item);
+        var days = Number.isFinite(start)
+          ? Math.max(0, (atTime - start) / DAY_MS)
+          : 0;
+
+        correction += allocated * (FLEX_RATE / 100) * days;
+        remainingOverlap -= allocated;
+        return remainingOverlap <= 0;
+      });
+
+    return Math.max(0, correction);
   }
 
   function flexibleClockSignature(rows) {
@@ -24527,20 +24619,36 @@ document.addEventListener("DOMContentLoaded", function() {
   function stableFlexibleLiveProfit() {
     var rows = activeFlexibleRows();
     var now = Date.now();
-    var signature = flexibleClockSignature(rows);
+    var signature = [
+      flexibleClockSignature(rows),
+      Number(currentUser && currentUser.invested || 0).toFixed(8),
+      activeReservedPlanRows()
+        .map(function (item) {
+          return [
+            String(item.id || ""),
+            Number(item.principal || 0).toFixed(8),
+            String(item.started_at || item.profit_started_at || ""),
+            String(item.status || "")
+          ].join("|");
+        })
+        .sort()
+        .join("::")
+    ].join("##");
 
     if (
       flexibleProfitClock.signature !== signature ||
       !Number.isFinite(flexibleProfitClock.anchoredAt) ||
       flexibleProfitClock.anchoredAt <= 0
     ) {
-      var principalNow = rows.reduce(function (total, item) {
-        return total + Number(item.principal || 0);
-      }, 0);
+      var principalNow = reconciledFlexiblePrincipal();
 
       flexibleProfitClock.signature = signature;
       flexibleProfitClock.anchoredAt = now;
-      flexibleProfitClock.anchoredProfit = rawFlexibleLiveProfit(rows, now);
+      flexibleProfitClock.anchoredProfit = Math.max(
+        0,
+        rawFlexibleLiveProfit(rows, now) -
+          duplicatedBaseProfitAfterTransfer(now)
+      );
       flexibleProfitClock.ratePerMs =
         principalNow * (FLEX_RATE / 100) / DAY_MS;
     }
@@ -24586,9 +24694,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function flexiblePrincipal() {
-    return activeFlexibleRows().reduce(function (total, item) {
-      return total + Number(item.principal || 0);
-    }, 0);
+    return reconciledFlexiblePrincipal();
   }
 
   function flexibleLiveProfit() {
@@ -25281,9 +25387,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
       var activatedInvestmentId =
         result &&
-        result.data &&
-        result.data.investment_id
-          ? result.data.investment_id
+        result.data
+          ? (
+              typeof result.data === "string"
+                ? result.data
+                : result.data.investment_id || ""
+            )
           : "";
 
       closePlanSelectionModal();
@@ -26518,9 +26627,12 @@ document.addEventListener("DOMContentLoaded", function() {
       if (result && result.error) throw result.error;
       var activatedVipInvestmentId =
         result &&
-        result.data &&
-        result.data.investment_id
-          ? result.data.investment_id
+        result.data
+          ? (
+              typeof result.data === "string"
+                ? result.data
+                : result.data.investment_id || ""
+            )
           : "";
 
       closeVipLockConfirmation();
@@ -26732,9 +26844,12 @@ document.addEventListener("DOMContentLoaded", function() {
       rows = [];
     }
 
-    var principal = rows.reduce(function(total,item){
-      return total + Number(item.principal || 0);
-    },0);
+    var principal =
+      typeof window.getFlexibleAvailablePrincipal === "function"
+        ? Number(window.getFlexibleAvailablePrincipal() || 0)
+        : rows.reduce(function(total,item){
+            return total + Number(item.principal || 0);
+          },0);
 
     var preserved = rows.reduce(function(total,item){
       return total + Math.max(0, Number(item.realized_profit || 0));
@@ -27220,6 +27335,11 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function getLocalFlexPrincipal(){
+    if(typeof window.getFlexibleAvailablePrincipal==="function"){
+      var reconciled=Number(window.getFlexibleAvailablePrincipal()||0);
+      if(Number.isFinite(reconciled)) return Math.max(0,reconciled);
+    }
+
     try{
       return (currentInvestments||[]).reduce(function(sum,item){
         if(
