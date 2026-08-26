@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
 <script id="apk-viewport-contain-fix-v1">
 (function () {
@@ -2547,6 +2550,11 @@ html[dir="rtl"] .referral-portfolio-meta {text-align:left}
 .referral-stat {padding:15px 10px;text-align:center;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px}
 .referral-stat span,.referral-stat strong {display:block}.referral-stat span {margin-bottom:7px;color:var(--muted);font-size:10px}.referral-stat strong {font-size:20px}.referral-stat.reward strong {color:var(--green)}
 .referral-rules {padding:22px}.referral-rules ul {margin:13px 0 0;padding-left:19px;color:#aeb7c3;line-height:2}.referral-apply {margin-top:15px;padding-top:15px;border-top:1px solid #ffffff0d}.referral-apply-row {display:grid;grid-template-columns:1fr auto;gap:8px}.referral-apply-row input {min-width:0;width:100%;text-transform:uppercase}
+.referral-apply-status{display:block;margin:9px 0 0;padding:10px 12px;border:1px solid transparent;border-radius:10px;font-size:11px;font-weight:750;line-height:1.65}
+.referral-apply-status[hidden]{display:none!important}
+.referral-apply-status.error{color:#ffd8dc;background:rgba(178,31,47,.24);border-color:rgba(255,88,105,.65);box-shadow:0 0 0 1px rgba(255,88,105,.08),0 8px 22px rgba(76,0,9,.22)}
+.referral-apply-status.success{color:#b9ffe1;background:rgba(12,126,83,.22);border-color:rgba(22,199,132,.55)}
+.referral-apply-status.info{color:#fff0a8;background:rgba(166,119,0,.20);border-color:rgba(240,185,11,.48)}
 .referral-history-card {margin-top:14px;padding:22px;border-color:rgba(240,185,11,.2)}
 .referral-history-head {display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:16px}.referral-history-head h2 {margin:0 0 5px}.referral-history-head p {margin:0;font-size:11px;line-height:1.6}.referral-history-list {display:flex;flex-direction:column;gap:9px}
 .referral-network-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
@@ -14990,10 +14998,11 @@ html.native-app #rewards{
       <div class="referral-apply">
         <label for="referralApplyInput" class="muted" style="display:block;margin-bottom:7px;font-size:11px;" data-t="haveInvitationCode">Have an invitation code?</label>
         <div class="referral-apply-row">
-          <input id="referralApplyInput" type="text" placeholder="BI-XXXXXXXX" maxlength="20">
-          <button class="btn" type="button" onclick="applyManualReferralCode()" data-t="apply">Apply</button>
+          <input id="referralApplyInput" type="text" placeholder="BI-XXXXXXXX" maxlength="20" aria-describedby="referralApplyStatus referralApplyNotice">
+          <button id="referralApplyButton" class="btn" type="button" onclick="applyManualReferralCode()" data-t="apply">Apply</button>
         </div>
-        <p class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;" data-t="referralApplyNotice">A referral code can only be registered before your first investment.</p>
+        <p id="referralApplyStatus" class="referral-apply-status" role="status" aria-live="polite" hidden></p>
+        <p id="referralApplyNotice" class="muted" style="font-size:10px;line-height:1.6;margin:8px 0 0;" data-t="referralApplyNotice">If no referrer is registered yet, an invitation code can be applied once and can never be changed.</p>
       </div>
     </div>
 
@@ -19495,6 +19504,29 @@ function shouldRepaintPortfolioStructure() {
   return due;
 }
 
+function motherPlanLevelLabel() {
+  const language = String(
+    localStorage.getItem("bi_lang") ||
+    document.documentElement.lang ||
+    "en"
+  ).toLowerCase();
+
+  const labels = {
+    en: "Flexible · 1.5% Daily",
+    fa: "پلن پایه · روزانه ۱.۵٪",
+    az: "Baza planı · Gündəlik 1.5%",
+    tr: "Temel plan · Günlük %1,5",
+    ru: "Базовый план · 1,5% в день",
+    ar: "الخطة الأساسية · ١٫٥٪ يوميًا",
+    zh: "基础计划 · 每日 1.5%",
+    es: "Plan base · 1,5% diario",
+    fr: "Plan de base · 1,5% par jour",
+    de: "Basisplan · 1,5% täglich"
+  };
+
+  return labels[language] || labels.en;
+}
+
 function renderPortfolioLive() {
   const repaintStructure = shouldRepaintPortfolioStructure();
   const balanceElement =
@@ -19522,7 +19554,7 @@ function renderPortfolioLive() {
     balanceElement.textContent = "$0.00";
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
-    levelElement.textContent = tr("basic");
+    levelElement.textContent = motherPlanLevelLabel();
     if (repaintStructure) renderVipPortfolioContracts();
     return;
   }
@@ -19546,34 +19578,11 @@ function renderPortfolioLive() {
       true
     );
 
-  const activeRegularInvestments =
-    snapshot.regularInvestments.filter(item => {
-      const endTime =
-        new Date(item.ends_at).getTime();
-
-      return (
-        item.status === "active" &&
-        Number.isFinite(endTime) &&
-        Date.now() < endTime
-      );
-    });
-
-  const activeRegularPrincipal =
-    activeRegularInvestments.reduce(
-      (total, item) =>
-        total + Number(item.principal || 0),
-      0
-    );
-
-  if (activeRegularPrincipal < 10) {
-    levelElement.textContent = tr("basic");
-  } else if (activeRegularPrincipal <= 100) {
-    levelElement.textContent = tr("starterLevel");
-  } else if (activeRegularPrincipal <= 1000) {
-    levelElement.textContent = tr("growthLevel");
-  } else {
-    levelElement.textContent = tr("premiumLevel");
-  }
+  /*
+   * This card belongs exclusively to FLEX_DAILY.  Selected plans display
+   * their own rate in their own cards and must never overwrite this label.
+   */
+  levelElement.textContent = motherPlanLevelLabel();
 
   if (repaintStructure) renderVipPortfolioContracts();
 }
@@ -19879,6 +19888,94 @@ const PENDING_REFERRAL_CODE_KEY = "bi_pending_referral_code";
 let currentReferralData = null;
 let currentReferralHistoryRows = [];
 let currentReferralHistoryFilter = "all";
+let currentReferralApplyMessage = null;
+
+function normalizeReferralApplyResult(data) {
+  let value = Array.isArray(data) ? data[0] : data;
+  if (typeof value === "string") {
+    try { value = JSON.parse(value); } catch (_) {}
+  }
+  if (value && typeof value === "object") return value;
+  if (value === true) return {applied:true,status:"applied_pending"};
+  if (value === false) return {applied:false,status:"already_referred",inviter_masked:tr("privateUser")};
+  return {applied:false,status:"unknown"};
+}
+
+function setReferralApplyMessage(type, key, replacements = {}) {
+  const element = document.getElementById("referralApplyStatus");
+  currentReferralApplyMessage = {type, key, replacements};
+  if (!element) return;
+  element.className = `referral-apply-status ${type}`;
+  element.textContent = tr(key, replacements);
+  element.hidden = false;
+}
+
+function clearReferralApplyMessage() {
+  const element = document.getElementById("referralApplyStatus");
+  currentReferralApplyMessage = null;
+  if (element) {
+    element.hidden = true;
+    element.textContent = "";
+    element.className = "referral-apply-status";
+  }
+}
+
+function refreshReferralApplyMessageLanguage() {
+  if (!currentReferralApplyMessage) return;
+  setReferralApplyMessage(
+    currentReferralApplyMessage.type,
+    currentReferralApplyMessage.key,
+    currentReferralApplyMessage.replacements
+  );
+}
+
+function referralApplyErrorInfo(error) {
+  const rawMessage = String(error?.message || error?.details || "");
+  const message = rawMessage.toLowerCase();
+  const assignedMarker = "REFERRAL_ALREADY_ASSIGNED|";
+  const markerIndex = rawMessage.toUpperCase().indexOf(assignedMarker);
+
+  if (markerIndex >= 0) {
+    const maskedInviter = rawMessage
+      .slice(markerIndex + assignedMarker.length)
+      .split("\n")[0]
+      .trim() || tr("privateUser");
+    return {
+      key:"referralAlreadyAssigned",
+      replacements:{user:maskedInviter}
+    };
+  }
+
+  if (message.includes("registered referrer cannot be changed")) {
+    return {key:"referralAlreadyAssigned",replacements:{user:tr("privateUser")}};
+  }
+  if (message.includes("invalid referral code")) return {key:"referralInvalidCode",replacements:{}};
+  if (message.includes("own referral code")) return {key:"referralSelfCode",replacements:{}};
+  if (message.includes("before investing")) return {key:"referralServiceUpdateNeeded",replacements:{}};
+  return {key:"referralApplyFailed",replacements:{}};
+}
+
+function showReferralApplyResult(result, options = {}) {
+  const inviter = String(result?.inviter_masked || tr("privateUser"));
+  if (result?.status === "already_referred") {
+    setReferralApplyMessage("error", "referralAlreadyAssigned", {user:inviter});
+    return false;
+  }
+  if (result?.status === "applied_rewarded") {
+    currentUser.__referralAssigned = true;
+    setReferralApplyMessage("success", "referralAppliedRewarded", {user:inviter});
+    if (!options.silent) toast(tr("referralAppliedRewarded", {user:inviter}), "success");
+    return true;
+  }
+  if (result?.applied || result?.status === "applied_pending") {
+    currentUser.__referralAssigned = true;
+    setReferralApplyMessage("success", "referralAppliedPending", {user:inviter});
+    if (!options.silent) toast(tr("referralAppliedPending", {user:inviter}), "success");
+    return true;
+  }
+  setReferralApplyMessage("error", "referralApplyFailed");
+  return false;
+}
 
 function captureReferralCodeFromUrl() {
   const url = new URL(window.location.href);
@@ -19899,11 +19996,14 @@ function getReferralLink(code) {
 async function applyPendingReferralCode() {
   if (!currentUser?.id) return false;
 
-  const code =
-    localStorage.getItem(PENDING_REFERRAL_CODE_KEY) ||
-    String(currentUser.referralInviteCode || "")
-      .trim()
-      .toUpperCase();
+  const storedCode = String(localStorage.getItem(PENDING_REFERRAL_CODE_KEY) || "")
+    .trim()
+    .toUpperCase();
+  const alreadyAssigned = Boolean(currentUser.referred_by || currentUser.__referralAssigned);
+  const metadataCode = alreadyAssigned
+    ? ""
+    : String(currentUser.referralInviteCode || "").trim().toUpperCase();
+  const code = storedCode || metadataCode;
   if (!code) return false;
 
   const { data, error } = await supabaseClient.rpc(
@@ -19921,11 +20021,15 @@ async function applyPendingReferralCode() {
 
   if (error) {
     console.error("Apply referral error:", error);
+    if (storedCode) {
+      const info = referralApplyErrorInfo(error);
+      setReferralApplyMessage("error", info.key, info.replacements);
+    }
     return false;
   }
 
-  if (data) toast(tr("referralCodeLabel"), "success");
-  return Boolean(data);
+  const result = normalizeReferralApplyResult(data);
+  return showReferralApplyResult(result, {silent:!storedCode});
 }
 
 async function applyManualReferralCode() {
@@ -19935,31 +20039,46 @@ async function applyManualReferralCode() {
   }
 
   const input = document.getElementById("referralApplyInput");
+  const button = document.getElementById("referralApplyButton");
   const code = String(input?.value || "").trim().toUpperCase();
 
   if (!/^BI-[A-Z0-9]{8}$/.test(code)) {
-    toast(tr("validReferralCode"));
+    setReferralApplyMessage("error", "referralInvalidCode");
     return;
   }
 
-  const { data, error } = await supabaseClient.rpc(
-    "apply_referral_code",
-    { p_code: code }
-  );
-
-  if (error) {
-    toast(localizedBackendError(error, "referralCodeFailed"));
-    return;
+  clearReferralApplyMessage();
+  if (button) {
+    button.disabled = true;
+    button.textContent = tr("referralChecking");
   }
 
-  if (!data) {
-    toast(tr("referralApplyNotice"));
-    return;
-  }
+  try {
+    const { data, error } = await supabaseClient.rpc(
+      "apply_referral_code",
+      { p_code: code }
+    );
 
-  input.value = "";
-  toast(tr("referralCodeLabel"), "success");
-  await loadReferralDashboard();
+    if (error) {
+      console.error("Manual referral error:", error);
+      const info = referralApplyErrorInfo(error);
+      setReferralApplyMessage("error", info.key, info.replacements);
+      toast(tr(info.key, info.replacements));
+      return;
+    }
+
+    const result = normalizeReferralApplyResult(data);
+    const applied = showReferralApplyResult(result);
+    if (!applied) return;
+
+    input.value = "";
+    await Promise.all([loadReferralDashboard(), updatePortfolio()]);
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = tr("apply");
+    }
+  }
 }
 
 async function loadReferralDashboard() {
@@ -21485,6 +21604,53 @@ Object.keys(EXTRA_TRANSLATIONS).forEach(code=>{
   SUPPORT_I18N[code]={support:s,title:s,guest:d.login,newTicket:s,subject:d.account,subjectPlaceholder:d.heroDesc,category:d.thAsset,general:s,deposit:d.deposit,withdrawal:d.withdraw,investment:d.invest,account:d.account,technical:d.security,message:s,messagePlaceholder:d.heroDesc,submit:d.continue,myTickets:s,noTickets:`${s}: 0`,selectTicket:s,closeTicket:d.clear,replyPlaceholder:d.heroDesc,sendReply:d.continue,open:d.active,answered:d.enabled,closed:d.clear,loadingTickets:"…",loadingConversation:"…"};
 });
 
+/* Referral ownership is permanent. These messages are deliberately explicit
+   so a second code attempt cannot look like a temporary or generic error. */
+const REFERRAL_ASSIGNMENT_TRANSLATIONS={
+  en:{
+    referralApplyNotice:"If no referrer is registered yet, an invitation code can be applied once—even after investing—and can never be changed.",
+    referralChecking:"Checking…",
+    referralInvalidCode:"Enter a valid invitation code in the BI-XXXXXXXX format.",
+    referralSelfCode:"You cannot use your own invitation code.",
+    referralAlreadyAssigned:"You are already in “{user}”'s referral network. Your referrer cannot be changed.",
+    referralAppliedRewarded:"Invitation code registered. The pending referral reward was credited to the referral chain.",
+    referralAppliedPending:"Invitation code registered. The reward will be credited after the first qualifying investment.",
+    referralApplyFailed:"The invitation code could not be registered. Please try again.",
+    referralServiceUpdateNeeded:"The referral service must be updated before codes can be registered after investing.",
+    privateUser:"Private user"
+  },
+  fa:{
+    referralApplyNotice:"اگر هنوز معرف ندارید، کد دعوت را فقط یک‌بار، حتی پس از سرمایه‌گذاری، می‌توانید ثبت کنید و بعداً قابل تغییر نیست.",
+    referralChecking:"در حال بررسی…",
+    referralInvalidCode:"یک کد دعوت معتبر با قالب BI-XXXXXXXX وارد کنید.",
+    referralSelfCode:"نمی‌توانید از کد دعوت خودتان استفاده کنید.",
+    referralAlreadyAssigned:"شما زیرمجموعه «{user}» هستید؛ معرف شما قبلاً ثبت شده و قابل تغییر نیست.",
+    referralAppliedRewarded:"کد دعوت ثبت شد و پاداش معوق به زنجیره دعوت واریز شد.",
+    referralAppliedPending:"کد دعوت ثبت شد؛ پاداش پس از نخستین سرمایه‌گذاری واجد شرایط واریز می‌شود.",
+    referralApplyFailed:"کد دعوت ثبت نشد؛ دوباره تلاش کنید.",
+    referralServiceUpdateNeeded:"برای ثبت کد پس از سرمایه‌گذاری، سرویس دعوت باید به نسخه جدید به‌روزرسانی شود.",
+    privateUser:"کاربر ناشناس"
+  },
+  ar:{
+    referralAlreadyAssigned:"لقد تمت دعوتك سابقًا بواسطة «{user}». لا يمكن تغيير المُحيل.",
+    referralAppliedRewarded:"تم تسجيل رمز الدعوة وإيداع المكافأة المعلّقة في سلسلة الإحالة.",
+    referralAppliedPending:"تم تسجيل رمز الدعوة، وستُضاف المكافأة بعد أول استثمار مؤهل."
+  },
+  tr:{
+    referralAlreadyAssigned:"Daha önce “{user}” tarafından davet edildiniz. Davet eden kişi değiştirilemez.",
+    referralAppliedRewarded:"Davet kodu kaydedildi ve bekleyen ödül davet zincirine yatırıldı.",
+    referralAppliedPending:"Davet kodu kaydedildi. Ödül ilk uygun yatırımdan sonra yatırılacaktır."
+  },
+  az:{
+    referralAlreadyAssigned:"Siz artıq “{user}” tərəfindən dəvət edilmisiniz. Dəvət edən dəyişdirilə bilməz.",
+    referralAppliedRewarded:"Dəvət kodu qeydə alındı və gözləyən mükafat dəvət zəncirinə köçürüldü.",
+    referralAppliedPending:"Dəvət kodu qeydə alındı. Mükafat ilk uyğun investisiyadan sonra köçürüləcək."
+  }
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  Object.assign(T[code],REFERRAL_ASSIGNMENT_TRANSLATIONS.en,REFERRAL_ASSIGNMENT_TRANSLATIONS[code]||{});
+});
+
 function tr(key,replacements={}){
   const lang=localStorage.getItem("bi_lang")||"en";
   let value=String(T[lang]?.[key]??T.en?.[key]??key);
@@ -21562,6 +21728,7 @@ function setLang(lang){
   updateHeaderAuthUI();
   applyTwoFactorLanguage();
   renderPortfolioLive();
+  refreshReferralApplyMessageLanguage();
   if(currentReferralHistoryRows.length) renderReferralHistoryRows();
   if(document.getElementById("transactions")?.classList.contains("active")) loadTransactions();
 }
@@ -23868,7 +24035,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-approved-glass-v5",
+            "/sw.js?v=20260826-referral-error-v6",
             {
               scope: "/",
               updateViaCache: "none"
@@ -25482,16 +25649,9 @@ document.addEventListener("DOMContentLoaded", function() {
      * in their own compact cards below and must never change the mother
      * plan's rate, label or profit calculation.
      */
-    var flexInvestments =
-      (currentInvestments || [])
-        .filter(function (item) {
-          return active(item) && isFlexible(item);
-        });
+    var flexInvestments = activeFlexibleRows();
 
-    var investedPrincipal =
-      flexInvestments.reduce(function (total, item) {
-        return total + Number(item.principal || 0);
-      }, 0);
+    var investedPrincipal = flexiblePrincipal();
 
     /*
      * Use the dedicated base-plan clock. The selected contracts have their own
