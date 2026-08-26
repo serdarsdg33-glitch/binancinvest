@@ -19495,6 +19495,29 @@ function shouldRepaintPortfolioStructure() {
   return due;
 }
 
+function motherPlanLevelLabel() {
+  const language = String(
+    localStorage.getItem("bi_lang") ||
+    document.documentElement.lang ||
+    "en"
+  ).toLowerCase();
+
+  const labels = {
+    en: "Flexible · 1.5% Daily",
+    fa: "پلن پایه · روزانه ۱.۵٪",
+    az: "Baza planı · Gündəlik 1.5%",
+    tr: "Temel plan · Günlük %1,5",
+    ru: "Базовый план · 1,5% в день",
+    ar: "الخطة الأساسية · ١٫٥٪ يوميًا",
+    zh: "基础计划 · 每日 1.5%",
+    es: "Plan base · 1,5% diario",
+    fr: "Plan de base · 1,5% par jour",
+    de: "Basisplan · 1,5% täglich"
+  };
+
+  return labels[language] || labels.en;
+}
+
 function renderPortfolioLive() {
   const repaintStructure = shouldRepaintPortfolioStructure();
   const balanceElement =
@@ -19522,7 +19545,7 @@ function renderPortfolioLive() {
     balanceElement.textContent = "$0.00";
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
-    levelElement.textContent = tr("basic");
+    levelElement.textContent = motherPlanLevelLabel();
     if (repaintStructure) renderVipPortfolioContracts();
     return;
   }
@@ -19546,34 +19569,11 @@ function renderPortfolioLive() {
       true
     );
 
-  const activeRegularInvestments =
-    snapshot.regularInvestments.filter(item => {
-      const endTime =
-        new Date(item.ends_at).getTime();
-
-      return (
-        item.status === "active" &&
-        Number.isFinite(endTime) &&
-        Date.now() < endTime
-      );
-    });
-
-  const activeRegularPrincipal =
-    activeRegularInvestments.reduce(
-      (total, item) =>
-        total + Number(item.principal || 0),
-      0
-    );
-
-  if (activeRegularPrincipal < 10) {
-    levelElement.textContent = tr("basic");
-  } else if (activeRegularPrincipal <= 100) {
-    levelElement.textContent = tr("starterLevel");
-  } else if (activeRegularPrincipal <= 1000) {
-    levelElement.textContent = tr("growthLevel");
-  } else {
-    levelElement.textContent = tr("premiumLevel");
-  }
+  /*
+   * This card belongs exclusively to FLEX_DAILY.  Selected plans display
+   * their own rate in their own cards and must never overwrite this label.
+   */
+  levelElement.textContent = motherPlanLevelLabel();
 
   if (repaintStructure) renderVipPortfolioContracts();
 }
@@ -25482,16 +25482,9 @@ document.addEventListener("DOMContentLoaded", function() {
      * in their own compact cards below and must never change the mother
      * plan's rate, label or profit calculation.
      */
-    var flexInvestments =
-      (currentInvestments || [])
-        .filter(function (item) {
-          return active(item) && isFlexible(item);
-        });
+    var flexInvestments = activeFlexibleRows();
 
-    var investedPrincipal =
-      flexInvestments.reduce(function (total, item) {
-        return total + Number(item.principal || 0);
-      }, 0);
+    var investedPrincipal = flexiblePrincipal();
 
     /*
      * Use the dedicated base-plan clock. The selected contracts have their own
