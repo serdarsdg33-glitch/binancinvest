@@ -14559,7 +14559,7 @@ html.native-app #rewards{
       <strong data-t="portfolioIntroTitle">Manage your capital, profits and contracts</strong>
       <span data-t="portfolioIntroSubtitle">Manage your investments with clarity and control</span>
     </div>
-    <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Basic</b></div></div>
+    <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Flexible · 1.5% Daily</b></div></div>
     <div id="flexCalculationCheck" class="flex-calculation-check" hidden>
       <button
         id="flexCalculationCheckToggle"
@@ -24035,7 +24035,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-referral-error-v6",
+            "/sw.js?v=20260826-plan-engine-v7",
             {
               scope: "/",
               updateViaCache: "none"
@@ -25772,6 +25772,29 @@ document.addEventListener("DOMContentLoaded", function() {
     if (levelElement) {
       levelElement.textContent =
         text("baseLevel");
+
+      var levelLabel =
+        levelElement.parentElement &&
+        levelElement.parentElement.querySelector(".muted");
+
+      if (levelLabel) {
+        var baseRateLabels = {
+          en:"Base plan rate",
+          fa:"نرخ پلن پایه",
+          az:"Baza plan dərəcəsi",
+          tr:"Temel plan oranı",
+          ru:"Ставка базового плана",
+          ar:"نسبة الخطة الأساسية",
+          zh:"基础计划利率",
+          es:"Tasa del plan base",
+          fr:"Taux du plan de base",
+          de:"Rate des Basisplans"
+        };
+
+        levelLabel.textContent =
+          baseRateLabels[language()] ||
+          baseRateLabels.en;
+      }
     }
   }
 
@@ -26642,9 +26665,11 @@ document.addEventListener("DOMContentLoaded", function() {
       window.__biPortfolioStructureDue !== false;
 
     /*
-     * Top four cards: mother FLEX_DAILY 1.5% only.
+     * Always restore the canonical FLEX_DAILY summary after the legacy live
+     * painter runs. Only the heavy contract-card DOM stays throttled on APK.
+     * This prevents Premium/selected-plan values from flashing in base cards.
      */
-    if (repaintStructure) renderMainFlexibleSummary();
+    renderMainFlexibleSummary();
 
     /*
      * Separate compact cards: explicitly confirmed
