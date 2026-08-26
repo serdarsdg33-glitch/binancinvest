@@ -15321,13 +15321,13 @@ html.native-app #rewards{
     >
       <div id="registerFields">
         <label for="authFullName" data-t="fullname">Full Name / Name</label>
-        <input id="authFullName" name="name" type="text" autocomplete="name" placeholder="e.g. John Doe">
+        <input id="authFullName" name="name" type="text" autocomplete="name" minlength="2" maxlength="80" required placeholder="e.g. John Doe">
 
         <label for="authUsernameReg" data-t="username">Username</label>
-        <input id="authUsernameReg" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. johndoe99">
+        <input id="authUsernameReg" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" minlength="3" maxlength="30" pattern="[A-Za-z0-9_]{3,30}" required placeholder="e.g. johndoe99">
 
         <label for="authEmailReg" data-t="email">Email Address</label>
-        <input id="authEmailReg" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" placeholder="name@example.com">
+        <input id="authEmailReg" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" maxlength="254" required placeholder="name@example.com">
 
         <label for="authReferralCode"><span data-t="referralCodeLabel">Referral Code</span> <span class="muted" data-t="optional">(Optional)</span></label>
         <input
@@ -15352,7 +15352,7 @@ html.native-app #rewards{
           Your password must contain at least <b>8 characters</b>, including an
           <b>uppercase letter</b>, a <b>lowercase letter</b> and a <b>number</b>.
         </div>
-        <input id="authPass" name="password" type="password" autocomplete="current-password" placeholder="******">
+        <input id="authPass" name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="******">
       </div>
       <button type="submit" class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" data-t="continue">Continue</button>
       <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
@@ -17817,7 +17817,7 @@ function clearFieldError(inputId) {
   error?.remove();
 }
 
-function showFieldError(inputId, message) {
+function showFieldError(inputId, message, shouldFocus = true) {
   const input = document.getElementById(inputId);
   if (!input) {
     toast(message, "error");
@@ -17835,10 +17835,12 @@ function showFieldError(inputId, message) {
   input.setAttribute("aria-invalid", "true");
   input.setAttribute("aria-describedby", error.id);
 
-  requestAnimationFrame(() => {
-    input.scrollIntoView({ behavior: "smooth", block: "center" });
-    input.focus({ preventScroll: true });
-  });
+  if (shouldFocus) {
+    requestAnimationFrame(() => {
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      input.focus({ preventScroll: true });
+    });
+  }
 }
 
 function showAuthSuccessPopup(title, message, duration = 1800) {
@@ -18076,6 +18078,201 @@ async function resolveLoginEmailFromIdentifier(identifier) {
   return email;
 }
 
+const COMMON_EMAIL_DOMAIN_FIXES = Object.freeze({
+  "gmil.com":"gmail.com",
+  "gmai.com":"gmail.com",
+  "gamil.com":"gmail.com",
+  "gmeil.com":"gmail.com",
+  "gmial.com":"gmail.com",
+  "gmal.com":"gmail.com",
+  "gmail.cm":"gmail.com",
+  "gmail.om":"gmail.com",
+  "gmail.con":"gmail.com",
+  "hotmai.com":"hotmail.com",
+  "hotmal.com":"hotmail.com",
+  "hotmial.com":"hotmail.com",
+  "outlok.com":"outlook.com",
+  "outloo.com":"outlook.com",
+  "yaho.com":"yahoo.com",
+  "yahooo.com":"yahoo.com",
+  "icloud.con":"icloud.com",
+  "iclod.com":"icloud.com"
+});
+
+function authRegistrationMessage(key, values = {}) {
+  const fa = (localStorage.getItem("bi_lang") || "en") === "fa";
+  const messages = {
+    usernameFormat: fa
+      ? "نام کاربری باید ۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط داشته باشد."
+      : "Username must contain 3–30 English letters, numbers or underscores.",
+    usernameTaken: fa
+      ? "این نام کاربری قبلاً ثبت شده است؛ نام دیگری انتخاب کنید."
+      : "This username is already registered. Choose another one.",
+    emailFormat: fa
+      ? "نشانی ایمیل معتبر نیست؛ آن را مانند name@example.com وارد کنید."
+      : "Enter a valid email address such as name@example.com.",
+    emailSuggestion: fa
+      ? `این دامنه احتمالاً اشتباه نوشته شده است. منظورتان ${values.email || ""} است؟`
+      : `This domain appears mistyped. Did you mean ${values.email || ""}?`,
+    emailTaken: fa
+      ? "این ایمیل قبلاً ثبت شده است؛ وارد حساب شوید یا رمز را بازیابی کنید."
+      : "This email is already registered. Sign in or recover your password."
+  };
+  return messages[key] || "";
+}
+
+function inspectRegistrationEmail(rawEmail) {
+  const email = String(rawEmail || "").trim().toLowerCase();
+  const basicPattern = /^[^\s@]+@[^\s@]+\.[a-z]{2,63}$/i;
+
+  if (
+    !basicPattern.test(email) ||
+    email.length > 254 ||
+    email.includes("..")
+  ) {
+    return {valid:false, email, message:authRegistrationMessage("emailFormat")};
+  }
+
+  const at = email.lastIndexOf("@");
+  const localPart = email.slice(0, at);
+  const domain = email.slice(at + 1);
+  const labels = domain.split(".");
+
+  if (
+    !localPart ||
+    localPart.startsWith(".") ||
+    localPart.endsWith(".") ||
+    labels.some(label =>
+      !label ||
+      label.startsWith("-") ||
+      label.endsWith("-") ||
+      !/^[a-z0-9-]+$/i.test(label)
+    )
+  ) {
+    return {valid:false, email, message:authRegistrationMessage("emailFormat")};
+  }
+
+  const correctedDomain = COMMON_EMAIL_DOMAIN_FIXES[domain];
+  if (correctedDomain) {
+    const suggestion = `${localPart}@${correctedDomain}`;
+    return {
+      valid:false,
+      email,
+      suggestion,
+      message:authRegistrationMessage("emailSuggestion", {email:suggestion})
+    };
+  }
+
+  return {valid:true, email, message:""};
+}
+
+function validateRegistrationEmailField(shouldFocus = true) {
+  const input = document.getElementById("authEmailReg");
+  const result = inspectRegistrationEmail(input?.value);
+
+  if (!result.valid) {
+    showFieldError("authEmailReg", result.message, shouldFocus);
+    return result;
+  }
+
+  if (input) input.value = result.email;
+  clearFieldError("authEmailReg");
+  return result;
+}
+
+function isMissingUsernameAvailabilityRpc(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+  return message.includes("check_username_available") &&
+    (
+      message.includes("could not find") ||
+      message.includes("schema cache") ||
+      message.includes("does not exist")
+    );
+}
+
+async function checkUsernameAvailability(username) {
+  const normalized = String(username || "").trim().toLowerCase();
+  const {data, error} = await supabaseClient.rpc(
+    "check_username_available",
+    {p_username:normalized}
+  );
+
+  /* Keep the current site usable until the supplied SQL migration is run. */
+  if (error && isMissingUsernameAvailabilityRpc(error)) return null;
+  if (error) throw error;
+  return data === true;
+}
+
+let usernameValidationSequence = 0;
+async function validateRegistrationUsernameField(shouldFocus = true) {
+  const input = document.getElementById("authUsernameReg");
+  const username = String(input?.value || "").trim();
+  const sequence = ++usernameValidationSequence;
+
+  if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
+    showFieldError(
+      "authUsernameReg",
+      authRegistrationMessage("usernameFormat"),
+      shouldFocus
+    );
+    return false;
+  }
+
+  clearFieldError("authUsernameReg");
+  const available = await checkUsernameAvailability(username);
+  if (sequence !== usernameValidationSequence) return false;
+
+  if (available === false) {
+    showFieldError(
+      "authUsernameReg",
+      authRegistrationMessage("usernameTaken"),
+      shouldFocus
+    );
+    return false;
+  }
+
+  return true;
+}
+
+function setupRegistrationFieldValidation() {
+  const usernameInput = document.getElementById("authUsernameReg");
+  const emailInput = document.getElementById("authEmailReg");
+  let usernameTimer = null;
+
+  usernameInput?.addEventListener("input", () => {
+    window.clearTimeout(usernameTimer);
+    usernameValidationSequence += 1;
+    clearFieldError("authUsernameReg");
+
+    const value = usernameInput.value.trim();
+    if (!value || !/^[a-zA-Z0-9_]{3,30}$/.test(value)) return;
+
+    usernameTimer = window.setTimeout(() => {
+      validateRegistrationUsernameField(false).catch(error => {
+        console.warn("Username availability check delayed:", error);
+      });
+    }, 450);
+  });
+
+  usernameInput?.addEventListener("blur", () => {
+    if (!usernameInput.value.trim()) return;
+    validateRegistrationUsernameField(false).catch(error => {
+      console.warn("Username availability check failed:", error);
+    });
+  });
+
+  emailInput?.addEventListener("input", () => clearFieldError("authEmailReg"));
+  emailInput?.addEventListener("blur", () => {
+    if (emailInput.value.trim()) validateRegistrationEmailField(false);
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupRegistrationFieldValidation, {once:true});
+} else {
+  setupRegistrationFieldValidation();
+}
+
 let authSubmissionInFlight = false;
 
 async function submitAuth() {
@@ -18085,11 +18282,13 @@ async function submitAuth() {
   authSubmissionInFlight = true;
   beginUiAction(submitButton, processingLabel());
   let registrationEmail = "";
+  let registrationUsername = "";
 
   try {
     if (authMode === "register") {
       const fullName = document.getElementById("authFullName").value.trim();
       const usernameValue = document.getElementById("authUsernameReg").value.trim();
+      registrationUsername = usernameValue;
       const email = document.getElementById("authEmailReg").value.trim().toLowerCase();
       registrationEmail = email;
       const password = document.getElementById("authPass").value;
@@ -18098,27 +18297,41 @@ async function submitAuth() {
       ).trim().toUpperCase();
 
       if (fullName.length < 2) {
-        return toast(tr("fullNameRequired"));
+        showFieldError("authFullName", tr("fullNameRequired"));
+        return;
       }
+      clearFieldError("authFullName");
 
       if (!/^[a-zA-Z0-9_]{3,30}$/.test(usernameValue)) {
-        return toast(tr("usernameRequirements"));
+        showFieldError(
+          "authUsernameReg",
+          authRegistrationMessage("usernameFormat")
+        );
+        return;
       }
 
-      if (!email.includes("@")) {
-        return toast(tr("validEmail"));
+      const emailInspection = validateRegistrationEmailField(true);
+      if (!emailInspection.valid) return;
+      registrationEmail = emailInspection.email;
+
+      if (!(await validateRegistrationUsernameField(true))) {
+        return;
       }
 
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
-        return toast(tr("passwordRuleError"));
+        showFieldError("authPass", tr("passwordRuleError"));
+        return;
       }
+      clearFieldError("authPass");
 
       if (
         referralCode &&
         !/^BI-[A-Z0-9]{8}$/.test(referralCode)
       ) {
-        return toast(tr("validReferralCode"));
+        showFieldError("authReferralCode", tr("validReferralCode"));
+        return;
       }
+      clearFieldError("authReferralCode");
 
       if (referralCode) {
         localStorage.setItem(
@@ -18144,6 +18357,17 @@ async function submitAuth() {
       });
 
       if (error) throw error;
+
+      /* With email confirmation enabled, Supabase may intentionally return a
+         neutral response for an email that already exists. Empty identities
+         identify that safe/obfuscated response without exposing account data. */
+      if (
+        data?.user &&
+        Array.isArray(data.user.identities) &&
+        data.user.identities.length === 0
+      ) {
+        throw new Error("User already registered");
+      }
 
       if (!data.session) {
         closeAuth();
@@ -18244,8 +18468,35 @@ async function submitAuth() {
           : "Registration response was delayed. Check your email before trying again, or use resend.",
         "error"
       );
+    } else if (
+      authMode === "register" &&
+      (
+        String(error?.message || "").toLowerCase().includes("already registered") ||
+        String(error?.message || "").toLowerCase().includes("already exists")
+      )
+    ) {
+      showFieldError(
+        "authEmailReg",
+        authRegistrationMessage("emailTaken")
+      );
     } else {
-      toast(localizedBackendError(error, "authenticationFailed"));
+      let usernameTaken = false;
+
+      if (authMode === "register" && registrationUsername) {
+        try {
+          usernameTaken =
+            (await checkUsernameAvailability(registrationUsername)) === false;
+        } catch (_) {}
+      }
+
+      if (usernameTaken) {
+        showFieldError(
+          "authUsernameReg",
+          authRegistrationMessage("usernameTaken")
+        );
+      } else {
+        toast(localizedBackendError(error, "authenticationFailed"));
+      }
     }
   } finally {
     authSubmissionInFlight = false;
@@ -24210,7 +24461,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-responsive-actions-v10",
+            "/sw.js?v=20260826-registration-validation-v11",
             {
               scope: "/",
               updateViaCache: "none"
