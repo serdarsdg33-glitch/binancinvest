@@ -13732,8 +13732,14 @@ html.native-app #rewards{
     --native-app-header-h:104px!important;
   }
 
-  html.apk-live-shell body{
+  html.native-app.apk-live-shell body{
     padding-top:calc(var(--native-app-header-h) + var(--native-safe-top,0px))!important;
+  }
+
+  /* Some APK builds use apk-live-shell without the native-app fixed-header
+     class. Their header remains in normal document flow and needs no spacer. */
+  html.apk-live-shell:not(.native-app) body{
+    padding-top:0!important;
   }
 
   html.apk-live-shell header{
