@@ -6608,7 +6608,15 @@ html[dir="rtl"] .password-flow-close {
   --dialog-muted: #b9c2cf;
 }
 
-body.dialog-open { overflow: hidden; touch-action: none; }
+body.dialog-open { overflow: hidden; touch-action: manipulation; }
+
+button,
+a,
+[role="button"],
+.btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 
 .modal,
 .email-confirm-modal,
@@ -6677,7 +6685,7 @@ body.dialog-open { overflow: hidden; touch-action: none; }
   backdrop-filter: blur(18px) saturate(1.15);
   scrollbar-width: thin;
   scrollbar-color: rgba(240,185,11,.36) transparent;
-  animation: premiumDialogEnter .28s cubic-bezier(.2,.8,.2,1) both;
+  animation: premiumDialogEnter .18s cubic-bezier(.2,.8,.2,1) both;
 }
 
 .modalbox::after,
@@ -6700,8 +6708,8 @@ body.dialog-open { overflow: hidden; touch-action: none; }
 }
 
 @keyframes premiumDialogEnter {
-  from { opacity: 0; transform: translateY(14px) scale(.975); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { transform: translateY(8px) scale(.988); }
+  to { transform: translateY(0) scale(1); }
 }
 
 .modalbox h2,
@@ -7902,9 +7910,13 @@ html[dir="rtl"] .plan-activation-success-banner{text-align:right}
   #downloadAppSection .install-platform-card{
     padding:20px 18px;
     border-radius:24px;
-    background:rgba(8,13,24,.85);
-    border:1px solid rgba(235,187,42,.24);
-    backdrop-filter:blur(8px);
+    background:linear-gradient(145deg,rgba(0,0,0,.46),rgba(0,0,0,.24));
+    border:1px solid rgba(235,187,42,.31);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.055),
+      0 16px 38px rgba(0,0,0,.28);
+    -webkit-backdrop-filter:blur(6px) saturate(115%);
+    backdrop-filter:blur(6px) saturate(115%);
   }
   #downloadAppSection .install-platform-badge{
     display:flex;
@@ -10775,6 +10787,41 @@ button.btn.gold:disabled,
   opacity:.48 !important;
   filter:saturate(.72) !important;
   cursor:not-allowed !important;
+}
+
+/* A request that is actively running must stay clear and readable. It is
+   still disabled against duplicate taps, but it must not look faded. */
+button.is-processing,
+.btn.is-processing,
+button.is-processing:disabled,
+.btn.is-processing:disabled,
+.plan-selection-confirm.is-processing:disabled,
+.vip-lock-confirm.is-processing:disabled{
+  opacity:1 !important;
+  filter:none !important;
+  cursor:progress !important;
+  transform:none !important;
+}
+
+button.is-processing::after,
+.btn.is-processing::after{
+  content:"";
+  display:inline-block;
+  width:.82em;
+  height:.82em;
+  margin-inline-start:.55em;
+  border:2px solid currentColor;
+  border-inline-end-color:transparent;
+  border-radius:50%;
+  vertical-align:-.08em;
+  animation:bi-action-spin .72s linear infinite;
+}
+
+@keyframes bi-action-spin{to{transform:rotate(360deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  button.is-processing::after,
+  .btn.is-processing::after{animation-duration:1.5s}
 }
 
 /* Header authentication actions specifically:
@@ -15736,10 +15783,49 @@ Transactions section.
 // اتصال به Supabase
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
+/* Never leave an action in an endless "processing" state on a weak mobile
+   connection. Supabase uses this fetch for Auth, RPC and table requests. */
+const SUPABASE_REQUEST_TIMEOUT_MS = 20000;
+function supabaseFetchWithTimeout(input, init = {}) {
+  if (typeof AbortController === "undefined") return fetch(input, init);
+
+  const controller = new AbortController();
+  const upstreamSignal = init && init.signal;
+  let relayAbort = null;
+
+  if (upstreamSignal) {
+    if (upstreamSignal.aborted) {
+      controller.abort();
+    } else if (typeof upstreamSignal.addEventListener === "function") {
+      relayAbort = () => controller.abort();
+      upstreamSignal.addEventListener("abort", relayAbort, {once:true});
+    }
+  }
+
+  const timeoutId = window.setTimeout(
+    () => controller.abort(),
+    SUPABASE_REQUEST_TIMEOUT_MS
+  );
+
+  return fetch(input, {...init, signal:controller.signal}).finally(() => {
+    window.clearTimeout(timeoutId);
+    if (
+      upstreamSignal &&
+      relayAbort &&
+      typeof upstreamSignal.removeEventListener === "function"
+    ) {
+      upstreamSignal.removeEventListener("abort", relayAbort);
+    }
+  });
+}
+
 const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY,
   {
+    global: {
+      fetch: supabaseFetchWithTimeout
+    },
     auth: {
       storageKey: "bi_customer_session",
       persistSession: true,
@@ -15748,6 +15834,52 @@ const supabaseClient = supabase.createClient(
     }
   }
 );
+
+function beginUiAction(button, label) {
+  if (!button || button.dataset.busy === "1") return false;
+  button.dataset.busy = "1";
+  button.dataset.idleText = button.textContent || "";
+  button.classList.add("is-processing");
+  button.setAttribute("aria-busy", "true");
+  button.disabled = true;
+  if (label) button.textContent = label;
+  return true;
+}
+
+function endUiAction(button, fallbackLabel) {
+  if (!button) return;
+  const idleText = button.dataset.idleText || fallbackLabel || button.textContent;
+  button.disabled = false;
+  button.classList.remove("is-processing");
+  button.removeAttribute("aria-busy");
+  button.textContent = idleText;
+  delete button.dataset.busy;
+  delete button.dataset.idleText;
+}
+
+function isNetworkOrTimeoutError(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+  return error?.name === "AbortError" ||
+    message.includes("abort") ||
+    message.includes("timeout") ||
+    message.includes("timed out") ||
+    message.includes("failed to fetch") ||
+    message.includes("networkerror") ||
+    message.includes("network request failed") ||
+    message.includes("load failed");
+}
+
+function networkTimeoutMessage() {
+  return (localStorage.getItem("bi_lang") || "en") === "fa"
+    ? "پاسخ سرور طول کشید. اتصال اینترنت را بررسی کنید و دوباره تلاش کنید."
+    : "The server took too long to respond. Check your connection and try again.";
+}
+
+function processingLabel() {
+  return (localStorage.getItem("bi_lang") || "en") === "fa"
+    ? "در حال پردازش…"
+    : "Processing…";
+}
 
 const PENDING_CONFIRMATION_KEY =
   "bi_pending_confirmation_email";
@@ -16242,8 +16374,7 @@ async function resendConfirmationEmail() {
   const button =
     document.getElementById("resendConfirmationBtn");
 
-  button.disabled = true;
-  button.textContent = tr("sending");
+  if (!beginUiAction(button, tr("sending"))) return;
 
   try {
     const { error } = await supabaseClient.auth.resend({
@@ -16270,7 +16401,7 @@ async function resendConfirmationEmail() {
     button.textContent =
       tr("resendConfirmationEmail");
   } finally {
-    button.disabled = false;
+    endUiAction(button, tr("resendConfirmationEmail"));
   }
 }
 
@@ -17945,15 +18076,22 @@ async function resolveLoginEmailFromIdentifier(identifier) {
   return email;
 }
 
+let authSubmissionInFlight = false;
+
 async function submitAuth() {
   const submitButton = document.getElementById("authSubmitBtn");
-  submitButton.disabled = true;
+  if (authSubmissionInFlight) return;
+
+  authSubmissionInFlight = true;
+  beginUiAction(submitButton, processingLabel());
+  let registrationEmail = "";
 
   try {
     if (authMode === "register") {
       const fullName = document.getElementById("authFullName").value.trim();
       const usernameValue = document.getElementById("authUsernameReg").value.trim();
       const email = document.getElementById("authEmailReg").value.trim().toLowerCase();
+      registrationEmail = email;
       const password = document.getElementById("authPass").value;
       const referralCode = String(
         document.getElementById("authReferralCode")?.value || ""
@@ -18090,9 +18228,29 @@ async function submitAuth() {
 
   } catch (error) {
     console.error(error);
-    toast(localizedBackendError(error, "authenticationFailed"));
+    /* A timeout does not prove that account creation failed; the Auth server
+       may already have accepted it. Avoid duplicate sign-ups and provide the
+       safe email-confirmation/resend path instead. */
+    if (
+      authMode === "register" &&
+      registrationEmail &&
+      isNetworkOrTimeoutError(error)
+    ) {
+      closeAuth();
+      showEmailConfirmation(registrationEmail);
+      toast(
+        (localStorage.getItem("bi_lang") || "en") === "fa"
+          ? "پاسخ ثبت‌نام دیر رسید. برای جلوگیری از ثبت دوباره، ایمیل را بررسی کنید؛ در صورت نیاز از ارسال مجدد استفاده کنید."
+          : "Registration response was delayed. Check your email before trying again, or use resend.",
+        "error"
+      );
+    } else {
+      toast(localizedBackendError(error, "authenticationFailed"));
+    }
   } finally {
-    submitButton.disabled = false;
+    authSubmissionInFlight = false;
+    endUiAction(submitButton);
+    updateAuthModalUI();
   }
 }
 
@@ -21679,6 +21837,7 @@ function tr(key,replacements={}){
    translated interface. */
 function localizedBackendError(error, fallbackKey){
   const message=String(error?.message||"").toLowerCase();
+  if(typeof isNetworkOrTimeoutError==="function"&&isNetworkOrTimeoutError(error)) return networkTimeoutMessage();
   if(message.includes("invalid login credentials")) return tr("invalidCredentials");
   if(message.includes("email not confirmed")) return tr("emailNotConfirmed");
   if(message.includes("already registered")||message.includes("already exists")) return tr("accountAlreadyExists");
@@ -24051,7 +24210,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-mobile-auth-v8",
+            "/sw.js?v=20260826-responsive-actions-v10",
             {
               scope: "/",
               updateViaCache: "none"
@@ -25552,10 +25711,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var button = document.querySelector("#planSelectionModal .plan-selection-actions .gold");
-    if (button) {
-      button.disabled = true;
-      button.textContent = text("processing");
-    }
+    if (button && !beginUiAction(button, text("processing"))) return;
 
     try {
       var result = await planRpcWithTimeout(
@@ -25603,10 +25759,7 @@ document.addEventListener("DOMContentLoaded", function() {
         toast(planActivationErrorMessage(error), "error");
       }
     } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent = text("confirmPlan");
-      }
+      endUiAction(button, text("confirmPlan"));
     }
   };
 
@@ -26126,33 +26279,23 @@ document.addEventListener("DOMContentLoaded", function() {
         "selectedPlanCancelConfirm"
       );
 
-    if (button) {
-      button.disabled = true;
-      button.textContent =
-        text("processing");
-    }
+    if (button && !beginUiAction(button, text("processing"))) return;
 
     try {
       var result =
-        await supabaseClient.rpc(
+        await planRpcWithTimeout(supabaseClient.rpc(
           "cancel_confirmed_investment",
           {
             p_investment_id:
               cancellationInvestmentId
           }
-        );
+        ), 15000);
 
       if (result.error) {
         throw result.error;
       }
 
       closeSelectedPlanCancel();
-
-      await refreshSecureAccount();
-      await updatePortfolio();
-
-      renderSelectedPlanSummaryCards();
-      renderFlexibleCard();
 
       setSelectedPlanCancelInlineSuccess(
         result && result.data
@@ -26163,6 +26306,10 @@ document.addEventListener("DOMContentLoaded", function() {
       renderSelectedPlanSummaryCards();
       normalizeSelectedPlanPanelLayout();
       focusInlineCancelSuccess();
+
+      /* The cancellation is already committed. Refresh in the background so
+         a slow mobile connection cannot keep the modal/button processing. */
+      refreshPortfolioAfterPlanActivation();
 
     } catch (error) {
       console.error(
@@ -26176,11 +26323,7 @@ document.addEventListener("DOMContentLoaded", function() {
       );
 
     } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent =
-          text("confirmCancel");
-      }
+      endUiAction(button, text("confirmCancel"));
     }
   };
 
@@ -26819,7 +26962,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!currentUser || !currentUser.id) { closeVipLockConfirmation(); openAuth("login"); return; }
     if (!Number.isFinite(amount) || amount < VIP_LOCK_MINIMUM || amount > VIP_LOCK_MAXIMUM) return;
     var button = document.getElementById("confirmVipLockBtn");
-    if (button) { button.disabled = true; button.textContent = text("processing"); }
+    if (button && !beginUiAction(button, text("processing"))) return;
     try {
       var result = await planRpcWithTimeout(
         supabaseClient.rpc("confirm_upgrade_investment", {p_plan_name:"VIP_LOCK", p_amount:amount}),
@@ -26849,7 +26992,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.error("Confirmed VIP activation error:", error);
       toast(planActivationErrorMessage(error), "error");
     } finally {
-      if (button) { button.disabled = false; button.textContent = tr("confirmLock"); }
+      endUiAction(button, tr("confirmLock"));
     }
   };
 
@@ -26884,20 +27027,21 @@ document.addEventListener("DOMContentLoaded", function() {
   window.confirmFlexibleSettlement = async function () {
     if (!settlementInvestmentId) return;
     var button = document.getElementById("flexSettleConfirmBtn");
-    if (button) { button.disabled = true; button.textContent = text("processing"); }
+    if (button && !beginUiAction(button, text("processing"))) return;
     try {
-      var result = await supabaseClient.rpc("settle_investment", {p_investment_id:settlementInvestmentId});
+      var result = await planRpcWithTimeout(
+        supabaseClient.rpc("settle_investment", {p_investment_id:settlementInvestmentId}),
+        15000
+      );
       if (result.error) throw result.error;
       closeFlexibleSettlement();
-      await refreshSecureAccount();
-      await updatePortfolio();
-      renderFlexibleCard();
       toast(text("settled"), "success");
+      refreshPortfolioAfterPlanActivation();
     } catch (error) {
       console.error("Investment settlement error:", error);
       toast(localizedBackendError(error, "investmentFailed"), "error");
     } finally {
-      if (button) { button.disabled = false; button.textContent = text("confirm"); }
+      endUiAction(button, text("confirm"));
     }
   };
 
@@ -27336,21 +27480,26 @@ document.addEventListener("DOMContentLoaded", function() {
     customError("");
 
     var oldText = button ? button.textContent : "";
-    if (button) {
-      button.disabled = true;
-      button.textContent =
+    if (
+      button &&
+      !beginUiAction(
+        button,
         customLang() === "fa"
           ? "در حال فعال‌سازی..."
-          : "Activating...";
-    }
+          : "Activating..."
+      )
+    ) return;
 
     try {
-      var result = await supabaseClient.rpc(
-        "confirm_custom_investment",
-        {
-          p_amount: amount,
-          p_term_days: term
-        }
+      var result = await planRpcWithTimeout(
+        supabaseClient.rpc(
+          "confirm_custom_investment",
+          {
+            p_amount: amount,
+            p_term_days: term
+          }
+        ),
+        15000
       );
 
       if (result && result.error) throw result.error;
@@ -27358,9 +27507,6 @@ document.addEventListener("DOMContentLoaded", function() {
       if (amountInput) amountInput.value = "";
       if (termInput) termInput.value = "";
       window.calcCustom();
-
-      try { await refreshSecureAccount(); } catch(_){}
-      try { await updatePortfolio(); } catch(_){}
 
       var activatedCustomInvestmentId =
         result &&
@@ -27389,6 +27535,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       } catch(_){}
 
+      /* Server activation is complete; do not hold the button while the
+         account cards reload over a slow mobile connection. */
+      refreshPortfolioAfterPlanActivation();
+
     } catch(error) {
       console.error("Custom investment activation error:", error);
 
@@ -27415,10 +27565,7 @@ document.addEventListener("DOMContentLoaded", function() {
           : "The custom contract could not be activated.")
       );
     } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent = oldText || tr("investCustomBtn");
-      }
+      endUiAction(button, oldText || tr("investCustomBtn"));
     }
   };
 
