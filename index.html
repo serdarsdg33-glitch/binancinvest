@@ -19463,7 +19463,40 @@ function getMainAvailableBalance() {
   return getMainPortfolioSnapshot().totalBalance;
 }
 
+/*
+ * Mobile performance guard:
+ * the live totals may update every second, but rebuilding every portfolio
+ * contract/card on every tick creates a long main-thread task on Android.
+ * Keep the numbers live and repaint the heavier card structure less often.
+ */
+let portfolioStructurePaintAt = 0;
+
+function shouldRepaintPortfolioStructure() {
+  const root = document.documentElement;
+  const mobileRuntime =
+    root.classList.contains("web-android") ||
+    root.classList.contains("apk-live-shell") ||
+    root.classList.contains("native-app");
+
+  const force = window.__biForcePortfolioStructure === true;
+  const dialogOpen = Boolean(
+    document.querySelector(".selected-plan-cancel-modal.open,.modal.open")
+  );
+  const now = Date.now();
+  const minimumGap = mobileRuntime ? 4000 : 1000;
+  const due = force || (!dialogOpen && now - portfolioStructurePaintAt >= minimumGap);
+
+  if (due) {
+    portfolioStructurePaintAt = now;
+    window.__biForcePortfolioStructure = false;
+  }
+
+  window.__biPortfolioStructureDue = due;
+  return due;
+}
+
 function renderPortfolioLive() {
+  const repaintStructure = shouldRepaintPortfolioStructure();
   const balanceElement =
     document.getElementById("balance");
 
@@ -19490,7 +19523,7 @@ function renderPortfolioLive() {
     investedElement.textContent = "$0.00";
     profitElement.textContent = "$0.00";
     levelElement.textContent = tr("basic");
-    renderVipPortfolioContracts();
+    if (repaintStructure) renderVipPortfolioContracts();
     return;
   }
 
@@ -19542,7 +19575,7 @@ function renderPortfolioLive() {
     levelElement.textContent = tr("premiumLevel");
   }
 
-  renderVipPortfolioContracts();
+  if (repaintStructure) renderVipPortfolioContracts();
 }
 
 async function updatePortfolio() {
@@ -19552,6 +19585,7 @@ async function updatePortfolio() {
   }
 
   await loadInvestments();
+  window.__biForcePortfolioStructure = true;
   renderPortfolioLive();
 
   /*
@@ -26335,21 +26369,24 @@ document.addEventListener("DOMContentLoaded", function() {
   window.renderPortfolioLive = function () {
     originalRenderPortfolioLive();
 
+    const repaintStructure =
+      window.__biPortfolioStructureDue !== false;
+
     /*
      * Top four cards: mother FLEX_DAILY 1.5% only.
      */
-    renderMainFlexibleSummary();
+    if (repaintStructure) renderMainFlexibleSummary();
 
     /*
      * Separate compact cards: explicitly confirmed
      * Starter / Growth / Premium contracts.
      */
-    renderSelectedPlanSummaryCards();
+    if (repaintStructure) renderSelectedPlanSummaryCards();
 
     /*
      * Lower FLEX card + list stays in place.
      */
-    renderFlexibleCard();
+    if (repaintStructure) renderFlexibleCard();
 
     /* Keep the VIP usable balance synchronized with fresh FLEX rows. */
     if (typeof window.calculatePortfolioVipLock === "function") {
@@ -27557,6 +27594,114 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   window.addEventListener("pageshow", start);
+})();
+</script>
+
+<style id="mobile-instant-interaction-v39">
+/* Faster taps and less compositing work in Android WebView/APK. */
+html.apk-live-shell button,
+html.apk-live-shell .btn,
+html.apk-live-shell a,
+html.apk-live-shell [onclick],
+html.web-android button,
+html.web-android .btn,
+html.web-android a,
+html.web-android [onclick] {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(240,185,11,.14);
+}
+
+@media (hover:none) and (pointer:coarse) {
+  html.apk-live-shell .card,
+  html.apk-live-shell .plan,
+  html.apk-live-shell .btn,
+  html.apk-live-shell .nav button,
+  html.web-android .card,
+  html.web-android .plan,
+  html.web-android .btn,
+  html.web-android .nav button {
+    transition-duration: .08s !important;
+  }
+
+  html.apk-live-shell .card:hover,
+  html.apk-live-shell .plan:hover,
+  html.apk-live-shell .btn:hover,
+  html.web-android .card:hover,
+  html.web-android .plan:hover,
+  html.web-android .btn:hover {
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* A moving backdrop blur is especially expensive on older Android GPUs. */
+  html.apk-live-shell .live-withdraw,
+  html.apk-live-shell .nav,
+  html.apk-live-shell .nav button,
+  html.apk-live-shell header,
+  html.web-android .live-withdraw {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+</style>
+
+<script id="mobile-instant-navigation-v39">
+(function () {
+  const root = document.documentElement;
+  const isPerformanceMobile = function () {
+    return (
+      root.classList.contains("apk-live-shell") ||
+      root.classList.contains("web-android") ||
+      root.classList.contains("native-app")
+    );
+  };
+
+  const originalPage = window.page;
+  let navigationToken = 0;
+
+  if (typeof originalPage === "function") {
+    window.page = function (id, button) {
+      if (!isPerformanceMobile()) {
+        return originalPage.apply(this, arguments);
+      }
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      /* Paint the selected screen and button before any data/network work. */
+      document.querySelectorAll(".view").forEach(function (view) {
+        view.classList.toggle("active", view === target);
+      });
+      document.querySelectorAll(".nav button").forEach(function (navButton) {
+        navButton.classList.toggle("active", navButton === button);
+      });
+      window.scrollTo(0, 0);
+
+      const token = ++navigationToken;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (token !== navigationToken) return;
+          originalPage.call(window, id, button);
+        });
+      });
+    };
+  }
+
+  document.addEventListener("pointerdown", function (event) {
+    if (!isPerformanceMobile()) return;
+    const control = event.target.closest &&
+      event.target.closest("button,.btn,a,[onclick]");
+    if (!control) return;
+    control.classList.add("bi-touch-active");
+  }, {passive:true, capture:true});
+
+  ["pointerup", "pointercancel"].forEach(function (type) {
+    document.addEventListener(type, function () {
+      document.querySelectorAll(".bi-touch-active").forEach(function (control) {
+        control.classList.remove("bi-touch-active");
+      });
+    }, {passive:true, capture:true});
+  });
 })();
 </script>
 
