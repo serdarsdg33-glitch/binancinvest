@@ -15265,16 +15265,22 @@ html.native-app #rewards{
     </div>
     <h2 id="authTitle">Sign In</h2>
     <p class="muted" data-t="local">Your account information is stored securely.</p>
-    <div class="form">
+    <form
+      id="authForm"
+      class="form"
+      autocomplete="on"
+      novalidate
+      onsubmit="event.preventDefault(); submitAuth();"
+    >
       <div id="registerFields">
-        <label data-t="fullname">Full Name / Name</label>
-        <input id="authFullName" placeholder="e.g. John Doe">
+        <label for="authFullName" data-t="fullname">Full Name / Name</label>
+        <input id="authFullName" name="name" type="text" autocomplete="name" placeholder="e.g. John Doe">
 
-        <label data-t="username">Username</label>
-        <input id="authUsernameReg" placeholder="e.g. johndoe99">
+        <label for="authUsernameReg" data-t="username">Username</label>
+        <input id="authUsernameReg" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. johndoe99">
 
-        <label data-t="email">Email Address</label>
-        <input id="authEmailReg" type="email" placeholder="name@example.com">
+        <label for="authEmailReg" data-t="email">Email Address</label>
+        <input id="authEmailReg" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" placeholder="name@example.com">
 
         <label for="authReferralCode"><span data-t="referralCodeLabel">Referral Code</span> <span class="muted" data-t="optional">(Optional)</span></label>
         <input
@@ -15291,19 +15297,19 @@ html.native-app #rewards{
         </div>
       </div>
       <div id="registerCodeFields" style="display:none;"><div style="background:rgba(240,185,11,0.1); border:1px solid rgba(240,185,11,0.3); padding:12px; border-radius:10px; margin-bottom:12px; font-size:13px; color:var(--gold2);"><span data-t="codeSentNotice">A verification code has been sent to your email. </span> <b id="simulatedCodeBox" style="color:#fff;">123456</b>)</div><label data-t="enterCode">Enter 6-digit Email Code</label><input id="authEmailCode" placeholder="123456" maxlength="6"></div>
-      <div id="loginFields"><label data-t="usernameOrEmail">Username or Email</label><input id="authUser" placeholder="Your username or email"></div>
-      <div id="forgotFields" style="display:none;"><label data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" placeholder="username or email"></div>
+      <div id="loginFields"><label for="authUser" data-t="usernameOrEmail">Username or Email</label><input id="authUser" name="login_identifier" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Your username or email"></div>
+      <div id="forgotFields" style="display:none;"><label for="forgotInput" data-t="enterEmailOrUser">Enter your Username or Registered Email</label><input id="forgotInput" name="recovery_identifier" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="username or email"></div>
       <div id="passwordContainer">
-        <label data-t="password">Password</label>
+        <label for="authPass" data-t="password">Password</label>
         <div class="password-requirements" data-t="passwordRequirements">
           Your password must contain at least <b>8 characters</b>, including an
           <b>uppercase letter</b>, a <b>lowercase letter</b> and a <b>number</b>.
         </div>
-        <input id="authPass" type="password" placeholder="******">
+        <input id="authPass" name="password" type="password" autocomplete="current-password" placeholder="******">
       </div>
-      <button class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" onclick="submitAuth()" data-t="continue">Continue</button>
+      <button type="submit" class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" data-t="continue">Continue</button>
       <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
-    </div>
+    </form>
   </div>
 </div>
 <!-- Password recovery code sent -->
@@ -17807,6 +17813,7 @@ function updateAuthModalUI() {
   const loginFields = document.getElementById("loginFields");
   const forgotFields = document.getElementById("forgotFields");
   const passwordContainer = document.getElementById("passwordContainer");
+  const passwordInput = document.getElementById("authPass");
   const passwordRequirements =
     passwordContainer?.querySelector(".password-requirements");
   const submitButton = document.getElementById("authSubmitBtn");
@@ -17826,6 +17833,9 @@ function updateAuthModalUI() {
   switchLink.style.display = "block";
 
   if (authMode === "register") {
+    if (passwordInput) {
+      passwordInput.setAttribute("autocomplete", "new-password");
+    }
     title.textContent = d.register || "Create Account";
     registerFields.style.display = "block";
     submitButton.textContent = d.register || "Create Account";
@@ -17845,6 +17855,9 @@ function updateAuthModalUI() {
       referralInput.value = pendingReferralCode;
     }
   } else if (authMode === "forgot") {
+    if (passwordInput) {
+      passwordInput.setAttribute("autocomplete", "off");
+    }
     title.textContent = d.resetPasswordTitle || "Reset Password";
     forgotFields.style.display = "block";
     passwordContainer.style.display = "none";
@@ -17852,6 +17865,9 @@ function updateAuthModalUI() {
     switchLink.textContent = d.haveAccountText || "Back to Sign In";
   } else {
     authMode = "login";
+    if (passwordInput) {
+      passwordInput.setAttribute("autocomplete", "current-password");
+    }
     title.textContent = d.login || "Sign In";
     loginFields.style.display = "block";
 
@@ -24035,7 +24051,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-plan-engine-v7",
+            "/sw.js?v=20260826-mobile-auth-v8",
             {
               scope: "/",
               updateViaCache: "none"
