@@ -18099,6 +18099,33 @@ const COMMON_EMAIL_DOMAIN_FIXES = Object.freeze({
   "iclod.com":"icloud.com"
 });
 
+/* Fast local protection for known disposable providers. The Supabase policy
+   below remains authoritative and can be expanded without changing this file. */
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  "emalupe.com",
+  "mail.tm",
+  "mechanicspedia.com",
+  "web-library.net",
+  "wshu.net",
+  "deltajohnsons.com",
+  "sharebot.net",
+  "dollicons.com",
+  "virgilian.com",
+  "airsworld.net",
+  "comfythings.com",
+  "2200freefonts.com",
+  "mailinator.com",
+  "yopmail.com",
+  "guerrillamail.com",
+  "guerrillamailblock.com",
+  "sharklasers.com",
+  "grr.la",
+  "dispostable.com",
+  "trashmail.com",
+  "fakeinbox.com",
+  "10minutemail.com"
+]);
+
 function authRegistrationMessage(key, values = {}) {
   const fa = (localStorage.getItem("bi_lang") || "en") === "fa";
   const messages = {
@@ -18116,7 +18143,10 @@ function authRegistrationMessage(key, values = {}) {
       : `This domain appears mistyped. Did you mean ${values.email || ""}?`,
     emailTaken: fa
       ? "این ایمیل قبلاً ثبت شده است؛ وارد حساب شوید یا رمز را بازیابی کنید."
-      : "This email is already registered. Sign in or recover your password."
+      : "This email is already registered. Sign in or recover your password.",
+    disposableEmail: fa
+      ? "استفاده از ایمیل موقت مجاز نیست؛ لطفاً Gmail، Outlook یا یک ایمیل دائمی وارد کنید."
+      : "Temporary email addresses are not allowed. Use Gmail, Outlook, or another permanent email."
   };
   return messages[key] || "";
 }
@@ -18163,7 +18193,63 @@ function inspectRegistrationEmail(rawEmail) {
     };
   }
 
+  const disposableDomain = Array.from(DISPOSABLE_EMAIL_DOMAINS).find(
+    blocked => domain === blocked || domain.endsWith(`.${blocked}`)
+  );
+  if (disposableDomain) {
+    return {
+      valid:false,
+      email,
+      disposable:true,
+      message:authRegistrationMessage("disposableEmail")
+    };
+  }
+
   return {valid:true, email, message:""};
+}
+
+function isMissingEmailPolicyRpc(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+  return message.includes("check_registration_email_allowed") &&
+    (
+      message.includes("could not find") ||
+      message.includes("schema cache") ||
+      message.includes("does not exist")
+    );
+}
+
+async function checkRegistrationEmailPolicy(email) {
+  const inspected = inspectRegistrationEmail(email);
+  if (!inspected.valid) {
+    return {
+      allowed:false,
+      reason:inspected.disposable ? "disposable" : "invalid",
+      message:inspected.message
+    };
+  }
+
+  const {data, error} = await supabaseClient.rpc(
+    "check_registration_email_allowed",
+    {p_email:inspected.email}
+  );
+
+  /* The local list still works before V44 is installed. */
+  if (error && isMissingEmailPolicyRpc(error)) {
+    return {allowed:true, reason:"policy_not_installed"};
+  }
+  if (error) throw error;
+
+  const allowed =
+    typeof data === "boolean"
+      ? data
+      : data?.allowed !== false;
+
+  return {
+    allowed,
+    reason:data?.reason || (allowed ? "allowed" : "disposable"),
+    domain:data?.domain || "",
+    message:allowed ? "" : authRegistrationMessage("disposableEmail")
+  };
 }
 
 function validateRegistrationEmailField(shouldFocus = true) {
@@ -18314,7 +18400,23 @@ async function submitAuth() {
       if (!emailInspection.valid) return;
       registrationEmail = emailInspection.email;
 
-      if (!(await validateRegistrationUsernameField(true))) {
+      const [usernameAllowed, emailPolicy] = await Promise.all([
+        validateRegistrationUsernameField(false),
+        checkRegistrationEmailPolicy(registrationEmail)
+      ]);
+
+      if (!usernameAllowed) {
+        const usernameInput = document.getElementById("authUsernameReg");
+        usernameInput?.scrollIntoView({behavior:"smooth", block:"center"});
+        usernameInput?.focus({preventScroll:true});
+        return;
+      }
+
+      if (!emailPolicy.allowed) {
+        showFieldError(
+          "authEmailReg",
+          emailPolicy.message || authRegistrationMessage("disposableEmail")
+        );
         return;
       }
 
@@ -18470,6 +18572,14 @@ async function submitAuth() {
       );
     } else if (
       authMode === "register" &&
+      String(error?.message || "").toLowerCase().includes("disposable email")
+    ) {
+      showFieldError(
+        "authEmailReg",
+        authRegistrationMessage("disposableEmail")
+      );
+    } else if (
+      authMode === "register" &&
       (
         String(error?.message || "").toLowerCase().includes("already registered") ||
         String(error?.message || "").toLowerCase().includes("already exists")
@@ -18481,15 +18591,32 @@ async function submitAuth() {
       );
     } else {
       let usernameTaken = false;
+      let emailBlocked = false;
 
-      if (authMode === "register" && registrationUsername) {
+      if (
+        authMode === "register" &&
+        (registrationUsername || registrationEmail)
+      ) {
         try {
-          usernameTaken =
-            (await checkUsernameAvailability(registrationUsername)) === false;
+          const checks = await Promise.all([
+            registrationUsername
+              ? checkUsernameAvailability(registrationUsername)
+              : Promise.resolve(null),
+            registrationEmail
+              ? checkRegistrationEmailPolicy(registrationEmail)
+              : Promise.resolve({allowed:true})
+          ]);
+          usernameTaken = checks[0] === false;
+          emailBlocked = checks[1]?.allowed === false;
         } catch (_) {}
       }
 
-      if (usernameTaken) {
+      if (emailBlocked) {
+        showFieldError(
+          "authEmailReg",
+          authRegistrationMessage("disposableEmail")
+        );
+      } else if (usernameTaken) {
         showFieldError(
           "authUsernameReg",
           authRegistrationMessage("usernameTaken")
@@ -24461,7 +24588,7 @@ async function deleteAllClosedSupportTickets() {
       try {
         const registration =
           await navigator.serviceWorker.register(
-            "/sw.js?v=20260826-registration-validation-v11",
+            "/sw.js?v=20260826-disposable-email-block-v12",
             {
               scope: "/",
               updateViaCache: "none"
