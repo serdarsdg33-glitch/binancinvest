@@ -18674,6 +18674,32 @@ async function loadAuthenticatedUser(authUser, options = {}) {
     return null;
   }
 
+  /* Defense in depth: an Auth row exists before the confirmation link is
+     clicked. Never render account/profile/financial data for that pending row,
+     even if an invalid local session is restored on an unusual device. */
+  if (
+    authUser.email &&
+    !authUser.email_confirmed_at &&
+    !authUser.confirmed_at
+  ) {
+    currentUser = null;
+    updateHeaderAuthUI();
+
+    if (typeof updateSupportAuthUI === "function") {
+      updateSupportAuthUI();
+    }
+
+    showEmailConfirmation(authUser.email);
+
+    try {
+      await supabaseClient.auth.signOut({scope:"local"});
+    } catch (error) {
+      console.warn("Pending email session cleanup skipped:", error);
+    }
+
+    return null;
+  }
+
   if (
     authenticatedUserLoadPromise &&
     authenticatedUserLoadId === authUser.id
