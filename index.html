@@ -13961,9 +13961,178 @@ html.native-app #rewards{
     grid-template-columns:128px minmax(0,1fr);
     gap:7px;
   }
-  #registerFields #authCountryCode{
-    padding-left:8px;
-    font-size:12px;
+}
+
+/* Custom black/gold country picker.
+   The native <select> stays in the DOM only as the value source so iOS never
+   opens its light system picker. */
+#registerFields .registration-phone-country{
+  position:relative;
+  z-index:40;
+}
+#registerFields #authCountryCode{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:0 !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  clip:rect(0 0 0 0) !important;
+  clip-path:inset(50%) !important;
+}
+#registerFields .registration-country-trigger{
+  width:100%;
+  height:43px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px;
+  padding:0 10px;
+  border:1px solid rgba(240,185,11,.34);
+  border-radius:10px;
+  background:
+    linear-gradient(145deg,rgba(19,22,27,.98),rgba(7,9,12,.98));
+  color:#f5f7fa;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 7px 18px rgba(0,0,0,.22);
+  cursor:pointer;
+  direction:ltr;
+  text-align:left;
+  font:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+#registerFields .registration-country-trigger:focus-visible,
+#registerFields .registration-country-trigger.is-open{
+  outline:none;
+  border-color:var(--gold);
+  box-shadow:
+    0 0 0 2px rgba(240,185,11,.11),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 9px 25px rgba(0,0,0,.34);
+}
+#registerFields .registration-country-trigger-label{
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  font-size:12px;
+  font-weight:700;
+}
+#registerFields .registration-country-trigger-arrow{
+  color:var(--gold);
+  font-size:11px;
+  flex:0 0 auto;
+  transition:transform .18s ease;
+}
+#registerFields .registration-country-trigger.is-open .registration-country-trigger-arrow{
+  transform:rotate(180deg);
+}
+#registerFields .registration-country-menu{
+  position:absolute;
+  top:calc(100% + 7px);
+  left:0;
+  width:min(350px,calc(100vw - 46px));
+  max-height:min(360px,55vh);
+  overflow:hidden;
+  display:none;
+  border:1px solid rgba(240,185,11,.48);
+  border-radius:14px;
+  background:
+    linear-gradient(155deg,rgba(13,16,20,.995),rgba(2,4,7,.995));
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.045);
+  z-index:99999;
+  direction:ltr;
+}
+#registerFields .registration-country-menu.open{
+  display:block;
+}
+#registerFields .registration-country-search-wrap{
+  position:sticky;
+  top:0;
+  z-index:2;
+  padding:10px;
+  background:rgba(5,7,10,.985);
+  border-bottom:1px solid rgba(240,185,11,.18);
+}
+#registerFields .registration-country-search{
+  width:100%;
+  height:38px;
+  margin:0;
+  padding:8px 11px;
+  border:1px solid rgba(240,185,11,.28);
+  border-radius:9px;
+  background:#0b0f14;
+  color:#fff;
+  outline:none;
+  direction:ltr;
+  text-align:left;
+  font-size:13px;
+}
+#registerFields .registration-country-search:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 2px rgba(240,185,11,.08);
+}
+#registerFields .registration-country-list{
+  max-height:calc(min(360px,55vh) - 59px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(240,185,11,.6) rgba(255,255,255,.035);
+}
+#registerFields .registration-country-option{
+  width:100%;
+  min-height:45px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 12px;
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  background:transparent;
+  color:#e9edf2;
+  text-align:left;
+  direction:ltr;
+  font:inherit;
+  font-size:13px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:rgba(240,185,11,.12);
+}
+#registerFields .registration-country-option:last-child{
+  border-bottom:0;
+}
+#registerFields .registration-country-option:hover,
+#registerFields .registration-country-option:focus-visible{
+  outline:none;
+  background:rgba(240,185,11,.09);
+}
+#registerFields .registration-country-option.selected{
+  background:
+    linear-gradient(90deg,rgba(240,185,11,.20),rgba(240,185,11,.055));
+  color:#ffd866;
+  font-weight:800;
+}
+#registerFields .registration-country-option.selected::after{
+  content:"✓";
+  margin-left:auto;
+  color:var(--gold);
+  font-weight:900;
+}
+#registerFields .registration-country-empty{
+  padding:18px 12px;
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+}
+@media(max-width:390px){
+  #registerFields .registration-country-trigger-label{font-size:11px;}
+  #registerFields .registration-country-menu{
+    width:min(330px,calc(100vw - 34px));
   }
 }
 </style>
@@ -15634,6 +15803,30 @@ html.native-app #rewards{
             <option value="+263" data-iso="ZW">🇿🇼 +263  Zimbabwe</option>
             
             </select>
+            <button
+              id="authCountryTrigger"
+              class="registration-country-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-controls="authCountryMenu"
+            >
+              <span id="authCountryTriggerLabel" class="registration-country-trigger-label">🌐 Select country</span>
+              <span class="registration-country-trigger-arrow" aria-hidden="true">▼</span>
+            </button>
+            <div id="authCountryMenu" class="registration-country-menu" role="dialog" aria-label="Country calling code">
+              <div class="registration-country-search-wrap">
+                <input
+                  id="authCountrySearch"
+                  class="registration-country-search"
+                  type="search"
+                  autocomplete="off"
+                  placeholder="Search country or code"
+                  aria-label="Search country or calling code"
+                >
+              </div>
+              <div id="authCountryList" class="registration-country-list" role="listbox"></div>
+            </div>
           </div>
           <div class="registration-phone-number-wrap">
             <input
@@ -18757,7 +18950,143 @@ function refreshRegistrationPhoneLanguage() {
   if (help) help.textContent = registrationPhoneCopy().help;
 }
 
+
+function setupCustomRegistrationCountryPicker() {
+  const select = document.getElementById("authCountryCode");
+  const trigger = document.getElementById("authCountryTrigger");
+  const label = document.getElementById("authCountryTriggerLabel");
+  const menu = document.getElementById("authCountryMenu");
+  const list = document.getElementById("authCountryList");
+  const search = document.getElementById("authCountrySearch");
+
+  if (!select || !trigger || !label || !menu || !list || !search) return;
+  if (trigger.dataset.ready === "1") return;
+  trigger.dataset.ready = "1";
+
+  const countryOptions = Array.from(select.options).filter(option => option.value);
+
+  function closeMenu({restoreFocus = false} = {}) {
+    menu.classList.remove("open");
+    trigger.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    if (restoreFocus) trigger.focus({preventScroll:true});
+  }
+
+  function refreshSelectedState() {
+    const selected = select.options[select.selectedIndex];
+    label.textContent = selected?.value ? selected.textContent.trim() : "🌐 Select country";
+
+    list.querySelectorAll(".registration-country-option").forEach(button => {
+      const active = button.dataset.value === select.value;
+      button.classList.toggle("selected", active);
+      button.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  function filterCountries() {
+    const query = normalizePhoneDigits(search.value).trim().toLowerCase();
+    let visibleCount = 0;
+
+    list.querySelectorAll(".registration-country-option").forEach(button => {
+      const haystack = button.dataset.search || "";
+      const visible = !query || haystack.includes(query);
+      button.hidden = !visible;
+      if (visible) visibleCount += 1;
+    });
+
+    let empty = list.querySelector(".registration-country-empty");
+    if (!visibleCount) {
+      if (!empty) {
+        empty = document.createElement("div");
+        empty.className = "registration-country-empty";
+        empty.textContent = "No countries found";
+        list.appendChild(empty);
+      }
+      empty.hidden = false;
+    } else if (empty) {
+      empty.hidden = true;
+    }
+  }
+
+  countryOptions.forEach(option => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "registration-country-option";
+    button.setAttribute("role", "option");
+    button.dataset.value = option.value;
+    button.dataset.iso = option.dataset.iso || "";
+    button.dataset.search = `${option.textContent} ${option.value} ${option.dataset.iso || ""}`.toLowerCase();
+    button.textContent = option.textContent.trim();
+
+    button.addEventListener("click", () => {
+      select.value = option.value;
+      select.dispatchEvent(new Event("change", {bubbles:true}));
+      refreshSelectedState();
+      search.value = "";
+      filterCountries();
+      closeMenu();
+    });
+
+    list.appendChild(button);
+  });
+
+  trigger.addEventListener("click", () => {
+    const opening = !menu.classList.contains("open");
+    if (!opening) {
+      closeMenu();
+      return;
+    }
+
+    menu.classList.add("open");
+    trigger.classList.add("is-open");
+    trigger.setAttribute("aria-expanded", "true");
+    search.value = "";
+    filterCountries();
+    refreshSelectedState();
+
+    requestAnimationFrame(() => {
+      const selectedButton = list.querySelector(".registration-country-option.selected");
+      selectedButton?.scrollIntoView({block:"center"});
+    });
+  });
+
+  search.addEventListener("input", filterCountries);
+  search.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMenu({restoreFocus:true});
+      return;
+    }
+
+    if (event.key === "Enter") {
+      const firstVisible = Array.from(
+        list.querySelectorAll(".registration-country-option")
+      ).find(button => !button.hidden);
+      if (firstVisible) {
+        event.preventDefault();
+        firstVisible.click();
+      }
+    }
+  });
+
+  document.addEventListener("pointerdown", event => {
+    if (!menu.classList.contains("open")) return;
+    if (menu.contains(event.target) || trigger.contains(event.target)) return;
+    closeMenu();
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && menu.classList.contains("open")) {
+      closeMenu({restoreFocus:true});
+    }
+  });
+
+  select.addEventListener("change", refreshSelectedState);
+  refreshSelectedState();
+}
+
 function setupRegistrationFieldValidation() {
+  setupCustomRegistrationCountryPicker();
   const usernameInput = document.getElementById("authUsernameReg");
   const emailInput = document.getElementById("authEmailReg");
   const phoneInput = document.getElementById("authPhoneLocal");
