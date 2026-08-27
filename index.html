@@ -13904,6 +13904,70 @@ html.native-app #rewards{
   }
 }
 </style>
+
+<style id="registration-phone-field-v1">
+/* Registration phone field: country flag/code + local number */
+#registerFields .registration-phone-row{
+  display:grid;
+  grid-template-columns:minmax(132px,145px) minmax(0,1fr);
+  gap:8px;
+  align-items:start;
+  direction:ltr;
+}
+#registerFields .registration-phone-country,
+#registerFields .registration-phone-number-wrap{
+  min-width:0;
+}
+#registerFields #authCountryCode,
+#registerFields #authPhoneLocal{
+  width:100%;
+  height:43px;
+  margin:0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#0d1218;
+  color:#fff;
+  outline:none;
+}
+#registerFields #authCountryCode{
+  padding:10px 28px 10px 10px;
+  direction:ltr;
+  text-align:left;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+#registerFields #authPhoneLocal{
+  padding:10px 13px;
+  direction:ltr;
+  text-align:left;
+  letter-spacing:.15px;
+}
+#registerFields #authCountryCode:focus,
+#registerFields #authPhoneLocal:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 2px rgba(240,185,11,.08);
+}
+#registerFields .registration-phone-help{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+#registerFields .registration-phone-number-wrap .field-validation-message{
+  margin-top:6px;
+}
+@media(max-width:390px){
+  #registerFields .registration-phone-row{
+    grid-template-columns:128px minmax(0,1fr);
+    gap:7px;
+  }
+  #registerFields #authCountryCode{
+    padding-left:8px;
+    font-size:12px;
+  }
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15328,6 +15392,264 @@ html.native-app #rewards{
 
         <label for="authEmailReg" data-t="email">Email Address</label>
         <input id="authEmailReg" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" maxlength="254" required placeholder="name@example.com">
+
+        <label for="authPhoneLocal" data-t="phone">Phone</label>
+        <div class="registration-phone-row">
+          <div class="registration-phone-country">
+            <select id="authCountryCode" name="country_code" aria-label="Country calling code" required>
+            <option value="" data-iso="" selected disabled>🌐 Select country</option>
+            <option value="+93" data-iso="AF">🇦🇫 +93  Afghanistan</option>
+            <option value="+355" data-iso="AL">🇦🇱 +355  Albania</option>
+            <option value="+213" data-iso="DZ">🇩🇿 +213  Algeria</option>
+            <option value="+1684" data-iso="AS">🇦🇸 +1684  American Samoa</option>
+            <option value="+244" data-iso="AO">🇦🇴 +244  Angola</option>
+            <option value="+1264" data-iso="AI">🇦🇮 +1264  Anguilla</option>
+            <option value="+1268" data-iso="AG">🇦🇬 +1268  Antigua and Barbuda</option>
+            <option value="+54" data-iso="AR">🇦🇷 +54  Argentina</option>
+            <option value="+374" data-iso="AM">🇦🇲 +374  Armenia</option>
+            <option value="+297" data-iso="AW">🇦🇼 +297  Aruba</option>
+            <option value="+61" data-iso="AU">🇦🇺 +61  Australia</option>
+            <option value="+43" data-iso="AT">🇦🇹 +43  Austria</option>
+            <option value="+994" data-iso="AZ">🇦🇿 +994  Azerbaijan</option>
+            <option value="+1242" data-iso="BS">🇧🇸 +1242  The Bahamas</option>
+            <option value="+973" data-iso="BH">🇧🇭 +973  Bahrain</option>
+            <option value="+880" data-iso="BD">🇧🇩 +880  Bangladesh</option>
+            <option value="+1246" data-iso="BB">🇧🇧 +1246  Barbados</option>
+            <option value="+375" data-iso="BY">🇧🇾 +375  Belarus</option>
+            <option value="+32" data-iso="BE">🇧🇪 +32  Belgium</option>
+            <option value="+501" data-iso="BZ">🇧🇿 +501  Belize</option>
+            <option value="+229" data-iso="BJ">🇧🇯 +229  Benin</option>
+            <option value="+1441" data-iso="BM">🇧🇲 +1441  Bermuda</option>
+            <option value="+975" data-iso="BT">🇧🇹 +975  Bhutan</option>
+            <option value="+591" data-iso="BO">🇧🇴 +591  Bolivia</option>
+            <option value="+387" data-iso="BA">🇧🇦 +387  Bosnia and Herzegovina</option>
+            <option value="+267" data-iso="BW">🇧🇼 +267  Botswana</option>
+            <option value="+55" data-iso="BR">🇧🇷 +55  Brazil</option>
+            <option value="+246" data-iso="IO">🇮🇴 +246  British Indian Ocean Territory</option>
+            <option value="+673" data-iso="BN">🇧🇳 +673  Brunei</option>
+            <option value="+359" data-iso="BG">🇧🇬 +359  Bulgaria</option>
+            <option value="+226" data-iso="BF">🇧🇫 +226  Burkina Faso</option>
+            <option value="+257" data-iso="BI">🇧🇮 +257  Burundi</option>
+            <option value="+855" data-iso="KH">🇰🇭 +855  Cambodia</option>
+            <option value="+237" data-iso="CM">🇨🇲 +237  Cameroon</option>
+            <option value="+1" data-iso="CA">🇨🇦 +1  Canada</option>
+            <option value="+238" data-iso="CV">🇨🇻 +238  Cape Verde</option>
+            <option value="+1345" data-iso="KY">🇰🇾 +1345  Cayman Islands</option>
+            <option value="+236" data-iso="CF">🇨🇫 +236  Central African Republic</option>
+            <option value="+235" data-iso="TD">🇹🇩 +235  Chad</option>
+            <option value="+56" data-iso="CL">🇨🇱 +56  Chile</option>
+            <option value="+86" data-iso="CN">🇨🇳 +86  China</option>
+            <option value="+61" data-iso="CX">🇨🇽 +61  Christmas Island</option>
+            <option value="+61" data-iso="CC">🇨🇨 +61  Cocos (Keeling) Islands</option>
+            <option value="+57" data-iso="CO">🇨🇴 +57  Colombia</option>
+            <option value="+269" data-iso="KM">🇰🇲 +269  Comoros</option>
+            <option value="+682" data-iso="CK">🇨🇰 +682  Cook Islands</option>
+            <option value="+506" data-iso="CR">🇨🇷 +506  Costa Rica</option>
+            <option value="+385" data-iso="HR">🇭🇷 +385  Croatia</option>
+            <option value="+53" data-iso="CU">🇨🇺 +53  Cuba</option>
+            <option value="+357" data-iso="CY">🇨🇾 +357  Cyprus</option>
+            <option value="+420" data-iso="CZ">🇨🇿 +420  Czech Republic</option>
+            <option value="+243" data-iso="CD">🇨🇩 +243  Democratic Republic of the Congo</option>
+            <option value="+45" data-iso="DK">🇩🇰 +45  Denmark</option>
+            <option value="+253" data-iso="DJ">🇩🇯 +253  Djibouti</option>
+            <option value="+1767" data-iso="DM">🇩🇲 +1767  Dominica</option>
+            <option value="+1809" data-iso="DO">🇩🇴 +1809  Dominican Republic</option>
+            <option value="+1829" data-iso="DO">🇩🇴 +1829  Dominican Republic</option>
+            <option value="+1849" data-iso="DO">🇩🇴 +1849  Dominican Republic</option>
+            <option value="+670" data-iso="TL">🇹🇱 +670  East Timor</option>
+            <option value="+593" data-iso="EC">🇪🇨 +593  Ecuador</option>
+            <option value="+20" data-iso="EG">🇪🇬 +20  Egypt</option>
+            <option value="+503" data-iso="SV">🇸🇻 +503  El Salvador</option>
+            <option value="+240" data-iso="GQ">🇬🇶 +240  Equatorial Guinea</option>
+            <option value="+291" data-iso="ER">🇪🇷 +291  Eritrea</option>
+            <option value="+372" data-iso="EE">🇪🇪 +372  Estonia</option>
+            <option value="+251" data-iso="ET">🇪🇹 +251  Ethiopia</option>
+            <option value="+500" data-iso="FK">🇫🇰 +500  Falkland Islands</option>
+            <option value="+298" data-iso="FO">🇫🇴 +298  Faroe Islands</option>
+            <option value="+691" data-iso="FM">🇫🇲 +691  Federated States of Micronesia</option>
+            <option value="+679" data-iso="FJ">🇫🇯 +679  Fiji</option>
+            <option value="+358" data-iso="FI">🇫🇮 +358  Finland</option>
+            <option value="+33" data-iso="FR">🇫🇷 +33  France</option>
+            <option value="+594" data-iso="GF">🇬🇫 +594  French Guiana</option>
+            <option value="+689" data-iso="PF">🇵🇫 +689  French Polynesia</option>
+            <option value="+241" data-iso="GA">🇬🇦 +241  Gabon</option>
+            <option value="+220" data-iso="GM">🇬🇲 +220  The Gambia</option>
+            <option value="+995" data-iso="GE">🇬🇪 +995  Georgia</option>
+            <option value="+49" data-iso="DE">🇩🇪 +49  Germany</option>
+            <option value="+233" data-iso="GH">🇬🇭 +233  Ghana</option>
+            <option value="+350" data-iso="GI">🇬🇮 +350  Gibraltar</option>
+            <option value="+30" data-iso="GR">🇬🇷 +30  Greece</option>
+            <option value="+299" data-iso="GL">🇬🇱 +299  Greenland</option>
+            <option value="+1473" data-iso="GD">🇬🇩 +1473  Grenada</option>
+            <option value="+590" data-iso="GP">🇬🇵 +590  Guadeloupe</option>
+            <option value="+1671" data-iso="GU">🇬🇺 +1671  Guam</option>
+            <option value="+502" data-iso="GT">🇬🇹 +502  Guatemala</option>
+            <option value="+44" data-iso="GG">🇬🇬 +44  Guernsey</option>
+            <option value="+224" data-iso="GN">🇬🇳 +224  Guinea</option>
+            <option value="+245" data-iso="GW">🇬🇼 +245  Guinea-Bissau</option>
+            <option value="+592" data-iso="GY">🇬🇾 +592  Guyana</option>
+            <option value="+509" data-iso="HT">🇭🇹 +509  Haiti</option>
+            <option value="+504" data-iso="HN">🇭🇳 +504  Honduras</option>
+            <option value="+852" data-iso="HK">🇭🇰 +852  Hong Kong</option>
+            <option value="+36" data-iso="HU">🇭🇺 +36  Hungary</option>
+            <option value="+354" data-iso="IS">🇮🇸 +354  Iceland</option>
+            <option value="+91" data-iso="IN">🇮🇳 +91  India</option>
+            <option value="+62" data-iso="ID">🇮🇩 +62  Indonesia</option>
+            <option value="+98" data-iso="IR">🇮🇷 +98  Iran</option>
+            <option value="+964" data-iso="IQ">🇮🇶 +964  Iraq</option>
+            <option value="+353" data-iso="IE">🇮🇪 +353  Ireland</option>
+            <option value="+44" data-iso="IM">🇮🇲 +44  Isle of Man</option>
+            <option value="+972" data-iso="IL">🇮🇱 +972  Israel</option>
+            <option value="+39" data-iso="IT">🇮🇹 +39  Italy</option>
+            <option value="+225" data-iso="CI">🇨🇮 +225  Ivory Coast</option>
+            <option value="+1876" data-iso="JM">🇯🇲 +1876  Jamaica</option>
+            <option value="+81" data-iso="JP">🇯🇵 +81  Japan</option>
+            <option value="+44" data-iso="JE">🇯🇪 +44  Jersey</option>
+            <option value="+962" data-iso="JO">🇯🇴 +962  Jordan</option>
+            <option value="+76" data-iso="KZ">🇰🇿 +76  Kazakhstan</option>
+            <option value="+77" data-iso="KZ">🇰🇿 +77  Kazakhstan</option>
+            <option value="+254" data-iso="KE">🇰🇪 +254  Kenya</option>
+            <option value="+686" data-iso="KI">🇰🇮 +686  Kiribati</option>
+            <option value="+965" data-iso="KW">🇰🇼 +965  Kuwait</option>
+            <option value="+996" data-iso="KG">🇰🇬 +996  Kyrgyzstan</option>
+            <option value="+856" data-iso="LA">🇱🇦 +856  Laos</option>
+            <option value="+371" data-iso="LV">🇱🇻 +371  Latvia</option>
+            <option value="+961" data-iso="LB">🇱🇧 +961  Lebanon</option>
+            <option value="+266" data-iso="LS">🇱🇸 +266  Lesotho</option>
+            <option value="+231" data-iso="LR">🇱🇷 +231  Liberia</option>
+            <option value="+218" data-iso="LY">🇱🇾 +218  Libya</option>
+            <option value="+423" data-iso="LI">🇱🇮 +423  Liechtenstein</option>
+            <option value="+370" data-iso="LT">🇱🇹 +370  Lithuania</option>
+            <option value="+352" data-iso="LU">🇱🇺 +352  Luxembourg</option>
+            <option value="+853" data-iso="MO">🇲🇴 +853  Macau</option>
+            <option value="+261" data-iso="MG">🇲🇬 +261  Madagascar</option>
+            <option value="+265" data-iso="MW">🇲🇼 +265  Malawi</option>
+            <option value="+60" data-iso="MY">🇲🇾 +60  Malaysia</option>
+            <option value="+960" data-iso="MV">🇲🇻 +960  Maldives</option>
+            <option value="+223" data-iso="ML">🇲🇱 +223  Mali</option>
+            <option value="+356" data-iso="MT">🇲🇹 +356  Malta</option>
+            <option value="+692" data-iso="MH">🇲🇭 +692  Marshall Islands</option>
+            <option value="+596" data-iso="MQ">🇲🇶 +596  Martinique</option>
+            <option value="+222" data-iso="MR">🇲🇷 +222  Mauritania</option>
+            <option value="+230" data-iso="MU">🇲🇺 +230  Mauritius</option>
+            <option value="+262" data-iso="YT">🇾🇹 +262  Mayotte</option>
+            <option value="+52" data-iso="MX">🇲🇽 +52  Mexico</option>
+            <option value="+373" data-iso="MD">🇲🇩 +373  Moldova</option>
+            <option value="+377" data-iso="MC">🇲🇨 +377  Monaco</option>
+            <option value="+976" data-iso="MN">🇲🇳 +976  Mongolia</option>
+            <option value="+1664" data-iso="MS">🇲🇸 +1664  Montserrat</option>
+            <option value="+212" data-iso="MA">🇲🇦 +212  Morocco</option>
+            <option value="+258" data-iso="MZ">🇲🇿 +258  Mozambique</option>
+            <option value="+264" data-iso="NA">🇳🇦 +264  Namibia</option>
+            <option value="+674" data-iso="NR">🇳🇷 +674  Nauru</option>
+            <option value="+977" data-iso="NP">🇳🇵 +977  Nepal</option>
+            <option value="+31" data-iso="NL">🇳🇱 +31  Netherlands</option>
+            <option value="+687" data-iso="NC">🇳🇨 +687  New Caledonia</option>
+            <option value="+64" data-iso="NZ">🇳🇿 +64  New Zealand</option>
+            <option value="+505" data-iso="NI">🇳🇮 +505  Nicaragua</option>
+            <option value="+227" data-iso="NE">🇳🇪 +227  Niger</option>
+            <option value="+234" data-iso="NG">🇳🇬 +234  Nigeria</option>
+            <option value="+683" data-iso="NU">🇳🇺 +683  Niue</option>
+            <option value="+672" data-iso="NF">🇳🇫 +672  Norfolk Island</option>
+            <option value="+850" data-iso="KP">🇰🇵 +850  North Korea</option>
+            <option value="+1670" data-iso="MP">🇲🇵 +1670  Northern Mariana Islands</option>
+            <option value="+47" data-iso="NO">🇳🇴 +47  Norway</option>
+            <option value="+968" data-iso="OM">🇴🇲 +968  Oman</option>
+            <option value="+92" data-iso="PK">🇵🇰 +92  Pakistan</option>
+            <option value="+680" data-iso="PW">🇵🇼 +680  Palau</option>
+            <option value="+507" data-iso="PA">🇵🇦 +507  Panama</option>
+            <option value="+675" data-iso="PG">🇵🇬 +675  Papua New Guinea</option>
+            <option value="+595" data-iso="PY">🇵🇾 +595  Paraguay</option>
+            <option value="+51" data-iso="PE">🇵🇪 +51  Peru</option>
+            <option value="+63" data-iso="PH">🇵🇭 +63  Philippines</option>
+            <option value="+64" data-iso="PN">🇵🇳 +64  Pitcairn Islands</option>
+            <option value="+48" data-iso="PL">🇵🇱 +48  Poland</option>
+            <option value="+351" data-iso="PT">🇵🇹 +351  Portugal</option>
+            <option value="+1787" data-iso="PR">🇵🇷 +1787  Puerto Rico</option>
+            <option value="+1939" data-iso="PR">🇵🇷 +1939  Puerto Rico</option>
+            <option value="+974" data-iso="QA">🇶🇦 +974  Qatar</option>
+            <option value="+389" data-iso="MK">🇲🇰 +389  Republic of Macedonia</option>
+            <option value="+242" data-iso="CG">🇨🇬 +242  Republic of the Congo</option>
+            <option value="+40" data-iso="RO">🇷🇴 +40  Romania</option>
+            <option value="+7" data-iso="RU">🇷🇺 +7  Russia</option>
+            <option value="+250" data-iso="RW">🇷🇼 +250  Rwanda</option>
+            <option value="+262" data-iso="RE">🇷🇪 +262  Réunion</option>
+            <option value="+290" data-iso="SH">🇸🇭 +290  Saint Helena</option>
+            <option value="+1869" data-iso="KN">🇰🇳 +1869  Saint Kitts and Nevis</option>
+            <option value="+1758" data-iso="LC">🇱🇨 +1758  Saint Lucia</option>
+            <option value="+508" data-iso="PM">🇵🇲 +508  Saint Pierre and Miquelon</option>
+            <option value="+1784" data-iso="VC">🇻🇨 +1784  Saint Vincent and the Grenadines</option>
+            <option value="+685" data-iso="WS">🇼🇸 +685  Samoa</option>
+            <option value="+378" data-iso="SM">🇸🇲 +378  San Marino</option>
+            <option value="+966" data-iso="SA">🇸🇦 +966  Saudi Arabia</option>
+            <option value="+221" data-iso="SN">🇸🇳 +221  Senegal</option>
+            <option value="+381" data-iso="RS">🇷🇸 +381  Serbia</option>
+            <option value="+248" data-iso="SC">🇸🇨 +248  Seychelles</option>
+            <option value="+232" data-iso="SL">🇸🇱 +232  Sierra Leone</option>
+            <option value="+65" data-iso="SG">🇸🇬 +65  Singapore</option>
+            <option value="+421" data-iso="SK">🇸🇰 +421  Slovakia</option>
+            <option value="+386" data-iso="SI">🇸🇮 +386  Slovenia</option>
+            <option value="+677" data-iso="SB">🇸🇧 +677  Solomon Islands</option>
+            <option value="+252" data-iso="SO">🇸🇴 +252  Somalia</option>
+            <option value="+27" data-iso="ZA">🇿🇦 +27  South Africa</option>
+            <option value="+500" data-iso="GS">🇬🇸 +500  South Georgia</option>
+            <option value="+82" data-iso="KR">🇰🇷 +82  South Korea</option>
+            <option value="+211" data-iso="SS">🇸🇸 +211  South Sudan</option>
+            <option value="+34" data-iso="ES">🇪🇸 +34  Spain</option>
+            <option value="+94" data-iso="LK">🇱🇰 +94  Sri Lanka</option>
+            <option value="+249" data-iso="SD">🇸🇩 +249  Sudan</option>
+            <option value="+597" data-iso="SR">🇸🇷 +597  Suriname</option>
+            <option value="+4779" data-iso="SJ">🇸🇯 +4779  Svalbard and Jan Mayen</option>
+            <option value="+268" data-iso="SZ">🇸🇿 +268  Swaziland</option>
+            <option value="+46" data-iso="SE">🇸🇪 +46  Sweden</option>
+            <option value="+41" data-iso="CH">🇨🇭 +41  Switzerland</option>
+            <option value="+963" data-iso="SY">🇸🇾 +963  Syria</option>
+            <option value="+239" data-iso="ST">🇸🇹 +239  São Tomé and Príncipe</option>
+            <option value="+886" data-iso="TW">🇹🇼 +886  Taiwan</option>
+            <option value="+992" data-iso="TJ">🇹🇯 +992  Tajikistan</option>
+            <option value="+255" data-iso="TZ">🇹🇿 +255  Tanzania</option>
+            <option value="+66" data-iso="TH">🇹🇭 +66  Thailand</option>
+            <option value="+228" data-iso="TG">🇹🇬 +228  Togo</option>
+            <option value="+690" data-iso="TK">🇹🇰 +690  Tokelau</option>
+            <option value="+676" data-iso="TO">🇹🇴 +676  Tonga</option>
+            <option value="+1868" data-iso="TT">🇹🇹 +1868  Trinidad and Tobago</option>
+            <option value="+216" data-iso="TN">🇹🇳 +216  Tunisia</option>
+            <option value="+90" data-iso="TR">🇹🇷 +90  Turkey</option>
+            <option value="+993" data-iso="TM">🇹🇲 +993  Turkmenistan</option>
+            <option value="+688" data-iso="TV">🇹🇻 +688  Tuvalu</option>
+            <option value="+256" data-iso="UG">🇺🇬 +256  Uganda</option>
+            <option value="+380" data-iso="UA">🇺🇦 +380  Ukraine</option>
+            <option value="+971" data-iso="AE">🇦🇪 +971  United Arab Emirates</option>
+            <option value="+44" data-iso="GB">🇬🇧 +44  United Kingdom</option>
+            <option value="+1" data-iso="US">🇺🇸 +1  United States</option>
+            <option value="+598" data-iso="UY">🇺🇾 +598  Uruguay</option>
+            <option value="+998" data-iso="UZ">🇺🇿 +998  Uzbekistan</option>
+            <option value="+678" data-iso="VU">🇻🇺 +678  Vanuatu</option>
+            <option value="+58" data-iso="VE">🇻🇪 +58  Venezuela</option>
+            <option value="+84" data-iso="VN">🇻🇳 +84  Vietnam</option>
+            <option value="+681" data-iso="WF">🇼🇫 +681  Wallis and Futuna</option>
+            <option value="+212" data-iso="EH">🇪🇭 +212  Western Sahara</option>
+            <option value="+967" data-iso="YE">🇾🇪 +967  Yemen</option>
+            <option value="+260" data-iso="ZM">🇿🇲 +260  Zambia</option>
+            <option value="+263" data-iso="ZW">🇿🇼 +263  Zimbabwe</option>
+            
+            </select>
+          </div>
+          <div class="registration-phone-number-wrap">
+            <input
+              id="authPhoneLocal"
+              name="phone_local"
+              type="tel"
+              inputmode="numeric"
+              autocomplete="tel-national"
+              dir="ltr"
+              maxlength="15"
+              required
+              placeholder="9123456789"
+            >
+          </div>
+        </div>
+        <div id="registrationPhoneHelp" class="registration-phone-help">Country code is added automatically. If you type a leading 0, it is removed automatically.</div>
 
         <label for="authReferralCode"><span data-t="referralCodeLabel">Referral Code</span> <span class="muted" data-t="optional">(Optional)</span></label>
         <input
@@ -18320,9 +18642,126 @@ async function validateRegistrationUsernameField(shouldFocus = true) {
   return true;
 }
 
+const REGISTRATION_PHONE_TEXT = {
+  en: {
+    help: "Country code is added automatically. If you type a leading 0, it is removed automatically.",
+    invalid: "Enter a valid phone number."
+  },
+  fa: {
+    help: "پیش‌شماره کشور خودکار اضافه می‌شود. اگر شماره را با صفر شروع کنید، صفر اول خودکار حذف می‌شود.",
+    invalid: "شماره تلفن معتبر وارد کنید."
+  },
+  az: {
+    help: "Ölkə kodu avtomatik əlavə olunur. Nömrəni 0 ilə başlasanız, ilk 0 avtomatik silinir.",
+    invalid: "Etibarlı telefon nömrəsi daxil edin."
+  },
+  tr: {
+    help: "Ülke kodu otomatik eklenir. Numarayı 0 ile başlatırsanız ilk 0 otomatik kaldırılır.",
+    invalid: "Geçerli bir telefon numarası girin."
+  },
+  ru: {
+    help: "Код страны добавляется автоматически. Если номер начинается с 0, первый 0 удаляется автоматически.",
+    invalid: "Введите корректный номер телефона."
+  },
+  ar: {
+    help: "تتم إضافة رمز الدولة تلقائيًا. إذا بدأت الرقم بصفر فسيتم حذف الصفر الأول تلقائيًا.",
+    invalid: "أدخل رقم هاتف صالحًا."
+  }
+};
+
+function registrationPhoneCopy() {
+  const lang = localStorage.getItem("bi_lang") || "en";
+  return REGISTRATION_PHONE_TEXT[lang] || REGISTRATION_PHONE_TEXT.en;
+}
+
+function normalizePhoneDigits(value) {
+  const faDigits = "۰۱۲۳۴۵۶۷۸۹";
+  const arDigits = "٠١٢٣٤٥٦٧٨٩";
+  return String(value || "")
+    .replace(/[۰-۹]/g, d => String(faDigits.indexOf(d)))
+    .replace(/[٠-٩]/g, d => String(arDigits.indexOf(d)));
+}
+
+function normalizeRegistrationPhoneLocal() {
+  const input = document.getElementById("authPhoneLocal");
+  const country = document.getElementById("authCountryCode");
+  if (!input) return "";
+
+  const original = normalizePhoneDigits(input.value).trim();
+  const pastedAsInternational = /^\s*(?:\+|00)/.test(original);
+  let digits = original.replace(/\D/g, "");
+  const dialDigits = String(country?.value || "").replace(/\D/g, "");
+  const countryIso = country?.options?.[country.selectedIndex]?.dataset?.iso || "";
+
+  if (pastedAsInternational && dialDigits && digits.startsWith(dialDigits)) {
+    digits = digits.slice(dialDigits.length);
+  }
+
+  /* For most countries the local trunk 0 is not part of E.164 and is removed
+     because the country calling code is already shown separately. Italy,
+     Vatican City and San Marino retain a meaningful leading 0 in some numbers. */
+  if (!["IT", "VA", "SM"].includes(countryIso)) {
+    digits = digits.replace(/^0+/, "");
+  }
+
+  const maxLocalDigits = Math.max(1, 15 - dialDigits.length);
+  digits = digits.slice(0, maxLocalDigits);
+  input.value = digits;
+  return digits;
+}
+
+function getRegistrationPhoneDetails() {
+  const country = document.getElementById("authCountryCode");
+  const local = normalizeRegistrationPhoneLocal();
+  const dialCode = String(country?.value || "");
+  const option = country?.options?.[country.selectedIndex] || null;
+  const e164 = `${dialCode}${local}`;
+
+  return {
+    local,
+    dialCode,
+    countryIso: option?.dataset?.iso || "",
+    e164,
+    valid: /^\+[1-9]\d{7,14}$/.test(e164)
+  };
+}
+
+function validateRegistrationPhoneField(shouldFocus = true) {
+  const details = getRegistrationPhoneDetails();
+  const country = document.getElementById("authCountryCode");
+
+  if (!country?.value) {
+    showFieldError(
+      "authPhoneLocal",
+      registrationPhoneCopy().selectCountry || "Select your country code.",
+      shouldFocus
+    );
+    return { ...details, valid: false };
+  }
+
+  if (!details.local || !details.valid) {
+    showFieldError(
+      "authPhoneLocal",
+      registrationPhoneCopy().invalid,
+      shouldFocus
+    );
+    return { ...details, valid: false };
+  }
+
+  clearFieldError("authPhoneLocal");
+  return details;
+}
+
+function refreshRegistrationPhoneLanguage() {
+  const help = document.getElementById("registrationPhoneHelp");
+  if (help) help.textContent = registrationPhoneCopy().help;
+}
+
 function setupRegistrationFieldValidation() {
   const usernameInput = document.getElementById("authUsernameReg");
   const emailInput = document.getElementById("authEmailReg");
+  const phoneInput = document.getElementById("authPhoneLocal");
+  const countryCodeSelect = document.getElementById("authCountryCode");
   let usernameTimer = null;
 
   usernameInput?.addEventListener("input", () => {
@@ -18351,6 +18790,23 @@ function setupRegistrationFieldValidation() {
   emailInput?.addEventListener("blur", () => {
     if (emailInput.value.trim()) validateRegistrationEmailField(false);
   });
+
+  phoneInput?.addEventListener("input", () => {
+    normalizeRegistrationPhoneLocal();
+    clearFieldError("authPhoneLocal");
+  });
+
+  phoneInput?.addEventListener("blur", () => {
+    if (phoneInput.value.trim()) validateRegistrationPhoneField(false);
+  });
+
+  countryCodeSelect?.addEventListener("change", () => {
+    normalizeRegistrationPhoneLocal();
+    clearFieldError("authPhoneLocal");
+    phoneInput?.focus({preventScroll:true});
+  });
+
+  refreshRegistrationPhoneLanguage();
 }
 
 if (document.readyState === "loading") {
@@ -18381,6 +18837,7 @@ async function submitAuth() {
       const referralCode = String(
         document.getElementById("authReferralCode")?.value || ""
       ).trim().toUpperCase();
+      const phoneInspection = getRegistrationPhoneDetails();
 
       if (fullName.length < 2) {
         showFieldError("authFullName", tr("fullNameRequired"));
@@ -18420,6 +18877,11 @@ async function submitAuth() {
         return;
       }
 
+      if (!phoneInspection.valid) {
+        validateRegistrationPhoneField(true);
+        return;
+      }
+
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
         showFieldError("authPass", tr("passwordRuleError"));
         return;
@@ -18453,6 +18915,9 @@ async function submitAuth() {
           data: {
             username: usernameValue,
             full_name: fullName,
+            phone: phoneInspection.e164,
+            phone_country: phoneInspection.countryIso,
+            phone_dial_code: phoneInspection.dialCode,
             referral_invite_code: referralCode || null
           }
         }
@@ -18654,6 +19119,10 @@ function buildAuthenticatedUserFallback(authUser, previousUser = null) {
       metadata.full_name ||
       metadata.name ||
       "",
+    phone:
+      previousUser?.phone ||
+      metadata.phone ||
+      "",
     referralInviteCode:
       metadata.referral_invite_code ||
       previousUser?.referralInviteCode ||
@@ -18744,6 +19213,11 @@ async function loadAuthenticatedUser(authUser, options = {}) {
             profile.full_name ||
             currentUser.fullname ||
             "",
+          phone:
+            profile.phone ||
+            authUser.user_metadata?.phone ||
+            currentUser.phone ||
+            "",
           referralInviteCode:
             authUser.user_metadata?.referral_invite_code ||
             currentUser.referralInviteCode ||
@@ -18753,6 +19227,17 @@ async function loadAuthenticatedUser(authUser, options = {}) {
           profit: Number(profile.profit || 0),
           __profileLoaded: true
         };
+
+        const metadataPhone = String(authUser.user_metadata?.phone || "").trim();
+        if (!profile.phone && metadataPhone) {
+          const { error: phoneSyncError } = await supabaseClient
+            .from("profiles")
+            .update({ phone: metadataPhone })
+            .eq("id", authUser.id);
+          if (phoneSyncError) {
+            console.warn("Registration phone profile sync skipped:", phoneSyncError);
+          }
+        }
       }
 
       updateHeaderAuthUI();
@@ -22270,6 +22755,7 @@ function applyLanguageChrome(lang,d){
   const authFullName=document.getElementById("authFullName");
   const authUsernameReg=document.getElementById("authUsernameReg");
   const authEmailReg=document.getElementById("authEmailReg");
+  const authPhoneLocal=document.getElementById("authPhoneLocal");
   const authReferralCode=document.getElementById("authReferralCode");
   const newRecoveryPassword=document.getElementById("newRecoveryPassword");
   const confirmRecoveryPassword=document.getElementById("confirmRecoveryPassword");
@@ -22280,6 +22766,7 @@ function applyLanguageChrome(lang,d){
   if(authUsernameReg) authUsernameReg.placeholder=d.username;
   if(authEmailReg) authEmailReg.placeholder=d.email;
   if(authReferralCode) authReferralCode.placeholder=d.referralCodeLabel;
+  if(typeof refreshRegistrationPhoneLanguage === "function") refreshRegistrationPhoneLanguage();
   if(newRecoveryPassword) newRecoveryPassword.placeholder=d.newPassword;
   if(confirmRecoveryPassword) confirmRecoveryPassword.placeholder=d.confirmNewPassword;
 
