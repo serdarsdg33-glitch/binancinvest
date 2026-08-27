@@ -23213,6 +23213,7 @@ async function ticketHasRelevantSupportReply(ticketId) {
     .select("id")
     .eq("ticket_id", ticketId)
     .in("sender_role", ["admin", "support", "agent"])
+    .not("sender_id", "is", null)
     .or("is_ai.eq.false,is_ai.is.null")
     .limit(1);
 
@@ -23300,6 +23301,9 @@ async function requestAiSupportReply(ticketId) {
             use_complete_ticket_context: true,
             prevent_duplicate_reply: true,
             handoff_on_customer_request: true,
+            always_answer_until_handoff: true,
+            auto_handoff_on_frustration_or_repeated_question: true,
+            withdrawal_requires_destination_wallet_address: true,
             stop_ai_after_support_team_reply: true,
             all_deposits_and_withdrawals_are_crypto_only: true,
             never_discuss_non_crypto_payment_methods: true,
