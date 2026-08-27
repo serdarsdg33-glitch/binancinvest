@@ -23155,12 +23155,12 @@ function normalizeAiSupportMessage(value) {
   if (cardPaymentLanguage.some(pattern => pattern.test(text))) {
     const lang = localStorage.getItem("bi_lang") || "en";
     const safeReplies = {
-      en:"For account-specific payment questions, the relevant support team needs to review this ticket. Please do not send card details, passwords or one-time codes.",
-      fa:"برای پرسش‌های پرداختی مربوط به حساب، لازم است تیم پشتیبانی مربوطه این تیکت را بررسی کند. لطفاً اطلاعات کارت، رمز یا کد یک‌بارمصرف ارسال نکنید.",
-      ar:"تحتاج أسئلة الدفع الخاصة بالحساب إلى مراجعة فريق الدعم المختص. لا ترسل بيانات البطاقة أو كلمات المرور أو رموز الاستخدام لمرة واحدة.",
-      tr:"Hesaba özel ödeme sorularını ilgili destek ekibinin incelemesi gerekir. Kart bilgisi, şifre veya tek kullanımlık kod göndermeyin.",
-      az:"Hesaba aid ödəniş suallarını müvafiq dəstək komandası yoxlamalıdır. Kart məlumatı, şifrə və ya birdəfəlik kod göndərməyin.",
-      ru:"Вопросы по платежам конкретного аккаунта должна проверить служба поддержки. Не отправляйте данные карты, пароли или одноразовые коды."
+      en:"All deposits and withdrawals on this platform use cryptocurrency only. Please send the operation type, cryptocurrency, network, amount and displayed status so the request can be reviewed.",
+      fa:"تمام واریزها و برداشت‌های این پلتفرم فقط با رمزارز انجام می‌شوند. برای بررسی درخواست، لطفاً نوع عملیات، نام رمزارز، شبکه، مبلغ و وضعیت نمایش‌داده‌شده را ارسال کنید.",
+      ar:"تتم جميع عمليات الإيداع والسحب في هذه المنصة بالعملات الرقمية فقط. للمراجعة، أرسل نوع العملية والعملة والشبكة والمبلغ والحالة الظاهرة.",
+      tr:"Bu platformdaki tüm yatırma ve çekme işlemleri yalnızca kripto para ile yapılır. İnceleme için işlem türünü, kripto parayı, ağı, tutarı ve görünen durumu gönderin.",
+      az:"Bu platformada bütün depozit və çıxarışlar yalnız kriptovalyuta ilə aparılır. Yoxlama üçün əməliyyat növünü, kriptovalyutanı, şəbəkəni, məbləği və görünən statusu göndərin.",
+      ru:"Все пополнения и выводы на платформе выполняются только в криптовалюте. Для проверки отправьте тип операции, криптовалюту, сеть, сумму и отображаемый статус."
     };
     return safeReplies[lang] || safeReplies.en;
   }
@@ -23301,10 +23301,9 @@ async function requestAiSupportReply(ticketId) {
             prevent_duplicate_reply: true,
             handoff_on_customer_request: true,
             stop_ai_after_support_team_reply: true,
-            payment_method: "cryptocurrency_only",
-            never_mention_card_payment: true,
-            never_request_card_number_cvv_password_or_otp: true,
-            do_not_append_security_disclaimer: true,
+            all_deposits_and_withdrawals_are_crypto_only: true,
+            never_discuss_non_crypto_payment_methods: true,
+            never_add_unrelated_security_warnings: true,
             crypto_deposit_checklist_only_for_deposit_questions: true
           }
         }
