@@ -15838,7 +15838,7 @@ html.native-app #rewards{
               dir="ltr"
               maxlength="15"
               required
-              placeholder="9123456789"
+              placeholder="2015550123"
             >
           </div>
         </div>
@@ -18951,6 +18951,33 @@ function refreshRegistrationPhoneLanguage() {
 }
 
 
+function getRegistrationPhonePlaceholder(countryIso) {
+  const placeholders = {
+    US: "2015550123",
+    CA: "4165550123",
+    GB: "7700900123",
+    TR: "5321234567",
+    AE: "501234567",
+    DE: "15123456789",
+    FR: "612345678",
+    IT: "3123456789",
+    ES: "612345678",
+    RU: "9123456789",
+    AZ: "501234567",
+    IR: "9123456789"
+  };
+  return placeholders[countryIso] || "2015550123";
+}
+
+function refreshRegistrationPhonePlaceholder() {
+  const input = document.getElementById("authPhoneLocal");
+  const country = document.getElementById("authCountryCode");
+  if (!input) return;
+  const countryIso = country?.options?.[country.selectedIndex]?.dataset?.iso || "US";
+  input.placeholder = getRegistrationPhonePlaceholder(countryIso);
+}
+
+
 function setupCustomRegistrationCountryPicker() {
   const select = document.getElementById("authCountryCode");
   const trigger = document.getElementById("authCountryTrigger");
@@ -19131,11 +19158,13 @@ function setupRegistrationFieldValidation() {
 
   countryCodeSelect?.addEventListener("change", () => {
     normalizeRegistrationPhoneLocal();
+    refreshRegistrationPhonePlaceholder();
     clearFieldError("authPhoneLocal");
     phoneInput?.focus({preventScroll:true});
   });
 
   refreshRegistrationPhoneLanguage();
+  refreshRegistrationPhonePlaceholder();
 }
 
 if (document.readyState === "loading") {
