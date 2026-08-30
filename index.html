@@ -18111,6 +18111,82 @@ function selectWithdrawCrypto(text, logoUrl) {
     document.getElementById('withdrawCustomOptions').classList.remove('open');
 }
 
+const DEPOSIT_COPY_LABELS = {
+    en: { copy: "Copy", copied: "Copied" },
+    fa: { copy: "کپی آدرس", copied: "آدرس کپی شد" },
+    az: { copy: "Kopyala", copied: "Kopyalandı" },
+    tr: { copy: "Kopyala", copied: "Kopyalandı" },
+    ru: { copy: "Копировать", copied: "Скопировано" },
+    ar: { copy: "نسخ العنوان", copied: "تم النسخ" },
+    zh: { copy: "复制地址", copied: "已复制" },
+    es: { copy: "Copiar", copied: "Copiado" },
+    fr: { copy: "Copier", copied: "Copié" },
+    de: { copy: "Kopieren", copied: "Kopiert" }
+};
+
+function depositCopyLabels() {
+    const language = localStorage.getItem("bi_lang") || document.documentElement.lang || "en";
+    return DEPOSIT_COPY_LABELS[language] || DEPOSIT_COPY_LABELS.en;
+}
+
+async function copyDepositWalletAddress(button) {
+    const addressNode = document.getElementById("depositWalletAddress");
+    const address = addressNode?.textContent?.trim() || "";
+    if (!address) return;
+
+    try {
+        if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(address);
+        } else {
+            const helper = document.createElement("textarea");
+            helper.value = address;
+            helper.setAttribute("readonly", "");
+            helper.style.position = "fixed";
+            helper.style.opacity = "0";
+            document.body.appendChild(helper);
+            helper.select();
+            document.execCommand("copy");
+            helper.remove();
+        }
+
+        const labels = depositCopyLabels();
+        button.classList.add("copied");
+        button.querySelector("span").textContent = labels.copied;
+        if (typeof toast === "function") toast(labels.copied, "success");
+        window.setTimeout(() => {
+            button.classList.remove("copied");
+            const label = button.querySelector("span");
+            if (label) label.textContent = depositCopyLabels().copy;
+        }, 1800);
+    } catch (error) {
+        console.warn("Wallet address copy failed:", error);
+        addressNode.focus?.();
+    }
+}
+
+function renderDepositWalletInfo(infoBox, template, address) {
+    infoBox.innerHTML = template.replace("{ADDR}", address);
+    const addressNode = infoBox.querySelector("span");
+    if (!addressNode) return;
+
+    addressNode.id = "depositWalletAddress";
+    addressNode.className = "deposit-wallet-address";
+    addressNode.setAttribute("tabindex", "0");
+
+    const row = document.createElement("div");
+    row.className = "deposit-wallet-address-row";
+    addressNode.before(row);
+    row.appendChild(addressNode);
+
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.className = "deposit-wallet-copy-button";
+    copyButton.setAttribute("aria-label", depositCopyLabels().copy);
+    copyButton.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg><span>${depositCopyLabels().copy}</span>`;
+    copyButton.addEventListener("click", () => copyDepositWalletAddress(copyButton));
+    row.appendChild(copyButton);
+}
+
 // بستن منوهای کشویی با کلیک خارج از آن‌ها
 window.addEventListener('click', function(e) {
     if (!e.target.closest('#depositCryptoCustomSelect')) {
@@ -18157,13 +18233,14 @@ function togglePaymentDetails() {
     const txContainer = document.getElementById('tx-container');
     let lang = localStorage.getItem("bi_lang") || "en";
     let dict = T[lang] || T.en;
+    infoBox.classList.toggle("deposit-wallet-info", method === "wallet");
 
     if (method === 'wallet') {
         cryptoContainer.style.display = 'block';
         if (txContainer) txContainer.style.display = 'block';
         const selectedCrypto = document.getElementById('crypto-currency').value;
         const address = WALLETS[selectedCrypto] || WALLETS["trx_usdt_trc20"];
-        infoBox.innerHTML = (dict.walletMsg || T.en.walletMsg).replace("{ADDR}", address);
+        renderDepositWalletInfo(infoBox, dict.walletMsg || T.en.walletMsg, address);
     } else if (method === 'paymentio') {
         cryptoContainer.style.display = 'none';
         if (txContainer) txContainer.style.display = 'none';
@@ -29851,6 +29928,119 @@ html.web-android [onclick] {
   new MutationObserver(applyCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});window.addEventListener("DOMContentLoaded",()=>{setupPhoneCountryPicker();applyCopy();setTimeout(()=>window.refreshProfileVerificationCards(true),700)});
 })();
 </script>
+
+<style id="deposit-wallet-readability-v1">
+/* Deposit-only visual refinement. Withdrawal controls and financial logic remain unchanged. */
+#portfolio #depositCryptoCustomSelect .custom-select-trigger{
+  min-height:56px;
+  padding:13px 15px!important;
+  background:rgba(5,9,14,.58)!important;
+  border-color:rgba(255,225,117,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px rgba(0,0,0,.18)!important;
+  backdrop-filter:blur(10px) saturate(118%)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(118%)!important;
+}
+#portfolio #depositCustomOptions{
+  top:calc(100% + 6px);
+  padding:7px;
+  overflow:hidden auto;
+  background:rgba(5,9,14,.88)!important;
+  border:1px solid rgba(255,225,117,.42)!important;
+  border-radius:14px!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(22px) saturate(130%)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(130%)!important;
+  isolation:isolate;
+}
+#portfolio #depositCustomOptions .custom-option{
+  min-height:48px;
+  margin:2px 0;
+  padding:11px 12px;
+  border:1px solid transparent;
+  border-radius:10px;
+  color:#fff!important;
+  background:rgba(255,255,255,.035)!important;
+  text-shadow:0 2px 7px rgba(0,0,0,.95)!important;
+}
+#portfolio #depositCustomOptions .custom-option:hover,
+#portfolio #depositCustomOptions .custom-option:active{
+  background:rgba(240,185,11,.14)!important;
+  border-color:rgba(255,225,117,.22)!important;
+}
+#portfolio #payment-info-box.deposit-wallet-info{
+  min-height:178px;
+  padding:23px!important;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+  font-size:14px!important;
+  line-height:1.75;
+  word-break:normal!important;
+  background:linear-gradient(145deg,rgba(8,12,17,.68),rgba(18,13,5,.46))!important;
+  border:1px dashed rgba(240,185,11,.62)!important;
+  border-radius:17px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(0,0,0,.24)!important;
+  backdrop-filter:blur(12px) saturate(116%)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(116%)!important;
+}
+#portfolio #payment-info-box.deposit-wallet-info>br{display:none}
+#portfolio #payment-info-box.deposit-wallet-info>b{font-size:15px;line-height:1.55}
+#portfolio #payment-info-box.deposit-wallet-info>small{display:block;color:#b6bdc8!important;font-size:12px;line-height:1.8}
+.deposit-wallet-address-row{
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  margin:2px 0;
+}
+.deposit-wallet-address{
+  min-width:0;
+  padding:12px 13px;
+  overflow-wrap:anywhere;
+  word-break:break-all;
+  color:#21dfa0!important;
+  background:rgba(2,20,15,.42);
+  border:1px solid rgba(33,223,160,.22);
+  border-radius:11px;
+  font-size:clamp(12px,2.7vw,15px)!important;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  line-height:1.55;
+  direction:ltr;
+  text-align:left;
+  user-select:all;
+  -webkit-user-select:all;
+  text-shadow:0 0 10px rgba(33,223,160,.18)!important;
+}
+.deposit-wallet-copy-button{
+  min-width:104px;
+  min-height:48px;
+  padding:10px 13px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:1px solid rgba(255,225,117,.45);
+  border-radius:11px;
+  color:#ffe47d;
+  background:linear-gradient(145deg,rgba(240,185,11,.16),rgba(43,32,5,.5));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.deposit-wallet-copy-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.deposit-wallet-copy-button:active{transform:scale(.98)}
+.deposit-wallet-copy-button.copied{color:#68efb6;border-color:rgba(42,211,146,.45);background:rgba(8,75,53,.42)}
+@media(max-width:600px){
+  #portfolio #payment-info-box.deposit-wallet-info{min-height:205px;padding:18px!important}
+  .deposit-wallet-address-row{grid-template-columns:1fr}
+  .deposit-wallet-copy-button{width:100%;min-height:45px}
+}
+</style>
 
 </body>
 </html>
