@@ -2476,6 +2476,26 @@ html[dir="rtl"] .plan-selection-label {
   line-height: 1.6;
 }
 
+.withdrawal-kyc-gate{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  margin:0 0 18px;
+  padding:14px;
+  border:1px solid rgba(255,101,113,.48);
+  border-radius:15px;
+  color:#ffe1e4;
+  background:linear-gradient(135deg,rgba(82,17,29,.72),rgba(31,10,17,.62));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 10px 28px rgba(0,0,0,.2);
+}
+.withdrawal-kyc-gate[hidden]{display:none!important}
+.withdrawal-kyc-gate-icon{width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(255,143,153,.42);border-radius:13px;color:#ff9ba5;background:rgba(255,101,113,.1)}
+.withdrawal-kyc-gate-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.withdrawal-kyc-gate-copy{min-width:0}.withdrawal-kyc-gate-copy strong{display:block;margin-bottom:4px;font-size:13px}.withdrawal-kyc-gate-copy p{margin:0;color:#efb9bf;font-size:11px;line-height:1.65}
+.withdrawal-kyc-gate .btn{min-height:39px;padding:8px 12px;white-space:nowrap}
+@media(max-width:600px){.withdrawal-kyc-gate{grid-template-columns:42px minmax(0,1fr)}.withdrawal-kyc-gate .btn{grid-column:1/-1;width:100%}}
+
 #withdrawAmount.withdrawal-input-error {
   border-color: var(--red) !important;
   background: rgba(234,57,67,.075) !important;
@@ -15148,6 +15168,17 @@ html.native-app #rewards{
         </div>
       </div>
 
+      <div id="withdrawalKycGate" class="withdrawal-kyc-gate" hidden role="alert" aria-live="assertive">
+        <div class="withdrawal-kyc-gate-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M16 3.5 26 7v7.1c0 6.3-3.7 11.3-10 14.4-6.3-3.1-10-8.1-10-14.4V7l10-3.5Z"/><path d="m11.5 16 3 3 6-7"/></svg>
+        </div>
+        <div class="withdrawal-kyc-gate-copy">
+          <strong id="withdrawalKycGateTitle">Identity verification required</strong>
+          <p id="withdrawalKycGateMessage">Your identity must be approved before you can submit a withdrawal request.</p>
+        </div>
+        <button id="withdrawalKycGateButton" class="btn gold" type="button" onclick="openWithdrawalKyc()">Start verification</button>
+      </div>
+
       
       <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="withdrawCryptoLabel">Select Currency & Network:</label>
       <div class="custom-select-wrapper" id="withdrawCryptoCustomSelect" style="margin-bottom:15px;">
@@ -23736,12 +23767,69 @@ function clearWithdrawalError() {
   clearFieldError("withdrawAmount");
 }
 
+const WITHDRAWAL_KYC_COPY = {
+  en:{title:"Identity verification required",message:"Your identity must be approved before you can submit a withdrawal request.",button:"Start verification",checkError:"Your verification status could not be checked. Please try again."},
+  fa:{title:"احراز هویت الزامی است",message:"برای ثبت درخواست برداشت، احراز هویت شما باید توسط مدیر تأیید شده باشد.",button:"رفتن به احراز هویت",checkError:"وضعیت احراز هویت بررسی نشد. دوباره تلاش کنید."},
+  az:{title:"Kimlik təsdiqi tələb olunur",message:"Çıxarış sorğusu göndərmək üçün kimliyiniz təsdiqlənməlidir.",button:"Təsdiqə keç",checkError:"Təsdiq statusu yoxlanılmadı. Yenidən cəhd edin."},
+  tr:{title:"Kimlik doğrulaması gerekli",message:"Para çekme talebi göndermeden önce kimliğiniz onaylanmalıdır.",button:"Doğrulamaya git",checkError:"Doğrulama durumu kontrol edilemedi. Tekrar deneyin."},
+  ru:{title:"Требуется подтверждение личности",message:"Для вывода средств ваша личность должна быть подтверждена.",button:"Пройти проверку",checkError:"Не удалось проверить статус. Повторите попытку."},
+  ar:{title:"التحقق من الهوية مطلوب",message:"يجب اعتماد التحقق من هويتك قبل إرسال طلب السحب.",button:"بدء التحقق",checkError:"تعذر التحقق من الحالة. حاول مرة أخرى."},
+  zh:{title:"需要身份验证",message:"提交提现申请前，您的身份验证必须已获批准。",button:"开始验证",checkError:"无法检查验证状态，请重试。"},
+  es:{title:"Se requiere verificación de identidad",message:"Tu identidad debe estar aprobada antes de solicitar un retiro.",button:"Iniciar verificación",checkError:"No se pudo comprobar el estado. Inténtalo de nuevo."},
+  fr:{title:"Vérification d’identité requise",message:"Votre identité doit être approuvée avant toute demande de retrait.",button:"Commencer",checkError:"Impossible de vérifier le statut. Réessayez."},
+  de:{title:"Identitätsprüfung erforderlich",message:"Ihre Identität muss vor einer Auszahlung bestätigt sein.",button:"Verifizierung starten",checkError:"Der Status konnte nicht geprüft werden. Bitte erneut versuchen."}
+};
+let withdrawalKycStatus = "unknown";
+let withdrawalKycUserId = null;
+function withdrawalKycCopy(){
+  const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
+  return WITHDRAWAL_KYC_COPY[language]||WITHDRAWAL_KYC_COPY.en;
+}
+function paintWithdrawalKycGate(show=true){
+  const gate=document.getElementById("withdrawalKycGate");
+  if(!gate)return;
+  const copy=withdrawalKycCopy();
+  document.getElementById("withdrawalKycGateTitle").textContent=copy.title;
+  document.getElementById("withdrawalKycGateMessage").textContent=copy.message;
+  document.getElementById("withdrawalKycGateButton").textContent=copy.button;
+  gate.hidden=!show;
+  if(show)gate.scrollIntoView({behavior:"smooth",block:"center"});
+}
+window.openWithdrawalKyc=function(){
+  const button=document.querySelector('.nav button[data-page="identity"],button[data-page="identity"]');
+  if(typeof page==="function")page("identity",button||null);
+  if(typeof window.loadKycStatus==="function")setTimeout(()=>window.loadKycStatus(),0);
+};
+async function ensureWithdrawalKycApproved(){
+  if(withdrawalKycStatus==="approved"&&withdrawalKycUserId===currentUser.id)return true;
+  try{
+    const {data,error}=await supabaseClient.from("kyc_requests").select("id,status").eq("user_id",currentUser.id).eq("status","approved").order("created_at",{ascending:false}).limit(1).maybeSingle();
+    if(error)throw error;
+    withdrawalKycStatus=data?.status==="approved"?"approved":"required";
+    withdrawalKycUserId=currentUser.id;
+    paintWithdrawalKycGate(withdrawalKycStatus!=="approved");
+    return withdrawalKycStatus==="approved";
+  }catch(error){
+    console.error("Withdrawal KYC check failed:",error);
+    showWithdrawalError(withdrawalKycCopy().checkError,"withdrawalLevel");
+    return false;
+  }
+}
+window.addEventListener("bi:kyc-status",event=>{
+  const request=event.detail?.request;
+  withdrawalKycUserId=event.detail?.signedIn&&currentUser?.id?currentUser.id:null;
+  withdrawalKycStatus=request?.status==="approved"?"approved":request?.status||"required";
+  if(withdrawalKycStatus==="approved")paintWithdrawalKycGate(false);
+});
+
 /* Secure withdrawal request */
 window.withdraw = async function () {
   if (!currentUser?.id) {
     openAuth("login");
     return;
   }
+
+  if(!(await ensureWithdrawalKycApproved()))return;
 
   const amount = Number(
     document.getElementById("withdrawAmount").value
@@ -23824,7 +23912,10 @@ if (amount > availableBalance) {
   const errorMessage =
     String(error.message || "");
 
-  if (
+  if (errorMessage.includes("KYC_APPROVAL_REQUIRED")) {
+    withdrawalKycStatus="required";
+    paintWithdrawalKycGate(true);
+  } else if (
     errorMessage.toLowerCase().includes(
       "daily withdrawal limit exceeded"
     )
