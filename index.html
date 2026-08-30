@@ -15542,6 +15542,27 @@ html.native-app #rewards{
   <div class="two">
     <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
     <div class="card profile-security-card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+      <div class="profile-verification-grid">
+        <article class="profile-verification-card" id="profilePhoneVerificationCard">
+          <div class="profile-verification-head">
+            <span class="profile-verification-icon" aria-hidden="true">☎</span>
+            <span id="profilePhoneVerificationStatus" class="profile-verification-status unverified">تأیید نشده</span>
+          </div>
+          <h3 id="profilePhoneVerificationTitle">تأیید شماره تلفن</h3>
+          <p id="profilePhoneVerificationDescription">شماره تلفن خود را با کد پیامکی تأیید کنید.</p>
+          <small id="profilePhoneVerificationValue"></small>
+          <button id="profilePhoneVerificationButton" type="button" class="btn profile-verification-button" onclick="openPhoneVerificationModal()">تأیید شماره تلفن</button>
+        </article>
+        <article class="profile-verification-card" id="profileIdentityVerificationCard">
+          <div class="profile-verification-head">
+            <span class="profile-verification-icon" aria-hidden="true">✓</span>
+            <span id="profileIdentityVerificationStatus" class="profile-verification-status unverified">تأیید نشده</span>
+          </div>
+          <h3 id="profileIdentityVerificationTitle">احراز هویت</h3>
+          <p id="profileIdentityVerificationDescription">مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.</p>
+          <button id="profileIdentityVerificationButton" type="button" class="btn profile-verification-button" onclick="openIdentityVerificationFromProfile()">شروع احراز هویت</button>
+        </article>
+      </div>
       <div class="twofa-security-card">
         <div class="twofa-security-head">
           <div class="twofa-security-title">
@@ -15570,6 +15591,29 @@ html.native-app #rewards{
   </div>
   </div>
 </section>
+</div>
+
+<div id="phoneVerificationModal" class="profile-verification-modal" role="dialog" aria-modal="true" aria-labelledby="phoneVerificationModalTitle">
+  <div class="profile-verification-modal-box">
+    <button type="button" class="profile-verification-modal-close" onclick="closePhoneVerificationModal()" aria-label="Close">×</button>
+    <div class="profile-verification-modal-icon" aria-hidden="true">☎</div>
+    <h2 id="phoneVerificationModalTitle">تأیید شماره تلفن</h2>
+    <p id="phoneVerificationModalDescription">شماره را همراه کد کشور وارد کنید؛ برای نمونه ‎+989121234567.</p>
+    <div id="phoneVerificationNumberStep">
+      <label id="phoneVerificationNumberLabel" for="phoneVerificationNumber">شماره تلفن</label>
+      <input id="phoneVerificationNumber" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="+989121234567" maxlength="18">
+      <button id="phoneVerificationSendButton" type="button" class="btn gold" onclick="sendPhoneVerificationCode()">ارسال کد</button>
+    </div>
+    <div id="phoneVerificationCodeStep" hidden>
+      <label id="phoneVerificationCodeLabel" for="phoneVerificationCode">کد ۶ رقمی</label>
+      <input id="phoneVerificationCode" type="text" inputmode="numeric" autocomplete="one-time-code" dir="ltr" maxlength="6" placeholder="000000" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)" onkeydown="if(event.key==='Enter')confirmPhoneVerificationCode()">
+      <div class="profile-verification-modal-actions">
+        <button id="phoneVerificationResendButton" type="button" class="btn" onclick="resendPhoneVerificationCode()">ارسال مجدد</button>
+        <button id="phoneVerificationConfirmButton" type="button" class="btn gold" onclick="confirmPhoneVerificationCode()">تأیید کد</button>
+      </div>
+    </div>
+    <div id="phoneVerificationError" class="profile-verification-error" role="alert" hidden></div>
+  </div>
 </div>
 
 <div id="twofaSetupModal" class="twofa-modal" role="dialog" aria-modal="true" aria-labelledby="twofaSetupTitle">
@@ -29494,6 +29538,16 @@ html.web-android [onclick] {
 @media(max-width:540px){#identity{padding-inline:8px}.kyc-fields,.kyc-upload-grid{grid-template-columns:1fr}.kyc-upload{min-height:145px}.kyc-page-title h2{font-size:27px}}
 </style>
 
+<style id="profile-verification-styles">
+.profile-verification-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}
+.profile-verification-card{min-width:0;padding:15px;border:1px solid rgba(255,229,138,.24);border-radius:15px;background:linear-gradient(145deg,rgba(6,12,18,.58),rgba(5,9,14,.34));box-shadow:inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.profile-verification-head{display:flex;align-items:center;justify-content:space-between;gap:9px}.profile-verification-icon{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border:1px solid rgba(255,225,117,.42);border-radius:11px;color:#ffe177;background:rgba(240,185,11,.09);font-size:18px;font-weight:900}
+.profile-verification-status{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid;border-radius:999px;font-size:9px;font-weight:900;white-space:nowrap}.profile-verification-status::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}.profile-verification-status.unverified{color:#ffd773;border-color:rgba(240,185,11,.28);background:rgba(240,185,11,.08)}.profile-verification-status.pending{color:#9fc3ff;border-color:rgba(111,153,255,.32);background:rgba(50,86,153,.14)}.profile-verification-status.verified{color:#60e9b3;border-color:rgba(22,199,132,.34);background:rgba(22,199,132,.11)}.profile-verification-status.rejected{color:#ff929d;border-color:rgba(255,101,113,.34);background:rgba(255,101,113,.1)}
+.profile-verification-card h3{margin:13px 0 5px;font-size:14px}.profile-verification-card p{min-height:38px;margin:0;color:#abb5c3;font-size:10px;line-height:1.75}.profile-verification-card small{display:block;min-height:16px;margin-top:5px;overflow:hidden;text-overflow:ellipsis;color:#d9c57e;font-size:9px;direction:ltr;text-align:start}.profile-verification-button{width:100%;min-height:39px;margin-top:12px;padding:8px 10px;color:#ffe28a;background:rgba(240,185,11,.08);border-color:rgba(240,185,11,.3);font-size:10px}.profile-verification-button:hover{background:rgba(240,185,11,.14)}.profile-verification-card.is-verified{border-color:rgba(43,212,146,.28)}.profile-verification-card.is-verified .profile-verification-icon{color:#73edbb;border-color:rgba(43,212,146,.35);background:rgba(43,212,146,.08)}
+.profile-verification-modal{position:fixed;inset:0;z-index:310;padding:16px;display:none;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.profile-verification-modal.open{display:grid}.profile-verification-modal-box{position:relative;width:min(470px,100%);padding:27px 23px 23px;border:1px solid rgba(255,225,117,.34);border-radius:21px;color:#fff;background:linear-gradient(145deg,rgba(17,24,34,.98),rgba(5,9,14,.98));box-shadow:0 28px 80px rgba(0,0,0,.58)}.profile-verification-modal-close{position:absolute;inset-inline-end:13px;top:13px;width:37px;height:37px;border:1px solid rgba(255,255,255,.15);border-radius:50%;color:#cbd3df;background:rgba(255,255,255,.045);font-size:23px;cursor:pointer}.profile-verification-modal-icon{width:52px;height:52px;margin-bottom:15px;display:grid;place-items:center;border:1px solid rgba(255,225,117,.45);border-radius:15px;color:#ffe27c;background:rgba(240,185,11,.09);font-size:22px}.profile-verification-modal-box h2{margin:0 0 7px}.profile-verification-modal-box>p{margin:0 0 17px;color:#aeb8c6;line-height:1.75}.profile-verification-modal-box label{display:block;margin:12px 0 7px;color:#d9dfe8;font-size:11px;font-weight:800}.profile-verification-modal-box input{width:100%;min-height:49px;padding:11px 13px;border:1px solid rgba(255,255,255,.17);border-radius:13px;outline:0;color:#fff;background:rgba(2,6,10,.62);font-size:16px}.profile-verification-modal-box input:focus{border-color:rgba(240,185,11,.7);box-shadow:0 0 0 3px rgba(240,185,11,.1)}.profile-verification-modal-box #phoneVerificationSendButton{width:100%;margin-top:12px}.profile-verification-modal-actions{display:grid;grid-template-columns:.8fr 1.2fr;gap:8px;margin-top:12px}.profile-verification-error{margin-top:13px;padding:11px 12px;border:1px solid rgba(255,101,113,.4);border-radius:11px;color:#ffabb3;background:rgba(75,14,24,.4);font-size:11px;line-height:1.65}
+@media(max-width:560px){.profile-verification-grid{grid-template-columns:1fr}.profile-verification-card p{min-height:0}.profile-verification-modal-box{padding:24px 17px 18px}.profile-verification-modal-actions{grid-template-columns:1fr}}
+</style>
+
 <script id="kyc-module-v1">
 (function(){
   "use strict";
@@ -29520,6 +29574,7 @@ html.web-android [onclick] {
   function isMissingKycTable(error){return ["42P01","PGRST205","PGRST204"].includes(error?.code)||/kyc_requests|submit_kyc_request/i.test(error?.message||"")}
   function renderKycState(request){
     const signedIn=Boolean(window.currentUser?.id||currentUser?.id);
+    window.dispatchEvent(new CustomEvent("bi:kyc-status",{detail:{request:request||null,signedIn}}));
     const guest=document.getElementById("kycGuestPanel"),content=document.getElementById("kycAuthenticatedContent"),form=document.getElementById("kycForm"),message=document.getElementById("kycStateMessage"),pill=document.getElementById("kycStatusPill"),badge=document.getElementById("kycNavBadge");
     if(!guest||!content)return;
     guest.hidden=signedIn;content.hidden=!signedIn;if(!signedIn)return;
@@ -29578,6 +29633,81 @@ html.web-android [onclick] {
   new MutationObserver(applyKycCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
   if(window.supabaseClient?.auth)window.supabaseClient.auth.onAuthStateChange(()=>setTimeout(()=>window.loadKycStatus(),250));
   window.addEventListener("DOMContentLoaded",()=>{applyKycCopy();setTimeout(()=>window.loadKycStatus(),500)});
+})();
+</script>
+
+<script id="profile-verification-module-v1">
+(function(){
+  "use strict";
+  const COPY={
+    en:{phoneTitle:"Phone verification",phoneDescription:"Verify your phone number with an SMS code.",phoneVerifiedDescription:"Your phone number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify phone",changePhone:"Change phone",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"Phone verification",modalDescription:"Enter your number with the country code, for example +989121234567.",phoneLabel:"Phone number",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent.",success:"Your phone number was verified successfully.",invalidPhone:"Enter a valid international phone number beginning with + and the country code.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"SMS verification is not available yet. Enable Phone Auth and configure an SMS provider in Supabase.",genericError:"Phone verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
+    fa:{phoneTitle:"تأیید شماره تلفن",phoneDescription:"شماره تلفن خود را با کد پیامکی تأیید کنید.",phoneVerifiedDescription:"شماره تلفن شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره تلفن",changePhone:"تغییر شماره",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره تلفن",modalDescription:"شماره را همراه کد کشور وارد کنید؛ برای نمونه ‎+989121234567.",phoneLabel:"شماره تلفن",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید ارسال شد.",success:"شماره تلفن شما با موفقیت تأیید شد.",invalidPhone:"شماره بین‌المللی معتبر را با علامت + و کد کشور وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید پیامکی هنوز فعال نیست. Phone Auth و ارائه‌دهنده SMS را در Supabase فعال کنید.",genericError:"تأیید شماره تلفن انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
+  };
+  let authPhoneUser=null,pendingPhone="",phoneBusy=false,resendTimer=null,resendSeconds=0,lastRefreshAt=0,latestKycRequest=null;
+  function lang(){return localStorage.getItem("bi_lang")||document.documentElement.lang||"en"}
+  function c(key){const selected=COPY[lang()]||COPY.en;return selected[key]||COPY.en[key]||key}
+  function byId(id){return document.getElementById(id)}
+  function normalizePhone(value){let phone=String(value||"").trim().replace(/[\s().-]/g,"");if(phone.startsWith("00"))phone="+"+phone.slice(2);return phone}
+  function maskPhone(value){const phone=String(value||"");if(phone.length<7)return phone;return phone.slice(0,4)+"••••"+phone.slice(-3)}
+  function setStatus(element,status,text){if(!element)return;element.className="profile-verification-status "+status;element.textContent=text}
+  function friendlyPhoneError(error){const raw=String(error?.message||"");if(/provider|sms.*disabled|phone.*disabled|unsupported.*phone|signups.*disabled/i.test(raw))return c("smsUnavailable");return raw||c("genericError")}
+  function setPhoneError(message){const box=byId("phoneVerificationError");if(!box)return;box.textContent=message||"";box.hidden=!message}
+  function renderPhoneCard(){
+    const card=byId("profilePhoneVerificationCard"),status=byId("profilePhoneVerificationStatus"),description=byId("profilePhoneVerificationDescription"),value=byId("profilePhoneVerificationValue"),button=byId("profilePhoneVerificationButton"),verified=Boolean(authPhoneUser?.phone&&authPhoneUser?.phone_confirmed_at);
+    if(!card||!status)return;
+    byId("profilePhoneVerificationTitle").textContent=c("phoneTitle");
+    setStatus(status,verified?"verified":"unverified",c(verified?"verified":"unverified"));
+    card.classList.toggle("is-verified",verified);description.textContent=c(verified?"phoneVerifiedDescription":"phoneDescription");value.textContent=maskPhone(authPhoneUser?.phone||currentUser?.phone||"");button.textContent=c(verified?"changePhone":"verifyPhone");
+  }
+  function renderIdentityCard(request=latestKycRequest){
+    latestKycRequest=request||null;const card=byId("profileIdentityVerificationCard"),status=byId("profileIdentityVerificationStatus"),description=byId("profileIdentityVerificationDescription"),button=byId("profileIdentityVerificationButton");if(!card||!status)return;
+    const state=request?.status||"not-submitted",verified=state==="approved";
+    byId("profileIdentityVerificationTitle").textContent=c("identityTitle");
+    setStatus(status,verified?"verified":state==="pending"?"pending":state==="rejected"?"rejected":"unverified",c(verified?"verified":state==="pending"?"pending":state==="rejected"?"rejected":"unverified"));
+    card.classList.toggle("is-verified",verified);description.textContent=c(verified?"identityVerifiedDescription":"identityDescription");button.textContent=c(verified?"viewIdentity":state==="rejected"?"continueIdentity":"startIdentity");
+  }
+  function applyCopy(){
+    renderPhoneCard();renderIdentityCard();
+    byId("phoneVerificationModalTitle").textContent=c("modalTitle");byId("phoneVerificationModalDescription").textContent=c("modalDescription");byId("phoneVerificationNumberLabel").textContent=c("phoneLabel");byId("phoneVerificationCodeLabel").textContent=c("codeLabel");byId("phoneVerificationSendButton").textContent=c("sendCode");byId("phoneVerificationConfirmButton").textContent=c("confirm");if(!resendSeconds)byId("phoneVerificationResendButton").textContent=c("resend");
+  }
+  window.refreshProfileVerificationCards=async function(force=false){
+    if(!currentUser?.id){authPhoneUser=null;renderPhoneCard();renderIdentityCard(null);return}
+    if(!force&&Date.now()-lastRefreshAt<12000){renderPhoneCard();return}
+    lastRefreshAt=Date.now();
+    try{const{data,error}=await supabaseClient.auth.getUser();if(error)throw error;authPhoneUser=data?.user||null;renderPhoneCard()}catch(error){console.warn("Phone verification status unavailable",error)}
+    if(typeof window.loadKycStatus==="function")void window.loadKycStatus();
+  };
+  window.openIdentityVerificationFromProfile=function(){const nav=document.querySelector('.nav button[data-page="identity"]');page("identity",nav)};
+  window.openPhoneVerificationModal=async function(){
+    if(!currentUser?.id)return openAuth("login");await window.refreshProfileVerificationCards(true);setPhoneError("");const input=byId("phoneVerificationNumber");input.value=authPhoneUser?.phone||currentUser?.phone||"";byId("phoneVerificationNumberStep").hidden=false;byId("phoneVerificationCodeStep").hidden=true;byId("phoneVerificationCode").value="";byId("phoneVerificationModal").classList.add("open");setTimeout(()=>input.focus(),80);
+  };
+  window.closePhoneVerificationModal=function(){byId("phoneVerificationModal").classList.remove("open");setPhoneError("")};
+  function setButtonBusy(button,busy,label){if(!button)return;button.disabled=busy;if(busy){button.dataset.oldText=button.textContent;button.textContent=label}else if(button.dataset.oldText){button.textContent=button.dataset.oldText;delete button.dataset.oldText}}
+  function startResendCooldown(seconds=60){
+    clearInterval(resendTimer);resendSeconds=seconds;const button=byId("phoneVerificationResendButton");
+    const paint=()=>{button.disabled=resendSeconds>0;button.textContent=resendSeconds>0?c("wait").replace("{seconds}",resendSeconds):c("resend")};paint();
+    resendTimer=setInterval(()=>{resendSeconds-=1;paint();if(resendSeconds<=0){clearInterval(resendTimer);resendTimer=null}},1000);
+  }
+  window.sendPhoneVerificationCode=async function(){
+    if(phoneBusy)return;setPhoneError("");const phone=normalizePhone(byId("phoneVerificationNumber").value);if(!/^\+[1-9]\d{7,14}$/.test(phone))return setPhoneError(c("invalidPhone"));phoneBusy=true;const button=byId("phoneVerificationSendButton");setButtonBusy(button,true,c("sending"));
+    try{const{error}=await supabaseClient.auth.updateUser({phone});if(error)throw error;pendingPhone=phone;byId("phoneVerificationNumber").value=phone;byId("phoneVerificationNumberStep").hidden=true;byId("phoneVerificationCodeStep").hidden=false;startResendCooldown();setTimeout(()=>byId("phoneVerificationCode").focus(),80)}catch(error){console.error("Phone verification send",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("sendCode"))}
+  };
+  window.resendPhoneVerificationCode=async function(){
+    if(phoneBusy||resendSeconds>0||!pendingPhone)return;phoneBusy=true;setPhoneError("");const button=byId("phoneVerificationResendButton");setButtonBusy(button,true,c("sending"));
+    try{const{error}=await supabaseClient.auth.resend({type:"phone_change",phone:pendingPhone});if(error)throw error;startResendCooldown();if(typeof toast==="function")toast(c("resent"),"success")}catch(error){console.error("Phone verification resend",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;if(!resendSeconds)setButtonBusy(button,false,c("resend"))}
+  };
+  window.confirmPhoneVerificationCode=async function(){
+    if(phoneBusy)return;const token=byId("phoneVerificationCode").value.trim();if(!/^\d{6}$/.test(token))return setPhoneError(c("invalidCode"));if(!pendingPhone)return setPhoneError(c("genericError"));phoneBusy=true;setPhoneError("");const button=byId("phoneVerificationConfirmButton");setButtonBusy(button,true,c("verifying"));
+    try{
+      const{data,error}=await supabaseClient.auth.verifyOtp({phone:pendingPhone,token,type:"phone_change"});if(error)throw error;authPhoneUser=data?.user||authPhoneUser;
+      const{error:profileError}=await supabaseClient.from("profiles").update({phone:pendingPhone}).eq("id",currentUser.id);if(profileError)console.warn("Verified phone profile sync skipped",profileError);currentUser.phone=pendingPhone;byId("phone").value=pendingPhone;pendingPhone="";window.closePhoneVerificationModal();await window.refreshProfileVerificationCards(true);if(typeof toast==="function")toast(c("success"),"success");
+    }catch(error){console.error("Phone verification confirm",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("confirm"))}
+  };
+  window.addEventListener("bi:kyc-status",event=>renderIdentityCard(event.detail?.request||null));
+  const previousPage=window.page;if(typeof previousPage==="function")window.page=function(id,button){const result=previousPage.apply(this,arguments);if(id==="profile")setTimeout(()=>window.refreshProfileVerificationCards(),0);return result};
+  const previousHeader=window.updateHeaderAuthUI;if(typeof previousHeader==="function")window.updateHeaderAuthUI=function(){const result=previousHeader.apply(this,arguments);setTimeout(()=>window.refreshProfileVerificationCards(),0);return result};
+  byId("phoneVerificationModal")?.addEventListener("click",event=>{if(event.target===event.currentTarget)window.closePhoneVerificationModal()});document.addEventListener("keydown",event=>{if(event.key==="Escape")window.closePhoneVerificationModal()});
+  new MutationObserver(applyCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});window.addEventListener("DOMContentLoaded",()=>{applyCopy();setTimeout(()=>window.refreshProfileVerificationCards(true),700)});
 })();
 </script>
 
