@@ -15632,7 +15632,16 @@ html.native-app #rewards{
       <div class="profile-contact-glass" style="margin-top: 30px; text-align: center; border-top: 1px solid #ffffff10; padding-top: 25px;">
         <h3 data-t="contactUs" style="margin:0 0 5px 0;">Contact Us</h3>
         <p class="muted" data-t="supportEmail" style="margin:0 0 10px 0; font-size:12px;">Support Email</p>
-        <a href="mailto:support@binancinvest.com" style="display:inline-block; padding:8px 16px; background:rgba(240,185,11,0.1); border:1px solid var(--gold); border-radius:8px; color:var(--gold); text-decoration:none; font-weight:bold; font-size:14px;">support@binancinvest.com</a>
+        <div class="profile-contact-actions">
+          <a class="profile-contact-email" href="mailto:support@binancinvest.com">support@binancinvest.com</a>
+          <button class="profile-contact-chat" type="button" onclick="openOnlineSupport()">
+            <span class="profile-contact-chat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M20 11.2a7.7 7.7 0 0 1-8 7.4 9.2 9.2 0 0 1-3.2-.6L4 20l1.5-4A7 7 0 0 1 4 11.2a7.7 7.7 0 0 1 8-7.4 7.7 7.7 0 0 1 8 7.4Z"/><path d="M8.5 11.3h.01M12 11.3h.01M15.5 11.3h.01"/></svg>
+            </span>
+            <span data-t="onlineChat">Online Chat</span>
+            <span class="profile-contact-chat-live" aria-hidden="true"></span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -18109,9 +18118,32 @@ function toggleCustomSelect(type) {
         depositOptions.classList.toggle('open');
         withdrawOptions.classList.remove('open');
     } else {
-        withdrawOptions.classList.toggle('open');
+        const willOpen = !withdrawOptions.classList.contains('open');
+        if (willOpen) prepareWithdrawOptionsScroll(withdrawOptions);
+        withdrawOptions.classList.toggle('open', willOpen);
         depositOptions.classList.remove('open');
+        if (willOpen) requestAnimationFrame(() => { withdrawOptions.scrollTop = 0; });
     }
+}
+
+function prepareWithdrawOptionsScroll(options) {
+    if (!options) return;
+    const wrapper = document.getElementById('withdrawCryptoCustomSelect');
+    if (wrapper) {
+        const rect = wrapper.getBoundingClientRect();
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const spaceBelow = Math.max(0, viewportHeight - rect.bottom - 14);
+        const spaceAbove = Math.max(0, rect.top - 14);
+        const openUp = spaceBelow < 285 && spaceAbove > spaceBelow;
+        const availableSpace = Math.max(190, Math.min(380, (openUp ? spaceAbove : spaceBelow) - 8));
+        options.classList.toggle('open-up', openUp);
+        options.style.setProperty('--withdraw-menu-available', `${Math.floor(availableSpace)}px`);
+    }
+    if (options.dataset.scrollGuardReady === 'true') return;
+    options.dataset.scrollGuardReady = 'true';
+    options.addEventListener('touchstart', event => event.stopPropagation(), {passive:true});
+    options.addEventListener('touchmove', event => event.stopPropagation(), {passive:true});
+    options.addEventListener('wheel', event => event.stopPropagation(), {passive:true});
 }
 
 function paymentMethodDictionary() {
@@ -30066,10 +30098,16 @@ html.web-android [onclick] {
 }
 #portfolio #withdrawCustomOptions{
   top:calc(100% + 7px);
-  max-height:min(360px,52vh);
-  padding:7px;
-  overflow-y:auto;
+  bottom:auto;
+  height:min(360px,var(--withdraw-menu-available,52dvh));
+  max-height:none;
+  padding:7px 7px 18px;
+  overflow-x:hidden;
+  overflow-y:scroll;
   overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  scrollbar-gutter:stable;
   background:rgba(4,8,13,.91)!important;
   border:1px solid rgba(255,225,117,.46)!important;
   border-radius:15px!important;
@@ -30078,6 +30116,17 @@ html.web-android [onclick] {
   -webkit-backdrop-filter:blur(26px) saturate(138%)!important;
   isolation:isolate;
   z-index:190;
+}
+#portfolio #withdrawCustomOptions.open-up{
+  top:auto!important;
+  bottom:calc(100% + 7px)!important;
+}
+#portfolio #withdrawCustomOptions::after{
+  content:"";
+  display:block;
+  width:100%;
+  height:8px;
+  pointer-events:none;
 }
 #portfolio #withdrawCustomOptions .custom-option{
   min-height:52px;
@@ -30105,8 +30154,8 @@ html.web-android [onclick] {
 }
 @media(max-width:600px){
   #portfolio #withdrawCustomOptions{
-    max-height:46vh;
-    padding:6px;
+    height:min(370px,var(--withdraw-menu-available,48dvh));
+    padding:6px 6px calc(18px + env(safe-area-inset-bottom,0px));
   }
   #portfolio #withdrawCustomOptions .custom-option{
     min-height:50px;
@@ -30282,6 +30331,55 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 .profile-withdrawal-security-status.active{color:#48e7a7;border-color:rgba(42,211,146,.4);background:rgba(7,72,50,.3)}
 .profile-withdrawal-security-row.is-active .profile-withdrawal-security-copy>small{color:#79dcb4}
 @media(max-width:460px){.profile-withdrawal-security-status{padding:5px 8px;font-size:10px}.profile-withdrawal-security-copy>small{font-size:9px}}
+
+#profile .profile-contact-actions{
+  width:min(470px,100%);
+  margin:0 auto;
+  display:grid;
+  gap:10px;
+}
+#profile .profile-contact-email,
+#profile .profile-contact-chat{
+  width:100%;
+  min-height:48px;
+  padding:10px 15px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  font-weight:900;
+  line-height:1.45;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+#profile .profile-contact-email{
+  color:#ffe06a;
+  border:1px solid rgba(240,185,11,.72);
+  background:linear-gradient(145deg,rgba(240,185,11,.12),rgba(52,38,5,.26));
+  font-size:clamp(12px,3vw,15px);
+  overflow-wrap:anywhere;
+}
+#profile .profile-contact-chat{
+  position:relative;
+  gap:10px;
+  color:#bfffe5;
+  border:1px solid rgba(43,212,146,.45);
+  background:linear-gradient(145deg,rgba(8,76,54,.42),rgba(3,20,16,.58));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.2);
+  backdrop-filter:blur(11px) saturate(120%);
+  -webkit-backdrop-filter:blur(11px) saturate(120%);
+  font-size:13px;
+}
+#profile .profile-contact-chat:hover{transform:translateY(-1px);border-color:rgba(80,240,180,.68);background:linear-gradient(145deg,rgba(9,98,68,.5),rgba(3,27,20,.66))}
+#profile .profile-contact-chat:active{transform:scale(.985)}
+#profile .profile-contact-chat-icon{width:25px;height:25px;display:grid;place-items:center;color:#63eeb7}
+#profile .profile-contact-chat-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#profile .profile-contact-chat-live{width:8px;height:8px;margin-inline-start:2px;border-radius:50%;background:#4cf0b3;box-shadow:0 0 10px #4cf0b3}
+@media(max-width:460px){
+  #profile .profile-contact-email,#profile .profile-contact-chat{min-height:46px;padding:9px 11px}
+  #profile .profile-contact-chat{font-size:12px}
+}
 </style>
 
 </body>
