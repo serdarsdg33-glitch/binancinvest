@@ -30050,6 +30050,70 @@ html.web-android [onclick] {
   background:rgba(240,185,11,.14)!important;
   border-color:rgba(255,225,117,.22)!important;
 }
+#portfolio #withdrawCryptoCustomSelect{
+  z-index:170;
+}
+#portfolio #withdrawCryptoCustomSelect .custom-select-trigger{
+  min-height:58px;
+  padding:14px 15px!important;
+  color:#fff!important;
+  background:linear-gradient(145deg,rgba(4,8,13,.7),rgba(26,20,7,.52))!important;
+  border:1px solid rgba(255,225,117,.38)!important;
+  border-radius:13px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 9px 24px rgba(0,0,0,.24)!important;
+  backdrop-filter:blur(13px) saturate(122%)!important;
+  -webkit-backdrop-filter:blur(13px) saturate(122%)!important;
+}
+#portfolio #withdrawCustomOptions{
+  top:calc(100% + 7px);
+  max-height:min(360px,52vh);
+  padding:7px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  background:rgba(4,8,13,.91)!important;
+  border:1px solid rgba(255,225,117,.46)!important;
+  border-radius:15px!important;
+  box-shadow:0 22px 56px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(26px) saturate(138%)!important;
+  -webkit-backdrop-filter:blur(26px) saturate(138%)!important;
+  isolation:isolate;
+  z-index:190;
+}
+#portfolio #withdrawCustomOptions .custom-option{
+  min-height:52px;
+  margin:2px 0;
+  padding:12px 13px;
+  border:1px solid rgba(255,255,255,.035);
+  border-radius:11px;
+  color:#fff!important;
+  background:rgba(255,255,255,.045)!important;
+  font-weight:730;
+  line-height:1.45;
+  text-shadow:0 2px 8px rgba(0,0,0,.98)!important;
+}
+#portfolio #withdrawCustomOptions .custom-option:hover,
+#portfolio #withdrawCustomOptions .custom-option:active{
+  color:#fff4c7!important;
+  background:linear-gradient(135deg,rgba(240,185,11,.2),rgba(255,255,255,.06))!important;
+  border-color:rgba(255,225,117,.3)!important;
+}
+#portfolio #withdrawCustomOptions .custom-option img{
+  width:25px;
+  height:25px;
+  flex:0 0 25px;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.48));
+}
+@media(max-width:600px){
+  #portfolio #withdrawCustomOptions{
+    max-height:46vh;
+    padding:6px;
+  }
+  #portfolio #withdrawCustomOptions .custom-option{
+    min-height:50px;
+    padding:11px 10px;
+    font-size:13px;
+  }
+}
 .payment-method-native-proxy{
   position:absolute!important;
   width:1px!important;
