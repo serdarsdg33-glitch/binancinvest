@@ -15083,9 +15083,25 @@ html.native-app #rewards{
 
       <div style="margin-bottom: 15px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depMethodLabel">Select Payment Method:</label>
-          <select id="payment-method" onchange="togglePaymentDetails();clearFieldError('payment-method')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
-              <option value="wallet" id="opt-direct-payment">1. Direct Payment</option>
-              <option value="paymentio" id="opt-paymentio">2. Payment via Payment.io Gateway</option>
+          <div class="custom-select-wrapper payment-method-custom-select" id="paymentMethodCustomSelect">
+              <button class="custom-select-trigger payment-method-trigger" id="paymentMethodTrigger" type="button" onclick="togglePaymentMethodSelect()" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="paymentMethodSelectedText" data-t="optDirect">1. Direct Payment</span>
+                  <span class="payment-method-chevron" aria-hidden="true">▼</span>
+              </button>
+              <div class="custom-options payment-method-options" id="paymentMethodCustomOptions" role="listbox" aria-label="Payment method">
+                  <button class="custom-option payment-method-option selected" type="button" data-payment-method="wallet" onclick="selectPaymentMethod('wallet')" role="option" aria-selected="true">
+                      <span class="payment-method-option-mark" aria-hidden="true">✓</span>
+                      <span data-t="optDirect">1. Direct Payment</span>
+                  </button>
+                  <button class="custom-option payment-method-option" type="button" data-payment-method="paymentio" onclick="selectPaymentMethod('paymentio')" role="option" aria-selected="false">
+                      <span class="payment-method-option-mark" aria-hidden="true">✓</span>
+                      <span data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</span>
+                  </button>
+              </div>
+          </div>
+          <select id="payment-method" class="payment-method-native-proxy" tabindex="-1" aria-hidden="true">
+              <option value="wallet" id="opt-direct-payment" data-t="optDirect">1. Direct Payment</option>
+              <option value="paymentio" id="opt-paymentio" data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</option>
           </select>
       </div>
 
@@ -15572,7 +15588,7 @@ html.native-app #rewards{
   <div class="title"><h2 data-t="profile">Profile & Security</h2></div>
   <div class="two">
     <div class="card form"><h2 data-t="account">Account</h2><label data-t="username">Username</label><input id="username" disabled><label data-t="email">Email</label><input id="emailInput" disabled><label data-t="fullname">Full Name</label><input id="fullNameInput"><label data-t="phone">Phone</label><input id="phone"><button class="btn gold" style="margin-top:15px" onclick="saveProfile()" data-t="save">Save Profile</button></div>
-    <div class="card profile-security-card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div class="row"><span data-t="secWith">Withdrawal confirmation</span><span class="green" data-t="enabled">Enabled</span></div>
+    <div class="card profile-security-card"><h2 data-t="security">Security</h2><div class="row"><span data-t="secLogin">Login protection</span><span class="green" data-t="active">Active</span></div><div id="profileWithdrawalSecurityRow" class="row profile-withdrawal-security-row"><span class="profile-withdrawal-security-copy"><span data-t="secWith">Withdrawal confirmation</span><small id="profileWithdrawalSecurityHint">After identity verification</small></span><span id="profileWithdrawalSecurityStatus" class="profile-withdrawal-security-status inactive">Inactive</span></div>
       <div class="profile-verification-grid">
         <article class="profile-verification-card" id="profilePhoneVerificationCard">
           <div class="profile-verification-head">
@@ -17420,7 +17436,7 @@ forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب 
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"تعداد کل سرمایه‌گذاران و کاربران ثبت‌شده در سایت", statInvestors:"سرمایه‌گذاران و کاربران آنلاین", statPaid:"کل سود پرداختی تا الان", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
-optDirect:"۱. پرداخت مستقیم", optPaymentio:"2. پرداخت از طریق درگاه Payment.io / NowPayments",
+optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io / NowPayments",
 walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی تیم پشتیبانی به موجودی شما اضافه گردد.</small>",
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
@@ -18098,6 +18114,48 @@ function toggleCustomSelect(type) {
     }
 }
 
+function paymentMethodDictionary() {
+    const language = localStorage.getItem("bi_lang") || document.documentElement.lang || "en";
+    return T[language] || T.en;
+}
+
+function togglePaymentMethodSelect() {
+    const options = document.getElementById('paymentMethodCustomOptions');
+    const trigger = document.getElementById('paymentMethodTrigger');
+    if (!options || !trigger) return;
+    const willOpen = !options.classList.contains('open');
+    options.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+    document.getElementById('depositCustomOptions')?.classList.remove('open');
+    document.getElementById('withdrawCustomOptions')?.classList.remove('open');
+}
+
+function selectPaymentMethod(value) {
+    const select = document.getElementById('payment-method');
+    const selectedText = document.getElementById('paymentMethodSelectedText');
+    const options = document.getElementById('paymentMethodCustomOptions');
+    const trigger = document.getElementById('paymentMethodTrigger');
+    if (!select || !selectedText) return;
+
+    const normalizedValue = value === 'paymentio' ? 'paymentio' : 'wallet';
+    const translationKey = normalizedValue === 'paymentio' ? 'optPaymentio' : 'optDirect';
+    const dictionary = paymentMethodDictionary();
+    select.value = normalizedValue;
+    selectedText.setAttribute('data-t', translationKey);
+    selectedText.textContent = dictionary[translationKey] || T.en[translationKey];
+
+    document.querySelectorAll('#paymentMethodCustomOptions [data-payment-method]').forEach(option => {
+        const isSelected = option.dataset.paymentMethod === normalizedValue;
+        option.classList.toggle('selected', isSelected);
+        option.setAttribute('aria-selected', String(isSelected));
+    });
+
+    options?.classList.remove('open');
+    trigger?.setAttribute('aria-expanded', 'false');
+    clearFieldError('payment-method');
+    togglePaymentDetails();
+}
+
 function selectDepositCrypto(value, text, logoUrl) {
     document.getElementById('crypto-currency').value = value;
     document.getElementById('depositSelectedText').innerHTML = `<img src="${logoUrl}" alt=""> ${text}`;
@@ -18189,6 +18247,12 @@ function renderDepositWalletInfo(infoBox, template, address) {
 
 // بستن منوهای کشویی با کلیک خارج از آن‌ها
 window.addEventListener('click', function(e) {
+    if (!e.target.closest('#paymentMethodCustomSelect')) {
+        let paymentOptions = document.getElementById('paymentMethodCustomOptions');
+        let paymentTrigger = document.getElementById('paymentMethodTrigger');
+        if(paymentOptions) paymentOptions.classList.remove('open');
+        if(paymentTrigger) paymentTrigger.setAttribute('aria-expanded', 'false');
+    }
     if (!e.target.closest('#depositCryptoCustomSelect')) {
         let el = document.getElementById('depositCustomOptions');
         if(el) el.classList.remove('open');
@@ -29826,9 +29890,22 @@ html.web-android [onclick] {
     en:{phoneTitle:"Phone verification",phoneDescription:"Verify your phone number with an SMS code.",phoneVerifiedDescription:"Your phone number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify phone",changePhone:"Change phone",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"Phone verification",modalDescription:"Select your country and enter your phone number.",phoneLabel:"Phone number",selectCountry:"Select country",searchCountry:"Search country or code",phoneHelp:"The country code is added automatically. A leading zero is removed automatically.",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent.",success:"Your phone number was verified successfully.",invalidPhone:"Select a country and enter a valid phone number.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"SMS verification is not available yet. Enable Phone Auth and configure an SMS provider in Supabase.",genericError:"Phone verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
     fa:{phoneTitle:"تأیید شماره تلفن",phoneDescription:"شماره تلفن خود را با کد پیامکی تأیید کنید.",phoneVerifiedDescription:"شماره تلفن شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره تلفن",changePhone:"تغییر شماره",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره تلفن",modalDescription:"کشور را انتخاب کنید و شماره تلفن خود را وارد کنید.",phoneLabel:"شماره تلفن",selectCountry:"انتخاب کشور",searchCountry:"جست‌وجوی کشور یا کد",phoneHelp:"کد کشور خودکار اضافه می‌شود و صفر ابتدایی شماره حذف خواهد شد.",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید ارسال شد.",success:"شماره تلفن شما با موفقیت تأیید شد.",invalidPhone:"کشور را انتخاب و شماره تلفن معتبر وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید پیامکی هنوز فعال نیست. Phone Auth و ارائه‌دهنده SMS را در Supabase فعال کنید.",genericError:"تأیید شماره تلفن انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
   };
+  const WITHDRAWAL_SECURITY_COPY={
+    en:{hint:"After identity verification",active:"Active",inactive:"Inactive"},
+    fa:{hint:"پس از احراز هویت",active:"فعال",inactive:"غیرفعال"},
+    az:{hint:"Kimlik təsdiqindən sonra",active:"Aktivdir",inactive:"Deaktivdir"},
+    tr:{hint:"Kimlik doğrulamasından sonra",active:"Aktif",inactive:"Pasif"},
+    ru:{hint:"После подтверждения личности",active:"Активно",inactive:"Неактивно"},
+    ar:{hint:"بعد التحقق من الهوية",active:"مفعل",inactive:"غير مفعل"},
+    zh:{hint:"身份验证后启用",active:"已启用",inactive:"未启用"},
+    es:{hint:"Después de verificar la identidad",active:"Activo",inactive:"Inactivo"},
+    fr:{hint:"Après vérification de l’identité",active:"Actif",inactive:"Inactif"},
+    de:{hint:"Nach der Identitätsprüfung",active:"Aktiv",inactive:"Inaktiv"}
+  };
   let authPhoneUser=null,pendingPhone="",phoneBusy=false,resendTimer=null,resendSeconds=0,lastRefreshAt=0,latestKycRequest=null;
   function lang(){return localStorage.getItem("bi_lang")||document.documentElement.lang||"en"}
   function c(key){const selected=COPY[lang()]||COPY.en;return selected[key]||COPY.en[key]||key}
+  function withdrawalSecurityCopy(key){const selected=WITHDRAWAL_SECURITY_COPY[lang()]||WITHDRAWAL_SECURITY_COPY.en;return selected[key]||WITHDRAWAL_SECURITY_COPY.en[key]||key}
   function byId(id){return document.getElementById(id)}
   function phoneDigits(value){
     const fa="۰۱۲۳۴۵۶۷۸۹",ar="٠١٢٣٤٥٦٧٨٩";
@@ -29877,9 +29954,15 @@ html.web-android [onclick] {
     setStatus(status,verified?"verified":"unverified",c(verified?"verified":"unverified"));
     card.classList.toggle("is-verified",verified);description.textContent=c(verified?"phoneVerifiedDescription":"phoneDescription");value.textContent=maskPhone(authPhoneUser?.phone||currentUser?.phone||"");button.textContent=c(verified?"changePhone":"verifyPhone");
   }
+  function renderWithdrawalSecurityState(state){
+    const approved=state==="approved",row=byId("profileWithdrawalSecurityRow"),status=byId("profileWithdrawalSecurityStatus"),hint=byId("profileWithdrawalSecurityHint");
+    if(hint)hint.textContent=withdrawalSecurityCopy("hint");
+    if(status){status.className="profile-withdrawal-security-status "+(approved?"active":"inactive");status.textContent=withdrawalSecurityCopy(approved?"active":"inactive")}
+    row?.classList.toggle("is-active",approved);
+  }
   function renderIdentityCard(request=latestKycRequest){
-    latestKycRequest=request||null;const card=byId("profileIdentityVerificationCard"),status=byId("profileIdentityVerificationStatus"),description=byId("profileIdentityVerificationDescription"),button=byId("profileIdentityVerificationButton");if(!card||!status)return;
-    const state=request?.status||"not-submitted",verified=state==="approved";
+    latestKycRequest=request||null;const state=request?.status||"not-submitted",card=byId("profileIdentityVerificationCard"),status=byId("profileIdentityVerificationStatus"),description=byId("profileIdentityVerificationDescription"),button=byId("profileIdentityVerificationButton");renderWithdrawalSecurityState(state);if(!card||!status)return;
+    const verified=state==="approved";
     byId("profileIdentityVerificationTitle").textContent=c("identityTitle");
     setStatus(status,verified?"verified":state==="pending"?"pending":state==="rejected"?"rejected":"unverified",c(verified?"verified":state==="pending"?"pending":state==="rejected"?"rejected":"unverified"));
     card.classList.toggle("is-verified",verified);description.textContent=c(verified?"identityVerifiedDescription":"identityDescription");button.textContent=c(verified?"viewIdentity":state==="rejected"?"continueIdentity":"startIdentity");
@@ -29890,7 +29973,7 @@ html.web-android [onclick] {
   }
   window.refreshProfileVerificationCards=async function(force=false){
     if(!currentUser?.id){authPhoneUser=null;renderPhoneCard();renderIdentityCard(null);return}
-    if(!force&&Date.now()-lastRefreshAt<12000){renderPhoneCard();return}
+    if(!force&&Date.now()-lastRefreshAt<12000){renderPhoneCard();if(typeof window.loadKycStatus==="function")void window.loadKycStatus();return}
     lastRefreshAt=Date.now();
     try{const{data,error}=await supabaseClient.auth.getUser();if(error)throw error;authPhoneUser=data?.user||null;renderPhoneCard()}catch(error){console.warn("Phone verification status unavailable",error)}
     if(typeof window.loadKycStatus==="function")void window.loadKycStatus();
@@ -29967,6 +30050,92 @@ html.web-android [onclick] {
   background:rgba(240,185,11,.14)!important;
   border-color:rgba(255,225,117,.22)!important;
 }
+.payment-method-native-proxy{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+#portfolio .payment-method-trigger{
+  width:100%;
+  min-height:56px;
+  padding:13px 15px!important;
+  border:1px solid rgba(255,225,117,.34)!important;
+  border-radius:13px!important;
+  color:#f5f7fa!important;
+  background:linear-gradient(145deg,rgba(7,11,16,.68),rgba(29,22,7,.44))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px rgba(0,0,0,.2)!important;
+  backdrop-filter:blur(12px) saturate(120%)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(120%)!important;
+  font-weight:760;
+  text-align:start;
+  touch-action:manipulation;
+}
+#portfolio .payment-method-chevron{
+  flex:0 0 auto;
+  margin-inline-start:12px;
+  color:#ffe477;
+  font-size:11px;
+  transition:transform .18s ease;
+}
+#portfolio #paymentMethodTrigger[aria-expanded="true"] .payment-method-chevron{transform:rotate(180deg)}
+#portfolio #paymentMethodCustomOptions{
+  top:calc(100% + 7px);
+  padding:7px;
+  overflow:hidden;
+  border:1px solid rgba(255,225,117,.44)!important;
+  border-radius:15px!important;
+  background:rgba(5,8,13,.9)!important;
+  box-shadow:0 22px 54px rgba(0,0,0,.66),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(24px) saturate(135%)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(135%)!important;
+  z-index:180;
+}
+#portfolio #paymentMethodCustomOptions .payment-method-option{
+  width:100%;
+  min-height:54px;
+  margin:2px 0;
+  padding:12px 13px;
+  border:1px solid transparent;
+  border-radius:11px;
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+  color:#f3f6fa!important;
+  background:rgba(255,255,255,.035)!important;
+  text-align:start;
+  font:inherit;
+  line-height:1.55;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+#portfolio #paymentMethodCustomOptions .payment-method-option:hover,
+#portfolio #paymentMethodCustomOptions .payment-method-option:active,
+#portfolio #paymentMethodCustomOptions .payment-method-option.selected{
+  border-color:rgba(255,225,117,.28)!important;
+  background:linear-gradient(135deg,rgba(240,185,11,.17),rgba(255,255,255,.045))!important;
+}
+#portfolio .payment-method-option-mark{
+  color:transparent;
+  font-size:15px;
+  font-weight:950;
+  text-align:center;
+}
+#portfolio .payment-method-option.selected .payment-method-option-mark{color:#ffe477}
+html[dir="rtl"] #portfolio #paymentMethodCustomOptions .payment-method-option{direction:rtl;text-align:right}
+html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{direction:ltr;text-align:left}
+@media(max-width:600px){
+  #portfolio #paymentMethodCustomOptions{position:absolute!important;max-height:none!important}
+  #portfolio #paymentMethodCustomOptions .payment-method-option{min-height:58px;font-size:13px}
+}
 #portfolio #payment-info-box.deposit-wallet-info{
   min-height:178px;
   padding:23px!important;
@@ -30040,6 +30209,15 @@ html.web-android [onclick] {
   .deposit-wallet-address-row{grid-template-columns:1fr}
   .deposit-wallet-copy-button{width:100%;min-height:45px}
 }
+
+.profile-withdrawal-security-copy{display:grid;gap:4px;min-width:0}
+.profile-withdrawal-security-copy>small{color:#9aa5b4;font-size:10px;font-weight:650;line-height:1.5}
+.profile-withdrawal-security-status{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;padding:6px 10px;border:1px solid;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap}
+.profile-withdrawal-security-status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 9px currentColor}
+.profile-withdrawal-security-status.inactive{color:#ffd978;border-color:rgba(240,185,11,.36);background:rgba(77,57,8,.28)}
+.profile-withdrawal-security-status.active{color:#48e7a7;border-color:rgba(42,211,146,.4);background:rgba(7,72,50,.3)}
+.profile-withdrawal-security-row.is-active .profile-withdrawal-security-copy>small{color:#79dcb4}
+@media(max-width:460px){.profile-withdrawal-security-status{padding:5px 8px;font-size:10px}.profile-withdrawal-security-copy>small{font-size:9px}}
 </style>
 
 </body>
