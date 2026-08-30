@@ -14446,7 +14446,13 @@ html.native-app #rewards{
         <h3 data-t="contactUs">Contact Us</h3>
         <p data-t="supportEmail">Support Email</p>
         <a href="mailto:support@binancinvest.com">support@binancinvest.com</a>
-        <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">◉ <span data-t="onlineChat">Online Chat</span></button>
+        <button class="contact-chat-btn" type="button" onclick="openOnlineSupport()">
+          <span class="contact-chat-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 11.2a7.7 7.7 0 0 1-8 7.4 9.2 9.2 0 0 1-3.2-.6L4 20l1.5-4A7 7 0 0 1 4 11.2a7.7 7.7 0 0 1 8-7.4 7.7 7.7 0 0 1 8 7.4Z"/><path d="M8.5 11.3h.01M12 11.3h.01M15.5 11.3h.01"/></svg>
+          </span>
+          <span data-t="onlineChat">Online Chat</span>
+          <span class="contact-chat-live" aria-hidden="true"></span>
+        </button>
     </div>
 
 
@@ -15110,19 +15116,30 @@ html.native-app #rewards{
           <div class="custom-select-wrapper" id="depositCryptoCustomSelect">
               <div class="custom-select-trigger" onclick="toggleCustomSelect('deposit')">
                   <span id="depositSelectedText" style="display:flex; align-items:center;">
-    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)
 </span>
                   <span>▼</span>
               </div>
               <div class="custom-options" id="depositCustomOptions">
-               <div class="custom-option" onclick="selectDepositCrypto('trx_usdt_trc20', 'TRX / Tether (TRC20)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')">
-    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRX / Tether (TRC20)
-</div>
-                  <div class="custom-option" onclick="selectDepositCrypto('bnb_usdt_bep20', 'BNB / Tether (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB / Tether (BEP20)
+                  <div class="deposit-option-group-title" data-t="depositGroupTether">Tether (USDT)</div>
+                  <div class="custom-option" onclick="selectDepositCrypto('trx_usdt_trc20', 'USDT (TRC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (TRC20)
                   </div>
-                  <div class="custom-option" onclick="selectDepositCrypto('eth_usdt_erc20', 'Ethereum / Tether (ERC20)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
-                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum / Tether (ERC20)
+                  <div class="custom-option" onclick="selectDepositCrypto('bnb_usdt_bep20', 'USDT (BEP20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (BEP20)
+                  </div>
+                  <div class="custom-option" onclick="selectDepositCrypto('eth_usdt_erc20', 'USDT (ERC20)', 'https://cryptologos.cc/logos/tether-usdt-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"> USDT (ERC20)
+                  </div>
+                  <div class="deposit-option-group-title deposit-option-group-main" data-t="depositGroupMain">Main Currencies</div>
+                  <div class="custom-option" onclick="selectDepositCrypto('trx', 'TRON (TRX)', 'https://cryptologos.cc/logos/tron-trx-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX"> TRON (TRX)
+                  </div>
+                  <div class="custom-option" onclick="selectDepositCrypto('bnb', 'BNB (BEP20)', 'https://cryptologos.cc/logos/bnb-bnb-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB"> BNB (BEP20)
+                  </div>
+                  <div class="custom-option" onclick="selectDepositCrypto('eth', 'Ethereum (ETH)', 'https://cryptologos.cc/logos/ethereum-eth-logo.svg')">
+                      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH"> Ethereum (ETH)
                   </div>
                   <div class="custom-option" onclick="selectDepositCrypto('btc', 'Bitcoin (BTC)', 'https://cryptologos.cc/logos/bitcoin-btc-logo.svg')">
                       <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC"> Bitcoin (BTC)
@@ -18107,6 +18124,9 @@ const WALLETS = {
     trx_usdt_trc20: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
     bnb_usdt_bep20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
     eth_usdt_erc20: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    trx: "TDeaeRTD4Ebj8FDhe4fZK3mGBNWnWajyzG",
+    bnb: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
+    eth: "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD",
     btc: "bc1p7vndl752t2tv3sah3k3wagzkcd445496s4fr298ustpe4maw4yns7fqv0k"
 };
 
@@ -23021,14 +23041,14 @@ const LANGUAGE_MODAL_TEXT = {
    so the interface never falls back to a different language mid-page. */
 const COMPLETE_SITE_TEXT = {
   en:{
-    support:"Support",friendReferralReward:"FRIEND REFERRAL REWARD",inviteFriendsEarn:"Invite Friends and Earn $10",referralAutoCredit:"$10 will automatically be added to your available balance.",viewReferralCode:"View Referral Code",liveSaved:"Live + Saved",verified:"Verified",safu:"SAFU",securityProtection:"Security Protection",networkProtection:"Network Protection",sslCertificate:"SSL Certificate",securityStandard:"Security Standard",onlineChat:"Online Chat",footerAbout:"A multilingual digital investment interface built to make account activity, investment plans, rewards and support easier to understand and manage from one secure experience.",platform:"Platform",companyHelp:"Company & Help",aboutUs:"About Us",referralRewards:"Referral Rewards",helpSupport:"Help & Support",legal:"Legal",termsConditions:"Terms & Conditions",privacyPolicy:"Privacy Policy",accountSecurity:"Account Security",riskDisclosure:"Risk Disclosure",footerRights:"© 2026 Binance Invest. All rights reserved.",terms:"Terms",privacy:"Privacy",about:"About",
+    support:"Support",friendReferralReward:"FRIEND REFERRAL REWARD",inviteFriendsEarn:"Invite Friends and Earn $10",referralAutoCredit:"$10 will automatically be added to your available balance.",viewReferralCode:"View Referral Code",liveSaved:"Live + Saved",verified:"Verified",safu:"SAFU",securityProtection:"Security Protection",networkProtection:"Network Protection",sslCertificate:"SSL Certificate",securityStandard:"Security Standard",onlineChat:"Online Chat",depositGroupTether:"Tether (USDT)",depositGroupMain:"Main Currencies",footerAbout:"A multilingual digital investment interface built to make account activity, investment plans, rewards and support easier to understand and manage from one secure experience.",platform:"Platform",companyHelp:"Company & Help",aboutUs:"About Us",referralRewards:"Referral Rewards",helpSupport:"Help & Support",legal:"Legal",termsConditions:"Terms & Conditions",privacyPolicy:"Privacy Policy",accountSecurity:"Account Security",riskDisclosure:"Risk Disclosure",footerRights:"© 2026 Binance Invest. All rights reserved.",terms:"Terms",privacy:"Privacy",about:"About",
     vipLockContract:"VIP LOCK CONTRACT",capitalLock60:"60-Day Capital Lock",capitalLockDesc:"Lock a selected amount for 60 days and calculate returns using the displayed 5.5% daily rate.",daily:"Daily",amountToLock:"Amount to lock ($10 – $10,000)",max:"MAX",dailyCalculation:"Daily calculation",calculation60:"60-day calculation",principalCalculation:"Principal + calculation",vipLockNotice:"The selected balance remains locked for 60 days. The displayed return is calculated from the contract rate.",lockFromBalance:"Lock From Balance",makeNewDeposit:"Make New Deposit",customAutoDesc:"Enter the amount and duration yourself. The daily rate is selected from the amount tier and the projected return is calculated instantly.",investmentAmountRange:"Investment Amount ($10 – $10,000)",termAuto:"Term (Days)",totalBalance:"Total Balance",referralRewardsBalance:"Referral rewards added to balance",referralBalanceNotice:"This reward is included in your available balance and is not active invested capital.",vipLockContracts:"VIP LOCK CONTRACTS",vipLockedCapital:"VIP 60-Day Locked Capital",vipListDesc:"All VIP contracts are displayed in one unified list.",lockedCapital:"Locked capital",projectedCalculation:"Projected calculation",activeContracts:"Active contracts",timeRemaining:"Time Remaining",dailyRate:"Daily Rate",totalCalculation:"Total Calculation",status:"Status",started:"Started",ends:"Ends",noVipContracts:"No VIP lock contracts found.",quickVipLock:"Quick VIP 60-Day Lock",quickVipDesc:"Lock available balance directly from your portfolio.",availableBalance:"Available balance",financeLoginTitle:"Sign in to access deposits and withdrawals",financeLoginDesc:"Wallet addresses and financial tools are available only to authenticated account holders.",signInSecurely:"Sign In Securely",
     personalReferral:"YOUR PERSONAL REFERRAL",personalReferralDesc:"Share your personal code. When your friend completes the first approved investment, a $10 reward is added to your available balance.",referralHistoryHint:"Review every referral's registration, investment and reward status below.",yourReferralCode:"YOUR REFERRAL CODE",signInToView:"Sign in to view",copyCode:"Copy Code",copyInvitationLink:"Copy Invitation Link",totalRegistrations:"Total registrations",successfulReferrals:"Successful referrals",totalRewards:"Total rewards",howItWorks:"How it works",referralStep1:"Share your personal code or invitation link.",referralStep2:"Your friend registers using your referral code.",referralStep3:"Your friend completes their first approved investment.",referralStep4:"$10 is automatically added to your available balance.",haveInvitationCode:"Have an invitation code?",apply:"Apply",referralApplyNotice:"A referral code can only be registered before your first investment.",referralActivity:"Referral Activity",referralActivityDesc:"Track each invited account from registration through reward payment.",refreshStatus:"Refresh Status",signInReferralActivity:"Sign in to view referral activity.",registered:"Registered",investmentPending:"Investment pending",investmentConfirmed:"Investment confirmed",rewardPaid:"$10 reward paid",supportTitle:"Support Center",supportGuestNotice:"Please sign in to create and manage your support tickets.",newTicket:"Create New Ticket",submitTicket:"Submit Ticket",myTickets:"My Tickets",
     basic:"Basic",starterLevel:"Starter · 2.5% Daily",growthLevel:"Growth · 3.5% Daily",premiumLevel:"Premium · 4.5% Daily",completed:"Completed",principalLocked:"Principal locked",unknown:"Unknown",contractCompleted:"Contract period completed",daysShort:"d",hoursShort:"h",minutesShort:"m",secondsShort:"s",loading:"Loading...",noTransactions:"No financial requests found.",signInTransactions:"Please sign in to view transaction history.",date:"Date",type:"Type",assetNetwork:"Asset / Network",invitedUser:"Invited User",notCompleted:"Not completed",credited:"credited",rewardAfterInvestment:"Reward will be paid after the first approved investment.",successfulReferral:"successful referral",successfulReferralsCount:"successful referrals",
     referralCodeLabel:"Referral Code",optional:"(Optional)",referralCodeHelp:"If a friend invited you, enter their code here. The invitation will be registered after your account is confirmed.",passwordRequirements:"Your password must contain at least 8 characters, including an uppercase letter, a lowercase letter and a number.",checkYourEmail:"Check your email",recoveryLinkSent:"We sent a password recovery code to:",recoveryEmailHelp:"Enter the 6-digit code from your email. Also check your Spam or Junk folder.",resendRecoveryEmail:"Resend code",createNewPassword:"Create a new password",newPasswordHelp:"Enter a strong new password for your account.",newPassword:"New password",confirmNewPassword:"Confirm new password",saveNewPassword:"Save new password",transactionStatusNote:"You can monitor the latest status of your request from the Transactions section.",viewTransactions:"View Transactions",investmentPlanBadge:"INVESTMENT PLAN",investmentTerm:"Investment term",investmentAmount:"Investment amount",planActivationNotice:"After payment confirmation and support team approval, your selected plan will be activated automatically and profit calculation will begin.",cancel:"Cancel",continueDeposit:"Continue to Deposit",confirm60DayLock:"Confirm 60-Day Lock",reviewLockAmount:"Review the selected amount before locking it from your available balance.",amountToLockShort:"Amount to lock",availableAfterLock:"Available after lock",lockConfirmationNotice:"The selected principal will remain locked for 60 days. Displayed return calculations are projected values and are separate from your available balance.",confirmLock:"Confirm Lock",confirmYourEmail:"Confirm your email",confirmationLinkSent:"We sent a secure confirmation link to:",confirmationEmailHelp:"Open your email and click the confirmation link. This window will close automatically after confirmation.",resendConfirmationEmail:"Resend confirmation email",changeEmailAddress:"Change email address",checkSpamFolder:"Also check your Spam or Junk folder.",depositSubmittedTitle:"Deposit Request Submitted",depositSubmittedMessage:"Your deposit request has been securely registered and is awaiting review. Once verified, the approved amount will be credited to your balance.",withdrawSubmittedTitle:"Withdrawal Request Submitted",withdrawSubmittedMessage:"Your withdrawal request has been securely registered and is awaiting review. Once approved, payment will be sent to the selected address.",saving:"Saving...",sending:"Sending...",activating:"Activating...",emailSent:"Email sent successfully",recoveryResent:"Recovery email sent again",confirmationResent:"Confirmation email sent again",passwordMismatch:"The passwords do not match.",passwordChanged:"Password changed. You are now signed in.",invalidDepositAmount:"Please enter a valid deposit amount",gatewayReferenceRequired:"Complete the gateway payment, then submit its reference",txidRequired:"Please enter the transaction hash / TXID",walletAddressRequired:"Please enter the destination wallet address",validAmountRange:"Enter an amount between $10 and $10,000.",invalidVipAmount:"Invalid VIP lock amount",invalidInvestmentPlan:"Invalid investment plan",insufficientBalance:"Insufficient available balance",loggedOut:"Logged out successfully",profileUpdated:"Profile updated successfully!",fullNameRequired:"Please enter your full name",usernameRequirements:"Username must contain 3–30 English letters, numbers or _",validEmail:"Please enter a valid email",passwordRuleError:"Password needs uppercase, lowercase, number and 8 characters",validReferralCode:"Please enter a valid referral code",registeredEmailRequired:"Enter your registered email address",writeMessage:"Please write your message",writeReply:"Please write your reply",selectTicket:"Please select a ticket",ticketSubmitted:"Ticket submitted successfully",ticketClosed:"Ticket closed successfully",ticketIsClosed:"This ticket is closed",ticketLoadError:"Tickets could not be loaded.",conversationLoadError:"Conversation could not be loaded.",supportTicket:"Support Ticket",signInFirst:"Please sign in first.",noMessages:"No messages found.",totalProfitText:"total profit",registrationSuccessful:"Registration Successful",registrationConfirmEmail:"Your account was created successfully. Please confirm your email to continue.",accountCreatedSignedIn:"Your account has been created and you are now signed in.",welcomeBack:"Welcome Back",signedInSuccessfully:"You have signed in successfully.",authenticationFailed:"Authentication failed",invalidCredentials:"Invalid email or password.",emailNotConfirmed:"Please confirm your email before signing in.",accountAlreadyExists:"An account with this email already exists.",depositRequestFailed:"Deposit request failed.",validWithdrawalAmount:"Please enter a valid withdrawal amount.",withdrawRequestFailed:"Withdrawal request failed.",smallerWithdrawalAmount:"Your available balance is {amount}. Please enter a smaller withdrawal amount.",supportRequestFailed:"The support request could not be completed."
   },
   fa:{
-    support:"پشتیبانی",friendReferralReward:"پاداش دعوت از دوستان",inviteFriendsEarn:"دوستانتان را دعوت کنید و ۱۰ دلار بگیرید",referralAutoCredit:"۱۰ دلار به‌صورت خودکار به موجودی قابل‌برداشت شما افزوده می‌شود.",viewReferralCode:"مشاهده کد دعوت",liveSaved:"زنده و ثبت‌شده",verified:"تأییدشده",safu:"محافظت SAFU",securityProtection:"محافظت امنیتی",networkProtection:"محافظت شبکه",sslCertificate:"گواهی SSL",securityStandard:"استاندارد امنیتی",onlineChat:"گفت‌وگوی آنلاین",footerAbout:"یک پلتفرم چندزبانه سرمایه‌گذاری دیجیتال برای مدیریت ساده و امن حساب، پلن‌ها، جوایز و پشتیبانی.",platform:"پلتفرم",companyHelp:"شرکت و راهنما",aboutUs:"درباره ما",referralRewards:"پاداش دعوت",helpSupport:"راهنما و پشتیبانی",legal:"قوانین",termsConditions:"شرایط و ضوابط",privacyPolicy:"سیاست حفظ حریم خصوصی",accountSecurity:"امنیت حساب",riskDisclosure:"افشای ریسک",footerRights:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",terms:"شرایط",privacy:"حریم خصوصی",about:"درباره ما",
+    support:"پشتیبانی",friendReferralReward:"پاداش دعوت از دوستان",inviteFriendsEarn:"دوستانتان را دعوت کنید و ۱۰ دلار بگیرید",referralAutoCredit:"۱۰ دلار به‌صورت خودکار به موجودی قابل‌برداشت شما افزوده می‌شود.",viewReferralCode:"مشاهده کد دعوت",liveSaved:"زنده و ثبت‌شده",verified:"تأییدشده",safu:"محافظت SAFU",securityProtection:"محافظت امنیتی",networkProtection:"محافظت شبکه",sslCertificate:"گواهی SSL",securityStandard:"استاندارد امنیتی",onlineChat:"گفت‌وگوی آنلاین",depositGroupTether:"تتر (USDT)",depositGroupMain:"ارزهای اصلی",footerAbout:"یک پلتفرم چندزبانه سرمایه‌گذاری دیجیتال برای مدیریت ساده و امن حساب، پلن‌ها، جوایز و پشتیبانی.",platform:"پلتفرم",companyHelp:"شرکت و راهنما",aboutUs:"درباره ما",referralRewards:"پاداش دعوت",helpSupport:"راهنما و پشتیبانی",legal:"قوانین",termsConditions:"شرایط و ضوابط",privacyPolicy:"سیاست حفظ حریم خصوصی",accountSecurity:"امنیت حساب",riskDisclosure:"افشای ریسک",footerRights:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",terms:"شرایط",privacy:"حریم خصوصی",about:"درباره ما",
     vipLockContract:"قرارداد قفل VIP",capitalLock60:"قفل سرمایه ۶۰ روزه",capitalLockDesc:"مبلغ انتخابی را برای ۶۰ روز قفل کنید؛ محاسبات با نرخ روزانه ۵٫۵٪ نمایش داده می‌شود.",daily:"روزانه",amountToLock:"مبلغ قفل‌شونده (۱۰ تا ۱۰٬۰۰۰ دلار)",max:"حداکثر",dailyCalculation:"محاسبه روزانه",calculation60:"محاسبه ۶۰ روزه",principalCalculation:"اصل سرمایه + محاسبه",vipLockNotice:"در این پلن برخلاف پلن‌های دیگر، سرمایه شما تا ۶۰ روز کامل قفل خواهد شد و حق برداشت ندارید.",lockFromBalance:"قفل از موجودی",makeNewDeposit:"واریز جدید",customAutoDesc:"مبلغ و مدت سرمایه‌گذاری را خودتان وارد کنید؛ نرخ روزانه بر اساس بازه مبلغ انتخاب می‌شود و سود دوره همان لحظه محاسبه می‌شود.",investmentAmountRange:"مبلغ سرمایه‌گذاری (۱۰ تا ۱۰٬۰۰۰ دلار)",termAuto:"مدت (روز)",totalBalance:"موجودی کل",referralRewardsBalance:"پاداش دعوت افزوده‌شده به موجودی",referralBalanceNotice:"این پاداش در موجودی قابل‌استفاده شما قرار دارد و سرمایه‌گذاری فعال محسوب نمی‌شود.",vipLockContracts:"قراردادهای قفل VIP",vipLockedCapital:"سرمایه قفل‌شده ۶۰ روزه VIP",vipListDesc:"تمام قراردادهای VIP در یک فهرست یکپارچه نمایش داده می‌شوند.",lockedCapital:"سرمایه قفل‌شده",projectedCalculation:"محاسبه پیش‌بینی‌شده",activeContracts:"قراردادهای فعال",timeRemaining:"زمان باقی‌مانده",dailyRate:"نرخ روزانه",totalCalculation:"محاسبه کل",status:"وضعیت",started:"شروع",ends:"پایان",noVipContracts:"هیچ قرارداد قفل VIP پیدا نشد.",quickVipLock:"قفل سریع ۶۰ روزه VIP",quickVipDesc:"موجودی قابل‌استفاده را مستقیماً از سبد خود قفل کنید.",availableBalance:"موجودی قابل‌استفاده",financeLoginTitle:"برای واریز و برداشت وارد حساب شوید",financeLoginDesc:"آدرس کیف‌پول و ابزارهای مالی فقط برای کاربران واردشده نمایش داده می‌شوند.",signInSecurely:"ورود امن",
     personalReferral:"کد دعوت شخصی شما",personalReferralDesc:"کد خود را به اشتراک بگذارید. پس از نخستین سرمایه‌گذاری تأییدشده دوست شما، ۱۰ دلار به موجودی‌تان افزوده می‌شود.",referralHistoryHint:"وضعیت ثبت‌نام، سرمایه‌گذاری و پاداش همه دعوت‌ها را در پایین همین صفحه ببینید.",yourReferralCode:"کد دعوت شما",signInToView:"برای مشاهده وارد شوید",copyCode:"کپی کد",copyInvitationLink:"کپی لینک دعوت",totalRegistrations:"کل ثبت‌نام‌ها",successfulReferrals:"دعوت‌های موفق",totalRewards:"کل پاداش‌ها",howItWorks:"نحوه کار",referralStep1:"کد شخصی یا لینک دعوت خود را به اشتراک بگذارید.",referralStep2:"دوست شما با کد دعوت ثبت‌نام می‌کند.",referralStep3:"نخستین سرمایه‌گذاری او تأیید می‌شود.",referralStep4:"۱۰ دلار خودکار به موجودی قابل‌استفاده شما افزوده می‌شود.",haveInvitationCode:"کد دعوت دارید؟",apply:"ثبت",referralApplyNotice:"کد دعوت فقط پیش از نخستین سرمایه‌گذاری قابل ثبت است.",referralActivity:"فعالیت دعوت‌ها",referralActivityDesc:"مسیر هر دعوت را از ثبت‌نام تا پرداخت پاداش دنبال کنید.",refreshStatus:"به‌روزرسانی وضعیت",signInReferralActivity:"برای مشاهده فعالیت دعوت‌ها وارد شوید.",registered:"ثبت‌نام‌شده",investmentPending:"سرمایه‌گذاری در انتظار",investmentConfirmed:"سرمایه‌گذاری تأییدشده",rewardPaid:"پاداش ۱۰ دلاری پرداخت شد",supportTitle:"مرکز پشتیبانی",supportGuestNotice:"برای ایجاد و مدیریت تیکت‌های پشتیبانی وارد شوید.",newTicket:"ایجاد تیکت جدید",submitTicket:"ارسال تیکت",myTickets:"تیکت‌های من",
     basic:"پایه",starterLevel:"استارتر · روزانه ۲٫۵٪",growthLevel:"رشد · روزانه ۳٫۵٪",premiumLevel:"پریمیوم · روزانه ۴٫۵٪",completed:"تکمیل‌شده",principalLocked:"اصل سرمایه قفل است",unknown:"نامشخص",contractCompleted:"دوره قرارداد پایان یافت",daysShort:"روز",hoursShort:"ساعت",minutesShort:"دقیقه",secondsShort:"ثانیه",loading:"در حال بارگذاری...",noTransactions:"هیچ درخواست مالی پیدا نشد.",signInTransactions:"برای مشاهده تاریخچه تراکنش‌ها وارد شوید.",date:"تاریخ",type:"نوع",assetNetwork:"دارایی / شبکه",invitedUser:"کاربر دعوت‌شده",notCompleted:"تکمیل‌نشده",credited:"به موجودی افزوده شد",rewardAfterInvestment:"پاداش پس از نخستین سرمایه‌گذاری تأییدشده پرداخت می‌شود.",successfulReferral:"دعوت موفق",successfulReferralsCount:"دعوت موفق",
@@ -23045,7 +23065,7 @@ function buildLocalizedSiteText(code){
   const investment=d.invest||d.plans;
   const security=d.security||supportWord;
   const generated={
-    support:supportWord,friendReferralReward:`${referral} · ${d.rewards}`,inviteFriendsEarn:`${referral} · $10`,referralAutoCredit:`$10 · ${balance}`,viewReferralCode:`${d.copy} · ${referral}`,liveSaved:d.live||d.active,verified:d.enabled||security,safu:"SAFU",securityProtection:security,networkProtection:security,sslCertificate:"SSL",securityStandard:security,onlineChat:supportWord,footerAbout:d.footerDesc,platform:d.platformStatsTitle||d.brand,companyHelp:`${d.account} · ${supportWord}`,aboutUs:d.brand,referralRewards:`${referral} · ${d.rewards}`,helpSupport:supportWord,legal:security,termsConditions:security,privacyPolicy:security,accountSecurity:security,riskDisclosure:security,footerRights:d.footerCopy,terms:security,privacy:security,about:d.brand,
+    support:supportWord,friendReferralReward:`${referral} · ${d.rewards}`,inviteFriendsEarn:`${referral} · $10`,referralAutoCredit:`$10 · ${balance}`,viewReferralCode:`${d.copy} · ${referral}`,liveSaved:d.live||d.active,verified:d.enabled||security,safu:"SAFU",securityProtection:security,networkProtection:security,sslCertificate:"SSL",securityStandard:security,onlineChat:supportWord,depositGroupTether:"Tether (USDT)",depositGroupMain:d.assets||d.thAsset||d.markets,footerAbout:d.footerDesc,platform:d.platformStatsTitle||d.brand,companyHelp:`${d.account} · ${supportWord}`,aboutUs:d.brand,referralRewards:`${referral} · ${d.rewards}`,helpSupport:supportWord,legal:security,termsConditions:security,privacyPolicy:security,accountSecurity:security,riskDisclosure:security,footerRights:d.footerCopy,terms:security,privacy:security,about:d.brand,
     vipLockContract:d.vipTitle,capitalLock60:`VIP · 60 ${u.days}`,capitalLockDesc:d.lockNoticeText,daily:u.daily,amountToLock:`${d.amount} ($10 – $10,000)`,max:"MAX",dailyCalculation:u.dailyProfit,calculation60:`60 ${u.days}`,principalCalculation:`${d.invested} + ${d.estimated}`,vipLockNotice:d.lockNoticeText,lockFromBalance:`${d.invest} · ${balance}`,makeNewDeposit:d.deposit,customAutoDesc:d.customDesc,investmentAmountRange:`${d.amount} ($10 – $10,000)`,termAuto:`${u.term} · ${d.active}`,totalBalance:d.balance,referralRewardsBalance:`${referral} · ${balance}`,referralBalanceNotice:d.heroDesc,vipLockContracts:d.vipTitle,vipLockedCapital:`VIP · 60 ${u.days}`,vipListDesc:d.heroDesc,lockedCapital:d.invested,projectedCalculation:d.estimated,activeContracts:d.active,timeRemaining:u.term,dailyRate:u.daily,totalCalculation:d.estimated,status:d.active,started:d.active,ends:u.term,noVipContracts:`${d.vipTitle} · 0`,quickVipLock:`VIP · 60 ${u.days}`,quickVipDesc:d.heroDesc,availableBalance:d.balance,financeLoginTitle:`${d.login} · ${d.deposit} / ${d.withdraw}`,financeLoginDesc:d.local,signInSecurely:d.login,
     personalReferral:referral,personalReferralDesc:d.heroDesc,referralHistoryHint:d.heroDesc,yourReferralCode:referral,signInToView:d.login,copyCode:d.copy,copyInvitationLink:d.copy,totalRegistrations:d.users||d.statUsers,successfulReferrals:referral,totalRewards:d.rewards,howItWorks:d.overview,referralStep1:d.copy,referralStep2:d.register,referralStep3:investment,referralStep4:`$10 · ${balance}`,haveInvitationCode:referral,apply:d.continue,referralApplyNotice:d.heroDesc,referralActivity:referral,referralActivityDesc:d.heroDesc,refreshStatus:d.active,signInReferralActivity:d.login,registered:d.register,investmentPending:investment,investmentConfirmed:investment,rewardPaid:`$10 · ${d.rewards}`,supportTitle:supportWord,supportGuestNotice:d.login,newTicket:supportWord,submitTicket:d.continue,myTickets:supportWord,
     basic:d.account,starterLevel:`Starter · 2.5% ${u.daily}`,growthLevel:`Growth · 3.5% ${u.daily}`,premiumLevel:`Premium · 4.5% ${u.daily}`,completed:d.active,principalLocked:d.invested,unknown:"—",contractCompleted:u.term,daysShort:u.days,hoursShort:"h",minutesShort:"m",secondsShort:"s",loading:"…",noTransactions:`${d.transactions}: 0`,signInTransactions:d.login,date:u.term,type:d.thAsset,assetNetwork:d.thAsset,invitedUser:d.username,notCompleted:d.active,credited:d.balance,rewardAfterInvestment:d.heroDesc,successfulReferral:referral,successfulReferralsCount:referral,
@@ -23684,6 +23704,9 @@ function parseDepositAsset(value) {
     trx_usdt_trc20: { asset: "USDT", network: "TRC20" },
     bnb_usdt_bep20: { asset: "USDT", network: "BEP20" },
     eth_usdt_erc20: { asset: "USDT", network: "ERC20" },
+    trx: { asset: "TRX", network: "TRON" },
+    bnb: { asset: "BNB", network: "BEP20" },
+    eth: { asset: "ETH", network: "ERC20" },
     btc: { asset: "BTC", network: "BITCOIN" }
   };
 
@@ -30058,7 +30081,11 @@ html.web-android [onclick] {
 #portfolio #depositCustomOptions{
   top:calc(100% + 6px);
   padding:7px;
+  max-height:min(450px,58dvh);
   overflow:hidden auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
   background:rgba(5,9,14,.88)!important;
   border:1px solid rgba(255,225,117,.42)!important;
   border-radius:14px!important;
@@ -30067,6 +30094,30 @@ html.web-android [onclick] {
   -webkit-backdrop-filter:blur(22px) saturate(130%)!important;
   isolation:isolate;
 }
+#portfolio #depositCustomOptions .deposit-option-group-title{
+  min-height:34px;
+  margin:3px 2px 5px;
+  padding:7px 10px;
+  display:flex;
+  align-items:center;
+  color:#7df0bf;
+  border:1px solid rgba(43,212,146,.2);
+  border-radius:9px;
+  background:linear-gradient(135deg,rgba(7,77,54,.34),rgba(4,22,17,.44));
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.04em;
+  line-height:1.35;
+  pointer-events:none;
+}
+#portfolio #depositCustomOptions .deposit-option-group-title.deposit-option-group-main{
+  margin-top:9px;
+  color:#ffe483;
+  border-color:rgba(240,185,11,.25);
+  background:linear-gradient(135deg,rgba(83,61,7,.32),rgba(27,21,6,.42));
+}
+html[dir="rtl"] #portfolio #depositCustomOptions .deposit-option-group-title{justify-content:flex-start;text-align:right}
+html[dir="ltr"] #portfolio #depositCustomOptions .deposit-option-group-title{justify-content:flex-start;text-align:left}
 #portfolio #depositCustomOptions .custom-option{
   min-height:48px;
   margin:2px 0;
@@ -30081,6 +30132,10 @@ html.web-android [onclick] {
 #portfolio #depositCustomOptions .custom-option:active{
   background:rgba(240,185,11,.14)!important;
   border-color:rgba(255,225,117,.22)!important;
+}
+@media(max-width:600px){
+  #portfolio #depositCustomOptions{max-height:54dvh;padding-bottom:14px}
+  #portfolio #depositCustomOptions .deposit-option-group-title{position:sticky;top:0;z-index:2;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 }
 #portfolio #withdrawCryptoCustomSelect{
   z-index:170;
@@ -30379,6 +30434,44 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 @media(max-width:460px){
   #profile .profile-contact-email,#profile .profile-contact-chat{min-height:46px;padding:9px 11px}
   #profile .profile-contact-chat{font-size:12px}
+}
+
+.contact-simple .contact-chat-btn{
+  width:min(420px,100%)!important;
+  min-height:52px!important;
+  margin:16px auto 0!important;
+  padding:11px 16px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  color:#bfffe5!important;
+  text-shadow:none!important;
+  background:linear-gradient(145deg,rgba(8,76,54,.46),rgba(3,20,16,.62))!important;
+  border:1px solid rgba(43,212,146,.48)!important;
+  border-radius:13px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 28px rgba(0,0,0,.28),0 0 18px rgba(43,212,146,.08)!important;
+  backdrop-filter:blur(13px) saturate(124%)!important;
+  -webkit-backdrop-filter:blur(13px) saturate(124%)!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:1.45!important;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.contact-simple .contact-chat-btn:hover{
+  color:#dcfff1!important;
+  transform:translateY(-1px)!important;
+  background:linear-gradient(145deg,rgba(9,98,68,.54),rgba(3,29,21,.7))!important;
+  border-color:rgba(80,240,180,.72)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 14px 31px rgba(0,0,0,.32),0 0 20px rgba(43,212,146,.13)!important;
+}
+.contact-simple .contact-chat-btn:active{transform:scale(.985)!important}
+.contact-simple .contact-chat-icon{width:26px;height:26px;display:grid;place-items:center;color:#63eeb7;flex:0 0 26px}
+.contact-simple .contact-chat-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.contact-simple .contact-chat-live{width:8px;height:8px;margin-inline-start:2px;border-radius:50%;background:#4cf0b3;box-shadow:0 0 11px #4cf0b3;flex:0 0 8px}
+@media(max-width:460px){
+  .contact-simple .contact-chat-btn{min-height:49px!important;padding:10px 12px!important;font-size:12px!important}
 }
 </style>
 
