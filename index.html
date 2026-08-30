@@ -14197,6 +14197,11 @@ html.native-app #rewards{
     <span id="supportNavBadge" class="support-nav-badge" hidden aria-label="New support reply">!</span>
   </button>
 
+  <button data-page="identity" onclick="page('identity',this)">
+    <span data-kyc-copy="nav">Identity</span>
+    <span id="kycNavBadge" class="kyc-nav-badge" hidden></span>
+  </button>
+
   <button data-page="profile" onclick="page('profile',this)">
     <span class="profile-nav-label" data-t="profile">Profile</span>
   </button>
@@ -15453,6 +15458,74 @@ html.native-app #rewards{
     </div>
   </div>
 </section>
+<section id="identity" class="view">
+  <div id="kycGuestPanel" class="kyc-guest-panel" hidden>
+    <div class="kyc-shield" aria-hidden="true">✓</div>
+    <h2 data-kyc-copy="title">Identity verification</h2>
+    <p data-kyc-copy="signInRequired">Sign in to submit or review your identity verification.</p>
+    <button class="btn gold" type="button" onclick="openAuth('login')" data-kyc-copy="signIn">Sign In</button>
+  </div>
+
+  <div id="kycAuthenticatedContent" hidden>
+    <div class="title kyc-page-title">
+      <div>
+        <span class="kyc-eyebrow" data-kyc-copy="eyebrow">ACCOUNT PROTECTION</span>
+        <h2 data-kyc-copy="title">Identity verification</h2>
+        <p data-kyc-copy="subtitle">Submit your identity document and a live selfie for manual review.</p>
+      </div>
+      <span id="kycStatusPill" class="kyc-status-pill not-submitted" data-kyc-copy="notSubmitted">Not submitted</span>
+    </div>
+
+    <div class="kyc-layout">
+      <aside class="kyc-info-card">
+        <div class="kyc-shield" aria-hidden="true">✓</div>
+        <h3 data-kyc-copy="whyTitle">Why verification is required</h3>
+        <p data-kyc-copy="whyText">Verification helps protect accounts and financial requests from unauthorized use.</p>
+        <div class="kyc-step"><b>1</b><span data-kyc-copy="stepOne">Enter your real information.</span></div>
+        <div class="kyc-step"><b>2</b><span data-kyc-copy="stepTwo">Upload one clear photo of your chosen document.</span></div>
+        <div class="kyc-step"><b>3</b><span data-kyc-copy="stepThree">Take a clear selfie while holding the document.</span></div>
+        <div class="kyc-privacy-note" data-kyc-copy="privacy">Your files are stored privately and are available only to authorized administrators.</div>
+      </aside>
+
+      <div class="kyc-form-card">
+        <div id="kycStateMessage" class="kyc-state-message" role="status" aria-live="polite"></div>
+        <form id="kycForm" onsubmit="submitKycRequest(event)" novalidate>
+          <div class="kyc-fields">
+            <label><span data-kyc-copy="fullName">Full legal name</span><input id="kycFullName" maxlength="120" autocomplete="name" required></label>
+            <label><span data-kyc-copy="country">Country</span><input id="kycCountry" maxlength="80" autocomplete="country-name" required></label>
+          </div>
+          <label><span data-kyc-copy="documentType">Document type</span>
+            <select id="kycDocumentType" required>
+              <option value="" data-kyc-copy="chooseDocument">Choose a document</option>
+              <option value="passport" data-kyc-copy="passport">Passport</option>
+              <option value="national_id" data-kyc-copy="nationalId">National ID card</option>
+              <option value="birth_certificate" data-kyc-copy="birthCertificate">Birth certificate</option>
+              <option value="driver_license" data-kyc-copy="driverLicense">Driver's license</option>
+            </select>
+          </label>
+
+          <div class="kyc-upload-grid">
+            <label class="kyc-upload" for="kycDocumentPhoto">
+              <input id="kycDocumentPhoto" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" required onchange="previewKycFile(this,'kycDocumentPreview','document')">
+              <img id="kycDocumentPreview" alt="" hidden>
+              <span class="kyc-upload-icon">＋</span><b data-kyc-copy="documentPhoto">Identity document photo</b><small data-kyc-copy="photoHelp">All document details must be clear and readable</small>
+            </label>
+            <label class="kyc-upload" for="kycSelfie">
+              <input id="kycSelfie" type="file" accept="image/jpeg,image/png,image/webp" capture="user" required onchange="previewKycFile(this,'kycSelfiePreview','selfie')">
+              <img id="kycSelfiePreview" alt="" hidden>
+              <span class="kyc-upload-icon">◎</span><b data-kyc-copy="selfie">Selfie with document</b><small data-kyc-copy="selfieHelp">Your face and document must both be visible</small>
+            </label>
+          </div>
+
+          <label class="kyc-consent"><input id="kycConsent" type="checkbox" required><span data-kyc-copy="consent">I confirm that the information and images belong to me and are accurate.</span></label>
+          <div id="kycError" class="kyc-error" hidden></div>
+          <button id="kycSubmitButton" class="btn gold kyc-submit" type="submit" data-kyc-copy="submit">Submit for review</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="profile" class="view">
   <div id="profileGuestPanel" class="profile-guest-panel" hidden>
     <div class="profile-guest-icon" aria-hidden="true">
@@ -29383,6 +29456,128 @@ html.web-android [onclick] {
       });
     }, {passive:true, capture:true});
   });
+})();
+</script>
+
+<style id="kyc-module-styles">
+.kyc-nav-badge{width:8px;height:8px;margin-inline-start:5px;border-radius:50%;background:#f0b90b;box-shadow:0 0 10px currentColor}
+#identity{position:relative;padding:18px 0 34px}
+.kyc-page-title{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.kyc-page-title h2{margin:5px 0 4px;font-size:clamp(25px,4vw,38px)}
+.kyc-page-title p{margin:0;color:var(--muted);line-height:1.75}
+.kyc-eyebrow{color:#ffe178;font-size:10px;font-weight:900;letter-spacing:.16em}
+.kyc-status-pill{flex:0 0 auto;padding:9px 13px;border:1px solid rgba(255,255,255,.16);border-radius:999px;color:#ccd3de;background:rgba(8,12,18,.58);font-size:11px;font-weight:900;backdrop-filter:blur(12px)}
+.kyc-status-pill.pending{color:#ffe58a;border-color:rgba(240,185,11,.38);background:rgba(67,49,6,.42)}
+.kyc-status-pill.approved{color:#6df0b7;border-color:rgba(42,211,146,.38);background:rgba(5,55,39,.42)}
+.kyc-status-pill.rejected{color:#ff9ca6;border-color:rgba(255,101,113,.42);background:rgba(67,13,23,.42)}
+.kyc-layout{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.45fr);gap:16px}
+.kyc-info-card,.kyc-form-card,.kyc-guest-panel{border:1px solid rgba(255,229,138,.25);border-radius:22px;background:linear-gradient(145deg,rgba(10,15,22,.72),rgba(5,8,13,.52));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 20px 52px rgba(0,0,0,.32);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.kyc-info-card{padding:24px}.kyc-info-card h3{margin:16px 0 8px;font-size:20px}.kyc-info-card>p{margin:0 0 20px;color:#aeb7c4;line-height:1.8}
+.kyc-shield{width:56px;height:56px;display:grid;place-items:center;border:1px solid rgba(255,229,138,.54);border-radius:18px;color:#ffe57f;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.16),rgba(240,185,11,.12) 40%,rgba(8,12,18,.55));box-shadow:0 0 24px rgba(240,185,11,.12);font-size:24px;font-weight:950}
+.kyc-step{display:grid;grid-template-columns:31px minmax(0,1fr);align-items:center;gap:10px;margin-top:11px;color:#d8dde5;line-height:1.55}
+.kyc-step b{width:31px;height:31px;display:grid;place-items:center;border:1px solid rgba(240,185,11,.3);border-radius:10px;color:#ffe17b;background:rgba(240,185,11,.08)}
+.kyc-privacy-note{margin-top:21px;padding:13px;border:1px solid rgba(54,210,151,.22);border-radius:13px;color:#a7dfca;background:rgba(13,81,59,.15);font-size:11px;line-height:1.75}
+.kyc-form-card{padding:24px}.kyc-form-card form>label,.kyc-fields label{display:grid;gap:8px;margin-bottom:14px;color:#d8dde5;font-size:12px;font-weight:800}
+.kyc-form-card input:not([type=file]):not([type=checkbox]),.kyc-form-card select{width:100%;min-height:48px;padding:11px 13px;border:1px solid rgba(255,255,255,.16);border-radius:13px;outline:0;color:#fff;background:rgba(5,9,14,.62)}
+.kyc-form-card input:focus,.kyc-form-card select:focus{border-color:rgba(240,185,11,.66);box-shadow:0 0 0 3px rgba(240,185,11,.1)}
+.kyc-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.kyc-fields label{margin:0}
+.kyc-upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:15px 0}
+.kyc-upload{position:relative;min-height:170px;padding:18px;overflow:hidden;display:grid!important;place-items:center;align-content:center;gap:6px;border:1px dashed rgba(255,229,138,.36);border-radius:16px;color:#e8ecf2;background:rgba(3,7,12,.42);text-align:center;cursor:pointer;transition:.16s}
+.kyc-upload:hover,.kyc-upload.has-file{border-style:solid;border-color:rgba(240,185,11,.65);background:rgba(240,185,11,.065)}
+.kyc-upload input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.kyc-upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.36}.kyc-upload>*:not(img):not(input){position:relative;z-index:1;text-shadow:0 2px 8px #000}.kyc-upload-icon{font-size:27px;color:#ffe07a}.kyc-upload b{font-size:13px}.kyc-upload small{color:#9fa9b7;font-size:10px}
+.kyc-consent{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:9px!important;margin:15px 0!important;color:#c6ced9!important;font-weight:600!important;line-height:1.65}.kyc-consent input{width:19px;height:19px;flex:0 0 19px;margin-top:2px;accent-color:#f0b90b}
+.kyc-submit{width:100%;min-height:50px}.kyc-submit:disabled{opacity:.55;cursor:wait}
+.kyc-error,.kyc-state-message{margin-bottom:14px;padding:12px 13px;border:1px solid rgba(255,101,113,.38);border-radius:13px;color:#ffb0b7;background:rgba(74,15,25,.34);line-height:1.7}
+.kyc-state-message:empty{display:none}.kyc-state-message.pending{color:#ffe7a1;border-color:rgba(240,185,11,.35);background:rgba(71,51,8,.32)}.kyc-state-message.approved{color:#8bf1c5;border-color:rgba(42,211,146,.34);background:rgba(8,67,48,.30)}.kyc-state-message.rejected{color:#ffadb6}.kyc-state-message.setup{color:#b8c7da;border-color:rgba(133,156,187,.35);background:rgba(23,35,51,.45)}
+.kyc-guest-panel{max-width:580px;margin:40px auto;padding:38px;display:grid;justify-items:center;gap:12px;text-align:center}.kyc-guest-panel p{margin:0 0 10px;color:#aeb7c4;line-height:1.7}
+@media(max-width:780px){.kyc-layout{grid-template-columns:1fr}.kyc-page-title{align-items:flex-start;flex-direction:column}.kyc-status-pill{align-self:flex-start}.kyc-info-card,.kyc-form-card{padding:18px}}
+@media(max-width:540px){#identity{padding-inline:8px}.kyc-fields,.kyc-upload-grid{grid-template-columns:1fr}.kyc-upload{min-height:145px}.kyc-page-title h2{font-size:27px}}
+</style>
+
+<script id="kyc-module-v1">
+(function(){
+  "use strict";
+  const KYC_BUCKET="kyc-documents";
+  const MAX_KYC_SOURCE_BYTES=20*1024*1024;
+  const KYC_COPY={
+    en:{nav:"Identity",eyebrow:"ACCOUNT PROTECTION",title:"Identity verification",subtitle:"Choose an available identity document and submit one document photo plus a selfie holding it for manual review.",signIn:"Sign In",signInRequired:"Sign in to submit or review your identity verification.",whyTitle:"Why verification is required",whyText:"Verification helps protect accounts and financial requests from unauthorized use.",stepOne:"Enter your real information and choose an available document.",stepTwo:"Upload one clear, readable photo of the document.",stepThree:"Take a clear selfie while holding the same document.",privacy:"Your files are stored privately and are available only to authorized administrators.",fullName:"Full legal name",country:"Country",documentType:"Document type",chooseDocument:"Choose a document",passport:"Passport",nationalId:"National ID card",birthCertificate:"Birth certificate",driverLicense:"Driver's license",documentPhoto:"Identity document photo",selfie:"Selfie with document",photoHelp:"All document details must be clear and readable",selfieHelp:"Your face and document must both be visible",consent:"I confirm that the information and images belong to me and are accurate.",submit:"Submit for review",submitting:"Uploading securely…",notSubmitted:"Not submitted",pending:"Pending review",approved:"Verified",rejected:"Resubmission required",pendingMessage:"Your documents were submitted successfully and are waiting for administrator review.",approvedMessage:"Your identity has been verified successfully.",rejectedMessage:"Your previous request was rejected. Review the administrator note and submit clearer images.",setupMessage:"Identity verification will become available after the Supabase setup file is installed.",required:"Complete every field and select the document photo and selfie.",consentRequired:"You must confirm the accuracy and ownership of the information.",invalidImage:"Only JPG, PNG and WebP images are accepted.",largeImage:"One of the selected images is too large. Choose a photo smaller than 20 MB.",submitError:"The verification request could not be submitted. Please try again.",selected:"Photo selected"},
+    fa:{nav:"احراز هویت",eyebrow:"امنیت حساب",title:"احراز هویت",subtitle:"یکی از مدارک در دسترس را انتخاب کنید و یک عکس از مدرک به‌همراه سلفی با همان مدرک برای بررسی مدیر بفرستید.",signIn:"ورود",signInRequired:"برای ارسال یا مشاهده وضعیت احراز هویت وارد حساب شوید.",whyTitle:"چرا احراز هویت لازم است؟",whyText:"احراز هویت از حساب و درخواست‌های مالی شما در برابر استفاده غیرمجاز محافظت می‌کند.",stepOne:"اطلاعات واقعی را وارد و یکی از مدارک در دسترس را انتخاب کنید.",stepTwo:"یک عکس واضح و خوانا از مدرک ارسال کنید.",stepThree:"یک سلفی واضح در حالی که همان مدرک را در دست دارید بگیرید.",privacy:"فایل‌های شما خصوصی ذخیره می‌شوند و فقط مدیران مجاز به آن‌ها دسترسی دارند.",fullName:"نام و نام خانوادگی واقعی",country:"کشور",documentType:"نوع مدرک",chooseDocument:"مدرک را انتخاب کنید",passport:"پاسپورت",nationalId:"کارت ملی",birthCertificate:"شناسنامه",driverLicense:"گواهینامه رانندگی",documentPhoto:"عکس مدرک هویتی",selfie:"سلفی همراه مدرک",photoHelp:"تمام اطلاعات مدرک باید واضح و خوانا باشد",selfieHelp:"چهره و مدرک هر دو باید واضح باشند",consent:"تأیید می‌کنم اطلاعات و تصاویر متعلق به خودم و صحیح هستند.",submit:"ارسال برای بررسی",submitting:"در حال ارسال امن…",notSubmitted:"ارسال نشده",pending:"در انتظار بررسی",approved:"تأییدشده",rejected:"نیاز به ارسال مجدد",pendingMessage:"مدارک شما با موفقیت ارسال شده و منتظر بررسی مدیر است.",approvedMessage:"احراز هویت شما با موفقیت تأیید شده است.",rejectedMessage:"درخواست قبلی رد شده است. یادداشت مدیر را بخوانید و تصاویر واضح‌تری ارسال کنید.",setupMessage:"پس از اجرای فایل تنظیمات Supabase، احراز هویت فعال می‌شود.",required:"تمام کادرها را کامل کنید و عکس مدرک و سلفی را انتخاب کنید.",consentRequired:"باید صحت و مالکیت اطلاعات را تأیید کنید.",invalidImage:"فقط تصاویر JPG، PNG و WebP قابل قبول هستند.",largeImage:"حجم یکی از تصاویر زیاد است. عکس کوچک‌تر از ۲۰ مگابایت انتخاب کنید.",submitError:"درخواست احراز هویت ارسال نشد. دوباره تلاش کنید.",selected:"عکس انتخاب شد"},
+    az:{nav:"Kimlik təsdiqi",title:"Kimlik təsdiqi",subtitle:"Şəxsiyyət sənədinizi və canlı selfinizi yoxlama üçün göndərin.",signIn:"Daxil ol",notSubmitted:"Göndərilməyib",pending:"Yoxlanılır",approved:"Təsdiqləndi",rejected:"Yenidən göndərin",submit:"Yoxlamaya göndər"},
+    tr:{nav:"Kimlik",title:"Kimlik doğrulama",subtitle:"Kimlik belgenizi ve canlı özçekiminizi inceleme için gönderin.",signIn:"Giriş Yap",notSubmitted:"Gönderilmedi",pending:"İnceleniyor",approved:"Doğrulandı",rejected:"Yeniden gönderin",submit:"İncelemeye gönder"},
+    ru:{nav:"Верификация",title:"Подтверждение личности",subtitle:"Отправьте документ и селфи на проверку.",signIn:"Войти",notSubmitted:"Не отправлено",pending:"На проверке",approved:"Подтверждено",rejected:"Отправьте повторно",submit:"Отправить на проверку"},
+    ar:{nav:"التحقق",title:"التحقق من الهوية",subtitle:"أرسل وثيقة الهوية وصورة شخصية للمراجعة.",signIn:"تسجيل الدخول",notSubmitted:"لم يُرسل",pending:"قيد المراجعة",approved:"تم التحقق",rejected:"أعد الإرسال",submit:"إرسال للمراجعة"},
+    zh:{nav:"身份验证",title:"身份验证",subtitle:"提交身份证件和实时自拍照以供审核。",signIn:"登录",notSubmitted:"未提交",pending:"审核中",approved:"已验证",rejected:"需要重新提交",submit:"提交审核"},
+    es:{nav:"Identidad",title:"Verificación de identidad",subtitle:"Envía tu documento y una selfie para revisión.",signIn:"Iniciar sesión",notSubmitted:"No enviado",pending:"En revisión",approved:"Verificado",rejected:"Volver a enviar",submit:"Enviar para revisión"},
+    fr:{nav:"Identité",title:"Vérification d’identité",subtitle:"Envoyez votre pièce d’identité et un selfie pour examen.",signIn:"Se connecter",notSubmitted:"Non envoyé",pending:"En cours",approved:"Vérifié",rejected:"Renvoyer",submit:"Envoyer"},
+    de:{nav:"Identität",title:"Identitätsprüfung",subtitle:"Senden Sie Ausweis und Selfie zur Prüfung.",signIn:"Anmelden",notSubmitted:"Nicht gesendet",pending:"In Prüfung",approved:"Verifiziert",rejected:"Erneut senden",submit:"Zur Prüfung senden"}
+  };
+  let currentKycRequest=null;
+  let kycLoading=false;
+  function lang(){return localStorage.getItem("bi_lang")||document.documentElement.lang||"en"}
+  function copy(key){const chosen=KYC_COPY[lang()]||KYC_COPY.en;return chosen[key]||KYC_COPY.en[key]||key}
+  function applyKycCopy(){document.querySelectorAll("[data-kyc-copy]").forEach(el=>{const value=copy(el.dataset.kycCopy);if(value)el.textContent=value});renderKycState(currentKycRequest)}
+  function setKycError(message){const box=document.getElementById("kycError");if(!box)return;box.textContent=message||"";box.hidden=!message}
+  function isMissingKycTable(error){return ["42P01","PGRST205","PGRST204"].includes(error?.code)||/kyc_requests|submit_kyc_request/i.test(error?.message||"")}
+  function renderKycState(request){
+    const signedIn=Boolean(window.currentUser?.id||currentUser?.id);
+    const guest=document.getElementById("kycGuestPanel"),content=document.getElementById("kycAuthenticatedContent"),form=document.getElementById("kycForm"),message=document.getElementById("kycStateMessage"),pill=document.getElementById("kycStatusPill"),badge=document.getElementById("kycNavBadge");
+    if(!guest||!content)return;
+    guest.hidden=signedIn;content.hidden=!signedIn;if(!signedIn)return;
+    const status=request?.status||"not-submitted";
+    const statusKey=status==="pending"?"pending":status==="approved"?"approved":status==="rejected"?"rejected":"notSubmitted";
+    pill.className="kyc-status-pill "+status;pill.textContent=copy(statusKey);
+    badge.hidden=status==="not-submitted";badge.style.background=status==="approved"?"#2bd492":status==="rejected"?"#ff6571":"#f0b90b";
+    if(status==="pending"){message.className="kyc-state-message pending";message.textContent=copy("pendingMessage");form.hidden=true}
+    else if(status==="approved"){message.className="kyc-state-message approved";message.textContent=copy("approvedMessage");form.hidden=true}
+    else if(status==="rejected"){message.className="kyc-state-message rejected";message.textContent=copy("rejectedMessage")+(request?.review_note?" "+request.review_note:"");form.hidden=false}
+    else{message.className="kyc-state-message";message.textContent="";form.hidden=false}
+    const nameInput=document.getElementById("kycFullName");if(nameInput&&!nameInput.value)nameInput.value=currentUser?.fullname||currentUser?.full_name||"";
+  }
+  window.loadKycStatus=async function(){
+    if(kycLoading)return;kycLoading=true;setKycError("");
+    try{
+      if(!currentUser?.id){currentKycRequest=null;renderKycState(null);return}
+      const {data,error}=await supabaseClient.from("kyc_requests").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
+      if(error){if(isMissingKycTable(error)){currentKycRequest={status:"setup"};const m=document.getElementById("kycStateMessage");renderKycState(null);m.className="kyc-state-message setup";m.textContent=copy("setupMessage");document.getElementById("kycForm").hidden=true;return}throw error}
+      currentKycRequest=data||null;renderKycState(currentKycRequest);
+    }catch(error){console.error("KYC status",error);setKycError(error?.message||copy("submitError"))}finally{kycLoading=false}
+  };
+  window.previewKycFile=function(input,previewId){
+    const file=input.files?.[0],preview=document.getElementById(previewId);setKycError("");
+    if(!file||!preview)return;
+    if(!["image/jpeg","image/png","image/webp"].includes(file.type)){input.value="";return setKycError(copy("invalidImage"))}
+    if(file.size>MAX_KYC_SOURCE_BYTES){input.value="";return setKycError(copy("largeImage"))}
+    if(preview.dataset.objectUrl)URL.revokeObjectURL(preview.dataset.objectUrl);
+    const url=URL.createObjectURL(file);preview.dataset.objectUrl=url;preview.src=url;preview.hidden=false;input.closest(".kyc-upload")?.classList.add("has-file");
+  };
+  async function compressImage(file){
+    let bitmap;try{bitmap=await createImageBitmap(file)}catch(_){return file}
+    const max=2200,scale=Math.min(1,max/Math.max(bitmap.width,bitmap.height)),w=Math.max(1,Math.round(bitmap.width*scale)),h=Math.max(1,Math.round(bitmap.height*scale));
+    const canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;const context=canvas.getContext("2d",{alpha:false});context.fillStyle="#fff";context.fillRect(0,0,w,h);context.drawImage(bitmap,0,0,w,h);bitmap.close?.();
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.88));return blob||file;
+  }
+  window.submitKycRequest=async function(event){
+    event.preventDefault();setKycError("");
+    if(!currentUser?.id)return openAuth("login");
+    const fullName=document.getElementById("kycFullName").value.trim(),country=document.getElementById("kycCountry").value.trim(),documentType=document.getElementById("kycDocumentType").value,documentPhoto=document.getElementById("kycDocumentPhoto").files?.[0],selfie=document.getElementById("kycSelfie").files?.[0],consent=document.getElementById("kycConsent").checked;
+    if(!fullName||!country||!documentType||!documentPhoto||!selfie)return setKycError(copy("required"));
+    if(!consent)return setKycError(copy("consentRequired"));
+    const files=[documentPhoto,selfie];if(files.some(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)))return setKycError(copy("invalidImage"));if(files.some(f=>f.size>MAX_KYC_SOURCE_BYTES))return setKycError(copy("largeImage"));
+    const button=document.getElementById("kycSubmitButton"),oldText=button.textContent;button.disabled=true;button.textContent=copy("submitting");
+    try{
+      const requestId=crypto.randomUUID(),names=["document.jpg","selfie.jpg"],prepared=[];
+      for(const file of files)prepared.push(await compressImage(file));
+      const paths=names.map(name=>`${currentUser.id}/${requestId}/${name}`);
+      for(let i=0;i<prepared.length;i++){const {error}=await supabaseClient.storage.from(KYC_BUCKET).upload(paths[i],prepared[i],{contentType:"image/jpeg",cacheControl:"0",upsert:false});if(error)throw error}
+      const {error}=await supabaseClient.rpc("submit_kyc_request",{p_id:requestId,p_full_name:fullName,p_country:country,p_document_type:documentType,p_document_path:paths[0],p_selfie_path:paths[1]});if(error)throw error;
+      event.target.reset();document.querySelectorAll(".kyc-upload").forEach(el=>el.classList.remove("has-file"));document.querySelectorAll(".kyc-upload img").forEach(img=>{if(img.dataset.objectUrl)URL.revokeObjectURL(img.dataset.objectUrl);img.hidden=true;img.removeAttribute("src")});await loadKycStatus();
+    }catch(error){console.error("KYC submit",error);setKycError(isMissingKycTable(error)?copy("setupMessage"):(error?.message||copy("submitError")))}finally{button.disabled=false;button.textContent=oldText||copy("submit")}
+  };
+  const previousPage=window.page;if(typeof previousPage==="function")window.page=function(id,button){const result=previousPage.apply(this,arguments);if(id==="identity")setTimeout(()=>window.loadKycStatus(),0);return result};
+  const previousHeaderUpdate=window.updateHeaderAuthUI;if(typeof previousHeaderUpdate==="function")window.updateHeaderAuthUI=function(){const result=previousHeaderUpdate.apply(this,arguments);setTimeout(()=>window.loadKycStatus(),0);return result};
+  new MutationObserver(applyKycCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+  if(window.supabaseClient?.auth)window.supabaseClient.auth.onAuthStateChange(()=>setTimeout(()=>window.loadKycStatus(),250));
+  window.addEventListener("DOMContentLoaded",()=>{applyKycCopy();setTimeout(()=>window.loadKycStatus(),500)});
 })();
 </script>
 
