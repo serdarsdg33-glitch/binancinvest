@@ -15153,10 +15153,32 @@ html.native-app #rewards{
 
       <div id="tx-container" style="margin-bottom: 20px;">
           <label style="display:block; color:#aeb7c3; font-size:12px; margin-bottom:5px;" data-t="depTxLabel">Transaction Hash / Reference Code:</label>
-          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" oninput="clearFieldError('tx-ref')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
+          <input type="text" id="tx-ref" placeholder="TXID / Ref Code" oninput="clearFieldError('tx-ref');if(this.value.trim())setDepositReceiptError('')" style="width:100%; padding:11px; background:#1a222c; border:1px solid #474d57; color:#fff; border-radius:8px;">
       </div>
 
-      <button class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
+      <div id="deposit-receipt-container" class="deposit-receipt-field">
+          <div class="deposit-receipt-heading">
+              <span data-deposit-receipt-copy="label">Deposit receipt image</span>
+              <small data-deposit-receipt-copy="optional">Optional when TXID is entered</small>
+          </div>
+          <label class="deposit-receipt-upload" id="depositReceiptUpload" for="deposit-receipt-input">
+              <input id="deposit-receipt-input" type="file" accept="image/jpeg,image/png,image/webp" onchange="handleDepositReceiptChange(event)">
+              <img id="depositReceiptPreview" alt="" hidden>
+              <span class="deposit-receipt-upload-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h1.2l1.1-1.5h6.4L16.3 5h1.2A2.5 2.5 0 0 1 20 7.5v9A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z"/><circle cx="12" cy="12" r="3.2"/></svg>
+              </span>
+              <strong data-deposit-receipt-copy="title">Choose receipt image</strong>
+              <small data-deposit-receipt-copy="help">JPG, PNG or WebP — maximum 8 MB</small>
+          </label>
+          <div class="deposit-receipt-meta" id="depositReceiptMeta" hidden>
+              <span id="depositReceiptFileName"></span>
+              <button type="button" onclick="resetDepositReceipt()" data-deposit-receipt-copy="remove">Remove image</button>
+          </div>
+          <p class="deposit-receipt-requirement" data-deposit-receipt-copy="requirement">Enter a TXID or upload a receipt image; one of the two is required.</p>
+          <div id="depositReceiptError" class="deposit-receipt-error" role="alert" aria-live="polite"></div>
+      </div>
+
+      <button id="deposit-submit-button" class="btn gold" style="width:100%; padding: 12px; font-size: 15px;" onclick="submitDepositRequest()" data-t="depSubmitBtn">Submit Deposit Request</button>
     </div>
 
     <!-- بخش برداشت -->
@@ -17437,7 +17459,7 @@ contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security
 platformStatsTitle:"Platform Statistics", statUsers:"Total registered users on the site", statInvestors:"Investors and active users", statPaid:"Total profit paid to date", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
 optDirect:"1. Direct Payment", optPaymentio:"2. Payment.io / NowPayments Gateway",
-walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Please transfer the amount to this address and submit the TXID for support team approval.</small>",
+walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfer the amount to this address, then submit the TXID or a receipt image for support team approval.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment.",
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
@@ -17463,7 +17485,7 @@ contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", 
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"تعداد کل سرمایه‌گذاران و کاربران ثبت‌شده در سایت", statInvestors:"سرمایه‌گذاران و کاربران آنلاین", statPaid:"کل سود پرداختی تا الان", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
 optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io / NowPayments",
-walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>لطفاً مبلغ را به این آدرس واریز کرده و سپس کد پیگیری/هش تراکنش را ثبت کنید تا پس از بررسی تیم پشتیبانی به موجودی شما اضافه گردد.</small>",
+walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>مبلغ را به این آدرس واریز کنید؛ سپس هش تراکنش یا تصویر فیش را بفرستید تا تیم پشتیبانی آن را بررسی کند.</small>",
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
 },
@@ -17489,7 +17511,7 @@ contactUs:"Bizimlə Əlaqə", supportEmail:"Dəstək E-poçtu", securityPartners
 platformStatsTitle:"Platforma Statistikası", statUsers:"Saytda qeydiyyatdan keçmiş ümumi istifadəçi sayı", statInvestors:"Aktiv investorlar və istifadəçilər", statPaid:"İndiyədək ödənilmiş ümumi mənfəət", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi",
 depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
 optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
-walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Zəhmət olmasa məbləği bu ünvana köçürün və təsdiq üçün TXID kodunu daxil edin.</small>",
+walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Məbləği bu ünvana köçürün, sonra təsdiq üçün TXID və ya qəbz şəklini göndərin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
 withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
 },
@@ -17514,7 +17536,7 @@ contactUs:"İletişim", supportEmail:"Destek E-postası", securityPartners:"Güv
 platformStatsTitle:"Platform İstatistikleri", statUsers:"Sitedeki toplam kayıtlı kullanıcı sayısı", statInvestors:"Aktif yatırımcılar ve kullanıcılar", statPaid:"Şimdiye kadar ödenen toplam kâr", statCapital:"Platform Sermayesi", liveWithdrawalsTitle:"Canlı Çekimler", justNow:"Az önce",
 depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCryptoLabel:"Para Birimi ve Ağ Seçin:", depTxLabel:"İşlem Kodu / TXID:", depSubmitBtn:"Yatırma Talebi Gönder",
 optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme",
-walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Lütfen tutarı bu adrese gönderin ve onay için TXID kodunu girin.</small>",
+walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Tutarı bu adrese gönderin, ardından onay için TXID veya dekont görselini iletin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın.",
 withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
 },
@@ -17539,7 +17561,7 @@ contactUs:"Контакты", supportEmail:"Email поддержки", securityP
 platformStatsTitle:"Статистика платформы", statUsers:"Общее число зарегистрированных пользователей", statInvestors:"Активные инвесторы и пользователи", statPaid:"Общая выплаченная прибыль на данный момент", statCapital:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
 depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
 optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
-walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму на этот адрес и введите TXID для подтверждения службой поддержки.</small>",
+walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму и отправьте TXID или изображение квитанции на проверку.</small>",
 paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
 },
@@ -17565,7 +17587,7 @@ contactUs:"اتصل بنا", supportEmail:"البريد الإلكتروني ل�
 platformStatsTitle:"إحصائيات المنصة", statUsers:"إجمالي عدد المستخدمين المسجلين في الموقع", statInvestors:"المستثمرون والمستخدمون النشطون", statPaid:"إجمالي الأرباح المدفوعة حتى الآن", statCapital:"رأس مال المنصة", liveWithdrawalsTitle:"عمليات السحب المباشرة", justNow:"الآن",
 depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
 optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
-walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>يرجى تحويل المبلغ إلى هذا العنوان وإرسال كود TXID لموافقة فريق الدعم.</small>",
+walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>حوّل المبلغ ثم أرسل TXID أو صورة الإيصال لمراجعة فريق الدعم.</small>",
 paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
 withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
 },
@@ -17591,7 +17613,7 @@ contactUs:"联系我们", supportEmail:"支持邮箱", securityPartners:"安全�
 platformStatsTitle:"平台统计", statUsers:"网站注册用户总数", statInvestors:"活跃投资者和用户", statPaid:"截至目前已支付的总利润", statCapital:"平台资本", liveWithdrawalsTitle:"实时提现", justNow:"刚刚",
 depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
 optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
-walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>请将金额转入此地址并提交 TXID 以供支持团队审核。</small>",
+walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>转账后，请提交 TXID 或充值凭证图片供支持团队审核。</small>",
 paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
 withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
 },
@@ -17617,7 +17639,7 @@ contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"So
 platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Total de usuarios registrados en el sitio", statInvestors:"Inversores y usuarios activos", statPaid:"Beneficio total pagado hasta ahora", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
 depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
 optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
-walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el monto a esta dirección y envíe el TXID para aprobación del equipo de soporte.</small>",
+walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el importe y envíe el TXID o una imagen del comprobante para su revisión.</small>",
 paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
 withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
 },
@@ -17643,7 +17665,7 @@ contactUs:"Contactez-nous", supportEmail:"E-mail de support", securityPartners:"
 platformStatsTitle:"Statistiques de la plateforme", statUsers:"Nombre total d’utilisateurs inscrits sur le site", statInvestors:"Investisseurs et utilisateurs actifs", statPaid:"Bénéfices totaux versés à ce jour", statCapital:"Capital de la plateforme", liveWithdrawalsTitle:"Retraits en direct", justNow:"À l'instant",
 depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
 optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
-walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Veuillez transférer le montant à cette adresse et soumettre le TXID.</small>",
+walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Effectuez le transfert, puis envoyez le TXID ou une image du reçu.</small>",
 paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
 withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
 },
@@ -17669,7 +17691,7 @@ contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheit
 platformStatsTitle:"Plattform-Statistiken", statUsers:"Gesamtzahl der auf der Website registrierten Nutzer", statInvestors:"Aktive Investoren und Nutzer", statPaid:"Bisher insgesamt ausgezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
 depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
 optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
-walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Bitte überweisen Sie den Betrag an diese Adresse und senden Sie die TXID zur Genehmigung durch das Support-Team.</small>",
+walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Überweisen Sie den Betrag und senden Sie anschließend die TXID oder ein Belegbild zur Prüfung.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
@@ -23716,6 +23738,53 @@ function parseDepositAsset(value) {
   };
 }
 
+const DEPOSIT_RECEIPT_BUCKET = "deposit-receipts";
+const MAX_DEPOSIT_RECEIPT_BYTES = 8 * 1024 * 1024;
+const DEPOSIT_RECEIPT_COPY = {
+  en:{label:"Deposit receipt image",optional:"Optional when TXID is entered",title:"Choose receipt image",help:"JPG, PNG or WebP — maximum 8 MB",remove:"Remove image",requirement:"Enter a TXID or upload a receipt image; one of the two is required.",required:"Enter a TXID or upload a receipt image.",invalid:"Choose a valid JPG, PNG or WebP image.",large:"The receipt image must be smaller than 8 MB.",uploadFailed:"The receipt image could not be uploaded. Please try again."},
+  fa:{label:"تصویر فیش واریزی",optional:"در صورت واردکردن TXID اختیاری است",title:"انتخاب تصویر فیش",help:"JPG، PNG یا WebP — حداکثر ۸ مگابایت",remove:"حذف تصویر",requirement:"واردکردن TXID یا ارسال تصویر فیش الزامی است؛ یکی از این دو کافی است.",required:"TXID را وارد کنید یا تصویر فیش را بفرستید.",invalid:"یک تصویر معتبر با فرمت JPG، PNG یا WebP انتخاب کنید.",large:"حجم تصویر فیش باید کمتر از ۸ مگابایت باشد.",uploadFailed:"ارسال تصویر فیش انجام نشد؛ دوباره تلاش کنید."},
+  az:{label:"Ödəniş qəbzinin şəkli",optional:"TXID daxil ediləndə istəyə bağlıdır",title:"Qəbz şəklini seçin",help:"JPG, PNG və ya WebP — maksimum 8 MB",remove:"Şəkli sil",requirement:"TXID daxil edin və ya qəbz şəklini yükləyin; bunlardan biri kifayətdir.",required:"TXID daxil edin və ya qəbz şəklini yükləyin.",invalid:"Etibarlı JPG, PNG və ya WebP şəkli seçin.",large:"Qəbz şəkli 8 MB-dan kiçik olmalıdır.",uploadFailed:"Qəbz şəklini yükləmək mümkün olmadı. Yenidən cəhd edin."},
+  tr:{label:"Yatırma dekontu görseli",optional:"TXID girildiğinde isteğe bağlıdır",title:"Dekont görseli seçin",help:"JPG, PNG veya WebP — en fazla 8 MB",remove:"Görseli kaldır",requirement:"TXID girin veya dekont görseli yükleyin; ikisinden biri yeterlidir.",required:"TXID girin veya dekont görseli yükleyin.",invalid:"Geçerli bir JPG, PNG veya WebP görseli seçin.",large:"Dekont görseli 8 MB'dan küçük olmalıdır.",uploadFailed:"Dekont görseli yüklenemedi. Lütfen tekrar deneyin."},
+  ru:{label:"Изображение квитанции",optional:"Необязательно при наличии TXID",title:"Выберите изображение квитанции",help:"JPG, PNG или WebP — до 8 МБ",remove:"Удалить изображение",requirement:"Введите TXID или загрузите квитанцию; достаточно одного варианта.",required:"Введите TXID или загрузите изображение квитанции.",invalid:"Выберите изображение JPG, PNG или WebP.",large:"Размер изображения должен быть меньше 8 МБ.",uploadFailed:"Не удалось загрузить квитанцию. Повторите попытку."},
+  ar:{label:"صورة إيصال الإيداع",optional:"اختياري عند إدخال TXID",title:"اختر صورة الإيصال",help:"JPG أو PNG أو WebP — بحد أقصى 8 ميغابايت",remove:"حذف الصورة",requirement:"أدخل TXID أو ارفع صورة الإيصال؛ يكفي أحدهما.",required:"أدخل TXID أو ارفع صورة إيصال الإيداع.",invalid:"اختر صورة JPG أو PNG أو WebP صالحة.",large:"يجب أن يكون حجم الصورة أقل من 8 ميغابايت.",uploadFailed:"تعذر رفع صورة الإيصال. حاول مرة أخرى."},
+  zh:{label:"充值凭证图片",optional:"已填写 TXID 时可选",title:"选择凭证图片",help:"JPG、PNG 或 WebP — 最大 8 MB",remove:"删除图片",requirement:"请输入 TXID 或上传凭证图片，两者任选其一。",required:"请输入 TXID 或上传充值凭证图片。",invalid:"请选择有效的 JPG、PNG 或 WebP 图片。",large:"凭证图片必须小于 8 MB。",uploadFailed:"凭证图片上传失败，请重试。"},
+  es:{label:"Imagen del comprobante",optional:"Opcional si se introduce el TXID",title:"Elegir imagen del comprobante",help:"JPG, PNG o WebP — máximo 8 MB",remove:"Eliminar imagen",requirement:"Introduce el TXID o sube el comprobante; uno de los dos es obligatorio.",required:"Introduce el TXID o sube una imagen del comprobante.",invalid:"Elige una imagen JPG, PNG o WebP válida.",large:"La imagen debe pesar menos de 8 MB.",uploadFailed:"No se pudo subir el comprobante. Inténtalo de nuevo."},
+  fr:{label:"Image du reçu de dépôt",optional:"Facultatif si le TXID est saisi",title:"Choisir l’image du reçu",help:"JPG, PNG ou WebP — 8 Mo maximum",remove:"Supprimer l’image",requirement:"Saisissez le TXID ou ajoutez le reçu ; l’un des deux est obligatoire.",required:"Saisissez le TXID ou ajoutez une image du reçu.",invalid:"Choisissez une image JPG, PNG ou WebP valide.",large:"L’image doit faire moins de 8 Mo.",uploadFailed:"Le reçu n’a pas pu être envoyé. Réessayez."},
+  de:{label:"Bild des Einzahlungsbelegs",optional:"Optional, wenn eine TXID angegeben ist",title:"Belegbild auswählen",help:"JPG, PNG oder WebP — maximal 8 MB",remove:"Bild entfernen",requirement:"TXID eingeben oder Belegbild hochladen; eine der beiden Angaben ist erforderlich.",required:"Geben Sie die TXID ein oder laden Sie ein Belegbild hoch.",invalid:"Wählen Sie ein gültiges JPG-, PNG- oder WebP-Bild.",large:"Das Belegbild muss kleiner als 8 MB sein.",uploadFailed:"Das Belegbild konnte nicht hochgeladen werden. Bitte erneut versuchen."}
+};
+let depositReceiptFile = null;
+let depositReceiptObjectUrl = "";
+function depositReceiptCopy(){const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";return DEPOSIT_RECEIPT_COPY[language]||DEPOSIT_RECEIPT_COPY.en}
+function applyDepositReceiptCopy(){const copy=depositReceiptCopy();document.querySelectorAll("[data-deposit-receipt-copy]").forEach(element=>{const key=element.dataset.depositReceiptCopy;if(copy[key])element.textContent=copy[key]})}
+function setDepositReceiptError(message=""){const box=document.getElementById("depositReceiptError");if(box)box.textContent=message}
+window.handleDepositReceiptChange=function(event){
+  const file=event.target.files?.[0]||null,copy=depositReceiptCopy();setDepositReceiptError("");
+  if(!file)return window.resetDepositReceipt();
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){window.resetDepositReceipt();setDepositReceiptError(copy.invalid);return}
+  if(file.size>MAX_DEPOSIT_RECEIPT_BYTES){window.resetDepositReceipt();setDepositReceiptError(copy.large);return}
+  depositReceiptFile=file;
+  clearFieldError("tx-ref");
+  if(depositReceiptObjectUrl)URL.revokeObjectURL(depositReceiptObjectUrl);
+  depositReceiptObjectUrl=URL.createObjectURL(file);
+  const preview=document.getElementById("depositReceiptPreview"),meta=document.getElementById("depositReceiptMeta");
+  if(preview){preview.src=depositReceiptObjectUrl;preview.hidden=false}
+  if(meta)meta.hidden=false;
+  const name=document.getElementById("depositReceiptFileName");if(name)name.textContent=file.name;
+  document.getElementById("depositReceiptUpload")?.classList.add("has-file");
+};
+window.resetDepositReceipt=function(){
+  depositReceiptFile=null;
+  const input=document.getElementById("deposit-receipt-input"),preview=document.getElementById("depositReceiptPreview"),meta=document.getElementById("depositReceiptMeta");
+  if(input)input.value="";
+  if(depositReceiptObjectUrl)URL.revokeObjectURL(depositReceiptObjectUrl);depositReceiptObjectUrl="";
+  if(preview){preview.hidden=true;preview.removeAttribute("src")}
+  if(meta)meta.hidden=true;
+  document.getElementById("depositReceiptUpload")?.classList.remove("has-file");
+};
+function depositReceiptExtension(file){return file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg"}
+window.addEventListener("DOMContentLoaded",applyDepositReceiptCopy);
+new MutationObserver(applyDepositReceiptCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+
 function parseWithdrawalAsset(value) {
   const text = String(value || "").trim();
   const match = text.match(/^(.+?)\s*\((.+?)\)$/);
@@ -23871,7 +23940,13 @@ window.submitDepositRequest = async function () {
   const txHash =
     document.getElementById("tx-ref")?.value.trim() || "";
 
+  const receiptFile = depositReceiptFile;
+  const receiptCopy = depositReceiptCopy();
+  const submitButton = document.getElementById("deposit-submit-button");
+  const submitButtonText = submitButton?.textContent || "";
+
   ["deposit-amount", "payment-method", "tx-ref"].forEach(clearFieldError);
+  setDepositReceiptError("");
 
   if (!Number.isFinite(amount) || amount <= 0) {
     showFieldError("deposit-amount", tr("invalidDepositAmount"));
@@ -23883,38 +23958,51 @@ window.submitDepositRequest = async function () {
     return;
   }
 
-  if (!txHash) {
-    showFieldError("tx-ref", tr("txidRequired"));
+  if (!txHash && !receiptFile) {
+    showFieldError("tx-ref", receiptCopy.required);
+    setDepositReceiptError(receiptCopy.required);
     return;
   }
 
   const selected = parseDepositAsset(cryptoValue);
-
-  const { error } = await supabaseClient.rpc(
-    "request_deposit",
-    {
-      p_amount: amount,
-      p_asset: selected.asset,
-      p_network: selected.network,
-      p_tx_hash: txHash,
-      p_note: "Direct wallet payment"
+  let proofPath = null;
+  if(submitButton){submitButton.disabled=true;submitButton.textContent=tr("saving")}
+  try {
+    if(receiptFile){
+      proofPath=`${currentUser.id}/${crypto.randomUUID()}.${depositReceiptExtension(receiptFile)}`;
+      const {error:uploadError}=await supabaseClient.storage
+        .from(DEPOSIT_RECEIPT_BUCKET)
+        .upload(proofPath,receiptFile,{contentType:receiptFile.type,cacheControl:"0",upsert:false});
+      if(uploadError){console.error("Deposit receipt upload error:",uploadError);setDepositReceiptError(receiptCopy.uploadFailed);return}
     }
-  );
 
-  if (error) {
-    console.error("Deposit request error:", error);
-    showFieldError(
-      "tx-ref",
-      localizedBackendError(error, "depositRequestFailed")
+    const { error } = await supabaseClient.rpc(
+      "request_deposit_with_receipt",
+      {
+        p_amount: amount,
+        p_asset: selected.asset,
+        p_network: selected.network,
+        p_tx_hash: txHash || null,
+        p_proof_path: proofPath,
+        p_note: "Direct wallet payment"
+      }
     );
-    return;
+
+    if (error) {
+      console.error("Deposit request error:", error);
+      const message=localizedBackendError(error, "depositRequestFailed");
+      if(txHash)showFieldError("tx-ref",message);else setDepositReceiptError(message);
+      return;
+    }
+
+    document.getElementById("deposit-amount").value = "";
+    document.getElementById("tx-ref").value = "";
+    window.resetDepositReceipt();
+    await loadTransactions();
+    showTransactionSuccessModal("deposit");
+  } finally {
+    if(submitButton){submitButton.disabled=false;submitButton.textContent=submitButtonText||tr("depSubmitBtn")}
   }
-
-  document.getElementById("deposit-amount").value = "";
-  document.getElementById("tx-ref").value = "";
-
- await loadTransactions();
-showTransactionSuccessModal("deposit");
 };
 function showWithdrawalError(message, titleKey = "insufficientBalance") {
   const box =
@@ -30377,6 +30465,35 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
   .deposit-wallet-address-row{grid-template-columns:1fr}
   .deposit-wallet-copy-button{width:100%;min-height:45px}
 }
+
+#portfolio .deposit-receipt-field{
+  margin:-3px 0 20px;
+  padding:14px;
+  border:1px solid rgba(255,225,117,.28);
+  border-radius:15px;
+  background:linear-gradient(145deg,rgba(4,9,14,.62),rgba(36,27,7,.34));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 25px rgba(0,0,0,.2);
+  backdrop-filter:blur(12px) saturate(118%);
+  -webkit-backdrop-filter:blur(12px) saturate(118%);
+}
+.deposit-receipt-heading{margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#eef2f7;font-size:12px;font-weight:850}
+.deposit-receipt-heading small{color:#aab4c2;font-size:9px;font-weight:650;text-align:end}
+.deposit-receipt-upload{position:relative;min-height:126px;padding:15px;overflow:hidden;display:grid!important;place-items:center;align-content:center;gap:6px;border:1px dashed rgba(255,225,117,.38);border-radius:13px;color:#edf2f7;background:rgba(2,6,10,.48);text-align:center;cursor:pointer;transition:border-color .16s,background .16s,transform .16s}
+.deposit-receipt-upload:hover,.deposit-receipt-upload.has-file{border-style:solid;border-color:rgba(42,211,146,.52);background:rgba(5,56,40,.22)}
+.deposit-receipt-upload:active{transform:scale(.995)}
+.deposit-receipt-upload input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.deposit-receipt-upload img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32}
+.deposit-receipt-upload>*:not(img):not(input){position:relative;z-index:1;text-shadow:0 2px 9px #000}
+.deposit-receipt-upload-icon{width:37px;height:37px;display:grid;place-items:center;border:1px solid rgba(255,225,117,.36);border-radius:11px;color:#ffe27b;background:rgba(240,185,11,.1)}
+.deposit-receipt-upload-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.deposit-receipt-upload strong{font-size:12px}.deposit-receipt-upload small{color:#aeb8c5;font-size:9px}
+.deposit-receipt-meta{margin-top:9px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#89e9c0;font-size:10px}
+.deposit-receipt-meta span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
+.deposit-receipt-meta button{flex:0 0 auto;padding:6px 9px;border:1px solid rgba(248,96,117,.33);border-radius:9px;color:#ff9cab;background:rgba(102,12,28,.22);font:inherit;font-weight:850;cursor:pointer}
+.deposit-receipt-requirement{margin:10px 1px 0;color:#aeb8c5;font-size:9px;line-height:1.7}
+.deposit-receipt-error{min-height:0;margin-top:0;color:#ff9dab;font-size:10px;font-weight:800;line-height:1.6}
+.deposit-receipt-error:not(:empty){margin-top:8px;padding:8px 10px;border:1px solid rgba(248,96,117,.35);border-radius:9px;background:rgba(106,14,30,.25)}
+@media(max-width:520px){.deposit-receipt-heading{align-items:flex-start;flex-direction:column;gap:3px}.deposit-receipt-heading small{text-align:start}.deposit-receipt-upload{min-height:118px}}
 
 .profile-withdrawal-security-copy{display:grid;gap:4px;min-width:0}
 .profile-withdrawal-security-copy>small{color:#9aa5b4;font-size:10px;font-weight:650;line-height:1.5}
