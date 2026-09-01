@@ -18415,6 +18415,7 @@ async function submitDepositRequest() {
 
     const { error } = await supabaseClient.from('transactions').insert([
         {
+            user_id: currentUser.id,
             username: currentUser.username,
             type: 'Deposit (Pending)',
             amount: Number(amount),
@@ -20133,6 +20134,7 @@ async function saveUserData() {
 async function saveTx(type, amount, status){
   if(!currentUser) return;
   await supabaseClient.from('transactions').insert([{
+    user_id: currentUser.id,
     username: currentUser.username,
     type: type,
     amount: amount,
@@ -21632,7 +21634,7 @@ async function loadTransactions(){
     tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">${tr("signInTransactions")}</div>`;
     return;
   }
-  let { data, error } = await supabaseClient.from('transactions').select('*').eq('username', currentUser.username).order('id', {ascending: false});
+  let { data, error } = await supabaseClient.from('transactions').select('*').eq('user_id', currentUser.id).order('id', {ascending: false});
   if(error || !data || data.length === 0){
     tList.innerHTML = `<div style="padding:20px; text-align:center;" class="muted">${tr("noTransactions")}</div>`;
     return;
@@ -21648,7 +21650,7 @@ async function loadTransactions(){
 
 async function clearTx(){
   if(!currentUser) return;
-  await supabaseClient.from('transactions').delete().eq('username', currentUser.username);
+  await supabaseClient.from('transactions').delete().eq('user_id', currentUser.id);
   loadTransactions(); toast(tr("clear"), "success");
 }
 
