@@ -30718,21 +30718,31 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 
 <!-- Reown AppKit connection layer: connection only; no payment transaction is enabled in this step. -->
 <style id="bi-direct-wallet-picker-style">
-  #bi-wallet-picker-overlay{position:fixed;inset:0;z-index:1000001;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.58);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);padding:0}
+  #bi-wallet-picker-overlay{position:fixed;inset:0;z-index:1000001;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.66);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:0}
   #bi-wallet-picker-overlay.open{display:flex}
-  #bi-wallet-picker{width:min(680px,100%);max-height:82vh;overflow:auto;background:linear-gradient(180deg,#1d1d1f,#131315);border:1px solid rgba(255,255,255,.12);border-radius:28px 28px 0 0;box-shadow:0 -18px 60px rgba(0,0,0,.5);padding:18px 18px calc(24px + env(safe-area-inset-bottom));color:#fff}
-  .bi-wallet-picker-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-  .bi-wallet-picker-head strong{font-size:19px;letter-spacing:.1px}
-  .bi-wallet-picker-close{width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1;cursor:pointer}
-  .bi-wallet-picker-note{margin:0 0 14px;color:rgba(255,255,255,.62);font-size:12px;line-height:1.6}
-  .bi-wallet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .bi-wallet-choice{min-height:62px;display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.1);border-radius:17px;background:rgba(255,255,255,.055);color:#fff;text-align:left;font:inherit;cursor:pointer;transition:.15s ease}
-  .bi-wallet-choice:active{transform:scale(.985)}
-  .bi-wallet-choice:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.17)}
-  .bi-wallet-choice .bi-wallet-logo{width:39px;height:39px;flex:0 0 39px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.1);font-weight:900;font-size:15px}
-  .bi-wallet-choice .bi-wallet-name{display:block;font-weight:800;font-size:13px}
-  .bi-wallet-choice .bi-wallet-sub{display:block;margin-top:2px;color:rgba(255,255,255,.5);font-size:10px}
-  @media(max-width:520px){.bi-wallet-grid{grid-template-columns:1fr 1fr}.bi-wallet-choice{min-height:59px;padding:9px 10px}.bi-wallet-choice .bi-wallet-logo{width:36px;height:36px;flex-basis:36px}}
+  #bi-wallet-picker{width:min(680px,100%);max-height:82vh;overflow:auto;background:linear-gradient(180deg,rgba(29,29,33,.985),rgba(15,15,18,.99));border:1px solid rgba(255,255,255,.13);border-radius:30px 30px 0 0;box-shadow:0 -24px 75px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.05);padding:20px 18px calc(24px + env(safe-area-inset-bottom));color:#fff}
+  .bi-wallet-picker-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+  .bi-wallet-picker-head strong{font-size:21px;letter-spacing:.1px}
+  .bi-wallet-picker-close{width:42px;height:42px;border:1px solid rgba(255,255,255,.07);border-radius:50%;background:rgba(255,255,255,.075);color:#fff;font-size:26px;line-height:1;cursor:pointer}
+  .bi-wallet-picker-note{margin:0 0 13px;color:rgba(255,255,255,.59);font-size:12px;line-height:1.65}
+  .bi-wallet-status{display:flex;align-items:center;gap:8px;margin:0 0 15px;padding:9px 11px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035);color:rgba(255,255,255,.66);font-size:11px;line-height:1.4}
+  .bi-wallet-status-dot{width:8px;height:8px;border-radius:50%;background:#8a8f98;box-shadow:0 0 0 3px rgba(138,143,152,.10)}
+  .bi-wallet-status.ready .bi-wallet-status-dot{background:#33d17a;box-shadow:0 0 0 3px rgba(51,209,122,.13),0 0 12px rgba(51,209,122,.42)}
+  .bi-wallet-status.error .bi-wallet-status-dot{background:#ffb020;box-shadow:0 0 0 3px rgba(255,176,32,.13)}
+  .bi-wallet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .bi-wallet-choice{position:relative;min-height:72px;display:flex;align-items:center;gap:13px;width:100%;padding:11px 13px;border:1px solid rgba(255,255,255,.105);border-radius:19px;background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.035));color:#fff;text-align:left;font:inherit;cursor:pointer;transition:transform .15s ease,border-color .15s ease,background .15s ease;overflow:hidden}
+  .bi-wallet-choice:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.08),transparent 42%);pointer-events:none}
+  .bi-wallet-choice:active{transform:scale(.982)}
+  .bi-wallet-choice:hover{background:rgba(255,255,255,.095);border-color:rgba(255,255,255,.19)}
+  .bi-wallet-choice .bi-wallet-logo{position:relative;width:44px;height:44px;flex:0 0 44px;border-radius:14px;display:grid;place-items:center;background:#fff;box-shadow:0 5px 16px rgba(0,0,0,.22);overflow:hidden}
+  .bi-wallet-choice .bi-wallet-logo img{width:30px;height:30px;object-fit:contain;display:block}
+  .bi-wallet-choice .bi-wallet-logo .fallback{display:none;color:#111;font-weight:900;font-size:13px}
+  .bi-wallet-choice .bi-wallet-name{display:block;font-weight:850;font-size:14px;letter-spacing:.05px}
+  .bi-wallet-choice .bi-wallet-sub{display:block;margin-top:3px;color:rgba(255,255,255,.50);font-size:10px}
+  .bi-wallet-choice .bi-wallet-arrow{margin-inline-start:auto;color:rgba(255,255,255,.36);font-size:18px;line-height:1}
+  .bi-wallet-choice[data-wallet="binance"]{border-color:rgba(240,185,11,.23)}
+  .bi-wallet-choice[data-wallet="trust"]{border-color:rgba(51,117,255,.20)}
+  @media(max-width:520px){.bi-wallet-grid{grid-template-columns:1fr 1fr}.bi-wallet-choice{min-height:70px;padding:10px}.bi-wallet-choice .bi-wallet-logo{width:42px;height:42px;flex-basis:42px}.bi-wallet-choice .bi-wallet-logo img{width:28px;height:28px}.bi-wallet-choice .bi-wallet-name{font-size:13px}.bi-wallet-choice .bi-wallet-arrow{display:none}}
 </style>
 <div id="bi-wallet-picker-overlay" aria-hidden="true">
   <div id="bi-wallet-picker" role="dialog" aria-modal="true" aria-label="Select wallet">
@@ -30740,23 +30750,110 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       <strong>Select wallet</strong>
       <button type="button" class="bi-wallet-picker-close" aria-label="Close" onclick="closeBiWalletPicker()">×</button>
     </div>
-    <p class="bi-wallet-picker-note">Only direct wallet connections are shown here. Coinbase and exchange-account login methods are disabled.</p>
+    <p class="bi-wallet-picker-note">Choose your wallet. Inside a wallet browser we connect directly; in Safari we use WalletConnect/Reown.</p>
+    <div id="bi-wallet-status" class="bi-wallet-status"><span class="bi-wallet-status-dot"></span><span id="bi-wallet-status-text">Preparing secure wallet connection…</span></div>
     <div class="bi-wallet-grid">
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('trust')"><span class="bi-wallet-logo">TW</span><span><span class="bi-wallet-name">Trust Wallet</span><span class="bi-wallet-sub">Mobile / WalletConnect</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('metamask')"><span class="bi-wallet-logo">MM</span><span><span class="bi-wallet-name">MetaMask</span><span class="bi-wallet-sub">Mobile / Extension</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('binance')"><span class="bi-wallet-logo">BW</span><span><span class="bi-wallet-name">Binance Wallet</span><span class="bi-wallet-sub">Web3 Wallet</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('safepal')"><span class="bi-wallet-logo">SP</span><span><span class="bi-wallet-name">SafePal</span><span class="bi-wallet-sub">Mobile / Extension</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('tokenpocket')"><span class="bi-wallet-logo">TP</span><span><span class="bi-wallet-name">TokenPocket</span><span class="bi-wallet-sub">Mobile wallet</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('imtoken')"><span class="bi-wallet-logo">IM</span><span><span class="bi-wallet-name">imToken</span><span class="bi-wallet-sub">Mobile wallet</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('ledger')"><span class="bi-wallet-logo">LG</span><span><span class="bi-wallet-name">Ledger</span><span class="bi-wallet-sub">Hardware wallet</span></span></button>
-      <button type="button" class="bi-wallet-choice" onclick="biConnectNamedWallet('exodus')"><span class="bi-wallet-logo">EX</span><span><span class="bi-wallet-name">Exodus</span><span class="bi-wallet-sub">Mobile / Desktop</span></span></button>
+      <button type="button" class="bi-wallet-choice" data-wallet="trust" onclick="biConnectNamedWallet('trust')"><span class="bi-wallet-logo"><img alt="Trust Wallet" src="https://cdn.simpleicons.org/trustwallet/3375BB" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">TW</span></span><span><span class="bi-wallet-name">Trust Wallet</span><span class="bi-wallet-sub">Mobile / WalletConnect</span></span><span class="bi-wallet-arrow">›</span></button>
+      <button type="button" class="bi-wallet-choice" data-wallet="metamask" onclick="biConnectNamedWallet('metamask')"><span class="bi-wallet-logo"><img alt="MetaMask" src="https://cdn.simpleicons.org/metamask/F6851B" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">MM</span></span><span><span class="bi-wallet-name">MetaMask</span><span class="bi-wallet-sub">Mobile / Extension</span></span><span class="bi-wallet-arrow">›</span></button>
+      <button type="button" class="bi-wallet-choice" data-wallet="binance" onclick="biConnectNamedWallet('binance')"><span class="bi-wallet-logo"><img alt="Binance Wallet" src="https://cdn.simpleicons.org/binance/F0B90B" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">BW</span></span><span><span class="bi-wallet-name">Binance Wallet</span><span class="bi-wallet-sub">Web3 Wallet</span></span><span class="bi-wallet-arrow">›</span></button>
+      <button type="button" class="bi-wallet-choice" data-wallet="safepal" onclick="biConnectNamedWallet('safepal')"><span class="bi-wallet-logo"><img alt="SafePal" src="https://cdn.simpleicons.org/safepal/4A6CFF" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="fallback">SP</span></span><span><span class="bi-wallet-name">SafePal</span><span class="bi-wallet-sub">Mobile / Extension</span></span><span class="bi-wallet-arrow">›</span></button>
     </div>
   </div>
 </div>
 <script type="module" id="bi-reown-appkit-v1">
 (async () => {
   const PROJECT_ID = "cc6cbdc4566972028acc77cf943c04c";
-  const APP_ORIGIN = "https://binancinvest.com";
+  const APP_ORIGIN = window.location.origin;
+  let walletButton = null;
+  let reownReady = false;
+
+  function setStatus(text, state = "") {
+    const box = document.getElementById("bi-wallet-status");
+    const label = document.getElementById("bi-wallet-status-text");
+    if (box) box.className = `bi-wallet-status ${state}`.trim();
+    if (label) label.textContent = text;
+  }
+
+  function publishAccount(address, isConnected = true) {
+    const clean = typeof address === "string" ? address.trim() : "";
+    if (typeof window.setDirectWalletConnectedAccount === "function") {
+      window.setDirectWalletConnectedAccount(isConnected && clean ? clean : "");
+    }
+  }
+
+  function providersList() {
+    const eth = window.ethereum;
+    if (Array.isArray(eth?.providers) && eth.providers.length) return eth.providers;
+    return eth ? [eth] : [];
+  }
+
+  function findInjectedProvider(walletId) {
+    const providers = providersList();
+    const pick = (fn) => providers.find(fn);
+    if (walletId === "metamask") return pick(p => p?.isMetaMask) || window.ethereum || null;
+    if (walletId === "trust") return pick(p => p?.isTrust || p?.isTrustWallet) || window.trustwallet || window.ethereum || null;
+    if (walletId === "safepal") return pick(p => p?.isSafePal || p?.isSafePalWallet) || window.safepalProvider || window.ethereum || null;
+    if (walletId === "binance") return pick(p => p?.isBinance || p?.isBinanceWallet) || window.BinanceChain || window.binancew3w || window.ethereum || null;
+    return window.ethereum || null;
+  }
+
+  async function tryInjected(walletId) {
+    const provider = findInjectedProvider(walletId);
+    if (!provider || typeof provider.request !== "function") return false;
+    try {
+      const accounts = await provider.request({ method: "eth_requestAccounts" });
+      const address = Array.isArray(accounts) ? String(accounts[0] || "") : "";
+      if (!address) return false;
+      publishAccount(address, true);
+      setStatus("Wallet connected directly.", "ready");
+      if (typeof closeBiWalletPicker === "function") closeBiWalletPicker();
+      return true;
+    } catch (error) {
+      if (error?.code === 4001) {
+        setStatus("Connection request was cancelled in the wallet.", "error");
+        return true;
+      }
+      console.warn(`Injected ${walletId} connection failed:`, error);
+      return false;
+    }
+  }
+
+  async function waitForReown(timeoutMs = 6500) {
+    const started = Date.now();
+    while (Date.now() - started < timeoutMs) {
+      if (reownReady || (walletButton && typeof walletButton.isReady === "function" && walletButton.isReady())) return true;
+      await new Promise(r => setTimeout(r, 180));
+    }
+    return false;
+  }
+
+  window.biConnectNamedWallet = async function (walletId) {
+    setStatus("Opening wallet…");
+    const directHandled = await tryInjected(walletId);
+    if (directHandled) return;
+
+    const ready = await waitForReown();
+    if (!ready || !walletButton || typeof walletButton.connect !== "function") {
+      setStatus("WalletConnect is unavailable. Check the Reown project domain/connection settings.", "error");
+      if (typeof toast === "function") toast("Wallet connection service is not ready.");
+      return;
+    }
+
+    try {
+      setStatus("Waiting for wallet approval…");
+      const result = walletButton.connect(walletId);
+      if (result && typeof result.then === "function") await result;
+    } catch (error) {
+      console.warn(`Reown ${walletId} connection failed:`, error);
+      const msg = String(error?.message || error || "");
+      if (/origin|allowlist|APKT002|domain/i.test(msg)) {
+        setStatus("This domain is not allowed in the Reown project settings.", "error");
+      } else {
+        setStatus("Wallet connection was not completed.", "error");
+      }
+      if (typeof toast === "function") toast("Wallet connection was not completed.");
+    }
+  };
 
   try {
     const [{ createAppKit }, { EthersAdapter }, { bsc }, { createAppKitWalletButton }] = await Promise.all([
@@ -30781,62 +30878,46 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       },
       themeMode: "dark",
       themeVariables: { "--w3m-z-index": 1000000 },
-      features: {
-        analytics: false,
-        email: false,
-        socials: [],
-        swaps: false,
-        onramp: false
-      }
+      features: { analytics: false, email: false, socials: [], swaps: false, onramp: false }
     });
 
-    const walletButton = createAppKitWalletButton({ namespace: "eip155" });
+    walletButton = createAppKitWalletButton({ namespace: "eip155" });
     window.biReownAppKit = appKit;
     window.biReownWalletButton = walletButton;
 
-    const publishAccount = (address, isConnected = true) => {
-      const clean = typeof address === "string" ? address.trim() : "";
-      if (typeof window.setDirectWalletConnectedAccount === "function") {
-        window.setDirectWalletConnectedAccount(isConnected && clean ? clean : "");
-      }
-    };
-
-    if (typeof appKit.subscribeProvider === "function") {
-      appKit.subscribeProvider((state) => {
-        publishAccount(state?.address, Boolean(state?.isConnected));
+    if (typeof walletButton.subscribeIsReady === "function") {
+      walletButton.subscribeIsReady((state) => {
+        reownReady = Boolean(state?.isReady ?? state);
+        if (reownReady) setStatus("Secure wallet connection is ready.", "ready");
       });
     }
+    if (typeof walletButton.isReady === "function") {
+      reownReady = Boolean(walletButton.isReady());
+      if (reownReady) setStatus("Secure wallet connection is ready.", "ready");
+    }
 
+    if (typeof appKit.subscribeProvider === "function") {
+      appKit.subscribeProvider((state) => publishAccount(state?.address, Boolean(state?.isConnected)));
+    }
     if (typeof appKit.subscribeAccount === "function") {
       appKit.subscribeAccount((state) => {
         const accountState = state?.accountState || state || {};
         const address = accountState?.address || state?.address || "";
         const connected = accountState?.isConnected ?? state?.isConnected ?? Boolean(address);
         publishAccount(address, Boolean(connected));
+        if (connected && address) {
+          setStatus("Wallet connected successfully.", "ready");
+          if (typeof closeBiWalletPicker === "function") closeBiWalletPicker();
+        }
       });
     }
 
-    window.biConnectNamedWallet = function (walletId) {
-      try {
-        if (!walletButton || typeof walletButton.connect !== "function" || (typeof walletButton.isReady === "function" && !walletButton.isReady())) {
-          if (typeof toast === "function") toast("Wallet connector is still loading. Please try again in a moment.");
-          return;
-        }
-        closeBiWalletPicker();
-        const result = walletButton.connect(walletId);
-        if (result && typeof result.catch === "function") {
-          result.catch((error) => {
-            console.warn(`Direct ${walletId} connection failed:`, error);
-            if (typeof toast === "function") toast("Wallet connection was not completed.");
-          });
-        }
-      } catch (error) {
-        console.warn(`Direct ${walletId} connection failed:`, error);
-        if (typeof toast === "function") toast("Wallet connection was not completed.");
-      }
-    };
+    setTimeout(() => {
+      if (!reownReady) setStatus("WalletConnect is still initializing. If this remains, check Reown Project Domains.", "error");
+    }, 7000);
   } catch (error) {
     console.warn("Reown AppKit direct wallet layer could not load:", error);
+    setStatus("WalletConnect could not initialize. Direct in-wallet connection can still work.", "error");
   }
 })();
 </script>
