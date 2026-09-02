@@ -15634,10 +15634,10 @@ html.native-app #rewards{
             <span class="profile-verification-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="8" y="3.5" width="16" height="25" rx="3"/><path d="M13 7h6M14 24.5h4"/></svg></span>
             <span id="profilePhoneVerificationStatus" class="profile-verification-status unverified">تأیید نشده</span>
           </div>
-          <h3 id="profilePhoneVerificationTitle">تأیید شماره تلفن</h3>
-          <p id="profilePhoneVerificationDescription">شماره تلفن خود را با کد پیامکی تأیید کنید.</p>
+          <h3 id="profilePhoneVerificationTitle">تأیید شماره واتساپ</h3>
+          <p id="profilePhoneVerificationDescription">شماره واتساپ خود را وارد کنید. کد تأیید در واتساپ برای شما ارسال می‌شود.</p>
           <small id="profilePhoneVerificationValue"></small>
-          <button id="profilePhoneVerificationButton" type="button" class="btn profile-verification-button" onclick="openPhoneVerificationModal()">تأیید شماره تلفن</button>
+          <button id="profilePhoneVerificationButton" type="button" class="btn profile-verification-button" onclick="openPhoneVerificationModal()">تأیید شماره واتساپ</button>
         </article>
         <article class="profile-verification-card" id="profileIdentityVerificationCard">
           <div class="profile-verification-head">
@@ -15692,10 +15692,10 @@ html.native-app #rewards{
   <div class="profile-verification-modal-box">
     <button type="button" class="profile-verification-modal-close" onclick="closePhoneVerificationModal()" aria-label="Close">×</button>
     <div class="profile-verification-modal-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="8" y="3.5" width="16" height="25" rx="3"/><path d="M13 7h6M14 24.5h4"/></svg></div>
-    <h2 id="phoneVerificationModalTitle">تأیید شماره تلفن</h2>
-    <p id="phoneVerificationModalDescription">کشور را انتخاب کنید و شماره تلفن خود را وارد کنید.</p>
+    <h2 id="phoneVerificationModalTitle">تأیید شماره واتساپ</h2>
+    <p id="phoneVerificationModalDescription">کشور را انتخاب کنید و شماره واتساپ خود را وارد کنید. سپس واتساپ را برای دریافت کد بررسی کنید.</p>
     <div id="phoneVerificationNumberStep">
-      <label id="phoneVerificationNumberLabel" for="phoneVerificationLocalNumber">شماره تلفن</label>
+      <label id="phoneVerificationNumberLabel" for="phoneVerificationLocalNumber">شماره واتساپ</label>
       <div class="phone-verification-phone-row">
         <div class="phone-verification-country">
           <select id="phoneVerificationCountryCode" aria-label="Country calling code" required></select>
@@ -15787,7 +15787,7 @@ html.native-app #rewards{
         <label for="authEmailReg" data-t="email">Email Address</label>
         <input id="authEmailReg" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" dir="ltr" maxlength="254" required placeholder="name@example.com">
 
-        <label for="authPhoneLocal" data-t="phone">Phone</label>
+        <label for="authPhoneLocal" data-t="phone">WhatsApp Number</label>
         <div class="registration-phone-row">
           <div class="registration-phone-country">
             <select id="authCountryCode" name="country_code" aria-label="Country calling code" required>
@@ -16067,7 +16067,7 @@ html.native-app #rewards{
             >
           </div>
         </div>
-        <div id="registrationPhoneHelp" class="registration-phone-help">Country code is added automatically. If you type a leading 0, it is removed automatically.</div>
+        <div id="registrationPhoneHelp" class="registration-phone-help">Enter the number linked to your WhatsApp. The verification code will be sent to WhatsApp, so check WhatsApp for the code. Country code is added automatically.</div>
 
         <label for="authReferralCode"><span data-t="referralCodeLabel">Referral Code</span> <span class="muted" data-t="optional">(Optional)</span></label>
         <input
@@ -17447,7 +17447,7 @@ hero:"Build your future with intelligent investing.",heroDesc:"Explore digital a
 users:"Platform users",tracked:"Assets tracked",assets:"Digital assets",live:"Live markets",uptime:"Platform uptime",top:"Top Markets",viewAll:"View all",featured:"Featured Investments",
 plans:"Investment Plans",illustrative:"Illustrative returns",calculator:"Investment Calculator",amount:"Amount",plan:"Plan",estimated:"Estimated value",
 balance:"Balance",invested:"Invested",profitTotal:"Total profit",level:"Account level",deposit:"Deposit",depositDesc:"Add balance securely via wallet or gateway.",add:"Add Balance",withdraw:"Withdraw",withdrawDesc:"Request withdrawal instantly.",request:"Request Withdrawal",
-clear:"Clear history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"Phone",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Your account information is stored securely.",
+clear:"Clear history",copy:"Copy code",account:"Account",username:"Username",email:"Email",fullname:"Full Name",phone:"WhatsApp Number",save:"Save Profile",security:"Security",password:"Password",continue:"Continue",local:"Your account information is stored securely.",
 eyebrowText:"PREMIUM DIGITAL ASSET PLATFORM",footerTitle:"Why Binance Invest?",footerDesc:"We provide professional-grade reliability with ultra-low latency trading execution, intelligent portfolio tools, and advanced security protocols to keep your digital assets growing securely.",footerCopy:"© 2026 Binance Invest Global. All rights reserved.",
 thAsset:"Asset",thPrice:"Price",th24h:"24h",thCap:"Market Cap",thVol:"Volume",
 customTitle:"Custom Investment Plan",customDesc:"Invest any custom amount from $1 to $100,000. Profit is dynamically calculated based on your exact investment amount and daily rates.",customAmountLabel:"Custom Amount ($1 - $100,000)",customTermLabel:"Term (Days)",investCustomBtn:"Invest Custom Amount",
@@ -17473,7 +17473,7 @@ hero:"آینده خود را هوشمندانه بسازید.",heroDesc:"رمز�
 users:"کاربران پلتفرم",tracked:"دارایی‌های تحت پوشش",assets:"رمزارزها",live:"بازار زنده",uptime:"آپ‌تایم",top:"بازارهای برتر",viewAll:"مشاهده همه",featured:"سرمایه‌گذاری‌های ویژه",
 plans:"پلن‌های سرمایه‌گذاری",illustrative:"بازدهی نمایشی",calculator:"محاسبه‌گر سرمایه‌گذاری",amount:"مبلغ",plan:"پلن",estimated:"ارزش تخمینی",
 balance:"موجودی",invested:"سرمایه‌گذاری‌شده",profitTotal:"سود کل",level:"سطح حساب",deposit:"واریز",depositDesc:"شارژ امن حساب از طریق ولت یا درگاه.",add:"افزودن موجودی",withdraw:"برداشت",withdrawDesc:"ثبت درخواست برداشتی آنی.",request:"درخواست برداشت",
-clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"تلفن",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب شما به صورت امن ذخیره می‌شود.",
+clear:"پاک کردن تاریخچه",copy:"کپی کد",account:"حساب",username:"نام کاربری",email:"ایمیل",fullname:"نام و نام خانوادگی",phone:"شماره واتساپ",save:"ذخیره پروفایل",security:"امنیت",password:"رمز عبور",continue:"ادامه",local:"اطلاعات حساب شما به صورت امن ذخیره می‌شود.",
 eyebrowText:"پلتفرم پیشرفته دارایی دیجیتال",footerTitle:"چرا بایننس اینوست؟",footerDesc:"ما قابلیت اطمینان در سطح حرفه‌ای با سرعت بالا، ابزارهای هوشمند سبد سرمایه و پروتکل‌های امنیتی پیشرفته را برای رشد امن دارایی‌های شما فراهم می‌کنیم.",footerCopy:"© ۲۰۲۶ بایننس اینوست. تمامی حقوق محفوظ است.",
 thAsset:"دارایی",thPrice:"قیمت",th24h:"۲۴ ساعته",thCap:"ارزش بازار",thVol:"حجم معاملات",
 customTitle:"پلن سرمایه‌گذاری کاستوم (سفارشی)",customDesc:"مبلغ دلخواه خود را از ۱ دلار تا ۱۰۰,۰۰۰ دلار سرمایه‌گذاری کنید. سود مستقیماً بر اساس مبلغ واریزی و نرخ‌های روزانه شما محاسبه می‌شود.",customAmountLabel:"مبلغ سفارشی (۱ تا ۱۰۰,۰۰۰ دلار)",customTermLabel:"مدت (روز)",investCustomBtn:"سرمایه‌گذاری با مبلغ سفارشی",
@@ -17499,7 +17499,7 @@ hero:"Gələcəyinizi ağıllı investisiya ilə qurun.",heroDesc:"Kriptovalyuta
 users:"Platforma istifadəçiləri",tracked:"İzlənən aktivlər",assets:"Rəqəmsal aktivlər",live:"Canlı bazarlar",uptime:"Platforma işləkliyi",top:"Ən yaxşı bazarlar",viewAll:"Hamısına bax",featured:"Seçilmiş investisiyalar",
 plans:"İnvestisiya planları",illustrative:"Nümunə gəlir",calculator:"İnvestisiya kalkulyatoru",amount:"Məbləğ",plan:"Plan",estimated:"Təxmini dəyər",
 balance:"Balans",invested:"İnvestisiya",profitTotal:"Ümumi gəlir",level:"Hesab səviyyəsi",deposit:"Depozit",depositDesc:"Balansı cüzdan və ya şlüz vasitəsilə artırın.",add:"Balans əlavə et",withdraw:"Çıxarış",withdrawDesc:"Ani çıxarış sorğusu.",request:"Sorğu göndər",
-clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"Telefon",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatlarınız təhlükəsiz saxlanılır.",
+clear:"Tarixçəni sil",copy:"Kodu kopyala",account:"Hesab",username:"İstifadəçi adı",email:"E-poçt",fullname:"Ad və Soyad",phone:"WhatsApp nömrəsi",save:"Profili saxla",security:"Təhlükəsizlik",password:"Şifrə",continue:"Davam et",local:"Hesab məlumatlarınız təhlükəsiz saxlanılır.",
 eyebrowText:"PREMİUM RƏqəmsal AKTİV PLATFORMASI",footerTitle:"Niyə Binance İnvest?",footerDesc:"Aktivlərinizin təhlükəsiz böyüməsi üçün peşəkar səviyyədə etibarlılıq və ağıllı portfel alətləri təqdim edirik.",footerCopy:"© 2026 Binance Invest Global. Bütün hüquqlar qorunur.",
 thAsset:"Aktiv",thPrice:"Qiymət",th24h:"24s",thCap:"Bazar Dəyəri",thVol:"Həcm",
 customTitle:"Xüsusi İnvestisiya Planı",customDesc:"1$-dan 100,000$-dək istənilən məbləği investisiya edin. Gəlir birbaşa depozit məbləğinə və gündəlik dərəcələrə əsasən hesablanır.",customAmountLabel:"Xüsusi Məbləş (1$ - 100,000$)",customTermLabel:"Müddət (Gün)",investCustomBtn:"Xüsusi Məbləğlə İnvestisiya Et",
@@ -17524,7 +17524,7 @@ brand:"Binance Invest",login:"Giriş Yap",register:"Hesap Oluştur",logout:"Çı
 hero:"Geleceğinizi akıllı yatırımlarla inşa edin.",heroDesc:"Dijital varlıkları ve yatırım planlarını profesyonel arayüzde keşfedin.",exploreInvest:"Yatırımları İncele",exploreMarkets:"Piyasaları İncele",
 top:"Popüler Piyasalar",viewAll:"Tümünü Gör",featured:"Öne Çıkan Yatırımlar",plans:"Yatırım Planları",illustrative:"Tahmini Getiri",calculator:"Yatırım Hesaplayıcı",amount:"Miktar",plan:"Plan",estimated:"Tahmini Değer",
 balance:"Bakiye",invested:"Yatırılan",profitTotal:"Toplam Kâr",level:"Hesap Seviyesi",deposit:"Para Yatır",depositDesc:"Güvenli bir şekilde bakiye yükleyin.",withdraw:"Para Çek",withdrawDesc:"Anında çekim talebi oluşturun.",request:"Çekim Talebi Gönder",
-clear:"Geçmişi Temizle",copy:"Kodu Kopyala",account:"Hesap",username:"Kullanıcı Adı",email:"E-posta",fullname:"Ad Soyad",phone:"Telefon",save:"Profili Kaydet",security:"Güvenlik",password:"Şifre",continue:"Devam Et",local:"Hesap bilgileriniz güvenli bir şekilde saklanır.",
+clear:"Geçmişi Temizle",copy:"Kodu Kopyala",account:"Hesap",username:"Kullanıcı Adı",email:"E-posta",fullname:"Ad Soyad",phone:"WhatsApp Numarası",save:"Profili Kaydet",security:"Güvenlik",password:"Şifre",continue:"Devam Et",local:"Hesap bilgileriniz güvenli bir şekilde saklanır.",
 eyebrowText:"PREMİUM DİJİTAL VARLIK PLATFORMU",footerTitle:"Neden Binance Invest?",footerDesc:"Varlıklarınızın güvenle büyümesi için profesyonel düzeyde güvenilirlik sunuyoruz.",footerCopy:"© 2026 Binance Invest Global. Tüm hakları saklıdır.",
 thAsset:"Varlık",thPrice:"Fiyat",th24h:"24s",thCap:"Piyasa Değeri",thVol:"Hacim",
 customTitle:"Özel Yatırım Planı",customDesc:"1$ ile 100.000$ arasında dilediğiniz miktarda yatırım yapın.",customAmountLabel:"Özel Miktar ($1 - $100,000)",customTermLabel:"Süre (Gün)",investCustomBtn:"Özel Miktar İle Yatırım Yap",
@@ -17549,7 +17549,7 @@ brand:"Binance Invest",login:"Войти",register:"Регистрация",logo
 hero:"Стройте свое будущее с умными инвестициями.",heroDesc:"Изучайте цифровые активы и инвестиционные планы в премиум-интерфейсе.",exploreInvest:"Инвестиции",exploreMarkets:"Рынки",
 top:"Популярные рынки",viewAll:"Все рынки",featured:"Рекомендуемые планы",plans:"Инвестиционные планы",illustrative:"Примерная доходность",calculator:"Калькулятор",amount:"Сумма",plan:"План",estimated:"Оценочная стоимость",
 balance:"Баланс",invested:"Инвестировано",profitTotal:"Общая прибыль",level:"Уровень счета",deposit:"Депозит",depositDesc:"Пополняйте баланс безопасно.",withdraw:"Вывод",withdrawDesc:"Запросить мгновенный вывод.",request:"Запросить вывод",
-clear:"Очистить историю",copy:"Копировать",account:"Аккаунт",username:"Имя пользователя",email:"Email",fullname:"ФИО",phone:"Телефон",save:"Сохранить",security:"Безопасность",password:"Пароль",continue:"Продолжить",local:"Данные аккаунта хранятся безопасно.",
+clear:"Очистить историю",copy:"Копировать",account:"Аккаунт",username:"Имя пользователя",email:"Email",fullname:"ФИО",phone:"Номер WhatsApp",save:"Сохранить",security:"Безопасность",password:"Пароль",continue:"Продолжить",local:"Данные аккаунта хранятся безопасно.",
 eyebrowText:"ПРЕМИАЛЬНАЯ ПЛАТФОРМА ЦИФРОВЫХ АКТИВОВ",footerTitle:"Почему Binance Invest?",footerDesc:"Надежность профессионального уровня и умные инструменты для роста ваших активов.",footerCopy:"© 2026 Binance Invest Global. Все права защищены.",
 thAsset:"Актив",thPrice:"Цена",th24h:"24ч",thCap:"Капитализация",thVol:"Объем",
 customTitle:"Персональный план",customDesc:"Инвестируйте любую сумму от $1 до $100,000.",customAmountLabel:"Сумма ($1 - $100,000)",customTermLabel:"Срок (Дней)",investCustomBtn:"Инвестировать",
@@ -17575,7 +17575,7 @@ hero:"ابنِ مستقبلك من خلال الاستثمار الذكي.",hero
 users:"مستخدمو المنصة",tracked:"الأصول المتتبعة",assets:"الأصول الرقمية",live:"الأسواق الحية",uptime:"وقت تشغيل المنصة",top:"أفضل الأسواق",viewAll:"عرض الكل",featured:"استثمارات مميزة",
 plans:"خطط الاستثمار",illustrative:"عوائد توضيحية",calculator:"حاسبة الاستثمار",amount:"المبلغ",plan:"الخطة",estimated:"القيمة المقدرة",
 balance:"الرصيد",invested:"المستثمر",profitTotal:"إجمالي الربح",level:"مستوى الحساب",deposit:"إيداع",depositDesc:"أضف رصيداً بأمان عبر المحفظة أو البوابة.",add:"إضافة رصيد",withdraw:"سحب",withdrawDesc:"اطلب السحب فوراً.",request:"طلب سحب",
-clear:"مسح السجل",copy:"نسخ الرمز",account:"الحساب",username:"اسم المستخدم",email:"البريد الإلكتروني",fullname:"الاسم الكامل",phone:"الهاتف",save:"حفظ الملف الشخصي",security:"الأمان",password:"كلمة المرور",continue:"متابعة",local:"يتم تخزين بيانات الحساب بأمان.",
+clear:"مسح السجل",copy:"نسخ الرمز",account:"الحساب",username:"اسم المستخدم",email:"البريد الإلكتروني",fullname:"الاسم الكامل",phone:"رقم WhatsApp",save:"حفظ الملف الشخصي",security:"الأمان",password:"كلمة المرور",continue:"متابعة",local:"يتم تخزين بيانات الحساب بأمان.",
 eyebrowText:"منصة الأصول الرقمية المميزة",footerTitle:"لماذا بايننس إنفست؟",footerDesc:"نحن نقدم موثوقية احترافية مع تنفيذ تداول منخفض الكمون للغاية، وأدوات محفظة ذكية، وبروتوكولات أمان متقدمة.",footerCopy:"© 2026 Binance Invest Global. جميع الحقوق محفوظة.",
 thAsset:"الأصل",thPrice:"السعر",th24h:"24س",thCap:"القيمة السوقية",thVol:"الحجم",
 customTitle:"خطة استثمار مخصصة",customDesc:"استثمر أي مبلغ مخصص من 1 دولار إلى 100,000 دولار.",customAmountLabel:"مبلغ مخصص (1$ - 100,000$)",customTermLabel:"المدة (أيام)",investCustomBtn:"استثمار بمبلغ مخصص",
@@ -17601,7 +17601,7 @@ hero:"通过智能投资构建您的未来。",heroDesc:"在一个高端界面�
 users:"平台用户",tracked:"跟踪资产",assets:"数字资产",live:"实时市场",uptime:"正常运行时间",top:"热门市场",viewAll:"查看全部",featured:"精选投资",
 plans:"投资计划",illustrative:"演示收益",calculator:"投资计算器",amount:"金额",plan:"计划",estimated:"预计价值",
 balance:"余额",invested:"已投资",profitTotal:"总利润",level:"账户等级",deposit:"充值",depositDesc:"通过钱包或网关安全充值。",withdraw:"提现",withdrawDesc:"立即申请提现。",request:"申请提现",
-clear:"清除历史",copy:"复制代码",account:"账户",username:"用户名",email:"电子邮箱",fullname:"全名",phone:"电话",save:"保存资料",security:"安全",password:"密码",continue:"继续",local:"账户信息将被安全存储。",
+clear:"清除历史",copy:"复制代码",account:"账户",username:"用户名",email:"电子邮箱",fullname:"全名",phone:"WhatsApp 号码",save:"保存资料",security:"安全",password:"密码",continue:"继续",local:"账户信息将被安全存储。",
 eyebrowText:"高端数字资产平台",footerTitle:"为什么选择 Binance Invest？",footerDesc:"我们提供专业级可靠性、超低延迟交易执行和高级安全协议。",footerCopy:"© 2026 Binance Invest Global. 保留所有权利。",
 thAsset:"资产",thPrice:"价格",th24h:"24小时",thCap:"市值",thVol:"交易量",
 customTitle:"自定义投资计划",customDesc:"投资 1 美元到 100,000 美元之间的任意自定义金额。",customAmountLabel:"自定义金额 ($1 - $100,000)",customTermLabel:"期限（天）",investCustomBtn:"以自定义金额投资",
@@ -17627,7 +17627,7 @@ hero:"Construye tu futuro con una inversión inteligente.",heroDesc:"Explora act
 users:"Usuarios de la plataforma",tracked:"Activos rastreados",assets:"Activos digitales",live:"Mercados en vivo",uptime:"Tiempo de actividad",top:"Principales mercados",viewAll:"Ver todo",featured:"Inversiones destacadas",
 plans:"Planes de inversión",illustrative:"Rendimientos ilustrativos",calculator:"Calculadora de inversión",amount:"Cantidad",plan:"Plan",estimated:"Valor estimado",
 balance:"Saldo",invested:"Invertido",profitTotal:"Beneficio total",level:"Nivel de cuenta",deposit:"Depósito",depositDesc:"Agrega saldo de forma segura mediante billetera o pasarela.",add:"Añadir saldo",withdraw:"Retirar",withdrawDesc:"Solicita un retiro al instante.",request:"Solicitar retiro",
-clear:"Borrar historial",copy:"Copiar código",account:"Cuenta",username:"Nombre de usuario",email:"Correo electrónico",fullname:"Nombre completo",phone:"Teléfono",save:"Guardar perfil",security:"Seguridad",password:"Contraseña",continue:"Continuar",local:"La información de la cuenta se almacena de forma segura.",
+clear:"Borrar historial",copy:"Copiar código",account:"Cuenta",username:"Nombre de usuario",email:"Correo electrónico",fullname:"Nombre completo",phone:"Número de WhatsApp",save:"Guardar perfil",security:"Seguridad",password:"Contraseña",continue:"Continuar",local:"La información de la cuenta se almacena de forma segura.",
 eyebrowText:"PLATAFORMA DE ACTIVOS DIGITALES PREMIUM",footerTitle:"¿Por qué Binance Invest?",footerDesc:"Ofrecemos confiabilidad de nivel profesional con ejecución comercial de latencia ultrabaja.",footerCopy:"© 2026 Binance Invest Global. Todos los derechos reservados.",
 thAsset:"Activo",thPrice:"Precio",th24h:"24h",thCap:"Capitalización",thVol:"Volumen",
 customTitle:"Plan de inversión personalizado",customDesc:"Invierte cualquier cantidad personalizada de $1 a $100,000.",customAmountLabel:"Cantidad personalizada ($1 - $100,000)",customTermLabel:"Plazo (Días)",investCustomBtn:"Invertir cantidad personalizada",
@@ -17653,7 +17653,7 @@ hero:"Construisez votre avenir grâce à l'investissement intelligent.",heroDesc
 users:"Utilisateurs",tracked:"Actifs suivis",assets:"Actifs numériques",live:"Marchés en direct",uptime:"Disponibilité",top:"Principaux marchés",viewAll:"Voir tout",featured:"Investissements en vedette",
 plans:"Plans d'investissement",illustrative:"Rendements indicatifs",calculator:"Calculateur d'investissement",amount:"Montant",plan:"Plan",estimated:"Valeur estimée",
 balance:"Solde",invested:"Investi",profitTotal:"Profit total",level:"Niveau de compte",deposit:"Dépôt",depositDesc:"Ajoutez des fonds en toute sécurité.",withdraw:"Retirer",withdrawDesc:"Demandez un retrait instantané.",request:"Demander un retrait",
-clear:"Effacer l'historique",copy:"Copier le code",account:"Compte",username:"Nom d'utilisateur",email:"E-mail",fullname:"Nom complet",phone:"Téléphone",save:"Enregistrer",security:"Sécurité",password:"Mot de passe",continue:"Continuer",local:"Les informations du compte sont stockées en toute sécurité.",
+clear:"Effacer l'historique",copy:"Copier le code",account:"Compte",username:"Nom d'utilisateur",email:"E-mail",fullname:"Nom complet",phone:"Numéro WhatsApp",save:"Enregistrer",security:"Sécurité",password:"Mot de passe",continue:"Continuer",local:"Les informations du compte sont stockées en toute sécurité.",
 eyebrowText:"PLATEFORME D'ACTIFS NUMÉRIQUES PREMIUM",footerTitle:"Pourquoi Binance Invest ?",footerDesc:"Nous offrons une fiabilité de niveau professionnel et une exécution à ultra-faible latence.",footerCopy:"© 2026 Binance Invest Global. Tous droits réservés.",
 thAsset:"Actif",thPrice:"Prix",th24h:"24h",thCap:"Capitalisation",thVol:"Volume",
 customTitle:"Plan d'investissement personnalisé",customDesc:"Investissez n'importe quel montant de 1 $ à 100 000 $.",customAmountLabel:"Montant personnalisé (1$ - 100 000$)",customTermLabel:"Durée (Jours)",investCustomBtn:"Investir",
@@ -17679,7 +17679,7 @@ hero:"Bauen Sie Ihre Zukunft durch intelligenten Investieren auf.",heroDesc:"Ent
 users:"Benutzer",tracked:"Verfolgte Assets",assets:"Digitale Assets",live:"Live-Märkte",uptime:"Betriebszeit",top:"Top-Märkte",viewAll:"Alle anzeigen",featured:"Empfohlene Investitionen",
 plans:"Investitionspläne",illustrative:"Beispielhafte Renditen",calculator:"Investitionsrechner",amount:"Betrag",plan:"Plan",estimated:"Geschätzter Wert",
 balance:"Guthaben",invested:"Investiert",profitTotal:"Gesamtgewinn",level:"Konto-Stufe",deposit:"Einzahlen",depositDesc:"Guthaben sicher per Wallet oder Gateway aufladen.",withdraw:"Abheben",withdrawDesc:"Auszahlung sofort anfordern.",request:"Auszahlung anfordern",
-clear:"Verlauf löschen",copy:"Code kopieren",account:"Konto",username:"Benutzername",email:"E-Mail",fullname:"Vollständiger Name",phone:"Telefon",save:"Profil speichern",security:"Sicherheit",password:"Passwort",continue:"Weiter",local:"Kontoinformationen werden sicher gespeichert.",
+clear:"Verlauf löschen",copy:"Code kopieren",account:"Konto",username:"Benutzername",email:"E-Mail",fullname:"Vollständiger Name",phone:"WhatsApp-Nummer",save:"Profil speichern",security:"Sicherheit",password:"Passwort",continue:"Weiter",local:"Kontoinformationen werden sicher gespeichert.",
 eyebrowText:"PREMIUM DIGITALE ASSET-PLATFORM",footerTitle:"Warum Binance Invest?",footerDesc:"Wir bieten professionelle Zuverlässigkeit mit ultraschneller Handelsausführung.",footerCopy:"© 2026 Binance Invest Global. Alle Rechte vorbehalten.",
 thAsset:"Asset",thPrice:"Preis",th24h:"24h",thCap:"Marktkapitalisierung",thVol:"Volumen",
 customTitle:"Benutzerdefinierter Investitionsplan",customDesc:"Investieren Sie einen beliebigen Betrag von 1 $ bis 100.000 $.",customAmountLabel:"Benutzerdefinierter Betrag ($1 - $100,000)",customTermLabel:"Laufzeit (Tage)",investCustomBtn:"Investieren",
@@ -19214,28 +19214,28 @@ async function validateRegistrationUsernameField(shouldFocus = true) {
 
 const REGISTRATION_PHONE_TEXT = {
   en: {
-    help: "Country code is added automatically. If you type a leading 0, it is removed automatically.",
-    invalid: "Enter a valid phone number."
+    help: "Enter the number linked to your WhatsApp. The verification code will be sent to WhatsApp, so check WhatsApp for the code. Country code is added automatically.",
+    invalid: "Enter a valid WhatsApp number."
   },
   fa: {
-    help: "پیش‌شماره کشور خودکار اضافه می‌شود. اگر شماره را با صفر شروع کنید، صفر اول خودکار حذف می‌شود.",
-    invalid: "شماره تلفن معتبر وارد کنید."
+    help: "شماره‌ای را وارد کنید که واتساپ شما روی آن فعال است. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را برای دریافت کد بررسی کنید. پیش‌شماره کشور خودکار اضافه می‌شود.",
+    invalid: "شماره واتساپ معتبر وارد کنید."
   },
   az: {
-    help: "Ölkə kodu avtomatik əlavə olunur. Nömrəni 0 ilə başlasanız, ilk 0 avtomatik silinir.",
-    invalid: "Etibarlı telefon nömrəsi daxil edin."
+    help: "WhatsApp aktiv olan nömrənizi daxil edin. Təsdiq kodu WhatsApp-a göndəriləcək, kod üçün WhatsApp-ı yoxlayın. Ölkə kodu avtomatik əlavə olunur.",
+    invalid: "Etibarlı WhatsApp nömrəsi daxil edin."
   },
   tr: {
-    help: "Ülke kodu otomatik eklenir. Numarayı 0 ile başlatırsanız ilk 0 otomatik kaldırılır.",
-    invalid: "Geçerli bir telefon numarası girin."
+    help: "WhatsApp kullandığınız numarayı girin. Doğrulama kodu WhatsApp üzerinden gönderilecektir; kod için WhatsApp’ı kontrol edin. Ülke kodu otomatik eklenir.",
+    invalid: "Geçerli bir WhatsApp numarası girin."
   },
   ru: {
-    help: "Код страны добавляется автоматически. Если номер начинается с 0, первый 0 удаляется автоматически.",
-    invalid: "Введите корректный номер телефона."
+    help: "Введите номер, к которому привязан WhatsApp. Код подтверждения будет отправлен в WhatsApp — проверьте WhatsApp. Код страны добавляется автоматически.",
+    invalid: "Введите корректный номер WhatsApp."
   },
   ar: {
-    help: "تتم إضافة رمز الدولة تلقائيًا. إذا بدأت الرقم بصفر فسيتم حذف الصفر الأول تلقائيًا.",
-    invalid: "أدخل رقم هاتف صالحًا."
+    help: "أدخل الرقم المرتبط بحساب WhatsApp الخاص بك. سيتم إرسال رمز التحقق عبر WhatsApp، لذا تحقق من WhatsApp لاستلام الرمز. تتم إضافة رمز الدولة تلقائيًا.",
+    invalid: "أدخل رقم WhatsApp صالحًا."
   }
 };
 
@@ -23043,7 +23043,7 @@ const EXTRA_SITE_TRANSLATIONS = {
   pt:{heroDesc:"Explore ativos digitais, planos de investimento e ferramentas de portfólio em uma interface premium.",footerTitle:"Por que Binance Invest?",illustrative:"Retornos ilustrativos",calculator:"Calculadora de investimento",amount:"Valor",plan:"Plano",estimated:"Valor estimado",level:"Nível da conta",depositDesc:"Adicione saldo com segurança via carteira ou gateway.",withdrawDesc:"Solicite um saque instantaneamente.",request:"Solicitar saque",clear:"Limpar histórico",username:"Nome de usuário",email:"E-mail",fullname:"Nome completo",phone:"Telefone",password:"Senha",continue:"Continuar",thAsset:"Ativo",thPrice:"Preço",thCap:"Capitalização",thVol:"Volume",dailyProfitLabel:"Lucro diário",monthlyProfitLabel:"Lucro mensal",supportEmail:"E-mail de suporte",securityPartners:"Parceiros de segurança",statUsers:"Usuários da plataforma",statInvestors:"Investidores ativos",statPaid:"Lucro total pago",statCapital:"Capital da plataforma",depSubmitBtn:"Enviar solicitação de depósito"},
   nl:{heroDesc:"Ontdek digitale activa, investeringsplannen en portfoliotools in één premium interface.",footerTitle:"Waarom Binance Invest?",illustrative:"Indicatieve rendementen",calculator:"Investeringscalculator",amount:"Bedrag",plan:"Plan",estimated:"Geschatte waarde",level:"Accountniveau",depositDesc:"Voeg veilig saldo toe via wallet of gateway.",withdrawDesc:"Vraag direct een opname aan.",request:"Opname aanvragen",clear:"Geschiedenis wissen",username:"Gebruikersnaam",email:"E-mail",fullname:"Volledige naam",phone:"Telefoon",password:"Wachtwoord",continue:"Doorgaan",thAsset:"Activa",thPrice:"Prijs",thCap:"Marktkapitalisatie",thVol:"Volume",dailyProfitLabel:"Dagelijkse winst",monthlyProfitLabel:"Maandelijkse winst",supportEmail:"Support-e-mail",securityPartners:"Beveiligingspartners",statUsers:"Platformgebruikers",statInvestors:"Actieve investeerders",statPaid:"Totaal uitbetaalde winst",statCapital:"Platformkapitaal",depSubmitBtn:"Stortingsverzoek indienen"},
   pl:{heroDesc:"Odkrywaj aktywa cyfrowe, plany inwestycyjne i narzędzia portfelowe w jednym interfejsie premium.",footerTitle:"Dlaczego Binance Invest?",illustrative:"Przykładowe zwroty",calculator:"Kalkulator inwestycji",amount:"Kwota",plan:"Plan",estimated:"Szacowana wartość",level:"Poziom konta",depositDesc:"Bezpiecznie dodaj saldo przez portfel lub bramkę.",withdrawDesc:"Złóż natychmiastową dyspozycję wypłaty.",request:"Zleć wypłatę",clear:"Wyczyść historię",username:"Nazwa użytkownika",email:"E-mail",fullname:"Imię i nazwisko",phone:"Telefon",password:"Hasło",continue:"Kontynuuj",thAsset:"Aktywo",thPrice:"Cena",thCap:"Kapitalizacja",thVol:"Wolumen",dailyProfitLabel:"Dzienny zysk",monthlyProfitLabel:"Miesięczny zysk",supportEmail:"E-mail wsparcia",securityPartners:"Partnerzy bezpieczeństwa",statUsers:"Użytkownicy platformy",statInvestors:"Aktywni inwestorzy",statPaid:"Łącznie wypłacony zysk",statCapital:"Kapitał platformy",depSubmitBtn:"Wyślij prośbę o wpłatę"},
-  uk:{heroDesc:"Досліджуйте цифрові активи, інвестиційні плани та інструменти портфеля в одному преміальному інтерфейсі.",footerTitle:"Чому Binance Invest?",illustrative:"Орієнтовна дохідність",calculator:"Інвестиційний калькулятор",amount:"Сума",plan:"План",estimated:"Орієнтовна вартість",level:"Рівень акаунта",depositDesc:"Безпечно поповнюйте баланс через гаманець або шлюз.",withdrawDesc:"Створіть миттєвий запит на виведення.",request:"Запит на виведення",clear:"Очистити історію",username:"Ім'я користувача",email:"Ел. пошта",fullname:"Повне ім'я",phone:"Телефон",password:"Пароль",continue:"Продовжити",thAsset:"Актив",thPrice:"Ціна",thCap:"Капіталізація",thVol:"Обсяг",dailyProfitLabel:"Денний прибуток",monthlyProfitLabel:"Місячний прибуток",supportEmail:"Пошта підтримки",securityPartners:"Партнери безпеки",statUsers:"Користувачі платформи",statInvestors:"Активні інвестори",statPaid:"Виплачений прибуток",statCapital:"Капітал платформи",depSubmitBtn:"Надіслати запит на депозит"},
+  uk:{heroDesc:"Досліджуйте цифрові активи, інвестиційні плани та інструменти портфеля в одному преміальному інтерфейсі.",footerTitle:"Чому Binance Invest?",illustrative:"Орієнтовна дохідність",calculator:"Інвестиційний калькулятор",amount:"Сума",plan:"План",estimated:"Орієнтовна вартість",level:"Рівень акаунта",depositDesc:"Безпечно поповнюйте баланс через гаманець або шлюз.",withdrawDesc:"Створіть миттєвий запит на виведення.",request:"Запит на виведення",clear:"Очистити історію",username:"Ім'я користувача",email:"Ел. пошта",fullname:"Повне ім'я",phone:"Номер WhatsApp",password:"Пароль",continue:"Продовжити",thAsset:"Актив",thPrice:"Ціна",thCap:"Капіталізація",thVol:"Обсяг",dailyProfitLabel:"Денний прибуток",monthlyProfitLabel:"Місячний прибуток",supportEmail:"Пошта підтримки",securityPartners:"Партнери безпеки",statUsers:"Користувачі платформи",statInvestors:"Активні інвестори",statPaid:"Виплачений прибуток",statCapital:"Капітал платформи",depSubmitBtn:"Надіслати запит на депозит"},
   ro:{heroDesc:"Explorează active digitale, planuri de investiții și instrumente de portofoliu într-o interfață premium.",footerTitle:"De ce Binance Invest?",illustrative:"Randamente orientative",calculator:"Calculator de investiții",amount:"Sumă",plan:"Plan",estimated:"Valoare estimată",level:"Nivel cont",depositDesc:"Adaugă sold în siguranță prin portofel sau gateway.",withdrawDesc:"Solicită o retragere instant.",request:"Solicită retragerea",clear:"Șterge istoricul",username:"Utilizator",email:"E-mail",fullname:"Nume complet",phone:"Telefon",password:"Parolă",continue:"Continuă",thAsset:"Activ",thPrice:"Preț",thCap:"Capitalizare",thVol:"Volum",dailyProfitLabel:"Profit zilnic",monthlyProfitLabel:"Profit lunar",supportEmail:"E-mail suport",securityPartners:"Parteneri de securitate",statUsers:"Utilizatori platformă",statInvestors:"Investitori activi",statPaid:"Profit total plătit",statCapital:"Capital platformă",depSubmitBtn:"Trimite cererea de depunere"},
   id:{heroDesc:"Jelajahi aset digital, paket investasi, dan alat portofolio dalam satu antarmuka premium.",footerTitle:"Mengapa Binance Invest?",illustrative:"Imbal hasil ilustratif",calculator:"Kalkulator Investasi",amount:"Jumlah",plan:"Paket",estimated:"Nilai perkiraan",level:"Level akun",depositDesc:"Tambah saldo dengan aman melalui dompet atau gateway.",withdrawDesc:"Ajukan penarikan secara instan.",request:"Ajukan Penarikan",clear:"Hapus riwayat",username:"Nama pengguna",email:"Email",fullname:"Nama lengkap",phone:"Telepon",password:"Kata sandi",continue:"Lanjutkan",thAsset:"Aset",thPrice:"Harga",thCap:"Kapitalisasi",thVol:"Volume",dailyProfitLabel:"Keuntungan harian",monthlyProfitLabel:"Keuntungan bulanan",supportEmail:"Email dukungan",securityPartners:"Mitra Keamanan",statUsers:"Pengguna Platform",statInvestors:"Investor Aktif",statPaid:"Total Profit Dibayar",statCapital:"Modal Platform",depSubmitBtn:"Kirim Permintaan Deposit"},
   ms:{heroDesc:"Terokai aset digital, pelan pelaburan dan alat portfolio dalam satu antara muka premium.",footerTitle:"Mengapa Binance Invest?",illustrative:"Pulangan ilustrasi",calculator:"Kalkulator Pelaburan",amount:"Jumlah",plan:"Pelan",estimated:"Nilai anggaran",level:"Tahap akaun",depositDesc:"Tambah baki dengan selamat melalui dompet atau gerbang.",withdrawDesc:"Mohon pengeluaran segera.",request:"Mohon Pengeluaran",clear:"Padam sejarah",username:"Nama pengguna",email:"E-mel",fullname:"Nama penuh",phone:"Telefon",password:"Kata laluan",continue:"Teruskan",thAsset:"Aset",thPrice:"Harga",thCap:"Modal pasaran",thVol:"Volum",dailyProfitLabel:"Keuntungan harian",monthlyProfitLabel:"Keuntungan bulanan",supportEmail:"E-mel sokongan",securityPartners:"Rakan Keselamatan",statUsers:"Pengguna Platform",statInvestors:"Pelabur Aktif",statPaid:"Jumlah Untung Dibayar",statCapital:"Modal Platform",depSubmitBtn:"Hantar Permintaan Deposit"},
@@ -30032,8 +30032,8 @@ html.web-android [onclick] {
 (function(){
   "use strict";
   const COPY={
-    en:{phoneTitle:"Phone verification",phoneDescription:"Verify your phone number with an SMS code.",phoneVerifiedDescription:"Your phone number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify phone",changePhone:"Change phone",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"Phone verification",modalDescription:"Select your country and enter your phone number.",phoneLabel:"Phone number",selectCountry:"Select country",searchCountry:"Search country or code",phoneHelp:"The country code is added automatically. A leading zero is removed automatically.",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent.",success:"Your phone number was verified successfully.",invalidPhone:"Select a country and enter a valid phone number.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"SMS verification is not available yet. Enable Phone Auth and configure an SMS provider in Supabase.",genericError:"Phone verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
-    fa:{phoneTitle:"تأیید شماره تلفن",phoneDescription:"شماره تلفن خود را با کد پیامکی تأیید کنید.",phoneVerifiedDescription:"شماره تلفن شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره تلفن",changePhone:"تغییر شماره",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره تلفن",modalDescription:"کشور را انتخاب کنید و شماره تلفن خود را وارد کنید.",phoneLabel:"شماره تلفن",selectCountry:"انتخاب کشور",searchCountry:"جست‌وجوی کشور یا کد",phoneHelp:"کد کشور خودکار اضافه می‌شود و صفر ابتدایی شماره حذف خواهد شد.",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید ارسال شد.",success:"شماره تلفن شما با موفقیت تأیید شد.",invalidPhone:"کشور را انتخاب و شماره تلفن معتبر وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید پیامکی هنوز فعال نیست. Phone Auth و ارائه‌دهنده SMS را در Supabase فعال کنید.",genericError:"تأیید شماره تلفن انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
+    en:{phoneTitle:"WhatsApp verification",phoneDescription:"Enter your WhatsApp number. We’ll send the verification code to WhatsApp, so check WhatsApp for the code.",phoneVerifiedDescription:"Your WhatsApp number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify WhatsApp",changePhone:"Change WhatsApp number",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"WhatsApp verification",modalDescription:"Select your country and enter your WhatsApp number. Then check WhatsApp for the verification code.",phoneLabel:"WhatsApp number",selectCountry:"Select country",searchCountry:"Search country or code",phoneHelp:"Enter the number linked to your WhatsApp. The verification code is sent to WhatsApp, so check WhatsApp for the code. The country code is added automatically.",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent to WhatsApp. Check WhatsApp for the code.",success:"Your WhatsApp number was verified successfully.",invalidPhone:"Select a country and enter a valid WhatsApp number.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"WhatsApp verification is temporarily unavailable. Please try again later.",genericError:"WhatsApp number verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
+    fa:{phoneTitle:"تأیید شماره واتساپ",phoneDescription:"شماره واتساپ خود را وارد کنید. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را برای دریافت کد بررسی کنید.",phoneVerifiedDescription:"شماره واتساپ شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره واتساپ",changePhone:"تغییر شماره واتساپ",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره واتساپ",modalDescription:"کشور را انتخاب کنید و شماره واتساپ خود را وارد کنید. سپس واتساپ را برای دریافت کد بررسی کنید.",phoneLabel:"شماره واتساپ",selectCountry:"انتخاب کشور",searchCountry:"جست‌وجوی کشور یا کد",phoneHelp:"شماره‌ای را وارد کنید که واتساپ شما روی آن فعال است. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را بررسی کنید. کد کشور خودکار اضافه می‌شود.",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید به واتساپ ارسال شد؛ واتساپ را بررسی کنید.",success:"شماره واتساپ شما با موفقیت تأیید شد.",invalidPhone:"کشور را انتخاب و شماره واتساپ معتبر وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید واتساپ موقتاً در دسترس نیست. کمی بعد دوباره تلاش کنید.",genericError:"تأیید شماره واتساپ انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
   };
   const WITHDRAWAL_SECURITY_COPY={
     en:{hint:"After identity verification",active:"Active",inactive:"Inactive"},
