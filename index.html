@@ -30722,18 +30722,130 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
   const PROJECT_ID = "cc6cbdc4566972028acc77cf943c04c";
   const APP_ORIGIN = "https://binancinvest.com";
 
+  /*
+    Keep the wallet picker focused on self-custody wallets plus Binance Wallet.
+    Centralized-exchange wallet entries (Coinbase, OKX, Bitget, Crypto.com, Kraken,
+    Gemini, Robinhood, etc.) are intentionally not included.
+
+    Reown identifies wallets by WalletGuide listing IDs. To avoid hard-coding IDs
+    that can change, we resolve the approved names from the official Explorer API
+    before initializing AppKit. MetaMask and Trust have stable fallback IDs so the
+    connector can still start if the directory request is temporarily unavailable.
+  */
+  const ALLOWED_WALLETS = [
+    {
+      label: "MetaMask",
+      search: "MetaMask",
+      aliases: ["MetaMask"],
+      fallbackId: "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96"
+    },
+    {
+      label: "Trust Wallet",
+      search: "Trust Wallet",
+      aliases: ["Trust Wallet"],
+      fallbackId: "4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0"
+    },
+    { label: "Binance Wallet", search: "Binance Wallet", aliases: ["Binance Wallet"] },
+    { label: "SafePal", search: "SafePal", aliases: ["SafePal", "SafePal Wallet"] },
+    { label: "TokenPocket", search: "TokenPocket", aliases: ["TokenPocket", "TokenPocket Wallet"] },
+    { label: "Rabby", search: "Rabby", aliases: ["Rabby", "Rabby Wallet"] },
+    { label: "Exodus", search: "Exodus", aliases: ["Exodus", "Exodus Wallet"] },
+    { label: "Ledger Wallet", search: "Ledger Wallet", aliases: ["Ledger Wallet", "Ledger Live"] },
+    { label: "OneKey", search: "OneKey", aliases: ["OneKey", "OneKey Wallet"] },
+    { label: "imToken", search: "imToken", aliases: ["imToken"] }
+  ];
+
+  const normalizeWalletName = (value) => String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+    .trim();
+
+  const listingEntries = (payload) => {
+    const raw = payload?.listings ?? payload?.data?.listings ?? payload?.data ?? payload;
+    if (Array.isArray(raw)) {
+      return raw.map((wallet) => [wallet?.id || wallet?.listing_id || wallet?.listingId || "", wallet]);
+    }
+    if (raw && typeof raw === "object") {
+      return Object.entries(raw);
+    }
+    return [];
+  };
+
+  const fetchWalletId = async (wallet) => {
+    if (typeof fetch !== "function") return wallet.fallbackId || "";
+
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), 6500) : null;
+
+    try {
+      const url = new URL("https://explorer-api.walletconnect.com/v3/wallets");
+      url.searchParams.set("projectId", PROJECT_ID);
+      url.searchParams.set("entries", "20");
+      url.searchParams.set("page", "1");
+      url.searchParams.set("search", wallet.search);
+
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        mode: "cors",
+        cache: "no-store",
+        signal: controller?.signal
+      });
+      if (!response.ok) throw new Error(`WalletGuide HTTP ${response.status}`);
+
+      const payload = await response.json();
+      const wanted = new Set(wallet.aliases.map(normalizeWalletName));
+      let fallbackCandidate = "";
+
+      for (const [key, value] of listingEntries(payload)) {
+        const id = String(value?.id || value?.listing_id || value?.listingId || key || "").trim();
+        const name = normalizeWalletName(value?.name || value?.title || "");
+        if (!id) continue;
+
+        if (wanted.has(name)) return id;
+        if (!fallbackCandidate && name.includes(normalizeWalletName(wallet.search))) {
+          fallbackCandidate = id;
+        }
+      }
+
+      return fallbackCandidate || wallet.fallbackId || "";
+    } catch (error) {
+      console.warn(`WalletGuide lookup skipped for ${wallet.label}:`, error);
+      return wallet.fallbackId || "";
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  };
+
   try {
-    const [{ createAppKit }, { EthersAdapter }, { bsc }] = await Promise.all([
-      import("https://esm.sh/@reown/appkit@1.8.23"),
-      import("https://esm.sh/@reown/appkit-adapter-ethers@1.8.23"),
-      import("https://esm.sh/@reown/appkit@1.8.23/networks")
+    const [modules, resolvedWalletIds] = await Promise.all([
+      Promise.all([
+        import("https://esm.sh/@reown/appkit@1.8.23"),
+        import("https://esm.sh/@reown/appkit-adapter-ethers@1.8.23"),
+        import("https://esm.sh/@reown/appkit@1.8.23/networks")
+      ]),
+      Promise.all(ALLOWED_WALLETS.map(fetchWalletId))
     ]);
+
+    const [{ createAppKit }, { EthersAdapter }, { bsc }] = modules;
+    const includeWalletIds = [...new Set(resolvedWalletIds.filter(Boolean))];
+
+    if (!includeWalletIds.length) {
+      throw new Error("No approved WalletGuide entries could be resolved.");
+    }
 
     const appKit = createAppKit({
       adapters: [new EthersAdapter()],
       networks: [bsc],
       defaultNetwork: bsc,
       projectId: PROJECT_ID,
+
+      // Only these resolved wallets appear in the WalletConnect directory.
+      includeWalletIds,
+      featuredWalletIds: includeWalletIds.slice(0, 5),
+
+      // Coinbase has a dedicated connector in AppKit; disable it explicitly.
+      enableCoinbase: false,
+
       metadata: {
         name: "BI Invest",
         description: "BI Invest direct wallet payment",
