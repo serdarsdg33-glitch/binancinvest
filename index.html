@@ -30134,20 +30134,31 @@ html.web-android [onclick] {
     const paint=()=>{button.disabled=resendSeconds>0;button.textContent=resendSeconds>0?c("wait").replace("{seconds}",resendSeconds):c("resend")};paint();
     resendTimer=setInterval(()=>{resendSeconds-=1;paint();if(resendSeconds<=0){clearInterval(resendTimer);resendTimer=null}},1000);
   }
+  async function invokeBirdPhoneVerification(action,phone,code=""){
+    const body={action,phone};if(code)body.code=code;
+    const{data,error}=await supabaseClient.functions.invoke("binancinvest-phone-verify",{body});
+    if(error)throw error;
+    if(!data?.success){
+      const message=data?.error==="rate_limited"?c("wait").replace("{seconds}",String(data?.retry_after||60)):c("genericError");
+      const failure=new Error(message);failure.code=data?.error||"bird_verify_failed";throw failure;
+    }
+    return data;
+  }
   window.sendPhoneVerificationCode=async function(){
     if(phoneBusy)return;setPhoneError("");const details=getPhoneVerificationDetails();if(!details.valid)return setPhoneError(c("invalidPhone"));const phone=details.e164;phoneBusy=true;const button=byId("phoneVerificationSendButton");setButtonBusy(button,true,c("sending"));
-    try{const{error}=await supabaseClient.auth.updateUser({phone});if(error)throw error;pendingPhone=phone;byId("phoneVerificationNumberStep").hidden=true;byId("phoneVerificationCodeStep").hidden=false;startResendCooldown();setTimeout(()=>byId("phoneVerificationCode").focus(),80)}catch(error){console.error("Phone verification send",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("sendCode"))}
+    try{await invokeBirdPhoneVerification("send",phone);pendingPhone=phone;byId("phoneVerificationNumberStep").hidden=true;byId("phoneVerificationCodeStep").hidden=false;startResendCooldown();setTimeout(()=>byId("phoneVerificationCode").focus(),80)}catch(error){console.error("Bird phone verification send",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("sendCode"))}
   };
   window.resendPhoneVerificationCode=async function(){
     if(phoneBusy||resendSeconds>0||!pendingPhone)return;phoneBusy=true;setPhoneError("");const button=byId("phoneVerificationResendButton");setButtonBusy(button,true,c("sending"));
-    try{const{error}=await supabaseClient.auth.resend({type:"phone_change",phone:pendingPhone});if(error)throw error;startResendCooldown();if(typeof toast==="function")toast(c("resent"),"success")}catch(error){console.error("Phone verification resend",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;if(!resendSeconds)setButtonBusy(button,false,c("resend"))}
+    try{await invokeBirdPhoneVerification("send",pendingPhone);startResendCooldown();if(typeof toast==="function")toast(c("resent"),"success")}catch(error){console.error("Bird phone verification resend",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;if(!resendSeconds)setButtonBusy(button,false,c("resend"))}
   };
   window.confirmPhoneVerificationCode=async function(){
     if(phoneBusy)return;const token=byId("phoneVerificationCode").value.trim();if(!/^\d{6}$/.test(token))return setPhoneError(c("invalidCode"));if(!pendingPhone)return setPhoneError(c("genericError"));phoneBusy=true;setPhoneError("");const button=byId("phoneVerificationConfirmButton");setButtonBusy(button,true,c("verifying"));
     try{
-      const{data,error}=await supabaseClient.auth.verifyOtp({phone:pendingPhone,token,type:"phone_change"});if(error)throw error;authPhoneUser=data?.user||authPhoneUser;
-      const{error:profileError}=await supabaseClient.from("profiles").update({phone:pendingPhone}).eq("id",currentUser.id);if(profileError)console.warn("Verified phone profile sync skipped",profileError);currentUser.phone=pendingPhone;byId("phone").value=pendingPhone;pendingPhone="";window.closePhoneVerificationModal();await window.refreshProfileVerificationCards(true);if(typeof toast==="function")toast(c("success"),"success");
-    }catch(error){console.error("Phone verification confirm",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("confirm"))}
+      await invokeBirdPhoneVerification("verify",pendingPhone,token);
+      const{data:userData,error:userError}=await supabaseClient.auth.getUser();if(userError)throw userError;authPhoneUser=userData?.user||authPhoneUser;
+      currentUser.phone=pendingPhone;byId("phone").value=pendingPhone;pendingPhone="";window.closePhoneVerificationModal();await window.refreshProfileVerificationCards(true);if(typeof toast==="function")toast(c("success"),"success");
+    }catch(error){console.error("Bird phone verification confirm",error);setPhoneError(friendlyPhoneError(error))}finally{phoneBusy=false;setButtonBusy(button,false,c("confirm"))}
   };
   window.addEventListener("bi:kyc-status",event=>renderIdentityCard(event.detail?.request||null));
   const previousPage=window.page;if(typeof previousPage==="function")window.page=function(id,button){const result=previousPage.apply(this,arguments);if(id==="profile")setTimeout(()=>window.refreshProfileVerificationCards(),0);return result};
