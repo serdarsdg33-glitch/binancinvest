@@ -23922,6 +23922,59 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+/* Stage-1 server-side blockchain verification.
+ * This never credits a balance automatically. It only verifies supported
+ * USDT TXIDs so the existing admin approval remains the final step.
+ */
+const depositVerificationLastAttempt = new Map();
+
+function isAutoVerifiableDeposit(item) {
+  const asset = String(item?.asset || "").trim().toUpperCase();
+  const network = String(item?.network || "").trim().toUpperCase();
+  const txHash = String(item?.tx_hash || "").trim();
+  const verification = String(item?.verification_status || "not_checked");
+  return item?.request_type === "deposit"
+    && item?.status === "pending"
+    && asset === "USDT"
+    && ["BEP20", "ERC20"].includes(network)
+    && /^0x[0-9a-fA-F]{64}$/.test(txHash)
+    && ["not_checked", "checking"].includes(verification);
+}
+
+async function verifyDepositRequestOnChain(requestId, { force = false } = {}) {
+  const id = String(requestId || "").trim();
+  if (!id || !currentUser?.id) return null;
+
+  const now = Date.now();
+  const last = Number(depositVerificationLastAttempt.get(id) || 0);
+  if (!force && now - last < 30000) return null;
+  depositVerificationLastAttempt.set(id, now);
+
+  try {
+    const { data, error } = await supabaseClient.functions.invoke(
+      "verify-deposit-tx",
+      { body: { request_id: id } }
+    );
+    if (error) {
+      console.warn("Deposit blockchain verification deferred:", error);
+      return null;
+    }
+    return data || null;
+  } catch (error) {
+    console.warn("Deposit blockchain verification deferred:", error);
+    return null;
+  }
+}
+
+function recheckPendingDepositVerifications(items) {
+  (Array.isArray(items) ? items : [])
+    .filter(isAutoVerifiableDeposit)
+    .slice(0, 4)
+    .forEach(item => {
+      void verifyDepositRequestOnChain(item.id);
+    });
+}
+
 /* Secure deposit request */
 window.submitDepositRequest = async function () {
   if (!currentUser?.id) {
@@ -23978,7 +24031,7 @@ window.submitDepositRequest = async function () {
       if(uploadError){console.error("Deposit receipt upload error:",uploadError);setDepositReceiptError(receiptCopy.uploadFailed);return}
     }
 
-    const { error } = await supabaseClient.rpc(
+    const { data: requestId, error } = await supabaseClient.rpc(
       "request_deposit_with_receipt",
       {
         p_amount: amount,
@@ -23986,15 +24039,29 @@ window.submitDepositRequest = async function () {
         p_network: selected.network,
         p_tx_hash: txHash || null,
         p_proof_path: proofPath,
-        p_note: "Direct wallet payment"
+        p_note: "Wallet address deposit"
       }
     );
 
     if (error) {
       console.error("Deposit request error:", error);
-      const message=localizedBackendError(error, "depositRequestFailed");
+      const duplicateTx = String(error?.code || "") === "23505";
+      const message = duplicateTx
+        ? (localStorage.getItem("bi_lang") === "fa"
+            ? "این TXID قبلاً برای یک درخواست واریز ثبت شده است."
+            : "This TXID has already been used for a deposit request.")
+        : localizedBackendError(error, "depositRequestFailed");
       if(txHash)showFieldError("tx-ref",message);else setDepositReceiptError(message);
       return;
+    }
+
+    if (
+      requestId
+      && txHash
+      && selected.asset === "USDT"
+      && ["BEP20", "ERC20"].includes(selected.network)
+    ) {
+      await verifyDepositRequestOnChain(requestId, { force: true });
     }
 
     document.getElementById("deposit-amount").value = "";
@@ -24294,6 +24361,11 @@ window.loadTransactions = async function () {
       `<div class="muted" style="padding:20px;text-align:center;">${tr("transactions")}</div>`;
     return;
   }
+
+  /* Recheck recently submitted supported TXIDs in the background.
+   * A 30-second per-request throttle prevents repeated Edge Function calls.
+   */
+  recheckPendingDepositVerifications(data || []);
 
   const cutoff = getTransactionHistoryCutoff();
   const visibleData = (data || []).filter(item => {
