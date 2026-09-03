@@ -14158,39 +14158,48 @@ html.native-app #rewards{
 </style>
 
 
-<style id="bsc-bot-store-style-v1">
-/* BSC Trading Bot Store — isolated styles */
-#bots{padding-bottom:20px}
-.bsc-bot-hero{position:relative;overflow:hidden;min-height:350px;padding:44px 40px;margin-bottom:20px;border:1px solid rgba(240,185,11,.28);border-radius:24px;background:radial-gradient(circle at 88% 12%,rgba(240,185,11,.23),transparent 32%),linear-gradient(135deg,rgba(18,25,34,.98),rgba(5,9,14,.98));box-shadow:0 28px 75px rgba(0,0,0,.52)}
-.bsc-bot-hero::after{content:"";position:absolute;width:260px;height:260px;right:-55px;bottom:-115px;border:1px solid rgba(255,229,138,.18);border-radius:50%;box-shadow:0 0 70px rgba(240,185,11,.10),inset 0 0 55px rgba(240,185,11,.06)}
-.bsc-bot-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;color:var(--gold2);font-size:11px;font-weight:900;letter-spacing:1.5px}
-.bsc-bot-hero h1{max-width:780px;margin:0 0 14px;font-size:clamp(34px,5vw,60px);line-height:1.02;letter-spacing:-1.9px}
-.bsc-bot-hero p{max-width:760px;margin:0;color:#aeb9c7;font-size:15px;line-height:1.75}
-.bsc-bot-value-line{display:flex;flex-wrap:wrap;gap:8px;margin:21px 0 0}
-.bsc-bot-value-line span{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;color:#dce5ef;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.075);border-radius:999px;font-size:11px;font-weight:800;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.bsc-bot-value-line span:first-child{color:#b9ffd9;border-color:rgba(22,199,132,.30);background:rgba(22,199,132,.07)}
-.bsc-bot-risk-note{position:relative;z-index:2;max-width:820px;margin-top:17px;padding:11px 13px;color:#9eabb9;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.055);border-radius:10px;font-size:11px;line-height:1.65}
-.bsc-bot-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.bsc-bot-product{position:relative;display:flex;flex-direction:column;min-height:525px;padding:23px 21px;overflow:hidden;background:linear-gradient(155deg,rgba(20,28,37,.96),rgba(7,11,16,.98));border:1px solid rgba(240,185,11,.20);border-radius:20px;box-shadow:0 18px 46px rgba(0,0,0,.42);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
-.bsc-bot-product:hover{transform:translateY(-5px);border-color:rgba(240,185,11,.53);box-shadow:0 24px 60px rgba(0,0,0,.54),0 0 20px rgba(240,185,11,.08)}
-.bsc-bot-product.featured{border-color:rgba(255,216,61,.58);background:radial-gradient(circle at 90% 5%,rgba(240,185,11,.13),transparent 33%),linear-gradient(155deg,rgba(23,30,38,.98),rgba(7,11,16,.98))}
-.bsc-bot-popular{position:absolute;right:14px;top:14px;padding:6px 9px;color:#171100;background:linear-gradient(135deg,#ffe98a,#f0b90b);border-radius:999px;font-size:9px;font-weight:950;letter-spacing:.5px}
-html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
-.bsc-bot-product-icon{width:47px;height:47px;display:grid;place-items:center;margin-bottom:15px;color:#181100;background:linear-gradient(145deg,#fff1a2,#f0b90b 64%,#b47d00);border-radius:14px;font-size:19px;font-weight:950;box-shadow:0 8px 22px rgba(240,185,11,.18)}
-.bsc-bot-product h2{margin:0 0 7px;font-size:22px}.bsc-bot-product-desc{min-height:58px;margin:0 0 15px;color:#9eaaba;line-height:1.65;font-size:12px}
-.bsc-bot-price{display:flex;align-items:flex-end;gap:7px;margin:7px 0 17px}.bsc-bot-price strong{color:#fff;font-size:38px;line-height:1;font-weight:950}.bsc-bot-price span{padding-bottom:4px;color:var(--muted);font-size:11px}
-.bsc-bot-features{display:flex;flex-direction:column;gap:10px;margin:0 0 22px;padding:0;list-style:none}.bsc-bot-features li{position:relative;padding-inline-start:23px;color:#c1cad5;font-size:12px;line-height:1.45}.bsc-bot-features li::before{content:"✓";position:absolute;inset-inline-start:0;top:0;width:16px;height:16px;display:grid;place-items:center;color:#0b120d;background:var(--green);border-radius:50%;font-size:9px;font-weight:950}
-.bsc-bot-buy{width:100%;margin-top:auto;min-height:45px;font-weight:900}
-.bsc-bot-process{margin-top:19px;padding:22px;background:linear-gradient(145deg,rgba(18,25,33,.92),rgba(8,12,17,.96));border:1px solid rgba(255,255,255,.07);border-radius:18px}.bsc-bot-process h2{margin:0 0 16px;font-size:20px}.bsc-bot-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.bsc-bot-step{padding:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);border-radius:12px}.bsc-bot-step b{display:grid;place-items:center;width:27px;height:27px;margin-bottom:10px;color:#171100;background:var(--gold);border-radius:8px}.bsc-bot-step span{color:#cbd4df;font-size:11px;line-height:1.55}
-.bsc-home-promo{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:18px;margin:24px 0 4px;padding:21px 22px;overflow:hidden;background:radial-gradient(circle at 90% 0%,rgba(240,185,11,.17),transparent 37%),linear-gradient(135deg,rgba(17,24,32,.97),rgba(7,11,16,.98));border:1px solid rgba(240,185,11,.28);border-radius:18px;box-shadow:0 16px 42px rgba(0,0,0,.38)}
-.bsc-home-promo h3{margin:0 0 6px;font-size:20px}.bsc-home-promo p{margin:0;color:#9eaaba;font-size:12px;line-height:1.65}.bsc-home-promo-price{color:var(--gold2);font-weight:900}
-.bsc-bot-modal{position:fixed;inset:0;z-index:950;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.80);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)}
-.bsc-bot-modal.open{display:flex}.bsc-bot-modal-box{width:min(470px,100%);padding:24px;color:#fff;background:linear-gradient(145deg,#151d26,#080d13);border:1px solid rgba(240,185,11,.38);border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.78)}
-.bsc-bot-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.bsc-bot-modal-head h2{margin:0;font-size:22px}.bsc-bot-modal-close{width:34px;height:34px;display:grid;place-items:center;padding:0;color:#aab4c0;background:#111820;border:1px solid #29313d;border-radius:9px;font-size:20px}
-.bsc-bot-order-summary{margin:18px 0;padding:15px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:12px}.bsc-bot-order-row{display:flex;justify-content:space-between;gap:14px;padding:7px 0;color:#aeb8c5;font-size:12px}.bsc-bot-order-row strong{color:#fff;text-align:end}.bsc-bot-order-row.price strong{color:var(--gold2);font-size:20px}.bsc-bot-modal-note{margin:0 0 16px;color:#9eabb9;font-size:11px;line-height:1.7}.bsc-bot-modal-actions{display:grid;grid-template-columns:1fr 1.35fr;gap:8px}.bsc-bot-modal-actions .btn{min-height:43px}
-.bsc-bot-deposit-focus{animation:bscDepositPulse 1.6s ease 2}@keyframes bscDepositPulse{0%,100%{box-shadow:0 10px 40px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 2px rgba(240,185,11,.32),0 0 28px rgba(240,185,11,.20),0 10px 40px rgba(0,0,0,.55)}}
-@media(max-width:900px){.bsc-bot-products{grid-template-columns:1fr}.bsc-bot-product{min-height:0}.bsc-bot-product-desc{min-height:0}.bsc-bot-steps{grid-template-columns:1fr}.bsc-home-promo{grid-template-columns:1fr}.bsc-home-promo .btn{width:100%}}
-@media(max-width:600px){.bsc-bot-hero{padding:29px 20px;min-height:330px;border-radius:18px}.bsc-bot-hero h1{font-size:38px}.bsc-bot-product{padding:19px 17px}.bsc-bot-price strong{font-size:34px}.bsc-bot-modal-actions{grid-template-columns:1fr}.bsc-home-promo{padding:18px 16px}}
+<style id="bsc-store-safe-v2">
+/* BSC STORE SAFE V2 — isolated; no existing selector/function is changed */
+#bots.bsc-store-view{padding-bottom:28px}
+.bsc2-hero{
+  position:relative;overflow:hidden;padding:42px 36px;margin-bottom:18px;
+  border:1px solid rgba(240,185,11,.28);border-radius:24px;
+  background:
+    radial-gradient(circle at 88% 8%,rgba(240,185,11,.23),transparent 34%),
+    linear-gradient(135deg,rgba(17,24,32,.98),rgba(6,10,15,.98));
+  box-shadow:0 24px 65px rgba(0,0,0,.48)
+}
+.bsc2-kicker{color:#ffe58a;font-size:11px;font-weight:900;letter-spacing:1.5px}
+.bsc2-hero h1{max-width:780px;margin:11px 0 13px;font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-1.7px}
+.bsc2-hero p{max-width:780px;margin:0;color:#aeb9c7;line-height:1.8;font-size:14px}
+.bsc2-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.bsc2-pill{padding:7px 10px;border-radius:999px;color:#ffe58a;background:rgba(240,185,11,.07);border:1px solid rgba(240,185,11,.22);font-size:11px;font-weight:800}
+.bsc2-risk{margin-top:17px;padding:11px 13px;border-left:3px solid #f0b90b;border-radius:9px;background:rgba(240,185,11,.055);color:#c6cfda;font-size:12px;line-height:1.7}
+.bsc2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.bsc2-card{
+  position:relative;padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:19px;
+  background:linear-gradient(145deg,rgba(20,27,35,.96),rgba(9,14,20,.98));
+  box-shadow:0 18px 45px rgba(0,0,0,.38)
+}
+.bsc2-card.popular{border-color:rgba(240,185,11,.58);box-shadow:0 18px 50px rgba(0,0,0,.46),0 0 22px rgba(240,185,11,.10)}
+.bsc2-badge{position:absolute;right:15px;top:15px;padding:5px 8px;border-radius:999px;color:#161000;background:#f0b90b;font-size:9px;font-weight:950}
+html[dir="rtl"] .bsc2-badge{right:auto;left:15px}
+.bsc2-card h2{margin:0 0 8px;font-size:21px}
+.bsc2-card p{min-height:66px;margin:0;color:#93a0b0;line-height:1.65;font-size:12px}
+.bsc2-price{margin:18px 0 2px;color:#fff;font-size:35px;font-weight:950;letter-spacing:-1px}
+.bsc2-license{color:#7f8b99;font-size:10px}
+.bsc2-features{list-style:none;margin:17px 0;padding:0;display:grid;gap:9px;color:#c8d0db;font-size:12px}
+.bsc2-features li::before{content:"✓";margin-inline-end:8px;color:#16c784;font-weight:900}
+.bsc2-buy{width:100%;min-height:44px;margin-top:9px}
+.bsc2-how{margin-top:18px;padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(13,18,24,.74)}
+.bsc2-how h2{margin:0 0 14px;font-size:19px}
+.bsc2-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bsc2-step{padding:14px;border-radius:13px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);color:#aeb9c7;line-height:1.65;font-size:12px}
+.bsc2-step b{display:grid;place-items:center;width:27px;height:27px;margin-bottom:9px;border-radius:50%;color:#161000;background:#f0b90b}
+.bsc2-selected-note{display:none;margin-top:14px;padding:13px;border-radius:12px;border:1px solid rgba(22,199,132,.25);background:rgba(22,199,132,.07);color:#9ef0cb;line-height:1.65;font-size:12px}
+.bsc2-selected-note.show{display:block}
+@media(max-width:900px){.bsc2-grid,.bsc2-steps{grid-template-columns:1fr}.bsc2-card p{min-height:0}}
+@media(max-width:600px){.bsc2-hero{padding:30px 20px;border-radius:19px}.bsc2-card{padding:18px}}
 </style>
 
 </head>
@@ -14245,8 +14254,6 @@ html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
 
   <button data-page="rewards" onclick="page('rewards',this)" data-t="rewards">Rewards</button>
 
-  <button data-page="bots" onclick="page('bots',this)" data-t="botStore">Trading Bot</button>
-
   <button
     data-page="support"
     onclick="page('support',this)"
@@ -14260,10 +14267,87 @@ html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
     <span id="kycNavBadge" class="kyc-nav-badge" hidden></span>
   </button>
 
+
+  <button data-page="bots" onclick="page('bots',this)">
+    <span data-bsc="nav">Trading Bot</span>
+  </button>
+
   <button data-page="profile" onclick="page('profile',this)">
     <span class="profile-nav-label" data-t="profile">Profile</span>
   </button>
 </nav>
+
+
+<section id="bots" class="view bsc-store-view">
+  <div class="bsc2-hero">
+    <div class="bsc2-kicker" data-bsc="kicker">BSC AUTOMATED TRADING</div>
+    <h1 data-bsc="heroTitle">Professional automated trading with advanced risk control.</h1>
+    <p data-bsc="heroDesc">Choose Spot, Futures, or the complete BSC Universal package. Connect your own supported exchange account and keep control of your funds.</p>
+    <div class="bsc2-pills">
+      <span class="bsc2-pill" data-bsc="pill1">Maximum profit potential</span>
+      <span class="bsc2-pill" data-bsc="pill2">Minimum possible risk focus</span>
+      <span class="bsc2-pill" data-bsc="pill3">Advanced risk management</span>
+      <span class="bsc2-pill" data-bsc="pill4">Windows + Mobile Control</span>
+    </div>
+    <div class="bsc2-risk" data-bsc="risk">Trading involves risk and profits are not guaranteed. BSC is designed to reduce and control risk; it cannot eliminate market risk.</div>
+  </div>
+
+  <div class="bsc2-grid">
+    <article class="bsc2-card">
+      <h2>BSC Spot Bot</h2>
+      <p data-bsc="spotDesc">Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.</p>
+      <div class="bsc2-price">$99</div>
+      <div class="bsc2-license" data-bsc="oneTime">one-time license</div>
+      <ul class="bsc2-features">
+        <li data-bsc="spotF1">Automated Spot entry & exit</li>
+        <li data-bsc="riskF">Risk per trade + daily loss limit</li>
+        <li data-bsc="multiF">Supported multi-exchange connection</li>
+        <li data-bsc="windowsF">Windows desktop package</li>
+      </ul>
+      <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('SPOT',99)" data-bsc="buy">Buy Now</button>
+    </article>
+
+    <article class="bsc2-card">
+      <h2>BSC Futures Bot</h2>
+      <p data-bsc="futuresDesc">Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.</p>
+      <div class="bsc2-price">$129</div>
+      <div class="bsc2-license" data-bsc="oneTime">one-time license</div>
+      <ul class="bsc2-features">
+        <li data-bsc="futureF1">Automated Long & Short</li>
+        <li data-bsc="futureF2">Leverage & margin controls</li>
+        <li data-bsc="riskF">Risk per trade + daily loss limit</li>
+        <li data-bsc="windowsF">Windows desktop package</li>
+      </ul>
+      <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('FUTURES',129)" data-bsc="buy">Buy Now</button>
+    </article>
+
+    <article class="bsc2-card popular">
+      <span class="bsc2-badge" data-bsc="popular">MOST POPULAR</span>
+      <h2>BSC Universal Bot</h2>
+      <p data-bsc="universalDesc">Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.</p>
+      <div class="bsc2-price">$179</div>
+      <div class="bsc2-license" data-bsc="oneTime">one-time license</div>
+      <ul class="bsc2-features">
+        <li data-bsc="universalF1">Spot + Futures in one package</li>
+        <li data-bsc="universalF2">Windows + mobile control</li>
+        <li data-bsc="universalF3">Full BSC risk-control toolkit</li>
+        <li data-bsc="universalF4">Multilingual installation guides</li>
+      </ul>
+      <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('UNIVERSAL',179)" data-bsc="buy">Buy Now</button>
+    </article>
+  </div>
+
+  <div class="bsc2-how">
+    <h2 data-bsc="howTitle">How to purchase</h2>
+    <div class="bsc2-steps">
+      <div class="bsc2-step"><b>1</b><span data-bsc="how1">Choose a BSC package.</span></div>
+      <div class="bsc2-step"><b>2</b><span data-bsc="how2">Continue to Portfolio → Deposit; the exact package price will be filled automatically.</span></div>
+      <div class="bsc2-step"><b>3</b><span data-bsc="how3">Submit the normal deposit request. Delivery and license activation are handled after payment approval.</span></div>
+    </div>
+    <div id="bscSafeSelectedNote" class="bsc2-selected-note"></div>
+  </div>
+</section>
+
 
 <section id="home" class="view active">
 <div class="homepage-vault-video">
@@ -14276,15 +14360,6 @@ html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
   <div class="coins" id="topCoins"></div>
 </section>
 <div class="title"><h2 data-t="featured">Featured Investments</h2></div><div class="plans" id="homePlans"></div>
-
-
-<div class="bsc-home-promo">
-  <div>
-    <h3 data-t="botHomeTitle">BSC Universal Trading Bot</h3>
-    <p><span data-t="botHomeDesc">Automated Spot & Futures trading with advanced risk management for Windows and mobile control.</span> <span class="bsc-home-promo-price" data-t="botHomePrice">Full package from $179.</span></p>
-  </div>
-  <button class="btn gold" type="button" onclick="page('bots',document.querySelector('[data-page=bots]'))" data-t="botExplore">Explore Trading Bots</button>
-</div>
 
 <div class="referral-home-card">
   <div class="referral-home-gift" aria-hidden="true">
@@ -14665,7 +14740,6 @@ html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
               <button class="site-footer-link" type="button" onclick="page('markets',document.querySelector('[data-page=markets]'))" data-t="markets">Markets</button>
               <button class="site-footer-link" type="button" onclick="page('invest',document.querySelector('[data-page=invest]'))" data-t="plans">Investment Plans</button>
               <button class="site-footer-link" type="button" onclick="page('portfolio',document.querySelector('[data-page=portfolio]'))" data-t="portfolio">Portfolio</button>
-              <button class="site-footer-link" type="button" onclick="page('bots',document.querySelector('[data-page=bots]'))" data-t="botStore">Trading Bot</button>
             </div>
           </div>
 
@@ -15464,99 +15538,6 @@ html[dir="rtl"] .bsc-bot-popular{right:auto;left:14px}
   </div>
   </div>
 </section>
-
-
-<section id="bots" class="view">
-  <div class="bsc-bot-hero">
-    <span class="bsc-bot-kicker" data-t="botEyebrow">BSC AUTOMATED TRADING</span>
-    <h1 data-t="botHeroTitle">Professional automated trading. Built around risk control.</h1>
-    <p data-t="botHeroDesc">BSC Trading Bots are designed to maximize trading opportunities while keeping risk controls at the center of every position. Connect your own supported exchange account and keep control of your funds.</p>
-    <div class="bsc-bot-value-line">
-      <span data-t="botMaxProfit">Maximum profit potential</span>
-      <span data-t="botMinRisk">Minimum possible risk focus</span>
-      <span data-t="botAdvancedRisk">Advanced risk management</span>
-      <span data-t="botMultiExchange">Multi-exchange support</span>
-    </div>
-    <div class="bsc-bot-risk-note" data-t="botRiskDisclaimer">Trading involves risk and profits are not guaranteed. The software is designed to control and reduce risk, not eliminate it.</div>
-  </div>
-
-  <div class="bsc-bot-products">
-    <article class="bsc-bot-product">
-      <div class="bsc-bot-product-icon">S</div>
-      <h2 data-t="botSpotName">BSC Spot Bot</h2>
-      <p class="bsc-bot-product-desc" data-t="botSpotDesc">Automated Spot trading with trend filters, dynamic position sizing, stop loss, take profit and trailing protection.</p>
-      <div class="bsc-bot-price"><strong>$99</strong><span data-t="botOneTime">one-time license</span></div>
-      <ul class="bsc-bot-features">
-        <li data-t="botFeatAuto">Automated entry & exit</li>
-        <li data-t="botFeatRisk">Risk per trade + daily loss limit</li>
-        <li data-t="botFeatMulti">Supported multi-exchange connection</li>
-        <li data-t="botFeatWindows">Windows desktop app</li>
-        <li data-t="botFeatMobile">Mobile monitoring & control</li>
-      </ul>
-      <button class="btn gold bsc-bot-buy" type="button" onclick="openBotPurchase('spot')" data-t="botBuyNow">Buy Now</button>
-    </article>
-
-    <article class="bsc-bot-product">
-      <div class="bsc-bot-product-icon">F</div>
-      <h2 data-t="botFuturesName">BSC Futures Bot</h2>
-      <p class="bsc-bot-product-desc" data-t="botFuturesDesc">Long & Short automation with leverage controls, isolated margin support and strict position-risk limits.</p>
-      <div class="bsc-bot-price"><strong>$129</strong><span data-t="botOneTime">one-time license</span></div>
-      <ul class="bsc-bot-features">
-        <li data-t="botFeatLongShort">Automated Long & Short</li>
-        <li data-t="botFeatLeverage">Leverage & margin controls</li>
-        <li data-t="botFeatRisk">Risk per trade + daily loss limit</li>
-        <li data-t="botFeatWindows">Windows desktop app</li>
-        <li data-t="botFeatMobile">Mobile monitoring & control</li>
-      </ul>
-      <button class="btn gold bsc-bot-buy" type="button" onclick="openBotPurchase('futures')" data-t="botBuyNow">Buy Now</button>
-    </article>
-
-    <article class="bsc-bot-product featured">
-      <span class="bsc-bot-popular" data-t="botMostPopular">MOST POPULAR</span>
-      <div class="bsc-bot-product-icon">∞</div>
-      <h2 data-t="botUniversalName">BSC Universal Bot</h2>
-      <p class="bsc-bot-product-desc" data-t="botUniversalDesc">The complete package: Spot + Futures, desktop software, mobile control and multilingual setup guides.</p>
-      <div class="bsc-bot-price"><strong>$179</strong><span data-t="botOneTime">one-time license</span></div>
-      <ul class="bsc-bot-features">
-        <li data-t="botFeatBoth">Spot + Futures in one package</li>
-        <li data-t="botFeatAllRisk">Full BSC risk-control toolkit</li>
-        <li data-t="botFeatMulti">Supported multi-exchange connection</li>
-        <li data-t="botFeatWindowsMobile">Windows + mobile control package</li>
-        <li data-t="botFeatGuides">Multilingual installation guides</li>
-      </ul>
-      <button class="btn gold bsc-bot-buy" type="button" onclick="openBotPurchase('universal')" data-t="botBuyNow">Buy Now</button>
-    </article>
-  </div>
-
-  <div class="bsc-bot-process">
-    <h2 data-t="botHowTitle">How your BSC Bot purchase works</h2>
-    <div class="bsc-bot-steps">
-      <div class="bsc-bot-step"><b>1</b><span data-t="botHow1">Choose your bot package and sign in to your BinancInvest account.</span></div>
-      <div class="bsc-bot-step"><b>2</b><span data-t="botHow2">Deposit the exact package price using the available crypto payment options.</span></div>
-      <div class="bsc-bot-step"><b>3</b><span data-t="botHow3">After payment confirmation, your download package and device license are prepared for delivery.</span></div>
-    </div>
-  </div>
-</section>
-
-<div id="bscBotPurchaseModal" class="bsc-bot-modal" role="dialog" aria-modal="true" aria-labelledby="bscBotPurchaseTitle" onclick="handleBotPurchaseBackdrop(event)">
-  <div class="bsc-bot-modal-box">
-    <div class="bsc-bot-modal-head">
-      <div><span class="bsc-bot-kicker" data-t="botSecureOrder">SECURE ORDER</span><h2 id="bscBotPurchaseTitle" data-t="botCompletePurchase">Complete your purchase</h2></div>
-      <button class="bsc-bot-modal-close" type="button" onclick="closeBotPurchase()" aria-label="Close">×</button>
-    </div>
-    <div class="bsc-bot-order-summary">
-      <div class="bsc-bot-order-row"><span data-t="botSelectedPackage">Selected package</span><strong id="bscBotSelectedName">—</strong></div>
-      <div class="bsc-bot-order-row price"><span data-t="botPrice">Price</span><strong id="bscBotSelectedPrice">—</strong></div>
-      <div class="bsc-bot-order-row"><span data-t="botDelivery">Delivery</span><strong data-t="botDeliveryValue">Download + device license</strong></div>
-    </div>
-    <p class="bsc-bot-modal-note" data-t="botPaymentInstructions">Continue to Deposit and submit the exact package amount. Your request will be tagged as a BSC Bot purchase for review.</p>
-    <p class="bsc-bot-modal-note" data-t="botDeliveryNote">After payment is approved, the customer package and license are delivered. Never share your exchange API Secret with BinancInvest support.</p>
-    <div class="bsc-bot-modal-actions">
-      <button class="btn" type="button" onclick="closeBotPurchase()" data-t="cancel">Cancel</button>
-      <button class="btn gold" type="button" onclick="continueBotPurchase()" data-t="botContinueDeposit">Continue to Deposit</button>
-    </div>
-  </div>
-</div>
 
 <section id="support" class="view">
   <div class="title">
@@ -17836,100 +17817,7 @@ walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style=
 paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
-
 };
-
-const BSC_BOT_TRANSLATIONS = {
-  en:{botStore:"Trading Bot",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Automated Spot & Futures trading with advanced risk management for Windows and mobile control.",botHomePrice:"Full package from $179.",botExplore:"Explore Trading Bots",botEyebrow:"BSC AUTOMATED TRADING",botHeroTitle:"Professional automated trading. Built around risk control.",botHeroDesc:"BSC Trading Bots are designed to maximize trading opportunities while keeping risk controls at the center of every position. Connect your own supported exchange account and keep control of your funds.",botMaxProfit:"Maximum profit potential",botMinRisk:"Minimum possible risk focus",botAdvancedRisk:"Advanced risk management",botMultiExchange:"Multi-exchange support",botRiskDisclaimer:"Trading involves risk and profits are not guaranteed. The software is designed to control and reduce risk, not eliminate it.",botSpotName:"BSC Spot Bot",botSpotDesc:"Automated Spot trading with trend filters, dynamic position sizing, stop loss, take profit and trailing protection.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Long & Short automation with leverage controls, isolated margin support and strict position-risk limits.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"The complete package: Spot + Futures, desktop software, mobile control and multilingual setup guides.",botOneTime:"one-time license",botMostPopular:"MOST POPULAR",botBuyNow:"Buy Now",botFeatAuto:"Automated entry & exit",botFeatRisk:"Risk per trade + daily loss limit",botFeatMulti:"Supported multi-exchange connection",botFeatWindows:"Windows desktop app",botFeatMobile:"Mobile monitoring & control",botFeatLongShort:"Automated Long & Short",botFeatLeverage:"Leverage & margin controls",botFeatBoth:"Spot + Futures in one package",botFeatAllRisk:"Full BSC risk-control toolkit",botFeatWindowsMobile:"Windows + mobile control package",botFeatGuides:"Multilingual installation guides",botHowTitle:"How your BSC Bot purchase works",botHow1:"Choose your bot package and sign in to your BinancInvest account.",botHow2:"Deposit the exact package price using the available crypto payment options.",botHow3:"After payment confirmation, your download package and device license are prepared for delivery.",botSecureOrder:"SECURE ORDER",botCompletePurchase:"Complete your purchase",botSelectedPackage:"Selected package",botPrice:"Price",botDelivery:"Delivery",botDeliveryValue:"Download + device license",botPaymentInstructions:"Continue to Deposit and submit the exact package amount. Your request will be tagged as a BSC Bot purchase for review.",botDeliveryNote:"After payment is approved, the customer package and license are delivered. Never share your exchange API Secret with BinancInvest support.",botContinueDeposit:"Continue to Deposit",botPaymentReady:"Package price added to Deposit. Complete the payment and submit your request.",botSignInFirst:"Sign in to purchase a BSC Trading Bot."},
-  fa:{botStore:"ربات ترید",botHomeTitle:"ربات ترید یونیورسال BSC",botHomeDesc:"معاملات خودکار اسپات و فیوچرز با مدیریت پیشرفته ریسک برای ویندوز و کنترل از موبایل.",botHomePrice:"پکیج کامل از ۱۷۹ دلار.",botExplore:"مشاهده ربات‌های ترید",botEyebrow:"معاملات خودکار BSC",botHeroTitle:"ترید خودکار حرفه‌ای با تمرکز اصلی بر کنترل ریسک.",botHeroDesc:"ربات‌های BSC برای بیشینه‌سازی فرصت‌های سود طراحی شده‌اند، در حالی که کنترل ریسک در مرکز هر معامله قرار دارد. حساب صرافی پشتیبانی‌شده خودتان را وصل کنید و کنترل دارایی‌هایتان را حفظ کنید.",botMaxProfit:"بیشترین پتانسیل سود",botMinRisk:"تمرکز بر کمترین ریسک ممکن",botAdvancedRisk:"مدیریت پیشرفته ریسک",botMultiExchange:"پشتیبانی از چند صرافی",botRiskDisclaimer:"ترید دارای ریسک است و سود تضمین‌شده نیست. نرم‌افزار برای کنترل و کاهش ریسک طراحی شده است، نه حذف کامل آن.",botSpotName:"ربات BSC Spot",botSpotDesc:"ترید خودکار اسپات با فیلتر روند، حجم هوشمند پوزیشن، حد ضرر، حد سود و تریلینگ.",botFuturesName:"ربات BSC Futures",botFuturesDesc:"معاملات خودکار لانگ و شورت با کنترل اهرم، مارجین ایزوله و محدودیت سخت‌گیرانه ریسک.",botUniversalName:"ربات BSC Universal",botUniversalDesc:"پکیج کامل شامل اسپات + فیوچرز، نرم‌افزار دسکتاپ، کنترل موبایل و راهنمای نصب چندزبانه.",botOneTime:"لایسنس یک‌باره",botMostPopular:"محبوب‌ترین",botBuyNow:"خرید ربات",botFeatAuto:"ورود و خروج خودکار",botFeatRisk:"ریسک هر معامله + سقف ضرر روزانه",botFeatMulti:"اتصال به صرافی‌های پشتیبانی‌شده",botFeatWindows:"برنامه دسکتاپ ویندوز",botFeatMobile:"مانیتور و کنترل با موبایل",botFeatLongShort:"لانگ و شورت خودکار",botFeatLeverage:"کنترل اهرم و مارجین",botFeatBoth:"اسپات + فیوچرز در یک پکیج",botFeatAllRisk:"تمام ابزارهای کنترل ریسک BSC",botFeatWindowsMobile:"ویندوز + پکیج کنترل موبایل",botFeatGuides:"راهنمای نصب چندزبانه",botHowTitle:"خرید ربات BSC چطور انجام می‌شود؟",botHow1:"پکیج ربات را انتخاب کنید و وارد حساب BinancInvest شوید.",botHow2:"مبلغ دقیق پکیج را با روش‌های پرداخت رمزارزی موجود واریز کنید.",botHow3:"بعد از تأیید پرداخت، فایل دانلود و لایسنس دستگاه برای تحویل آماده می‌شود.",botSecureOrder:"سفارش امن",botCompletePurchase:"تکمیل خرید",botSelectedPackage:"پکیج انتخابی",botPrice:"قیمت",botDelivery:"تحویل",botDeliveryValue:"دانلود + لایسنس دستگاه",botPaymentInstructions:"به بخش واریز بروید و مبلغ دقیق پکیج را ثبت کنید. درخواست شما با عنوان خرید ربات BSC برای بررسی مشخص می‌شود.",botDeliveryNote:"پس از تأیید پرداخت، پکیج مشتری و لایسنس تحویل داده می‌شود. API Secret صرافی خود را هرگز برای پشتیبانی BinancInvest ارسال نکنید.",botContinueDeposit:"ادامه به واریز",botPaymentReady:"مبلغ پکیج در بخش واریز قرار گرفت. پرداخت را انجام دهید و درخواست را ثبت کنید.",botSignInFirst:"برای خرید ربات BSC ابتدا وارد حساب شوید."},
-  az:{botStore:"Ticarət Botu",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Windows və mobil idarəetmə üçün qabaqcıl risk nəzarətli avtomatik Spot və Futures ticarəti.",botHomePrice:"Tam paket $179-dan.",botExplore:"Ticarət Botlarına Bax",botEyebrow:"BSC AVTOMATİK TİCARƏT",botHeroTitle:"Risk nəzarəti üzərində qurulmuş peşəkar avtomatik ticarət.",botHeroDesc:"BSC botları hər mövqedə risk nəzarətini ön planda saxlayaraq qazanc imkanlarını maksimumlaşdırmaq üçün hazırlanıb. Dəstəklənən birjanızın hesabını qoşun və vəsaitlərinizə nəzarəti saxlayın.",botMaxProfit:"Maksimum qazanc potensialı",botMinRisk:"Mümkün minimum riskə fokus",botAdvancedRisk:"Qabaqcıl risk idarəetməsi",botMultiExchange:"Çoxsaylı birja dəstəyi",botRiskDisclaimer:"Ticarət risklidir və qazanc zəmanətli deyil. Proqram riskləri idarə edib azaltmaq üçün hazırlanıb, tam aradan qaldırmaq üçün deyil.",botSpotName:"BSC Spot Bot",botSpotDesc:"Trend filtrləri, dinamik mövqe ölçüsü, stop-loss, take-profit və trailing qoruması ilə avtomatik Spot ticarəti.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Leverage nəzarəti, isolated margin və sərt risk limitləri ilə avtomatik Long və Short.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Tam paket: Spot + Futures, desktop proqramı, mobil idarəetmə və çoxdilli quraşdırma təlimatları.",botOneTime:"birdəfəlik lisenziya",botMostPopular:"ƏN POPULYAR",botBuyNow:"İndi Al",botFeatAuto:"Avtomatik giriş və çıxış",botFeatRisk:"Hər əməliyyat riski + gündəlik zərər limiti",botFeatMulti:"Dəstəklənən çoxsaylı birja bağlantısı",botFeatWindows:"Windows desktop tətbiqi",botFeatMobile:"Mobil monitorinq və idarəetmə",botFeatLongShort:"Avtomatik Long və Short",botFeatLeverage:"Leverage və margin nəzarəti",botFeatBoth:"Spot + Futures bir paketdə",botFeatAllRisk:"Tam BSC risk nəzarət dəsti",botFeatWindowsMobile:"Windows + mobil idarəetmə paketi",botFeatGuides:"Çoxdilli quraşdırma təlimatları",botHowTitle:"BSC Bot alışınız necə işləyir",botHow1:"Bot paketini seçin və BinancInvest hesabınıza daxil olun.",botHow2:"Mövcud kripto ödəniş üsulu ilə paketin dəqiq qiymətini depozit edin.",botHow3:"Ödəniş təsdiqləndikdən sonra yükləmə paketi və cihaz lisenziyası hazırlanır.",botSecureOrder:"TƏHLÜKƏSİZ SİFARİŞ",botCompletePurchase:"Alışı tamamla",botSelectedPackage:"Seçilmiş paket",botPrice:"Qiymət",botDelivery:"Çatdırılma",botDeliveryValue:"Yükləmə + cihaz lisenziyası",botPaymentInstructions:"Depozit bölməsinə keçin və paketin dəqiq məbləğini göndərin. Sorğunuz BSC Bot alışı kimi işarələnəcək.",botDeliveryNote:"Ödəniş təsdiqləndikdən sonra müştəri paketi və lisenziya çatdırılır. Birja API Secret məlumatınızı BinancInvest dəstəyinə göndərməyin.",botContinueDeposit:"Depozitə Davam Et",botPaymentReady:"Paket qiyməti Depozit bölməsinə əlavə edildi. Ödənişi tamamlayıb sorğunu göndərin.",botSignInFirst:"BSC Trading Bot almaq üçün daxil olun."},
-  tr:{botStore:"Trading Bot",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Windows ve mobil kontrol için gelişmiş risk yönetimli otomatik Spot ve Futures işlemleri.",botHomePrice:"Tam paket $179'dan.",botExplore:"Trading Botları Gör",botEyebrow:"BSC OTOMATİK TRADING",botHeroTitle:"Risk kontrolü üzerine kurulu profesyonel otomatik trading.",botHeroDesc:"BSC botları, her pozisyonda risk kontrolünü merkezde tutarken işlem fırsatlarını en üst düzeye çıkarmak için tasarlanmıştır. Desteklenen borsa hesabınızı bağlayın ve fonlarınızın kontrolünü koruyun.",botMaxProfit:"Maksimum kâr potansiyeli",botMinRisk:"Mümkün en düşük riske odaklanma",botAdvancedRisk:"Gelişmiş risk yönetimi",botMultiExchange:"Çoklu borsa desteği",botRiskDisclaimer:"Trading risk içerir ve kâr garanti edilmez. Yazılım riski yönetmek ve azaltmak için tasarlanmıştır, tamamen ortadan kaldırmak için değil.",botSpotName:"BSC Spot Bot",botSpotDesc:"Trend filtreleri, dinamik pozisyon boyutu, stop loss, take profit ve trailing koruması ile otomatik Spot trading.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Kaldıraç kontrolü, isolated margin ve sıkı risk limitleri ile otomatik Long ve Short.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Tam paket: Spot + Futures, masaüstü yazılımı, mobil kontrol ve çok dilli kurulum rehberleri.",botOneTime:"tek seferlik lisans",botMostPopular:"EN POPÜLER",botBuyNow:"Şimdi Satın Al",botFeatAuto:"Otomatik giriş ve çıkış",botFeatRisk:"İşlem başına risk + günlük zarar limiti",botFeatMulti:"Desteklenen çoklu borsa bağlantısı",botFeatWindows:"Windows masaüstü uygulaması",botFeatMobile:"Mobil izleme ve kontrol",botFeatLongShort:"Otomatik Long ve Short",botFeatLeverage:"Kaldıraç ve margin kontrolü",botFeatBoth:"Spot + Futures tek pakette",botFeatAllRisk:"Tam BSC risk kontrol araçları",botFeatWindowsMobile:"Windows + mobil kontrol paketi",botFeatGuides:"Çok dilli kurulum rehberleri",botHowTitle:"BSC Bot satın alma süreci",botHow1:"Bot paketinizi seçin ve BinancInvest hesabınıza giriş yapın.",botHow2:"Mevcut kripto ödeme yöntemleriyle paket ücretinin tam tutarını yatırın.",botHow3:"Ödeme onaylandıktan sonra indirme paketi ve cihaz lisansınız hazırlanır.",botSecureOrder:"GÜVENLİ SİPARİŞ",botCompletePurchase:"Satın almayı tamamla",botSelectedPackage:"Seçilen paket",botPrice:"Fiyat",botDelivery:"Teslimat",botDeliveryValue:"İndirme + cihaz lisansı",botPaymentInstructions:"Deposit bölümüne geçin ve tam paket tutarını gönderin. Talebiniz BSC Bot satın alımı olarak işaretlenecektir.",botDeliveryNote:"Ödeme onaylandıktan sonra müşteri paketi ve lisans teslim edilir. Borsa API Secret bilginizi BinancInvest desteğiyle paylaşmayın.",botContinueDeposit:"Deposit'e Devam Et",botPaymentReady:"Paket ücreti Deposit alanına eklendi. Ödemeyi tamamlayıp talebi gönderin.",botSignInFirst:"BSC Trading Bot satın almak için giriş yapın."},
-  ru:{botStore:"Торговый бот",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Автоматическая торговля Spot и Futures с продвинутым управлением риском для Windows и мобильного управления.",botHomePrice:"Полный пакет от $179.",botExplore:"Открыть торговых ботов",botEyebrow:"АВТОМАТИЧЕСКАЯ ТОРГОВЛЯ BSC",botHeroTitle:"Профессиональная автоматическая торговля с упором на контроль риска.",botHeroDesc:"Боты BSC созданы для максимизации торговых возможностей при постоянном контроле риска. Подключайте собственный поддерживаемый аккаунт биржи и сохраняйте контроль над средствами.",botMaxProfit:"Максимальный потенциал прибыли",botMinRisk:"Фокус на минимально возможном риске",botAdvancedRisk:"Продвинутое управление риском",botMultiExchange:"Поддержка нескольких бирж",botRiskDisclaimer:"Торговля связана с риском, прибыль не гарантируется. Программа предназначена для контроля и снижения риска, а не полного его устранения.",botSpotName:"BSC Spot Bot",botSpotDesc:"Автоматическая Spot-торговля с фильтрами тренда, динамическим размером позиции, стоп-лоссом, тейк-профитом и трейлингом.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Автоматические Long и Short с контролем плеча, isolated margin и строгими лимитами риска.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Полный пакет: Spot + Futures, программа для ПК, мобильное управление и многоязычные инструкции.",botOneTime:"разовая лицензия",botMostPopular:"САМЫЙ ПОПУЛЯРНЫЙ",botBuyNow:"Купить",botFeatAuto:"Автоматический вход и выход",botFeatRisk:"Риск на сделку + дневной лимит убытка",botFeatMulti:"Подключение поддерживаемых бирж",botFeatWindows:"Приложение Windows",botFeatMobile:"Мобильный мониторинг и управление",botFeatLongShort:"Автоматические Long и Short",botFeatLeverage:"Контроль плеча и маржи",botFeatBoth:"Spot + Futures в одном пакете",botFeatAllRisk:"Полный набор контроля риска BSC",botFeatWindowsMobile:"Windows + мобильное управление",botFeatGuides:"Многоязычные инструкции по установке",botHowTitle:"Как проходит покупка BSC Bot",botHow1:"Выберите пакет и войдите в аккаунт BinancInvest.",botHow2:"Внесите точную стоимость пакета доступным крипто-способом.",botHow3:"После подтверждения оплаты готовятся пакет загрузки и лицензия устройства.",botSecureOrder:"БЕЗОПАСНЫЙ ЗАКАЗ",botCompletePurchase:"Завершить покупку",botSelectedPackage:"Выбранный пакет",botPrice:"Цена",botDelivery:"Доставка",botDeliveryValue:"Загрузка + лицензия устройства",botPaymentInstructions:"Перейдите к депозиту и отправьте точную сумму. Запрос будет отмечен как покупка BSC Bot.",botDeliveryNote:"После подтверждения оплаты выдаются пакет и лицензия. Никогда не отправляйте API Secret биржи в поддержку BinancInvest.",botContinueDeposit:"Перейти к депозиту",botPaymentReady:"Стоимость пакета добавлена в поле депозита. Завершите оплату и отправьте запрос.",botSignInFirst:"Войдите, чтобы купить BSC Trading Bot."},
-  ar:{botStore:"بوت التداول",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"تداول Spot وFutures تلقائي مع إدارة مخاطر متقدمة لويندوز والتحكم عبر الهاتف.",botHomePrice:"الباقة الكاملة من 179$.",botExplore:"استعراض بوتات التداول",botEyebrow:"تداول BSC الآلي",botHeroTitle:"تداول آلي احترافي مبني حول التحكم في المخاطر.",botHeroDesc:"تم تصميم بوتات BSC لتعظيم فرص التداول مع إبقاء التحكم في المخاطر في مركز كل صفقة. اربط حسابك في منصة مدعومة واحتفظ بالتحكم في أموالك.",botMaxProfit:"أقصى إمكانات الربح",botMinRisk:"التركيز على أقل مخاطرة ممكنة",botAdvancedRisk:"إدارة مخاطر متقدمة",botMultiExchange:"دعم عدة منصات",botRiskDisclaimer:"التداول ينطوي على مخاطر والأرباح غير مضمونة. البرنامج مصمم للتحكم في المخاطر وتقليلها، وليس لإلغائها بالكامل.",botSpotName:"BSC Spot Bot",botSpotDesc:"تداول Spot آلي مع فلاتر الاتجاه وحجم مركز ديناميكي ووقف خسارة وجني ربح وتتبع.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Long وShort آليان مع التحكم بالرافعة وisolated margin وحدود صارمة للمخاطر.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"الباقة الكاملة: Spot + Futures، برنامج سطح المكتب، تحكم الهاتف ودليل إعداد متعدد اللغات.",botOneTime:"ترخيص لمرة واحدة",botMostPopular:"الأكثر شعبية",botBuyNow:"اشتر الآن",botFeatAuto:"دخول وخروج آلي",botFeatRisk:"مخاطرة لكل صفقة + حد خسارة يومي",botFeatMulti:"اتصال بمنصات متعددة مدعومة",botFeatWindows:"تطبيق Windows",botFeatMobile:"مراقبة وتحكم من الهاتف",botFeatLongShort:"Long وShort آليان",botFeatLeverage:"التحكم بالرافعة والهامش",botFeatBoth:"Spot + Futures في باقة واحدة",botFeatAllRisk:"مجموعة BSC الكاملة للتحكم بالمخاطر",botFeatWindowsMobile:"Windows + حزمة التحكم عبر الهاتف",botFeatGuides:"أدلة تثبيت متعددة اللغات",botHowTitle:"كيف تعمل عملية شراء BSC Bot",botHow1:"اختر باقة البوت وسجل الدخول إلى حساب BinancInvest.",botHow2:"أودع السعر الدقيق للباقة بإحدى طرق الدفع بالعملات المشفرة.",botHow3:"بعد تأكيد الدفع يتم تجهيز ملف التحميل وترخيص الجهاز.",botSecureOrder:"طلب آمن",botCompletePurchase:"إكمال الشراء",botSelectedPackage:"الباقة المختارة",botPrice:"السعر",botDelivery:"التسليم",botDeliveryValue:"تحميل + ترخيص جهاز",botPaymentInstructions:"انتقل إلى الإيداع وأرسل المبلغ الدقيق للباقة. سيتم وسم الطلب كشراء BSC Bot.",botDeliveryNote:"بعد اعتماد الدفع يتم تسليم الباقة والترخيص. لا تشارك API Secret الخاص بمنصتك مع دعم BinancInvest.",botContinueDeposit:"المتابعة إلى الإيداع",botPaymentReady:"تمت إضافة سعر الباقة إلى الإيداع. أكمل الدفع وأرسل الطلب.",botSignInFirst:"سجل الدخول لشراء BSC Trading Bot."},
-  zh:{botStore:"交易机器人",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"支持 Windows 与手机控制的自动 Spot / Futures 交易与高级风险管理。",botHomePrice:"完整套餐 $179 起。",botExplore:"查看交易机器人",botEyebrow:"BSC 自动交易",botHeroTitle:"以风险控制为核心的专业自动交易。",botHeroDesc:"BSC 交易机器人旨在最大化交易机会，同时把风险控制放在每个仓位的核心。连接您自己的受支持交易所账户并保持资金控制权。",botMaxProfit:"最大利润潜力",botMinRisk:"专注尽可能低的风险",botAdvancedRisk:"高级风险管理",botMultiExchange:"多交易所支持",botRiskDisclaimer:"交易存在风险，利润不作保证。本软件旨在控制和降低风险，而不是完全消除风险。",botSpotName:"BSC Spot Bot",botSpotDesc:"自动现货交易，包含趋势过滤、动态仓位、止损、止盈和追踪保护。",botFuturesName:"BSC Futures Bot",botFuturesDesc:"自动 Long / Short，包含杠杆控制、逐仓保证金支持和严格的仓位风险限制。",botUniversalName:"BSC Universal Bot",botUniversalDesc:"完整套餐：Spot + Futures、桌面软件、手机控制和多语言安装指南。",botOneTime:"一次性许可证",botMostPopular:"最受欢迎",botBuyNow:"立即购买",botFeatAuto:"自动入场与出场",botFeatRisk:"单笔风险 + 每日亏损限制",botFeatMulti:"连接受支持的多家交易所",botFeatWindows:"Windows 桌面应用",botFeatMobile:"手机监控与控制",botFeatLongShort:"自动 Long 与 Short",botFeatLeverage:"杠杆与保证金控制",botFeatBoth:"Spot + Futures 一个套餐",botFeatAllRisk:"完整 BSC 风险控制工具",botFeatWindowsMobile:"Windows + 手机控制套餐",botFeatGuides:"多语言安装指南",botHowTitle:"BSC Bot 购买流程",botHow1:"选择机器人套餐并登录 BinancInvest 账户。",botHow2:"通过可用的加密货币方式存入套餐的准确价格。",botHow3:"付款确认后，将准备下载包与设备许可证。",botSecureOrder:"安全订单",botCompletePurchase:"完成购买",botSelectedPackage:"所选套餐",botPrice:"价格",botDelivery:"交付",botDeliveryValue:"下载 + 设备许可证",botPaymentInstructions:"前往充值并提交套餐的准确金额。您的请求将标记为 BSC Bot 购买。",botDeliveryNote:"付款获批后将交付客户包和许可证。不要向 BinancInvest 支持人员分享交易所 API Secret。",botContinueDeposit:"前往充值",botPaymentReady:"套餐价格已填入充值金额。完成付款并提交请求。",botSignInFirst:"请登录后购买 BSC Trading Bot。"},
-  es:{botStore:"Bot de Trading",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Trading automático Spot y Futures con gestión avanzada de riesgo para Windows y control móvil.",botHomePrice:"Paquete completo desde $179.",botExplore:"Ver Bots de Trading",botEyebrow:"TRADING AUTOMÁTICO BSC",botHeroTitle:"Trading automático profesional centrado en el control del riesgo.",botHeroDesc:"Los bots BSC están diseñados para maximizar oportunidades de trading manteniendo el control de riesgo en el centro de cada posición. Conecta tu propia cuenta de exchange compatible y conserva el control de tus fondos.",botMaxProfit:"Máximo potencial de beneficio",botMinRisk:"Enfoque en el menor riesgo posible",botAdvancedRisk:"Gestión avanzada del riesgo",botMultiExchange:"Soporte multi-exchange",botRiskDisclaimer:"El trading implica riesgo y los beneficios no están garantizados. El software está diseñado para controlar y reducir el riesgo, no eliminarlo.",botSpotName:"BSC Spot Bot",botSpotDesc:"Trading Spot automático con filtros de tendencia, tamaño dinámico de posición, stop loss, take profit y trailing.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Long y Short automáticos con control de apalancamiento, margen aislado y límites estrictos de riesgo.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Paquete completo: Spot + Futures, software de escritorio, control móvil y guías multilingües.",botOneTime:"licencia de pago único",botMostPopular:"MÁS POPULAR",botBuyNow:"Comprar",botFeatAuto:"Entrada y salida automáticas",botFeatRisk:"Riesgo por operación + límite diario",botFeatMulti:"Conexión con exchanges compatibles",botFeatWindows:"Aplicación de Windows",botFeatMobile:"Monitoreo y control móvil",botFeatLongShort:"Long y Short automáticos",botFeatLeverage:"Control de apalancamiento y margen",botFeatBoth:"Spot + Futures en un paquete",botFeatAllRisk:"Kit completo de control de riesgo BSC",botFeatWindowsMobile:"Windows + control móvil",botFeatGuides:"Guías de instalación multilingües",botHowTitle:"Cómo funciona la compra de BSC Bot",botHow1:"Elige tu paquete e inicia sesión en BinancInvest.",botHow2:"Deposita el precio exacto con las opciones cripto disponibles.",botHow3:"Tras confirmar el pago se prepara la descarga y la licencia del dispositivo.",botSecureOrder:"PEDIDO SEGURO",botCompletePurchase:"Completar compra",botSelectedPackage:"Paquete seleccionado",botPrice:"Precio",botDelivery:"Entrega",botDeliveryValue:"Descarga + licencia de dispositivo",botPaymentInstructions:"Continúa a Depósito y envía el importe exacto. La solicitud se marcará como compra de BSC Bot.",botDeliveryNote:"Tras aprobarse el pago se entregan el paquete y la licencia. Nunca compartas tu API Secret del exchange con soporte de BinancInvest.",botContinueDeposit:"Continuar al depósito",botPaymentReady:"El precio del paquete se agregó al depósito. Completa el pago y envía la solicitud.",botSignInFirst:"Inicia sesión para comprar BSC Trading Bot."},
-  fr:{botStore:"Bot de Trading",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Trading Spot et Futures automatisé avec gestion avancée du risque pour Windows et contrôle mobile.",botHomePrice:"Pack complet à partir de 179 $.",botExplore:"Voir les Bots de Trading",botEyebrow:"TRADING AUTOMATISÉ BSC",botHeroTitle:"Trading automatisé professionnel centré sur la maîtrise du risque.",botHeroDesc:"Les bots BSC sont conçus pour maximiser les opportunités de trading tout en plaçant la maîtrise du risque au cœur de chaque position. Connectez votre propre compte d'exchange compatible et gardez le contrôle de vos fonds.",botMaxProfit:"Potentiel de profit maximal",botMinRisk:"Objectif de risque minimal possible",botAdvancedRisk:"Gestion avancée du risque",botMultiExchange:"Support multi-exchange",botRiskDisclaimer:"Le trading comporte des risques et les profits ne sont pas garantis. Le logiciel vise à contrôler et réduire le risque, pas à le supprimer.",botSpotName:"BSC Spot Bot",botSpotDesc:"Trading Spot automatisé avec filtres de tendance, taille de position dynamique, stop loss, take profit et trailing.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Long et Short automatisés avec contrôle du levier, marge isolée et limites strictes de risque.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Pack complet : Spot + Futures, logiciel desktop, contrôle mobile et guides multilingues.",botOneTime:"licence à paiement unique",botMostPopular:"LE PLUS POPULAIRE",botBuyNow:"Acheter",botFeatAuto:"Entrée et sortie automatisées",botFeatRisk:"Risque par trade + limite de perte quotidienne",botFeatMulti:"Connexion aux exchanges compatibles",botFeatWindows:"Application Windows",botFeatMobile:"Suivi et contrôle mobile",botFeatLongShort:"Long et Short automatisés",botFeatLeverage:"Contrôle du levier et de la marge",botFeatBoth:"Spot + Futures dans un seul pack",botFeatAllRisk:"Outils complets de contrôle du risque BSC",botFeatWindowsMobile:"Windows + contrôle mobile",botFeatGuides:"Guides d'installation multilingues",botHowTitle:"Comment fonctionne l'achat du BSC Bot",botHow1:"Choisissez votre pack et connectez-vous à BinancInvest.",botHow2:"Déposez le montant exact du pack avec une méthode crypto disponible.",botHow3:"Après validation du paiement, le téléchargement et la licence appareil sont préparés.",botSecureOrder:"COMMANDE SÉCURISÉE",botCompletePurchase:"Finaliser l'achat",botSelectedPackage:"Pack sélectionné",botPrice:"Prix",botDelivery:"Livraison",botDeliveryValue:"Téléchargement + licence appareil",botPaymentInstructions:"Continuez vers Dépôt et envoyez le montant exact. La demande sera marquée comme achat BSC Bot.",botDeliveryNote:"Après validation du paiement, le pack et la licence sont livrés. Ne partagez jamais votre API Secret d'exchange avec le support BinancInvest.",botContinueDeposit:"Continuer vers Dépôt",botPaymentReady:"Le prix du pack a été ajouté au dépôt. Terminez le paiement et envoyez la demande.",botSignInFirst:"Connectez-vous pour acheter BSC Trading Bot."},
-  de:{botStore:"Trading Bot",botHomeTitle:"BSC Universal Trading Bot",botHomeDesc:"Automatisierter Spot- und Futures-Handel mit fortschrittlichem Risikomanagement für Windows und mobile Steuerung.",botHomePrice:"Komplettpaket ab 179 $. ",botExplore:"Trading Bots ansehen",botEyebrow:"BSC AUTOMATISCHER HANDEL",botHeroTitle:"Professioneller automatisierter Handel mit Fokus auf Risikokontrolle.",botHeroDesc:"BSC Bots wurden entwickelt, um Handelschancen zu maximieren und gleichzeitig die Risikokontrolle in den Mittelpunkt jeder Position zu stellen. Verbinden Sie Ihr eigenes unterstütztes Börsenkonto und behalten Sie die Kontrolle über Ihr Kapital.",botMaxProfit:"Maximales Gewinnpotenzial",botMinRisk:"Fokus auf möglichst geringes Risiko",botAdvancedRisk:"Fortschrittliches Risikomanagement",botMultiExchange:"Multi-Exchange-Unterstützung",botRiskDisclaimer:"Trading ist mit Risiken verbunden und Gewinne sind nicht garantiert. Die Software soll Risiken kontrollieren und reduzieren, nicht vollständig beseitigen.",botSpotName:"BSC Spot Bot",botSpotDesc:"Automatischer Spot-Handel mit Trendfiltern, dynamischer Positionsgröße, Stop Loss, Take Profit und Trailing-Schutz.",botFuturesName:"BSC Futures Bot",botFuturesDesc:"Automatisierte Long- und Short-Positionen mit Hebelkontrolle, Isolated Margin und strengen Risikolimits.",botUniversalName:"BSC Universal Bot",botUniversalDesc:"Komplettpaket: Spot + Futures, Desktop-Software, mobile Steuerung und mehrsprachige Einrichtungshandbücher.",botOneTime:"einmalige Lizenz",botMostPopular:"AM BELIEBTESTEN",botBuyNow:"Jetzt kaufen",botFeatAuto:"Automatischer Ein- und Ausstieg",botFeatRisk:"Risiko pro Trade + tägliches Verlustlimit",botFeatMulti:"Verbindung zu unterstützten Börsen",botFeatWindows:"Windows-Desktop-App",botFeatMobile:"Mobile Überwachung und Steuerung",botFeatLongShort:"Automatisierte Long & Short",botFeatLeverage:"Hebel- und Margin-Kontrolle",botFeatBoth:"Spot + Futures in einem Paket",botFeatAllRisk:"Komplettes BSC-Risikokontrollpaket",botFeatWindowsMobile:"Windows + mobile Steuerung",botFeatGuides:"Mehrsprachige Installationsanleitungen",botHowTitle:"So funktioniert der Kauf des BSC Bot",botHow1:"Wählen Sie Ihr Bot-Paket und melden Sie sich bei BinancInvest an.",botHow2:"Zahlen Sie den exakten Paketpreis mit einer verfügbaren Krypto-Zahlungsmethode ein.",botHow3:"Nach Zahlungsbestätigung werden Download-Paket und Gerätelizenz vorbereitet.",botSecureOrder:"SICHERE BESTELLUNG",botCompletePurchase:"Kauf abschließen",botSelectedPackage:"Ausgewähltes Paket",botPrice:"Preis",botDelivery:"Lieferung",botDeliveryValue:"Download + Gerätelizenz",botPaymentInstructions:"Gehen Sie zu Einzahlung und senden Sie den exakten Betrag. Ihre Anfrage wird als BSC-Bot-Kauf gekennzeichnet.",botDeliveryNote:"Nach Zahlungsfreigabe werden Paket und Lizenz geliefert. Teilen Sie Ihren Exchange API Secret niemals mit dem BinancInvest Support.",botContinueDeposit:"Weiter zur Einzahlung",botPaymentReady:"Der Paketpreis wurde in die Einzahlung übernommen. Schließen Sie die Zahlung ab und senden Sie die Anfrage.",botSignInFirst:"Melden Sie sich an, um einen BSC Trading Bot zu kaufen."}
-};
-
-LANGUAGE_CATALOG.forEach(([code])=>{
-  if (!T[code]) T[code] = {};
-  Object.assign(T[code], BSC_BOT_TRANSLATIONS.en, BSC_BOT_TRANSLATIONS[code] || {});
-});
-
-const BSC_BOT_PRODUCTS = {
-  spot:{nameKey:"botSpotName",price:99,code:"BSC_SPOT"},
-  futures:{nameKey:"botFuturesName",price:129,code:"BSC_FUTURES"},
-  universal:{nameKey:"botUniversalName",price:179,code:"BSC_UNIVERSAL"}
-};
-let activeBotPurchase = null;
-
-function openBotPurchase(productId){
-  const product = BSC_BOT_PRODUCTS[productId];
-  if(!product) return;
-  if(!currentUser?.id){
-    try{ localStorage.setItem("bsc_bot_selected_product",productId); }catch(_){}
-    toast(tr("botSignInFirst"));
-    openAuth("login");
-    return;
-  }
-  activeBotPurchase = {id:productId,...product};
-  const modal=document.getElementById("bscBotPurchaseModal");
-  const name=document.getElementById("bscBotSelectedName");
-  const price=document.getElementById("bscBotSelectedPrice");
-  if(name) name.textContent=tr(product.nameKey);
-  if(price) price.textContent=`$${product.price}`;
-  modal?.classList.add("open");
-  document.body.style.overflow="hidden";
-}
-function closeBotPurchase(){
-  document.getElementById("bscBotPurchaseModal")?.classList.remove("open");
-  if(!document.querySelector('.modal[style*="display: flex"],.password-flow-modal.open,.email-confirm-modal.open')) document.body.style.overflow="";
-}
-function handleBotPurchaseBackdrop(event){
-  if(event?.target?.id==="bscBotPurchaseModal") closeBotPurchase();
-}
-function getBotPurchaseDepositNote(){
-  try{
-    const raw=localStorage.getItem("bsc_bot_purchase_intent");
-    if(!raw) return "";
-    const intent=JSON.parse(raw);
-    if(!intent?.code || !intent?.price) return "";
-    return `BSC Bot Purchase | ${intent.code} | $${intent.price} | Customer ${currentUser?.id||""}`;
-  }catch(_){ return ""; }
-}
-function continueBotPurchase(){
-  if(!activeBotPurchase) return;
-  const intent={
-    productId:activeBotPurchase.id,
-    code:activeBotPurchase.code,
-    price:activeBotPurchase.price,
-    selectedAt:new Date().toISOString(),
-    status:"awaiting_deposit"
-  };
-  try{localStorage.setItem("bsc_bot_purchase_intent",JSON.stringify(intent));}catch(_){}
-  closeBotPurchase();
-  const nav=document.querySelector('[data-page="portfolio"]');
-  page("portfolio",nav);
-  setTimeout(()=>{
-    const input=document.getElementById("deposit-amount");
-    if(input){
-      input.value=String(intent.price);
-      input.dispatchEvent(new Event("input",{bubbles:true}));
-      const card=input.closest(".card");
-      card?.classList.add("bsc-bot-deposit-focus");
-      input.scrollIntoView({behavior:"smooth",block:"center"});
-      setTimeout(()=>card?.classList.remove("bsc-bot-deposit-focus"),3600);
-    }
-    toast(tr("botPaymentReady"),"success");
-  },260);
-}
-window.openBotPurchase=openBotPurchase;
-window.closeBotPurchase=closeBotPurchase;
-window.handleBotPurchaseBackdrop=handleBotPurchaseBackdrop;
-window.continueBotPurchase=continueBotPurchase;
-window.getBotPurchaseDepositNote=getBotPurchaseDepositNote;
-
 const SUPPORT_I18N = {
   en: {
     support: "Support",
@@ -24273,7 +24161,7 @@ window.submitDepositRequest = async function () {
         p_network: selected.network,
         p_tx_hash: txHash || null,
         p_proof_path: proofPath,
-        p_note: (typeof getBotPurchaseDepositNote === "function" && getBotPurchaseDepositNote()) || "Wallet address deposit"
+        p_note: "Wallet address deposit"
       }
     );
 
@@ -30910,6 +30798,233 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
   .contact-simple .contact-chat-btn{min-height:49px!important;padding:10px 12px!important;font-size:12px!important}
 }
 </style>
+
+
+<script id="bsc-store-safe-script-v2">
+(function(){
+  "use strict";
+  const I18N={
+    en:{
+      nav:"Trading Bot",kicker:"BSC AUTOMATED TRADING",heroTitle:"Professional automated trading with advanced risk control.",
+      heroDesc:"Choose Spot, Futures, or the complete BSC Universal package. Connect your own supported exchange account and keep control of your funds.",
+      pill1:"Maximum profit potential",pill2:"Minimum possible risk focus",pill3:"Advanced risk management",pill4:"Windows + Mobile Control",
+      risk:"Trading involves risk and profits are not guaranteed. BSC is designed to reduce and control risk; it cannot eliminate market risk.",
+      spotDesc:"Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.",
+      futuresDesc:"Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.",
+      universalDesc:"Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.",
+      oneTime:"one-time license",spotF1:"Automated Spot entry & exit",riskF:"Risk per trade + daily loss limit",multiF:"Supported multi-exchange connection",
+      windowsF:"Windows desktop package",futureF1:"Automated Long & Short",futureF2:"Leverage & margin controls",
+      universalF1:"Spot + Futures in one package",universalF2:"Windows + mobile control",universalF3:"Full BSC risk-control toolkit",universalF4:"Multilingual installation guides",
+      buy:"Buy Now",popular:"MOST POPULAR",howTitle:"How to purchase",how1:"Choose a BSC package.",
+      how2:"Continue to Portfolio → Deposit; the exact package price will be filled automatically.",
+      how3:"Submit the normal deposit request. Delivery and license activation are handled after payment approval.",
+      selected:"BSC {code} selected — ${price} has been entered in Deposit."
+    },
+    fa:{
+      nav:"ربات ترید",kicker:"معاملات خودکار BSC",heroTitle:"ترید خودکار حرفه‌ای با کنترل پیشرفته ریسک.",
+      heroDesc:"ربات Spot، Futures یا پکیج کامل BSC Universal را انتخاب کنید. حساب صرافی پشتیبانی‌شده خودتان را متصل کنید و کنترل دارایی‌هایتان را حفظ کنید.",
+      pill1:"بیشترین پتانسیل سود",pill2:"تمرکز بر کمترین ریسک ممکن",pill3:"مدیریت پیشرفته ریسک",pill4:"ویندوز + کنترل موبایل",
+      risk:"ترید دارای ریسک است و سود تضمین‌شده نیست. BSC برای کاهش و کنترل ریسک طراحی شده است، اما ریسک بازار را کاملاً حذف نمی‌کند.",
+      spotDesc:"ترید خودکار اسپات با فیلتر روند، تعیین حجم پوزیشن، حد ضرر، حد سود و تریلینگ.",
+      futuresDesc:"لانگ و شورت خودکار با کنترل اهرم، پشتیبانی مارجین ایزوله و محدودیت سخت‌گیرانه ریسک.",
+      universalDesc:"پکیج کامل شامل Spot + Futures، نرم‌افزار ویندوز، مانیتور/کنترل موبایل و راهنمای نصب چندزبانه.",
+      oneTime:"لایسنس یک‌باره",spotF1:"ورود و خروج خودکار Spot",riskF:"ریسک هر معامله + سقف ضرر روزانه",multiF:"اتصال به صرافی‌های پشتیبانی‌شده",
+      windowsF:"پکیج دسکتاپ ویندوز",futureF1:"لانگ و شورت خودکار",futureF2:"کنترل اهرم و مارجین",
+      universalF1:"Spot + Futures در یک پکیج",universalF2:"ویندوز + کنترل موبایل",universalF3:"تمام ابزارهای کنترل ریسک BSC",universalF4:"راهنمای نصب چندزبانه",
+      buy:"خرید ربات",popular:"محبوب‌ترین",howTitle:"نحوه خرید",how1:"یکی از پکیج‌های BSC را انتخاب کنید.",
+      how2:"به Portfolio → Deposit بروید؛ مبلغ دقیق پکیج خودکار وارد می‌شود.",
+      how3:"درخواست واریز عادی سایت را ثبت کنید. تحویل و فعال‌سازی لایسنس بعد از تأیید پرداخت انجام می‌شود.",
+      selected:"پکیج BSC {code} انتخاب شد — مبلغ ${price} در بخش واریز وارد شد."
+    },
+    az:{
+      nav:"Ticarət Botu",kicker:"BSC AVTOMATİK TİCARƏT",heroTitle:"Qabaqcıl risk nəzarətli peşəkar avtomatik ticarət.",
+      heroDesc:"Spot, Futures və ya tam BSC Universal paketini seçin. Dəstəklənən birja hesabınızı qoşun və vəsaitlərinizə nəzarəti saxlayın.",
+      pill1:"Maksimum qazanc potensialı",pill2:"Mümkün minimum riskə fokus",pill3:"Qabaqcıl risk idarəetməsi",pill4:"Windows + Mobil İdarəetmə",
+      risk:"Ticarət risklidir və qazanc zəmanətli deyil. BSC riski azaltmaq və idarə etmək üçün hazırlanıb; bazar riskini tam aradan qaldıra bilməz.",
+      spotDesc:"Trend filtrləri, mövqe ölçüsü, stop-loss, take-profit və trailing ilə avtomatik Spot ticarəti.",
+      futuresDesc:"Leverage nəzarəti, isolated margin və ciddi risk limitləri ilə avtomatik Long & Short.",
+      universalDesc:"Spot + Futures, Windows proqramı, mobil monitorinq/idarəetmə və çoxdilli quraşdırma təlimatları.",
+      oneTime:"birdəfəlik lisenziya",spotF1:"Avtomatik Spot giriş və çıxış",riskF:"Əməliyyat riski + gündəlik zərər limiti",multiF:"Dəstəklənən birjalara bağlantı",
+      windowsF:"Windows desktop paketi",futureF1:"Avtomatik Long & Short",futureF2:"Leverage və margin nəzarəti",
+      universalF1:"Spot + Futures bir paketdə",universalF2:"Windows + mobil idarəetmə",universalF3:"Tam BSC risk nəzarət alətləri",universalF4:"Çoxdilli quraşdırma təlimatları",
+      buy:"İndi Al",popular:"ƏN POPULYAR",howTitle:"Necə almaq olar",how1:"BSC paketini seçin.",
+      how2:"Portfolio → Deposit bölməsinə keçin; paket qiyməti avtomatik yazılacaq.",
+      how3:"Saytın adi depozit sorğusunu göndərin. Ödəniş təsdiqindən sonra lisenziya təqdim edilir.",
+      selected:"BSC {code} seçildi — ${price} depozit bölməsinə yazıldı."
+    },
+    tr:{
+      nav:"Trading Bot",kicker:"BSC OTOMATİK TRADING",heroTitle:"Gelişmiş risk kontrollü profesyonel otomatik trading.",
+      heroDesc:"Spot, Futures veya tam BSC Universal paketini seçin. Desteklenen borsa hesabınızı bağlayın ve fonlarınızın kontrolünü koruyun.",
+      pill1:"Maksimum kâr potansiyeli",pill2:"Mümkün en düşük riske odaklanma",pill3:"Gelişmiş risk yönetimi",pill4:"Windows + Mobil Kontrol",
+      risk:"Trading risk içerir ve kâr garanti edilmez. BSC riski azaltmak ve kontrol etmek için tasarlanmıştır; piyasa riskini tamamen ortadan kaldıramaz.",
+      spotDesc:"Trend filtreleri, pozisyon boyutlandırma, stop loss, take profit ve trailing ile otomatik Spot trading.",
+      futuresDesc:"Kaldıraç kontrolü, isolated margin ve sıkı risk limitleri ile otomatik Long & Short.",
+      universalDesc:"Spot + Futures, Windows yazılımı, mobil izleme/kontrol ve çok dilli kurulum rehberleri.",
+      oneTime:"tek seferlik lisans",spotF1:"Otomatik Spot giriş ve çıkış",riskF:"İşlem riski + günlük zarar limiti",multiF:"Desteklenen borsalara bağlantı",
+      windowsF:"Windows masaüstü paketi",futureF1:"Otomatik Long & Short",futureF2:"Kaldıraç ve margin kontrolü",
+      universalF1:"Spot + Futures tek pakette",universalF2:"Windows + mobil kontrol",universalF3:"Tam BSC risk kontrol araçları",universalF4:"Çok dilli kurulum rehberleri",
+      buy:"Satın Al",popular:"EN POPÜLER",howTitle:"Nasıl satın alınır",how1:"Bir BSC paketi seçin.",
+      how2:"Portfolio → Deposit bölümüne geçin; paket fiyatı otomatik girilir.",
+      how3:"Sitenin normal para yatırma talebini gönderin. Ödeme onaylandıktan sonra lisans teslim edilir.",
+      selected:"BSC {code} seçildi — ${price} Deposit alanına girildi."
+    },
+    ru:{
+      nav:"Торговый бот",kicker:"АВТОМАТИЧЕСКАЯ ТОРГОВЛЯ BSC",heroTitle:"Профессиональная автоматическая торговля с контролем риска.",
+      heroDesc:"Выберите Spot, Futures или полный пакет BSC Universal. Подключите собственный поддерживаемый аккаунт биржи.",
+      pill1:"Максимальный потенциал прибыли",pill2:"Фокус на минимально возможном риске",pill3:"Продвинутое управление риском",pill4:"Windows + мобильное управление",
+      risk:"Торговля связана с риском, прибыль не гарантируется. BSC снижает и контролирует риск, но не может устранить рыночный риск.",
+      spotDesc:"Автоматическая Spot-торговля с трендовыми фильтрами, размером позиции, stop loss, take profit и trailing.",
+      futuresDesc:"Автоматические Long & Short с контролем плеча, isolated margin и строгими лимитами риска.",
+      universalDesc:"Spot + Futures, Windows, мобильный контроль и многоязычные руководства.",
+      oneTime:"разовая лицензия",spotF1:"Автоматический вход/выход Spot",riskF:"Риск сделки + дневной лимит убытка",multiF:"Подключение поддерживаемых бирж",
+      windowsF:"Windows-пакет",futureF1:"Автоматические Long & Short",futureF2:"Контроль плеча и маржи",
+      universalF1:"Spot + Futures в одном пакете",universalF2:"Windows + мобильный контроль",universalF3:"Полный набор контроля риска BSC",universalF4:"Многоязычные инструкции",
+      buy:"Купить",popular:"ПОПУЛЯРНО",howTitle:"Как купить",how1:"Выберите пакет BSC.",
+      how2:"Перейдите Portfolio → Deposit; цена пакета заполнится автоматически.",
+      how3:"Отправьте обычную заявку на депозит. Лицензия выдается после подтверждения платежа.",
+      selected:"Выбран BSC {code} — ${price} добавлено в Deposit."
+    },
+    ar:{
+      nav:"روبوت التداول",kicker:"التداول الآلي BSC",heroTitle:"تداول آلي احترافي مع تحكم متقدم بالمخاطر.",
+      heroDesc:"اختر Spot أو Futures أو حزمة BSC Universal الكاملة واربط حساب منصتك المدعومة.",
+      pill1:"أقصى إمكانات الربح",pill2:"التركيز على أقل مخاطرة ممكنة",pill3:"إدارة متقدمة للمخاطر",pill4:"Windows + تحكم عبر الهاتف",
+      risk:"التداول ينطوي على مخاطر والأرباح غير مضمونة. صُمم BSC لتقليل المخاطر والسيطرة عليها، وليس لإلغائها بالكامل.",
+      spotDesc:"تداول Spot آلي مع مرشحات الاتجاه وحجم الصفقة ووقف الخسارة وجني الربح وTrailing.",
+      futuresDesc:"Long وShort آليان مع تحكم بالرافعة وIsolated Margin وحدود صارمة للمخاطر.",
+      universalDesc:"Spot + Futures وبرنامج Windows وتحكم عبر الهاتف وأدلة إعداد متعددة اللغات.",
+      oneTime:"ترخيص لمرة واحدة",spotF1:"دخول وخروج Spot تلقائي",riskF:"مخاطرة لكل صفقة + حد خسارة يومي",multiF:"اتصال بمنصات مدعومة",
+      windowsF:"حزمة Windows",futureF1:"Long & Short تلقائي",futureF2:"تحكم بالرافعة والهامش",
+      universalF1:"Spot + Futures في حزمة واحدة",universalF2:"Windows + تحكم الهاتف",universalF3:"مجموعة BSC الكاملة للتحكم بالمخاطر",universalF4:"أدلة تثبيت متعددة اللغات",
+      buy:"شراء",popular:"الأكثر شعبية",howTitle:"طريقة الشراء",how1:"اختر حزمة BSC.",
+      how2:"انتقل إلى Portfolio → Deposit وسيتم إدخال السعر تلقائياً.",
+      how3:"أرسل طلب الإيداع العادي. يتم تسليم الترخيص بعد اعتماد الدفع.",
+      selected:"تم اختيار BSC {code} — تمت إضافة ${price} إلى الإيداع."
+    },
+    zh:{
+      nav:"交易机器人",kicker:"BSC 自动交易",heroTitle:"以高级风险控制为核心的专业自动交易。",
+      heroDesc:"选择 Spot、Futures 或完整 BSC Universal 套餐，并连接您自己的受支持交易所账户。",
+      pill1:"最大盈利潜力",pill2:"专注尽可能低的风险",pill3:"高级风险管理",pill4:"Windows + 手机控制",
+      risk:"交易存在风险，利润不保证。BSC 旨在降低和控制风险，但无法消除市场风险。",
+      spotDesc:"自动 Spot 交易，包含趋势过滤、仓位大小、止损、止盈和追踪保护。",
+      futuresDesc:"自动 Long & Short，包含杠杆控制、Isolated Margin 和严格风险限制。",
+      universalDesc:"Spot + Futures、Windows 软件、手机监控/控制和多语言安装指南。",
+      oneTime:"一次性许可证",spotF1:"自动 Spot 进出场",riskF:"单笔风险 + 每日亏损上限",multiF:"连接受支持交易所",
+      windowsF:"Windows 桌面包",futureF1:"自动 Long & Short",futureF2:"杠杆和保证金控制",
+      universalF1:"Spot + Futures 一个套餐",universalF2:"Windows + 手机控制",universalF3:"完整 BSC 风险控制工具",universalF4:"多语言安装指南",
+      buy:"立即购买",popular:"最受欢迎",howTitle:"购买方式",how1:"选择 BSC 套餐。",
+      how2:"进入 Portfolio → Deposit；套餐价格会自动填写。",
+      how3:"提交网站原有的充值请求。付款批准后交付许可证。",
+      selected:"已选择 BSC {code} — ${price} 已填入充值。"
+    },
+    es:{
+      nav:"Bot de Trading",kicker:"TRADING AUTOMÁTICO BSC",heroTitle:"Trading automático profesional con control avanzado de riesgo.",
+      heroDesc:"Elige Spot, Futures o BSC Universal. Conecta tu propia cuenta de exchange compatible.",
+      pill1:"Máximo potencial de beneficio",pill2:"Enfoque en el menor riesgo posible",pill3:"Gestión avanzada del riesgo",pill4:"Windows + control móvil",
+      risk:"El trading implica riesgo y los beneficios no están garantizados. BSC está diseñado para reducir y controlar el riesgo, no para eliminarlo.",
+      spotDesc:"Spot automático con filtros de tendencia, tamaño de posición, stop loss, take profit y trailing.",
+      futuresDesc:"Long & Short automáticos con control de apalancamiento, margen aislado y límites estrictos.",
+      universalDesc:"Spot + Futures, Windows, control móvil y guías multilingües.",
+      oneTime:"licencia de pago único",spotF1:"Entrada y salida Spot automáticas",riskF:"Riesgo por operación + límite diario",multiF:"Conexión con exchanges compatibles",
+      windowsF:"Paquete Windows",futureF1:"Long & Short automáticos",futureF2:"Control de apalancamiento y margen",
+      universalF1:"Spot + Futures en un paquete",universalF2:"Windows + control móvil",universalF3:"Kit completo de riesgo BSC",universalF4:"Guías multilingües",
+      buy:"Comprar",popular:"MÁS POPULAR",howTitle:"Cómo comprar",how1:"Elige un paquete BSC.",
+      how2:"Ve a Portfolio → Deposit; el precio se rellenará automáticamente.",
+      how3:"Envía la solicitud de depósito normal. La licencia se entrega tras aprobar el pago.",
+      selected:"BSC {code} seleccionado — ${price} añadido a Deposit."
+    },
+    fr:{
+      nav:"Bot de Trading",kicker:"TRADING AUTOMATISÉ BSC",heroTitle:"Trading automatisé professionnel avec contrôle avancé du risque.",
+      heroDesc:"Choisissez Spot, Futures ou BSC Universal et connectez votre propre compte d'exchange compatible.",
+      pill1:"Potentiel de profit maximal",pill2:"Objectif de risque minimal possible",pill3:"Gestion avancée du risque",pill4:"Windows + contrôle mobile",
+      risk:"Le trading comporte des risques et les profits ne sont pas garantis. BSC vise à réduire et contrôler le risque, pas à le supprimer.",
+      spotDesc:"Spot automatisé avec filtres de tendance, taille de position, stop loss, take profit et trailing.",
+      futuresDesc:"Long & Short automatisés avec contrôle du levier, marge isolée et limites strictes.",
+      universalDesc:"Spot + Futures, Windows, contrôle mobile et guides multilingues.",
+      oneTime:"licence à paiement unique",spotF1:"Entrée/sortie Spot automatiques",riskF:"Risque par trade + limite quotidienne",multiF:"Connexion aux exchanges compatibles",
+      windowsF:"Pack Windows",futureF1:"Long & Short automatisés",futureF2:"Contrôle du levier et de la marge",
+      universalF1:"Spot + Futures dans un pack",universalF2:"Windows + contrôle mobile",universalF3:"Outils complets de risque BSC",universalF4:"Guides multilingues",
+      buy:"Acheter",popular:"LE PLUS POPULAIRE",howTitle:"Comment acheter",how1:"Choisissez un pack BSC.",
+      how2:"Allez à Portfolio → Deposit; le prix sera renseigné automatiquement.",
+      how3:"Envoyez la demande de dépôt normale. La licence est livrée après validation du paiement.",
+      selected:"BSC {code} sélectionné — ${price} ajouté au dépôt."
+    },
+    de:{
+      nav:"Trading Bot",kicker:"BSC AUTOMATISCHER HANDEL",heroTitle:"Professioneller automatisierter Handel mit fortschrittlicher Risikokontrolle.",
+      heroDesc:"Wählen Sie Spot, Futures oder BSC Universal und verbinden Sie Ihr unterstütztes Börsenkonto.",
+      pill1:"Maximales Gewinnpotenzial",pill2:"Fokus auf möglichst geringes Risiko",pill3:"Fortschrittliches Risikomanagement",pill4:"Windows + mobile Steuerung",
+      risk:"Trading ist mit Risiken verbunden und Gewinne sind nicht garantiert. BSC reduziert und kontrolliert Risiken, kann Marktrisiken aber nicht beseitigen.",
+      spotDesc:"Automatisierter Spot-Handel mit Trendfiltern, Positionsgröße, Stop Loss, Take Profit und Trailing.",
+      futuresDesc:"Automatisierte Long & Short mit Hebelkontrolle, Isolated Margin und strengen Risikolimits.",
+      universalDesc:"Spot + Futures, Windows, mobile Steuerung und mehrsprachige Installationsanleitungen.",
+      oneTime:"einmalige Lizenz",spotF1:"Automatischer Spot Ein-/Ausstieg",riskF:"Risiko pro Trade + tägliches Verlustlimit",multiF:"Verbindung zu unterstützten Börsen",
+      windowsF:"Windows-Paket",futureF1:"Automatisierte Long & Short",futureF2:"Hebel- und Margin-Kontrolle",
+      universalF1:"Spot + Futures in einem Paket",universalF2:"Windows + mobile Steuerung",universalF3:"Komplette BSC-Risikokontrolle",universalF4:"Mehrsprachige Anleitungen",
+      buy:"Kaufen",popular:"AM BELIEBTESTEN",howTitle:"So kaufen Sie",how1:"Wählen Sie ein BSC-Paket.",
+      how2:"Gehen Sie zu Portfolio → Deposit; der Preis wird automatisch eingetragen.",
+      how3:"Senden Sie die normale Einzahlungsanfrage. Die Lizenz wird nach Zahlungsfreigabe geliefert.",
+      selected:"BSC {code} gewählt — ${price} wurde in Deposit eingetragen."
+    }
+  };
+
+  function currentLang(){
+    const raw=(localStorage.getItem("bi_lang")||"en").toLowerCase();
+    return I18N[raw] ? raw : "en";
+  }
+  function apply(){
+    const dict=I18N[currentLang()];
+    document.querySelectorAll("[data-bsc]").forEach(el=>{
+      const key=el.getAttribute("data-bsc");
+      if(dict[key]) el.textContent=dict[key];
+    });
+  }
+
+  window.bscSafeBuy=function(code,price){
+    try{
+      localStorage.setItem("bsc_safe_purchase_selection",JSON.stringify({
+        code:String(code),price:Number(price),selectedAt:new Date().toISOString()
+      }));
+    }catch(_){}
+
+    if(typeof window.page==="function"){
+      const nav=document.querySelector('[data-page="portfolio"]');
+      window.page("portfolio",nav);
+    }
+
+    window.setTimeout(function(){
+      const input=document.getElementById("deposit-amount");
+      if(input){
+        input.value=String(price);
+        input.dispatchEvent(new Event("input",{bubbles:true}));
+        input.scrollIntoView({behavior:"smooth",block:"center"});
+      }
+      const note=document.getElementById("bscSafeSelectedNote");
+      if(note){
+        const dict=I18N[currentLang()];
+        note.textContent=(dict.selected||I18N.en.selected)
+          .replace("{code}",String(code))
+          .replace("{price}",String(price));
+        note.classList.add("show");
+      }
+      if(typeof window.toast==="function"){
+        const dict=I18N[currentLang()];
+        window.toast((dict.selected||I18N.en.selected)
+          .replace("{code}",String(code))
+          .replace("{price}",String(price)));
+      }
+    },180);
+  };
+
+  let last="";
+  function sync(){
+    const now=currentLang();
+    if(now!==last){last=now;apply();}
+  }
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",function(){apply();sync();},{once:true});
+  }else{apply();sync();}
+  window.setInterval(sync,900);
+})();
+</script>
 
 </body>
 </html>
