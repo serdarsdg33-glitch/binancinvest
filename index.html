@@ -14321,6 +14321,13 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 @media(max-width:720px){.bsc4-item{grid-template-columns:1fr}.bsc4-my{padding:16px}.bsc4-my-head{align-items:flex-start;flex-direction:column}}
 </style>
 
+
+<style id="bsc-v5-card-platform-fix">
+.bsc5-platforms{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 2px}
+.bsc5-platform{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);color:#bdc8d4;font-size:10px;font-weight:800}
+.bsc5-platform::before{content:"✓";color:#16c784;font-weight:950}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -14415,13 +14422,18 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
     <article class="bsc2-card">
       <h2>BSC Spot Bot</h2>
       <p data-bsc="spotDesc">Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.</p>
-      <div class="bsc2-price">$99 <span class="bsc4-monthly-badge">/ 30 DAYS</span></div>
+      <div class="bsc2-price"><span dir="ltr">$99</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
       <div class="bsc2-license" data-bsc="oneTime">30-day subscription</div>
+      <div class="bsc5-platforms">
+        <span class="bsc5-platform">Windows Package</span>
+        <span class="bsc5-platform">Mobile Package</span>
+      </div>
       <ul class="bsc2-features">
         <li data-bsc="spotF1">Automated Spot entry & exit</li>
         <li data-bsc="riskF">Risk per trade + daily loss limit</li>
         <li data-bsc="multiF">Supported multi-exchange connection</li>
         <li data-bsc="windowsF">Windows desktop package</li>
+        <li data-bsc="mobileF">Mobile controller package</li>
       </ul>
       <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('SPOT',99)" data-bsc="buy">Buy Now</button>
     </article>
@@ -14429,13 +14441,18 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
     <article class="bsc2-card">
       <h2>BSC Futures Bot</h2>
       <p data-bsc="futuresDesc">Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.</p>
-      <div class="bsc2-price">$129 <span class="bsc4-monthly-badge">/ 30 DAYS</span></div>
+      <div class="bsc2-price"><span dir="ltr">$129</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
       <div class="bsc2-license" data-bsc="oneTime">30-day subscription</div>
+      <div class="bsc5-platforms">
+        <span class="bsc5-platform">Windows Package</span>
+        <span class="bsc5-platform">Mobile Package</span>
+      </div>
       <ul class="bsc2-features">
         <li data-bsc="futureF1">Automated Long & Short</li>
         <li data-bsc="futureF2">Leverage & margin controls</li>
         <li data-bsc="riskF">Risk per trade + daily loss limit</li>
         <li data-bsc="windowsF">Windows desktop package</li>
+        <li data-bsc="mobileF">Mobile controller package</li>
       </ul>
       <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('FUTURES',129)" data-bsc="buy">Buy Now</button>
     </article>
@@ -14444,12 +14461,17 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       <span class="bsc2-badge" data-bsc="popular">MOST POPULAR</span>
       <h2>BSC Universal Bot</h2>
       <p data-bsc="universalDesc">Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.</p>
-      <div class="bsc2-price">$179 <span class="bsc4-monthly-badge">/ 30 DAYS</span></div>
+      <div class="bsc2-price"><span dir="ltr">$179</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
       <div class="bsc2-license" data-bsc="oneTime">30-day subscription</div>
+      <div class="bsc5-platforms">
+        <span class="bsc5-platform">Windows Package</span>
+        <span class="bsc5-platform">Mobile Package</span>
+      </div>
       <ul class="bsc2-features">
         <li data-bsc="universalF1">Spot + Futures in one package</li>
         <li data-bsc="universalF2">Windows + mobile control</li>
         <li data-bsc="universalF3">Full BSC risk-control toolkit</li>
+        <li data-bsc="mobileF">Mobile controller package</li>
         <li data-bsc="universalF4">Multilingual installation guides</li>
       </ul>
       <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('UNIVERSAL',179)" data-bsc="buy">Buy Now</button>
@@ -30947,7 +30969,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.",
       universalDesc:"Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.",
       oneTime:"30-day subscription",spotF1:"Automated Spot entry & exit",riskF:"Risk per trade + daily loss limit",multiF:"Supported multi-exchange connection",
-      windowsF:"Windows desktop package",futureF1:"Automated Long & Short",futureF2:"Leverage & margin controls",
+      windowsF:"Windows desktop package",mobileF:"Mobile controller package",futureF1:"Automated Long & Short",futureF2:"Leverage & margin controls",
       universalF1:"Spot + Futures in one package",universalF2:"Windows + mobile control",universalF3:"Full BSC risk-control toolkit",universalF4:"Multilingual installation guides",
       buy:"Buy Now",popular:"MOST POPULAR",howTitle:"How to purchase",how1:"Choose a BSC package.",
       how2:"Choose Base Plan or Direct Payment in the secure checkout window.",
@@ -30963,7 +30985,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"لانگ و شورت خودکار با کنترل اهرم، پشتیبانی مارجین ایزوله و محدودیت سخت‌گیرانه ریسک.",
       universalDesc:"پکیج کامل شامل Spot + Futures، نرم‌افزار ویندوز، مانیتور/کنترل موبایل و راهنمای نصب چندزبانه.",
       oneTime:"اشتراک ۳۰ روزه",spotF1:"ورود و خروج خودکار Spot",riskF:"ریسک هر معامله + سقف ضرر روزانه",multiF:"اتصال به صرافی‌های پشتیبانی‌شده",
-      windowsF:"پکیج دسکتاپ ویندوز",futureF1:"لانگ و شورت خودکار",futureF2:"کنترل اهرم و مارجین",
+      windowsF:"پکیج دسکتاپ ویندوز",mobileF:"پکیج موبایل و کنترل از گوشی",futureF1:"لانگ و شورت خودکار",futureF2:"کنترل اهرم و مارجین",
       universalF1:"Spot + Futures در یک پکیج",universalF2:"ویندوز + کنترل موبایل",universalF3:"تمام ابزارهای کنترل ریسک BSC",universalF4:"راهنمای نصب چندزبانه",
       buy:"خرید ربات",popular:"محبوب‌ترین",howTitle:"نحوه خرید",how1:"یکی از پکیج‌های BSC را انتخاب کنید.",
       how2:"در پنجره پرداخت امن، پرداخت از پلن پایه یا پرداخت مستقیم را انتخاب کنید.",
@@ -30979,7 +31001,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Leverage nəzarəti, isolated margin və ciddi risk limitləri ilə avtomatik Long & Short.",
       universalDesc:"Spot + Futures, Windows proqramı, mobil monitorinq/idarəetmə və çoxdilli quraşdırma təlimatları.",
       oneTime:"30 günlük abunə",spotF1:"Avtomatik Spot giriş və çıxış",riskF:"Əməliyyat riski + gündəlik zərər limiti",multiF:"Dəstəklənən birjalara bağlantı",
-      windowsF:"Windows desktop paketi",futureF1:"Avtomatik Long & Short",futureF2:"Leverage və margin nəzarəti",
+      windowsF:"Windows desktop paketi",mobileF:"Mobil idarəetmə paketi",futureF1:"Avtomatik Long & Short",futureF2:"Leverage və margin nəzarəti",
       universalF1:"Spot + Futures bir paketdə",universalF2:"Windows + mobil idarəetmə",universalF3:"Tam BSC risk nəzarət alətləri",universalF4:"Çoxdilli quraşdırma təlimatları",
       buy:"İndi Al",popular:"ƏN POPULYAR",howTitle:"Necə almaq olar",how1:"BSC paketini seçin.",
       how2:"Portfolio → Deposit bölməsinə keçin; paket qiyməti avtomatik yazılacaq.",
@@ -30995,7 +31017,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Kaldıraç kontrolü, isolated margin ve sıkı risk limitleri ile otomatik Long & Short.",
       universalDesc:"Spot + Futures, Windows yazılımı, mobil izleme/kontrol ve çok dilli kurulum rehberleri.",
       oneTime:"30 günlük abonelik",spotF1:"Otomatik Spot giriş ve çıkış",riskF:"İşlem riski + günlük zarar limiti",multiF:"Desteklenen borsalara bağlantı",
-      windowsF:"Windows masaüstü paketi",futureF1:"Otomatik Long & Short",futureF2:"Kaldıraç ve margin kontrolü",
+      windowsF:"Windows masaüstü paketi",mobileF:"Mobil kontrol paketi",futureF1:"Otomatik Long & Short",futureF2:"Kaldıraç ve margin kontrolü",
       universalF1:"Spot + Futures tek pakette",universalF2:"Windows + mobil kontrol",universalF3:"Tam BSC risk kontrol araçları",universalF4:"Çok dilli kurulum rehberleri",
       buy:"Satın Al",popular:"EN POPÜLER",howTitle:"Nasıl satın alınır",how1:"Bir BSC paketi seçin.",
       how2:"Portfolio → Deposit bölümüne geçin; paket fiyatı otomatik girilir.",
@@ -31011,7 +31033,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Автоматические Long & Short с контролем плеча, isolated margin и строгими лимитами риска.",
       universalDesc:"Spot + Futures, Windows, мобильный контроль и многоязычные руководства.",
       oneTime:"подписка на 30 дней",spotF1:"Автоматический вход/выход Spot",riskF:"Риск сделки + дневной лимит убытка",multiF:"Подключение поддерживаемых бирж",
-      windowsF:"Windows-пакет",futureF1:"Автоматические Long & Short",futureF2:"Контроль плеча и маржи",
+      windowsF:"Windows-пакет",mobileF:"Мобильный пакет управления",futureF1:"Автоматические Long & Short",futureF2:"Контроль плеча и маржи",
       universalF1:"Spot + Futures в одном пакете",universalF2:"Windows + мобильный контроль",universalF3:"Полный набор контроля риска BSC",universalF4:"Многоязычные инструкции",
       buy:"Купить",popular:"ПОПУЛЯРНО",howTitle:"Как купить",how1:"Выберите пакет BSC.",
       how2:"Перейдите Portfolio → Deposit; цена пакета заполнится автоматически.",
@@ -31027,7 +31049,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Long وShort آليان مع تحكم بالرافعة وIsolated Margin وحدود صارمة للمخاطر.",
       universalDesc:"Spot + Futures وبرنامج Windows وتحكم عبر الهاتف وأدلة إعداد متعددة اللغات.",
       oneTime:"اشتراك لمدة 30 يومًا",spotF1:"دخول وخروج Spot تلقائي",riskF:"مخاطرة لكل صفقة + حد خسارة يومي",multiF:"اتصال بمنصات مدعومة",
-      windowsF:"حزمة Windows",futureF1:"Long & Short تلقائي",futureF2:"تحكم بالرافعة والهامش",
+      windowsF:"حزمة Windows",mobileF:"حزمة التحكم عبر الهاتف",futureF1:"Long & Short تلقائي",futureF2:"تحكم بالرافعة والهامش",
       universalF1:"Spot + Futures في حزمة واحدة",universalF2:"Windows + تحكم الهاتف",universalF3:"مجموعة BSC الكاملة للتحكم بالمخاطر",universalF4:"أدلة تثبيت متعددة اللغات",
       buy:"شراء",popular:"الأكثر شعبية",howTitle:"طريقة الشراء",how1:"اختر حزمة BSC.",
       how2:"انتقل إلى Portfolio → Deposit وسيتم إدخال السعر تلقائياً.",
@@ -31043,7 +31065,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"自动 Long & Short，包含杠杆控制、Isolated Margin 和严格风险限制。",
       universalDesc:"Spot + Futures、Windows 软件、手机监控/控制和多语言安装指南。",
       oneTime:"30天订阅",spotF1:"自动 Spot 进出场",riskF:"单笔风险 + 每日亏损上限",multiF:"连接受支持交易所",
-      windowsF:"Windows 桌面包",futureF1:"自动 Long & Short",futureF2:"杠杆和保证金控制",
+      windowsF:"Windows 桌面包",mobileF:"手机控制包",futureF1:"自动 Long & Short",futureF2:"杠杆和保证金控制",
       universalF1:"Spot + Futures 一个套餐",universalF2:"Windows + 手机控制",universalF3:"完整 BSC 风险控制工具",universalF4:"多语言安装指南",
       buy:"立即购买",popular:"最受欢迎",howTitle:"购买方式",how1:"选择 BSC 套餐。",
       how2:"进入 Portfolio → Deposit；套餐价格会自动填写。",
@@ -31059,7 +31081,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Long & Short automáticos con control de apalancamiento, margen aislado y límites estrictos.",
       universalDesc:"Spot + Futures, Windows, control móvil y guías multilingües.",
       oneTime:"suscripción de 30 días",spotF1:"Entrada y salida Spot automáticas",riskF:"Riesgo por operación + límite diario",multiF:"Conexión con exchanges compatibles",
-      windowsF:"Paquete Windows",futureF1:"Long & Short automáticos",futureF2:"Control de apalancamiento y margen",
+      windowsF:"Paquete Windows",mobileF:"Paquete de control móvil",futureF1:"Long & Short automáticos",futureF2:"Control de apalancamiento y margen",
       universalF1:"Spot + Futures en un paquete",universalF2:"Windows + control móvil",universalF3:"Kit completo de riesgo BSC",universalF4:"Guías multilingües",
       buy:"Comprar",popular:"MÁS POPULAR",howTitle:"Cómo comprar",how1:"Elige un paquete BSC.",
       how2:"Ve a Portfolio → Deposit; el precio se rellenará automáticamente.",
@@ -31075,7 +31097,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Long & Short automatisés avec contrôle du levier, marge isolée et limites strictes.",
       universalDesc:"Spot + Futures, Windows, contrôle mobile et guides multilingues.",
       oneTime:"abonnement de 30 jours",spotF1:"Entrée/sortie Spot automatiques",riskF:"Risque par trade + limite quotidienne",multiF:"Connexion aux exchanges compatibles",
-      windowsF:"Pack Windows",futureF1:"Long & Short automatisés",futureF2:"Contrôle du levier et de la marge",
+      windowsF:"Pack Windows",mobileF:"Pack de contrôle mobile",futureF1:"Long & Short automatisés",futureF2:"Contrôle du levier et de la marge",
       universalF1:"Spot + Futures dans un pack",universalF2:"Windows + contrôle mobile",universalF3:"Outils complets de risque BSC",universalF4:"Guides multilingues",
       buy:"Acheter",popular:"LE PLUS POPULAIRE",howTitle:"Comment acheter",how1:"Choisissez un pack BSC.",
       how2:"Allez à Portfolio → Deposit; le prix sera renseigné automatiquement.",
@@ -31091,7 +31113,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       futuresDesc:"Automatisierte Long & Short mit Hebelkontrolle, Isolated Margin und strengen Risikolimits.",
       universalDesc:"Spot + Futures, Windows, mobile Steuerung und mehrsprachige Installationsanleitungen.",
       oneTime:"30-Tage-Abonnement",spotF1:"Automatischer Spot Ein-/Ausstieg",riskF:"Risiko pro Trade + tägliches Verlustlimit",multiF:"Verbindung zu unterstützten Börsen",
-      windowsF:"Windows-Paket",futureF1:"Automatisierte Long & Short",futureF2:"Hebel- und Margin-Kontrolle",
+      windowsF:"Windows-Paket",mobileF:"Mobiles Steuerungspaket",futureF1:"Automatisierte Long & Short",futureF2:"Hebel- und Margin-Kontrolle",
       universalF1:"Spot + Futures in einem Paket",universalF2:"Windows + mobile Steuerung",universalF3:"Komplette BSC-Risikokontrolle",universalF4:"Mehrsprachige Anleitungen",
       buy:"Kaufen",popular:"AM BELIEBTESTEN",howTitle:"So kaufen Sie",how1:"Wählen Sie ein BSC-Paket.",
       how2:"Gehen Sie zu Portfolio → Deposit; der Preis wird automatisch eingetragen.",
@@ -31167,7 +31189,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
       <div>
         <div class="bscp-kicker">BSC SECURE CHECKOUT</div>
         <h2 id="bscPaymentTitle" class="bscp-title">BSC Bot</h2>
-        <div id="bscPaymentPrice" class="bscp-price">$0</div>
+        <div id="bscPaymentPrice" class="bscp-price" dir="ltr">$0</div>
       </div>
       <button class="bscp-close" type="button" onclick="bscpClose()" aria-label="Close">×</button>
     </div>
@@ -31419,9 +31441,23 @@ function T(k){return C[L()][k]||C.en[k]||k}
 function dateText(v){try{return new Date(v).toLocaleString(L()==="fa"?"fa-IR":undefined,{year:"numeric",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return String(v||"—")}}
 function apply(){document.querySelectorAll("[data-bsc4]").forEach(e=>{const k=e.dataset.bsc4;if(T(k))e.textContent=T(k)})}
 async function fn(name,body){
- const {data,error}=await supabaseClient.functions.invoke(name,{body});
- if(error){let m=error.message||T("server");try{if(error.context?.json){const x=await error.context.json();m=x?.error||m}}catch(_){}throw new Error(m)}
- if(data?.error)throw new Error(data.error);return data||{};
+ try{
+  const {data,error}=await supabaseClient.functions.invoke(name,{body});
+  if(error){
+   let m=error.message||T("server");
+   try{if(error.context?.json){const x=await error.context.json();m=x?.error||m}}catch(_){}
+   if(/Failed to send a request to the Edge Function/i.test(m)) m=T("server");
+   if(/Authentication required|JWT|Unauthorized/i.test(m)) m=T("login");
+   throw new Error(m);
+  }
+  if(data?.error)throw new Error(data.error);
+  return data||{};
+ }catch(e){
+  const m=String(e?.message||T("server"));
+  if(/Authentication required|JWT|Unauthorized/i.test(m)) throw new Error(T("login"));
+  if(/Failed to send a request to the Edge Function/i.test(m)) throw new Error(T("server"));
+  throw e;
+ }
 }
 function mStatus(msg,type="info"){const b=$("bscpStatus");if(!b)return;b.textContent=msg||"";b.className="bscp-status"+(msg?` show ${type}`:"")}
 function busy(v){["bscpPayBaseBtn","bscpVerifyBtn","bscpRetryBtn"].forEach(id=>{const e=$(id);if(e)e.disabled=!!v})}
@@ -31447,7 +31483,7 @@ window.bscSafeBuy=function(code,price){
  if(!currentUser){if(typeof openAuth==="function")openAuth("login");if(typeof toast==="function")toast(T("login"));return}
  const names={SPOT:"BSC Spot Bot",FUTURES:"BSC Futures Bot",UNIVERSAL:"BSC Universal Bot"};
  S.code=String(code||"").toUpperCase();S.name=names[S.code]||"BSC Bot";S.price=Number(price)||0;S.network="BEP20";S.polls=0;stopPoll();
- $("bscPaymentTitle").textContent=S.name;$("bscPaymentPrice").textContent=`$${S.price} / 30 days`;$("bscpExactAmount").textContent=`${S.price} USDT`;
+ $("bscPaymentTitle").textContent=S.name;$("bscPaymentPrice").textContent=`$${S.price} · 30 DAYS`;$("bscpExactAmount").textContent=`${S.price} USDT`;
  $("bscpTxid").value="";$("bscpCheckoutBody").style.display="";$("bscpSuccess").classList.remove("show");$("bscpRetryBtn").style.display="none";$("bscpWalletAddress").textContent="0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD";
  $("bscpBaseMethod").classList.add("active");$("bscpDirectMethod").classList.remove("active");$("bscpBaseSection").classList.add("active");$("bscpDirectSection").classList.remove("active");
  $("bscPaymentModal").classList.add("open");document.body.classList.add("bscp-lock");summary().catch(e=>mStatus(e.message||T("server"),"error"));
