@@ -18409,23 +18409,42 @@ function shortDirectWalletAddress(value){
     const address=String(value||"");
     return address.length>14?`${address.slice(0,7)}…${address.slice(-5)}`:address;
 }
+function directWalletDisconnectLabel(){
+    const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
+    return ({
+        en:"Disconnect wallet",fa:"قطع اتصال ولت",az:"Cüzdanı ayır",tr:"Cüzdan bağlantısını kes",
+        ru:"Отключить кошелек",ar:"قطع اتصال المحفظة",zh:"断开钱包",es:"Desconectar billetera",
+        fr:"Déconnecter le portefeuille",de:"Wallet trennen"
+    })[language]||"Disconnect wallet";
+}
+function directWalletChangeLabel(){
+    const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
+    return ({
+        en:"Change wallet",fa:"تغییر ولت",az:"Cüzdanı dəyiş",tr:"Cüzdanı değiştir",
+        ru:"Сменить кошелек",ar:"تغيير المحفظة",zh:"更换钱包",es:"Cambiar billetera",
+        fr:"Changer de portefeuille",de:"Wallet wechseln"
+    })[language]||"Change wallet";
+}
 function renderDirectWalletConnectPanel(){
     const infoBox=document.getElementById('payment-info-box');
     if(!infoBox)return;
     const copy=directWalletConnectCopy();
-    const connected=directWalletConnectedAccount
+    const isConnected=Boolean(directWalletConnectedAccount);
+    const connected=isConnected
         ? `<div class="direct-wallet-connected"><span>${copy.connected}</span><strong title="${directWalletConnectedAccount}">${shortDirectWalletAddress(directWalletConnectedAccount)}</strong></div>`
         : "";
+    const actions=isConnected
+        ? `<button type="button" class="direct-wallet-connect-button disconnect" onclick="disconnectDirectWallet()">${directWalletDisconnectLabel()}</button>
+           <button type="button" class="direct-wallet-connect-button" onclick="openDirectWalletConnectSetup()">${directWalletChangeLabel()}</button>`
+        : `<button type="button" class="direct-wallet-connect-button primary" onclick="connectDirectBrowserWallet()">${copy.browser}</button>
+           <button type="button" class="direct-wallet-connect-button" onclick="openDirectWalletConnectSetup()">${copy.all}</button>`;
     infoBox.innerHTML=`
         <div class="direct-wallet-connect-head">
             <span class="direct-wallet-connect-icon" aria-hidden="true">◈</span>
             <div><strong>${copy.title}</strong><small>${copy.desc}</small></div>
         </div>
         ${connected}
-        <div class="direct-wallet-connect-actions">
-            <button type="button" class="direct-wallet-connect-button primary" onclick="connectDirectBrowserWallet()">${copy.browser}</button>
-            <button type="button" class="direct-wallet-connect-button" onclick="openDirectWalletConnectSetup()">${copy.all}</button>
-        </div>`;
+        <div class="direct-wallet-connect-actions">${actions}</div>`;
 }
 window.connectDirectBrowserWallet=async function(){
     const copy=directWalletConnectCopy();
@@ -18441,6 +18460,39 @@ window.connectDirectBrowserWallet=async function(){
         if(typeof toast==='function')toast(copy.connectFailed);
     }
 };
+window.disconnectDirectWallet=async function(){
+    const appKit=window.biReownAppKit;
+    let disconnected=false;
+    try{
+        const controller=appKit?.adapter?.connectionControllerClient;
+        if(controller && typeof controller.disconnect==='function'){
+            await controller.disconnect();
+            disconnected=true;
+        }else if(appKit && typeof appKit.disconnect==='function'){
+            await appKit.disconnect();
+            disconnected=true;
+        }
+    }catch(error){
+        console.warn('Reown disconnect failed:',error);
+    }
+
+    // For injected browser wallets, revoke eth_accounts permission when supported.
+    try{
+        if(window.ethereum?.request){
+            await window.ethereum.request({method:'wallet_revokePermissions',params:[{eth_accounts:{}}]});
+            disconnected=true;
+        }
+    }catch(error){
+        // Many mobile wallets do not implement wallet_revokePermissions; clearing the dApp state is still safe.
+        console.debug('Wallet permission revoke is not supported by this wallet:',error);
+    }
+
+    directWalletConnectedAccount='';
+    if(typeof window.setDirectWalletConnectedAccount==='function')window.setDirectWalletConnectedAccount('');
+    else renderDirectWalletConnectPanel();
+    if(typeof toast==='function')toast(disconnected?'Wallet disconnected.':'Connection cleared from this page.');
+};
+
 window.openDirectWalletConnectSetup=function(){
     const copy=directWalletConnectCopy();
     if(typeof toast==='function')toast(copy.allSetup);
@@ -30520,6 +30572,8 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 #portfolio .direct-wallet-connect-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
 #portfolio .direct-wallet-connect-button{min-height:48px;padding:10px 12px;border:1px solid rgba(255,255,255,.16);border-radius:12px;color:#eef2f7;background:rgba(255,255,255,.055);font:inherit;font-size:12px;font-weight:800;cursor:pointer;touch-action:manipulation}
 #portfolio .direct-wallet-connect-button.primary{border-color:rgba(255,225,117,.42);color:#171106;background:linear-gradient(135deg,#f0b90b,#ffd85a)}
+#portfolio .direct-wallet-connect-button.disconnect{border-color:rgba(255,92,92,.38);color:#ffb0b0;background:linear-gradient(145deg,rgba(116,19,19,.32),rgba(50,8,8,.32))}
+#portfolio .direct-wallet-connect-button.disconnect:active{transform:scale(.985)}
 #portfolio .direct-wallet-connected{margin-top:13px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(14,203,129,.3);border-radius:11px;background:rgba(14,203,129,.075)}
 #portfolio .direct-wallet-connected span{color:#9ba8b7;font-size:10px}
 #portfolio .direct-wallet-connected strong{color:#73edb7;font-size:12px;direction:ltr;unicode-bidi:isolate}
@@ -30792,6 +30846,24 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
     });
 
     window.biReownAppKit = appKit;
+
+    window.disconnectDirectWallet = async function () {
+      try {
+        const controller = appKit?.adapter?.connectionControllerClient;
+        if (controller && typeof controller.disconnect === "function") {
+          await controller.disconnect();
+        } else if (typeof appKit.disconnect === "function") {
+          await appKit.disconnect();
+        }
+      } catch (error) {
+        console.warn("Reown disconnect failed:", error);
+      } finally {
+        if (typeof window.setDirectWalletConnectedAccount === "function") {
+          window.setDirectWalletConnectedAccount("");
+        }
+        if (typeof toast === "function") toast("Wallet disconnected.");
+      }
+    };
 
     // This is the function already called by the site's existing
     // "All wallets / WalletConnect" button.
