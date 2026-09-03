@@ -14328,6 +14328,39 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 .bsc5-platform::before{content:"✓";color:#16c784;font-weight:950}
 </style>
 
+
+<style id="instant-wallet-deposit-v6-css">
+.iwp-panel{padding:3px 0 1px;color:#eef3f8;word-break:normal}
+.iwp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+.iwp-kicker{color:#f0b90b;font-size:10px;font-weight:950;letter-spacing:1.2px}
+.iwp-title{margin:3px 0 0;font-size:17px;font-weight:900}
+.iwp-secure{padding:5px 8px;border-radius:999px;border:1px solid rgba(22,199,132,.25);background:rgba(22,199,132,.08);color:#8ef0c5;font-size:9px;font-weight:900;white-space:nowrap}
+.iwp-networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.iwp-network{min-height:55px;padding:10px 11px;text-align:start;border:1px solid #334151;border-radius:11px;background:#101720;color:#eaf0f6}
+.iwp-network.active{border-color:#f0b90b;background:rgba(240,185,11,.075);box-shadow:inset 0 0 0 1px rgba(240,185,11,.10)}
+.iwp-network b{display:block;font-size:12px}.iwp-network span{display:block;margin-top:3px;color:#8492a3;font-size:9px}
+.iwp-summary{display:grid;gap:8px;margin-bottom:12px}
+.iwp-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 11px;border:1px solid rgba(255,255,255,.065);border-radius:10px;background:rgba(255,255,255,.025)}
+.iwp-row span{color:#8794a4;font-size:10px}.iwp-row b{min-width:0;color:#f5f7fa;font-size:11px;text-align:end}
+.iwp-address{direction:ltr;unicode-bidi:embed;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px!important;color:#6ee7b7!important}
+.iwp-wallets{display:none;margin:10px 0;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:#0c1219}
+.iwp-wallets.show{display:block}
+.iwp-wallets-title{margin-bottom:8px;color:#aeb8c4;font-size:10px}
+.iwp-wallet-list{display:grid;gap:7px}
+.iwp-wallet-btn{display:flex;align-items:center;gap:9px;width:100%;min-height:44px;padding:8px 10px;border:1px solid #344252;border-radius:10px;background:#151e29;color:#f2f5f8;text-align:start;font-size:11px;font-weight:850}
+.iwp-wallet-btn img{width:25px;height:25px;border-radius:7px;object-fit:contain}
+.iwp-wallet-fallback{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+.iwp-wallet-fallback p{margin:0 0 8px;color:#8794a4;font-size:9px;line-height:1.65}
+.iwp-trust{display:flex;align-items:center;justify-content:center;min-height:42px;width:100%;border:1px solid rgba(51,117,255,.35);border-radius:10px;background:rgba(51,117,255,.09);color:#a9c8ff;font-size:10px;font-weight:900;text-decoration:none}
+.iwp-pay{width:100%;min-height:47px;padding:11px 14px;border:1px solid #f0b90b;border-radius:11px;background:linear-gradient(135deg,#ffe15b,#dca600);color:#171100;font-size:13px;font-weight:950}
+.iwp-pay:disabled{opacity:.48;cursor:not-allowed}
+.iwp-status{display:none;margin-top:10px;padding:11px 12px;border-radius:10px;font-size:10px;line-height:1.65}
+.iwp-status.show{display:block}.iwp-status.info{border:1px solid rgba(82,126,255,.28);background:rgba(82,126,255,.08);color:#bcd4ff}.iwp-status.ok{border:1px solid rgba(22,199,132,.28);background:rgba(22,199,132,.08);color:#a7f3d0}.iwp-status.err{border:1px solid rgba(234,57,67,.27);background:rgba(234,57,67,.08);color:#fecaca}
+.iwp-spin{display:inline-block;width:13px;height:13px;margin-inline-end:7px;border:2px solid rgba(255,255,255,.23);border-top-color:currentColor;border-radius:50%;vertical-align:-2px;animation:iwpSpin .8s linear infinite}
+@keyframes iwpSpin{to{transform:rotate(360deg)}}
+@media(max-width:520px){.iwp-networks{grid-template-columns:1fr}.iwp-row{flex-direction:column}.iwp-row b{text-align:start}}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15377,15 +15410,20 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
                       <span class="payment-method-option-mark" aria-hidden="true">✓</span>
                       <span data-t="optDirect">1. Direct Payment</span>
                   </button>
+                  <button class="custom-option payment-method-option" type="button" data-payment-method="instantwallet" onclick="selectPaymentMethod('instantwallet')" role="option" aria-selected="false">
+                      <span class="payment-method-option-mark" aria-hidden="true">✓</span>
+                      <span data-iwp="option">2. Instant Wallet Payment</span>
+                  </button>
                   <button class="custom-option payment-method-option" type="button" data-payment-method="paymentio" onclick="selectPaymentMethod('paymentio')" role="option" aria-selected="false">
                       <span class="payment-method-option-mark" aria-hidden="true">✓</span>
-                      <span data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</span>
+                      <span data-t="optPaymentio">3. Payment via Payment.io / NowPayments Gateway</span>
                   </button>
               </div>
           </div>
           <select id="payment-method" class="payment-method-native-proxy" tabindex="-1" aria-hidden="true">
               <option value="wallet" id="opt-direct-payment" data-t="optDirect">1. Direct Payment</option>
-              <option value="paymentio" id="opt-paymentio" data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</option>
+              <option value="instantwallet" id="opt-instant-wallet-payment">2. Instant Wallet Payment</option>
+              <option value="paymentio" id="opt-paymentio" data-t="optPaymentio">3. Payment via Payment.io / NowPayments Gateway</option>
           </select>
       </div>
 
@@ -31518,6 +31556,212 @@ window.addEventListener("bsc:purchase-paid",()=>bsc4LoadMyBots());
 document.addEventListener("click",e=>{const b=e.target.closest?.('[data-page="bots"]');if(b)setTimeout(()=>bsc4LoadMyBots(),200)});
 apply();setTimeout(()=>{if(currentUser)bsc4LoadMyBots()},1200);
 let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(currentUser)bsc4LoadMyBots()}},1500);
+})();
+</script>
+
+
+<script id="instant-wallet-deposit-v6-script">
+(function(){
+"use strict";
+
+const RECEIVER="0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD";
+const NET={
+  BEP20:{chainId:"0x38",decimals:18,token:"0x55d398326f99059ff775485246999027b3197955",label:"USDT (BEP20)"},
+  ERC20:{chainId:"0x1",decimals:6,token:"0xdAC17F958D2ee523a2206206994597C13D831ec7",label:"USDT (ERC20)"}
+};
+const COPY={
+ en:{option:"2. Instant Wallet Payment",title:"Instant Wallet Deposit",secure:"ON-CHAIN VERIFIED",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Deposit amount",destination:"Destination",network:"Network",pay:"Choose Wallet & Pay",wallets:"Choose a wallet",trustHelp:"On iPhone Safari, open BinancInvest inside a wallet browser first. Trust Wallet supports this directly.",trust:"Open in Trust Wallet",connecting:"Connecting to wallet…",confirm:"Wallet opened. Confirm the USDT transfer in your wallet.",sent:"Transaction sent. Waiting for blockchain confirmation…",confirmations:"Blockchain confirmation {a}/{b}…",success:"Payment successful. ${amount} was added to your Base Plan.",rejected:"Transaction was rejected in the wallet.",noWallet:"No compatible EVM wallet was detected. Open the site inside Trust Wallet or another Web3 wallet.",wrong:"Could not switch to the selected network.",invalid:"Enter a valid deposit amount first.",failed:"Payment could not be verified. No balance was credited.",server:"Verification service is temporarily unavailable.",used:"This blockchain transaction has already been used."},
+ fa:{option:"۲. پرداخت مستقیم با کیف پول",title:"واریز مستقیم از کیف پول",secure:"تأیید واقعی بلاکچین",bep:"BNB Smart Chain",erc:"Ethereum",amount:"مبلغ واریز",destination:"ولت مقصد",network:"شبکه",pay:"انتخاب ولت و پرداخت",wallets:"انتخاب کیف پول",trustHelp:"در Safari آیفون، سایت را داخل مرورگر کیف پول باز کنید. Trust Wallet این حالت را مستقیماً پشتیبانی می‌کند.",trust:"باز کردن در Trust Wallet",connecting:"در حال اتصال به کیف پول…",confirm:"کیف پول باز شد؛ انتقال USDT را داخل کیف پول تأیید کنید.",sent:"تراکنش ارسال شد؛ در حال بررسی بلاکچین…",confirmations:"تأیید بلاکچین {a} از {b}…",success:"پرداخت موفق بود. مبلغ ${amount} به پلن پایه شما اضافه شد.",rejected:"تراکنش در کیف پول لغو شد.",noWallet:"کیف پول EVM سازگار پیدا نشد. سایت را داخل Trust Wallet یا یک کیف پول Web3 باز کنید.",wrong:"تغییر به شبکه انتخاب‌شده انجام نشد.",invalid:"ابتدا مبلغ معتبر واریز را وارد کنید.",failed:"پرداخت تأیید نشد و هیچ مبلغی به موجودی اضافه نشد.",server:"سرویس بررسی پرداخت موقتاً در دسترس نیست.",used:"این تراکنش بلاکچین قبلاً استفاده شده است."},
+ az:{option:"2. Birbaşa Cüzdan Ödənişi",title:"Cüzdandan Ani Depozit",secure:"BLOCKCHAIN TƏSDİQLİ",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Depozit məbləği",destination:"Qəbul edən cüzdan",network:"Şəbəkə",pay:"Cüzdan Seç və Ödə",wallets:"Cüzdan seçin",trustHelp:"iPhone Safari-də saytı əvvəlcə Web3 cüzdan brauzerində açın.",trust:"Trust Wallet-də Aç",connecting:"Cüzdana qoşulur…",confirm:"Cüzdan açıldı. USDT köçürməsini təsdiqləyin.",sent:"Tranzaksiya göndərildi. Blockchain təsdiqi gözlənilir…",confirmations:"Blockchain təsdiqi {a}/{b}…",success:"Ödəniş uğurludur. ${amount} Baza Planınıza əlavə edildi.",rejected:"Tranzaksiya cüzdanda ləğv edildi.",noWallet:"Uyğun EVM cüzdan tapılmadı.",wrong:"Seçilmiş şəbəkəyə keçmək mümkün olmadı.",invalid:"Əvvəlcə düzgün məbləğ daxil edin.",failed:"Ödəniş təsdiqlənmədi və balans artırılmadı.",server:"Yoxlama xidməti müvəqqəti əlçatan deyil.",used:"Bu tranzaksiya artıq istifadə edilib."},
+ tr:{option:"2. Anlık Cüzdan Ödemesi",title:"Cüzdandan Anlık Para Yatırma",secure:"BLOCKCHAIN DOĞRULAMALI",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Yatırma tutarı",destination:"Hedef cüzdan",network:"Ağ",pay:"Cüzdan Seç ve Öde",wallets:"Cüzdan seç",trustHelp:"iPhone Safari'de siteyi önce Web3 cüzdan tarayıcısında açın.",trust:"Trust Wallet'ta Aç",connecting:"Cüzdana bağlanılıyor…",confirm:"Cüzdan açıldı. USDT transferini onaylayın.",sent:"İşlem gönderildi. Blockchain onayı bekleniyor…",confirmations:"Blockchain onayı {a}/{b}…",success:"Ödeme başarılı. ${amount} Ana Planınıza eklendi.",rejected:"İşlem cüzdanda iptal edildi.",noWallet:"Uyumlu EVM cüzdan bulunamadı.",wrong:"Seçilen ağa geçilemedi.",invalid:"Önce geçerli bir tutar girin.",failed:"Ödeme doğrulanmadı; bakiye eklenmedi.",server:"Doğrulama servisi geçici olarak kullanılamıyor.",used:"Bu blockchain işlemi daha önce kullanıldı."},
+ ru:{option:"2. Мгновенная оплата кошельком",title:"Мгновенный депозит из кошелька",secure:"ПРОВЕРКА В БЛОКЧЕЙНЕ",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Сумма депозита",destination:"Кошелек получателя",network:"Сеть",pay:"Выбрать кошелек и оплатить",wallets:"Выберите кошелек",trustHelp:"В Safari на iPhone сначала откройте сайт во встроенном браузере Web3-кошелька.",trust:"Открыть в Trust Wallet",connecting:"Подключение кошелька…",confirm:"Кошелек открыт. Подтвердите перевод USDT.",sent:"Транзакция отправлена. Ожидается подтверждение…",confirmations:"Подтверждение блокчейна {a}/{b}…",success:"Оплата успешна. ${amount} добавлено в Base Plan.",rejected:"Транзакция отменена в кошельке.",noWallet:"Совместимый EVM-кошелек не найден.",wrong:"Не удалось переключить сеть.",invalid:"Введите корректную сумму.",failed:"Платеж не подтвержден; баланс не изменен.",server:"Сервис проверки временно недоступен.",used:"Эта транзакция уже использована."},
+ ar:{option:"٢. الدفع الفوري بالمحفظة",title:"إيداع فوري من المحفظة",secure:"موثق على البلوكشين",bep:"BNB Smart Chain",erc:"Ethereum",amount:"مبلغ الإيداع",destination:"محفظة الاستلام",network:"الشبكة",pay:"اختر المحفظة وادفع",wallets:"اختر المحفظة",trustHelp:"في Safari على iPhone افتح الموقع أولًا داخل متصفح محفظة Web3.",trust:"فتح في Trust Wallet",connecting:"جار الاتصال بالمحفظة…",confirm:"تم فتح المحفظة. أكد تحويل USDT.",sent:"تم إرسال المعاملة. جار انتظار تأكيد البلوكشين…",confirmations:"تأكيد البلوكشين {a}/{b}…",success:"تم الدفع بنجاح. تمت إضافة ${amount} إلى الخطة الأساسية.",rejected:"تم إلغاء المعاملة في المحفظة.",noWallet:"لم يتم العثور على محفظة EVM متوافقة.",wrong:"تعذر التبديل إلى الشبكة.",invalid:"أدخل مبلغًا صحيحًا أولًا.",failed:"لم يتم تأكيد الدفع ولم تتم إضافة رصيد.",server:"خدمة التحقق غير متاحة مؤقتًا.",used:"تم استخدام هذه المعاملة سابقًا."},
+ zh:{option:"2. 钱包即时支付",title:"钱包即时充值",secure:"链上验证",bep:"BNB Smart Chain",erc:"Ethereum",amount:"充值金额",destination:"收款钱包",network:"网络",pay:"选择钱包并支付",wallets:"选择钱包",trustHelp:"在 iPhone Safari 中，请先在 Web3 钱包浏览器内打开本站。",trust:"在 Trust Wallet 打开",connecting:"正在连接钱包…",confirm:"钱包已打开，请确认 USDT 转账。",sent:"交易已发送，等待区块链确认…",confirmations:"区块链确认 {a}/{b}…",success:"支付成功，${amount} 已加入基础计划。",rejected:"钱包中已取消交易。",noWallet:"未检测到兼容的 EVM 钱包。",wrong:"无法切换网络。",invalid:"请先输入有效金额。",failed:"付款未验证，余额未增加。",server:"验证服务暂时不可用。",used:"该交易已被使用。"},
+ es:{option:"2. Pago instantáneo con wallet",title:"Depósito instantáneo desde wallet",secure:"VERIFICADO ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Importe",destination:"Wallet de destino",network:"Red",pay:"Elegir Wallet y Pagar",wallets:"Elige una wallet",trustHelp:"En Safari de iPhone, abre primero el sitio dentro del navegador de una wallet Web3.",trust:"Abrir en Trust Wallet",connecting:"Conectando wallet…",confirm:"Wallet abierta. Confirma la transferencia USDT.",sent:"Transacción enviada. Esperando confirmación…",confirmations:"Confirmación blockchain {a}/{b}…",success:"Pago exitoso. ${amount} se añadió a tu Plan Base.",rejected:"Transacción cancelada en la wallet.",noWallet:"No se detectó una wallet EVM compatible.",wrong:"No se pudo cambiar de red.",invalid:"Introduce primero un importe válido.",failed:"Pago no verificado; no se acreditó saldo.",server:"Servicio de verificación no disponible temporalmente.",used:"Esta transacción ya fue utilizada."},
+ fr:{option:"2. Paiement instantané par portefeuille",title:"Dépôt instantané par portefeuille",secure:"VÉRIFIÉ ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Montant",destination:"Portefeuille destinataire",network:"Réseau",pay:"Choisir le portefeuille et payer",wallets:"Choisissez un portefeuille",trustHelp:"Sur Safari iPhone, ouvrez d'abord le site dans le navigateur d'un portefeuille Web3.",trust:"Ouvrir dans Trust Wallet",connecting:"Connexion au portefeuille…",confirm:"Portefeuille ouvert. Confirmez le transfert USDT.",sent:"Transaction envoyée. En attente de confirmation…",confirmations:"Confirmation blockchain {a}/{b}…",success:"Paiement réussi. ${amount} ajouté au Plan de Base.",rejected:"Transaction annulée dans le portefeuille.",noWallet:"Aucun portefeuille EVM compatible détecté.",wrong:"Impossible de changer de réseau.",invalid:"Saisissez d'abord un montant valide.",failed:"Paiement non vérifié; aucun solde crédité.",server:"Service de vérification temporairement indisponible.",used:"Cette transaction a déjà été utilisée."},
+ de:{option:"2. Sofortige Wallet-Zahlung",title:"Sofortige Wallet-Einzahlung",secure:"ON-CHAIN VERIFIZIERT",bep:"BNB Smart Chain",erc:"Ethereum",amount:"Einzahlungsbetrag",destination:"Ziel-Wallet",network:"Netzwerk",pay:"Wallet wählen & bezahlen",wallets:"Wallet auswählen",trustHelp:"Öffnen Sie die Seite auf iPhone Safari zuerst im Browser einer Web3-Wallet.",trust:"In Trust Wallet öffnen",connecting:"Wallet wird verbunden…",confirm:"Wallet geöffnet. USDT-Transfer bestätigen.",sent:"Transaktion gesendet. Blockchain-Bestätigung läuft…",confirmations:"Blockchain-Bestätigung {a}/{b}…",success:"Zahlung erfolgreich. ${amount} wurde dem Basisplan hinzugefügt.",rejected:"Transaktion in der Wallet abgebrochen.",noWallet:"Keine kompatible EVM-Wallet erkannt.",wrong:"Netzwerkwechsel fehlgeschlagen.",invalid:"Zuerst gültigen Betrag eingeben.",failed:"Zahlung nicht bestätigt; kein Guthaben gutgeschrieben.",server:"Prüfdienst vorübergehend nicht verfügbar.",used:"Diese Transaktion wurde bereits verwendet."}
+};
+
+const siteT=(typeof T!=="undefined"&&T)?T:{};
+const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false};
+const announced=new Map();
+function lang(){const x=(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase();return COPY[x]?x:"en"}
+function t(k){return COPY[lang()][k]||COPY.en[k]||k}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function applyLabels(){document.querySelectorAll("[data-iwp]").forEach(e=>{const k=e.dataset.iwp;if(t(k))e.textContent=t(k)});const n=document.getElementById("opt-instant-wallet-payment");if(n)n.textContent=t("option")}
+function money(){
+  const raw=Number(document.getElementById("deposit-amount")?.value||0);
+  return Number.isFinite(raw)&&raw>0?Math.round(raw*100)/100:0;
+}
+function status(message,type="info",spinner=false){
+  const box=document.getElementById("iwpStatus");if(!box)return;
+  box.className="iwp-status"+(message?` show ${type}`:"");
+  box.innerHTML=message?(spinner?`<span class="iwp-spin"></span>${esc(message)}`:esc(message)):"";
+}
+function stopPoll(){if(state.poll){clearTimeout(state.poll);state.poll=null}}
+function setBusy(v){state.busy=!!v;const b=document.getElementById("iwpPay");if(b)b.disabled=!!v}
+function parseUnits(value,decimals){
+  const fixed=Number(value).toFixed(2),[w,f=""]=fixed.split(".");
+  return BigInt(w)*(10n**BigInt(decimals))+BigInt((f+"0".repeat(decimals)).slice(0,decimals));
+}
+function transferData(to,units){
+  return "0xa9059cbb"+to.toLowerCase().replace(/^0x/,"").padStart(64,"0")+units.toString(16).padStart(64,"0");
+}
+function trustDappUrl(){
+  const coin=state.network==="BEP20"?"20000714":"60";
+  return `https://link.trustwallet.com/open_url?coin_id=${coin}&url=${encodeURIComponent(location.href)}`;
+}
+function render(){
+  const box=document.getElementById("payment-info-box");if(!box)return;
+  const a=money(),n=NET[state.network];
+  box.classList.remove("deposit-wallet-info");
+  box.innerHTML=`<div class="iwp-panel">
+    <div class="iwp-head"><div><div class="iwp-kicker">BINANCINVEST</div><div class="iwp-title">${esc(t("title"))}</div></div><span class="iwp-secure">${esc(t("secure"))}</span></div>
+    <div class="iwp-networks">
+      <button type="button" class="iwp-network ${state.network==="BEP20"?"active":""}" data-iwp-net="BEP20"><b>USDT (BEP20)</b><span>${esc(t("bep"))}</span></button>
+      <button type="button" class="iwp-network ${state.network==="ERC20"?"active":""}" data-iwp-net="ERC20"><b>USDT (ERC20)</b><span>${esc(t("erc"))}</span></button>
+    </div>
+    <div class="iwp-summary">
+      <div class="iwp-row"><span>${esc(t("amount"))}</span><b id="iwpAmount">${a>0?"$"+a.toFixed(2):"—"}</b></div>
+      <div class="iwp-row"><span>${esc(t("network"))}</span><b id="iwpNetwork">${esc(n.label)}</b></div>
+      <div class="iwp-row"><span>${esc(t("destination"))}</span><b class="iwp-address">${RECEIVER}</b></div>
+    </div>
+    <button id="iwpPay" type="button" class="iwp-pay">${esc(t("pay"))}</button>
+    <div id="iwpWallets" class="iwp-wallets">
+      <div class="iwp-wallets-title">${esc(t("wallets"))}</div>
+      <div id="iwpWalletList" class="iwp-wallet-list"></div>
+      <div class="iwp-wallet-fallback"><p>${esc(t("trustHelp"))}</p><a class="iwp-trust" id="iwpTrust" href="${esc(trustDappUrl())}">${esc(t("trust"))}</a></div>
+    </div>
+    <div id="iwpStatus" class="iwp-status" role="status" aria-live="polite"></div>
+  </div>`;
+  box.querySelectorAll("[data-iwp-net]").forEach(b=>b.addEventListener("click",()=>{if(state.busy)return;state.network=b.dataset.iwpNet;state.provider=null;state.walletName="";render()}));
+  document.getElementById("iwpPay")?.addEventListener("click",chooseWallet);
+}
+function discover(){
+  if(window.trustwallet?.ethereum&&!announced.has("trust-direct"))announced.set("trust-direct",{info:{name:"Trust Wallet",uuid:"trust-direct",icon:""},provider:window.trustwallet.ethereum});
+  if(window.ethereum&&!announced.has("legacy"))announced.set("legacy",{info:{name:window.ethereum.isMetaMask?"MetaMask / Browser Wallet":"Browser Wallet",uuid:"legacy",icon:""},provider:window.ethereum});
+  try{window.dispatchEvent(new Event("eip6963:requestProvider"))}catch(_){}
+}
+window.addEventListener("eip6963:announceProvider",e=>{const d=e.detail;if(d?.provider&&d?.info?.uuid)announced.set(d.info.uuid,d)});
+function chooseWallet(){
+  const amount=money();if(!amount){status(t("invalid"),"err");document.getElementById("deposit-amount")?.focus();return}
+  discover();
+  const wrap=document.getElementById("iwpWallets"),list=document.getElementById("iwpWalletList");if(!wrap||!list)return;
+  wrap.classList.add("show");list.innerHTML="";
+  const seen=new Set();
+  for(const d of announced.values()){
+    const name=String(d?.info?.name||"Web3 Wallet");if(seen.has(name+"|"+String(d.provider)))continue;seen.add(name+"|"+String(d.provider));
+    const b=document.createElement("button");b.type="button";b.className="iwp-wallet-btn";
+    if(d?.info?.icon){const img=document.createElement("img");img.src=d.info.icon;img.alt="";b.appendChild(img)}
+    const s=document.createElement("span");s.textContent=name;b.appendChild(s);
+    b.addEventListener("click",()=>startPayment(d.provider,name));list.appendChild(b);
+  }
+  if(!list.children.length)status(t("noWallet"),"err");
+}
+async function switchChain(provider){
+  const n=NET[state.network];
+  try{await provider.request({method:"wallet_switchEthereumChain",params:[{chainId:n.chainId}]})}
+  catch(e){
+    if(state.network==="BEP20"&&(e?.code===4902||String(e?.message||"").includes("Unrecognized"))){
+      await provider.request({method:"wallet_addEthereumChain",params:[{chainId:"0x38",chainName:"BNB Smart Chain",nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},rpcUrls:["https://bsc-dataseed.binance.org/"],blockExplorerUrls:["https://bscscan.com"]}]});
+      return;
+    }
+    throw e;
+  }
+}
+async function invokeVerify(amount,from,txHash){
+  const {data,error}=await supabaseClient.functions.invoke("direct-wallet-deposit",{body:{action:"submit",amount,network:state.network,tx_hash:txHash,from_address:from}});
+  if(error){
+    let msg=error.message||t("server");
+    try{if(error.context?.json){const d=await error.context.json();msg=d?.error||msg}}catch(_){}
+    if(/already been used/i.test(msg))msg=t("used");
+    throw new Error(msg);
+  }
+  if(data?.error)throw new Error(data.error);
+  return data||{};
+}
+async function finishSuccess(data,amount){
+  stopPoll();setBusy(false);status(t("success").replace("{amount}",Number(data?.credited_amount||amount).toFixed(2)),"ok");
+  document.getElementById("deposit-amount").value="";
+  try{if(typeof refreshSecureAccount==="function")await refreshSecureAccount()}catch(_){}
+  try{if(typeof updatePortfolio==="function")await updatePortfolio()}catch(_){}
+  try{if(typeof loadTransactions==="function")await loadTransactions()}catch(_){}
+  try{if(typeof window.refreshWithdrawalLimitCard==="function")await window.refreshWithdrawalLimitCard()}catch(_){}
+  if(typeof toast==="function")toast(t("success").replace("{amount}",Number(data?.credited_amount||amount).toFixed(2)),"success");
+  if(typeof showTransactionSuccessModal==="function")showTransactionSuccessModal("deposit");
+}
+async function verifyLoop(amount,from,txHash,isPoll=false){
+  try{
+    const d=await invokeVerify(amount,from,txHash);
+    if(d.status==="approved"){await finishSuccess(d,amount);return}
+    if(d.status==="failed"){stopPoll();setBusy(false);status(t("failed"),"err");return}
+    if(d.confirmations!=null&&d.required!=null)status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
+    else status(t("sent"),"info",true);
+    if(state.polls++<60)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),6000);
+    else{setBusy(false);status(t("server"),"err")}
+  }catch(e){if(!isPoll){setBusy(false);status(e?.message||t("server"),"err")}else if(state.polls++<60){state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),7000)}else{setBusy(false);status(t("server"),"err")}}
+}
+async function startPayment(provider,name){
+  if(state.busy)return;
+  const amount=money();if(!amount){status(t("invalid"),"err");return}
+  state.provider=provider;state.walletName=name;state.polls=0;stopPoll();setBusy(true);status(t("connecting"),"info",true);
+  try{
+    const accounts=await provider.request({method:"eth_requestAccounts"});
+    const from=String(accounts?.[0]||"").toLowerCase();
+    if(!/^0x[0-9a-f]{40}$/.test(from))throw new Error(t("noWallet"));
+    try{await switchChain(provider)}catch(_){throw new Error(t("wrong"))}
+    const n=NET[state.network],units=parseUnits(amount,n.decimals),data=transferData(RECEIVER,units);
+    status(t("confirm"),"info",true);
+    const txHash=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
+    if(!/^0x[0-9a-fA-F]{64}$/.test(String(txHash||"")))throw new Error(t("failed"));
+    state.txHash=txHash;status(t("sent"),"info",true);
+    await verifyLoop(amount,from,txHash,false);
+  }catch(e){
+    setBusy(false);
+    const m=String(e?.message||"");
+    if(e?.code===4001||/rejected|denied|cancel/i.test(m))status(t("rejected"),"err");
+    else status(m||t("failed"),"err");
+  }
+}
+
+/* Replace only the selector controller to understand the new method. */
+window.selectPaymentMethod=function(value){
+  const select=document.getElementById("payment-method"),selectedText=document.getElementById("paymentMethodSelectedText"),options=document.getElementById("paymentMethodCustomOptions"),trigger=document.getElementById("paymentMethodTrigger");
+  if(!select||!selectedText)return;
+  const normalized=value==="paymentio"?"paymentio":value==="instantwallet"?"instantwallet":"wallet";
+  select.value=normalized;
+  if(normalized==="instantwallet"){selectedText.removeAttribute("data-t");selectedText.setAttribute("data-iwp","option");selectedText.textContent=t("option")}
+  else{
+    const key=normalized==="paymentio"?"optPaymentio":"optDirect",dict=typeof paymentMethodDictionary==="function"?paymentMethodDictionary():(siteT.en||{});
+    selectedText.removeAttribute("data-iwp");selectedText.setAttribute("data-t",key);selectedText.textContent=dict?.[key]||siteT.en?.[key]||key;
+  }
+  document.querySelectorAll('#paymentMethodCustomOptions [data-payment-method]').forEach(o=>{const yes=o.dataset.paymentMethod===normalized;o.classList.toggle("selected",yes);o.setAttribute("aria-selected",String(yes))});
+  options?.classList.remove("open");trigger?.setAttribute("aria-expanded","false");if(typeof clearFieldError==="function")clearFieldError("payment-method");togglePaymentDetails();
+};
+
+window.togglePaymentDetails=function(){
+  const method=document.getElementById("payment-method")?.value||"wallet",crypto=document.getElementById("crypto-options-container"),info=document.getElementById("payment-info-box"),tx=document.getElementById("tx-container"),receipt=document.getElementById("deposit-receipt-container"),submit=document.getElementById("deposit-submit-button");
+  if(!crypto||!info)return;
+  if(method==="instantwallet"){
+    crypto.style.display="none";if(tx)tx.style.display="none";if(receipt)receipt.style.display="none";if(submit)submit.style.display="none";render();return;
+  }
+  if(receipt)receipt.style.display=method==="wallet"?"":"none";
+  if(submit)submit.style.display=method==="wallet"?"":"none";
+  if(method==="wallet"){
+    crypto.style.display="block";if(tx)tx.style.display="block";
+    const lang=localStorage.getItem("bi_lang")||"en",dict=window.T?.[lang]||siteT.en||{},selected=document.getElementById("crypto-currency")?.value||"trx_usdt_trc20",address=window.WALLETS?.[selected]||WALLETS[selected]||WALLETS["trx_usdt_trc20"];
+    info.classList.add("deposit-wallet-info");renderDepositWalletInfo(info,dict.walletMsg||siteT.en?.walletMsg||"Wallet: {ADDR}",address);
+  }else{
+    crypto.style.display="none";if(tx)tx.style.display="none";info.classList.remove("deposit-wallet-info");
+    const lang=localStorage.getItem("bi_lang")||"en",dict=window.T?.[lang]||siteT.en||{};
+    info.innerHTML=`<div style="margin-bottom:8px;">${dict.paymentioMsg||siteT.en?.paymentioMsg||""}</div><iframe src="https://nowpayments.io/embeds/donation-widget?api_key=33HTHXD-CGJ4ND0-HM6KNZ1-MAHCC87" title="${dict.deposit||"Deposit"}" width="100%" height="650" frameborder="0" scrolling="auto" style="overflow-y:auto;border-radius:8px;"></iframe>`;
+  }
+};
+
+document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(document.getElementById("payment-method")?.value==="instantwallet"){const el=document.getElementById("iwpAmount"),v=money();if(el)el.textContent=v>0?"$"+v.toFixed(2):"—"}});
+applyLabels();
+discover();
+let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet")render()}},1200);
 })();
 </script>
 
