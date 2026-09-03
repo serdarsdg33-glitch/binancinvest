@@ -14178,8 +14178,9 @@ html.native-app #rewards{
 .bsc2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .bsc2-card{
   position:relative;overflow:hidden;padding:0 22px 22px;border:1px solid rgba(255,255,255,.09);border-radius:19px;
-  background:linear-gradient(145deg,rgba(20,27,35,.96),rgba(9,14,20,.98));
-  box-shadow:0 18px 45px rgba(0,0,0,.38);
+  background:radial-gradient(ellipse at 90% 48%,rgba(220,180,75,.18),transparent 65%),linear-gradient(145deg,rgba(83,75,55,.82),rgba(43,53,56,.88));
+  box-shadow:inset 0 1px 0 rgba(255,240,193,.16),0 18px 45px rgba(0,0,0,.28);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease
 }
 .bsc2-card:hover{transform:translateY(-4px);border-color:rgba(240,185,11,.32);box-shadow:0 25px 62px rgba(0,0,0,.5),0 0 24px rgba(240,185,11,.07)}
@@ -14193,11 +14194,11 @@ html.native-app #rewards{
 html[dir="rtl"] .bsc2-visual-mark{left:auto;right:14px}
 .bsc2-badge{position:absolute;z-index:3;right:15px;top:15px;padding:5px 8px;border-radius:999px;color:#161000;background:#f0b90b;font-size:9px;font-weight:950;box-shadow:0 7px 18px rgba(0,0,0,.32)}
 html[dir="rtl"] .bsc2-badge{right:auto;left:15px}
-.bsc2-card h2{margin:0 0 8px;font-size:21px}
-.bsc2-card p{min-height:66px;margin:0;color:#93a0b0;line-height:1.65;font-size:12px}
+.bsc2-card h2{margin:0 0 8px;color:#fff;font-size:21px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.bsc2-card p{min-height:66px;margin:0;color:#e2e7eb;line-height:1.75;font-size:12px}
 .bsc2-price{margin:18px 0 2px;color:#fff;font-size:35px;font-weight:950;letter-spacing:-1px}
-.bsc2-license{color:#7f8b99;font-size:10px}
-.bsc2-features{list-style:none;margin:17px 0;padding:0;display:grid;gap:9px;color:#c8d0db;font-size:12px}
+.bsc2-license{color:#ded6bf;font-size:10px}
+.bsc2-features{list-style:none;margin:17px 0;padding:0;display:grid;gap:9px;color:#f1f3f5;font-size:12px}
 .bsc2-features li::before{content:"✓";margin-inline-end:8px;color:#16c784;font-weight:900}
 .bsc2-buy{width:100%;min-height:44px;margin-top:9px}
 .bsc2-how{margin-top:18px;padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(13,18,24,.74)}
@@ -14363,7 +14364,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 
 <style id="bsc-v5-card-platform-fix">
 .bsc5-platforms{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 2px}
-.bsc5-platform{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);color:#bdc8d4;font-size:10px;font-weight:800}
+.bsc5-platform{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,226,145,.28);background:rgba(255,255,255,.11);color:#f2f4f6;font-size:10px;font-weight:800}
 .bsc5-platform::before{content:"✓";color:#16c784;font-weight:950}
 </style>
 
@@ -14375,9 +14376,14 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 .iwp-title{margin:3px 0 0;font-size:17px;font-weight:900}
 .iwp-secure{padding:5px 8px;border-radius:999px;border:1px solid rgba(22,199,132,.25);background:rgba(22,199,132,.08);color:#8ef0c5;font-size:9px;font-weight:900;white-space:nowrap}
 .iwp-networks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.iwp-network{min-height:55px;padding:10px 11px;text-align:start;border:1px solid #334151;border-radius:11px;background:#101720;color:#eaf0f6}
-.iwp-network.active{border-color:#f0b90b;background:rgba(240,185,11,.075);box-shadow:inset 0 0 0 1px rgba(240,185,11,.10)}
-.iwp-network b{display:block;font-size:12px}.iwp-network span{display:block;margin-top:3px;color:#8492a3;font-size:9px}
+.iwp-network{display:flex;align-items:center;gap:11px;min-width:0;min-height:68px;padding:12px;text-align:start;border:1px solid rgba(255,226,140,.32);border-radius:13px;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(115,99,54,.32));color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 7px 20px rgba(0,0,0,.15);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.iwp-network.active{border-color:#ffd44d;background:linear-gradient(135deg,rgba(240,185,11,.3),rgba(255,235,167,.13));box-shadow:inset 0 0 0 1px rgba(240,185,11,.25),0 0 18px rgba(240,185,11,.12)}
+.iwp-network-copy{min-width:0;display:block}.iwp-network-copy b{display:block;font-size:12px;line-height:1.5}.iwp-network-copy>span{display:block;margin-top:3px;color:#e1e4e9;font-size:9px;line-height:1.5}
+.iwp-network-icons{position:relative;display:block;flex:0 0 49px;width:49px;height:40px;direction:ltr}
+.iwp-network-chain,.iwp-network-token{position:absolute;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,239,182,.8);box-shadow:0 3px 10px rgba(0,0,0,.25);overflow:hidden}
+.iwp-network-chain{left:0;top:0;background:#313a40}.iwp-network-token{right:0;bottom:0;background:#26a17b}
+.iwp-network-icons svg{display:block;width:27px;height:27px}
+@media(min-width:621px) and (max-width:1000px){.iwp-network{flex-wrap:wrap}}
 .iwp-summary{display:grid;gap:8px;margin-bottom:12px}
 .iwp-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 11px;border:1px solid rgba(255,255,255,.065);border-radius:10px;background:rgba(255,255,255,.025)}
 .iwp-row span{color:#8794a4;font-size:10px}.iwp-row b{min-width:0;color:#f5f7fa;font-size:11px;text-align:end}
@@ -31813,6 +31819,13 @@ function parseUnits(value,decimals){const fixed=Number(value).toFixed(2),[w,f=""
 function transferData(to,units){return "0xa9059cbb"+to.toLowerCase().replace(/^0x/,"").padStart(64,"0")+units.toString(16).padStart(64,"0")}
 function trustDappUrl(){const coin=state.network==="BEP20"?"20000714":state.network==="TRC20"?"195":"60";return `https://link.trustwallet.com/open_url?coin_id=${coin}&url=${encodeURIComponent(location.href)}`}
 
+function iwpNetworkIcons(network){
+  const ethereum='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 16l10 6 10-6L16 2Z" fill="#e5eaf2"/><path d="M16 2v20l10-6L16 2Z" fill="#8e9aaf"/><path d="m6 18 10 12 10-12-10 6-10-6Z" fill="#c3ccdb"/><path d="M16 24v6l10-12-10 6Z" fill="#8290a7"/></svg>';
+  const chain=network==='BEP20'?walletLogo('binance'):network==='ERC20'?ethereum:walletLogo('tronlink');
+  const tether='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 6h18v4h-7v4.1c5.2.2 9 1.2 9 2.5s-3.8 2.3-9 2.5V27h-4v-7.9c-5.2-.2-9-1.2-9-2.5s3.8-2.3 9-2.5V10H7V6Zm7 9.3c-4 .2-7 1-7 1.3 0 .5 4 1.2 9 1.2s9-.7 9-1.2c0-.3-3-1.1-7-1.3v1.4h-4v-1.4Z" fill="#fff"/></svg>';
+  return '<span class="iwp-network-icons" aria-hidden="true"><span class="iwp-network-chain">'+chain+'</span><span class="iwp-network-token">'+tether+'</span></span>';
+}
+
 function render(){
   const box=document.getElementById("payment-info-box");if(!box)return;
   const a=money(),n=NET[state.network];
@@ -31820,9 +31833,9 @@ function render(){
   box.innerHTML=`<div class="iwp-panel">
     <div class="iwp-head"><div><div class="iwp-kicker">BINANCINVEST</div><div class="iwp-title">${esc(t("title"))}</div></div><span class="iwp-secure">${esc(t("secure"))}</span></div>
     <div class="iwp-networks">
-      <button type="button" class="iwp-network ${state.network==="BEP20"?"active":""}" data-iwp-net="BEP20"><b>USDT (BEP20)</b><span>${esc(t("bep"))}</span></button>
-      <button type="button" class="iwp-network ${state.network==="ERC20"?"active":""}" data-iwp-net="ERC20"><b>USDT (ERC20)</b><span>${esc(t("erc"))}</span></button>
-      <button type="button" class="iwp-network ${state.network==="TRC20"?"active":""}" data-iwp-net="TRC20"><b>USDT (TRC20)</b><span>${esc(t("tron"))}</span></button>
+      <button type="button" class="iwp-network ${state.network==="BEP20"?"active":""}" data-iwp-net="BEP20">${iwpNetworkIcons("BEP20")}<span class="iwp-network-copy"><b>USDT (BEP20)</b><span>${esc(t("bep"))}</span></span></button>
+      <button type="button" class="iwp-network ${state.network==="ERC20"?"active":""}" data-iwp-net="ERC20">${iwpNetworkIcons("ERC20")}<span class="iwp-network-copy"><b>USDT (ERC20)</b><span>${esc(t("erc"))}</span></span></button>
+      <button type="button" class="iwp-network ${state.network==="TRC20"?"active":""}" data-iwp-net="TRC20">${iwpNetworkIcons("TRC20")}<span class="iwp-network-copy"><b>USDT (TRC20)</b><span>${esc(t("tron"))}</span></span></button>
     </div>
     <div class="iwp-summary">
       <div class="iwp-row"><span>${esc(t("amount"))}</span><b id="iwpAmount">${a>0?"$"+a.toFixed(2):"—"}</b></div>
