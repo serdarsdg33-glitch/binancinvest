@@ -31601,7 +31601,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v8-script">
+<script id="instant-wallet-deposit-v9-script">
 (function(){
 "use strict";
 
@@ -31630,6 +31630,8 @@ const siteT=(typeof T!=="undefined"&&T)?T:{};
 const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false};
 const IWP_PENDING_KEY="bi_instant_wallet_pending_v8";
 let iwpResumeRunning=false;
+let iwpServerRecoveryRunning=false;
+let iwpServerRecoveryTimer=null;
 
 function savePendingPayment(p){
   try{localStorage.setItem(IWP_PENDING_KEY,JSON.stringify({...p,savedAt:Date.now()}))}catch(_){}
@@ -31645,7 +31647,12 @@ function readPendingPayment(){
 function clearPendingPayment(){try{localStorage.removeItem(IWP_PENDING_KEY)}catch(_){}}
 function markConfirmed(){
   const b=document.getElementById("iwpPay");
-  if(b){b.textContent="✓ "+t("confirmed");b.classList.add("confirmed");b.disabled=true}
+  if(b){
+    b.textContent="✓ "+t("confirmed");
+    b.classList.add("confirmed");
+    b.disabled=true;
+    b.setAttribute("aria-label",t("confirmed"));
+  }
 }
 const evmAnnounced=new Map(),tronAnnounced=new Map();
 
@@ -31873,6 +31880,10 @@ async function verifyLoop(amount,from,txHash,isPoll=false){
   try{
     const d=await invokeVerify(amount,from,txHash);
     if(d.status==="approved"){await finishSuccess(d,amount);return}
+    if(d.reason==="verified_waiting_for_credit_recovery"){
+      status(t("sent"),"info",true);waitNote(true);
+      setTimeout(()=>void recoverLatestPaymentFromServer(true),700);
+    }
     if(d.status==="failed"){
       stopPoll();state.busy=false;setBusy(false);clearPendingPayment();
       status(t("failed"),"err");waitNote(false);return;
@@ -31976,9 +31987,72 @@ window.togglePaymentDetails=function(){
   }
 };
 
+
+async function recoverLatestPaymentFromServer(forceUi=false){
+  if(iwpServerRecoveryRunning||!currentUser?.id||document.hidden)return;
+  const method=document.getElementById("payment-method");
+  const localPending=readPendingPayment();
+  if(!forceUi && !localPending && method?.value!=="instantwallet")return;
+
+  iwpServerRecoveryRunning=true;
+  try{
+    const {data,error}=await supabaseClient.functions.invoke("direct-wallet-recovery",{body:{}});
+    if(error){
+      // Keep the current spinner alive; the next scheduled recovery retries.
+      return;
+    }
+    const d=data||{};
+    if(d.status==="none")return;
+
+    if(d.status==="approved"){
+      if(method && method.value!=="instantwallet")window.selectPaymentMethod("instantwallet");
+      else if(method?.value==="instantwallet" && !document.getElementById("iwpStatus"))render();
+      await finishSuccess(d,Number(d.credited_amount||money()||0));
+      return;
+    }
+
+    if(d.status==="failed"){
+      stopPoll();state.busy=false;setBusy(false);clearPendingPayment();
+      status(t("failed"),"err");waitNote(false);
+      return;
+    }
+
+    if(d.status==="checking" || d.status==="pending"){
+      if(method?.value==="instantwallet"){
+        state.busy=true;setBusy(true);
+        if(d.confirmations!=null&&d.required!=null){
+          status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
+        }else{
+          status(t("sent"),"info",true);
+        }
+        waitNote(true);
+      }
+    }
+  }catch(_){
+    // Silent retry; never turn a valid payment into an error because one poll failed.
+  }finally{
+    iwpServerRecoveryRunning=false;
+  }
+}
+
+function scheduleServerRecovery(){
+  if(iwpServerRecoveryTimer)clearInterval(iwpServerRecoveryTimer);
+  iwpServerRecoveryTimer=setInterval(()=>{
+    if(document.hidden||!currentUser?.id)return;
+    const method=document.getElementById("payment-method");
+    if(readPendingPayment() || method?.value==="instantwallet"){
+      void recoverLatestPaymentFromServer(false);
+    }
+  },4000);
+}
+
 async function resumePendingPayment(){
   if(iwpResumeRunning||!currentUser?.id)return;
-  const p=readPendingPayment();if(!p)return;
+  const p=readPendingPayment();
+  if(!p){
+    await recoverLatestPaymentFromServer(true);
+    return;
+  }
   iwpResumeRunning=true;
   try{
     stopPoll();state.busy=false;state.polls=0;state.network=p.network||"BEP20";state.txHash=p.txHash;
@@ -31995,13 +32069,29 @@ async function resumePendingPayment(){
 }
 
 document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(document.getElementById("payment-method")?.value==="instantwallet"){const el=document.getElementById("iwpAmount"),v=money();if(el)el.textContent=v>0?"$"+v.toFixed(2):"—"}});
-window.addEventListener("focus",()=>setTimeout(()=>void resumePendingPayment(),80));
-window.addEventListener("pageshow",()=>setTimeout(()=>void resumePendingPayment(),120));
-window.addEventListener("online",()=>setTimeout(()=>void resumePendingPayment(),100));
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(()=>void resumePendingPayment(),100)});
+window.addEventListener("focus",()=>{
+  setTimeout(()=>void resumePendingPayment(),80);
+  setTimeout(()=>void recoverLatestPaymentFromServer(false),220);
+});
+window.addEventListener("pageshow",()=>{
+  setTimeout(()=>void resumePendingPayment(),120);
+  setTimeout(()=>void recoverLatestPaymentFromServer(false),260);
+});
+window.addEventListener("online",()=>{
+  setTimeout(()=>void resumePendingPayment(),100);
+  setTimeout(()=>void recoverLatestPaymentFromServer(false),260);
+});
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden){
+    setTimeout(()=>void resumePendingPayment(),100);
+    setTimeout(()=>void recoverLatestPaymentFromServer(false),260);
+  }
+});
 applyLabels();discoverEvm();discoverTron();
-setTimeout(()=>void resumePendingPayment(),1800);
-setTimeout(()=>void resumePendingPayment(),5000);
+scheduleServerRecovery();
+setTimeout(()=>void resumePendingPayment(),900);
+setTimeout(()=>void recoverLatestPaymentFromServer(false),1800);
+setTimeout(()=>void resumePendingPayment(),4200);
 let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet")render()}},1200);
 })();
 </script>
