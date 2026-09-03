@@ -3,17 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="canonical" href="https://binancinvest.com/">
-<script id="bi-canonical-domain-guard">
-(function(){
-  try {
-    if (window.location.hostname.toLowerCase() === 'www.binancinvest.com') {
-      var target = 'https://binancinvest.com' + window.location.pathname + window.location.search + window.location.hash;
-      window.location.replace(target);
-    }
-  } catch (_) {}
-})();
-</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -15114,16 +15103,11 @@ html.native-app #rewards{
                       <span class="payment-method-option-mark" aria-hidden="true">✓</span>
                       <span data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</span>
                   </button>
-                  <button class="custom-option payment-method-option" type="button" data-payment-method="directwallet" onclick="selectPaymentMethod('directwallet')" role="option" aria-selected="false">
-                      <span class="payment-method-option-mark" aria-hidden="true">✓</span>
-                      <span data-t="optDirectWallet">3. Pay Directly from Wallet</span>
-                  </button>
               </div>
           </div>
           <select id="payment-method" class="payment-method-native-proxy" tabindex="-1" aria-hidden="true">
               <option value="wallet" id="opt-direct-payment" data-t="optDirect">1. Direct Payment</option>
               <option value="paymentio" id="opt-paymentio" data-t="optPaymentio">2. Payment via Payment.io / NowPayments Gateway</option>
-              <option value="directwallet" id="opt-direct-wallet" data-t="optDirectWallet">3. Pay Directly from Wallet</option>
           </select>
       </div>
 
@@ -17474,7 +17458,7 @@ forgotPasswordText:"Forgot Password?",needAccountText:"Don't have an account? Si
 contactUs:"Contact Us", supportEmail:"Support Email", securityPartners:"Security Partners & Protection",
 platformStatsTitle:"Platform Statistics", statUsers:"Total registered users on the site", statInvestors:"Investors and active users", statPaid:"Total profit paid to date", statCapital:"Platform Capital", liveWithdrawalsTitle:"Live Withdrawals", justNow:"Just now",
 depAmountLabel:"Amount (USD):", depMethodLabel:"Select Payment Method:", depCryptoLabel:"Select Currency & Network:", depTxLabel:"Transaction Hash / Reference Code:", depSubmitBtn:"Submit Deposit Request",
-optDirect:"1. Direct Payment", optPaymentio:"2. Payment.io / NowPayments Gateway", optDirectWallet:"3. Pay Directly from Wallet",
+optDirect:"1. Direct Payment", optPaymentio:"2. Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet Address for selected network:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfer the amount to this address, then submit the TXID or a receipt image for support team approval.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the secure widget below to complete your payment.",
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
@@ -17500,7 +17484,7 @@ forgotPasswordText:"فراموشی رمز عبور؟",needAccountText:"حساب 
 contactUs:"ارتباط با ما", supportEmail:"ایمیل پشتیبانی", securityPartners:"شرکای امنیتی و محافظت",
 platformStatsTitle:"آمارهای پلتفرم", statUsers:"تعداد کل سرمایه‌گذاران و کاربران ثبت‌شده در سایت", statInvestors:"سرمایه‌گذاران و کاربران آنلاین", statPaid:"کل سود پرداختی تا الان", statCapital:"سرمایه کل سایت", liveWithdrawalsTitle:"برداشت‌های زنده", justNow:"همین الان",
 depAmountLabel:"مبلغ (دلار / USD):", depMethodLabel:"انتخاب روش پرداخت:", depCryptoLabel:"انتخاب نوع ارز و شبکه:", depTxLabel:"شماره پیگیری / هش تراکنش (TXID):", depSubmitBtn:"ثبت درخواست واریز و انتظار تایید",
-optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io / NowPayments", optDirectWallet:"۳. پرداخت مستقیم از ولت",
+optDirect:"۱. پرداخت مستقیم", optPaymentio:"۲. پرداخت از طریق درگاه Payment.io / NowPayments",
 walletMsg:"<b>آدرس ولت برای این شبکه:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>مبلغ را به این آدرس واریز کنید؛ سپس هش تراکنش یا تصویر فیش را بفرستید تا تیم پشتیبانی آن را بررسی کند.</small>",
 paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخاب شد. لطفاً از طریق ویجت امن زیر پرداخت خود را انجام دهید.",
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
@@ -17526,7 +17510,7 @@ forgotPasswordText:"Şifrəni unutmusunuz?",needAccountText:"Hesabınız yoxdur?
 contactUs:"Bizimlə Əlaqə", supportEmail:"Dəstək E-poçtu", securityPartners:"Təhlükəsizlik Tərəfdaşları",
 platformStatsTitle:"Platforma Statistikası", statUsers:"Saytda qeydiyyatdan keçmiş ümumi istifadəçi sayı", statInvestors:"Aktiv investorlar və istifadəçilər", statPaid:"İndiyədək ödənilmiş ümumi mənfəət", statCapital:"Sayt Kapitalı", liveWithdrawalsTitle:"Canlı Çıxarışlar", justNow:"Elə indi",
 depAmountLabel:"Məbləğ (USD):", depMethodLabel:"Ödəniş Üsulunu Seçin:", depCryptoLabel:"Valyuta və Şəbəkəni Seçin:", depTxLabel:"Əməliyyat Kodu / TXID:", depSubmitBtn:"Depozit Sorğusunu Göndər",
-optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş", optDirectWallet:"3. Cüzdandan Birbaşa Ödəniş",
+optDirect:"1. Birbaşa Ödəniş", optPaymentio:"2. Payment.io / NowPayments Vasitəsilə Ödəniş",
 walletMsg:"<b>Seçilmiş şəbəkə üçün cüzdan ünvanı:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Məbləği bu ünvana köçürün, sonra təsdiq üçün TXID və ya qəbz şəklini göndərin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağıdakı təhlükəsiz vidjetdən istifadə edin.",
 withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
@@ -17551,7 +17535,7 @@ forgotPasswordText:"Şifremi Unuttum?",needAccountText:"Hesabınız yok mu? Kay�
 contactUs:"İletişim", supportEmail:"Destek E-postası", securityPartners:"Güvenlik Ortakları",
 platformStatsTitle:"Platform İstatistikleri", statUsers:"Sitedeki toplam kayıtlı kullanıcı sayısı", statInvestors:"Aktif yatırımcılar ve kullanıcılar", statPaid:"Şimdiye kadar ödenen toplam kâr", statCapital:"Platform Sermayesi", liveWithdrawalsTitle:"Canlı Çekimler", justNow:"Az önce",
 depAmountLabel:"Miktar (USD):", depMethodLabel:"Ödeme Yöntemi Seçin:", depCryptoLabel:"Para Birimi ve Ağ Seçin:", depTxLabel:"İşlem Kodu / TXID:", depSubmitBtn:"Yatırma Talebi Gönder",
-optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme", optDirectWallet:"3. Cüzdandan Doğrudan Ödeme",
+optDirect:"1. Doğrudan Ödeme", optPaymentio:"2. Payment.io / NowPayments İle Ödeme",
 walletMsg:"<b>Seçilen ağ için cüzdan adresi:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Tutarı bu adrese gönderin, ardından onay için TXID veya dekont görselini iletin.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki güvenli widget'ı kullanın.",
 withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
@@ -17576,7 +17560,7 @@ forgotPasswordText:"Забыли пароль?",needAccountText:"Нет акка
 contactUs:"Контакты", supportEmail:"Email поддержки", securityPartners:"Партнеры по безопасности",
 platformStatsTitle:"Статистика платформы", statUsers:"Общее число зарегистрированных пользователей", statInvestors:"Активные инвесторы и пользователи", statPaid:"Общая выплаченная прибыль на данный момент", statCapital:"Капитал платформы", liveWithdrawalsTitle:"Живые выводы", justNow:"Только что",
 depAmountLabel:"Сумма (USD):", depMethodLabel:"Выберите способ оплаты:", depCryptoLabel:"Валюта и сеть:", depTxLabel:"Хеш транзакции / TXID:", depSubmitBtn:"Отправить запрос на депозит",
-optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments", optDirectWallet:"3. Прямая оплата из кошелька",
+optDirect:"1. Прямой платеж", optPaymentio:"2. Оплата через Payment.io / NowPayments",
 walletMsg:"<b>Адрес кошелька для выбранной сети:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Переведите сумму и отправьте TXID или изображение квитанции на проверку.</small>",
 paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Используйте безопасный виджет ниже для оплаты.",
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
@@ -17602,7 +17586,7 @@ forgotPasswordText:"هل نسيت كلمة المرور؟",needAccountText:"لي
 contactUs:"اتصل بنا", supportEmail:"البريد الإلكتروني للدعم", securityPartners:"شركاء الحماية والأمان",
 platformStatsTitle:"إحصائيات المنصة", statUsers:"إجمالي عدد المستخدمين المسجلين في الموقع", statInvestors:"المستثمرون والمستخدمون النشطون", statPaid:"إجمالي الأرباح المدفوعة حتى الآن", statCapital:"رأس مال المنصة", liveWithdrawalsTitle:"عمليات السحب المباشرة", justNow:"الآن",
 depAmountLabel:"المبلغ (دولار أمريكي):", depMethodLabel:"اختر طريقة الدفع:", depCryptoLabel:"اختر العملة والشبكة:", depTxLabel:"رقم المعاملة / رمز المرجع (TXID):", depSubmitBtn:"إرسال طلب الإيداع",
-optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments", optDirectWallet:"3. الدفع مباشرة من المحفظة",
+optDirect:"1. الدفع المباشر", optPaymentio:"2. الدفع عبر بوابة Payment.io / NowPayments",
 walletMsg:"<b>عنوان المحفظة للشبكة المحددة:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>حوّل المبلغ ثم أرسل TXID أو صورة الإيصال لمراجعة فريق الدعم.</small>",
 paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> يرجى استخدام الأداة الآمنة أدناه لإتمام الدفع.",
 withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
@@ -17628,7 +17612,7 @@ forgotPasswordText:"忘记密码？",needAccountText:"没有账户？立即注�
 contactUs:"联系我们", supportEmail:"支持邮箱", securityPartners:"安全合作伙伴与保护",
 platformStatsTitle:"平台统计", statUsers:"网站注册用户总数", statInvestors:"活跃投资者和用户", statPaid:"截至目前已支付的总利润", statCapital:"平台资本", liveWithdrawalsTitle:"实时提现", justNow:"刚刚",
 depAmountLabel:"金额 (美元):", depMethodLabel:"选择支付方式:", depCryptoLabel:"选择币种与网络:", depTxLabel:"交易哈希 / 参考代码 (TXID):", depSubmitBtn:"提交充值请求",
-optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付", optDirectWallet:"3. 从钱包直接支付",
+optDirect:"1. 直接支付", optPaymentio:"2. 通过 Payment.io / NowPayments 网关支付",
 walletMsg:"<b>所选网络的钱包地址：</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>转账后，请提交 TXID 或充值凭证图片供支持团队审核。</small>",
 paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下方的安全小组件完成支付。",
 withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
@@ -17654,7 +17638,7 @@ forgotPasswordText:"¿Olvidaste tu contraseña?",needAccountText:"¿No tienes cu
 contactUs:"Contáctanos", supportEmail:"Correo de soporte", securityPartners:"Socios de seguridad y protección",
 platformStatsTitle:"Estadísticas de la plataforma", statUsers:"Total de usuarios registrados en el sitio", statInvestors:"Inversores y usuarios activos", statPaid:"Beneficio total pagado hasta ahora", statCapital:"Capital de la plataforma", liveWithdrawalsTitle:"Retiros en vivo", justNow:"Justo ahora",
 depAmountLabel:"Cantidad (USD):", depMethodLabel:"Seleccionar método de pago:", depCryptoLabel:"Seleccionar moneda y red:", depTxLabel:"Hash de transacción / Código (TXID):", depSubmitBtn:"Enviar solicitud de depósito",
-optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments", optDirectWallet:"3. Pago directo desde la billetera",
+optDirect:"1. Pago directo", optPaymentio:"2. Pago mediante pasarela Payment.io / NowPayments",
 walletMsg:"<b>Dirección de billetera para la red seleccionada:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Transfiera el importe y envíe el TXID o una imagen del comprobante para su revisión.</small>",
 paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el widget seguro a continuación para pagar.",
 withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
@@ -17680,7 +17664,7 @@ forgotPasswordText:"Mot de passe oublié ?",needAccountText:"Pas de compte ? Ins
 contactUs:"Contactez-nous", supportEmail:"E-mail de support", securityPartners:"Partenaires de sécurité",
 platformStatsTitle:"Statistiques de la plateforme", statUsers:"Nombre total d’utilisateurs inscrits sur le site", statInvestors:"Investisseurs et utilisateurs actifs", statPaid:"Bénéfices totaux versés à ce jour", statCapital:"Capital de la plateforme", liveWithdrawalsTitle:"Retraits en direct", justNow:"À l'instant",
 depAmountLabel:"Montant (USD) :", depMethodLabel:"Sélectionner le mode de paiement :", depCryptoLabel:"Sélectionner la devise et le réseau :", depTxLabel:"Code de transaction / TXID :", depSubmitBtn:"Soumettre la demande de dépôt",
-optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments", optDirectWallet:"3. Paiement direct depuis le portefeuille",
+optDirect:"1. Paiement direct", optPaymentio:"2. Paiement via Payment.io / NowPayments",
 walletMsg:"<b>Adresse du portefeuille pour le réseau sélectionné :</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Effectuez le transfert, puis envoyez le TXID ou une image du reçu.</small>",
 paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuillez utiliser le widget sécurisé ci-dessous.",
 withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
@@ -17706,7 +17690,7 @@ forgotPasswordText:"Passwort vergessen?",needAccountText:"Kein Konto? Registrier
 contactUs:"Kontakt", supportEmail:"Support-E-Mail", securityPartners:"Sicherheitspartner",
 platformStatsTitle:"Plattform-Statistiken", statUsers:"Gesamtzahl der auf der Website registrierten Nutzer", statInvestors:"Aktive Investoren und Nutzer", statPaid:"Bisher insgesamt ausgezahlter Gewinn", statCapital:"Plattformkapital", liveWithdrawalsTitle:"Live-Auszahlungen", justNow:"Gerade eben",
 depAmountLabel:"Betrag (USD):", depMethodLabel:"Zahlungsmethode auswählen:", depCryptoLabel:"Währung & Netzwerk auswählen:", depTxLabel:"Transaktions-Hash / TXID:", depSubmitBtn:"Einzahlungsantrag absenden",
-optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway", optDirectWallet:"3. Direkte Zahlung aus der Wallet",
+optDirect:"1. Direkte Zahlung", optPaymentio:"2. Zahlung über Payment.io / NowPayments Gateway",
 walletMsg:"<b>Wallet-Adresse für das ausgewählte Netzwerk:</b><br><span style='color:#0ecb81; user-select: all;'>{ADDR}</span><br><small style='color:#aaa;'>Überweisen Sie den Betrag und senden Sie anschließend die TXID oder ein Belegbild zur Prüfung.</small>",
 paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen Sie das sichere Widget unten.",
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
@@ -18227,12 +18211,8 @@ function selectPaymentMethod(value) {
     const trigger = document.getElementById('paymentMethodTrigger');
     if (!select || !selectedText) return;
 
-    const normalizedValue = value === 'paymentio'
-        ? 'paymentio'
-        : (value === 'directwallet' ? 'directwallet' : 'wallet');
-    const translationKey = normalizedValue === 'paymentio'
-        ? 'optPaymentio'
-        : (normalizedValue === 'directwallet' ? 'optDirectWallet' : 'optDirect');
+    const normalizedValue = value === 'paymentio' ? 'paymentio' : 'wallet';
+    const translationKey = normalizedValue === 'paymentio' ? 'optPaymentio' : 'optDirect';
     const dictionary = paymentMethodDictionary();
     select.value = normalizedValue;
     selectedText.setAttribute('data-t', translationKey);
@@ -18384,143 +18364,14 @@ async function fetchRealPrices() {
     }
 }
 
-const DIRECT_WALLET_CONNECT_COPY = {
-    en:{title:"Direct wallet payment",desc:"Connect your wallet first. No funds can move until you approve a transaction inside your wallet.",browser:"Connect browser wallet",all:"All wallets · WalletConnect",connected:"Connected wallet",noProvider:"No browser wallet was detected. In the next step we will enable WalletConnect for mobile and other wallets.",allSetup:"WalletConnect needs a Reown Project ID. We will add it in the next step before enabling payments.",connectFailed:"Wallet connection was not completed."},
-    fa:{title:"پرداخت مستقیم از ولت",desc:"ابتدا ولت خود را متصل کنید. تا زمانی که تراکنش را داخل ولت تأیید نکنید، هیچ مبلغی منتقل نمی‌شود.",browser:"اتصال ولت مرورگر",all:"همه ولت‌ها · WalletConnect",connected:"ولت متصل‌شده",noProvider:"ولت مرورگری شناسایی نشد. در مرحله بعد WalletConnect را برای موبایل و سایر ولت‌ها فعال می‌کنیم.",allSetup:"برای فعال‌کردن همه ولت‌ها از طریق WalletConnect به Reown Project ID نیاز داریم. آن را در مرحله بعد اضافه می‌کنیم.",connectFailed:"اتصال ولت کامل نشد."},
-    az:{title:"Cüzdandan birbaşa ödəniş",desc:"Əvvəlcə cüzdanınızı qoşun. Cüzdanda əməliyyatı təsdiqləmədən heç bir vəsait köçürülmür.",browser:"Brauzer cüzdanını qoş",all:"Bütün cüzdanlar · WalletConnect",connected:"Qoşulmuş cüzdan",noProvider:"Brauzer cüzdanı aşkarlanmadı. Növbəti mərhələdə mobil və digər cüzdanlar üçün WalletConnect aktivləşdiriləcək.",allSetup:"WalletConnect üçün Reown Project ID lazımdır. Ödənişləri aktiv etməzdən əvvəl növbəti mərhələdə əlavə edəcəyik.",connectFailed:"Cüzdan bağlantısı tamamlanmadı."},
-    tr:{title:"Cüzdandan doğrudan ödeme",desc:"Önce cüzdanınızı bağlayın. Cüzdanınızda işlemi onaylamadan hiçbir para aktarılmaz.",browser:"Tarayıcı cüzdanını bağla",all:"Tüm cüzdanlar · WalletConnect",connected:"Bağlı cüzdan",noProvider:"Tarayıcı cüzdanı algılanmadı. Sonraki adımda mobil ve diğer cüzdanlar için WalletConnect'i etkinleştireceğiz.",allSetup:"WalletConnect için Reown Project ID gerekir. Ödemeleri etkinleştirmeden önce sonraki adımda ekleyeceğiz.",connectFailed:"Cüzdan bağlantısı tamamlanmadı."},
-    ru:{title:"Прямая оплата из кошелька",desc:"Сначала подключите кошелек. Средства не переводятся, пока вы не подтвердите транзакцию в самом кошельке.",browser:"Подключить кошелек браузера",all:"Все кошельки · WalletConnect",connected:"Подключенный кошелек",noProvider:"Кошелек браузера не обнаружен. На следующем этапе мы включим WalletConnect для мобильных и других кошельков.",allSetup:"Для WalletConnect нужен Reown Project ID. Мы добавим его на следующем этапе до включения платежей.",connectFailed:"Подключение кошелька не завершено."},
-    ar:{title:"الدفع مباشرة من المحفظة",desc:"قم بتوصيل محفظتك أولاً. لن يتم تحويل أي أموال حتى تؤكد المعاملة داخل محفظتك.",browser:"توصيل محفظة المتصفح",all:"كل المحافظ · WalletConnect",connected:"المحفظة المتصلة",noProvider:"لم يتم اكتشاف محفظة في المتصفح. في الخطوة التالية سنفعّل WalletConnect للموبايل والمحافظ الأخرى.",allSetup:"يتطلب WalletConnect معرّف Reown Project ID. سنضيفه في الخطوة التالية قبل تفعيل الدفع.",connectFailed:"لم يكتمل توصيل المحفظة."},
-    zh:{title:"从钱包直接支付",desc:"请先连接钱包。只有在钱包内确认交易后才会转移资金。",browser:"连接浏览器钱包",all:"所有钱包 · WalletConnect",connected:"已连接钱包",noProvider:"未检测到浏览器钱包。下一步将为移动端和其他钱包启用 WalletConnect。",allSetup:"WalletConnect 需要 Reown Project ID。我们会在启用付款前的下一步添加它。",connectFailed:"钱包连接未完成。"},
-    es:{title:"Pago directo desde la billetera",desc:"Primero conecta tu billetera. No se moverán fondos hasta que apruebes la transacción dentro de tu billetera.",browser:"Conectar billetera del navegador",all:"Todas las billeteras · WalletConnect",connected:"Billetera conectada",noProvider:"No se detectó una billetera del navegador. En el siguiente paso activaremos WalletConnect para móviles y otras billeteras.",allSetup:"WalletConnect necesita un Reown Project ID. Lo añadiremos en el siguiente paso antes de activar los pagos.",connectFailed:"La conexión de la billetera no se completó."},
-    fr:{title:"Paiement direct depuis le portefeuille",desc:"Connectez d'abord votre portefeuille. Aucun fonds ne sera transféré avant votre confirmation dans le portefeuille.",browser:"Connecter le portefeuille du navigateur",all:"Tous les portefeuilles · WalletConnect",connected:"Portefeuille connecté",noProvider:"Aucun portefeuille de navigateur détecté. À l'étape suivante, nous activerons WalletConnect pour mobile et les autres portefeuilles.",allSetup:"WalletConnect nécessite un Reown Project ID. Nous l'ajouterons à l'étape suivante avant d'activer les paiements.",connectFailed:"La connexion du portefeuille n'a pas été terminée."},
-    de:{title:"Direkte Zahlung aus der Wallet",desc:"Verbinden Sie zuerst Ihre Wallet. Es werden keine Gelder übertragen, bevor Sie die Transaktion in Ihrer Wallet bestätigen.",browser:"Browser-Wallet verbinden",all:"Alle Wallets · WalletConnect",connected:"Verbundene Wallet",noProvider:"Keine Browser-Wallet erkannt. Im nächsten Schritt aktivieren wir WalletConnect für Mobilgeräte und weitere Wallets.",allSetup:"WalletConnect benötigt eine Reown Project ID. Wir fügen sie im nächsten Schritt hinzu, bevor Zahlungen aktiviert werden.",connectFailed:"Die Wallet-Verbindung wurde nicht abgeschlossen."}
-};
-let directWalletConnectedAccount = "";
-window.setDirectWalletConnectedAccount=function(value){
-    directWalletConnectedAccount=String(value||"");
-    renderDirectWalletConnectPanel();
-};
-function directWalletConnectCopy(){
-    const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
-    return DIRECT_WALLET_CONNECT_COPY[language]||DIRECT_WALLET_CONNECT_COPY.en;
-}
-function shortDirectWalletAddress(value){
-    const address=String(value||"");
-    return address.length>14?`${address.slice(0,7)}…${address.slice(-5)}`:address;
-}
-function directWalletDisconnectLabel(){
-    const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
-    return ({
-        en:"Disconnect wallet",fa:"قطع اتصال ولت",az:"Cüzdanı ayır",tr:"Cüzdan bağlantısını kes",
-        ru:"Отключить кошелек",ar:"قطع اتصال المحفظة",zh:"断开钱包",es:"Desconectar billetera",
-        fr:"Déconnecter le portefeuille",de:"Wallet trennen"
-    })[language]||"Disconnect wallet";
-}
-function directWalletChangeLabel(){
-    const language=localStorage.getItem("bi_lang")||document.documentElement.lang||"en";
-    return ({
-        en:"Change wallet",fa:"تغییر ولت",az:"Cüzdanı dəyiş",tr:"Cüzdanı değiştir",
-        ru:"Сменить кошелек",ar:"تغيير المحفظة",zh:"更换钱包",es:"Cambiar billetera",
-        fr:"Changer de portefeuille",de:"Wallet wechseln"
-    })[language]||"Change wallet";
-}
-function renderDirectWalletConnectPanel(){
-    const infoBox=document.getElementById('payment-info-box');
-    if(!infoBox)return;
-    const copy=directWalletConnectCopy();
-    const isConnected=Boolean(directWalletConnectedAccount);
-    const connected=isConnected
-        ? `<div class="direct-wallet-connected"><span>${copy.connected}</span><strong title="${directWalletConnectedAccount}">${shortDirectWalletAddress(directWalletConnectedAccount)}</strong></div>`
-        : "";
-    const actions=isConnected
-        ? `<button type="button" class="direct-wallet-connect-button disconnect" onclick="disconnectDirectWallet()">${directWalletDisconnectLabel()}</button>
-           <button type="button" class="direct-wallet-connect-button" onclick="openDirectWalletConnectSetup()">${directWalletChangeLabel()}</button>`
-        : `<button type="button" class="direct-wallet-connect-button primary" onclick="connectDirectBrowserWallet()">${copy.browser}</button>
-           <button type="button" class="direct-wallet-connect-button" onclick="openDirectWalletConnectSetup()">${copy.all}</button>`;
-    infoBox.innerHTML=`
-        <div class="direct-wallet-connect-head">
-            <span class="direct-wallet-connect-icon" aria-hidden="true">◈</span>
-            <div><strong>${copy.title}</strong><small>${copy.desc}</small></div>
-        </div>
-        ${connected}
-        <div class="direct-wallet-connect-actions">${actions}</div>`;
-}
-window.connectDirectBrowserWallet=async function(){
-    const copy=directWalletConnectCopy();
-    try{
-        const provider=window.ethereum;
-        if(!provider?.request){if(typeof toast==='function')toast(copy.noProvider);return}
-        const accounts=await provider.request({method:'eth_requestAccounts'});
-        directWalletConnectedAccount=Array.isArray(accounts)?String(accounts[0]||''):'';
-        if(!directWalletConnectedAccount)throw new Error('No wallet account returned');
-        renderDirectWalletConnectPanel();
-    }catch(error){
-        console.warn('Direct wallet connection skipped:',error);
-        if(typeof toast==='function')toast(copy.connectFailed);
-    }
-};
-window.disconnectDirectWallet=async function(){
-    const appKit=window.biReownAppKit;
-    let disconnected=false;
-    try{
-        const controller=appKit?.adapter?.connectionControllerClient;
-        if(controller && typeof controller.disconnect==='function'){
-            await controller.disconnect();
-            disconnected=true;
-        }else if(appKit && typeof appKit.disconnect==='function'){
-            await appKit.disconnect();
-            disconnected=true;
-        }
-    }catch(error){
-        console.warn('Reown disconnect failed:',error);
-    }
-
-    // For injected browser wallets, revoke eth_accounts permission when supported.
-    try{
-        if(window.ethereum?.request){
-            await window.ethereum.request({method:'wallet_revokePermissions',params:[{eth_accounts:{}}]});
-            disconnected=true;
-        }
-    }catch(error){
-        // Many mobile wallets do not implement wallet_revokePermissions; clearing the dApp state is still safe.
-        console.debug('Wallet permission revoke is not supported by this wallet:',error);
-    }
-
-    directWalletConnectedAccount='';
-    if(typeof window.setDirectWalletConnectedAccount==='function')window.setDirectWalletConnectedAccount('');
-    else renderDirectWalletConnectPanel();
-    if(typeof toast==='function')toast(disconnected?'Wallet disconnected.':'Connection cleared from this page.');
-};
-
-window.openDirectWalletConnectSetup=function(){
-    const copy=directWalletConnectCopy();
-    if(typeof toast==='function')toast(copy.allSetup);
-};
-
 function togglePaymentDetails() {
     const method = document.getElementById('payment-method').value;
     const cryptoContainer = document.getElementById('crypto-options-container');
     const infoBox = document.getElementById('payment-info-box');
     const txContainer = document.getElementById('tx-container');
-    const receiptContainer = document.getElementById('deposit-receipt-container');
-    const submitButton = document.getElementById('deposit-submit-button');
     let lang = localStorage.getItem("bi_lang") || "en";
     let dict = T[lang] || T.en;
     infoBox.classList.toggle("deposit-wallet-info", method === "wallet");
-    infoBox.classList.toggle("direct-wallet-connect-info", method === "directwallet");
-
-    if (method === 'directwallet') {
-        cryptoContainer.style.display = 'none';
-        if (txContainer) txContainer.style.display = 'none';
-        if (receiptContainer) receiptContainer.style.display = 'none';
-        if (submitButton) submitButton.style.display = 'none';
-        renderDirectWalletConnectPanel();
-        return;
-    }
-
-    if (receiptContainer) receiptContainer.style.display = '';
-    if (submitButton) submitButton.style.display = '';
 
     if (method === 'wallet') {
         cryptoContainer.style.display = 'block';
@@ -23507,7 +23358,7 @@ LANGUAGE_CATALOG.forEach(([code])=>{
 /* Older packs did not contain every original key.  Replace those inherited
    English values with an equivalent value already authored in that language. */
 const BASE_LOCAL_FALLBACKS={
-  users:"statUsers",tracked:"thAsset",assets:"thAsset",live:"markets",uptime:"active",add:"deposit",customTitle:"plans",customDesc:"heroDesc",customAmountLabel:"amount",customTermLabel:"level",investCustomBtn:"invest",lockNoticeText:"heroDesc",pointsTitle:"rewards",pointsSub:"rewards",refTitle:"rewards",vipSub:"rewards",streakTitle:"active",streakSub:"active",secLogin:"security",secWith:"security",enabled:"active",forgotPasswordText:"password",needAccountText:"register",haveAccountText:"login",usernameOrEmail:"username",enterEmailOrUser:"email",codeSentNotice:"email",enterCode:"continue",sendResetCode:"continue",resetPasswordTitle:"password",newPasswordLabel:"password",resetBtn:"continue",footerDesc:"heroDesc",footerCopy:"brand",depAmountLabel:"amount",depMethodLabel:"deposit",depCryptoLabel:"thAsset",depTxLabel:"transactions",depSubmitBtn:"deposit",optDirect:"deposit",optPaymentio:"deposit",optDirectWallet:"deposit",paymentioMsg:"depositDesc",withdrawWalletLabel:"withdraw",withdrawCryptoLabel:"thAsset",withdrawAmountLabel:"amount"
+  users:"statUsers",tracked:"thAsset",assets:"thAsset",live:"markets",uptime:"active",add:"deposit",customTitle:"plans",customDesc:"heroDesc",customAmountLabel:"amount",customTermLabel:"level",investCustomBtn:"invest",lockNoticeText:"heroDesc",pointsTitle:"rewards",pointsSub:"rewards",refTitle:"rewards",vipSub:"rewards",streakTitle:"active",streakSub:"active",secLogin:"security",secWith:"security",enabled:"active",forgotPasswordText:"password",needAccountText:"register",haveAccountText:"login",usernameOrEmail:"username",enterEmailOrUser:"email",codeSentNotice:"email",enterCode:"continue",sendResetCode:"continue",resetPasswordTitle:"password",newPasswordLabel:"password",resetBtn:"continue",footerDesc:"heroDesc",footerCopy:"brand",depAmountLabel:"amount",depMethodLabel:"deposit",depCryptoLabel:"thAsset",depTxLabel:"transactions",depSubmitBtn:"deposit",optDirect:"deposit",optPaymentio:"deposit",paymentioMsg:"depositDesc",withdrawWalletLabel:"withdraw",withdrawCryptoLabel:"thAsset",withdrawAmountLabel:"amount"
 };
 LANGUAGE_CATALOG.forEach(([code])=>{
   if(code==="en")return;
@@ -30181,8 +30032,8 @@ html.web-android [onclick] {
 (function(){
   "use strict";
   const COPY={
-    en:{phoneTitle:"WhatsApp verification",phoneDescription:"Enter your WhatsApp number. We’ll send the verification code to WhatsApp, so check WhatsApp for the code.",phoneVerifiedDescription:"Your WhatsApp number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify phone",changePhone:"Change phone",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"WhatsApp verification",modalDescription:"Select your country and enter your WhatsApp number. Then check WhatsApp for the verification code.",phoneLabel:"WhatsApp number",selectCountry:"Select country",searchCountry:"Search country or code",phoneHelp:"Enter the number linked to your WhatsApp. The verification code is sent to WhatsApp, so check WhatsApp for the code. The country code is added automatically.",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent to WhatsApp. Check WhatsApp for the code.",success:"Your WhatsApp number was verified successfully.",invalidPhone:"Select a country and enter a valid WhatsApp number.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"SMS verification is not available yet. Enable Phone Auth and configure an SMS provider in Supabase.",genericError:"WhatsApp number verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
-    fa:{phoneTitle:"تأیید شماره واتساپ",phoneDescription:"شماره واتساپ خود را وارد کنید. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را برای دریافت کد بررسی کنید.",phoneVerifiedDescription:"شماره واتساپ شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره تلفن",changePhone:"تغییر شماره",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره واتساپ",modalDescription:"کشور را انتخاب کنید و شماره واتساپ خود را وارد کنید. سپس واتساپ را برای دریافت کد بررسی کنید.",phoneLabel:"شماره واتساپ",selectCountry:"انتخاب کشور",searchCountry:"جست‌وجوی کشور یا کد",phoneHelp:"شماره‌ای را وارد کنید که واتساپ شما روی آن فعال است. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را بررسی کنید. کد کشور خودکار اضافه می‌شود.",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید به واتساپ ارسال شد؛ واتساپ را بررسی کنید.",success:"شماره واتساپ شما با موفقیت تأیید شد.",invalidPhone:"کشور را انتخاب و شماره واتساپ معتبر وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید پیامکی هنوز فعال نیست. Phone Auth و ارائه‌دهنده SMS را در Supabase فعال کنید.",genericError:"تأیید شماره واتساپ انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
+    en:{phoneTitle:"WhatsApp verification",phoneDescription:"Enter your WhatsApp number. We’ll send the verification code to WhatsApp, so check WhatsApp for the code.",phoneVerifiedDescription:"Your WhatsApp number has been verified.",identityTitle:"Identity verification",identityDescription:"Submit an identity document and selfie for manual review.",identityVerifiedDescription:"Your identity has been verified successfully.",verified:"Verified",unverified:"Not verified",pending:"Pending review",rejected:"Rejected",verifyPhone:"Verify WhatsApp",changePhone:"Change WhatsApp number",startIdentity:"Start verification",viewIdentity:"View verification",continueIdentity:"Resubmit documents",modalTitle:"WhatsApp verification",modalDescription:"Select your country and enter your WhatsApp number. Then check WhatsApp for the verification code.",phoneLabel:"WhatsApp number",selectCountry:"Select country",searchCountry:"Search country or code",phoneHelp:"Enter the number linked to your WhatsApp. The verification code is sent to WhatsApp, so check WhatsApp for the code. The country code is added automatically.",sendCode:"Send code",codeLabel:"6-digit code",resend:"Resend code",confirm:"Verify code",sending:"Sending…",verifying:"Verifying…",resent:"A new code was sent to WhatsApp. Check WhatsApp for the code.",success:"Your WhatsApp number was verified successfully.",invalidPhone:"Select a country and enter a valid WhatsApp number.",invalidCode:"Enter the complete 6-digit code.",smsUnavailable:"WhatsApp verification is temporarily unavailable. Please try again later.",genericError:"WhatsApp number verification could not be completed. Please try again.",wait:"Try again in {seconds}s"},
+    fa:{phoneTitle:"تأیید شماره واتساپ",phoneDescription:"شماره واتساپ خود را وارد کنید. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را برای دریافت کد بررسی کنید.",phoneVerifiedDescription:"شماره واتساپ شما با موفقیت تأیید شده است.",identityTitle:"احراز هویت",identityDescription:"مدرک هویتی و سلفی خود را برای بررسی ارسال کنید.",identityVerifiedDescription:"احراز هویت شما با موفقیت تأیید شده است.",verified:"تأییدشده",unverified:"تأیید نشده",pending:"در انتظار بررسی",rejected:"رد شده",verifyPhone:"تأیید شماره واتساپ",changePhone:"تغییر شماره واتساپ",startIdentity:"شروع احراز هویت",viewIdentity:"مشاهده احراز هویت",continueIdentity:"ارسال مجدد مدارک",modalTitle:"تأیید شماره واتساپ",modalDescription:"کشور را انتخاب کنید و شماره واتساپ خود را وارد کنید. سپس واتساپ را برای دریافت کد بررسی کنید.",phoneLabel:"شماره واتساپ",selectCountry:"انتخاب کشور",searchCountry:"جست‌وجوی کشور یا کد",phoneHelp:"شماره‌ای را وارد کنید که واتساپ شما روی آن فعال است. کد تأیید در واتساپ ارسال می‌شود؛ واتساپ را بررسی کنید. کد کشور خودکار اضافه می‌شود.",sendCode:"ارسال کد",codeLabel:"کد ۶ رقمی",resend:"ارسال مجدد",confirm:"تأیید کد",sending:"در حال ارسال…",verifying:"در حال تأیید…",resent:"کد جدید به واتساپ ارسال شد؛ واتساپ را بررسی کنید.",success:"شماره واتساپ شما با موفقیت تأیید شد.",invalidPhone:"کشور را انتخاب و شماره واتساپ معتبر وارد کنید.",invalidCode:"کد ۶ رقمی را کامل وارد کنید.",smsUnavailable:"سرویس تأیید واتساپ موقتاً در دسترس نیست. کمی بعد دوباره تلاش کنید.",genericError:"تأیید شماره واتساپ انجام نشد. دوباره تلاش کنید.",wait:"{seconds} ثانیه دیگر تلاش کنید"}
   };
   const WITHDRAWAL_SECURITY_COPY={
     en:{hint:"After identity verification",active:"Active",inactive:"Inactive"},
@@ -30554,30 +30405,6 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
   #portfolio #paymentMethodCustomOptions{position:absolute!important;max-height:none!important}
   #portfolio #paymentMethodCustomOptions .payment-method-option{min-height:58px;font-size:13px}
 }
-#portfolio #payment-info-box.direct-wallet-connect-info{
-  min-height:210px;
-  padding:20px!important;
-  word-break:normal!important;
-  background:linear-gradient(145deg,rgba(8,12,17,.74),rgba(25,19,7,.5))!important;
-  border:1px solid rgba(255,225,117,.4)!important;
-  border-radius:17px!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(0,0,0,.24)!important;
-  backdrop-filter:blur(14px) saturate(120%)!important;
-  -webkit-backdrop-filter:blur(14px) saturate(120%)!important;
-}
-#portfolio .direct-wallet-connect-head{display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;align-items:start}
-#portfolio .direct-wallet-connect-icon{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,225,117,.35);border-radius:13px;color:#ffe477;background:rgba(240,185,11,.1);font-size:22px}
-#portfolio .direct-wallet-connect-head strong{display:block;color:#fff3bf;font-size:15px;line-height:1.45}
-#portfolio .direct-wallet-connect-head small{display:block;margin-top:5px;color:#aeb7c3;font-size:11px;line-height:1.75}
-#portfolio .direct-wallet-connect-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
-#portfolio .direct-wallet-connect-button{min-height:48px;padding:10px 12px;border:1px solid rgba(255,255,255,.16);border-radius:12px;color:#eef2f7;background:rgba(255,255,255,.055);font:inherit;font-size:12px;font-weight:800;cursor:pointer;touch-action:manipulation}
-#portfolio .direct-wallet-connect-button.primary{border-color:rgba(255,225,117,.42);color:#171106;background:linear-gradient(135deg,#f0b90b,#ffd85a)}
-#portfolio .direct-wallet-connect-button.disconnect{border-color:rgba(255,92,92,.38);color:#ffb0b0;background:linear-gradient(145deg,rgba(116,19,19,.32),rgba(50,8,8,.32))}
-#portfolio .direct-wallet-connect-button.disconnect:active{transform:scale(.985)}
-#portfolio .direct-wallet-connected{margin-top:13px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(14,203,129,.3);border-radius:11px;background:rgba(14,203,129,.075)}
-#portfolio .direct-wallet-connected span{color:#9ba8b7;font-size:10px}
-#portfolio .direct-wallet-connected strong{color:#73edb7;font-size:12px;direction:ltr;unicode-bidi:isolate}
-@media(max-width:560px){#portfolio .direct-wallet-connect-actions{grid-template-columns:1fr}}
 #portfolio #payment-info-box.deposit-wallet-info{
   min-height:178px;
   padding:23px!important;
@@ -30780,125 +30607,3 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 
 </body>
 </html>
-
-<!-- Reown AppKit connection layer: connection only; no payment transaction is enabled in this step. -->
-<!-- Reown AppKit connection layer: native professional modal; connection only, no payment transaction is enabled. -->
-<script type="module" id="bi-reown-appkit-v1">
-(async () => {
-  // Reown Project ID from the user's dashboard (32 characters).
-  const PROJECT_ID = "cc6ccbdc45d6972028acc77cf943c04c";
-  const APP_ORIGIN = "https://binancinvest.com";
-
-  // Only ordinary self-custody wallets requested for this site.
-  // IDs are Reown / WalletGuide IDs.
-  const INCLUDED_WALLETS = [
-    "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96", // MetaMask
-    "4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0", // Trust Wallet
-    "8a0ee50d1f22f6651afcae7eb4253e52a3310b90af5daef78a8c4929a9bb99d4", // Binance Wallet
-    "0b415a746fb9ee99cce155c2ceca0c6f6061b1dbca2d722b3ba16381d0562150", // SafePal
-    "20459438007b75f4f4acb98bf29aa3b800550309646d375da5fd4aac6c2a2c66", // TokenPocket
-    "ef333840daf915aafdc4a004525502d6d49d77bd9c65e0642dbaefb3c2893bef", // imToken
-    "19177a98252e07ddfc9af2083ba8e07ef627cb6103467ffebb3f8f4205fd7927", // Ledger
-    "e9ff15be73584489ca4a66f64d32c4537711797e30b6660dbcb71ea72a42b1f4"  // Exodus
-  ];
-
-  try {
-    const [{ createAppKit }, { EthersAdapter }, { bsc }] = await Promise.all([
-      import("https://esm.sh/@reown/appkit@1.8.23"),
-      import("https://esm.sh/@reown/appkit-adapter-ethers@1.8.23"),
-      import("https://esm.sh/@reown/appkit@1.8.23/networks")
-    ]);
-
-    const appKit = createAppKit({
-      adapters: [new EthersAdapter()],
-      networks: [bsc],
-      defaultNetwork: bsc,
-      projectId: PROJECT_ID,
-
-      // Restore Reown's own professional wallet modal and logos,
-      // while limiting WalletGuide results to the requested wallets.
-      includeWalletIds: INCLUDED_WALLETS,
-      featuredWalletIds: INCLUDED_WALLETS,
-      allWallets: "SHOW",
-      enableCoinbase: false,
-      enableWalletGuide: false,
-      enableMobileFullScreen: false,
-
-      metadata: {
-        name: "BI Invest",
-        description: "BI Invest secure wallet connection",
-        url: APP_ORIGIN,
-        icons: ["https://binancinvest.com/binancinvest-apple-touch-v37.png?v=20260824-1131"]
-      },
-      themeMode: "dark",
-      themeVariables: {
-        "--w3m-z-index": 1000000,
-        "--w3m-accent": "#f0b90b",
-        "--w3m-border-radius-master": "3px"
-      },
-      features: {
-        analytics: false,
-        email: false,
-        socials: [],
-        swaps: false,
-        onramp: false
-      }
-    });
-
-    window.biReownAppKit = appKit;
-
-    window.disconnectDirectWallet = async function () {
-      try {
-        const controller = appKit?.adapter?.connectionControllerClient;
-        if (controller && typeof controller.disconnect === "function") {
-          await controller.disconnect();
-        } else if (typeof appKit.disconnect === "function") {
-          await appKit.disconnect();
-        }
-      } catch (error) {
-        console.warn("Reown disconnect failed:", error);
-      } finally {
-        if (typeof window.setDirectWalletConnectedAccount === "function") {
-          window.setDirectWalletConnectedAccount("");
-        }
-        if (typeof toast === "function") toast("Wallet disconnected.");
-      }
-    };
-
-    // This is the function already called by the site's existing
-    // "All wallets / WalletConnect" button.
-    window.openDirectWalletConnectSetup = function () {
-      return appKit.open({ view: "Connect", namespace: "eip155" });
-    };
-
-    const publishAccount = (address, isConnected = true) => {
-      const clean = typeof address === "string" ? address.trim() : "";
-      if (typeof window.setDirectWalletConnectedAccount === "function") {
-        window.setDirectWalletConnectedAccount(isConnected && clean ? clean : "");
-      }
-    };
-
-    if (typeof appKit.subscribeProvider === "function") {
-      appKit.subscribeProvider((state) => {
-        publishAccount(state?.address, Boolean(state?.isConnected));
-      });
-    }
-
-    if (typeof appKit.subscribeAccount === "function") {
-      appKit.subscribeAccount((state) => {
-        const accountState = state?.accountState || state || {};
-        const address = accountState?.address || state?.address || "";
-        const connected = accountState?.isConnected ?? state?.isConnected ?? Boolean(address);
-        publishAccount(address, Boolean(connected));
-      });
-    }
-  } catch (error) {
-    console.warn("Reown AppKit connection layer could not load:", error);
-    window.openDirectWalletConnectSetup = function () {
-      if (typeof toast === "function") {
-        toast("Wallet connection service is not ready. Please refresh and try again.");
-      }
-    };
-  }
-})();
-</script>
