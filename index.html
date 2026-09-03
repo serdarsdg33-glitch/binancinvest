@@ -14202,6 +14202,92 @@ html[dir="rtl"] .bsc2-badge{right:auto;left:15px}
 @media(max-width:600px){.bsc2-hero{padding:30px 20px;border-radius:19px}.bsc2-card{padding:18px}}
 </style>
 
+
+<style id="bsc-payment-modal-v3-css">
+/* BSC payment modal v3 — isolated from existing site styles */
+.bscp-modal{
+  position:fixed;inset:0;z-index:950;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(0,0,0,.84);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)
+}
+.bscp-modal.open{display:flex}
+.bscp-panel{
+  width:min(650px,100%);max-height:min(88vh,780px);overflow:auto;
+  color:#f5f7fb;background:linear-gradient(145deg,#151c25,#090e15);
+  border:1px solid rgba(240,185,11,.34);border-radius:22px;
+  box-shadow:0 34px 100px rgba(0,0,0,.78),0 0 34px rgba(240,185,11,.08)
+}
+.bscp-head{position:sticky;top:0;z-index:3;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:20px 22px 16px;background:rgba(12,17,24,.96);border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(15px)}
+.bscp-kicker{color:#f0b90b;font-size:10px;font-weight:950;letter-spacing:1.4px}
+.bscp-title{margin:4px 0 0;font-size:22px;line-height:1.15}
+.bscp-price{margin-top:5px;color:#ffe58a;font-size:15px;font-weight:900}
+.bscp-close{flex:0 0 auto;width:38px;height:38px;border:1px solid #34404d;border-radius:10px;color:#cbd5df;background:#151c25;font-size:23px;line-height:1}
+.bscp-body{padding:20px 22px 24px}
+.bscp-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.bscp-method{
+  min-height:86px;padding:14px;text-align:left;color:#eef2f7;background:#10161e;
+  border:1px solid #2c3745;border-radius:14px;transition:.2s ease
+}
+html[dir="rtl"] .bscp-method{text-align:right}
+.bscp-method strong{display:block;margin-bottom:4px;font-size:14px}
+.bscp-method span{display:block;color:#8f9cac;font-size:11px;line-height:1.55}
+.bscp-method.active{border-color:rgba(240,185,11,.75);background:rgba(240,185,11,.075);box-shadow:0 0 0 2px rgba(240,185,11,.055)}
+.bscp-section{display:none}
+.bscp-section.active{display:block}
+.bscp-balance{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 15px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.025)
+}
+.bscp-balance span{color:#91a0b2;font-size:11px}
+.bscp-balance b{font-size:18px;color:#fff}
+.bscp-hint{margin:0 0 14px;color:#93a0b0;font-size:11px;line-height:1.7}
+.bscp-primary,.bscp-secondary{
+  width:100%;min-height:45px;border-radius:11px;padding:11px 15px;font-weight:900
+}
+.bscp-primary{color:#171100;background:linear-gradient(135deg,#ffe15b,#e3a700);border:1px solid #f0b90b}
+.bscp-primary:disabled{opacity:.45;cursor:not-allowed}
+.bscp-secondary{margin-top:8px;color:#e8edf4;background:#151c25;border:1px solid #384657}
+.bscp-networks{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
+.bscp-network{
+  padding:12px;border:1px solid #2d3948;border-radius:12px;background:#0e141c;color:#e8edf4;text-align:left
+}
+html[dir="rtl"] .bscp-network{text-align:right}
+.bscp-network.active{border-color:#f0b90b;background:rgba(240,185,11,.07)}
+.bscp-network strong{display:block;font-size:12px}
+.bscp-network span{display:block;margin-top:3px;color:#8391a2;font-size:10px}
+.bscp-wallet-box{padding:14px;margin-bottom:13px;border:1px dashed rgba(240,185,11,.5);border-radius:13px;background:#0b1118}
+.bscp-wallet-label{color:#94a1b1;font-size:10px;margin-bottom:6px}
+.bscp-wallet-address{direction:ltr;unicode-bidi:embed;word-break:break-all;color:#67e8a5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.7}
+.bscp-wallet-row{display:flex;gap:8px;align-items:flex-start}
+.bscp-wallet-row .bscp-wallet-address{flex:1}
+.bscp-copy{flex:0 0 auto;padding:7px 9px;border-radius:8px;color:#ffe58a;background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.28);font-size:10px;font-weight:850}
+.bscp-exact{display:flex;justify-content:space-between;gap:10px;padding-top:10px;margin-top:10px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:#9aa6b5}
+.bscp-exact b{color:#fff}
+.bscp-field label{display:block;margin:0 0 6px;color:#aeb8c5;font-size:11px}
+.bscp-field input{
+  width:100%;min-height:44px;padding:10px 12px;color:#fff;background:#0d131b;border:1px solid #384657;border-radius:10px;outline:none
+}
+.bscp-field input:focus{border-color:#f0b90b}
+.bscp-status{display:none;margin-top:13px;padding:13px 14px;border-radius:12px;font-size:11px;line-height:1.65}
+.bscp-status.show{display:block}
+.bscp-status.info{color:#bcd6ff;background:rgba(85,119,255,.09);border:1px solid rgba(85,119,255,.25)}
+.bscp-status.success{color:#a7f3d0;background:rgba(22,199,132,.09);border:1px solid rgba(22,199,132,.27)}
+.bscp-status.error{color:#fecaca;background:rgba(234,57,67,.09);border:1px solid rgba(234,57,67,.25)}
+.bscp-success{display:none;padding:28px 18px 32px;text-align:center}
+.bscp-success.show{display:block}
+.bscp-success-icon{width:72px;height:72px;margin:0 auto 15px;display:grid;place-items:center;border-radius:50%;color:#07110a;background:#16c784;font-size:34px;font-weight:950;box-shadow:0 12px 35px rgba(22,199,132,.22)}
+.bscp-success h3{margin:0 0 8px;font-size:25px}
+.bscp-success p{max-width:440px;margin:0 auto 18px;color:#9ca9b8;line-height:1.75;font-size:12px}
+.bscp-spinner{display:inline-block;width:14px;height:14px;margin-inline-end:7px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:bscpSpin .8s linear infinite;vertical-align:-2px}
+@keyframes bscpSpin{to{transform:rotate(360deg)}}
+body.bscp-lock{overflow:hidden}
+@media(max-width:600px){
+  .bscp-modal{padding:9px;align-items:flex-end}
+  .bscp-panel{width:100%;max-height:92vh;border-radius:19px 19px 0 0}
+  .bscp-head{padding:17px 16px 14px}.bscp-body{padding:16px}
+  .bscp-methods,.bscp-networks{grid-template-columns:1fr}
+}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -31023,6 +31109,241 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
     document.addEventListener("DOMContentLoaded",function(){apply();sync();},{once:true});
   }else{apply();sync();}
   window.setInterval(sync,900);
+})();
+</script>
+
+
+<div id="bscPaymentModal" class="bscp-modal" role="dialog" aria-modal="true" aria-labelledby="bscPaymentTitle" onclick="bscpBackdrop(event)">
+  <div class="bscp-panel">
+    <div class="bscp-head">
+      <div>
+        <div class="bscp-kicker">BSC SECURE CHECKOUT</div>
+        <h2 id="bscPaymentTitle" class="bscp-title">BSC Bot</h2>
+        <div id="bscPaymentPrice" class="bscp-price">$0</div>
+      </div>
+      <button class="bscp-close" type="button" onclick="bscpClose()" aria-label="Close">×</button>
+    </div>
+
+    <div id="bscpCheckoutBody" class="bscp-body">
+      <div class="bscp-methods">
+        <button id="bscpBaseMethod" class="bscp-method active" type="button" onclick="bscpSelectMethod('base')">
+          <strong data-bscp="baseTitle">Pay from Base Plan</strong>
+          <span data-bscp="baseDesc">Use available principal from your Base Plan.</span>
+        </button>
+        <button id="bscpDirectMethod" class="bscp-method" type="button" onclick="bscpSelectMethod('direct')">
+          <strong data-bscp="directTitle">Direct Payment</strong>
+          <span data-bscp="directDesc">Send USDT directly and verify the TXID.</span>
+        </button>
+      </div>
+
+      <section id="bscpBaseSection" class="bscp-section active">
+        <div class="bscp-balance">
+          <div><span data-bscp="availableBase">Available Base Plan principal</span></div>
+          <b id="bscpBaseBalance">—</b>
+        </div>
+        <p id="bscpBaseHint" class="bscp-hint" data-bscp="baseHint">The exact bot price will be deducted from Base Plan principal. Your earned Base Plan profit is preserved by the existing plan engine.</p>
+        <button id="bscpPayBaseBtn" class="bscp-primary" type="button" onclick="bscpPayFromBase()" disabled data-bscp="payBase">Pay from Base Plan</button>
+      </section>
+
+      <section id="bscpDirectSection" class="bscp-section">
+        <p class="bscp-hint" data-bscp="directHint">For instant automatic verification, use USDT on BEP20 or ERC20 and send the exact package price to the selected wallet.</p>
+        <div class="bscp-networks">
+          <button id="bscpNetBep20" class="bscp-network active" type="button" onclick="bscpSelectNetwork('BEP20')">
+            <strong>USDT (BEP20)</strong><span data-bscp="fastVerify">Automatic blockchain verification</span>
+          </button>
+          <button id="bscpNetErc20" class="bscp-network" type="button" onclick="bscpSelectNetwork('ERC20')">
+            <strong>USDT (ERC20)</strong><span data-bscp="fastVerify">Automatic blockchain verification</span>
+          </button>
+        </div>
+
+        <div class="bscp-wallet-box">
+          <div class="bscp-wallet-label" data-bscp="walletAddress">Wallet address</div>
+          <div class="bscp-wallet-row">
+            <div id="bscpWalletAddress" class="bscp-wallet-address">0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD</div>
+            <button id="bscpCopyBtn" class="bscp-copy" type="button" onclick="bscpCopyWallet()" data-bscp="copy">Copy</button>
+          </div>
+          <div class="bscp-exact">
+            <span data-bscp="sendExactly">Send exactly</span>
+            <b id="bscpExactAmount">0 USDT</b>
+          </div>
+        </div>
+
+        <div class="bscp-field">
+          <label for="bscpTxid" data-bscp="txidLabel">Transaction Hash (TXID)</label>
+          <input id="bscpTxid" type="text" autocomplete="off" spellcheck="false" placeholder="0x..." />
+        </div>
+        <button id="bscpVerifyBtn" class="bscp-primary" type="button" onclick="bscpSubmitDirect()" data-bscp="verifyPayment">Verify Payment</button>
+        <button id="bscpRetryBtn" class="bscp-secondary" type="button" onclick="bscpSubmitDirect()" style="display:none" data-bscp="checkAgain">Check Again</button>
+      </section>
+
+      <div id="bscpStatus" class="bscp-status" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="bscpSuccess" class="bscp-success">
+      <div class="bscp-success-icon">✓</div>
+      <h3 data-bscp="successTitle">Payment Successful</h3>
+      <p id="bscpSuccessText" data-bscp="successText">Your BSC bot purchase has been recorded successfully.</p>
+      <button class="bscp-primary" type="button" onclick="bscpClose()" data-bscp="done">Done</button>
+    </div>
+  </div>
+</div>
+
+
+<script id="bsc-payment-modal-v3-script">
+(function(){
+  "use strict";
+
+  const ADDRESS = "0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD";
+  const COPY = {
+    en:{baseTitle:"Pay from Base Plan",baseDesc:"Use available principal from your Base Plan.",directTitle:"Direct Payment",directDesc:"Send USDT directly and verify the TXID.",availableBase:"Available Base Plan principal",baseHint:"The exact bot price will be deducted from Base Plan principal. Your earned Base Plan profit is preserved by the existing plan engine.",payBase:"Pay from Base Plan",directHint:"For instant automatic verification, use USDT on BEP20 or ERC20 and send the exact package price to the selected wallet.",fastVerify:"Automatic blockchain verification",walletAddress:"Wallet address",copy:"Copy",copied:"Copied",sendExactly:"Send exactly",txidLabel:"Transaction Hash (TXID)",verifyPayment:"Verify Payment",checkAgain:"Check Again",successTitle:"Payment Successful",successText:"Your BSC bot purchase has been recorded successfully.",done:"Done",login:"Please sign in before purchasing a bot.",loading:"Loading account information…",insufficient:"Your Base Plan principal is not enough for this package.",baseConfirm:"The package price will be deducted from Base Plan principal.",processing:"Processing secure payment…",txidRequired:"Enter a valid 0x transaction hash.",checking:"Payment found. Waiting for blockchain confirmations…",notFound:"Transaction has not been mined yet. We will check again.",failed:"Payment verification failed. Check the network, amount and TXID.",server:"Payment service is temporarily unavailable.",already:"This bot is already purchased on your account."},
+    fa:{baseTitle:"پرداخت از سرمایه پلن پایه",baseDesc:"هزینه ربات را از اصل سرمایه موجود در پلن پایه پرداخت کنید.",directTitle:"پرداخت مستقیم",directDesc:"USDT ارسال کنید و TXID را برای تأیید وارد کنید.",availableBase:"اصل سرمایه موجود در پلن پایه",baseHint:"قیمت دقیق ربات از اصل سرمایه پلن پایه کم می‌شود و سود ایجادشده پلن پایه توسط موتور فعلی سایت حفظ می‌شود.",payBase:"پرداخت از پلن پایه",directHint:"برای تأیید خودکار و فوری، USDT را روی شبکه BEP20 یا ERC20 به ولت انتخاب‌شده بفرستید.",fastVerify:"تأیید خودکار روی بلاکچین",walletAddress:"آدرس ولت",copy:"کپی",copied:"کپی شد",sendExactly:"مبلغ دقیق",txidLabel:"هش تراکنش (TXID)",verifyPayment:"بررسی پرداخت",checkAgain:"بررسی دوباره",successTitle:"پرداخت موفق",successText:"خرید ربات BSC شما با موفقیت ثبت شد.",done:"تمام",login:"برای خرید ربات ابتدا وارد حساب شوید.",loading:"در حال دریافت اطلاعات حساب…",insufficient:"سرمایه پلن پایه شما برای خرید این پکیج کافی نیست.",baseConfirm:"قیمت پکیج از اصل سرمایه پلن پایه کم خواهد شد.",processing:"در حال انجام پرداخت امن…",txidRequired:"یک هش تراکنش معتبر 0x وارد کنید.",checking:"پرداخت پیدا شد؛ در انتظار تأییدهای بلاکچین هستیم…",notFound:"تراکنش هنوز ماین نشده؛ دوباره بررسی می‌کنیم.",failed:"تأیید پرداخت ناموفق بود. شبکه، مبلغ و TXID را بررسی کنید.",server:"سرویس پرداخت موقتاً در دسترس نیست.",already:"این ربات قبلاً برای حساب شما خریداری شده است."},
+    az:{baseTitle:"Baza Plandan Ödəniş",baseDesc:"Baza Plan əsas kapitalından istifadə edin.",directTitle:"Birbaşa Ödəniş",directDesc:"USDT göndərin və TXID-ni yoxlayın.",availableBase:"Baza Plan əsas kapitalı",baseHint:"Botun dəqiq qiyməti Baza Plan əsas kapitalından çıxılır; mövcud plan mühərriki qazanılmış gəliri qoruyur.",payBase:"Baza Plandan Ödə",directHint:"Ani avtomatik yoxlama üçün USDT-ni BEP20 və ya ERC20 ilə göndərin.",fastVerify:"Avtomatik blockchain yoxlaması",walletAddress:"Cüzdan ünvanı",copy:"Kopyala",copied:"Kopyalandı",sendExactly:"Dəqiq göndərin",txidLabel:"Tranzaksiya Hash (TXID)",verifyPayment:"Ödənişi Yoxla",checkAgain:"Yenidən Yoxla",successTitle:"Ödəniş Uğurludur",successText:"BSC bot alışınız uğurla qeydə alındı.",done:"Bitir",login:"Bot almaq üçün əvvəlcə daxil olun.",loading:"Hesab məlumatları yüklənir…",insufficient:"Baza Plan kapitalınız bu paket üçün kifayət deyil.",baseConfirm:"Paket qiyməti Baza Plan əsas kapitalından çıxılacaq.",processing:"Təhlükəsiz ödəniş işlənir…",txidRequired:"Etibarlı 0x TXID daxil edin.",checking:"Ödəniş tapıldı; blockchain təsdiqləri gözlənilir…",notFound:"Tranzaksiya hələ təsdiqlənməyib. Yenidən yoxlanacaq.",failed:"Ödəniş yoxlaması uğursuz oldu. Şəbəkə, məbləğ və TXID-ni yoxlayın.",server:"Ödəniş xidməti müvəqqəti əlçatan deyil.",already:"Bu bot artıq hesabınızda alınıb."},
+    tr:{baseTitle:"Ana Plandan Öde",baseDesc:"Ana Plan anaparanızı kullanın.",directTitle:"Doğrudan Ödeme",directDesc:"USDT gönderin ve TXID'yi doğrulayın.",availableBase:"Mevcut Ana Plan anaparası",baseHint:"Bot fiyatı Ana Plan anaparasından düşülür; mevcut plan motoru kazanılmış kârı korur.",payBase:"Ana Plandan Öde",directHint:"Otomatik doğrulama için USDT'yi BEP20 veya ERC20 ile gönderin.",fastVerify:"Otomatik blockchain doğrulaması",walletAddress:"Cüzdan adresi",copy:"Kopyala",copied:"Kopyalandı",sendExactly:"Tam olarak gönder",txidLabel:"İşlem Hash (TXID)",verifyPayment:"Ödemeyi Doğrula",checkAgain:"Tekrar Kontrol Et",successTitle:"Ödeme Başarılı",successText:"BSC bot satın alımınız başarıyla kaydedildi.",done:"Tamam",login:"Bot satın almadan önce giriş yapın.",loading:"Hesap bilgileri yükleniyor…",insufficient:"Ana Plan anaparanız bu paket için yetersiz.",baseConfirm:"Paket fiyatı Ana Plan anaparanızdan düşülecek.",processing:"Güvenli ödeme işleniyor…",txidRequired:"Geçerli bir 0x TXID girin.",checking:"Ödeme bulundu; blockchain onayları bekleniyor…",notFound:"İşlem henüz onaylanmadı. Tekrar kontrol edilecek.",failed:"Ödeme doğrulaması başarısız. Ağ, tutar ve TXID'yi kontrol edin.",server:"Ödeme servisi geçici olarak kullanılamıyor.",already:"Bu bot hesabınızda zaten satın alınmış."},
+    ru:{baseTitle:"Оплатить из базового плана",baseDesc:"Использовать основной капитал Base Plan.",directTitle:"Прямая оплата",directDesc:"Отправьте USDT и подтвердите TXID.",availableBase:"Доступный капитал Base Plan",baseHint:"Цена бота будет списана из основного капитала Base Plan; накопленная прибыль сохраняется текущим механизмом.",payBase:"Оплатить из Base Plan",directHint:"Для автоматической проверки используйте USDT BEP20 или ERC20.",fastVerify:"Автоматическая проверка блокчейна",walletAddress:"Адрес кошелька",copy:"Копировать",copied:"Скопировано",sendExactly:"Отправьте точно",txidLabel:"Хэш транзакции (TXID)",verifyPayment:"Проверить оплату",checkAgain:"Проверить снова",successTitle:"Оплата успешна",successText:"Покупка BSC Bot успешно зарегистрирована.",done:"Готово",login:"Сначала войдите в аккаунт.",loading:"Загрузка данных аккаунта…",insufficient:"Недостаточно капитала Base Plan.",baseConfirm:"Цена будет списана из капитала Base Plan.",processing:"Обработка защищенной оплаты…",txidRequired:"Введите корректный 0x TXID.",checking:"Платеж найден; ожидаются подтверждения блокчейна…",notFound:"Транзакция еще не подтверждена. Проверим снова.",failed:"Проверка платежа не прошла. Проверьте сеть, сумму и TXID.",server:"Сервис оплаты временно недоступен.",already:"Этот бот уже куплен на вашем аккаунте."},
+    ar:{baseTitle:"الدفع من الخطة الأساسية",baseDesc:"استخدم رأس مال الخطة الأساسية.",directTitle:"الدفع المباشر",directDesc:"أرسل USDT وتحقق من TXID.",availableBase:"رأس مال الخطة الأساسية المتاح",baseHint:"يتم خصم سعر الروبوت من رأس مال الخطة الأساسية مع الحفاظ على الأرباح المتراكمة بواسطة نظام الخطة الحالي.",payBase:"الدفع من الخطة الأساسية",directHint:"للتحقق التلقائي استخدم USDT على BEP20 أو ERC20.",fastVerify:"تحقق تلقائي عبر البلوكشين",walletAddress:"عنوان المحفظة",copy:"نسخ",copied:"تم النسخ",sendExactly:"أرسل بالضبط",txidLabel:"Hash المعاملة (TXID)",verifyPayment:"تحقق من الدفع",checkAgain:"تحقق مرة أخرى",successTitle:"تم الدفع بنجاح",successText:"تم تسجيل شراء روبوت BSC بنجاح.",done:"تم",login:"سجّل الدخول أولاً لشراء الروبوت.",loading:"جار تحميل معلومات الحساب…",insufficient:"رأس مال الخطة الأساسية غير كافٍ.",baseConfirm:"سيتم خصم سعر الحزمة من رأس مال الخطة الأساسية.",processing:"جار معالجة الدفع الآمن…",txidRequired:"أدخل TXID صالح يبدأ بـ 0x.",checking:"تم العثور على الدفع؛ ننتظر تأكيدات البلوكشين…",notFound:"المعاملة لم تُؤكد بعد. سنعيد التحقق.",failed:"فشل التحقق من الدفع. تحقق من الشبكة والمبلغ وTXID.",server:"خدمة الدفع غير متاحة مؤقتًا.",already:"تم شراء هذا الروبوت مسبقًا على حسابك."},
+    zh:{baseTitle:"从基础计划支付",baseDesc:"使用基础计划本金。",directTitle:"直接支付",directDesc:"发送 USDT 并验证 TXID。",availableBase:"可用基础计划本金",baseHint:"机器人价格将从基础计划本金扣除，当前计划引擎会保留已产生的利润。",payBase:"从基础计划支付",directHint:"自动验证请使用 USDT BEP20 或 ERC20。",fastVerify:"自动区块链验证",walletAddress:"钱包地址",copy:"复制",copied:"已复制",sendExactly:"准确发送",txidLabel:"交易哈希 (TXID)",verifyPayment:"验证付款",checkAgain:"再次检查",successTitle:"付款成功",successText:"您的 BSC Bot 购买已成功记录。",done:"完成",login:"购买前请先登录。",loading:"正在加载账户信息…",insufficient:"基础计划本金不足。",baseConfirm:"套餐价格将从基础计划本金扣除。",processing:"正在处理安全付款…",txidRequired:"请输入有效的 0x TXID。",checking:"已找到付款，正在等待区块链确认…",notFound:"交易尚未确认，将再次检查。",failed:"付款验证失败，请检查网络、金额和 TXID。",server:"付款服务暂时不可用。",already:"此机器人已在您的账户中购买。"},
+    es:{baseTitle:"Pagar desde Plan Base",baseDesc:"Usa el capital principal disponible del Plan Base.",directTitle:"Pago Directo",directDesc:"Envía USDT y verifica el TXID.",availableBase:"Capital disponible del Plan Base",baseHint:"El precio se descuenta del capital del Plan Base y el motor actual conserva el beneficio generado.",payBase:"Pagar desde Plan Base",directHint:"Para verificación automática usa USDT en BEP20 o ERC20.",fastVerify:"Verificación automática blockchain",walletAddress:"Dirección de wallet",copy:"Copiar",copied:"Copiado",sendExactly:"Enviar exactamente",txidLabel:"Hash de transacción (TXID)",verifyPayment:"Verificar Pago",checkAgain:"Comprobar de nuevo",successTitle:"Pago Exitoso",successText:"Tu compra de BSC Bot se registró correctamente.",done:"Listo",login:"Inicia sesión antes de comprar.",loading:"Cargando información de cuenta…",insufficient:"El capital del Plan Base no es suficiente.",baseConfirm:"El precio se descontará del capital del Plan Base.",processing:"Procesando pago seguro…",txidRequired:"Introduce un TXID 0x válido.",checking:"Pago encontrado; esperando confirmaciones blockchain…",notFound:"La transacción aún no está confirmada. Se comprobará de nuevo.",failed:"Falló la verificación. Revisa red, importe y TXID.",server:"El servicio de pago no está disponible temporalmente.",already:"Este bot ya fue comprado en tu cuenta."},
+    fr:{baseTitle:"Payer depuis le Plan de Base",baseDesc:"Utilisez le capital principal disponible du Plan de Base.",directTitle:"Paiement Direct",directDesc:"Envoyez des USDT et vérifiez le TXID.",availableBase:"Capital disponible du Plan de Base",baseHint:"Le prix est déduit du capital du Plan de Base et le moteur actuel préserve le profit acquis.",payBase:"Payer depuis le Plan de Base",directHint:"Pour la vérification automatique, utilisez USDT sur BEP20 ou ERC20.",fastVerify:"Vérification blockchain automatique",walletAddress:"Adresse du portefeuille",copy:"Copier",copied:"Copié",sendExactly:"Envoyer exactement",txidLabel:"Hash de transaction (TXID)",verifyPayment:"Vérifier le Paiement",checkAgain:"Vérifier à nouveau",successTitle:"Paiement Réussi",successText:"Votre achat BSC Bot a été enregistré.",done:"Terminé",login:"Connectez-vous avant l'achat.",loading:"Chargement du compte…",insufficient:"Le capital du Plan de Base est insuffisant.",baseConfirm:"Le prix sera déduit du capital du Plan de Base.",processing:"Traitement du paiement sécurisé…",txidRequired:"Saisissez un TXID 0x valide.",checking:"Paiement trouvé; attente des confirmations blockchain…",notFound:"La transaction n'est pas encore confirmée. Nouvelle vérification à venir.",failed:"Échec de la vérification. Vérifiez réseau, montant et TXID.",server:"Le service de paiement est temporairement indisponible.",already:"Ce bot a déjà été acheté sur votre compte."},
+    de:{baseTitle:"Aus Basisplan bezahlen",baseDesc:"Verfügbares Basisplan-Kapital verwenden.",directTitle:"Direktzahlung",directDesc:"USDT senden und TXID prüfen.",availableBase:"Verfügbares Basisplan-Kapital",baseHint:"Der Bot-Preis wird vom Basisplan-Kapital abgezogen; der bestehende Plan-Engine erhält bereits verdienten Gewinn.",payBase:"Aus Basisplan bezahlen",directHint:"Für automatische Prüfung USDT auf BEP20 oder ERC20 verwenden.",fastVerify:"Automatische Blockchain-Prüfung",walletAddress:"Wallet-Adresse",copy:"Kopieren",copied:"Kopiert",sendExactly:"Genau senden",txidLabel:"Transaktions-Hash (TXID)",verifyPayment:"Zahlung Prüfen",checkAgain:"Erneut Prüfen",successTitle:"Zahlung Erfolgreich",successText:"Ihr BSC-Bot-Kauf wurde erfolgreich registriert.",done:"Fertig",login:"Bitte zuerst anmelden.",loading:"Kontoinformationen werden geladen…",insufficient:"Das Basisplan-Kapital reicht nicht aus.",baseConfirm:"Der Paketpreis wird vom Basisplan-Kapital abgezogen.",processing:"Sichere Zahlung wird verarbeitet…",txidRequired:"Gültige 0x-TXID eingeben.",checking:"Zahlung gefunden; Blockchain-Bestätigungen werden abgewartet…",notFound:"Transaktion noch nicht bestätigt. Erneute Prüfung folgt.",failed:"Zahlungsprüfung fehlgeschlagen. Netzwerk, Betrag und TXID prüfen.",server:"Zahlungsdienst vorübergehend nicht verfügbar.",already:"Dieser Bot wurde auf Ihrem Konto bereits gekauft."}
+  };
+
+  const state={code:"",name:"",price:0,method:"base",network:"BEP20",basePrincipal:0,pollTimer:null,pollCount:0};
+  const $=id=>document.getElementById(id);
+  function lang(){const l=(localStorage.getItem("bi_lang")||"en").toLowerCase();return COPY[l]?l:"en"}
+  function t(k){return COPY[lang()][k]||COPY.en[k]||k}
+  function applyCopy(){document.querySelectorAll("[data-bscp]").forEach(el=>{const k=el.dataset.bscp;if(t(k))el.textContent=t(k)})}
+  function status(msg,type="info"){
+    const box=$("bscpStatus"); if(!box)return;
+    box.textContent=msg||""; box.className="bscp-status"+(msg?` show ${type}`:"");
+  }
+  function stopPoll(){if(state.pollTimer){clearTimeout(state.pollTimer);state.pollTimer=null}}
+  function setBusy(busy){
+    ["bscpPayBaseBtn","bscpVerifyBtn","bscpRetryBtn"].forEach(id=>{const el=$(id);if(el)el.disabled=!!busy});
+  }
+  async function invoke(body){
+    const {data,error}=await supabaseClient.functions.invoke("bsc-bot-purchase",{body});
+    if(error){
+      let msg=error.message||t("server");
+      try{
+        const ctx=error.context;
+        if(ctx&&typeof ctx.json==="function"){const payload=await ctx.json();if(payload?.error)msg=payload.error}
+      }catch(_){}
+      throw new Error(msg);
+    }
+    if(data?.error)throw new Error(data.error);
+    return data||{};
+  }
+  function success(already=false){
+    stopPoll(); setBusy(false);
+    $("bscpCheckoutBody").style.display="none";
+    $("bscpSuccess").classList.add("show");
+    const p=$("bscpSuccessText");
+    if(p)p.textContent=already?t("already"):t("successText");
+    try{window.dispatchEvent(new CustomEvent("bsc:purchase-paid",{detail:{product_code:state.code,price:state.price}}))}catch(_){}
+  }
+  async function loadSummary(){
+    status(t("loading"),"info");
+    try{
+      const d=await invoke({action:"summary"});
+      state.basePrincipal=Number(d.base_principal||0);
+      $("bscpBaseBalance").textContent=`$${state.basePrincipal.toFixed(2)}`;
+      const paid=(d.purchases||[]).find(p=>p.status==="paid"&&(p.product_code===state.code||p.product_code==="UNIVERSAL"));
+      if(paid){success(true);return}
+      const enough=state.basePrincipal+1e-8>=state.price;
+      $("bscpPayBaseBtn").disabled=!enough;
+      status(enough?t("baseConfirm"):t("insufficient"),enough?"info":"error");
+    }catch(e){
+      $("bscpBaseBalance").textContent="—";
+      status(e?.message||t("server"),"error");
+    }
+  }
+
+  window.bscSafeBuy=function(code,price){
+    if(!currentUser){ if(typeof openAuth==="function")openAuth("login"); if(typeof toast==="function")toast(t("login")); return; }
+    const names={SPOT:"BSC Spot Bot",FUTURES:"BSC Futures Bot",UNIVERSAL:"BSC Universal Bot"};
+    state.code=String(code||"").toUpperCase();
+    state.name=names[state.code]||"BSC Bot";
+    state.price=Number(price)||0;
+    state.method="base"; state.network="BEP20"; state.pollCount=0; stopPoll();
+    $("bscPaymentTitle").textContent=state.name;
+    $("bscPaymentPrice").textContent=`$${state.price}`;
+    $("bscpExactAmount").textContent=`${state.price} USDT`;
+    $("bscpTxid").value="";
+    $("bscpCheckoutBody").style.display="";
+    $("bscpSuccess").classList.remove("show");
+    $("bscpRetryBtn").style.display="none";
+    $("bscpWalletAddress").textContent=ADDRESS;
+    applyCopy();
+    bscpSelectMethod("base");
+    bscpSelectNetwork("BEP20");
+    $("bscPaymentModal").classList.add("open");
+    document.body.classList.add("bscp-lock");
+    loadSummary();
+  };
+
+  window.bscpClose=function(){stopPoll();$("bscPaymentModal").classList.remove("open");document.body.classList.remove("bscp-lock");status("")};
+  window.bscpBackdrop=function(e){if(e.target===$("bscPaymentModal"))bscpClose()};
+  window.bscpSelectMethod=function(method){
+    state.method=method==="direct"?"direct":"base";
+    $("bscpBaseMethod").classList.toggle("active",state.method==="base");
+    $("bscpDirectMethod").classList.toggle("active",state.method==="direct");
+    $("bscpBaseSection").classList.toggle("active",state.method==="base");
+    $("bscpDirectSection").classList.toggle("active",state.method==="direct");
+    status(state.method==="base"?(state.basePrincipal>=state.price?t("baseConfirm"):t("insufficient")):"");
+  };
+  window.bscpSelectNetwork=function(network){
+    state.network=network==="ERC20"?"ERC20":"BEP20";
+    $("bscpNetBep20").classList.toggle("active",state.network==="BEP20");
+    $("bscpNetErc20").classList.toggle("active",state.network==="ERC20");
+    $("bscpWalletAddress").textContent=ADDRESS;
+  };
+  window.bscpCopyWallet=async function(){
+    const btn=$("bscpCopyBtn");
+    try{await navigator.clipboard.writeText(ADDRESS);btn.textContent=t("copied")}
+    catch(_){const r=document.createRange();r.selectNodeContents($("bscpWalletAddress"));const s=window.getSelection();s.removeAllRanges();s.addRange(r);btn.textContent=t("copy")}
+    setTimeout(()=>btn.textContent=t("copy"),1500);
+  };
+  window.bscpPayFromBase=async function(){
+    if(state.basePrincipal+1e-8<state.price){status(t("insufficient"),"error");return}
+    setBusy(true);status(t("processing"),"info");
+    try{
+      const d=await invoke({action:"pay_base",product_code:state.code});
+      if(d.status==="paid"){success(!!d.already_owned);return}
+      status(t("server"),"error");
+    }catch(e){
+      const msg=String(e?.message||"");
+      status(/Insufficient principal/i.test(msg)?t("insufficient"):msg||t("server"),"error");
+    }finally{setBusy(false)}
+  };
+  function schedulePoll(){
+    stopPoll();
+    if(state.pollCount>=18){$("bscpRetryBtn").style.display="block";return}
+    state.pollCount++;
+    state.pollTimer=setTimeout(()=>bscpSubmitDirect(true),7000);
+  }
+  window.bscpSubmitDirect=async function(isPoll=false){
+    const tx=String($("bscpTxid").value||"").trim();
+    if(!/^0x[0-9a-fA-F]{64}$/.test(tx)){if(!isPoll)status(t("txidRequired"),"error");return}
+    setBusy(true);
+    if(!isPoll)state.pollCount=0;
+    status(`<span class="bscp-spinner"></span>${t("processing")}`,"info");
+    const box=$("bscpStatus");
+    if(box){box.innerHTML=`<span class="bscp-spinner"></span>${t("processing")}`}
+    try{
+      const d=await invoke({action:"submit_direct",product_code:state.code,network:state.network,tx_hash:tx});
+      if(d.status==="paid"){success(!!d.already_owned);return}
+      if(d.status==="failed"){stopPoll();status(t("failed"),"error");$("bscpRetryBtn").style.display="block";return}
+      const message=d.reason==="transaction_not_found_or_not_mined"?t("notFound"):t("checking");
+      status(message,"info"); $("bscpRetryBtn").style.display="none"; schedulePoll();
+    }catch(e){
+      stopPoll(); status(e?.message||t("server"),"error"); $("bscpRetryBtn").style.display="block";
+    }finally{setBusy(false)}
+  };
+
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("bscPaymentModal")?.classList.contains("open"))bscpClose()});
+  applyCopy();
+  let lastLang=lang();
+  setInterval(()=>{const l=lang();if(l!==lastLang){lastLang=l;applyCopy()}},1000);
 })();
 </script>
 
