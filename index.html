@@ -31601,7 +31601,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v9-script">
+<script id="instant-wallet-deposit-v10-script">
 (function(){
 "use strict";
 
@@ -31629,6 +31629,23 @@ const COPY={
 const siteT=(typeof T!=="undefined"&&T)?T:{};
 const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false};
 const IWP_PENDING_KEY="bi_instant_wallet_pending_v8";
+const IWP_HANDLED_KEY="bi_iwp_handled_success_v10";
+function readHandled(){
+  try{
+    const a=JSON.parse(localStorage.getItem(IWP_HANDLED_KEY)||"[]");
+    return Array.isArray(a)?a:[];
+  }catch(_){return []}
+}
+function isHandled(id){return !!id&&readHandled().includes(String(id))}
+function markHandled(id){
+  if(!id)return;
+  try{
+    const a=readHandled().filter(Boolean);
+    if(!a.includes(String(id)))a.unshift(String(id));
+    localStorage.setItem(IWP_HANDLED_KEY,JSON.stringify(a.slice(0,30)));
+  }catch(_){}
+}
+
 let iwpResumeRunning=false;
 let iwpServerRecoveryRunning=false;
 let iwpServerRecoveryTimer=null;
@@ -31855,12 +31872,36 @@ async function invokeVerify(amount,from,txHash){
   if(data?.error)throw new Error(data.error);
   return data||{};
 }
+
+async function acknowledgeSuccess(requestId){
+  if(!requestId)return;
+  try{
+    await supabaseClient.functions.invoke("direct-wallet-recovery",{
+      body:{action:"ack",request_id:String(requestId)}
+    });
+  }catch(_){}
+}
 async function finishSuccess(data,amount){
-  stopPoll();state.busy=false;clearPendingPayment();waitNote(false);
-  const credited=Number(data?.credited_amount||amount).toFixed(2);
+  const requestId=String(data?.request_id||"");
+  const alreadyHandled=isHandled(requestId);
+
+  stopPoll();
+  state.busy=false;
+  clearPendingPayment();
+  waitNote(false);
+
+  const credited=Number(data?.credited_amount||amount||0).toFixed(2);
   status(t("success").replace("{amount}",credited),"ok");
   markConfirmed();
-  const input=document.getElementById("deposit-amount");if(input)input.value="";
+
+  if(requestId){
+    markHandled(requestId);
+    void acknowledgeSuccess(requestId);
+  }
+
+  const input=document.getElementById("deposit-amount");
+  if(input)input.value="";
+
   try{
     if(typeof syncFinancialStateFromServer==="function")await syncFinancialStateFromServer();
     else{
@@ -31869,9 +31910,20 @@ async function finishSuccess(data,amount){
       if(typeof loadTransactions==="function")await loadTransactions();
     }
   }catch(_){}
-  try{if(typeof window.refreshWithdrawalLimitCard==="function")await window.refreshWithdrawalLimitCard()}catch(_){}
-  if(typeof toast==="function")toast(t("success").replace("{amount}",credited),"success");
-  if(typeof showTransactionSuccessModal==="function")showTransactionSuccessModal("deposit");
+
+  try{
+    if(typeof window.refreshWithdrawalLimitCard==="function")
+      await window.refreshWithdrawalLimitCard();
+  }catch(_){}
+
+  // Show the success toast only once for each blockchain payment.
+  if(!alreadyHandled && typeof toast==="function"){
+    toast(t("success").replace("{amount}",credited),"success");
+  }
+
+  // IMPORTANT: Do not open the site's generic "deposit request submitted"
+  // modal for Instant Wallet payments. The inline green confirmation is the
+  // only success UI for this flow.
 }
 async function verifyLoop(amount,from,txHash,isPoll=false){
   stopPoll();
@@ -31973,7 +32025,7 @@ window.togglePaymentDetails=function(){
   if(method==="instantwallet"){
     crypto.style.display="none";if(tx)tx.style.display="none";if(receipt)receipt.style.display="none";if(submit)submit.style.display="none";render();return;
   }
-  stopPoll();setBusy(false);
+  stopPoll();state.busy=false;setBusy(false);
   if(receipt)receipt.style.display=method==="wallet"?"":"none";
   if(submit)submit.style.display=method==="wallet"?"":"none";
   if(method==="wallet"){
@@ -32005,6 +32057,12 @@ async function recoverLatestPaymentFromServer(forceUi=false){
     if(d.status==="none")return;
 
     if(d.status==="approved"){
+      const rid=String(d.request_id||"");
+      if(isHandled(rid)){
+        if(rid)void acknowledgeSuccess(rid);
+        clearPendingPayment();
+        return;
+      }
       if(method && method.value!=="instantwallet")window.selectPaymentMethod("instantwallet");
       else if(method?.value==="instantwallet" && !document.getElementById("iwpStatus"))render();
       await finishSuccess(d,Number(d.credited_amount||money()||0));
