@@ -14177,12 +14177,21 @@ html.native-app #rewards{
 .bsc2-risk{margin-top:17px;padding:11px 13px;border-left:3px solid #f0b90b;border-radius:9px;background:rgba(240,185,11,.055);color:#c6cfda;font-size:12px;line-height:1.7}
 .bsc2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .bsc2-card{
-  position:relative;padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:19px;
+  position:relative;overflow:hidden;padding:0 22px 22px;border:1px solid rgba(255,255,255,.09);border-radius:19px;
   background:linear-gradient(145deg,rgba(20,27,35,.96),rgba(9,14,20,.98));
-  box-shadow:0 18px 45px rgba(0,0,0,.38)
+  box-shadow:0 18px 45px rgba(0,0,0,.38);
+  transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease
 }
+.bsc2-card:hover{transform:translateY(-4px);border-color:rgba(240,185,11,.32);box-shadow:0 25px 62px rgba(0,0,0,.5),0 0 24px rgba(240,185,11,.07)}
 .bsc2-card.popular{border-color:rgba(240,185,11,.58);box-shadow:0 18px 50px rgba(0,0,0,.46),0 0 22px rgba(240,185,11,.10)}
-.bsc2-badge{position:absolute;right:15px;top:15px;padding:5px 8px;border-radius:999px;color:#161000;background:#f0b90b;font-size:9px;font-weight:950}
+.bsc2-visual{position:relative;isolation:isolate;aspect-ratio:16/9;margin:0 -22px 19px;overflow:hidden;border-bottom:1px solid rgba(240,185,11,.18);background:#080c11}
+.bsc2-visual::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 46%,rgba(8,12,17,.9) 100%),linear-gradient(120deg,rgba(240,185,11,.07),transparent 42%);pointer-events:none}
+.bsc2-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.94) contrast(1.04);transition:transform .55s ease,filter .55s ease}
+.bsc2-card:hover .bsc2-visual img{transform:scale(1.035);filter:saturate(1.05) contrast(1.06)}
+.bsc2-visual-mark{position:absolute;z-index:2;left:14px;bottom:12px;width:31px;height:31px;display:grid;place-items:center;border:1px solid rgba(255,226,108,.38);border-radius:10px;background:rgba(7,11,16,.66);color:#ffe26c;box-shadow:0 8px 20px rgba(0,0,0,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.bsc2-visual-mark svg{width:18px;height:18px}
+html[dir="rtl"] .bsc2-visual-mark{left:auto;right:14px}
+.bsc2-badge{position:absolute;z-index:3;right:15px;top:15px;padding:5px 8px;border-radius:999px;color:#161000;background:#f0b90b;font-size:9px;font-weight:950;box-shadow:0 7px 18px rgba(0,0,0,.32)}
 html[dir="rtl"] .bsc2-badge{right:auto;left:15px}
 .bsc2-card h2{margin:0 0 8px;font-size:21px}
 .bsc2-card p{min-height:66px;margin:0;color:#93a0b0;line-height:1.65;font-size:12px}
@@ -14199,7 +14208,36 @@ html[dir="rtl"] .bsc2-badge{right:auto;left:15px}
 .bsc2-selected-note{display:none;margin-top:14px;padding:13px;border-radius:12px;border:1px solid rgba(22,199,132,.25);background:rgba(22,199,132,.07);color:#9ef0cb;line-height:1.65;font-size:12px}
 .bsc2-selected-note.show{display:block}
 @media(max-width:900px){.bsc2-grid,.bsc2-steps{grid-template-columns:1fr}.bsc2-card p{min-height:0}}
-@media(max-width:600px){.bsc2-hero{padding:30px 20px;border-radius:19px}.bsc2-card{padding:18px}}
+@media(max-width:600px){.bsc2-hero{padding:30px 20px;border-radius:19px}.bsc2-card{padding:0 18px 18px}.bsc2-visual{margin:0 -18px 17px}.bsc2-card:hover{transform:none}}
+</style>
+
+<style id="bsc-home-carousel-v1-css">
+.bsc-home-showcase{position:relative;margin:24px 0 26px;padding:20px;border:1px solid rgba(240,185,11,.22);border-radius:22px;background:linear-gradient(145deg,rgba(16,23,31,.86),rgba(7,11,16,.93));box-shadow:0 22px 55px rgba(0,0,0,.34);overflow:hidden}
+.bsc-home-showcase::before{content:"";position:absolute;inset:-150px auto auto -120px;width:330px;height:330px;border-radius:50%;background:rgba(240,185,11,.09);filter:blur(55px);pointer-events:none}
+.bsc-home-heading{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:15px}
+.bsc-home-heading h2{margin:0;font-size:clamp(21px,3vw,30px)}
+.bsc-home-heading p{max-width:620px;margin:5px 0 0;color:#9aa7b6;font-size:11px;line-height:1.65}
+.bsc-home-all{flex:0 0 auto;min-height:38px;padding:8px 13px;border:1px solid rgba(240,185,11,.34);border-radius:11px;background:rgba(240,185,11,.07);color:#ffe58a;font-size:10px;font-weight:900}
+.bsc-home-track{position:relative;display:flex;gap:13px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(240,185,11,.52) rgba(255,255,255,.045)}
+.bsc-home-track::-webkit-scrollbar{height:6px}.bsc-home-track::-webkit-scrollbar-track{background:rgba(255,255,255,.045);border-radius:999px}.bsc-home-track::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#a97800,#f0b90b);border-radius:999px}
+.bsc-home-card{position:relative;isolation:isolate;flex:0 0 clamp(280px,38vw,430px);scroll-snap-align:start;overflow:hidden;padding:0;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:#0a0f15;color:#fff;text-align:start;box-shadow:0 14px 34px rgba(0,0,0,.34);cursor:pointer;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.bsc-home-card:hover{transform:translateY(-3px);border-color:rgba(240,185,11,.5);box-shadow:0 20px 43px rgba(0,0,0,.44),0 0 20px rgba(240,185,11,.08)}
+.bsc-home-card-image{position:relative;aspect-ratio:16/9;overflow:hidden;background:#070a0e}
+.bsc-home-card-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 43%,rgba(7,10,14,.95) 100%),linear-gradient(110deg,rgba(240,185,11,.08),transparent 46%);pointer-events:none}
+.bsc-home-card-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease,filter .5s ease}
+.bsc-home-card:hover img{transform:scale(1.035);filter:saturate(1.06)}
+.bsc-home-card-body{position:relative;padding:15px 16px 16px}
+.bsc-home-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.bsc-home-card h3{margin:0;font-size:17px;line-height:1.25}.bsc-home-price{flex:0 0 auto;color:#ffe16a;font-size:18px;font-weight:950;direction:ltr}
+.bsc-home-card p{min-height:38px;margin:8px 0 12px;color:#96a3b2;font-size:10px;line-height:1.65}
+.bsc-home-card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:11px;border-top:1px solid rgba(255,255,255,.065)}
+.bsc-home-card-foot small{color:#8390a0;font-size:9px}.bsc-home-card-action{display:inline-flex;align-items:center;gap:6px;color:#ffe58a;font-size:10px;font-weight:900}
+.bsc-home-card-action svg{width:14px;height:14px;transition:transform .2s ease}html[dir="rtl"] .bsc-home-card-action svg{transform:scaleX(-1)}
+.bsc-home-card:hover .bsc-home-card-action svg{transform:translateX(3px)}html[dir="rtl"] .bsc-home-card:hover .bsc-home-card-action svg{transform:scaleX(-1) translateX(3px)}
+.bsc2-card.bsc-home-target{animation:bscHomeTarget 1.4s ease;outline:2px solid rgba(240,185,11,.78);outline-offset:3px}
+@keyframes bscHomeTarget{0%,100%{box-shadow:0 18px 45px rgba(0,0,0,.38)}35%{box-shadow:0 20px 65px rgba(240,185,11,.3),0 0 0 7px rgba(240,185,11,.08)}}
+@media(max-width:700px){.bsc-home-showcase{margin:18px 0 22px;padding:16px 13px;border-radius:18px}.bsc-home-heading{align-items:center}.bsc-home-heading p{display:none}.bsc-home-all{min-height:35px;padding:7px 10px}.bsc-home-track{gap:11px;margin-inline-end:-13px}.bsc-home-card{flex-basis:min(82vw,340px)}.bsc-home-card:hover{transform:none}.bsc-home-card-body{padding:13px 14px 14px}}
+@media(prefers-reduced-motion:reduce){.bsc-home-track{scroll-behavior:auto}.bsc-home-card,.bsc-home-card img{transition:none}.bsc2-card.bsc-home-target{animation:none}}
 </style>
 
 
@@ -14376,21 +14414,34 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 
 <style id="iwp-wallets-autoconfirm-v8-css">
 .iwp-wallet-list{grid-template-columns:1fr 1fr}
+.iwp-wallets{
+  position:relative;overflow:hidden;margin-top:13px;padding:14px;border-color:rgba(240,185,11,.24);
+  background:linear-gradient(145deg,rgba(20,29,39,.88),rgba(8,13,20,.95));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 18px 38px rgba(0,0,0,.28);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.iwp-wallets::before{content:"";position:absolute;inset:-80px auto auto -80px;width:180px;height:180px;border-radius:50%;background:rgba(240,185,11,.07);filter:blur(30px);pointer-events:none}
+.iwp-wallets-title{position:relative;margin-bottom:11px;color:#d8e0e9;font-size:11px;font-weight:850}
 .iwp-wallet-btn{
-  position:relative;min-height:54px;padding:9px 11px;
-  transition:border-color .18s ease,background .18s ease,transform .18s ease
+  position:relative;isolation:isolate;overflow:hidden;min-height:66px;padding:10px 12px;border-color:rgba(153,171,192,.22);border-radius:14px;
+  background:linear-gradient(135deg,rgba(31,42,55,.92),rgba(18,26,36,.96));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 7px 16px rgba(0,0,0,.2);
+  transition:border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease
 }
+.iwp-wallet-btn::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(110deg,rgba(255,255,255,.045),transparent 38%,rgba(240,185,11,.045));opacity:.55}
+.iwp-wallet-btn:hover{border-color:rgba(240,185,11,.45);background:linear-gradient(135deg,rgba(37,48,62,.96),rgba(21,29,39,.98));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 11px 24px rgba(0,0,0,.28)}
 .iwp-wallet-btn:active{transform:scale(.985)}
-.iwp-wallet-btn.detected{border-color:rgba(22,199,132,.34);background:rgba(22,199,132,.055)}
+.iwp-wallet-btn.detected{border-color:rgba(22,199,132,.43);background:linear-gradient(135deg,rgba(21,61,53,.52),rgba(17,31,36,.95))}
 .iwp-wallet-brand{
-  flex:0 0 auto;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;
-  border:1px solid rgba(255,255,255,.10);background:#202a36;color:#fff;
-  font-size:9px;font-weight:950;letter-spacing:.2px
+  flex:0 0 auto;display:grid;place-items:center;width:42px;height:42px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(7,11,16,.72);color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 7px 16px rgba(0,0,0,.26)
 }
+.iwp-wallet-logo{display:block;width:29px;height:29px}
 .iwp-wallet-copy{min-width:0;display:block}
-.iwp-wallet-copy strong{display:block;color:#f2f5f8;font-size:11px}
-.iwp-wallet-copy small{display:block;margin-top:2px;color:#778697;font-size:8px}
-.iwp-wallet-ready{margin-inline-start:auto;color:#4ade80;font-size:9px;font-weight:900}
+.iwp-wallet-copy strong{display:block;color:#f5f7fa;font-size:12px;letter-spacing:.05px}
+.iwp-wallet-copy small{display:block;margin-top:3px;color:#8c9aab;font-size:9px;font-weight:650}
+.iwp-wallet-ready{margin-inline-start:auto;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid rgba(74,222,128,.3);background:rgba(74,222,128,.09);color:#4ade80;font-size:10px;font-weight:900}
 .iwp-wallet-fallback{display:none}
 .iwp-helper{
   margin-top:8px;color:#8391a1;font-size:9px;line-height:1.7
@@ -14399,7 +14450,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   border-color:#16c784;background:linear-gradient(135deg,#34d399,#16a66d);
   color:#06120c;box-shadow:0 10px 28px rgba(22,199,132,.16)
 }
-@media(max-width:520px){.iwp-wallet-list{grid-template-columns:1fr}}
+@media(max-width:520px){.iwp-wallet-list{grid-template-columns:1fr}.iwp-wallet-btn{min-height:70px}.iwp-wallet-brand{width:44px;height:44px}}
 </style>
 
 </head>
@@ -14493,7 +14544,11 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   </div>
 
   <div class="bsc2-grid">
-    <article class="bsc2-card">
+    <article id="bscBotSpot" class="bsc2-card" data-bsc-package="SPOT" tabindex="-1">
+      <div class="bsc2-visual">
+        <img src="bsc-spot.webp" alt="" loading="lazy" decoding="async">
+        <span class="bsc2-visual-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 17.5 9 12l3 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7h4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
       <h2>BSC Spot Bot</h2>
       <p data-bsc="spotDesc">Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.</p>
       <div class="bsc2-price"><span dir="ltr">$99</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
@@ -14512,7 +14567,11 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('SPOT',99)" data-bsc="buy">Buy Now</button>
     </article>
 
-    <article class="bsc2-card">
+    <article id="bscBotFutures" class="bsc2-card" data-bsc-package="FUTURES" tabindex="-1">
+      <div class="bsc2-visual">
+        <img src="bsc-futures.webp" alt="" loading="lazy" decoding="async">
+        <span class="bsc2-visual-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 7 4-3 4 3M9 4v7M19 17l-4 3-4-3m4 3v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
       <h2>BSC Futures Bot</h2>
       <p data-bsc="futuresDesc">Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.</p>
       <div class="bsc2-price"><span dir="ltr">$129</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
@@ -14531,8 +14590,12 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       <button class="btn gold bsc2-buy" type="button" onclick="bscSafeBuy('FUTURES',129)" data-bsc="buy">Buy Now</button>
     </article>
 
-    <article class="bsc2-card popular">
+    <article id="bscBotUniversal" class="bsc2-card popular" data-bsc-package="UNIVERSAL" tabindex="-1">
       <span class="bsc2-badge" data-bsc="popular">MOST POPULAR</span>
+      <div class="bsc2-visual">
+        <img src="bsc-universal.webp" alt="" loading="lazy" decoding="async">
+        <span class="bsc2-visual-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      </div>
       <h2>BSC Universal Bot</h2>
       <p data-bsc="universalDesc">Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.</p>
       <div class="bsc2-price"><span dir="ltr">$179</span> <span class="bsc4-monthly-badge" dir="ltr">30 DAYS</span></div>
@@ -14584,6 +14647,42 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   <video id="homepageVaultVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Animated investment vault showcase" src="homepage-vault-clean.mp4"></video>
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
+
+<section class="bsc-home-showcase" aria-labelledby="bscHomeTitle">
+  <div class="bsc-home-heading">
+    <div>
+      <h2 id="bscHomeTitle" data-bsc="nav">Trading Bot</h2>
+      <p data-bsc="heroTitle">Professional automated trading with advanced risk control.</p>
+    </div>
+    <button class="bsc-home-all" type="button" onclick="openBscBotCard('SPOT',true)" data-bsc="nav">Trading Bot</button>
+  </div>
+  <div class="bsc-home-track" id="bscHomeTrack" role="region" aria-label="BSC trading bot packages" tabindex="0">
+    <button class="bsc-home-card" type="button" onclick="openBscBotCard('SPOT')" aria-label="BSC Spot Bot">
+      <span class="bsc-home-card-image"><img src="bsc-spot.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-body">
+        <span class="bsc-home-card-top"><h3>BSC Spot Bot</h3><b class="bsc-home-price">$99</b></span>
+        <p data-bsc="spotDesc">Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.</p>
+        <span class="bsc-home-card-foot"><small data-bsc="oneTime">30-day subscription</small><span class="bsc-home-card-action"><span data-bsc="buy">Buy Now</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </span>
+    </button>
+    <button class="bsc-home-card" type="button" onclick="openBscBotCard('FUTURES')" aria-label="BSC Futures Bot">
+      <span class="bsc-home-card-image"><img src="bsc-futures.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-body">
+        <span class="bsc-home-card-top"><h3>BSC Futures Bot</h3><b class="bsc-home-price">$129</b></span>
+        <p data-bsc="futuresDesc">Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.</p>
+        <span class="bsc-home-card-foot"><small data-bsc="oneTime">30-day subscription</small><span class="bsc-home-card-action"><span data-bsc="buy">Buy Now</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </span>
+    </button>
+    <button class="bsc-home-card" type="button" onclick="openBscBotCard('UNIVERSAL')" aria-label="BSC Universal Bot">
+      <span class="bsc-home-card-image"><img src="bsc-universal.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-body">
+        <span class="bsc-home-card-top"><h3>BSC Universal Bot</h3><b class="bsc-home-price">$179</b></span>
+        <p data-bsc="universalDesc">Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.</p>
+        <span class="bsc-home-card-foot"><small data-bsc="oneTime">30-day subscription</small><span class="bsc-home-card-action"><span data-bsc="buy">Buy Now</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+      </span>
+    </button>
+  </div>
+</section>
 
 <section class="top-markets-showcase">
   <div class="title"><h2 data-t="top">Top Markets</h2><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="viewAll">View all</button></div>
@@ -31213,6 +31312,27 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
     });
   }
 
+  window.openBscBotCard=function(code,showTop){
+    const normalized=String(code||"SPOT").toUpperCase();
+    const nav=document.querySelector('[data-page="bots"]');
+    if(typeof window.page==="function") window.page("bots",nav);
+
+    window.setTimeout(function(){
+      const target=showTop
+        ? document.getElementById("bots")
+        : document.querySelector('[data-bsc-package="'+normalized+'"]');
+      if(!target)return;
+      const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({behavior:reduced?"auto":"smooth",block:showTop?"start":"center"});
+      if(!showTop){
+        document.querySelectorAll(".bsc2-card.bsc-home-target").forEach(el=>el.classList.remove("bsc-home-target"));
+        target.classList.add("bsc-home-target");
+        try{target.focus({preventScroll:true})}catch(_){target.focus()}
+        window.setTimeout(()=>target.classList.remove("bsc-home-target"),1600);
+      }
+    },140);
+  };
+
   window.bscSafeBuy=function(code,price){
     try{
       localStorage.setItem("bsc_safe_purchase_selection",JSON.stringify({
@@ -31767,6 +31887,20 @@ function findTronProvider(brand){
 function brandProvider(brand){
   return state.network==="TRC20"?findTronProvider(brand):findEvmProvider(brand);
 }
+function walletLogo(brand){
+  const common='class="iwp-wallet-logo" viewBox="0 0 48 48" aria-hidden="true" focusable="false"';
+  const logos={
+    binance:`<svg ${common}><g fill="#F3BA2F"><path d="m24 5 7.1 7.1-4.2 4.2L24 13.4l-2.9 2.9-4.2-4.2L24 5Zm-12 12 4.2 4.2-2.9 2.9 2.9 2.9-4.2 4.2L4.9 24 12 17Zm24 0 7.1 7.1-7.1 7.1-4.2-4.2 2.9-2.9-2.9-2.9L36 17ZM24 34.6l2.9-2.9 4.2 4.2L24 43l-7.1-7.1 4.2-4.2 2.9 2.9Z"/><path d="m24 18.8 5.2 5.2-5.2 5.2-5.2-5.2 5.2-5.2Z"/></g></svg>`,
+    trust:`<svg ${common}><path d="M24 5.5c6.7 5 13.5 4.6 16.5 4.6 0 15.7-3.1 25.5-16.5 32.4C10.6 35.6 7.5 25.8 7.5 10.1c3 0 9.8.4 16.5-4.6Z" fill="#3375BB"/><path d="M24 10.8c4.5 3 9 3.2 11.6 3.3-.4 11.1-2.8 18.1-11.6 23.3V10.8Z" fill="#fff" fill-opacity=".95"/><path d="M24 10.8v26.6c-8.8-5.2-11.2-12.2-11.6-23.3 2.6-.1 7.1-.3 11.6-3.3Z" fill="#fff" fill-opacity=".62"/></svg>`,
+    metamask:`<svg ${common}><path d="m7 8 14 10-4.7 8.7-8.5-3.1L7 8Zm34 0-14 10 4.7 8.7 8.5-3.1L41 8Z" fill="#E2761B"/><path d="m21 18 3-4 3 4-3 3.2L21 18Zm-4.7 8.7 4.4 2.1-1.6 6.2-7.3-2 4.5-6.3Zm15.4 0-4.4 2.1 1.6 6.2 7.3-2-4.5-6.3Z" fill="#F6851B"/><path d="m19.1 35 4.9 3.7 4.9-3.7-1.2 5.3H20.3L19.1 35Z" fill="#C0AD9E"/><path d="m20.7 28.8 3.3 2.4 3.3-2.4 1.6 6.2-4.9 1.4-4.9-1.4 1.6-6.2Z" fill="#763D16"/></svg>`,
+    okx:`<svg ${common}><g fill="#fff"><rect x="6" y="6" width="10" height="10" rx="1"/><rect x="32" y="6" width="10" height="10" rx="1"/><rect x="19" y="19" width="10" height="10" rx="1"/><rect x="6" y="32" width="10" height="10" rx="1"/><rect x="32" y="32" width="10" height="10" rx="1"/></g></svg>`,
+    bitget:`<svg ${common}><path d="M10 14h20l-5-5 3.8-3.8L41 17.5 28.8 29.8 25 26l5-5H10v-7Zm28 20H18l5 5-3.8 3.8L7 30.5l12.2-12.3L23 22l-5 5h20v7Z" fill="#00F0C8"/></svg>`,
+    coinbase:`<svg ${common}><circle cx="24" cy="24" r="20" fill="#1652F0"/><path fill="#fff" fill-rule="evenodd" d="M24 13.5c5.8 0 10.5 4.7 10.5 10.5S29.8 34.5 24 34.5 13.5 29.8 13.5 24 18.2 13.5 24 13.5Zm-4.4 6.1v8.8h8.8v-8.8h-8.8Z" clip-rule="evenodd"/></svg>`,
+    tronlink:`<svg ${common}><path d="M7 7.2 42 14 20.5 41 7 7.2Z" fill="none" stroke="#FF3040" stroke-width="3" stroke-linejoin="round"/><path d="m7 7.2 18 12.2L42 14M25 19.4 20.5 41M7 7.2l13.5 33.8" fill="none" stroke="#FF3040" stroke-width="2.4" stroke-linejoin="round"/></svg>`,
+    generic:`<svg ${common}><path d="M8 15.5h29a5 5 0 0 1 5 5v16a5 5 0 0 1-5 5H11a5 5 0 0 1-5-5V13a6 6 0 0 1 6-6h23v8.5" fill="none" stroke="#F0B90B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="35" cy="28.5" r="2.5" fill="#F0B90B"/></svg>`
+  };
+  return logos[brand]||logos.generic;
+}
 function mobileDappLink(brand){
   const u=location.href;
   if(brand==="trust")return trustDappUrl();
@@ -31820,7 +31954,7 @@ async function chooseWallet(){
   for(const item of walletCatalog()){
     const provider=brandProvider(item.id),b=document.createElement("button");
     b.type="button";b.className="iwp-wallet-btn"+(provider?" detected":"");
-    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.textContent=item.tag;
+    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.innerHTML=walletLogo(item.id);badge.setAttribute("aria-hidden","true");
     const copy=document.createElement("span");copy.className="iwp-wallet-copy";
     const strong=document.createElement("strong");strong.textContent=item.name;
     const small=document.createElement("small");small.textContent=provider?"Ready to connect":"Open wallet";
@@ -31837,7 +31971,7 @@ async function chooseWallet(){
     const name=String(d?.info?.name||"Wallet");
     if([...knownNames].some(k=>name.toLowerCase().includes(k.split(" ")[0])))continue;
     const b=document.createElement("button");b.type="button";b.className="iwp-wallet-btn detected";
-    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.textContent="WEB3";
+    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.innerHTML=walletLogo("generic");badge.setAttribute("aria-hidden","true");
     const copy=document.createElement("span");copy.className="iwp-wallet-copy";
     const strong=document.createElement("strong");strong.textContent=name;
     const small=document.createElement("small");small.textContent="Ready to connect";
