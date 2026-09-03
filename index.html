@@ -3,6 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="canonical" href="https://binancinvest.com/">
+<script id="bi-canonical-domain-guard">
+(function(){
+  try {
+    if (window.location.hostname.toLowerCase() === 'www.binancinvest.com') {
+      var target = 'https://binancinvest.com' + window.location.pathname + window.location.search + window.location.hash;
+      window.location.replace(target);
+    }
+  } catch (_) {}
+})();
+</script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -30722,7 +30733,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
 (async () => {
   // Reown Project ID from the user's dashboard (32 characters).
   const PROJECT_ID = "cc6ccbdc45d6972028acc77cf943c04c";
-  const APP_ORIGIN = window.location.origin;
+  const APP_ORIGIN = "https://binancinvest.com";
 
   // Only ordinary self-custody wallets requested for this site.
   // IDs are Reown / WalletGuide IDs.
@@ -30763,7 +30774,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
         name: "BI Invest",
         description: "BI Invest secure wallet connection",
         url: APP_ORIGIN,
-        icons: []
+        icons: ["https://binancinvest.com/binancinvest-apple-touch-v37.png?v=20260824-1131"]
       },
       themeMode: "dark",
       themeVariables: {
