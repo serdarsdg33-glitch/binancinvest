@@ -14373,6 +14373,35 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 @media(max-width:620px){.iwp-networks{grid-template-columns:1fr}}
 </style>
 
+
+<style id="iwp-wallets-autoconfirm-v8-css">
+.iwp-wallet-list{grid-template-columns:1fr 1fr}
+.iwp-wallet-btn{
+  position:relative;min-height:54px;padding:9px 11px;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease
+}
+.iwp-wallet-btn:active{transform:scale(.985)}
+.iwp-wallet-btn.detected{border-color:rgba(22,199,132,.34);background:rgba(22,199,132,.055)}
+.iwp-wallet-brand{
+  flex:0 0 auto;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;
+  border:1px solid rgba(255,255,255,.10);background:#202a36;color:#fff;
+  font-size:9px;font-weight:950;letter-spacing:.2px
+}
+.iwp-wallet-copy{min-width:0;display:block}
+.iwp-wallet-copy strong{display:block;color:#f2f5f8;font-size:11px}
+.iwp-wallet-copy small{display:block;margin-top:2px;color:#778697;font-size:8px}
+.iwp-wallet-ready{margin-inline-start:auto;color:#4ade80;font-size:9px;font-weight:900}
+.iwp-wallet-fallback{display:none}
+.iwp-helper{
+  margin-top:8px;color:#8391a1;font-size:9px;line-height:1.7
+}
+.iwp-pay.confirmed{
+  border-color:#16c784;background:linear-gradient(135deg,#34d399,#16a66d);
+  color:#06120c;box-shadow:0 10px 28px rgba(22,199,132,.16)
+}
+@media(max-width:520px){.iwp-wallet-list{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -31572,7 +31601,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v7-script">
+<script id="instant-wallet-deposit-v8-script">
 (function(){
 "use strict";
 
@@ -31585,20 +31614,39 @@ const NET={
   TRC20:{kind:"tron",chainId:"0x2b6653dc",decimals:6,token:TRON_USDT,receiver:TRON_RECEIVER,label:"USDT (TRC20)"}
 };
 const COPY={
- en:{option:"2. Instant Wallet Payment",title:"Instant Wallet Deposit",secure:"ON-CHAIN VERIFIED",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Deposit amount",destination:"Destination",network:"Network",pay:"Choose Wallet & Pay",wallets:"Choose a wallet",trustHelp:"On iPhone Safari, open BinancInvest inside a compatible wallet browser first.",trust:"Open in Trust Wallet",connecting:"Connecting to wallet…",confirm:"Wallet opened. Confirm the USDT transfer in your wallet.",sent:"Transaction sent. Waiting for blockchain confirmation…",confirmations:"Blockchain confirmation {a}/{b}…",success:"Payment successful. ${amount} was added to your Base Plan.",rejected:"Transaction was rejected in the wallet.",noWallet:"No compatible wallet was detected. Open the site inside a Web3/TRON wallet.",wrong:"Could not switch to the selected network.",invalid:"Enter a valid deposit amount first.",failed:"Payment could not be verified. No balance was credited.",server:"Verification service is temporarily unavailable.",used:"This blockchain transaction has already been used.",waitNote:"Blockchain confirmation may take up to 30 minutes. Thank you for your patience."},
- fa:{option:"۲. پرداخت مستقیم با کیف پول",title:"واریز مستقیم از کیف پول",secure:"تأیید واقعی بلاکچین",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"مبلغ واریز",destination:"ولت مقصد",network:"شبکه",pay:"انتخاب ولت و پرداخت",wallets:"انتخاب کیف پول",trustHelp:"در Safari آیفون، سایت را داخل مرورگر یک کیف پول سازگار باز کنید.",trust:"باز کردن در Trust Wallet",connecting:"در حال اتصال به کیف پول…",confirm:"کیف پول باز شد؛ انتقال USDT را داخل کیف پول تأیید کنید.",sent:"تراکنش ارسال شد؛ در حال بررسی بلاکچین…",confirmations:"تأیید بلاکچین {a} از {b}…",success:"پرداخت موفق بود. مبلغ ${amount} به پلن پایه شما اضافه شد.",rejected:"تراکنش در کیف پول لغو شد.",noWallet:"کیف پول سازگار پیدا نشد. سایت را داخل یک کیف پول Web3/TRON باز کنید.",wrong:"تغییر به شبکه انتخاب‌شده انجام نشد.",invalid:"ابتدا مبلغ معتبر واریز را وارد کنید.",failed:"پرداخت تأیید نشد و هیچ مبلغی به موجودی اضافه نشد.",server:"سرویس بررسی پرداخت موقتاً در دسترس نیست.",used:"این تراکنش بلاکچین قبلاً استفاده شده است.",waitNote:"تأیید تراکنش از طرف بلاکچین ممکن است تا ۳۰ دقیقه طول بکشد. از صبر و شکیبایی شما سپاسگزاریم."},
- az:{option:"2. Birbaşa Cüzdan Ödənişi",title:"Cüzdandan Ani Depozit",secure:"BLOCKCHAIN TƏSDİQLİ",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Depozit məbləği",destination:"Qəbul edən cüzdan",network:"Şəbəkə",pay:"Cüzdan Seç və Ödə",wallets:"Cüzdan seçin",trustHelp:"iPhone Safari-də saytı uyğun Web3/TRON cüzdan brauzerində açın.",trust:"Trust Wallet-də Aç",connecting:"Cüzdana qoşulur…",confirm:"Cüzdan açıldı. USDT köçürməsini təsdiqləyin.",sent:"Tranzaksiya göndərildi. Blockchain təsdiqi gözlənilir…",confirmations:"Blockchain təsdiqi {a}/{b}…",success:"Ödəniş uğurludur. ${amount} Baza Planınıza əlavə edildi.",rejected:"Tranzaksiya cüzdanda ləğv edildi.",noWallet:"Uyğun cüzdan tapılmadı.",wrong:"Seçilmiş şəbəkəyə keçmək mümkün olmadı.",invalid:"Əvvəlcə düzgün məbləğ daxil edin.",failed:"Ödəniş təsdiqlənmədi və balans artırılmadı.",server:"Yoxlama xidməti müvəqqəti əlçatan deyil.",used:"Bu tranzaksiya artıq istifadə edilib.",waitNote:"Blockchain təsdiqi 30 dəqiqəyə qədər çəkə bilər. Səbriniz üçün təşəkkür edirik."},
- tr:{option:"2. Anlık Cüzdan Ödemesi",title:"Cüzdandan Anlık Para Yatırma",secure:"BLOCKCHAIN DOĞRULAMALI",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Yatırma tutarı",destination:"Hedef cüzdan",network:"Ağ",pay:"Cüzdan Seç ve Öde",wallets:"Cüzdan seç",trustHelp:"iPhone Safari'de siteyi uyumlu bir Web3/TRON cüzdan tarayıcısında açın.",trust:"Trust Wallet'ta Aç",connecting:"Cüzdana bağlanılıyor…",confirm:"Cüzdan açıldı. USDT transferini onaylayın.",sent:"İşlem gönderildi. Blockchain onayı bekleniyor…",confirmations:"Blockchain onayı {a}/{b}…",success:"Ödeme başarılı. ${amount} Ana Planınıza eklendi.",rejected:"İşlem cüzdanda iptal edildi.",noWallet:"Uyumlu cüzdan bulunamadı.",wrong:"Seçilen ağa geçilemedi.",invalid:"Önce geçerli bir tutar girin.",failed:"Ödeme doğrulanmadı; bakiye eklenmedi.",server:"Doğrulama servisi geçici olarak kullanılamıyor.",used:"Bu blockchain işlemi daha önce kullanıldı.",waitNote:"Blockchain onayı 30 dakikaya kadar sürebilir. Sabrınız için teşekkür ederiz."},
- ru:{option:"2. Мгновенная оплата кошельком",title:"Мгновенный депозит из кошелька",secure:"ПРОВЕРКА В БЛОКЧЕЙНЕ",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Сумма депозита",destination:"Кошелек получателя",network:"Сеть",pay:"Выбрать кошелек и оплатить",wallets:"Выберите кошелек",trustHelp:"В Safari на iPhone откройте сайт во встроенном браузере совместимого Web3/TRON-кошелька.",trust:"Открыть в Trust Wallet",connecting:"Подключение кошелька…",confirm:"Кошелек открыт. Подтвердите перевод USDT.",sent:"Транзакция отправлена. Ожидается подтверждение…",confirmations:"Подтверждение блокчейна {a}/{b}…",success:"Оплата успешна. ${amount} добавлено в Base Plan.",rejected:"Транзакция отменена в кошельке.",noWallet:"Совместимый кошелек не найден.",wrong:"Не удалось переключить сеть.",invalid:"Введите корректную сумму.",failed:"Платеж не подтвержден; баланс не изменен.",server:"Сервис проверки временно недоступен.",used:"Эта транзакция уже использована.",waitNote:"Подтверждение блокчейна может занять до 30 минут. Спасибо за ваше терпение."},
- ar:{option:"٢. الدفع الفوري بالمحفظة",title:"إيداع فوري من المحفظة",secure:"موثق على البلوكشين",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"مبلغ الإيداع",destination:"محفظة الاستلام",network:"الشبكة",pay:"اختر المحفظة وادفع",wallets:"اختر المحفظة",trustHelp:"في Safari على iPhone افتح الموقع داخل متصفح محفظة Web3/TRON متوافقة.",trust:"فتح في Trust Wallet",connecting:"جار الاتصال بالمحفظة…",confirm:"تم فتح المحفظة. أكد تحويل USDT.",sent:"تم إرسال المعاملة. جار انتظار تأكيد البلوكشين…",confirmations:"تأكيد البلوكشين {a}/{b}…",success:"تم الدفع بنجاح. تمت إضافة ${amount} إلى الخطة الأساسية.",rejected:"تم إلغاء المعاملة في المحفظة.",noWallet:"لم يتم العثور على محفظة متوافقة.",wrong:"تعذر التبديل إلى الشبكة.",invalid:"أدخل مبلغًا صحيحًا أولًا.",failed:"لم يتم تأكيد الدفع ولم تتم إضافة رصيد.",server:"خدمة التحقق غير متاحة مؤقتًا.",used:"تم استخدام هذه المعاملة سابقًا.",waitNote:"قد يستغرق تأكيد البلوكشين ما يصل إلى 30 دقيقة. شكرًا لصبركم."},
- zh:{option:"2. 钱包即时支付",title:"钱包即时充值",secure:"链上验证",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"充值金额",destination:"收款钱包",network:"网络",pay:"选择钱包并支付",wallets:"选择钱包",trustHelp:"在 iPhone Safari 中，请在兼容的 Web3/TRON 钱包浏览器内打开本站。",trust:"在 Trust Wallet 打开",connecting:"正在连接钱包…",confirm:"钱包已打开，请确认 USDT 转账。",sent:"交易已发送，等待区块链确认…",confirmations:"区块链确认 {a}/{b}…",success:"支付成功，${amount} 已加入基础计划。",rejected:"钱包中已取消交易。",noWallet:"未检测到兼容钱包。",wrong:"无法切换网络。",invalid:"请先输入有效金额。",failed:"付款未验证，余额未增加。",server:"验证服务暂时不可用。",used:"该交易已被使用。",waitNote:"区块链确认可能需要最多30分钟。感谢您的耐心等待。"},
- es:{option:"2. Pago instantáneo con wallet",title:"Depósito instantáneo desde wallet",secure:"VERIFICADO ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Importe",destination:"Wallet de destino",network:"Red",pay:"Elegir Wallet y Pagar",wallets:"Elige una wallet",trustHelp:"En Safari de iPhone, abre el sitio dentro de una wallet Web3/TRON compatible.",trust:"Abrir en Trust Wallet",connecting:"Conectando wallet…",confirm:"Wallet abierta. Confirma la transferencia USDT.",sent:"Transacción enviada. Esperando confirmación…",confirmations:"Confirmación blockchain {a}/{b}…",success:"Pago exitoso. ${amount} se añadió a tu Plan Base.",rejected:"Transacción cancelada en la wallet.",noWallet:"No se detectó una wallet compatible.",wrong:"No se pudo cambiar de red.",invalid:"Introduce primero un importe válido.",failed:"Pago no verificado; no se acreditó saldo.",server:"Servicio de verificación no disponible temporalmente.",used:"Esta transacción ya fue utilizada.",waitNote:"La confirmación de la blockchain puede tardar hasta 30 minutos. Gracias por tu paciencia."},
- fr:{option:"2. Paiement instantané par portefeuille",title:"Dépôt instantané par portefeuille",secure:"VÉRIFIÉ ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Montant",destination:"Portefeuille destinataire",network:"Réseau",pay:"Choisir le portefeuille et payer",wallets:"Choisissez un portefeuille",trustHelp:"Sur Safari iPhone, ouvrez le site dans un portefeuille Web3/TRON compatible.",trust:"Ouvrir dans Trust Wallet",connecting:"Connexion au portefeuille…",confirm:"Portefeuille ouvert. Confirmez le transfert USDT.",sent:"Transaction envoyée. En attente de confirmation…",confirmations:"Confirmation blockchain {a}/{b}…",success:"Paiement réussi. ${amount} ajouté au Plan de Base.",rejected:"Transaction annulée dans le portefeuille.",noWallet:"Aucun portefeuille compatible détecté.",wrong:"Impossible de changer de réseau.",invalid:"Saisissez d'abord un montant valide.",failed:"Paiement non vérifié; aucun solde crédité.",server:"Service de vérification temporairement indisponible.",used:"Cette transaction a déjà été utilisée.",waitNote:"La confirmation blockchain peut prendre jusqu’à 30 minutes. Merci pour votre patience."},
- de:{option:"2. Sofortige Wallet-Zahlung",title:"Sofortige Wallet-Einzahlung",secure:"ON-CHAIN VERIFIZIERT",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Einzahlungsbetrag",destination:"Ziel-Wallet",network:"Netzwerk",pay:"Wallet wählen & bezahlen",wallets:"Wallet auswählen",trustHelp:"Öffnen Sie die Seite auf dem iPhone in einem kompatiblen Web3/TRON-Wallet-Browser.",trust:"In Trust Wallet öffnen",connecting:"Wallet wird verbunden…",confirm:"Wallet geöffnet. USDT-Transfer bestätigen.",sent:"Transaktion gesendet. Blockchain-Bestätigung läuft…",confirmations:"Blockchain-Bestätigung {a}/{b}…",success:"Zahlung erfolgreich. ${amount} wurde dem Basisplan hinzugefügt.",rejected:"Transaktion in der Wallet abgebrochen.",noWallet:"Keine kompatible Wallet erkannt.",wrong:"Netzwerkwechsel fehlgeschlagen.",invalid:"Zuerst gültigen Betrag eingeben.",failed:"Zahlung nicht bestätigt; kein Guthaben gutgeschrieben.",server:"Prüfdienst vorübergehend nicht verfügbar.",used:"Diese Transaktion wurde bereits verwendet.",waitNote:"Die Blockchain-Bestätigung kann bis zu 30 Minuten dauern. Vielen Dank für Ihre Geduld."}
+ en:{option:"2. Instant Wallet Payment",title:"Instant Wallet Deposit",secure:"ON-CHAIN VERIFIED",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Deposit amount",destination:"Destination",network:"Network",pay:"Choose Wallet & Pay",wallets:"Choose a wallet",trustHelp:"On iPhone Safari, open BinancInvest inside a compatible wallet browser first.",trust:"Open in Trust Wallet",connecting:"Connecting to wallet…",confirm:"Wallet opened. Confirm the USDT transfer in your wallet.",sent:"Transaction sent. Waiting for blockchain confirmation…",confirmations:"Blockchain confirmation {a}/{b}…",success:"Payment successful. ${amount} was added to your Base Plan.",rejected:"Transaction was rejected in the wallet.",noWallet:"No compatible wallet was detected in this browser. Choose one of the wallets above and open BinancInvest in its built-in browser.",wrong:"Could not switch to the selected network.",invalid:"Enter a valid deposit amount first.",failed:"Payment could not be verified. No balance was credited.",server:"Verification service is temporarily unavailable.",used:"This blockchain transaction has already been used.",waitNote:"Blockchain confirmation may take up to 30 minutes. Thank you for your patience.",confirmed:"Payment Confirmed",resume:"Payment detected. Checking confirmation now…",walletHint:"If the wallet app does not open automatically, open it and visit binancinvest.com in its DApp browser."},
+ fa:{option:"۲. پرداخت مستقیم با کیف پول",title:"واریز مستقیم از کیف پول",secure:"تأیید واقعی بلاکچین",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"مبلغ واریز",destination:"ولت مقصد",network:"شبکه",pay:"انتخاب ولت و پرداخت",wallets:"انتخاب کیف پول",trustHelp:"در Safari آیفون، سایت را داخل مرورگر یک کیف پول سازگار باز کنید.",trust:"باز کردن در Trust Wallet",connecting:"در حال اتصال به کیف پول…",confirm:"کیف پول باز شد؛ انتقال USDT را داخل کیف پول تأیید کنید.",sent:"تراکنش ارسال شد؛ در حال بررسی بلاکچین…",confirmations:"تأیید بلاکچین {a} از {b}…",success:"پرداخت موفق بود. مبلغ ${amount} به پلن پایه شما اضافه شد.",rejected:"تراکنش در کیف پول لغو شد.",noWallet:"هیچ کیف پول سازگاری در این مرورگر شناسایی نشد. یکی از کیف پول‌های بالا را باز کنید و BinancInvest را از مرورگر داخلی همان کیف پول اجرا کنید.",wrong:"تغییر به شبکه انتخاب‌شده انجام نشد.",invalid:"ابتدا مبلغ معتبر واریز را وارد کنید.",failed:"پرداخت تأیید نشد و هیچ مبلغی به موجودی اضافه نشد.",server:"سرویس بررسی پرداخت موقتاً در دسترس نیست.",used:"این تراکنش بلاکچین قبلاً استفاده شده است.",waitNote:"تأیید تراکنش از طرف بلاکچین ممکن است تا ۳۰ دقیقه طول بکشد. از صبر و شکیبایی شما سپاسگزاریم.",confirmed:"تأیید شد",resume:"تراکنش پیدا شد؛ در حال بررسی تأیید نهایی…",walletHint:"اگر برنامه کیف پول خودکار باز نشد، همان کیف پول را باز کنید و binancinvest.com را در مرورگر داخلی آن اجرا کنید."},
+ az:{option:"2. Birbaşa Cüzdan Ödənişi",title:"Cüzdandan Ani Depozit",secure:"BLOCKCHAIN TƏSDİQLİ",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Depozit məbləği",destination:"Qəbul edən cüzdan",network:"Şəbəkə",pay:"Cüzdan Seç və Ödə",wallets:"Cüzdan seçin",trustHelp:"iPhone Safari-də saytı uyğun Web3/TRON cüzdan brauzerində açın.",trust:"Trust Wallet-də Aç",connecting:"Cüzdana qoşulur…",confirm:"Cüzdan açıldı. USDT köçürməsini təsdiqləyin.",sent:"Tranzaksiya göndərildi. Blockchain təsdiqi gözlənilir…",confirmations:"Blockchain təsdiqi {a}/{b}…",success:"Ödəniş uğurludur. ${amount} Baza Planınıza əlavə edildi.",rejected:"Tranzaksiya cüzdanda ləğv edildi.",noWallet:"Bu brauzerdə uyğun cüzdan aşkarlanmadı. Yuxarıdakı cüzdanlardan birini açın və BinancInvest-i onun daxili brauzerində açın.",wrong:"Seçilmiş şəbəkəyə keçmək mümkün olmadı.",invalid:"Əvvəlcə düzgün məbləğ daxil edin.",failed:"Ödəniş təsdiqlənmədi və balans artırılmadı.",server:"Yoxlama xidməti müvəqqəti əlçatan deyil.",used:"Bu tranzaksiya artıq istifadə edilib.",waitNote:"Blockchain təsdiqi 30 dəqiqəyə qədər çəkə bilər. Səbriniz üçün təşəkkür edirik.",confirmed:"Ödəniş Təsdiqləndi",resume:"Tranzaksiya tapıldı; təsdiq yenidən yoxlanılır…",walletHint:"Cüzdan avtomatik açılmasa, onu açın və binancinvest.com saytını daxili DApp brauzerində açın."},
+ tr:{option:"2. Anlık Cüzdan Ödemesi",title:"Cüzdandan Anlık Para Yatırma",secure:"BLOCKCHAIN DOĞRULAMALI",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Yatırma tutarı",destination:"Hedef cüzdan",network:"Ağ",pay:"Cüzdan Seç ve Öde",wallets:"Cüzdan seç",trustHelp:"iPhone Safari'de siteyi uyumlu bir Web3/TRON cüzdan tarayıcısında açın.",trust:"Trust Wallet'ta Aç",connecting:"Cüzdana bağlanılıyor…",confirm:"Cüzdan açıldı. USDT transferini onaylayın.",sent:"İşlem gönderildi. Blockchain onayı bekleniyor…",confirmations:"Blockchain onayı {a}/{b}…",success:"Ödeme başarılı. ${amount} Ana Planınıza eklendi.",rejected:"İşlem cüzdanda iptal edildi.",noWallet:"Bu tarayıcıda uyumlu cüzdan algılanmadı. Yukarıdaki cüzdanlardan birini açıp BinancInvest’i cüzdanın dahili tarayıcısında açın.",wrong:"Seçilen ağa geçilemedi.",invalid:"Önce geçerli bir tutar girin.",failed:"Ödeme doğrulanmadı; bakiye eklenmedi.",server:"Doğrulama servisi geçici olarak kullanılamıyor.",used:"Bu blockchain işlemi daha önce kullanıldı.",waitNote:"Blockchain onayı 30 dakikaya kadar sürebilir. Sabrınız için teşekkür ederiz.",confirmed:"Ödeme Onaylandı",resume:"İşlem bulundu; onay yeniden kontrol ediliyor…",walletHint:"Cüzdan otomatik açılmazsa uygulamayı açın ve binancinvest.com adresini dahili DApp tarayıcısında açın."},
+ ru:{option:"2. Мгновенная оплата кошельком",title:"Мгновенный депозит из кошелька",secure:"ПРОВЕРКА В БЛОКЧЕЙНЕ",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Сумма депозита",destination:"Кошелек получателя",network:"Сеть",pay:"Выбрать кошелек и оплатить",wallets:"Выберите кошелек",trustHelp:"В Safari на iPhone откройте сайт во встроенном браузере совместимого Web3/TRON-кошелька.",trust:"Открыть в Trust Wallet",connecting:"Подключение кошелька…",confirm:"Кошелек открыт. Подтвердите перевод USDT.",sent:"Транзакция отправлена. Ожидается подтверждение…",confirmations:"Подтверждение блокчейна {a}/{b}…",success:"Оплата успешна. ${amount} добавлено в Base Plan.",rejected:"Транзакция отменена в кошельке.",noWallet:"В этом браузере совместимый кошелек не обнаружен. Выберите кошелек выше и откройте BinancInvest во встроенном браузере кошелька.",wrong:"Не удалось переключить сеть.",invalid:"Введите корректную сумму.",failed:"Платеж не подтвержден; баланс не изменен.",server:"Сервис проверки временно недоступен.",used:"Эта транзакция уже использована.",waitNote:"Подтверждение блокчейна может занять до 30 минут. Спасибо за ваше терпение.",confirmed:"Платеж подтвержден",resume:"Транзакция найдена; проверяем подтверждение…",walletHint:"Если приложение кошелька не открылось автоматически, откройте его и посетите binancinvest.com во встроенном DApp-браузере."},
+ ar:{option:"٢. الدفع الفوري بالمحفظة",title:"إيداع فوري من المحفظة",secure:"موثق على البلوكشين",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"مبلغ الإيداع",destination:"محفظة الاستلام",network:"الشبكة",pay:"اختر المحفظة وادفع",wallets:"اختر المحفظة",trustHelp:"في Safari على iPhone افتح الموقع داخل متصفح محفظة Web3/TRON متوافقة.",trust:"فتح في Trust Wallet",connecting:"جار الاتصال بالمحفظة…",confirm:"تم فتح المحفظة. أكد تحويل USDT.",sent:"تم إرسال المعاملة. جار انتظار تأكيد البلوكشين…",confirmations:"تأكيد البلوكشين {a}/{b}…",success:"تم الدفع بنجاح. تمت إضافة ${amount} إلى الخطة الأساسية.",rejected:"تم إلغاء المعاملة في المحفظة.",noWallet:"لم يتم اكتشاف محفظة متوافقة في هذا المتصفح. اختر إحدى المحافظ أعلاه وافتح BinancInvest من متصفح المحفظة الداخلي.",wrong:"تعذر التبديل إلى الشبكة.",invalid:"أدخل مبلغًا صحيحًا أولًا.",failed:"لم يتم تأكيد الدفع ولم تتم إضافة رصيد.",server:"خدمة التحقق غير متاحة مؤقتًا.",used:"تم استخدام هذه المعاملة سابقًا.",waitNote:"قد يستغرق تأكيد البلوكشين ما يصل إلى 30 دقيقة. شكرًا لصبركم.",confirmed:"تم تأكيد الدفع",resume:"تم العثور على المعاملة؛ جار التحقق من التأكيد النهائي…",walletHint:"إذا لم تفتح المحفظة تلقائيًا، افتحها ثم افتح binancinvest.com من متصفح DApp الداخلي."},
+ zh:{option:"2. 钱包即时支付",title:"钱包即时充值",secure:"链上验证",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"充值金额",destination:"收款钱包",network:"网络",pay:"选择钱包并支付",wallets:"选择钱包",trustHelp:"在 iPhone Safari 中，请在兼容的 Web3/TRON 钱包浏览器内打开本站。",trust:"在 Trust Wallet 打开",connecting:"正在连接钱包…",confirm:"钱包已打开，请确认 USDT 转账。",sent:"交易已发送，等待区块链确认…",confirmations:"区块链确认 {a}/{b}…",success:"支付成功，${amount} 已加入基础计划。",rejected:"钱包中已取消交易。",noWallet:"此浏览器未检测到兼容钱包。请选择上方钱包，并在钱包内置浏览器中打开 BinancInvest。",wrong:"无法切换网络。",invalid:"请先输入有效金额。",failed:"付款未验证，余额未增加。",server:"验证服务暂时不可用。",used:"该交易已被使用。",waitNote:"区块链确认可能需要最多30分钟。感谢您的耐心等待。",confirmed:"付款已确认",resume:"已找到交易，正在重新检查确认状态…",walletHint:"如果钱包应用没有自动打开，请打开钱包并在其内置 DApp 浏览器中访问 binancinvest.com。"},
+ es:{option:"2. Pago instantáneo con wallet",title:"Depósito instantáneo desde wallet",secure:"VERIFICADO ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Importe",destination:"Wallet de destino",network:"Red",pay:"Elegir Wallet y Pagar",wallets:"Elige una wallet",trustHelp:"En Safari de iPhone, abre el sitio dentro de una wallet Web3/TRON compatible.",trust:"Abrir en Trust Wallet",connecting:"Conectando wallet…",confirm:"Wallet abierta. Confirma la transferencia USDT.",sent:"Transacción enviada. Esperando confirmación…",confirmations:"Confirmación blockchain {a}/{b}…",success:"Pago exitoso. ${amount} se añadió a tu Plan Base.",rejected:"Transacción cancelada en la wallet.",noWallet:"No se detectó una wallet compatible en este navegador. Elige una wallet arriba y abre BinancInvest en su navegador interno.",wrong:"No se pudo cambiar de red.",invalid:"Introduce primero un importe válido.",failed:"Pago no verificado; no se acreditó saldo.",server:"Servicio de verificación no disponible temporalmente.",used:"Esta transacción ya fue utilizada.",waitNote:"La confirmación de la blockchain puede tardar hasta 30 minutos. Gracias por tu paciencia.",confirmed:"Pago confirmado",resume:"Transacción detectada; comprobando la confirmación…",walletHint:"Si la wallet no se abre automáticamente, ábrela y visita binancinvest.com en su navegador DApp interno."},
+ fr:{option:"2. Paiement instantané par portefeuille",title:"Dépôt instantané par portefeuille",secure:"VÉRIFIÉ ON-CHAIN",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Montant",destination:"Portefeuille destinataire",network:"Réseau",pay:"Choisir le portefeuille et payer",wallets:"Choisissez un portefeuille",trustHelp:"Sur Safari iPhone, ouvrez le site dans un portefeuille Web3/TRON compatible.",trust:"Ouvrir dans Trust Wallet",connecting:"Connexion au portefeuille…",confirm:"Portefeuille ouvert. Confirmez le transfert USDT.",sent:"Transaction envoyée. En attente de confirmation…",confirmations:"Confirmation blockchain {a}/{b}…",success:"Paiement réussi. ${amount} ajouté au Plan de Base.",rejected:"Transaction annulée dans le portefeuille.",noWallet:"Aucun portefeuille compatible détecté dans ce navigateur. Choisissez un portefeuille ci-dessus et ouvrez BinancInvest dans son navigateur intégré.",wrong:"Impossible de changer de réseau.",invalid:"Saisissez d'abord un montant valide.",failed:"Paiement non vérifié; aucun solde crédité.",server:"Service de vérification temporairement indisponible.",used:"Cette transaction a déjà été utilisée.",waitNote:"La confirmation blockchain peut prendre jusqu’à 30 minutes. Merci pour votre patience.",confirmed:"Paiement confirmé",resume:"Transaction détectée; vérification de la confirmation…",walletHint:"Si le portefeuille ne s’ouvre pas automatiquement, ouvrez-le et visitez binancinvest.com dans son navigateur DApp intégré."},
+ de:{option:"2. Sofortige Wallet-Zahlung",title:"Sofortige Wallet-Einzahlung",secure:"ON-CHAIN VERIFIZIERT",bep:"BNB Smart Chain",erc:"Ethereum",tron:"TRON",amount:"Einzahlungsbetrag",destination:"Ziel-Wallet",network:"Netzwerk",pay:"Wallet wählen & bezahlen",wallets:"Wallet auswählen",trustHelp:"Öffnen Sie die Seite auf dem iPhone in einem kompatiblen Web3/TRON-Wallet-Browser.",trust:"In Trust Wallet öffnen",connecting:"Wallet wird verbunden…",confirm:"Wallet geöffnet. USDT-Transfer bestätigen.",sent:"Transaktion gesendet. Blockchain-Bestätigung läuft…",confirmations:"Blockchain-Bestätigung {a}/{b}…",success:"Zahlung erfolgreich. ${amount} wurde dem Basisplan hinzugefügt.",rejected:"Transaktion in der Wallet abgebrochen.",noWallet:"In diesem Browser wurde keine kompatible Wallet erkannt. Wählen Sie oben eine Wallet und öffnen Sie BinancInvest im integrierten Browser der Wallet.",wrong:"Netzwerkwechsel fehlgeschlagen.",invalid:"Zuerst gültigen Betrag eingeben.",failed:"Zahlung nicht bestätigt; kein Guthaben gutgeschrieben.",server:"Prüfdienst vorübergehend nicht verfügbar.",used:"Diese Transaktion wurde bereits verwendet.",waitNote:"Die Blockchain-Bestätigung kann bis zu 30 Minuten dauern. Vielen Dank für Ihre Geduld.",confirmed:"Zahlung bestätigt",resume:"Transaktion erkannt; Bestätigung wird erneut geprüft…",walletHint:"Falls die Wallet nicht automatisch geöffnet wird, öffnen Sie sie und rufen Sie binancinvest.com im integrierten DApp-Browser auf."}
 };
 
 const siteT=(typeof T!=="undefined"&&T)?T:{};
 const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false};
+const IWP_PENDING_KEY="bi_instant_wallet_pending_v8";
+let iwpResumeRunning=false;
+
+function savePendingPayment(p){
+  try{localStorage.setItem(IWP_PENDING_KEY,JSON.stringify({...p,savedAt:Date.now()}))}catch(_){}
+}
+function readPendingPayment(){
+  try{
+    const p=JSON.parse(localStorage.getItem(IWP_PENDING_KEY)||"null");
+    if(!p||!p.txHash||!p.network||!p.from||!Number(p.amount))return null;
+    if(Date.now()-Number(p.savedAt||0)>24*60*60*1000){localStorage.removeItem(IWP_PENDING_KEY);return null}
+    return p;
+  }catch(_){return null}
+}
+function clearPendingPayment(){try{localStorage.removeItem(IWP_PENDING_KEY)}catch(_){}}
+function markConfirmed(){
+  const b=document.getElementById("iwpPay");
+  if(b){b.textContent="✓ "+t("confirmed");b.classList.add("confirmed");b.disabled=true}
+}
 const evmAnnounced=new Map(),tronAnnounced=new Map();
 
 function lang(){const x=(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase();return COPY[x]?x:"en"}
@@ -31634,13 +31682,13 @@ function render(){
     <div id="iwpWallets" class="iwp-wallets">
       <div class="iwp-wallets-title">${esc(t("wallets"))}</div>
       <div id="iwpWalletList" class="iwp-wallet-list"></div>
-      <div class="iwp-wallet-fallback"><p>${esc(t("trustHelp"))}</p><a class="iwp-trust" id="iwpTrust" href="${esc(trustDappUrl())}">${esc(t("trust"))}</a></div>
+      <div class="iwp-helper">${esc(t("walletHint"))}</div>
     </div>
     <div id="iwpStatus" class="iwp-status" role="status" aria-live="polite"></div>
     <div id="iwpWaitNote" class="iwp-wait-note">${esc(t("waitNote"))}</div>
   </div>`;
   box.querySelectorAll("[data-iwp-net]").forEach(b=>b.addEventListener("click",()=>{if(state.busy)return;state.network=b.dataset.iwpNet;state.provider=null;state.walletName="";render()}));
-  document.getElementById("iwpPay")?.addEventListener("click",chooseWallet);
+  const payBtn=document.getElementById("iwpPay");if(payBtn){payBtn.classList.remove("confirmed");payBtn.disabled=false;payBtn.addEventListener("click",chooseWallet)}
 }
 
 function discoverEvm(){
@@ -31656,22 +31704,116 @@ function discoverTron(){
 window.addEventListener("eip6963:announceProvider",e=>{const d=e.detail;if(d?.provider&&d?.info?.uuid)evmAnnounced.set(d.info.uuid,d)});
 window.addEventListener("TIP6963:announceProvider",e=>{const d=e.detail;if(d?.provider&&d?.info?.uuid)tronAnnounced.set(d.info.uuid,d)});
 
+function providerName(d){return String(d?.info?.name||"").toLowerCase()}
+function findEvmProvider(brand){
+  const tests={
+    binance:n=>/binance|bnb chain/.test(n),
+    trust:n=>/trust/.test(n),
+    metamask:n=>/metamask/.test(n),
+    okx:n=>/okx/.test(n),
+    bitget:n=>/bitget|bitkeep/.test(n),
+    coinbase:n=>/coinbase|base wallet/.test(n)
+  };
+  for(const d of evmAnnounced.values())if(tests[brand]?.(providerName(d)))return d.provider;
+  if(brand==="binance"&&window.BinanceChain)return window.BinanceChain;
+  if(brand==="trust"&&window.trustwallet?.ethereum)return window.trustwallet.ethereum;
+  if(brand==="okx"&&window.okxwallet)return window.okxwallet;
+  if(brand==="bitget"&&window.bitkeep?.ethereum)return window.bitkeep.ethereum;
+  if(brand==="coinbase"&&window.coinbaseWalletExtension)return window.coinbaseWalletExtension;
+  if(brand==="metamask"&&window.ethereum?.isMetaMask)return window.ethereum;
+  return null;
+}
+function findTronProvider(brand){
+  const tests={
+    binance:n=>/binance/.test(n),
+    trust:n=>/trust/.test(n),
+    okx:n=>/okx/.test(n),
+    bitget:n=>/bitget|bitkeep/.test(n),
+    tronlink:n=>/tronlink|tron/.test(n)
+  };
+  for(const d of tronAnnounced.values())if(tests[brand]?.(providerName(d)))return d.provider;
+  if(brand==="tronlink")return window.tron||window.tronLink||null;
+  return null;
+}
+function brandProvider(brand){
+  return state.network==="TRC20"?findTronProvider(brand):findEvmProvider(brand);
+}
+function mobileDappLink(brand){
+  const u=location.href;
+  if(brand==="trust")return trustDappUrl();
+  if(brand==="metamask"){
+    const stripped=u.replace(/^https?:\/\//,"");
+    return "https://metamask.app.link/dapp/"+stripped;
+  }
+  if(brand==="bitget")return "https://bkcode.vip?action=dapp&url="+encodeURIComponent(u);
+  if(brand==="coinbase")return "https://go.cb-w.com/dapp?cb_url="+encodeURIComponent(u);
+  if(brand==="binance")return "https://web3.binance.com/";
+  if(brand==="okx")return "https://web3.okx.com/";
+  if(brand==="tronlink")return "https://www.tronlink.org/";
+  return u;
+}
+function walletCatalog(){
+  const all=[
+    {id:"binance",name:"Binance Wallet",tag:"BIN",nets:["BEP20","ERC20","TRC20"]},
+    {id:"trust",name:"Trust Wallet",tag:"TW",nets:["BEP20","ERC20","TRC20"]},
+    {id:"metamask",name:"MetaMask",tag:"MM",nets:["BEP20","ERC20"]},
+    {id:"okx",name:"OKX Wallet",tag:"OKX",nets:["BEP20","ERC20","TRC20"]},
+    {id:"bitget",name:"Bitget Wallet",tag:"BG",nets:["BEP20","ERC20","TRC20"]},
+    {id:"coinbase",name:"Coinbase Wallet",tag:"CB",nets:["BEP20","ERC20"]},
+    {id:"tronlink",name:"TronLink",tag:"TRX",nets:["TRC20"]}
+  ];
+  return all.filter(x=>x.nets.includes(state.network));
+}
+function openPreferredWallet(item){
+  const p=brandProvider(item.id);
+  if(p){
+    if(state.network==="TRC20")startTronPayment(p,item.name);
+    else startEvmPayment(p,item.name);
+    return;
+  }
+  status(t("noWallet"),"info");
+  const link=mobileDappLink(item.id);
+  if(["trust","metamask","bitget","coinbase"].includes(item.id))window.location.href=link;
+  else window.open(link,"_blank","noopener");
+}
 async function chooseWallet(){
   const amount=money();if(!amount){status(t("invalid"),"err");document.getElementById("deposit-amount")?.focus();return}
   waitNote(false);
   const wrap=document.getElementById("iwpWallets"),list=document.getElementById("iwpWalletList");if(!wrap||!list)return;
   wrap.classList.add("show");list.innerHTML="";
-  if(state.network==="TRC20"){discoverTron();await new Promise(r=>setTimeout(r,120))}
-  else{discoverEvm();await new Promise(r=>setTimeout(r,80))}
-  const source=state.network==="TRC20"?tronAnnounced:evmAnnounced,seen=new Set();
-  for(const d of source.values()){
-    const name=String(d?.info?.name||"Web3 Wallet");if(seen.has(name+"|"+String(d.provider)))continue;seen.add(name+"|"+String(d.provider));
-    const b=document.createElement("button");b.type="button";b.className="iwp-wallet-btn";
-    if(d?.info?.icon){const img=document.createElement("img");img.src=d.info.icon;img.alt="";b.appendChild(img)}
-    const s=document.createElement("span");s.textContent=name;b.appendChild(s);
-    b.addEventListener("click",()=>state.network==="TRC20"?startTronPayment(d.provider,name):startEvmPayment(d.provider,name));list.appendChild(b);
+  discoverEvm();discoverTron();
+  await new Promise(r=>setTimeout(r,140));
+
+  for(const item of walletCatalog()){
+    const provider=brandProvider(item.id),b=document.createElement("button");
+    b.type="button";b.className="iwp-wallet-btn"+(provider?" detected":"");
+    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.textContent=item.tag;
+    const copy=document.createElement("span");copy.className="iwp-wallet-copy";
+    const strong=document.createElement("strong");strong.textContent=item.name;
+    const small=document.createElement("small");small.textContent=provider?"Ready to connect":"Open wallet";
+    copy.append(strong,small);b.append(badge,copy);
+    if(provider){const ready=document.createElement("span");ready.className="iwp-wallet-ready";ready.textContent="✓";b.appendChild(ready)}
+    b.addEventListener("click",()=>openPreferredWallet(item));
+    list.appendChild(b);
   }
-  if(!list.children.length)status(t("noWallet"),"err");
+
+  // Also append any injected provider not already represented by the preferred brands.
+  const source=state.network==="TRC20"?tronAnnounced:evmAnnounced;
+  const knownNames=new Set(walletCatalog().map(x=>x.name.toLowerCase()));
+  for(const d of source.values()){
+    const name=String(d?.info?.name||"Wallet");
+    if([...knownNames].some(k=>name.toLowerCase().includes(k.split(" ")[0])))continue;
+    const b=document.createElement("button");b.type="button";b.className="iwp-wallet-btn detected";
+    const badge=document.createElement("span");badge.className="iwp-wallet-brand";badge.textContent="WEB3";
+    const copy=document.createElement("span");copy.className="iwp-wallet-copy";
+    const strong=document.createElement("strong");strong.textContent=name;
+    const small=document.createElement("small");small.textContent="Ready to connect";
+    const ready=document.createElement("span");ready.className="iwp-wallet-ready";ready.textContent="✓";
+    copy.append(strong,small);b.append(badge,copy,ready);
+    b.addEventListener("click",()=>state.network==="TRC20"?startTronPayment(d.provider,name):startEvmPayment(d.provider,name));
+    list.appendChild(b);
+  }
+  status("");
 }
 
 async function switchEvmChain(provider){
@@ -31707,29 +31849,46 @@ async function invokeVerify(amount,from,txHash){
   return data||{};
 }
 async function finishSuccess(data,amount){
-  stopPoll();setBusy(false);status(t("success").replace("{amount}",Number(data?.credited_amount||amount).toFixed(2)),"ok");waitNote(false);
-  document.getElementById("deposit-amount").value="";
-  try{if(typeof refreshSecureAccount==="function")await refreshSecureAccount()}catch(_){}
-  try{if(typeof updatePortfolio==="function")await updatePortfolio()}catch(_){}
-  try{if(typeof loadTransactions==="function")await loadTransactions()}catch(_){}
+  stopPoll();state.busy=false;clearPendingPayment();waitNote(false);
+  const credited=Number(data?.credited_amount||amount).toFixed(2);
+  status(t("success").replace("{amount}",credited),"ok");
+  markConfirmed();
+  const input=document.getElementById("deposit-amount");if(input)input.value="";
+  try{
+    if(typeof syncFinancialStateFromServer==="function")await syncFinancialStateFromServer();
+    else{
+      if(typeof refreshSecureAccount==="function")await refreshSecureAccount();
+      if(typeof updatePortfolio==="function")await updatePortfolio();
+      if(typeof loadTransactions==="function")await loadTransactions();
+    }
+  }catch(_){}
   try{if(typeof window.refreshWithdrawalLimitCard==="function")await window.refreshWithdrawalLimitCard()}catch(_){}
-  if(typeof toast==="function")toast(t("success").replace("{amount}",Number(data?.credited_amount||amount).toFixed(2)),"success");
+  if(typeof toast==="function")toast(t("success").replace("{amount}",credited),"success");
   if(typeof showTransactionSuccessModal==="function")showTransactionSuccessModal("deposit");
 }
 async function verifyLoop(amount,from,txHash,isPoll=false){
+  stopPoll();
+  savePendingPayment({amount,from,txHash,network:state.network});
+  state.busy=true;setBusy(true);
   try{
     const d=await invokeVerify(amount,from,txHash);
     if(d.status==="approved"){await finishSuccess(d,amount);return}
-    if(d.status==="failed"){stopPoll();setBusy(false);status(t("failed"),"err");waitNote(false);return}
+    if(d.status==="failed"){
+      stopPoll();state.busy=false;setBusy(false);clearPendingPayment();
+      status(t("failed"),"err");waitNote(false);return;
+    }
     if(d.confirmations!=null&&d.required!=null)status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
     else status(t("sent"),"info",true);
     waitNote(true);
-    if(state.polls++<300)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),6000);
-    else{setBusy(false);status(t("server"),"err")}
+    if(state.polls++<360)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),5000);
+    else{state.busy=false;setBusy(false);status(t("server"),"err")}
   }catch(e){
-    if(!isPoll){setBusy(false);status(e?.message||t("server"),"err")}
-    else if(state.polls++<300){state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),7000)}
-    else{setBusy(false);status(t("server"),"err")}
+    // Network/app switching can pause Safari requests. Preserve the payment
+    // and try again when the page becomes visible/focused, plus a timer.
+    if(!isPoll)status(e?.message||t("server"),"info",true);
+    waitNote(true);
+    if(state.polls++<360)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),6500);
+    else{state.busy=false;setBusy(false);status(t("server"),"err")}
   }
 }
 async function startEvmPayment(provider,name){
@@ -31745,7 +31904,7 @@ async function startEvmPayment(provider,name){
     status(t("confirm"),"info",true);
     const txHash=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
     if(!/^0x[0-9a-fA-F]{64}$/.test(String(txHash||"")))throw new Error(t("failed"));
-    state.txHash=txHash;status(t("sent"),"info",true);waitNote(true);
+    state.txHash=txHash;savePendingPayment({amount,from,txHash,network:state.network});status(t("sent"),"info",true);waitNote(true);
     await verifyLoop(amount,from,txHash,false);
   }catch(e){
     setBusy(false);waitNote(false);const m=String(e?.message||"");
@@ -31774,7 +31933,7 @@ async function startTronPayment(provider,name){
     const raw=typeof result==="string"?result:(result?.txid||result?.txID||result?.transaction?.txID||"");
     const txHash=String(raw).replace(/^0x/i,"");
     if(!/^[0-9a-fA-F]{64}$/.test(txHash))throw new Error(t("failed"));
-    state.txHash=txHash;status(t("sent"),"info",true);waitNote(true);
+    state.txHash=txHash;savePendingPayment({amount,from,txHash,network:state.network});status(t("sent"),"info",true);waitNote(true);
     await verifyLoop(amount,from,txHash,false);
   }catch(e){
     setBusy(false);waitNote(false);const m=String(e?.message||"");
@@ -31817,8 +31976,32 @@ window.togglePaymentDetails=function(){
   }
 };
 
+async function resumePendingPayment(){
+  if(iwpResumeRunning||!currentUser?.id)return;
+  const p=readPendingPayment();if(!p)return;
+  iwpResumeRunning=true;
+  try{
+    stopPoll();state.busy=false;state.polls=0;state.network=p.network||"BEP20";state.txHash=p.txHash;
+    const input=document.getElementById("deposit-amount");if(input)input.value=String(p.amount);
+    const method=document.getElementById("payment-method");
+    if(method&&method.value!=="instantwallet"){
+      window.selectPaymentMethod("instantwallet");
+    }else if(method?.value==="instantwallet"){
+      render();
+    }
+    status(t("resume"),"info",true);waitNote(true);setBusy(true);
+    await verifyLoop(Number(p.amount),String(p.from),String(p.txHash),true);
+  }finally{iwpResumeRunning=false}
+}
+
 document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(document.getElementById("payment-method")?.value==="instantwallet"){const el=document.getElementById("iwpAmount"),v=money();if(el)el.textContent=v>0?"$"+v.toFixed(2):"—"}});
+window.addEventListener("focus",()=>setTimeout(()=>void resumePendingPayment(),80));
+window.addEventListener("pageshow",()=>setTimeout(()=>void resumePendingPayment(),120));
+window.addEventListener("online",()=>setTimeout(()=>void resumePendingPayment(),100));
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(()=>void resumePendingPayment(),100)});
 applyLabels();discoverEvm();discoverTron();
+setTimeout(()=>void resumePendingPayment(),1800);
+setTimeout(()=>void resumePendingPayment(),5000);
 let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet")render()}},1200);
 })();
 </script>
