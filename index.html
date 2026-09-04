@@ -216,6 +216,10 @@
 })();
 </script>
 
+<!-- Cloudflare Turnstile public Site Key.
+     Leave empty until the Cloudflare widget is created.
+     NEVER put the Turnstile Secret Key in this HTML file. -->
+<meta name="bi-turnstile-site-key" content="0x4AAAAAAEnrAcCXCgJUYg9B">
 <meta name="theme-color" content="#0b0e11">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14562,6 +14566,52 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   }
 }
 </style>
+
+<style id="auth-turnstile-protection-v1">
+  .auth-turnstile-shell{
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border:1px solid rgba(240,185,11,.22);
+    border-radius:12px;
+    background:
+      linear-gradient(145deg,rgba(240,185,11,.055),rgba(255,255,255,.018));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.04),
+      0 8px 24px rgba(0,0,0,.18);
+  }
+  .auth-turnstile-shell.is-enabled{display:block}
+  .auth-turnstile-label{
+    margin:0 0 9px;
+    color:#c9d1dc;
+    font-size:11px;
+    font-weight:800;
+    line-height:1.5;
+  }
+  .auth-turnstile-widget{
+    min-height:65px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .auth-turnstile-error{
+    display:none;
+    margin-top:8px;
+    color:#ff8e95;
+    font-size:11px;
+    line-height:1.5;
+  }
+  .auth-turnstile-error.show{display:block}
+  @media(max-width:420px){
+    .auth-turnstile-shell{padding:10px}
+    .auth-turnstile-widget{
+      transform-origin:center top;
+      overflow:visible;
+    }
+  }
+</style>
+
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -16659,6 +16709,11 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
         </div>
         <input id="authPass" name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="******">
       </div>
+      <div id="authTurnstileShell" class="auth-turnstile-shell" aria-live="polite">
+        <div id="authTurnstileLabel" class="auth-turnstile-label">Security verification</div>
+        <div id="authTurnstileWidget" class="auth-turnstile-widget"></div>
+        <div id="authTurnstileError" class="auth-turnstile-error"></div>
+      </div>
       <button type="submit" class="btn gold" style="width:100%;margin-top:15px" id="authSubmitBtn" data-t="continue">Continue</button>
       <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:13px;"><a href="#" id="forgotLink" onclick="switchAuthMode('forgot'); return false;" style="color:var(--gold); text-decoration:none;" data-t="forgotPasswordText">Forgot Password?</a><a href="#" id="switchAuthLink" onclick="toggleAuthMode(); return false;" style="color:var(--muted); text-decoration:none;" data-t="needAccountText">Don't have an account? Sign up</a></div>
     </form>
@@ -16721,6 +16776,12 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       >
         <span data-t="continue">Continue</span>
       </button>
+
+      <div id="recoveryTurnstileShell" class="auth-turnstile-shell" aria-live="polite" style="margin-top:14px;">
+        <div id="recoveryTurnstileLabel" class="auth-turnstile-label">Security verification</div>
+        <div id="recoveryTurnstileWidget" class="auth-turnstile-widget"></div>
+        <div id="recoveryTurnstileError" class="auth-turnstile-error"></div>
+      </div>
 
       <button
         class="btn"
@@ -17385,11 +17446,15 @@ async function sendPasswordRecovery(identifier) {
   const cleanEmail =
     await resolveLoginEmailFromIdentifier(raw);
 
+  const captchaToken =
+    await window.biRequireAuthCaptchaToken?.("auth");
+
   const { error } =
     await supabaseClient.auth.signInWithOtp({
       email: cleanEmail,
       options: {
-        shouldCreateUser: false
+        shouldCreateUser: false,
+        ...(captchaToken ? { captchaToken } : {})
       }
     });
 
@@ -17484,11 +17549,15 @@ async function resendPasswordRecovery() {
   }
 
   try {
+    const captchaToken =
+      await window.biRequireAuthCaptchaToken?.("recovery");
+
     const { error } =
       await supabaseClient.auth.signInWithOtp({
         email,
         options: {
-          shouldCreateUser: false
+          shouldCreateUser: false,
+          ...(captchaToken ? { captchaToken } : {})
         }
       });
 
@@ -20179,10 +20248,13 @@ async function submitAuth() {
         );
       }
 
+      const captchaToken = await window.biRequireAuthCaptchaToken?.("auth");
+
       const { data, error } = await supabaseClient.auth.signUp({
         email,
         password,
         options: {
+          ...(captchaToken ? { captchaToken } : {}),
           data: {
             username: usernameValue,
             full_name: fullName,
@@ -20247,10 +20319,14 @@ async function submitAuth() {
           loginIdentifier
         );
 
+      const captchaToken =
+        await window.biRequireAuthCaptchaToken?.("auth");
+
       const { data, error } =
         await supabaseClient.auth.signInWithPassword({
           email,
-          password
+          password,
+          ...(captchaToken ? { options: { captchaToken } } : {})
         });
 
       if (error) throw error;
@@ -20364,6 +20440,7 @@ async function submitAuth() {
   } finally {
     authSubmissionInFlight = false;
     endUiAction(submitButton);
+    window.biResetAuthCaptcha?.("auth");
     updateAuthModalUI();
   }
 }
@@ -32961,6 +33038,308 @@ setTimeout(()=>void restoreWalletHandoff(),1100);
 setTimeout(()=>void resumePendingPayment(),650);
 setInterval(()=>{if(historyOwner&&historyOwner!==currentUser?.id)clearPaymentHistory();if(!document.hidden&&document.getElementById("transactions")?.classList.contains("active"))void loadPaymentHistory()},10000);
 let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();void loadPaymentHistory();if(document.getElementById("payment-method")?.value==="instantwallet"&&!state.terminal)render()}},1200);
+})();
+</script>
+
+
+<script id="auth-turnstile-protection-v1">
+(function(){
+  "use strict";
+
+  const META_NAME = "bi-turnstile-site-key";
+  const SCRIPT_ID = "bi-turnstile-api";
+  const SCRIPT_SRC =
+    "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+
+  const state = {
+    loadPromise: null,
+    auth: { widgetId: null, token: "" },
+    recovery: { widgetId: null, token: "" }
+  };
+
+  const COPY = {
+    en:{label:"Security verification",required:"Complete the security check before continuing.",load:"Security check could not load. Check your connection and try again."},
+    fa:{label:"تأیید امنیتی",required:"قبل از ادامه، تأیید امنیتی را کامل کنید.",load:"تأیید امنیتی بارگذاری نشد. اتصال اینترنت را بررسی و دوباره تلاش کنید."},
+    az:{label:"Təhlükəsizlik yoxlaması",required:"Davam etməzdən əvvəl təhlükəsizlik yoxlamasını tamamlayın.",load:"Təhlükəsizlik yoxlaması yüklənmədi. İnternet bağlantısını yoxlayıb yenidən cəhd edin."},
+    tr:{label:"Güvenlik doğrulaması",required:"Devam etmeden önce güvenlik doğrulamasını tamamlayın.",load:"Güvenlik doğrulaması yüklenemedi. İnternet bağlantınızı kontrol edip tekrar deneyin."},
+    ru:{label:"Проверка безопасности",required:"Перед продолжением пройдите проверку безопасности.",load:"Проверка безопасности не загрузилась. Проверьте подключение и повторите попытку."},
+    ar:{label:"التحقق الأمني",required:"أكمل التحقق الأمني قبل المتابعة.",load:"تعذر تحميل التحقق الأمني. تحقق من الاتصال وحاول مرة أخرى."},
+    zh:{label:"安全验证",required:"继续之前请完成安全验证。",load:"安全验证无法加载，请检查网络连接后重试。"},
+    es:{label:"Verificación de seguridad",required:"Completa la verificación de seguridad antes de continuar.",load:"No se pudo cargar la verificación de seguridad. Revisa tu conexión e inténtalo de nuevo."},
+    fr:{label:"Vérification de sécurité",required:"Effectuez la vérification de sécurité avant de continuer.",load:"La vérification de sécurité n’a pas pu se charger. Vérifiez votre connexion et réessayez."},
+    de:{label:"Sicherheitsprüfung",required:"Schließen Sie die Sicherheitsprüfung ab, bevor Sie fortfahren.",load:"Die Sicherheitsprüfung konnte nicht geladen werden. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut."}
+  };
+
+  function lang(){
+    return String(localStorage.getItem("bi_lang") || "en").toLowerCase();
+  }
+
+  function copy(){
+    return COPY[lang()] || COPY.en;
+  }
+
+  function siteKey(){
+    const meta = document.querySelector(`meta[name="${META_NAME}"]`);
+    const key = String(
+      window.BI_TURNSTILE_SITE_KEY ||
+      meta?.getAttribute("content") ||
+      ""
+    ).trim();
+
+    if (!key) return "";
+    if (/YOUR|REPLACE|SITE.?KEY|TURNSTILE_SITE_KEY_HERE/i.test(key)) return "";
+    return key;
+  }
+
+  function enabled(){
+    return Boolean(siteKey());
+  }
+
+  function refs(kind){
+    const recovery = kind === "recovery";
+    return {
+      shell: document.getElementById(
+        recovery ? "recoveryTurnstileShell" : "authTurnstileShell"
+      ),
+      target: document.getElementById(
+        recovery ? "recoveryTurnstileWidget" : "authTurnstileWidget"
+      ),
+      label: document.getElementById(
+        recovery ? "recoveryTurnstileLabel" : "authTurnstileLabel"
+      ),
+      error: document.getElementById(
+        recovery ? "recoveryTurnstileError" : "authTurnstileError"
+      )
+    };
+  }
+
+  function setError(kind, message=""){
+    const box = refs(kind).error;
+    if (!box) return;
+    box.textContent = String(message || "");
+    box.classList.toggle("show", Boolean(message));
+  }
+
+  function syncCopy(){
+    for (const kind of ["auth","recovery"]){
+      const r = refs(kind);
+      if (r.label) r.label.textContent = copy().label;
+    }
+  }
+
+  function setShellVisibility(kind){
+    const r = refs(kind);
+    if (!r.shell) return;
+    r.shell.classList.toggle("is-enabled", enabled());
+  }
+
+  function loadApi(){
+    if (!enabled()) return Promise.resolve(false);
+    if (window.turnstile?.render) return Promise.resolve(true);
+    if (state.loadPromise) return state.loadPromise;
+
+    state.loadPromise = new Promise((resolve, reject) => {
+      const existing = document.getElementById(SCRIPT_ID);
+      if (existing){
+        const started = Date.now();
+        const timer = setInterval(() => {
+          if (window.turnstile?.render){
+            clearInterval(timer);
+            resolve(true);
+          } else if (Date.now() - started > 12000){
+            clearInterval(timer);
+            reject(new Error("Turnstile API timeout"));
+          }
+        }, 100);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.id = SCRIPT_ID;
+      script.src = SCRIPT_SRC;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.turnstile?.render) resolve(true);
+        else reject(new Error("Turnstile API unavailable"));
+      };
+      script.onerror = () => reject(new Error("Turnstile API failed"));
+      document.head.appendChild(script);
+    }).catch(error => {
+      state.loadPromise = null;
+      throw error;
+    });
+
+    return state.loadPromise;
+  }
+
+  async function mount(kind="auth"){
+    setShellVisibility(kind);
+    syncCopy();
+    setError(kind, "");
+
+    if (!enabled()) return false;
+
+    const r = refs(kind);
+    if (!r.target) return false;
+
+    try{
+      await loadApi();
+
+      if (state[kind].widgetId !== null) return true;
+
+      r.target.innerHTML = "";
+      state[kind].token = "";
+
+      state[kind].widgetId = window.turnstile.render(r.target, {
+        sitekey: siteKey(),
+        theme: "dark",
+        size: "flexible",
+        appearance: "interaction-only",
+        callback(token){
+          state[kind].token = String(token || "");
+          setError(kind, "");
+        },
+        "expired-callback"(){
+          state[kind].token = "";
+        },
+        "timeout-callback"(){
+          state[kind].token = "";
+        },
+        "error-callback"(){
+          state[kind].token = "";
+          setError(kind, copy().load);
+        }
+      });
+
+      return true;
+    }catch(error){
+      console.warn("Turnstile load failed:", error);
+      setError(kind, copy().load);
+      return false;
+    }
+  }
+
+  async function requireToken(kind="auth"){
+    if (!enabled()) return undefined;
+
+    await mount(kind);
+
+    const token = String(state[kind]?.token || "").trim();
+    if (token) return token;
+
+    setError(kind, copy().required);
+    refs(kind).shell?.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+    throw new Error(copy().required);
+  }
+
+  function reset(kind="auth"){
+    if (!enabled()) return;
+
+    state[kind].token = "";
+    setError(kind, "");
+
+    if (
+      state[kind].widgetId !== null &&
+      window.turnstile?.reset
+    ){
+      try{
+        window.turnstile.reset(state[kind].widgetId);
+      }catch(_){}
+    }
+  }
+
+  function remove(kind="auth"){
+    state[kind].token = "";
+
+    if (
+      state[kind].widgetId !== null &&
+      window.turnstile?.remove
+    ){
+      try{
+        window.turnstile.remove(state[kind].widgetId);
+      }catch(_){}
+    }
+
+    state[kind].widgetId = null;
+    const r = refs(kind);
+    if (r.target) r.target.innerHTML = "";
+    setError(kind, "");
+  }
+
+  window.biMountAuthTurnstile = mount;
+  window.biRequireAuthCaptchaToken = requireToken;
+  window.biResetAuthCaptcha = reset;
+
+  /* Wrap only modal-opening/mode-switch helpers; original logic is preserved. */
+  const originalOpenAuth = window.openAuth;
+  if (typeof originalOpenAuth === "function"){
+    window.openAuth = function(){
+      const result = originalOpenAuth.apply(this, arguments);
+      setTimeout(() => mount("auth"), 0);
+      return result;
+    };
+  }
+
+  const originalSwitchAuthMode = window.switchAuthMode;
+  if (typeof originalSwitchAuthMode === "function"){
+    window.switchAuthMode = function(){
+      reset("auth");
+      const result = originalSwitchAuthMode.apply(this, arguments);
+      setTimeout(() => mount("auth"), 0);
+      return result;
+    };
+  }
+
+  const originalToggleAuthMode = window.toggleAuthMode;
+  if (typeof originalToggleAuthMode === "function"){
+    window.toggleAuthMode = function(){
+      reset("auth");
+      const result = originalToggleAuthMode.apply(this, arguments);
+      setTimeout(() => mount("auth"), 0);
+      return result;
+    };
+  }
+
+  const originalOpenPasswordResetSentModal =
+    window.openPasswordResetSentModal;
+  if (typeof originalOpenPasswordResetSentModal === "function"){
+    window.openPasswordResetSentModal = function(){
+      const result =
+        originalOpenPasswordResetSentModal.apply(this, arguments);
+      setTimeout(() => mount("recovery"), 0);
+      return result;
+    };
+  }
+
+  const originalClosePasswordResetSentModal =
+    window.closePasswordResetSentModal;
+  if (typeof originalClosePasswordResetSentModal === "function"){
+    window.closePasswordResetSentModal = function(){
+      reset("recovery");
+      return originalClosePasswordResetSentModal.apply(this, arguments);
+    };
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    syncCopy();
+    setShellVisibility("auth");
+    setShellVisibility("recovery");
+
+    /* If a Site Key is configured, pre-load only after the DOM is ready. */
+    if (enabled()){
+      loadApi().catch(() => {});
+    }
+  });
+
+  new MutationObserver(syncCopy).observe(
+    document.documentElement,
+    {attributes:true, attributeFilter:["lang","dir"]}
+  );
 })();
 </script>
 
