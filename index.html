@@ -14514,6 +14514,54 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 #payment-info-box{scroll-margin-top:110px}
 .iwp-status.info:not(.show){display:none}
 </style>
+<style id="iwp-black-glass-gold-v1">
+/* Appearance only: scoped to the wallet/network chooser, not payment logic. */
+#payment-info-box .iwp-network,
+#payment-info-box .iwp-wallet-list .iwp-wallet-btn{
+  background:linear-gradient(145deg,rgba(19,20,22,.92),rgba(3,5,7,.86));
+  border:1px solid rgba(226,185,69,.64);
+  color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,239,192,.10),inset 0 -1px 0 rgba(0,0,0,.6),0 8px 20px rgba(0,0,0,.28);
+  backdrop-filter:blur(18px) saturate(110%);
+  -webkit-backdrop-filter:blur(18px) saturate(110%);
+}
+#payment-info-box .iwp-network.active{
+  background:linear-gradient(145deg,rgba(27,25,18,.95),rgba(4,6,8,.91));
+  border-color:#f4cc57;
+  box-shadow:inset 0 0 0 1px rgba(244,204,87,.25),inset 0 1px 0 rgba(255,240,187,.16),0 0 17px rgba(240,185,11,.12);
+}
+#payment-info-box .iwp-wallets{
+  background:linear-gradient(145deg,rgba(12,14,17,.82),rgba(3,5,7,.74));
+  border-color:rgba(226,185,69,.42);
+  box-shadow:inset 0 1px 0 rgba(255,239,192,.08),0 14px 30px rgba(0,0,0,.28);
+}
+#payment-info-box .iwp-wallets::before{opacity:.16}
+#payment-info-box .iwp-wallet-list .iwp-wallet-btn::after{opacity:.12}
+#payment-info-box .iwp-wallet-brand,
+#payment-info-box .iwp-network-chain{
+  background:linear-gradient(145deg,rgba(21,23,26,.96),rgba(2,4,6,.91));
+  border-color:rgba(226,185,69,.56);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 12px rgba(0,0,0,.36);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+/* Keep the recognisable green Tether badge and all original logo colours. */
+#payment-info-box .iwp-network-token{border-color:rgba(237,205,116,.85)}
+#payment-info-box .iwp-network-copy>span,
+#payment-info-box .iwp-wallet-copy small{color:#d9dde3}
+#payment-info-box .iwp-network:focus-visible,
+#payment-info-box .iwp-wallet-list .iwp-wallet-btn:focus-visible{
+  outline:2px solid #ffe39a;outline-offset:3px;
+}
+@media(hover:hover){
+  #payment-info-box .iwp-network:hover,
+  #payment-info-box .iwp-wallet-list .iwp-wallet-btn:hover{
+    border-color:#f4cc57;
+    background:linear-gradient(145deg,rgba(27,28,29,.95),rgba(5,7,9,.9));
+    box-shadow:inset 0 1px 0 rgba(255,239,192,.16),0 9px 24px rgba(0,0,0,.35);
+  }
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
