@@ -31782,7 +31782,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v15-script">
+<script id="instant-wallet-deposit-v16-script">
 (function(){
 "use strict";
 
@@ -31889,16 +31889,16 @@ function it(k,vars={}){
 }
 const evmAnnounced=new Map(),tronAnnounced=new Map();
 const PAYFLOW_COPY={
- en:{continueWith:"Continue with {wallet}",checkingFunds:"Checking wallet balance…",insufficientUSDT:"Insufficient USDT balance. Required: {need} USDT · Available: {have} USDT.",insufficientGas:"Insufficient network fee balance. Add a small amount of the network gas token and try again.",submittedNotVisible:"Transaction was submitted but is not visible on-chain yet. We are still checking automatically.",handoffReady:"Payment details restored. Continue in {wallet}.",balanceCheckFailed:"Wallet balance could not be checked. Please try again inside the wallet browser."},
- fa:{continueWith:"ادامه پرداخت با {wallet}",checkingFunds:"در حال بررسی موجودی کیف پول…",insufficientUSDT:"موجودی USDT کافی نیست. مبلغ لازم: {need} USDT · موجودی شما: {have} USDT.",insufficientGas:"موجودی کارمزد شبکه کافی نیست. مقدار کمی از ارز کارمزد شبکه به کیف پول اضافه کرده و دوباره امتحان کنید.",submittedNotVisible:"تراکنش ارسال شده اما هنوز روی بلاکچین دیده نشده است. بررسی خودکار ادامه دارد.",handoffReady:"اطلاعات پرداخت بازیابی شد. پرداخت را در {wallet} ادامه دهید.",balanceCheckFailed:"امکان بررسی موجودی کیف پول نبود. لطفاً داخل مرورگر همان کیف پول دوباره تلاش کنید."},
- az:{continueWith:"{wallet} ilə ödənişə davam et",checkingFunds:"Cüzdan balansı yoxlanılır…",insufficientUSDT:"USDT balansı kifayət deyil. Lazım olan: {need} USDT · Mövcud: {have} USDT.",insufficientGas:"Şəbəkə komissiyası üçün balans kifayət deyil.",submittedNotVisible:"Tranzaksiya göndərilib, lakin hələ blockchain-də görünmür. Avtomatik yoxlama davam edir.",handoffReady:"Ödəniş məlumatları bərpa edildi. {wallet} ilə davam edin.",balanceCheckFailed:"Cüzdan balansını yoxlamaq mümkün olmadı."},
- tr:{continueWith:"{wallet} ile ödemeye devam et",checkingFunds:"Cüzdan bakiyesi kontrol ediliyor…",insufficientUSDT:"Yetersiz USDT bakiyesi. Gerekli: {need} USDT · Mevcut: {have} USDT.",insufficientGas:"Ağ işlem ücreti için bakiye yetersiz.",submittedNotVisible:"İşlem gönderildi ancak henüz blockchain üzerinde görünmüyor. Otomatik kontrol sürüyor.",handoffReady:"Ödeme bilgileri geri yüklendi. {wallet} ile devam edin.",balanceCheckFailed:"Cüzdan bakiyesi kontrol edilemedi."},
- ru:{continueWith:"Продолжить с {wallet}",checkingFunds:"Проверяем баланс кошелька…",insufficientUSDT:"Недостаточно USDT. Нужно: {need} USDT · Доступно: {have} USDT.",insufficientGas:"Недостаточно средств для комиссии сети.",submittedNotVisible:"Транзакция отправлена, но пока не видна в блокчейне. Автопроверка продолжается.",handoffReady:"Данные платежа восстановлены. Продолжите в {wallet}.",balanceCheckFailed:"Не удалось проверить баланс кошелька."},
- ar:{continueWith:"المتابعة عبر {wallet}",checkingFunds:"جارٍ التحقق من رصيد المحفظة…",insufficientUSDT:"رصيد USDT غير كافٍ. المطلوب: {need} USDT · المتاح: {have} USDT.",insufficientGas:"رصيد رسوم الشبكة غير كافٍ.",submittedNotVisible:"تم إرسال المعاملة لكنها لم تظهر على البلوكشين بعد. يستمر التحقق تلقائيًا.",handoffReady:"تمت استعادة بيانات الدفع. تابع عبر {wallet}.",balanceCheckFailed:"تعذر التحقق من رصيد المحفظة."},
- zh:{continueWith:"使用 {wallet} 继续支付",checkingFunds:"正在检查钱包余额…",insufficientUSDT:"USDT余额不足。需要：{need} USDT · 可用：{have} USDT。",insufficientGas:"网络手续费余额不足。",submittedNotVisible:"交易已提交但暂未在链上显示，系统仍在自动检查。",handoffReady:"支付信息已恢复，请在 {wallet} 中继续。",balanceCheckFailed:"无法检查钱包余额。"},
- es:{continueWith:"Continuar con {wallet}",checkingFunds:"Comprobando saldo de la wallet…",insufficientUSDT:"Saldo USDT insuficiente. Necesario: {need} USDT · Disponible: {have} USDT.",insufficientGas:"Saldo insuficiente para la comisión de red.",submittedNotVisible:"La transacción fue enviada pero aún no aparece on-chain. Seguimos comprobando automáticamente.",handoffReady:"Datos de pago restaurados. Continúa en {wallet}.",balanceCheckFailed:"No se pudo comprobar el saldo de la wallet."},
+ en:{continueWith:"Continue with {wallet}",checkingFunds:"Checking wallet balance…",balanceOptional:"If your wallet does not expose the balance to this page, you can still continue and the wallet will validate the transfer.",insufficientUSDT:"Insufficient USDT balance. Required: {need} USDT · Available: {have} USDT.",insufficientGas:"Insufficient network fee balance. Add a small amount of the network gas token and try again.",submittedNotVisible:"Transaction was submitted but is not visible on-chain yet. We are still checking automatically.",handoffReady:"Payment details restored. Continue in {wallet}.",balanceCheckFailed:"Wallet balance could not be checked. Please try again inside the wallet browser."},
+ fa:{continueWith:"ادامه پرداخت با {wallet}",checkingFunds:"در حال بررسی موجودی کیف پول…",balanceOptional:"اگر کیف پول اجازه خواندن موجودی را ندهد، پرداخت همچنان ادامه پیدا می‌کند و خود کیف پول تراکنش را بررسی می‌کند.",insufficientUSDT:"موجودی USDT کافی نیست. مبلغ لازم: {need} USDT · موجودی شما: {have} USDT.",insufficientGas:"موجودی کارمزد شبکه کافی نیست. مقدار کمی از ارز کارمزد شبکه به کیف پول اضافه کرده و دوباره امتحان کنید.",submittedNotVisible:"تراکنش ارسال شده اما هنوز روی بلاکچین دیده نشده است. بررسی خودکار ادامه دارد.",handoffReady:"اطلاعات پرداخت بازیابی شد. پرداخت را در {wallet} ادامه دهید.",balanceCheckFailed:"امکان بررسی موجودی کیف پول نبود. لطفاً داخل مرورگر همان کیف پول دوباره تلاش کنید."},
+ az:{continueWith:"{wallet} ilə ödənişə davam et",checkingFunds:"Cüzdan balansı yoxlanılır…",balanceOptional:"Cüzdan balansı bu səhifəyə göstərməsə belə, ödəniş davam edə bilər və tranzaksiyanı cüzdan özü yoxlayacaq.",insufficientUSDT:"USDT balansı kifayət deyil. Lazım olan: {need} USDT · Mövcud: {have} USDT.",insufficientGas:"Şəbəkə komissiyası üçün balans kifayət deyil.",submittedNotVisible:"Tranzaksiya göndərilib, lakin hələ blockchain-də görünmür. Avtomatik yoxlama davam edir.",handoffReady:"Ödəniş məlumatları bərpa edildi. {wallet} ilə davam edin.",balanceCheckFailed:"Cüzdan balansını yoxlamaq mümkün olmadı."},
+ tr:{continueWith:"{wallet} ile ödemeye devam et",checkingFunds:"Cüzdan bakiyesi kontrol ediliyor…",balanceOptional:"Cüzdan bakiyeyi bu sayfaya göstermese bile ödeme devam edebilir; işlemi cüzdanın kendisi doğrular.",insufficientUSDT:"Yetersiz USDT bakiyesi. Gerekli: {need} USDT · Mevcut: {have} USDT.",insufficientGas:"Ağ işlem ücreti için bakiye yetersiz.",submittedNotVisible:"İşlem gönderildi ancak henüz blockchain üzerinde görünmüyor. Otomatik kontrol sürüyor.",handoffReady:"Ödeme bilgileri geri yüklendi. {wallet} ile devam edin.",balanceCheckFailed:"Cüzdan bakiyesi kontrol edilemedi."},
+ ru:{continueWith:"Продолжить с {wallet}",checkingFunds:"Проверяем баланс кошелька…",balanceOptional:"Если кошелек не показывает баланс этой странице, оплату все равно можно продолжить — перевод проверит сам кошелек.",insufficientUSDT:"Недостаточно USDT. Нужно: {need} USDT · Доступно: {have} USDT.",insufficientGas:"Недостаточно средств для комиссии сети.",submittedNotVisible:"Транзакция отправлена, но пока не видна в блокчейне. Автопроверка продолжается.",handoffReady:"Данные платежа восстановлены. Продолжите в {wallet}.",balanceCheckFailed:"Не удалось проверить баланс кошелька."},
+ ar:{continueWith:"المتابعة عبر {wallet}",checkingFunds:"جارٍ التحقق من رصيد المحفظة…",balanceOptional:"إذا لم تعرض المحفظة الرصيد لهذه الصفحة، يمكن متابعة الدفع وستتحقق المحفظة نفسها من المعاملة.",insufficientUSDT:"رصيد USDT غير كافٍ. المطلوب: {need} USDT · المتاح: {have} USDT.",insufficientGas:"رصيد رسوم الشبكة غير كافٍ.",submittedNotVisible:"تم إرسال المعاملة لكنها لم تظهر على البلوكشين بعد. يستمر التحقق تلقائيًا.",handoffReady:"تمت استعادة بيانات الدفع. تابع عبر {wallet}.",balanceCheckFailed:"تعذر التحقق من رصيد المحفظة."},
+ zh:{continueWith:"使用 {wallet} 继续支付",checkingFunds:"正在检查钱包余额…",balanceOptional:"如果钱包不向此页面提供余额，仍可继续付款，钱包本身会验证交易。",insufficientUSDT:"USDT余额不足。需要：{need} USDT · 可用：{have} USDT。",insufficientGas:"网络手续费余额不足。",submittedNotVisible:"交易已提交但暂未在链上显示，系统仍在自动检查。",handoffReady:"支付信息已恢复，请在 {wallet} 中继续。",balanceCheckFailed:"无法检查钱包余额。"},
+ es:{continueWith:"Continuar con {wallet}",checkingFunds:"Comprobando saldo de la wallet…",balanceOptional:"Si la wallet no expone el saldo a esta página, el pago puede continuar y la propia wallet validará la transferencia.",insufficientUSDT:"Saldo USDT insuficiente. Necesario: {need} USDT · Disponible: {have} USDT.",insufficientGas:"Saldo insuficiente para la comisión de red.",submittedNotVisible:"La transacción fue enviada pero aún no aparece on-chain. Seguimos comprobando automáticamente.",handoffReady:"Datos de pago restaurados. Continúa en {wallet}.",balanceCheckFailed:"No se pudo comprobar el saldo de la wallet."},
  fr:{continueWith:"Continuer avec {wallet}",checkingFunds:"Vérification du solde…",insufficientUSDT:"Solde USDT insuffisant. Requis : {need} USDT · Disponible : {have} USDT.",insufficientGas:"Solde insuffisant pour les frais réseau.",submittedNotVisible:"La transaction a été envoyée mais n’est pas encore visible on-chain. La vérification automatique continue.",handoffReady:"Détails du paiement restaurés. Continuez dans {wallet}.",balanceCheckFailed:"Impossible de vérifier le solde du portefeuille."},
- de:{continueWith:"Mit {wallet} fortfahren",checkingFunds:"Wallet-Guthaben wird geprüft…",insufficientUSDT:"USDT-Guthaben reicht nicht aus. Benötigt: {need} USDT · Verfügbar: {have} USDT.",insufficientGas:"Nicht genügend Guthaben für die Netzwerkgebühr.",submittedNotVisible:"Transaktion wurde gesendet, ist aber noch nicht on-chain sichtbar. Die automatische Prüfung läuft weiter.",handoffReady:"Zahlungsdaten wiederhergestellt. In {wallet} fortfahren.",balanceCheckFailed:"Wallet-Guthaben konnte nicht geprüft werden."}
+ de:{continueWith:"Mit {wallet} fortfahren",checkingFunds:"Wallet-Guthaben wird geprüft…",balanceOptional:"Wenn die Wallet dieser Seite keinen Kontostand bereitstellt, kann die Zahlung trotzdem fortgesetzt werden; die Wallet prüft die Transaktion selbst.",insufficientUSDT:"USDT-Guthaben reicht nicht aus. Benötigt: {need} USDT · Verfügbar: {have} USDT.",insufficientGas:"Nicht genügend Guthaben für die Netzwerkgebühr.",submittedNotVisible:"Transaktion wurde gesendet, ist aber noch nicht on-chain sichtbar. Die automatische Prüfung läuft weiter.",handoffReady:"Zahlungsdaten wiederhergestellt. In {wallet} fortfahren.",balanceCheckFailed:"Wallet-Guthaben konnte nicht geprüft werden."}
 };
 function pf(k,vars={}){
   const d=PAYFLOW_COPY[lang()]||PAYFLOW_COPY.en;
@@ -32416,17 +32416,37 @@ function formatTokenUnits(v,d){
   }catch(_){return "0"}
 }
 async function checkEvmFunds(provider,from,amount){
-  const n=NET[state.network],need=parseUnits(amount,n.decimals);
+  const n=NET[state.network],need=parseUnits(String(amount),n.decimals);
   const balanceData="0x70a08231"+from.toLowerCase().replace(/^0x/,"").padStart(64,"0");
-  let raw;
-  try{
-    raw=await provider.request({method:"eth_call",params:[{to:n.token,data:balanceData},"latest"]});
-  }catch(_){throw new Error(pf("balanceCheckFailed"))}
-  const tokenBal=BigInt(raw||"0x0");
-  if(tokenBal<need)throw new Error(pf("insufficientUSDT",{need:Number(amount).toFixed(2),have:formatTokenUnits(tokenBal,n.decimals)}));
 
-  // Also check whether the wallet can afford the network fee. If a provider
-  // does not support estimation we do not block a valid transfer.
+  let tokenBal=null;
+  try{
+    const raw=await provider.request({
+      method:"eth_call",
+      params:[{to:n.token,data:balanceData},"latest"]
+    });
+    if(typeof raw==="string" && /^0x[0-9a-fA-F]*$/.test(raw)){
+      tokenBal=BigInt(raw||"0x0");
+    }
+  }catch(_){
+    // Some wallet browsers block/read-limit eth_call.
+    // This is NOT proof of insufficient funds, so do not block payment.
+    tokenBal=null;
+  }
+
+  // Only block when the wallet successfully returned a real token balance
+  // and that balance is actually below the required amount.
+  if(tokenBal!==null && tokenBal<need){
+    throw new Error(
+      pf("insufficientUSDT",{
+        need:String(amount),
+        have:formatTokenUnits(tokenBal,n.decimals)
+      })
+    );
+  }
+
+  // Gas/native balance check is also advisory unless all required values
+  // can be read successfully. A wallet may handle/estimate fees internally.
   try{
     const data=transferData(n.receiver,need);
     const [gasHex,gasPriceHex,nativeHex]=await Promise.all([
@@ -32434,25 +32454,59 @@ async function checkEvmFunds(provider,from,amount){
       provider.request({method:"eth_gasPrice"}),
       provider.request({method:"eth_getBalance",params:[from,"latest"]})
     ]);
-    const gas=BigInt(gasHex||"0x0"),gasPrice=BigInt(gasPriceHex||"0x0"),native=BigInt(nativeHex||"0x0");
-    if(gas>0n&&gasPrice>0n&&native<gas*gasPrice)throw new Error(pf("insufficientGas"));
+    const gas=BigInt(gasHex||"0x0");
+    const gasPrice=BigInt(gasPriceHex||"0x0");
+    const native=BigInt(nativeHex||"0x0");
+    if(gas>0n && gasPrice>0n && native<gas*gasPrice){
+      throw new Error(pf("insufficientGas"));
+    }
   }catch(e){
     if(String(e?.message||"")===pf("insufficientGas"))throw e;
   }
-  return true;
+
+  return {checked:tokenBal!==null,balance:tokenBal};
 }
 async function checkTronFunds(tronWeb,from,amount){
+  let contract;
   try{
-    const contract=await tronWeb.contract().at(TRON_USDT);
+    contract=await tronWeb.contract().at(TRON_USDT);
+  }catch(_){
+    throw new Error(t("noWallet"));
+  }
+
+  try{
     const raw=await contract.balanceOf(from).call();
     const tokenBal=BigInt(String(raw?.toString?.()??raw??"0"));
-    const need=parseUnits(amount,6);
-    if(tokenBal<need)throw new Error(pf("insufficientUSDT",{need:Number(amount).toFixed(2),have:formatTokenUnits(tokenBal,6)}));
-    return contract;
+    const need=parseUnits(String(amount),6);
+
+    if(tokenBal<need){
+      throw new Error(
+        pf("insufficientUSDT",{
+          need:String(amount),
+          have:formatTokenUnits(tokenBal,6)
+        })
+      );
+    }
   }catch(e){
-    if(/USDT|موجودی|баланс|saldo|Solde|Guthaben|余额|رصيد|balans/i.test(String(e?.message||"")))throw e;
-    throw new Error(pf("balanceCheckFailed"));
+    const msg=String(e?.message||"");
+
+    // Preserve only a genuine insufficient-USDT result.
+    if(msg===pf("insufficientUSDT",{
+      need:String(amount),
+      have:"__never_matches__"
+    })){
+      throw e;
+    }
+
+    if(/Insufficient USDT|موجودی USDT کافی نیست|Недостаточно USDT|USDT bakiye|USDT баланс|Saldo USDT insuficiente|Solde USDT insuffisant|USDT-Guthaben|USDT余额|رصيد USDT/i.test(msg)){
+      throw e;
+    }
+
+    // Wallet/provider did not expose balanceOf correctly.
+    // Continue: the wallet itself will validate the transfer on send.
   }
+
+  return contract;
 }
 async function startEvmPayment(provider,name){
   if(state.busy)return;
@@ -32468,7 +32522,7 @@ async function startEvmPayment(provider,name){
     try{await switchEvmChain(provider)}catch(_){throw new Error(t("wrong"))}
 
     status(pf("checkingFunds"),"info",true);
-    await checkEvmFunds(provider,from,amount+0.001);
+    await checkEvmFunds(provider,from,String(amount));
 
     status(it("preparing"),"info",true);
     intent=await createPaymentIntent(amount,from);
@@ -32481,7 +32535,7 @@ async function startEvmPayment(provider,name){
       from,txHash:"",network:state.network,sent:false
     });
 
-    await checkEvmFunds(provider,from,Number(payAmount));
+    await checkEvmFunds(provider,from,payAmount);
     const n=NET[state.network],units=parseUnits(payAmount,n.decimals),data=transferData(n.receiver,units);
 
     status(it("exact",{amount:payAmount}),"info",false);
@@ -32521,7 +32575,7 @@ async function startTronPayment(provider,name){
     if(!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(from))throw new Error(t("noWallet"));
 
     status(pf("checkingFunds"),"info",true);
-    await checkTronFunds(tronWeb,from,amount+0.001);
+    await checkTronFunds(tronWeb,from,String(amount));
 
     status(it("preparing"),"info",true);
     intent=await createPaymentIntent(amount,from);
@@ -32534,7 +32588,7 @@ async function startTronPayment(provider,name){
       from,txHash:"",network:state.network,sent:false
     });
 
-    const contract=await checkTronFunds(tronWeb,from,Number(payAmount));
+    const contract=await checkTronFunds(tronWeb,from,payAmount);
     const units=parseUnits(payAmount,6).toString();
 
     status(it("exact",{amount:payAmount}),"info",false);
