@@ -31849,7 +31849,13 @@ try{
 }catch(_){}
 
 function savePendingPayment(p){
-  try{localStorage.setItem(IWP_PENDING_KEY,JSON.stringify({...p,userId:currentUser?.id||"",savedAt:Date.now()}))}catch(_){}
+  try{
+    const previous=readPendingPayment();
+    if(previous?.userId===currentUser?.id)rememberPayment(previous);
+    const saved={...p,userId:currentUser?.id||"",savedAt:Date.now()};
+    rememberPayment(saved);
+    localStorage.setItem(IWP_PENDING_KEY,JSON.stringify(saved));
+  }catch(_){}
 }
 function readPendingPayment(){
   try{
@@ -31859,7 +31865,88 @@ function readPendingPayment(){
     return p;
   }catch(_){return null}
 }
-function clearPendingPayment(){try{localStorage.removeItem(IWP_PENDING_KEY)}catch(_){}}
+function clearPendingPayment(){try{
+  const p=readPendingPayment();
+  if(p&&p.requestId===state.activeRequestId)localStorage.removeItem(IWP_PENDING_KEY);
+}catch(_){}}
+const IWP_HISTORY_KEY="bi_iwp_payment_history_v16";
+const HISTORY_COPY={
+ en:["Previous wallet payments","Start a separate new payment","New payments do not replace or repay these transfers.","Check status","Confirmed","Not completed","Waiting for verification","Payment reference needs recovery"],
+ fa:["پرداخت‌های قبلی کیف پول","شروع یک پرداخت جدید و جداگانه","پرداخت جدید جایگزین یا تکرار این انتقال‌ها نیست.","بررسی وضعیت","تأیید شده","تکمیل نشده","در انتظار بررسی","نیازمند بازیابی مرجع پرداخت"],
+ az:["Əvvəlki cüzdan ödənişləri","Ayrıca yeni ödəniş başlat","Yeni ödəniş bu köçürmələri əvəz etmir və təkrarlamır.","Statusu yoxla","Təsdiqləndi","Tamamlanmayıb","Yoxlanılır","Ödəniş istinadı bərpa edilməlidir"],
+ tr:["Önceki cüzdan ödemeleri","Ayrı bir yeni ödeme başlat","Yeni ödeme bu transferleri değiştirmez veya tekrarlamaz.","Durumu kontrol et","Onaylandı","Tamamlanmadı","Doğrulama bekleniyor","Ödeme referansı kurtarılmalı"],
+ ru:["Предыдущие платежи","Начать отдельный новый платёж","Новый платёж не заменяет и не повторяет эти переводы.","Проверить статус","Подтверждено","Не завершено","Ожидает проверки","Нужно восстановить данные платежа"],
+ ar:["مدفوعات المحفظة السابقة","بدء دفعة جديدة منفصلة","الدفعة الجديدة لا تستبدل هذه التحويلات ولا تكررها.","فحص الحالة","مؤكد","غير مكتمل","بانتظار التحقق","يلزم استعادة مرجع الدفع"],
+ zh:["之前的钱包付款","开始另一笔新付款","新付款不会替代或重复这些转账。","查看状态","已确认","未完成","等待验证","需要恢复付款信息"],
+ es:["Pagos anteriores","Iniciar un pago nuevo separado","El nuevo pago no sustituye ni repite estas transferencias.","Consultar estado","Confirmado","No completado","Pendiente de verificación","Es necesario recuperar la referencia"],
+ fr:["Paiements précédents","Commencer un nouveau paiement distinct","Le nouveau paiement ne remplace ni ne répète ces transferts.","Vérifier le statut","Confirmé","Non terminé","Vérification en attente","Référence du paiement à récupérer"],
+ de:["Frühere Wallet-Zahlungen","Separate neue Zahlung starten","Neue Zahlungen ersetzen oder wiederholen diese Überweisungen nicht.","Status prüfen","Bestätigt","Nicht abgeschlossen","Wartet auf Prüfung","Zahlungsreferenz muss wiederhergestellt werden"]
+};
+function historyText(index){return (HISTORY_COPY[lang()]||HISTORY_COPY.en)[index]}
+function savedPayments(){try{const a=JSON.parse(localStorage.getItem(IWP_HISTORY_KEY)||"[]");return Array.isArray(a)?a:[]}catch(_){return []}}
+function rememberPayment(p){
+  if(!p?.requestId||!p.userId)return;
+  const a=savedPayments().filter(x=>!(x.requestId===p.requestId&&x.userId===p.userId));
+  localStorage.setItem(IWP_HISTORY_KEY,JSON.stringify([p,...a]));
+}
+function resetPaymentDraft(){
+  stopTrackingLoops();state.verifyEpoch++;
+  Object.assign(state,{terminal:false,trackingStarted:false,reviewRequired:false,serverRegistered:false,
+    activeRequestId:"",activeUserId:"",activeAmount:0,activePayAmount:"",activeFrom:"",activeTxHash:"",activeNetwork:"",txHash:""});
+  setBusy(false);
+}
+function startSeparatePayment(){
+  // Never detach while the wallet approval/send promise is still in flight.
+  if(state.busy&&!state.trackingStarted&&!state.terminal)return;
+  resetPaymentDraft();
+  const input=document.getElementById("deposit-amount");
+  if(input){input.value="";input.disabled=false;input.focus()}
+  render();
+}
+let historyGeneration=0;
+const historyChecks=new Set();
+async function loadPaymentHistory(){
+  const host=document.getElementById("iwpHistory"),owner=currentUser?.id;
+  if(!host||!owner)return;
+  const generation=++historyGeneration;
+  try{
+    const {data,error}=await supabaseClient.from("financial_requests")
+      .select("id,user_id,amount,network,status,verification_status,verification_reason,tx_hash,created_at")
+      .eq("user_id",owner).eq("request_type","deposit").eq("user_note","Instant wallet payment")
+      .order("created_at",{ascending:false}).limit(30);
+    if(error||owner!==currentUser?.id||generation!==historyGeneration||host!==document.getElementById("iwpHistory"))return;
+    const rows=(data||[]).filter(r=>r.id!==state.activeRequestId||state.terminal);
+    host.hidden=!rows.length;
+    host.innerHTML=rows.length?`<h3>${esc(historyText(0))}</h3><p class="iwp-helper">${esc(historyText(2))}</p>`+rows.map(r=>{
+      const approved=r.status==="approved"&&r.verification_status==="verified";
+      const label=approved?4:r.status==="rejected"?5:r.verification_reason==="payment_reference_missing"?7:6;
+      return `<div class="iwp-row" style="display:block;margin-top:10px;overflow-wrap:anywhere"><b dir="ltr">$${Number(r.amount).toFixed(2)} · ${esc(r.network)}</b><p>${esc(historyText(label))}</p><small dir="ltr">${esc(r.id)}</small>${r.status==="pending"?`<button class="iwp-wallet-btn" type="button" data-history-check="${esc(r.id)}" style="margin-top:10px">${esc(historyText(3))}</button>`:""}</div>`;
+    }).join(""):"";
+    host.querySelectorAll("[data-history-check]").forEach(b=>{
+      b.disabled=historyChecks.has(owner+":"+b.dataset.historyCheck);
+      b.addEventListener("click",()=>void recheckSavedPayment(b.dataset.historyCheck));
+    });
+  }catch(_){}
+}
+async function recheckSavedPayment(id){
+  const owner=currentUser?.id,key=owner+":"+id;
+  if(!owner||historyChecks.has(key))return;
+  historyChecks.add(key);void loadPaymentHistory();
+  try{
+    const {data:row,error}=await supabaseClient.from("financial_requests").select("id,status")
+      .eq("id",id).eq("user_id",owner).eq("request_type","deposit").eq("user_note","Instant wallet payment").maybeSingle();
+    if(error||!row||row.status!=="pending"||owner!==currentUser?.id)return;
+    const p=savedPayments().find(x=>x.userId===owner&&x.requestId===id);
+    if(p?.txHash){try{await attachPaymentIntent(id,p.txHash)}catch(_){}}
+    if(owner!==currentUser?.id)return;
+    const {data,error:err}=await supabaseClient.functions.invoke("direct-wallet-recovery",{body:{action:"recover",request_id:id}});
+    if(owner!==currentUser?.id||err||String(data?.request_id)!==String(id))return;
+    // Background history must never reset the new form or invoke a wallet send.
+    if(data.status==="approved"&&typeof syncFinancialStateFromServer==="function")await syncFinancialStateFromServer();
+  }catch(_){
+    // Keep the payment and the new draft intact on a temporary network failure.
+  }finally{historyChecks.delete(key);if(owner===currentUser?.id)void loadPaymentHistory()}
+}
 const RECOVERY_COPY={
   en:{retry:"Recheck this payment",delayed:"Confirmation is taking longer than expected. Your payment reference is saved. Do not pay again; you can recheck this payment.",review:"This payment needs review by the support team. Keep this payment reference and do not pay again.",unavailable:"The verification service is temporarily unavailable. Your payment reference is saved; do not pay again."},
   fa:{retry:"بررسی دوباره همین پرداخت",delayed:"تأیید پرداخت بیشتر از معمول طول کشیده است. شناسه پرداخت حفظ شده؛ دوباره پرداخت نکنید و وضعیت همین پرداخت را بررسی کنید.",review:"این پرداخت به بررسی تیم پشتیبانی نیاز دارد. شناسه پرداخت را نگه دارید و دوباره پرداخت نکنید.",unavailable:"سرویس تأیید موقتاً در دسترس نیست. شناسه پرداخت حفظ شده است؛ دوباره پرداخت نکنید."}
@@ -31938,7 +32025,11 @@ function stopTrackingLoops(){
   stopPoll();stopDbPoll();stopRealtime();
   state.verifyInFlight=false;state.dbPollInFlight=false;state.trackingStarted=false;
 }
-function setBusy(v){state.busy=!!v;const b=document.getElementById("iwpPay");if(b)b.disabled=!!v}
+function setBusy(v){
+  state.busy=!!v;const b=document.getElementById("iwpPay");if(b)b.disabled=!!v;
+  const input=document.getElementById("deposit-amount");if(input)input.disabled=!!v;
+  const next=document.getElementById("iwpNewPayment");if(next)next.hidden=!(state.trackingStarted||state.terminal);
+}
 function normalizeTrackedTx(network,tx){
   const x=String(tx||"").trim().toLowerCase();
   return network==="TRC20"?x.replace(/^0x/,""):x;
@@ -31966,7 +32057,7 @@ function iwpNetworkIcons(network){
 
 function render(){
   const box=document.getElementById("payment-info-box");if(!box)return;
-  const a=money(),n=NET[state.network];
+  const a=state.trackingStarted?state.activeAmount:money(),n=NET[state.network];
   box.classList.remove("deposit-wallet-info");
   box.innerHTML=`<div class="iwp-panel">
     <div class="iwp-head"><div><div class="iwp-kicker">BINANCINVEST</div><div class="iwp-title">${esc(t("title"))}</div></div><span class="iwp-secure">${esc(t("secure"))}</span></div>
@@ -31989,10 +32080,18 @@ function render(){
     <div id="iwpStatus" class="iwp-status" role="status" aria-live="polite"></div>
     <div id="iwpWaitNote" class="iwp-wait-note">${esc(t("waitNote"))}</div>
     <button id="iwpRecheck" type="button" class="iwp-wallet-btn" hidden>${esc(recoveryText("retry"))}</button>
+    <button id="iwpNewPayment" type="button" class="iwp-wallet-btn" hidden>${esc(historyText(1))}</button>
+    <section id="iwpHistory" hidden style="margin-top:20px;border-top:1px solid rgba(240,190,60,.3);padding-top:16px"></section>
   </div>`;
   box.querySelectorAll("[data-iwp-net]").forEach(b=>b.addEventListener("click",()=>{if(state.busy)return;state.network=b.dataset.iwpNet;state.provider=null;state.walletName="";render()}));
   const payBtn=document.getElementById("iwpPay");if(payBtn){payBtn.classList.remove("confirmed");payBtn.disabled=state.busy;payBtn.addEventListener("click",chooseWallet)}
   document.getElementById("iwpRecheck")?.addEventListener("click",()=>void recoverLatestPaymentFromServer(state.verifyEpoch,true));
+  document.getElementById("iwpNewPayment")?.addEventListener("click",startSeparatePayment);
+  setBusy(state.busy);void loadPaymentHistory();
+  if(state.trackingStarted){
+    if(state.reviewRequired)showRecoveryNotice("review");
+    else{status(it("register"),"info",true);waitNote(true)}
+  }else if(state.terminal&&state.lastOutcome==="approved")markConfirmed();
 }
 
 function discoverEvm(){
@@ -32063,6 +32162,8 @@ function walletHandoffUrl(brand){
   u.searchParams.set("iwp_amount",String(money()||""));
   u.searchParams.set("iwp_wallet",String(brand||""));
   u.searchParams.set("iwp_lang",lang());
+  // Navigation nonce only: never used as payment authorization or a transaction id.
+  u.searchParams.set("iwp_open",Date.now().toString(36)+"-"+Math.random().toString(36).slice(2));
   u.hash="instant-wallet-payment";
   return u.toString();
 }
@@ -32118,6 +32219,7 @@ function openPreferredWallet(item){
   else window.open(link,"_blank","noopener");
 }
 async function chooseWallet(){
+  if(state.busy)return;
   const amount=money();if(!amount){status(t("invalid"),"err");document.getElementById("deposit-amount")?.focus();return}
   stopPoll();
   state.busy=false;
@@ -32259,6 +32361,7 @@ async function finishSuccess(data,amount,epoch=null){
   // bring the spinner back after this point.
   terminalizeTracking();
   clearPendingPayment();
+  state.lastOutcome="approved";setBusy(false);
   waitNote(false);
   const retry=document.getElementById("iwpRecheck");if(retry)retry.hidden=true;
 
@@ -32298,6 +32401,7 @@ function finishFailed(message=null,epoch=null){
   if(state.terminal)return;
   terminalizeTracking();
   clearPendingPayment();
+  state.lastOutcome="failed";
   setBusy(false);
   waitNote(false);
   status(message||t("failed"),"err");
@@ -32671,27 +32775,18 @@ window.selectPaymentMethod=function(value){
 window.togglePaymentDetails=function(){
   const method=document.getElementById("payment-method")?.value||"wallet",crypto=document.getElementById("crypto-options-container"),info=document.getElementById("payment-info-box"),tx=document.getElementById("tx-container"),receipt=document.getElementById("deposit-receipt-container"),submit=document.getElementById("deposit-submit-button");
   if(!crypto||!info)return;
+  if(method!=="instantwallet"&&state.busy&&!state.trackingStarted){
+    window.selectPaymentMethod("instantwallet");return;
+  }
+  if(method!=="instantwallet"&&state.trackingStarted)resetPaymentDraft();
   if(method==="instantwallet"){
     crypto.style.display="none";
     if(tx)tx.style.display="none";
     if(receipt)receipt.style.display="none";
     if(submit)submit.style.display="none";
-    state.busy=!!readPendingPayment();
-    stopPoll();
     render();
-
-    // IMPORTANT: Selecting the payment method alone is NOT a payment.
-    // Spinner/recovery starts only if this device already has an exact TX hash
-    // from a wallet transaction that was actually sent.
-    const pending=readPendingPayment();
-    if(pending?.requestId){
-      setTimeout(()=>void resumePendingPayment(),120);
-    }else{
-      stopTrackingLoops();
-      state.terminal=false;state.serverRegistered=false;
-      state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";state.activeRequestId="";state.activePayAmount="";
-      setBusy(false);status("");waitNote(false);
-    }
+    // Saved transfers are history, never the draft for a new payment.
+    void resumePendingPayment();
     return;
   }
   stopPoll();state.busy=false;setBusy(false);
@@ -32753,7 +32848,7 @@ function scheduleServerRecovery(){
 async function resumePendingPayment(){
   if(iwpResumeRunning||!currentUser?.id)return;
   const p=readPendingPayment();
-  if(!p?.requestId)return;
+  if(!p?.requestId){void loadPaymentHistory();return}
   iwpResumeRunning=true;
   try{
     // Older saved entries did not include their owner. Verify ownership before
@@ -32763,23 +32858,22 @@ async function resumePendingPayment(){
       .select("id").eq("id",p.requestId).eq("user_id",owner)
       .eq("request_type","deposit").eq("user_note","Instant wallet payment").maybeSingle();
     if(error||!owned||currentUser?.id!==owner)return;
-    state.network=String(p.network||"BEP20").toUpperCase();
-    const input=document.getElementById("deposit-amount");
-    if(input)input.value=String(p.amount);
-    const method=document.getElementById("payment-method");
-    if(method&&method.value!=="instantwallet")window.selectPaymentMethod("instantwallet");
-    else if(method?.value==="instantwallet"&&!document.getElementById("iwpStatus"))render();
-    beginIntentTracking(p.requestId,Number(p.amount),String(p.payAmount||p.amount),String(p.from),state.network,String(p.txHash||""));
-  }finally{iwpResumeRunning=false}
+    // Migration of ownerless legacy storage is allowed only after server ownership check.
+    rememberPayment({...p,userId:owner});
+  }finally{iwpResumeRunning=false;void loadPaymentHistory()}
 }
 
 
 async function restoreWalletHandoff(){
   const q=new URLSearchParams(location.search);
-  if(q.get("iwp")!=="1")return false;
+  const handoffKey=q.get("iwp_open")||q.toString();
+  if(q.get("iwp")!=="1"||state.handoffRestored===handoffKey)return false;
   if(!currentUser?.id){setTimeout(()=>void restoreWalletHandoff(),500);return true}
   const amount=Number(q.get("iwp_amount")||0),network=String(q.get("iwp_network")||"BEP20").toUpperCase(),wallet=String(q.get("iwp_wallet")||"").toLowerCase();
   if(!NET[network]||!Number.isFinite(amount)||amount<=0)return false;
+  if(state.busy&&!state.trackingStarted)return false;
+  state.handoffRestored=handoffKey;
+  resetPaymentDraft();
   state.network=network;state.handoffWallet=wallet;
   const nav=document.querySelector('[data-page="portfolio"]');
   if(typeof window.page==="function")window.page("portfolio",nav);
@@ -32787,6 +32881,7 @@ async function restoreWalletHandoff(){
   if(input){input.value=String(amount);input.dispatchEvent(new Event("input",{bubbles:true}))}
   if(typeof window.selectPaymentMethod==="function")window.selectPaymentMethod("instantwallet");
   setTimeout(()=>{
+    if(state.busy||state.trackingStarted)return;
     render();
     const item=walletCatalog().find(x=>x.id===wallet);
     status(pf("handoffReady",{wallet:item?.name||wallet||"Wallet"}),"info",false);
@@ -32794,7 +32889,7 @@ async function restoreWalletHandoff(){
   },220);
   try{
     const clean=new URL(location.href);
-    ["iwp","iwp_network","iwp_amount","iwp_wallet","iwp_lang"].forEach(k=>clean.searchParams.delete(k));
+    ["iwp","iwp_network","iwp_amount","iwp_wallet","iwp_lang","iwp_open"].forEach(k=>clean.searchParams.delete(k));
     clean.hash="";
     history.replaceState(history.state,"",clean.pathname+(clean.search?clean.search:"")+clean.hash);
   }catch(_){}
@@ -32803,11 +32898,13 @@ async function restoreWalletHandoff(){
 
 document.getElementById("deposit-amount")?.addEventListener("input",()=>{
   if(document.getElementById("payment-method")?.value!=="instantwallet")return;
+  if(state.busy){
+    if(state.trackingStarted)document.getElementById("deposit-amount").value=String(state.activeAmount);
+    return;
+  }
   const v=money();
   if(state.terminal&&v>0){
-    stopTrackingLoops();
-    state.terminal=false;state.serverRegistered=false;
-    state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";state.activeRequestId="";state.activePayAmount="";
+    resetPaymentDraft();
     render();
   }
   const el=document.getElementById("iwpAmount");
@@ -32839,6 +32936,7 @@ scheduleServerRecovery();
 setTimeout(()=>void restoreWalletHandoff(),350);
 setTimeout(()=>void restoreWalletHandoff(),1100);
 setTimeout(()=>void resumePendingPayment(),650);
+setInterval(()=>{if(!document.hidden&&currentUser?.id&&document.getElementById("payment-method")?.value==="instantwallet")void loadPaymentHistory()},10000);
 let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet"&&!state.terminal)render()}},1200);
 })();
 </script>
