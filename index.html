@@ -14593,7 +14593,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    overflow:visible;
   }
   .auth-turnstile-error{
     display:none;
@@ -14605,10 +14605,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   .auth-turnstile-error.show{display:block}
   @media(max-width:420px){
     .auth-turnstile-shell{padding:10px}
-    .auth-turnstile-widget{
-      transform-origin:center top;
-      overflow:visible;
-    }
+    .auth-turnstile-widget{width:100%}
   }
 </style>
 
@@ -33195,7 +33192,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
         sitekey: siteKey(),
         theme: "dark",
         size: "flexible",
-        appearance: "interaction-only",
+        appearance: "always",
         callback(token){
           state[kind].token = String(token || "");
           setError(kind, "");
