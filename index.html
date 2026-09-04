@@ -15811,7 +15811,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 
 </section>
 
-<section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn clear-history-btn" type="button" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div></section>
+<section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn clear-history-btn" type="button" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div><section id="iwpHistory" class="card" hidden style="margin-top:20px;border:1px solid rgba(240,190,60,.3);padding:20px"></section></section>
 
 <section id="rewards" class="view">
   <div class="rewards-top-artwork" aria-label="Binance Invest referral rewards network banner">
@@ -22145,6 +22145,7 @@ function calcCustom() {
 }
 
 async function loadTransactions(){
+  if(typeof window.refreshWalletPaymentHistory === "function") void window.refreshWalletPaymentHistory();
   const tList = document.getElementById("txList");
   if(!tList) return;
   if(!currentUser){
@@ -24439,49 +24440,18 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-/* Stage-1 server-side blockchain verification.
- * This never credits a balance automatically. It only verifies supported
- * USDT TXIDs so the existing admin approval remains the final step.
+/* Method 1 is reviewed by the administrator using a hash or receipt.
+ * Compatibility helpers intentionally do not call a chain verifier.
+ * Method 2 has its own independent server verification and finalizer.
  */
 const depositVerificationLastAttempt = new Map();
 
 function isAutoVerifiableDeposit(item) {
-  const asset = String(item?.asset || "").trim().toUpperCase();
-  const network = String(item?.network || "").trim().toUpperCase();
-  const txHash = String(item?.tx_hash || "").trim();
-  const verification = String(item?.verification_status || "not_checked");
-  return item?.request_type === "deposit"
-    && item?.user_note !== "Instant wallet payment"
-    && item?.status === "pending"
-    && asset === "USDT"
-    && ["BEP20", "ERC20"].includes(network)
-    && /^0x[0-9a-fA-F]{64}$/.test(txHash)
-    && ["not_checked", "checking"].includes(verification);
+  return false;
 }
 
 async function verifyDepositRequestOnChain(requestId, { force = false } = {}) {
-  const id = String(requestId || "").trim();
-  if (!id || !currentUser?.id) return null;
-
-  const now = Date.now();
-  const last = Number(depositVerificationLastAttempt.get(id) || 0);
-  if (!force && now - last < 30000) return null;
-  depositVerificationLastAttempt.set(id, now);
-
-  try {
-    const { data, error } = await supabaseClient.functions.invoke(
-      "verify-deposit-tx",
-      { body: { request_id: id } }
-    );
-    if (error) {
-      console.warn("Deposit blockchain verification deferred:", error);
-      return null;
-    }
-    return data || null;
-  } catch (error) {
-    console.warn("Deposit blockchain verification deferred:", error);
-    return null;
-  }
+  return null;
 }
 
 function recheckPendingDepositVerifications(items) {
@@ -24573,14 +24543,7 @@ window.submitDepositRequest = async function () {
       return;
     }
 
-    if (
-      requestId
-      && txHash
-      && selected.asset === "USDT"
-      && ["BEP20", "ERC20"].includes(selected.network)
-    ) {
-      await verifyDepositRequestOnChain(requestId, { force: true });
-    }
+    // The request stays pending until an authorized administrator reviews it.
 
     document.getElementById("deposit-amount").value = "";
     document.getElementById("tx-ref").value = "";
@@ -31904,10 +31867,18 @@ function startSeparatePayment(){
   render();
 }
 let historyGeneration=0;
+let historyOwner="";
 const historyChecks=new Set();
+function clearPaymentHistory(){
+  historyGeneration++;historyOwner="";
+  const host=document.getElementById("iwpHistory");
+  if(host){host.hidden=true;host.innerHTML=""}
+}
 async function loadPaymentHistory(){
   const host=document.getElementById("iwpHistory"),owner=currentUser?.id;
-  if(!host||!owner)return;
+  if(!host)return;
+  if(!owner){clearPaymentHistory();return}
+  if(historyOwner!==owner){clearPaymentHistory();historyOwner=owner}
   const generation=++historyGeneration;
   try{
     const {data,error}=await supabaseClient.from("financial_requests")
@@ -31915,7 +31886,7 @@ async function loadPaymentHistory(){
       .eq("user_id",owner).eq("request_type","deposit").eq("user_note","Instant wallet payment")
       .order("created_at",{ascending:false}).limit(30);
     if(error||owner!==currentUser?.id||generation!==historyGeneration||host!==document.getElementById("iwpHistory"))return;
-    const rows=(data||[]).filter(r=>r.id!==state.activeRequestId||state.terminal);
+    const rows=data||[];
     host.hidden=!rows.length;
     host.innerHTML=rows.length?`<h3>${esc(historyText(0))}</h3><p class="iwp-helper">${esc(historyText(2))}</p>`+rows.map(r=>{
       const approved=r.status==="approved"&&r.verification_status==="verified";
@@ -31928,6 +31899,11 @@ async function loadPaymentHistory(){
     });
   }catch(_){}
 }
+window.refreshWalletPaymentHistory=loadPaymentHistory;
+supabaseClient.auth?.onAuthStateChange((_event,session)=>{
+  // Clear synchronously; never make a Supabase request inside an auth callback.
+  if(session?.user?.id!==historyOwner)clearPaymentHistory();
+});
 async function recheckSavedPayment(id){
   const owner=currentUser?.id,key=owner+":"+id;
   if(!owner||historyChecks.has(key))return;
@@ -32081,7 +32057,6 @@ function render(){
     <div id="iwpWaitNote" class="iwp-wait-note">${esc(t("waitNote"))}</div>
     <button id="iwpRecheck" type="button" class="iwp-wallet-btn" hidden>${esc(recoveryText("retry"))}</button>
     <button id="iwpNewPayment" type="button" class="iwp-wallet-btn" hidden>${esc(historyText(1))}</button>
-    <section id="iwpHistory" hidden style="margin-top:20px;border-top:1px solid rgba(240,190,60,.3);padding-top:16px"></section>
   </div>`;
   box.querySelectorAll("[data-iwp-net]").forEach(b=>b.addEventListener("click",()=>{if(state.busy)return;state.network=b.dataset.iwpNet;state.provider=null;state.walletName="";render()}));
   const payBtn=document.getElementById("iwpPay");if(payBtn){payBtn.classList.remove("confirmed");payBtn.disabled=state.busy;payBtn.addEventListener("click",chooseWallet)}
@@ -32936,8 +32911,8 @@ scheduleServerRecovery();
 setTimeout(()=>void restoreWalletHandoff(),350);
 setTimeout(()=>void restoreWalletHandoff(),1100);
 setTimeout(()=>void resumePendingPayment(),650);
-setInterval(()=>{if(!document.hidden&&currentUser?.id&&document.getElementById("payment-method")?.value==="instantwallet")void loadPaymentHistory()},10000);
-let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet"&&!state.terminal)render()}},1200);
+setInterval(()=>{if(historyOwner&&historyOwner!==currentUser?.id)clearPaymentHistory();if(!document.hidden&&document.getElementById("transactions")?.classList.contains("active"))void loadPaymentHistory()},10000);
+let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();void loadPaymentHistory();if(document.getElementById("payment-method")?.value==="instantwallet"&&!state.terminal)render()}},1200);
 })();
 </script>
 
