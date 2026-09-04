@@ -14509,6 +14509,11 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 @media(max-width:520px){.iwp-wallet-list{grid-template-columns:1fr}.iwp-wallet-btn{min-height:70px}.iwp-wallet-brand{width:44px;height:44px}}
 </style>
 
+
+<style id="iwp-handoff-v12-css">
+#payment-info-box{scroll-margin-top:110px}
+.iwp-status.info:not(.show){display:none}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -31777,7 +31782,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v11-script">
+<script id="instant-wallet-deposit-v12-script">
 (function(){
 "use strict";
 
@@ -31803,7 +31808,7 @@ const COPY={
 };
 
 const siteT=(typeof T!=="undefined"&&T)?T:{};
-const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false};
+const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false,handoffWallet:"",notFoundPolls:0};
 const IWP_PENDING_KEY="bi_instant_wallet_pending_v11";
 const IWP_HANDLED_KEY="bi_iwp_handled_success_v10";
 function readHandled(){
@@ -31853,6 +31858,25 @@ function markConfirmed(){
   }
 }
 const evmAnnounced=new Map(),tronAnnounced=new Map();
+const PAYFLOW_COPY={
+ en:{continueWith:"Continue with {wallet}",checkingFunds:"Checking wallet balance…",insufficientUSDT:"Insufficient USDT balance. Required: {need} USDT · Available: {have} USDT.",insufficientGas:"Insufficient network fee balance. Add a small amount of the network gas token and try again.",submittedNotVisible:"Transaction was submitted but is not visible on-chain yet. We are still checking automatically.",handoffReady:"Payment details restored. Continue in {wallet}.",balanceCheckFailed:"Wallet balance could not be checked. Please try again inside the wallet browser."},
+ fa:{continueWith:"ادامه پرداخت با {wallet}",checkingFunds:"در حال بررسی موجودی کیف پول…",insufficientUSDT:"موجودی USDT کافی نیست. مبلغ لازم: {need} USDT · موجودی شما: {have} USDT.",insufficientGas:"موجودی کارمزد شبکه کافی نیست. مقدار کمی از ارز کارمزد شبکه به کیف پول اضافه کرده و دوباره امتحان کنید.",submittedNotVisible:"تراکنش ارسال شده اما هنوز روی بلاکچین دیده نشده است. بررسی خودکار ادامه دارد.",handoffReady:"اطلاعات پرداخت بازیابی شد. پرداخت را در {wallet} ادامه دهید.",balanceCheckFailed:"امکان بررسی موجودی کیف پول نبود. لطفاً داخل مرورگر همان کیف پول دوباره تلاش کنید."},
+ az:{continueWith:"{wallet} ilə ödənişə davam et",checkingFunds:"Cüzdan balansı yoxlanılır…",insufficientUSDT:"USDT balansı kifayət deyil. Lazım olan: {need} USDT · Mövcud: {have} USDT.",insufficientGas:"Şəbəkə komissiyası üçün balans kifayət deyil.",submittedNotVisible:"Tranzaksiya göndərilib, lakin hələ blockchain-də görünmür. Avtomatik yoxlama davam edir.",handoffReady:"Ödəniş məlumatları bərpa edildi. {wallet} ilə davam edin.",balanceCheckFailed:"Cüzdan balansını yoxlamaq mümkün olmadı."},
+ tr:{continueWith:"{wallet} ile ödemeye devam et",checkingFunds:"Cüzdan bakiyesi kontrol ediliyor…",insufficientUSDT:"Yetersiz USDT bakiyesi. Gerekli: {need} USDT · Mevcut: {have} USDT.",insufficientGas:"Ağ işlem ücreti için bakiye yetersiz.",submittedNotVisible:"İşlem gönderildi ancak henüz blockchain üzerinde görünmüyor. Otomatik kontrol sürüyor.",handoffReady:"Ödeme bilgileri geri yüklendi. {wallet} ile devam edin.",balanceCheckFailed:"Cüzdan bakiyesi kontrol edilemedi."},
+ ru:{continueWith:"Продолжить с {wallet}",checkingFunds:"Проверяем баланс кошелька…",insufficientUSDT:"Недостаточно USDT. Нужно: {need} USDT · Доступно: {have} USDT.",insufficientGas:"Недостаточно средств для комиссии сети.",submittedNotVisible:"Транзакция отправлена, но пока не видна в блокчейне. Автопроверка продолжается.",handoffReady:"Данные платежа восстановлены. Продолжите в {wallet}.",balanceCheckFailed:"Не удалось проверить баланс кошелька."},
+ ar:{continueWith:"المتابعة عبر {wallet}",checkingFunds:"جارٍ التحقق من رصيد المحفظة…",insufficientUSDT:"رصيد USDT غير كافٍ. المطلوب: {need} USDT · المتاح: {have} USDT.",insufficientGas:"رصيد رسوم الشبكة غير كافٍ.",submittedNotVisible:"تم إرسال المعاملة لكنها لم تظهر على البلوكشين بعد. يستمر التحقق تلقائيًا.",handoffReady:"تمت استعادة بيانات الدفع. تابع عبر {wallet}.",balanceCheckFailed:"تعذر التحقق من رصيد المحفظة."},
+ zh:{continueWith:"使用 {wallet} 继续支付",checkingFunds:"正在检查钱包余额…",insufficientUSDT:"USDT余额不足。需要：{need} USDT · 可用：{have} USDT。",insufficientGas:"网络手续费余额不足。",submittedNotVisible:"交易已提交但暂未在链上显示，系统仍在自动检查。",handoffReady:"支付信息已恢复，请在 {wallet} 中继续。",balanceCheckFailed:"无法检查钱包余额。"},
+ es:{continueWith:"Continuar con {wallet}",checkingFunds:"Comprobando saldo de la wallet…",insufficientUSDT:"Saldo USDT insuficiente. Necesario: {need} USDT · Disponible: {have} USDT.",insufficientGas:"Saldo insuficiente para la comisión de red.",submittedNotVisible:"La transacción fue enviada pero aún no aparece on-chain. Seguimos comprobando automáticamente.",handoffReady:"Datos de pago restaurados. Continúa en {wallet}.",balanceCheckFailed:"No se pudo comprobar el saldo de la wallet."},
+ fr:{continueWith:"Continuer avec {wallet}",checkingFunds:"Vérification du solde…",insufficientUSDT:"Solde USDT insuffisant. Requis : {need} USDT · Disponible : {have} USDT.",insufficientGas:"Solde insuffisant pour les frais réseau.",submittedNotVisible:"La transaction a été envoyée mais n’est pas encore visible on-chain. La vérification automatique continue.",handoffReady:"Détails du paiement restaurés. Continuez dans {wallet}.",balanceCheckFailed:"Impossible de vérifier le solde du portefeuille."},
+ de:{continueWith:"Mit {wallet} fortfahren",checkingFunds:"Wallet-Guthaben wird geprüft…",insufficientUSDT:"USDT-Guthaben reicht nicht aus. Benötigt: {need} USDT · Verfügbar: {have} USDT.",insufficientGas:"Nicht genügend Guthaben für die Netzwerkgebühr.",submittedNotVisible:"Transaktion wurde gesendet, ist aber noch nicht on-chain sichtbar. Die automatische Prüfung läuft weiter.",handoffReady:"Zahlungsdaten wiederhergestellt. In {wallet} fortfahren.",balanceCheckFailed:"Wallet-Guthaben konnte nicht geprüft werden."}
+};
+function pf(k,vars={}){
+  const d=PAYFLOW_COPY[lang()]||PAYFLOW_COPY.en;
+  let s=d[k]||PAYFLOW_COPY.en[k]||k;
+  for(const [a,b] of Object.entries(vars))s=s.replaceAll(`{${a}}`,String(b));
+  return s;
+}
+
 
 function lang(){const x=(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase();return COPY[x]?x:"en"}
 function t(k){return COPY[lang()][k]||COPY.en[k]||k}
@@ -31890,7 +31914,7 @@ function render(){
       <div class="iwp-row"><span>${esc(t("network"))}</span><b id="iwpNetwork">${esc(n.label)}</b></div>
       <div class="iwp-row"><span>${esc(t("destination"))}</span><b class="iwp-address">${esc(n.receiver)}</b></div>
     </div>
-    <button id="iwpPay" type="button" class="iwp-pay">${esc(t("pay"))}</button>
+    <button id="iwpPay" type="button" class="iwp-pay">${esc(state.handoffWallet?pf("continueWith",{wallet:(walletCatalog().find(x=>x.id===state.handoffWallet)?.name||state.handoffWallet)}):t("pay"))}</button>
     <div id="iwpWallets" class="iwp-wallets">
       <div class="iwp-wallets-title">${esc(t("wallets"))}</div>
       <div id="iwpWalletList" class="iwp-wallet-list"></div>
@@ -31964,15 +31988,31 @@ function walletLogo(brand){
   };
   return logos[brand]||logos.generic;
 }
+function walletHandoffUrl(brand){
+  const u=new URL(location.origin+location.pathname);
+  u.searchParams.set("iwp","1");
+  u.searchParams.set("iwp_network",state.network);
+  u.searchParams.set("iwp_amount",String(money()||""));
+  u.searchParams.set("iwp_wallet",String(brand||""));
+  u.searchParams.set("iwp_lang",lang());
+  u.hash="instant-wallet-payment";
+  return u.toString();
+}
 function mobileDappLink(brand){
-  const u=location.href;
-  if(brand==="trust")return trustDappUrl();
+  const u=walletHandoffUrl(brand);
+  if(brand==="trust"){
+    const coin=state.network==="BEP20"?"20000714":state.network==="TRC20"?"195":"60";
+    return `https://link.trustwallet.com/open_url?coin_id=${coin}&url=${encodeURIComponent(u)}`;
+  }
   if(brand==="metamask"){
     const stripped=u.replace(/^https?:\/\//,"");
     return "https://metamask.app.link/dapp/"+stripped;
   }
   if(brand==="bitget")return "https://bkcode.vip?action=dapp&url="+encodeURIComponent(u);
   if(brand==="coinbase")return "https://go.cb-w.com/dapp?cb_url="+encodeURIComponent(u);
+  // Binance/OKX do not expose a stable public URL-only DApp-browser deep link
+  // in the currently documented interface. We still preserve the full target
+  // URL in clipboard/session so the wallet browser can open the exact payment state.
   if(brand==="binance")return "https://web3.binance.com/";
   if(brand==="okx")return "https://web3.okx.com/";
   if(brand==="tronlink")return "https://www.tronlink.org/";
@@ -31997,6 +32037,13 @@ function openPreferredWallet(item){
     else startEvmPayment(p,item.name);
     return;
   }
+  const target=walletHandoffUrl(item.id);
+  try{
+    sessionStorage.setItem("bi_iwp_handoff_v12",JSON.stringify({
+      amount:money(),network:state.network,wallet:item.id,target,createdAt:Date.now()
+    }));
+  }catch(_){}
+  try{navigator.clipboard?.writeText?.(target)}catch(_){}
   status(t("noWallet"),"info");
   const link=mobileDappLink(item.id);
   if(["trust","metamask","bitget","coinbase"].includes(item.id))window.location.href=link;
@@ -32010,9 +32057,18 @@ async function chooseWallet(){
   status("");
   waitNote(false);
   const wrap=document.getElementById("iwpWallets"),list=document.getElementById("iwpWalletList");if(!wrap||!list)return;
-  wrap.classList.add("show");list.innerHTML="";
   discoverEvm();discoverTron();
   await new Promise(r=>setTimeout(r,140));
+  if(state.handoffWallet){
+    const item=walletCatalog().find(x=>x.id===state.handoffWallet);
+    const provider=item?brandProvider(item.id):null;
+    if(item&&provider){
+      wrap.classList.remove("show");
+      if(state.network==="TRC20")return startTronPayment(provider,item.name);
+      return startEvmPayment(provider,item.name);
+    }
+  }
+  wrap.classList.add("show");list.innerHTML="";
 
   for(const item of walletCatalog()){
     const provider=brandProvider(item.id),b=document.createElement("button");
@@ -32149,27 +32205,79 @@ async function verifyLoop(amount,from,txHash,isPoll=false){
     if(d.confirmations!=null&&d.required!=null)status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
     else status(t("sent"),"info",true);
     waitNote(true);
-    if(state.polls++<360)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),5000);
+    if(d.reason==="transaction_not_found_or_not_mined")state.notFoundPolls++;else state.notFoundPolls=0;
+    if(state.notFoundPolls>=22){status(pf("submittedNotVisible"),"info",false);waitNote(true)}
+    const nextDelay=state.polls<20?1800:3200;
+    if(state.polls++<520)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),nextDelay);
     else{state.busy=false;setBusy(false);status(t("server"),"err")}
   }catch(e){
     // Network/app switching can pause Safari requests. Preserve the payment
     // and try again when the page becomes visible/focused, plus a timer.
     if(!isPoll)status(e?.message||t("server"),"info",true);
     waitNote(true);
-    if(state.polls++<360)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),6500);
+    const retryDelay=state.polls<20?2200:3800;
+    if(state.polls++<520)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),retryDelay);
     else{state.busy=false;setBusy(false);status(t("server"),"err")}
+  }
+}
+
+function formatTokenUnits(v,d){
+  try{
+    const b=10n**BigInt(d),w=v/b,f=(v%b).toString().padStart(d,"0").slice(0,6).replace(/0+$/,"");
+    return f?`${w}.${f}`:w.toString();
+  }catch(_){return "0"}
+}
+async function checkEvmFunds(provider,from,amount){
+  const n=NET[state.network],need=parseUnits(amount,n.decimals);
+  const balanceData="0x70a08231"+from.toLowerCase().replace(/^0x/,"").padStart(64,"0");
+  let raw;
+  try{
+    raw=await provider.request({method:"eth_call",params:[{to:n.token,data:balanceData},"latest"]});
+  }catch(_){throw new Error(pf("balanceCheckFailed"))}
+  const tokenBal=BigInt(raw||"0x0");
+  if(tokenBal<need)throw new Error(pf("insufficientUSDT",{need:Number(amount).toFixed(2),have:formatTokenUnits(tokenBal,n.decimals)}));
+
+  // Also check whether the wallet can afford the network fee. If a provider
+  // does not support estimation we do not block a valid transfer.
+  try{
+    const data=transferData(n.receiver,need);
+    const [gasHex,gasPriceHex,nativeHex]=await Promise.all([
+      provider.request({method:"eth_estimateGas",params:[{from,to:n.token,data,value:"0x0"}]}),
+      provider.request({method:"eth_gasPrice"}),
+      provider.request({method:"eth_getBalance",params:[from,"latest"]})
+    ]);
+    const gas=BigInt(gasHex||"0x0"),gasPrice=BigInt(gasPriceHex||"0x0"),native=BigInt(nativeHex||"0x0");
+    if(gas>0n&&gasPrice>0n&&native<gas*gasPrice)throw new Error(pf("insufficientGas"));
+  }catch(e){
+    if(String(e?.message||"")===pf("insufficientGas"))throw e;
+  }
+  return true;
+}
+async function checkTronFunds(tronWeb,from,amount){
+  try{
+    const contract=await tronWeb.contract().at(TRON_USDT);
+    const raw=await contract.balanceOf(from).call();
+    const tokenBal=BigInt(String(raw?.toString?.()??raw??"0"));
+    const need=parseUnits(amount,6);
+    if(tokenBal<need)throw new Error(pf("insufficientUSDT",{need:Number(amount).toFixed(2),have:formatTokenUnits(tokenBal,6)}));
+    return contract;
+  }catch(e){
+    if(/USDT|موجودی|баланс|saldo|Solde|Guthaben|余额|رصيد|balans/i.test(String(e?.message||"")))throw e;
+    throw new Error(pf("balanceCheckFailed"));
   }
 }
 async function startEvmPayment(provider,name){
   if(state.busy)return;
   const amount=money();if(!amount){status(t("invalid"),"err");return}
-  state.provider=provider;state.walletName=name;state.polls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
   try{
     const accounts=await provider.request({method:"eth_requestAccounts"});
     const from=String(accounts?.[0]||"").toLowerCase();
     if(!/^0x[0-9a-f]{40}$/.test(from))throw new Error(t("noWallet"));
     try{await switchEvmChain(provider)}catch(_){throw new Error(t("wrong"))}
     const n=NET[state.network],units=parseUnits(amount,n.decimals),data=transferData(n.receiver,units);
+    status(pf("checkingFunds"),"info",true);
+    await checkEvmFunds(provider,from,amount);
     status(t("confirm"),"info",true);
     const txHash=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
     if(!/^0x[0-9a-fA-F]{64}$/.test(String(txHash||"")))throw new Error(t("failed"));
@@ -32183,7 +32291,7 @@ async function startEvmPayment(provider,name){
 async function startTronPayment(provider,name){
   if(state.busy)return;
   const amount=money();if(!amount){status(t("invalid"),"err");return}
-  state.provider=provider;state.walletName=name;state.polls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
   try{
     let accounts=[];
     try{accounts=await provider.request({method:"eth_requestAccounts"})}catch(e){
@@ -32196,8 +32304,9 @@ async function startTronPayment(provider,name){
     const from=String(accounts?.[0]||tronWeb?.defaultAddress?.base58||"");
     if(!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(from))throw new Error(t("noWallet"));
     const units=parseUnits(amount,6).toString();
+    status(pf("checkingFunds"),"info",true);
+    const contract=await checkTronFunds(tronWeb,from,amount);
     status(t("confirm"),"info",true);
-    const contract=await tronWeb.contract().at(TRON_USDT);
     const result=await contract.transfer(TRON_RECEIVER,units).send({feeLimit:100000000,callValue:0,shouldPollResponse:false});
     const raw=typeof result==="string"?result:(result?.txid||result?.txID||result?.transaction?.txID||"");
     const txHash=String(raw).replace(/^0x/i,"");
@@ -32376,6 +32485,34 @@ async function resumePendingPayment(){
   }finally{iwpResumeRunning=false}
 }
 
+
+async function restoreWalletHandoff(){
+  const q=new URLSearchParams(location.search);
+  if(q.get("iwp")!=="1")return false;
+  if(!currentUser?.id){setTimeout(()=>void restoreWalletHandoff(),500);return true}
+  const amount=Number(q.get("iwp_amount")||0),network=String(q.get("iwp_network")||"BEP20").toUpperCase(),wallet=String(q.get("iwp_wallet")||"").toLowerCase();
+  if(!NET[network]||!Number.isFinite(amount)||amount<=0)return false;
+  state.network=network;state.handoffWallet=wallet;
+  const nav=document.querySelector('[data-page="portfolio"]');
+  if(typeof window.page==="function")window.page("portfolio",nav);
+  const input=document.getElementById("deposit-amount");
+  if(input){input.value=String(amount);input.dispatchEvent(new Event("input",{bubbles:true}))}
+  if(typeof window.selectPaymentMethod==="function")window.selectPaymentMethod("instantwallet");
+  setTimeout(()=>{
+    render();
+    const item=walletCatalog().find(x=>x.id===wallet);
+    status(pf("handoffReady",{wallet:item?.name||wallet||"Wallet"}),"info",false);
+    document.getElementById("payment-info-box")?.scrollIntoView({behavior:"smooth",block:"center"});
+  },220);
+  try{
+    const clean=new URL(location.href);
+    ["iwp","iwp_network","iwp_amount","iwp_wallet","iwp_lang"].forEach(k=>clean.searchParams.delete(k));
+    clean.hash="";
+    history.replaceState(history.state,"",clean.pathname+(clean.search?clean.search:"")+clean.hash);
+  }catch(_){}
+  return true;
+}
+
 document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(document.getElementById("payment-method")?.value==="instantwallet"){const el=document.getElementById("iwpAmount"),v=money();if(el)el.textContent=v>0?"$"+v.toFixed(2):"—"}});
 window.addEventListener("focus",()=>{
   setTimeout(()=>void resumePendingPayment(),80);
@@ -32397,6 +32534,8 @@ document.addEventListener("visibilitychange",()=>{
 });
 applyLabels();discoverEvm();discoverTron();
 scheduleServerRecovery();
+setTimeout(()=>void restoreWalletHandoff(),350);
+setTimeout(()=>void restoreWalletHandoff(),1100);
 setTimeout(()=>void resumePendingPayment(),900);
 setTimeout(()=>void recoverLatestPaymentFromServer(),1800);
 setTimeout(()=>void resumePendingPayment(),4200);
