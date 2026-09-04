@@ -31782,7 +31782,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v14-script">
+<script id="instant-wallet-deposit-v15-script">
 (function(){
 "use strict";
 
@@ -31813,9 +31813,10 @@ const state={
   handoffWallet:"",notFoundPolls:0,
   terminal:false,verifyEpoch:0,verifyInFlight:false,trackingStarted:false,serverRegistered:false,
   activeTxHash:"",activeNetwork:"",activeAmount:0,activeFrom:"",
+  activeRequestId:"",activePayAmount:"",
   dbPollTimer:null,dbPollInFlight:false,realtimeChannel:null,recoveryInFlight:false
 };
-const IWP_PENDING_KEY="bi_instant_wallet_pending_v11";
+const IWP_PENDING_KEY="bi_instant_wallet_intent_v15";
 const IWP_HANDLED_KEY="bi_iwp_handled_success_v10";
 function readHandled(){
   try{
@@ -31837,6 +31838,10 @@ let iwpResumeRunning=false;
 let iwpServerRecoveryRunning=false;
 let iwpServerRecoveryTimer=null; // legacy timer intentionally unused in v13
 try{
+  localStorage.removeItem("bi_instant_wallet_pending_v11");
+  localStorage.removeItem("bi_instant_wallet_pending_v8");
+}catch(_){}
+try{
   localStorage.removeItem("bi_instant_wallet_pending_v8");
   localStorage.removeItem("bi_instant_wallet_pending_v9");
   localStorage.removeItem("bi_instant_wallet_pending_v10");
@@ -31848,8 +31853,8 @@ function savePendingPayment(p){
 function readPendingPayment(){
   try{
     const p=JSON.parse(localStorage.getItem(IWP_PENDING_KEY)||"null");
-    if(!p||!p.txHash||!p.network||!p.from||!Number(p.amount))return null;
-    if(Date.now()-Number(p.savedAt||0)>24*60*60*1000){localStorage.removeItem(IWP_PENDING_KEY);return null}
+    if(!p||!p.requestId||!p.network||!p.from||!Number(p.amount))return null;
+    if(Date.now()-Number(p.savedAt||0)>45*60*1000){localStorage.removeItem(IWP_PENDING_KEY);return null}
     return p;
   }catch(_){return null}
 }
@@ -31862,6 +31867,25 @@ function markConfirmed(){
     b.disabled=true;
     b.setAttribute("aria-label",t("confirmed"));
   }
+}
+
+const INTENT_COPY={
+ en:{preparing:"Preparing a secure payment reference…",exact:"Exact network amount: {amount} USDT. This tiny fractional reference identifies your payment automatically.",register:"Payment sent. Server verification is running independently."},
+ fa:{preparing:"در حال ساخت شناسه امن پرداخت…",exact:"مبلغ دقیق شبکه: {amount} USDT. بخش اعشاری بسیار کوچک فقط شناسه خودکار همین پرداخت است.",register:"پرداخت ارسال شد. بررسی تراکنش مستقل از مرورگر در سرور ادامه دارد."},
+ az:{preparing:"Təhlükəsiz ödəniş identifikatoru hazırlanır…",exact:"Dəqiq şəbəkə məbləği: {amount} USDT. Kiçik onluq hissə ödənişi avtomatik tanıyır.",register:"Ödəniş göndərildi. Server yoxlaması brauzerdən asılı olmadan davam edir."},
+ tr:{preparing:"Güvenli ödeme kimliği hazırlanıyor…",exact:"Kesin ağ tutarı: {amount} USDT. Çok küçük ondalık bölüm yalnızca bu ödemeyi otomatik tanımlar.",register:"Ödeme gönderildi. Sunucu doğrulaması tarayıcıdan bağımsız devam ediyor."},
+ ru:{preparing:"Создаём безопасный идентификатор платежа…",exact:"Точная сумма в сети: {amount} USDT. Небольшая дробная часть служит только автоматическим идентификатором платежа.",register:"Платёж отправлен. Серверная проверка продолжается независимо от браузера."},
+ ar:{preparing:"جارٍ إنشاء معرف دفع آمن…",exact:"المبلغ الدقيق على الشبكة: {amount} USDT. الجزء العشري الصغير هو فقط معرّف تلقائي لهذه الدفعة.",register:"تم إرسال الدفع. يستمر التحقق على الخادم بشكل مستقل عن المتصفح."},
+ zh:{preparing:"正在创建安全支付标识…",exact:"网络精确金额：{amount} USDT。极小的小数部分仅用于自动识别本次付款。",register:"付款已发送。服务器验证将独立于浏览器继续。"},
+ es:{preparing:"Preparando una referencia de pago segura…",exact:"Importe exacto de red: {amount} USDT. La pequeña fracción decimal solo identifica automáticamente este pago.",register:"Pago enviado. La verificación del servidor continúa independientemente del navegador."},
+ fr:{preparing:"Préparation d’une référence de paiement sécurisée…",exact:"Montant réseau exact : {amount} USDT. La très petite fraction décimale sert uniquement à identifier automatiquement ce paiement.",register:"Paiement envoyé. La vérification serveur continue indépendamment du navigateur."},
+ de:{preparing:"Sichere Zahlungsreferenz wird erstellt…",exact:"Exakter Netzwerkbetrag: {amount} USDT. Der sehr kleine Dezimalanteil dient nur zur automatischen Zuordnung dieser Zahlung.",register:"Zahlung gesendet. Die Serverprüfung läuft unabhängig vom Browser weiter."}
+};
+function it(k,vars={}){
+  const d=INTENT_COPY[lang()]||INTENT_COPY.en;
+  let s=d[k]||INTENT_COPY.en[k]||k;
+  for(const [a,b] of Object.entries(vars))s=s.replaceAll("{"+a+"}",String(b));
+  return s;
 }
 const evmAnnounced=new Map(),tronAnnounced=new Map();
 const PAYFLOW_COPY={
@@ -31912,7 +31936,12 @@ function trackingMatches(network,tx){
     String(state.activeNetwork||"").toUpperCase()===String(network||"").toUpperCase() &&
     normalizeTrackedTx(network,state.activeTxHash)===normalizeTrackedTx(network,tx);
 }
-function parseUnits(value,decimals){const fixed=Number(value).toFixed(2),[w,f=""]=fixed.split(".");return BigInt(w)*(10n**BigInt(decimals))+BigInt((f+"0".repeat(decimals)).slice(0,decimals))}
+function parseUnits(value,decimals){
+  const s=String(value??"").trim();
+  if(!/^\d+(?:\.\d+)?$/.test(s))throw new Error("Invalid token amount");
+  const [w,f=""]=s.split(".");
+  return BigInt(w)*(10n**BigInt(decimals))+BigInt((f+"0".repeat(decimals)).slice(0,decimals)||"0");
+}
 function transferData(to,units){return "0xa9059cbb"+to.toLowerCase().replace(/^0x/,"").padStart(64,"0")+units.toString(16).padStart(64,"0")}
 function trustDappUrl(){const coin=state.network==="BEP20"?"20000714":state.network==="TRC20"?"195":"60";return `https://link.trustwallet.com/open_url?coin_id=${coin}&url=${encodeURIComponent(location.href)}`}
 
@@ -32160,6 +32189,31 @@ async function invokeVerify(amount,from,txHash){
   return data||{};
 }
 
+
+async function createPaymentIntent(amount,from){
+  const {data,error}=await supabaseClient.functions.invoke("direct-wallet-deposit",{
+    body:{action:"create_intent",amount:Number(amount),network:state.network,from_address:from}
+  });
+  if(error)throw new Error(error.message||t("server"));
+  if(!data?.request_id||!data?.pay_amount)throw new Error(t("server"));
+  return data;
+}
+async function attachPaymentIntent(requestId,txHash){
+  if(!requestId||!txHash)return;
+  try{
+    await supabaseClient.functions.invoke("direct-wallet-deposit",{
+      body:{action:"attach_tx",request_id:requestId,tx_hash:txHash}
+    });
+  }catch(_){}
+}
+async function cancelPaymentIntent(requestId){
+  if(!requestId)return;
+  try{
+    await supabaseClient.functions.invoke("direct-wallet-deposit",{
+      body:{action:"cancel_intent",request_id:requestId}
+    });
+  }catch(_){}
+}
 async function acknowledgeSuccess(requestId){
   if(!requestId)return;
   try{
@@ -32234,9 +32288,8 @@ function finishFailed(message=null,epoch=null){
 }
 
 function trackedRowMatches(row){
-  if(!row||!state.activeTxHash||!state.activeNetwork)return false;
-  return String(row.network||"").toUpperCase()===String(state.activeNetwork).toUpperCase() &&
-    normalizeTrackedTx(state.activeNetwork,row.tx_hash)===normalizeTrackedTx(state.activeNetwork,state.activeTxHash);
+  if(!row||!state.activeRequestId)return false;
+  return String(row.id||"")===String(state.activeRequestId);
 }
 
 async function handleTrackedDbRow(row,epoch){
@@ -32265,16 +32318,14 @@ async function handleTrackedDbRow(row,epoch){
 }
 
 async function pollTrackedDb(epoch){
-  if(state.terminal||epoch!==state.verifyEpoch||state.dbPollInFlight||!currentUser?.id||!state.activeTxHash)return;
+  if(state.terminal||epoch!==state.verifyEpoch||state.dbPollInFlight||!currentUser?.id||!state.activeRequestId)return;
   state.dbPollInFlight=true;
   try{
-    const tx=normalizeTrackedTx(state.activeNetwork,state.activeTxHash);
     const {data,error}=await supabaseClient
       .from("financial_requests")
       .select("id,user_id,amount,network,tx_hash,status,verification_status,verification_reason,verified_amount,updated_at")
       .eq("user_id",currentUser.id)
-      .eq("network",state.activeNetwork)
-      .eq("tx_hash",tx)
+      .eq("id",state.activeRequestId)
       .maybeSingle();
     if(!error&&data)await handleTrackedDbRow(data,epoch);
   }catch(_){}
@@ -32310,57 +32361,15 @@ function startTrackedRealtime(epoch){
   }catch(_){}
 }
 
-async function registerPaymentWithServer(epoch){
-  if(state.terminal||epoch!==state.verifyEpoch||state.verifyInFlight)return;
-  if(!state.activeTxHash||!state.activeFrom||!state.activeAmount)return;
+async function registerPaymentWithServer(epoch){ return; }
 
-  state.verifyInFlight=true;
-  try{
-    const d=await invokeVerify(state.activeAmount,state.activeFrom,state.activeTxHash);
-    if(state.terminal||epoch!==state.verifyEpoch)return;
-
-    if(d.status==="approved"){
-      state.serverRegistered=true;
-      await finishSuccess(d,state.activeAmount,epoch);
-      return;
-    }
-
-    if(d.status==="failed"){
-      state.serverRegistered=true;
-      finishFailed(t("failed"),epoch);
-      return;
-    }
-
-    // `checking` means the transaction is safely registered and the
-    // independent Supabase watcher is now responsible for chain verification.
-    state.serverRegistered=true;
-    status(t("sent"),"info",true);
-    waitNote(true);
-
-    // Immediately check the database in case the background watcher was fast.
-    setTimeout(()=>void pollTrackedDb(epoch),220);
-  }catch(_){
-    // Registration itself can be retried when the page regains focus.
-    // Do not mark the payment failed because of a temporary browser/network error.
-    if(!state.terminal&&epoch===state.verifyEpoch){
-      state.serverRegistered=false;
-      waitNote(true);
-    }
-  }finally{
-    state.verifyInFlight=false;
-  }
-}
-function beginPaymentTracking(amount,from,txHash,network=state.network){
+function beginIntentTracking(requestId,amount,payAmount,from,network,txHash=""){
+  if(!requestId||!from||!Number(amount))return;
   const normalizedNetwork=String(network||state.network||"BEP20").toUpperCase();
-  const normalizedTx=normalizeTrackedTx(normalizedNetwork,txHash);
-  if(!normalizedTx||!from||!Number(amount))return;
 
-  if(!state.terminal&&state.trackingStarted &&
-     state.activeNetwork===normalizedNetwork &&
-     normalizeTrackedTx(normalizedNetwork,state.activeTxHash)===normalizedTx){
+  if(!state.terminal&&state.trackingStarted&&String(state.activeRequestId)===String(requestId)){
     const epoch=state.verifyEpoch;
     void pollTrackedDb(epoch);
-    if(!state.serverRegistered&&!state.verifyInFlight)void registerPaymentWithServer(epoch);
     return;
   }
 
@@ -32370,33 +32379,34 @@ function beginPaymentTracking(amount,from,txHash,network=state.network){
   const epoch=state.verifyEpoch;
 
   state.trackingStarted=true;
+  state.activeRequestId=String(requestId);
   state.activeNetwork=normalizedNetwork;
-  state.activeTxHash=normalizedTx;
   state.activeAmount=Number(amount);
+  state.activePayAmount=String(payAmount||amount);
   state.activeFrom=String(from);
+  state.activeTxHash=String(txHash||"");
   state.network=normalizedNetwork;
-  state.txHash=normalizedTx;
+  state.txHash=String(txHash||"");
   state.polls=0;
   state.notFoundPolls=0;
   state.busy=true;
-  state.serverRegistered=false;
+  state.serverRegistered=true;
 
   savePendingPayment({
-    amount:Number(amount),from:String(from),txHash:normalizedTx,network:normalizedNetwork
+    requestId:String(requestId),amount:Number(amount),payAmount:String(payAmount||amount),
+    from:String(from),txHash:String(txHash||""),network:normalizedNetwork,sent:true
   });
-  setBusy(true);
-  status(t("sent"),"info",true);
-  waitNote(true);
 
-  // Browser only registers the TX once. From then on the independent
-  // server watcher verifies/finalizes it even if this browser is suspended.
+  setBusy(true);
+  status(it("register"),"info",true);
+  waitNote(true);
   startTrackedRealtime(epoch);
   startTrackedDbPoll(epoch);
-  void registerPaymentWithServer(epoch);
 }
 
 async function verifyLoop(amount,from,txHash,isPoll=false){
-  beginPaymentTracking(amount,from,txHash,state.network);
+  const p=readPendingPayment();
+  if(p?.requestId)beginIntentTracking(p.requestId,amount,p.payAmount||amount,from,p.network||state.network,txHash);
 }
 
 function formatTokenUnits(v,d){
@@ -32447,54 +32457,105 @@ async function checkTronFunds(tronWeb,from,amount){
 async function startEvmPayment(provider,name){
   if(state.busy)return;
   const amount=money();if(!amount){status(t("invalid"),"err");return}
-  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;
+  stopTrackingLoops();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+
+  let intent=null,txSent=false;
   try{
     const accounts=await provider.request({method:"eth_requestAccounts"});
     const from=String(accounts?.[0]||"").toLowerCase();
     if(!/^0x[0-9a-f]{40}$/.test(from))throw new Error(t("noWallet"));
     try{await switchEvmChain(provider)}catch(_){throw new Error(t("wrong"))}
-    const n=NET[state.network],units=parseUnits(amount,n.decimals),data=transferData(n.receiver,units);
+
     status(pf("checkingFunds"),"info",true);
-    await checkEvmFunds(provider,from,amount);
-    status(t("confirm"),"info",true);
-    const txHash=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
-    if(!/^0x[0-9a-fA-F]{64}$/.test(String(txHash||"")))throw new Error(t("failed"));
-    state.txHash=txHash;beginPaymentTracking(amount,from,txHash,state.network);
+    await checkEvmFunds(provider,from,amount+0.001);
+
+    status(it("preparing"),"info",true);
+    intent=await createPaymentIntent(amount,from);
+    const payAmount=String(intent.pay_amount);
+    state.activeRequestId=String(intent.request_id);
+    state.activePayAmount=payAmount;
+
+    savePendingPayment({
+      requestId:String(intent.request_id),amount:Number(amount),payAmount,
+      from,txHash:"",network:state.network,sent:false
+    });
+
+    await checkEvmFunds(provider,from,Number(payAmount));
+    const n=NET[state.network],units=parseUnits(payAmount,n.decimals),data=transferData(n.receiver,units);
+
+    status(it("exact",{amount:payAmount}),"info",false);
+    const result=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
+    txSent=true;
+
+    const walletHash=String(result||"").trim();
+    const validHash=/^0x[0-9a-fA-F]{64}$/.test(walletHash)?walletHash:"";
+    if(validHash)void attachPaymentIntent(intent.request_id,validHash);
+
+    beginIntentTracking(intent.request_id,amount,payAmount,from,state.network,validHash);
   }catch(e){
-    setBusy(false);waitNote(false);const m=String(e?.message||"");
-    if(e?.code===4001||/rejected|denied|cancel/i.test(m))status(t("rejected"),"err");else status(m||t("failed"),"err");
+    if(intent?.request_id&&!txSent)void cancelPaymentIntent(intent.request_id);
+    if(!txSent)clearPendingPayment();
+    state.busy=false;setBusy(false);waitNote(false);
+    const msg=String(e?.message||"");
+    if(e?.code===4001||/rejected|denied|cancel/i.test(msg))status(t("rejected"),"err");
+    else status(msg||t("failed"),"err");
   }
 }
 async function startTronPayment(provider,name){
   if(state.busy)return;
   const amount=money();if(!amount){status(t("invalid"),"err");return}
-  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;stopPoll();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+  state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;
+  stopTrackingLoops();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
+
+  let intent=null,txSent=false;
   try{
     let accounts=[];
-    try{accounts=await provider.request({method:"eth_requestAccounts"})}catch(e){
-      if(provider?.request)accounts=await provider.request({method:"tron_requestAccounts"});
-      else throw e;
-    }
+    try{accounts=await provider.request({method:"eth_requestAccounts"})}
+    catch(e){if(provider?.request)accounts=await provider.request({method:"tron_requestAccounts"});else throw e}
+
     await ensureTronMainnet(provider);
     const tronWeb=provider?.tronWeb||window.tronWeb||window.tronLink?.tronWeb;
     if(!tronWeb||!tronWeb.contract)throw new Error(t("noWallet"));
     const from=String(accounts?.[0]||tronWeb?.defaultAddress?.base58||"");
     if(!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(from))throw new Error(t("noWallet"));
-    const units=parseUnits(amount,6).toString();
+
     status(pf("checkingFunds"),"info",true);
-    const contract=await checkTronFunds(tronWeb,from,amount);
-    status(t("confirm"),"info",true);
+    await checkTronFunds(tronWeb,from,amount+0.001);
+
+    status(it("preparing"),"info",true);
+    intent=await createPaymentIntent(amount,from);
+    const payAmount=String(intent.pay_amount);
+    state.activeRequestId=String(intent.request_id);
+    state.activePayAmount=payAmount;
+
+    savePendingPayment({
+      requestId:String(intent.request_id),amount:Number(amount),payAmount,
+      from,txHash:"",network:state.network,sent:false
+    });
+
+    const contract=await checkTronFunds(tronWeb,from,Number(payAmount));
+    const units=parseUnits(payAmount,6).toString();
+
+    status(it("exact",{amount:payAmount}),"info",false);
     const result=await contract.transfer(TRON_RECEIVER,units).send({feeLimit:100000000,callValue:0,shouldPollResponse:false});
+    txSent=true;
+
     const raw=typeof result==="string"?result:(result?.txid||result?.txID||result?.transaction?.txID||"");
-    const txHash=String(raw).replace(/^0x/i,"");
-    if(!/^[0-9a-fA-F]{64}$/.test(txHash))throw new Error(t("failed"));
-    state.txHash=txHash;beginPaymentTracking(amount,from,txHash,state.network);
+    const walletHash=String(raw||"").replace(/^0x/i,"");
+    const validHash=/^[0-9a-fA-F]{64}$/.test(walletHash)?walletHash:"";
+    if(validHash)void attachPaymentIntent(intent.request_id,validHash);
+
+    beginIntentTracking(intent.request_id,amount,payAmount,from,state.network,validHash);
   }catch(e){
-    setBusy(false);waitNote(false);const m=String(e?.message||"");
-    if(e?.code===4001||/rejected|denied|cancel/i.test(m))status(t("rejected"),"err");else status(m||t("failed"),"err");
+    if(intent?.request_id&&!txSent)void cancelPaymentIntent(intent.request_id);
+    if(!txSent)clearPendingPayment();
+    state.busy=false;setBusy(false);waitNote(false);
+    const msg=String(e?.message||"");
+    if(e?.code===4001||/rejected|denied|cancel/i.test(msg))status(t("rejected"),"err");
+    else status(msg||t("failed"),"err");
   }
 }
-
 /* Replace only the selector controller to understand the new method. */
 window.selectPaymentMethod=function(value){
   const select=document.getElementById("payment-method"),selectedText=document.getElementById("paymentMethodSelectedText"),options=document.getElementById("paymentMethodCustomOptions"),trigger=document.getElementById("paymentMethodTrigger");
@@ -32526,12 +32587,12 @@ window.togglePaymentDetails=function(){
     // Spinner/recovery starts only if this device already has an exact TX hash
     // from a wallet transaction that was actually sent.
     const pending=readPendingPayment();
-    if(pending?.txHash){
+    if(pending?.requestId){
       setTimeout(()=>void resumePendingPayment(),120);
     }else{
       stopTrackingLoops();
       state.terminal=false;state.serverRegistered=false;
-      state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
+      state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";state.activeRequestId="";state.activePayAmount="";
       setBusy(false);status("");waitNote(false);
     }
     return;
@@ -32551,26 +32612,7 @@ window.togglePaymentDetails=function(){
 };
 
 
-async function recoverLatestPaymentFromServer(epoch=state.verifyEpoch){
-  if(state.recoveryInFlight||state.terminal||epoch!==state.verifyEpoch||!currentUser?.id)return;
-  const p=readPendingPayment();
-  if(!p?.txHash||!p?.network||!trackingMatches(p.network,p.txHash))return;
-
-  state.recoveryInFlight=true;
-  try{
-    const {data,error}=await supabaseClient.functions.invoke("direct-wallet-recovery",{
-      body:{action:"recover",network:String(p.network),tx_hash:String(p.txHash)}
-    });
-    if(error||state.terminal||epoch!==state.verifyEpoch)return;
-    const d=data||{};
-    if(d.status==="approved"){
-      await finishSuccess(d,Number(d.credited_amount||p.amount||0),epoch);
-    }else if(d.status==="failed"){
-      finishFailed(t("failed"),epoch);
-    }
-  }catch(_){}
-  finally{state.recoveryInFlight=false}
-}
+async function recoverLatestPaymentFromServer(){ return; }
 
 function scheduleServerRecovery(){
   if(iwpServerRecoveryTimer){
@@ -32582,7 +32624,7 @@ function scheduleServerRecovery(){
 async function resumePendingPayment(){
   if(iwpResumeRunning||!currentUser?.id)return;
   const p=readPendingPayment();
-  if(!p?.txHash)return;
+  if(!p?.requestId)return;
   iwpResumeRunning=true;
   try{
     state.network=String(p.network||"BEP20").toUpperCase();
@@ -32591,7 +32633,7 @@ async function resumePendingPayment(){
     const method=document.getElementById("payment-method");
     if(method&&method.value!=="instantwallet")window.selectPaymentMethod("instantwallet");
     else if(method?.value==="instantwallet"&&!document.getElementById("iwpStatus"))render();
-    beginPaymentTracking(Number(p.amount),String(p.from),String(p.txHash),state.network);
+    beginIntentTracking(p.requestId,Number(p.amount),String(p.payAmount||p.amount),String(p.from),state.network,String(p.txHash||""));
   }finally{iwpResumeRunning=false}
 }
 
@@ -32629,7 +32671,7 @@ document.getElementById("deposit-amount")?.addEventListener("input",()=>{
   if(state.terminal&&v>0){
     stopTrackingLoops();
     state.terminal=false;state.serverRegistered=false;
-    state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
+    state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";state.activeRequestId="";state.activePayAmount="";
     render();
   }
   const el=document.getElementById("iwpAmount");
@@ -32639,7 +32681,6 @@ window.addEventListener("focus",()=>{
   setTimeout(()=>void resumePendingPayment(),60);
   const epoch=state.verifyEpoch;
   setTimeout(()=>void pollTrackedDb(epoch),110);
-  if(!state.serverRegistered&&!state.verifyInFlight)setTimeout(()=>void registerPaymentWithServer(epoch),180);
 });
 window.addEventListener("pageshow",()=>{
   setTimeout(()=>void resumePendingPayment(),70);
@@ -32649,16 +32690,12 @@ window.addEventListener("pageshow",()=>{
 window.addEventListener("online",()=>{
   setTimeout(()=>void resumePendingPayment(),70);
   const epoch=state.verifyEpoch;
-  if(!state.serverRegistered&&!state.verifyInFlight)setTimeout(()=>void registerPaymentWithServer(epoch),170);
 });
 document.addEventListener("visibilitychange",()=>{
   if(!document.hidden){
     setTimeout(()=>void resumePendingPayment(),70);
     const epoch=state.verifyEpoch;
     setTimeout(()=>void pollTrackedDb(epoch),100);
-    if(!state.serverRegistered&&!state.verifyInFlight){
-      setTimeout(()=>void registerPaymentWithServer(epoch),180);
-    }
   }
 });
 applyLabels();discoverEvm();discoverTron();
