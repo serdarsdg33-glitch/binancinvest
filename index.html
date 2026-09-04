@@ -31782,7 +31782,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v12-script">
+<script id="instant-wallet-deposit-v13-script">
 (function(){
 "use strict";
 
@@ -31808,7 +31808,13 @@ const COPY={
 };
 
 const siteT=(typeof T!=="undefined"&&T)?T:{};
-const state={network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false,handoffWallet:"",notFoundPolls:0};
+const state={
+  network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false,
+  handoffWallet:"",notFoundPolls:0,
+  terminal:false,verifyEpoch:0,verifyInFlight:false,trackingStarted:false,
+  activeTxHash:"",activeNetwork:"",activeAmount:0,activeFrom:"",
+  dbPollTimer:null,dbPollInFlight:false,realtimeChannel:null,recoveryInFlight:false
+};
 const IWP_PENDING_KEY="bi_instant_wallet_pending_v11";
 const IWP_HANDLED_KEY="bi_iwp_handled_success_v10";
 function readHandled(){
@@ -31829,7 +31835,7 @@ function markHandled(id){
 
 let iwpResumeRunning=false;
 let iwpServerRecoveryRunning=false;
-let iwpServerRecoveryTimer=null;
+let iwpServerRecoveryTimer=null; // legacy timer intentionally unused in v13
 try{
   localStorage.removeItem("bi_instant_wallet_pending_v8");
   localStorage.removeItem("bi_instant_wallet_pending_v9");
@@ -31886,7 +31892,26 @@ function money(){const raw=Number(document.getElementById("deposit-amount")?.val
 function status(message,type="info",spinner=false){const box=document.getElementById("iwpStatus");if(!box)return;box.className="iwp-status"+(message?` show ${type}`:"");box.innerHTML=message?(spinner?`<span class="iwp-spin"></span>${esc(message)}`:esc(message)):""}
 function waitNote(show=true){const e=document.getElementById("iwpWaitNote");if(e)e.classList.toggle("show",!!show)}
 function stopPoll(){if(state.poll){clearTimeout(state.poll);state.poll=null}}
+function stopDbPoll(){if(state.dbPollTimer){clearInterval(state.dbPollTimer);state.dbPollTimer=null}}
+function stopRealtime(){
+  const ch=state.realtimeChannel;
+  state.realtimeChannel=null;
+  if(ch){try{ch.unsubscribe()}catch(_){try{supabaseClient.removeChannel(ch)}catch(__){}}}
+}
+function stopTrackingLoops(){
+  stopPoll();stopDbPoll();stopRealtime();
+  state.verifyInFlight=false;state.dbPollInFlight=false;state.trackingStarted=false;
+}
 function setBusy(v){state.busy=!!v;const b=document.getElementById("iwpPay");if(b)b.disabled=!!v}
+function normalizeTrackedTx(network,tx){
+  const x=String(tx||"").trim().toLowerCase();
+  return network==="TRC20"?x.replace(/^0x/,""):x;
+}
+function trackingMatches(network,tx){
+  return !state.terminal &&
+    String(state.activeNetwork||"").toUpperCase()===String(network||"").toUpperCase() &&
+    normalizeTrackedTx(network,state.activeTxHash)===normalizeTrackedTx(network,tx);
+}
 function parseUnits(value,decimals){const fixed=Number(value).toFixed(2),[w,f=""]=fixed.split(".");return BigInt(w)*(10n**BigInt(decimals))+BigInt((f+"0".repeat(decimals)).slice(0,decimals))}
 function transferData(to,units){return "0xa9059cbb"+to.toLowerCase().replace(/^0x/,"").padStart(64,"0")+units.toString(16).padStart(64,"0")}
 function trustDappUrl(){const coin=state.network==="BEP20"?"20000714":state.network==="TRC20"?"195":"60";return `https://link.trustwallet.com/open_url?coin_id=${coin}&url=${encodeURIComponent(location.href)}`}
@@ -32143,16 +32168,30 @@ async function acknowledgeSuccess(requestId){
     });
   }catch(_){}
 }
-async function finishSuccess(data,amount){
-  const requestId=String(data?.request_id||"");
+
+function terminalizeTracking(){
+  if(state.terminal)return false;
+  state.terminal=true;
+  state.verifyEpoch++;
+  stopTrackingLoops();
+  state.recoveryInFlight=false;
+  return true;
+}
+
+async function finishSuccess(data,amount,epoch=null){
+  if(epoch!==null && epoch!==state.verifyEpoch)return;
+  if(state.terminal)return;
+
+  const requestId=String(data?.request_id||data?.id||"");
   const alreadyHandled=isHandled(requestId);
 
-  stopPoll();
-  state.busy=false;
+  // Terminal lock happens before any await. No old `checking` response can
+  // bring the spinner back after this point.
+  terminalizeTracking();
   clearPendingPayment();
   waitNote(false);
 
-  const credited=Number(data?.credited_amount||amount||0).toFixed(2);
+  const credited=Number(data?.credited_amount||data?.amount||amount||0).toFixed(2);
   status(t("success").replace("{amount}",credited),"ok");
   markConfirmed();
 
@@ -32178,47 +32217,196 @@ async function finishSuccess(data,amount){
       await window.refreshWithdrawalLimitCard();
   }catch(_){}
 
-  // Show the success toast only once for each blockchain payment.
   if(!alreadyHandled && typeof toast==="function"){
     toast(t("success").replace("{amount}",credited),"success");
   }
-
-  // IMPORTANT: Do not open the site's generic "deposit request submitted"
-  // modal for Instant Wallet payments. The inline green confirmation is the
-  // only success UI for this flow.
 }
-async function verifyLoop(amount,from,txHash,isPoll=false){
+
+function finishFailed(message=null,epoch=null){
+  if(epoch!==null && epoch!==state.verifyEpoch)return;
+  if(state.terminal)return;
+  terminalizeTracking();
+  clearPendingPayment();
+  setBusy(false);
+  waitNote(false);
+  status(message||t("failed"),"err");
+}
+
+function trackedRowMatches(row){
+  if(!row||!state.activeTxHash||!state.activeNetwork)return false;
+  return String(row.network||"").toUpperCase()===String(state.activeNetwork).toUpperCase() &&
+    normalizeTrackedTx(state.activeNetwork,row.tx_hash)===normalizeTrackedTx(state.activeNetwork,state.activeTxHash);
+}
+
+async function handleTrackedDbRow(row,epoch){
+  if(state.terminal||epoch!==state.verifyEpoch||!trackedRowMatches(row))return false;
+
+  const s=String(row.status||"").toLowerCase();
+  const v=String(row.verification_status||"").toLowerCase();
+
+  if(s==="approved" && v==="verified"){
+    await finishSuccess({
+      request_id:row.id,
+      credited_amount:Number(row.amount||state.activeAmount||0)
+    },Number(row.amount||state.activeAmount||0),epoch);
+    return true;
+  }
+
+  if(s==="rejected" || v==="failed"){
+    finishFailed(t("failed"),epoch);
+    return true;
+  }
+
+  if(s==="pending" && v==="verified"){
+    void recoverLatestPaymentFromServer(epoch);
+  }
+  return false;
+}
+
+async function pollTrackedDb(epoch){
+  if(state.terminal||epoch!==state.verifyEpoch||state.dbPollInFlight||!currentUser?.id||!state.activeTxHash)return;
+  state.dbPollInFlight=true;
+  try{
+    const tx=normalizeTrackedTx(state.activeNetwork,state.activeTxHash);
+    const {data,error}=await supabaseClient
+      .from("financial_requests")
+      .select("id,user_id,amount,network,tx_hash,status,verification_status,verification_reason,verified_amount,updated_at")
+      .eq("user_id",currentUser.id)
+      .eq("network",state.activeNetwork)
+      .eq("tx_hash",tx)
+      .maybeSingle();
+    if(!error&&data)await handleTrackedDbRow(data,epoch);
+  }catch(_){}
+  finally{state.dbPollInFlight=false}
+}
+
+function startTrackedDbPoll(epoch){
+  stopDbPoll();
+  void pollTrackedDb(epoch);
+  state.dbPollTimer=setInterval(()=>{
+    if(!document.hidden&&!state.terminal&&epoch===state.verifyEpoch){
+      void pollTrackedDb(epoch);
+    }
+  },1000);
+}
+
+function startTrackedRealtime(epoch){
+  stopRealtime();
+  if(!supabaseClient?.channel||!currentUser?.id)return;
+  try{
+    const ch=supabaseClient
+      .channel(`iwp-${currentUser.id}-${Date.now()}`)
+      .on("postgres_changes",{
+        event:"*",schema:"public",table:"financial_requests",
+        filter:`user_id=eq.${currentUser.id}`
+      },payload=>{
+        if(state.terminal||epoch!==state.verifyEpoch)return;
+        const row=payload?.new||{};
+        if(trackedRowMatches(row))void handleTrackedDbRow(row,epoch);
+      })
+      .subscribe();
+    state.realtimeChannel=ch;
+  }catch(_){}
+}
+
+function scheduleVerifier(epoch,delay){
   stopPoll();
-  savePendingPayment({amount,from,txHash,network:state.network});
-  state.busy=true;setBusy(true);
+  if(state.terminal||epoch!==state.verifyEpoch)return;
+  state.poll=setTimeout(()=>void runVerifierCycle(epoch),delay);
+}
+
+async function runVerifierCycle(epoch){
+  if(state.terminal||epoch!==state.verifyEpoch||state.verifyInFlight)return;
+  if(!state.activeTxHash||!state.activeFrom||!state.activeAmount)return;
+
+  state.verifyInFlight=true;
+  const amount=state.activeAmount,from=state.activeFrom,txHash=state.activeTxHash;
+
   try{
     const d=await invokeVerify(amount,from,txHash);
-    if(d.status==="approved"){await finishSuccess(d,amount);return}
-    if(d.reason==="verified_waiting_for_credit_recovery"){
-      status(t("sent"),"info",true);waitNote(true);
-      setTimeout(()=>void recoverLatestPaymentFromServer(),700);
+    if(state.terminal||epoch!==state.verifyEpoch)return;
+
+    if(d.status==="approved"){
+      await finishSuccess(d,amount,epoch);
+      return;
     }
+
     if(d.status==="failed"){
-      stopPoll();state.busy=false;setBusy(false);clearPendingPayment();
-      status(t("failed"),"err");waitNote(false);return;
+      finishFailed(t("failed"),epoch);
+      return;
     }
-    if(d.confirmations!=null&&d.required!=null)status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
-    else status(t("sent"),"info",true);
-    waitNote(true);
-    if(d.reason==="transaction_not_found_or_not_mined")state.notFoundPolls++;else state.notFoundPolls=0;
-    if(state.notFoundPolls>=22){status(pf("submittedNotVisible"),"info",false);waitNote(true)}
-    const nextDelay=state.polls<20?1800:3200;
-    if(state.polls++<520)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),nextDelay);
-    else{state.busy=false;setBusy(false);status(t("server"),"err")}
-  }catch(e){
-    // Network/app switching can pause Safari requests. Preserve the payment
-    // and try again when the page becomes visible/focused, plus a timer.
-    if(!isPoll)status(e?.message||t("server"),"info",true);
-    waitNote(true);
-    const retryDelay=state.polls<20?2200:3800;
-    if(state.polls++<520)state.poll=setTimeout(()=>verifyLoop(amount,from,txHash,true),retryDelay);
-    else{state.busy=false;setBusy(false);status(t("server"),"err")}
+
+    if(d.reason==="verified_waiting_for_credit_recovery"){
+      void recoverLatestPaymentFromServer(epoch);
+    }
+
+    if(!state.terminal&&epoch===state.verifyEpoch){
+      if(d.confirmations!=null&&d.required!=null){
+        status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
+      }else{
+        status(t("sent"),"info",true);
+      }
+      waitNote(true);
+      if(d.reason==="transaction_not_found_or_not_mined")state.notFoundPolls++;
+      else state.notFoundPolls=0;
+      if(state.notFoundPolls>=22)status(pf("submittedNotVisible"),"info",false);
+    }
+  }catch(_){
+    if(!state.terminal&&epoch===state.verifyEpoch)waitNote(true);
+  }finally{
+    state.verifyInFlight=false;
   }
+
+  if(!state.terminal&&epoch===state.verifyEpoch){
+    state.polls++;
+    scheduleVerifier(epoch,state.polls<30?1200:2000);
+  }
+}
+
+function beginPaymentTracking(amount,from,txHash,network=state.network){
+  const normalizedNetwork=String(network||state.network||"BEP20").toUpperCase();
+  const normalizedTx=normalizeTrackedTx(normalizedNetwork,txHash);
+  if(!normalizedTx||!from||!Number(amount))return;
+
+  if(!state.terminal&&state.trackingStarted &&
+     state.activeNetwork===normalizedNetwork &&
+     normalizeTrackedTx(normalizedNetwork,state.activeTxHash)===normalizedTx){
+    const epoch=state.verifyEpoch;
+    void pollTrackedDb(epoch);
+    if(!state.verifyInFlight)void runVerifierCycle(epoch);
+    return;
+  }
+
+  stopTrackingLoops();
+  state.terminal=false;
+  state.verifyEpoch++;
+  const epoch=state.verifyEpoch;
+
+  state.trackingStarted=true;
+  state.activeNetwork=normalizedNetwork;
+  state.activeTxHash=normalizedTx;
+  state.activeAmount=Number(amount);
+  state.activeFrom=String(from);
+  state.network=normalizedNetwork;
+  state.txHash=normalizedTx;
+  state.polls=0;
+  state.notFoundPolls=0;
+  state.busy=true;
+
+  savePendingPayment({
+    amount:Number(amount),from:String(from),txHash:normalizedTx,network:normalizedNetwork
+  });
+  setBusy(true);
+  status(t("sent"),"info",true);
+  waitNote(true);
+
+  startTrackedRealtime(epoch);
+  startTrackedDbPoll(epoch);
+  void runVerifierCycle(epoch);
+}
+
+async function verifyLoop(amount,from,txHash,isPoll=false){
+  beginPaymentTracking(amount,from,txHash,state.network);
 }
 
 function formatTokenUnits(v,d){
@@ -32281,8 +32469,7 @@ async function startEvmPayment(provider,name){
     status(t("confirm"),"info",true);
     const txHash=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
     if(!/^0x[0-9a-fA-F]{64}$/.test(String(txHash||"")))throw new Error(t("failed"));
-    state.txHash=txHash;savePendingPayment({amount,from,txHash,network:state.network});status(t("sent"),"info",true);waitNote(true);
-    await verifyLoop(amount,from,txHash,false);
+    state.txHash=txHash;beginPaymentTracking(amount,from,txHash,state.network);
   }catch(e){
     setBusy(false);waitNote(false);const m=String(e?.message||"");
     if(e?.code===4001||/rejected|denied|cancel/i.test(m))status(t("rejected"),"err");else status(m||t("failed"),"err");
@@ -32311,8 +32498,7 @@ async function startTronPayment(provider,name){
     const raw=typeof result==="string"?result:(result?.txid||result?.txID||result?.transaction?.txID||"");
     const txHash=String(raw).replace(/^0x/i,"");
     if(!/^[0-9a-fA-F]{64}$/.test(txHash))throw new Error(t("failed"));
-    state.txHash=txHash;savePendingPayment({amount,from,txHash,network:state.network});status(t("sent"),"info",true);waitNote(true);
-    await verifyLoop(amount,from,txHash,false);
+    state.txHash=txHash;beginPaymentTracking(amount,from,txHash,state.network);
   }catch(e){
     setBusy(false);waitNote(false);const m=String(e?.message||"");
     if(e?.code===4001||/rejected|denied|cancel/i.test(m))status(t("rejected"),"err");else status(m||t("failed"),"err");
@@ -32353,9 +32539,10 @@ window.togglePaymentDetails=function(){
     if(pending?.txHash){
       setTimeout(()=>void resumePendingPayment(),120);
     }else{
-      setBusy(false);
-      status("");
-      waitNote(false);
+      stopTrackingLoops();
+      state.terminal=false;
+      state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
+      setBusy(false);status("");waitNote(false);
     }
     return;
   }
@@ -32374,114 +32561,47 @@ window.togglePaymentDetails=function(){
 };
 
 
-async function recoverLatestPaymentFromServer(){
-  if(iwpServerRecoveryRunning||!currentUser?.id||document.hidden)return;
+async function recoverLatestPaymentFromServer(epoch=state.verifyEpoch){
+  if(state.recoveryInFlight||state.terminal||epoch!==state.verifyEpoch||!currentUser?.id)return;
+  const p=readPendingPayment();
+  if(!p?.txHash||!p?.network||!trackingMatches(p.network,p.txHash))return;
 
-  const localPending=readPendingPayment();
-  if(!localPending?.txHash || !localPending?.network)return;
-
-  iwpServerRecoveryRunning=true;
+  state.recoveryInFlight=true;
   try{
     const {data,error}=await supabaseClient.functions.invoke("direct-wallet-recovery",{
-      body:{
-        action:"recover",
-        network:String(localPending.network),
-        tx_hash:String(localPending.txHash)
-      }
+      body:{action:"recover",network:String(p.network),tx_hash:String(p.txHash)}
     });
-    if(error)return;
-
+    if(error||state.terminal||epoch!==state.verifyEpoch)return;
     const d=data||{};
-    if(d.status==="none")return;
-
     if(d.status==="approved"){
-      const rid=String(d.request_id||"");
-      if(isHandled(rid)){
-        if(rid)void acknowledgeSuccess(rid);
-        clearPendingPayment();
-        return;
-      }
-
-      const method=document.getElementById("payment-method");
-      if(method && method.value==="instantwallet"){
-        if(!document.getElementById("iwpStatus"))render();
-        await finishSuccess(d,Number(d.credited_amount||localPending.amount||0));
-      }else{
-        // Never change payment method or open UI automatically.
-        // Just remember the verified result; it will show if the user returns
-        // to Instant Wallet during this session.
-        markHandled(rid);
-        clearPendingPayment();
-        if(rid)void acknowledgeSuccess(rid);
-        try{
-          if(typeof syncFinancialStateFromServer==="function")
-            await syncFinancialStateFromServer();
-        }catch(_){}
-      }
-      return;
+      await finishSuccess(d,Number(d.credited_amount||p.amount||0),epoch);
+    }else if(d.status==="failed"){
+      finishFailed(t("failed"),epoch);
     }
-
-    if(d.status==="failed"){
-      clearPendingPayment();
-      state.busy=false;
-      stopPoll();
-      if(document.getElementById("payment-method")?.value==="instantwallet"){
-        setBusy(false);
-        status(t("failed"),"err");
-        waitNote(false);
-      }
-      return;
-    }
-
-    if((d.status==="checking"||d.status==="pending") &&
-       document.getElementById("payment-method")?.value==="instantwallet"){
-      state.busy=true;
-      setBusy(true);
-      if(d.confirmations!=null&&d.required!=null){
-        status(
-          t("confirmations")
-            .replace("{a}",String(d.confirmations))
-            .replace("{b}",String(d.required)),
-          "info",true
-        );
-      }else{
-        status(t("sent"),"info",true);
-      }
-      waitNote(true);
-    }
-  }catch(_){
-    // Silent retry. A failed poll must never create UI by itself.
-  }finally{
-    iwpServerRecoveryRunning=false;
-  }
+  }catch(_){}
+  finally{state.recoveryInFlight=false}
 }
 
 function scheduleServerRecovery(){
-  if(iwpServerRecoveryTimer)clearInterval(iwpServerRecoveryTimer);
-  iwpServerRecoveryTimer=setInterval(()=>{
-    if(document.hidden||!currentUser?.id)return;
-    if(readPendingPayment()){
-      void recoverLatestPaymentFromServer();
-    }
-  },4000);
+  if(iwpServerRecoveryTimer){
+    clearInterval(iwpServerRecoveryTimer);
+    iwpServerRecoveryTimer=null;
+  }
 }
 
 async function resumePendingPayment(){
   if(iwpResumeRunning||!currentUser?.id)return;
   const p=readPendingPayment();
-  if(!p)return;
+  if(!p?.txHash)return;
   iwpResumeRunning=true;
   try{
-    stopPoll();state.busy=false;state.polls=0;state.network=p.network||"BEP20";state.txHash=p.txHash;
-    const input=document.getElementById("deposit-amount");if(input)input.value=String(p.amount);
+    state.network=String(p.network||"BEP20").toUpperCase();
+    const input=document.getElementById("deposit-amount");
+    if(input)input.value=String(p.amount);
     const method=document.getElementById("payment-method");
-    if(method&&method.value!=="instantwallet"){
-      window.selectPaymentMethod("instantwallet");
-    }else if(method?.value==="instantwallet"){
-      render();
-    }
-    status(t("resume"),"info",true);waitNote(true);setBusy(true);
-    await verifyLoop(Number(p.amount),String(p.from),String(p.txHash),true);
+    if(method&&method.value!=="instantwallet")window.selectPaymentMethod("instantwallet");
+    else if(method?.value==="instantwallet"&&!document.getElementById("iwpStatus"))render();
+    beginPaymentTracking(Number(p.amount),String(p.from),String(p.txHash),state.network);
   }finally{iwpResumeRunning=false}
 }
 
@@ -32513,33 +32633,34 @@ async function restoreWalletHandoff(){
   return true;
 }
 
-document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(document.getElementById("payment-method")?.value==="instantwallet"){const el=document.getElementById("iwpAmount"),v=money();if(el)el.textContent=v>0?"$"+v.toFixed(2):"—"}});
-window.addEventListener("focus",()=>{
-  setTimeout(()=>void resumePendingPayment(),80);
-  setTimeout(()=>void recoverLatestPaymentFromServer(),220);
+document.getElementById("deposit-amount")?.addEventListener("input",()=>{
+  if(document.getElementById("payment-method")?.value!=="instantwallet")return;
+  const v=money();
+  if(state.terminal&&v>0){
+    stopTrackingLoops();
+    state.terminal=false;
+    state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
+    render();
+  }
+  const el=document.getElementById("iwpAmount");
+  if(el)el.textContent=v>0?"$"+v.toFixed(2):"—";
 });
-window.addEventListener("pageshow",()=>{
-  setTimeout(()=>void resumePendingPayment(),120);
-  setTimeout(()=>void recoverLatestPaymentFromServer(),260);
-});
-window.addEventListener("online",()=>{
-  setTimeout(()=>void resumePendingPayment(),100);
-  setTimeout(()=>void recoverLatestPaymentFromServer(),260);
-});
+window.addEventListener("focus",()=>setTimeout(()=>void resumePendingPayment(),70));
+window.addEventListener("pageshow",()=>setTimeout(()=>void resumePendingPayment(),90));
+window.addEventListener("online",()=>setTimeout(()=>void resumePendingPayment(),90));
 document.addEventListener("visibilitychange",()=>{
   if(!document.hidden){
-    setTimeout(()=>void resumePendingPayment(),100);
-    setTimeout(()=>void recoverLatestPaymentFromServer(),260);
+    setTimeout(()=>void resumePendingPayment(),70);
+    const epoch=state.verifyEpoch;
+    setTimeout(()=>void pollTrackedDb(epoch),100);
   }
 });
 applyLabels();discoverEvm();discoverTron();
 scheduleServerRecovery();
 setTimeout(()=>void restoreWalletHandoff(),350);
 setTimeout(()=>void restoreWalletHandoff(),1100);
-setTimeout(()=>void resumePendingPayment(),900);
-setTimeout(()=>void recoverLatestPaymentFromServer(),1800);
-setTimeout(()=>void resumePendingPayment(),4200);
-let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet")render()}},1200);
+setTimeout(()=>void resumePendingPayment(),650);
+let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels();if(document.getElementById("payment-method")?.value==="instantwallet"&&!state.terminal)render()}},1200);
 })();
 </script>
 
