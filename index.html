@@ -24451,6 +24451,7 @@ function isAutoVerifiableDeposit(item) {
   const txHash = String(item?.tx_hash || "").trim();
   const verification = String(item?.verification_status || "not_checked");
   return item?.request_type === "deposit"
+    && item?.user_note !== "Instant wallet payment"
     && item?.status === "pending"
     && asset === "USDT"
     && ["BEP20", "ERC20"].includes(network)
@@ -31848,17 +31849,28 @@ try{
 }catch(_){}
 
 function savePendingPayment(p){
-  try{localStorage.setItem(IWP_PENDING_KEY,JSON.stringify({...p,savedAt:Date.now()}))}catch(_){}
+  try{localStorage.setItem(IWP_PENDING_KEY,JSON.stringify({...p,userId:currentUser?.id||"",savedAt:Date.now()}))}catch(_){}
 }
 function readPendingPayment(){
   try{
     const p=JSON.parse(localStorage.getItem(IWP_PENDING_KEY)||"null");
     if(!p||!p.requestId||!p.network||!p.from||!Number(p.amount))return null;
-    if(Date.now()-Number(p.savedAt||0)>45*60*1000){localStorage.removeItem(IWP_PENDING_KEY);return null}
+    if(p.userId&&p.userId!==currentUser?.id)return null;
     return p;
   }catch(_){return null}
 }
 function clearPendingPayment(){try{localStorage.removeItem(IWP_PENDING_KEY)}catch(_){}}
+const RECOVERY_COPY={
+  en:{retry:"Recheck this payment",delayed:"Confirmation is taking longer than expected. Your payment reference is saved. Do not pay again; you can recheck this payment.",review:"This payment needs review by the support team. Keep this payment reference and do not pay again.",unavailable:"The verification service is temporarily unavailable. Your payment reference is saved; do not pay again."},
+  fa:{retry:"بررسی دوباره همین پرداخت",delayed:"تأیید پرداخت بیشتر از معمول طول کشیده است. شناسه پرداخت حفظ شده؛ دوباره پرداخت نکنید و وضعیت همین پرداخت را بررسی کنید.",review:"این پرداخت به بررسی تیم پشتیبانی نیاز دارد. شناسه پرداخت را نگه دارید و دوباره پرداخت نکنید.",unavailable:"سرویس تأیید موقتاً در دسترس نیست. شناسه پرداخت حفظ شده است؛ دوباره پرداخت نکنید."}
+};
+function recoveryText(key){return (RECOVERY_COPY[lang()]||RECOVERY_COPY.en)[key]}
+function showRecoveryNotice(key){
+  status(recoveryText(key)+(state.activeRequestId?" — "+state.activeRequestId:""),"info",false);
+  waitNote(false);
+  const retry=document.getElementById("iwpRecheck");if(retry)retry.hidden=false;
+  setBusy(true);
+}
 function markConfirmed(){
   const b=document.getElementById("iwpPay");
   if(b){
@@ -31976,9 +31988,11 @@ function render(){
     </div>
     <div id="iwpStatus" class="iwp-status" role="status" aria-live="polite"></div>
     <div id="iwpWaitNote" class="iwp-wait-note">${esc(t("waitNote"))}</div>
+    <button id="iwpRecheck" type="button" class="iwp-wallet-btn" hidden>${esc(recoveryText("retry"))}</button>
   </div>`;
   box.querySelectorAll("[data-iwp-net]").forEach(b=>b.addEventListener("click",()=>{if(state.busy)return;state.network=b.dataset.iwpNet;state.provider=null;state.walletName="";render()}));
-  const payBtn=document.getElementById("iwpPay");if(payBtn){payBtn.classList.remove("confirmed");payBtn.disabled=false;payBtn.addEventListener("click",chooseWallet)}
+  const payBtn=document.getElementById("iwpPay");if(payBtn){payBtn.classList.remove("confirmed");payBtn.disabled=state.busy;payBtn.addEventListener("click",chooseWallet)}
+  document.getElementById("iwpRecheck")?.addEventListener("click",()=>void recoverLatestPaymentFromServer(state.verifyEpoch,true));
 }
 
 function discoverEvm(){
@@ -32200,11 +32214,12 @@ async function createPaymentIntent(amount,from){
 }
 async function attachPaymentIntent(requestId,txHash){
   if(!requestId||!txHash)return;
-  try{
-    await supabaseClient.functions.invoke("direct-wallet-deposit",{
+  const {data,error}=await supabaseClient.functions.invoke("direct-wallet-deposit",{
       body:{action:"attach_tx",request_id:requestId,tx_hash:txHash}
-    });
-  }catch(_){}
+  });
+  if(error||data?.error)throw new Error(data?.error||error?.message||t("server"));
+  if(String(data?.request_id)!==String(requestId))throw new Error(t("server"));
+  return data;
 }
 async function cancelPaymentIntent(requestId){
   if(!requestId)return;
@@ -32245,6 +32260,7 @@ async function finishSuccess(data,amount,epoch=null){
   terminalizeTracking();
   clearPendingPayment();
   waitNote(false);
+  const retry=document.getElementById("iwpRecheck");if(retry)retry.hidden=true;
 
   const credited=Number(data?.credited_amount||data?.amount||amount||0).toFixed(2);
   status(t("success").replace("{amount}",credited),"ok");
@@ -32293,7 +32309,7 @@ function trackedRowMatches(row){
 }
 
 async function handleTrackedDbRow(row,epoch){
-  if(state.terminal||epoch!==state.verifyEpoch||!trackedRowMatches(row))return false;
+  if(state.terminal||epoch!==state.verifyEpoch||state.activeUserId!==currentUser?.id||!trackedRowMatches(row))return false;
 
   const s=String(row.status||"").toLowerCase();
   const v=String(row.verification_status||"").toLowerCase();
@@ -32318,7 +32334,7 @@ async function handleTrackedDbRow(row,epoch){
 }
 
 async function pollTrackedDb(epoch){
-  if(state.terminal||epoch!==state.verifyEpoch||state.dbPollInFlight||!currentUser?.id||!state.activeRequestId)return;
+  if(state.terminal||epoch!==state.verifyEpoch||state.dbPollInFlight||!currentUser?.id||state.activeUserId!==currentUser.id||!state.activeRequestId)return;
   state.dbPollInFlight=true;
   try{
     const {data,error}=await supabaseClient
@@ -32329,7 +32345,13 @@ async function pollTrackedDb(epoch){
       .maybeSingle();
     if(!error&&data)await handleTrackedDbRow(data,epoch);
   }catch(_){}
-  finally{state.dbPollInFlight=false}
+  finally{
+    state.dbPollInFlight=false;
+    if(!state.terminal&&epoch===state.verifyEpoch&&state.activeUserId===currentUser?.id){
+      if(!state.reviewRequired)void recoverLatestPaymentFromServer(epoch);
+      if(!state.reviewRequired&&Date.now()-state.trackingSince>90000)showRecoveryNotice("delayed");
+    }
+  }
 }
 
 function startTrackedDbPoll(epoch){
@@ -32339,7 +32361,7 @@ function startTrackedDbPoll(epoch){
     if(!document.hidden&&!state.terminal&&epoch===state.verifyEpoch){
       void pollTrackedDb(epoch);
     }
-  },750);
+  },3000);
 }
 
 function startTrackedRealtime(epoch){
@@ -32361,15 +32383,23 @@ function startTrackedRealtime(epoch){
   }catch(_){}
 }
 
-async function registerPaymentWithServer(epoch){ return; }
+async function registerPaymentWithServer(epoch){
+  if(state.terminal||epoch!==state.verifyEpoch||state.serverRegistered||!state.activeTxHash)return;
+  const id=state.activeRequestId;
+  await attachPaymentIntent(id,state.activeTxHash);
+  if(!state.terminal&&epoch===state.verifyEpoch&&id===state.activeRequestId)state.serverRegistered=true;
+}
 
 function beginIntentTracking(requestId,amount,payAmount,from,network,txHash=""){
   if(!requestId||!from||!Number(amount))return;
   const normalizedNetwork=String(network||state.network||"BEP20").toUpperCase();
 
   if(!state.terminal&&state.trackingStarted&&String(state.activeRequestId)===String(requestId)){
+    if(txHash&&txHash!==state.activeTxHash){state.activeTxHash=String(txHash);state.serverRegistered=false}
+    setBusy(true);
     const epoch=state.verifyEpoch;
     void pollTrackedDb(epoch);
+    void recoverLatestPaymentFromServer(epoch);
     return;
   }
 
@@ -32379,6 +32409,10 @@ function beginIntentTracking(requestId,amount,payAmount,from,network,txHash=""){
   const epoch=state.verifyEpoch;
 
   state.trackingStarted=true;
+  state.activeUserId=currentUser?.id;
+  state.trackingSince=Date.now();
+  state.recoveryLastAt=0;
+  state.reviewRequired=false;
   state.activeRequestId=String(requestId);
   state.activeNetwork=normalizedNetwork;
   state.activeAmount=Number(amount);
@@ -32390,7 +32424,7 @@ function beginIntentTracking(requestId,amount,payAmount,from,network,txHash=""){
   state.polls=0;
   state.notFoundPolls=0;
   state.busy=true;
-  state.serverRegistered=true;
+  state.serverRegistered=false;
 
   savePendingPayment({
     requestId:String(requestId),amount:Number(amount),payAmount:String(payAmount||amount),
@@ -32402,6 +32436,7 @@ function beginIntentTracking(requestId,amount,payAmount,from,network,txHash=""){
   waitNote(true);
   startTrackedRealtime(epoch);
   startTrackedDbPoll(epoch);
+  void recoverLatestPaymentFromServer(epoch);
 }
 
 async function verifyLoop(amount,from,txHash,isPoll=false){
@@ -32514,7 +32549,7 @@ async function startEvmPayment(provider,name){
   state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;
   stopTrackingLoops();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
 
-  let intent=null,txSent=false;
+  let intent=null,txSent=false,sendStarted=false;
   try{
     const accounts=await provider.request({method:"eth_requestAccounts"});
     const from=String(accounts?.[0]||"").toLowerCase();
@@ -32539,15 +32574,19 @@ async function startEvmPayment(provider,name){
     const n=NET[state.network],units=parseUnits(payAmount,n.decimals),data=transferData(n.receiver,units);
 
     status(it("exact",{amount:payAmount}),"info",false);
+    sendStarted=true;
     const result=await provider.request({method:"eth_sendTransaction",params:[{from,to:n.token,data,value:"0x0"}]});
     txSent=true;
 
-    const walletHash=String(result||"").trim();
+    const walletHash=String(typeof result==="string"?result:(result?.hash||result?.transactionHash||"")).trim();
     const validHash=/^0x[0-9a-fA-F]{64}$/.test(walletHash)?walletHash:"";
-    if(validHash)void attachPaymentIntent(intent.request_id,validHash);
-
     beginIntentTracking(intent.request_id,amount,payAmount,from,state.network,validHash);
   }catch(e){
+    const rejected=e?.code===4001||/rejected|denied|cancel/i.test(String(e?.message||""));
+    if(intent?.request_id&&sendStarted&&!rejected){
+      const p=readPendingPayment();
+      if(p){beginIntentTracking(p.requestId,p.amount,p.payAmount,p.from,p.network,p.txHash||"");showRecoveryNotice("delayed");return}
+    }
     if(intent?.request_id&&!txSent)void cancelPaymentIntent(intent.request_id);
     if(!txSent)clearPendingPayment();
     state.busy=false;setBusy(false);waitNote(false);
@@ -32562,7 +32601,7 @@ async function startTronPayment(provider,name){
   state.provider=provider;state.walletName=name;state.polls=0;state.notFoundPolls=0;
   stopTrackingLoops();setBusy(true);waitNote(false);status(t("connecting"),"info",true);
 
-  let intent=null,txSent=false;
+  let intent=null,txSent=false,sendStarted=false;
   try{
     let accounts=[];
     try{accounts=await provider.request({method:"eth_requestAccounts"})}
@@ -32592,16 +32631,20 @@ async function startTronPayment(provider,name){
     const units=parseUnits(payAmount,6).toString();
 
     status(it("exact",{amount:payAmount}),"info",false);
+    sendStarted=true;
     const result=await contract.transfer(TRON_RECEIVER,units).send({feeLimit:100000000,callValue:0,shouldPollResponse:false});
     txSent=true;
 
     const raw=typeof result==="string"?result:(result?.txid||result?.txID||result?.transaction?.txID||"");
     const walletHash=String(raw||"").replace(/^0x/i,"");
     const validHash=/^[0-9a-fA-F]{64}$/.test(walletHash)?walletHash:"";
-    if(validHash)void attachPaymentIntent(intent.request_id,validHash);
-
     beginIntentTracking(intent.request_id,amount,payAmount,from,state.network,validHash);
   }catch(e){
+    const rejected=e?.code===4001||/rejected|denied|cancel/i.test(String(e?.message||""));
+    if(intent?.request_id&&sendStarted&&!rejected){
+      const p=readPendingPayment();
+      if(p){beginIntentTracking(p.requestId,p.amount,p.payAmount,p.from,p.network,p.txHash||"");showRecoveryNotice("delayed");return}
+    }
     if(intent?.request_id&&!txSent)void cancelPaymentIntent(intent.request_id);
     if(!txSent)clearPendingPayment();
     state.busy=false;setBusy(false);waitNote(false);
@@ -32633,7 +32676,7 @@ window.togglePaymentDetails=function(){
     if(tx)tx.style.display="none";
     if(receipt)receipt.style.display="none";
     if(submit)submit.style.display="none";
-    state.busy=false;
+    state.busy=!!readPendingPayment();
     stopPoll();
     render();
 
@@ -32666,7 +32709,39 @@ window.togglePaymentDetails=function(){
 };
 
 
-async function recoverLatestPaymentFromServer(){ return; }
+async function recoverLatestPaymentFromServer(epoch=state.verifyEpoch,force=false){
+  if(iwpServerRecoveryRunning||state.terminal||epoch!==state.verifyEpoch||!state.activeRequestId||state.activeUserId!==currentUser?.id)return;
+  if(!force&&(state.reviewRequired||Date.now()-Number(state.recoveryLastAt||0)<15000))return;
+  iwpServerRecoveryRunning=true;
+  state.recoveryLastAt=Date.now();
+  const id=state.activeRequestId,userId=currentUser.id;
+  const retry=document.getElementById("iwpRecheck");if(retry)retry.disabled=true;
+  try{
+    // Retry the SAME hash registration. A failed API call must never trigger
+    // another wallet transfer or erase the locally saved payment reference.
+    let attachError=null;
+    try{await registerPaymentWithServer(epoch)}catch(error){attachError=error}
+    if(state.terminal||epoch!==state.verifyEpoch||currentUser?.id!==userId)return;
+    const {data,error}=await supabaseClient.functions.invoke("direct-wallet-recovery",{
+      body:{action:"recover",request_id:id}
+    });
+    if(state.terminal||epoch!==state.verifyEpoch||currentUser?.id!==userId)return;
+    if(error||data?.error)throw new Error(data?.error||error?.message||t("server"));
+    if(String(data?.request_id)!==String(id))throw new Error(t("server"));
+    if(data.status==="approved")await finishSuccess(data,state.activeAmount,epoch);
+    else if(data.status==="failed"||data.status==="rejected")finishFailed(t("failed"),epoch);
+    else if(data.status==="manual_review"){
+      state.reviewRequired=true;
+      showRecoveryNotice("review");
+    }else if(attachError)showRecoveryNotice("unavailable");
+    else if(Date.now()-state.trackingSince>90000)showRecoveryNotice("delayed");
+  }catch(_){
+    if(!state.terminal&&epoch===state.verifyEpoch&&currentUser?.id===userId)showRecoveryNotice("unavailable");
+  }finally{
+    iwpServerRecoveryRunning=false;
+    if(retry)retry.disabled=false;
+  }
+}
 
 function scheduleServerRecovery(){
   if(iwpServerRecoveryTimer){
@@ -32681,6 +32756,13 @@ async function resumePendingPayment(){
   if(!p?.requestId)return;
   iwpResumeRunning=true;
   try{
+    // Older saved entries did not include their owner. Verify ownership before
+    // showing them or attaching a transaction under the current login.
+    const owner=currentUser.id;
+    const {data:owned,error}=await supabaseClient.from("financial_requests")
+      .select("id").eq("id",p.requestId).eq("user_id",owner)
+      .eq("request_type","deposit").eq("user_note","Instant wallet payment").maybeSingle();
+    if(error||!owned||currentUser?.id!==owner)return;
     state.network=String(p.network||"BEP20").toUpperCase();
     const input=document.getElementById("deposit-amount");
     if(input)input.value=String(p.amount);
