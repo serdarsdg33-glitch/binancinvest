@@ -31782,7 +31782,7 @@ let _last=L();setInterval(()=>{const x=L();if(x!==_last){_last=x;apply();if(curr
 </script>
 
 
-<script id="instant-wallet-deposit-v13-script">
+<script id="instant-wallet-deposit-v14-script">
 (function(){
 "use strict";
 
@@ -31811,7 +31811,7 @@ const siteT=(typeof T!=="undefined"&&T)?T:{};
 const state={
   network:"BEP20",provider:null,walletName:"",txHash:"",poll:null,polls:0,busy:false,
   handoffWallet:"",notFoundPolls:0,
-  terminal:false,verifyEpoch:0,verifyInFlight:false,trackingStarted:false,
+  terminal:false,verifyEpoch:0,verifyInFlight:false,trackingStarted:false,serverRegistered:false,
   activeTxHash:"",activeNetwork:"",activeAmount:0,activeFrom:"",
   dbPollTimer:null,dbPollInFlight:false,realtimeChannel:null,recoveryInFlight:false
 };
@@ -32175,6 +32175,7 @@ function terminalizeTracking(){
   state.verifyEpoch++;
   stopTrackingLoops();
   state.recoveryInFlight=false;
+  state.serverRegistered=false;
   return true;
 }
 
@@ -32287,7 +32288,7 @@ function startTrackedDbPoll(epoch){
     if(!document.hidden&&!state.terminal&&epoch===state.verifyEpoch){
       void pollTrackedDb(epoch);
     }
-  },1000);
+  },750);
 }
 
 function startTrackedRealtime(epoch){
@@ -32309,60 +32310,46 @@ function startTrackedRealtime(epoch){
   }catch(_){}
 }
 
-function scheduleVerifier(epoch,delay){
-  stopPoll();
-  if(state.terminal||epoch!==state.verifyEpoch)return;
-  state.poll=setTimeout(()=>void runVerifierCycle(epoch),delay);
-}
-
-async function runVerifierCycle(epoch){
+async function registerPaymentWithServer(epoch){
   if(state.terminal||epoch!==state.verifyEpoch||state.verifyInFlight)return;
   if(!state.activeTxHash||!state.activeFrom||!state.activeAmount)return;
 
   state.verifyInFlight=true;
-  const amount=state.activeAmount,from=state.activeFrom,txHash=state.activeTxHash;
-
   try{
-    const d=await invokeVerify(amount,from,txHash);
+    const d=await invokeVerify(state.activeAmount,state.activeFrom,state.activeTxHash);
     if(state.terminal||epoch!==state.verifyEpoch)return;
 
     if(d.status==="approved"){
-      await finishSuccess(d,amount,epoch);
+      state.serverRegistered=true;
+      await finishSuccess(d,state.activeAmount,epoch);
       return;
     }
 
     if(d.status==="failed"){
+      state.serverRegistered=true;
       finishFailed(t("failed"),epoch);
       return;
     }
 
-    if(d.reason==="verified_waiting_for_credit_recovery"){
-      void recoverLatestPaymentFromServer(epoch);
-    }
+    // `checking` means the transaction is safely registered and the
+    // independent Supabase watcher is now responsible for chain verification.
+    state.serverRegistered=true;
+    status(t("sent"),"info",true);
+    waitNote(true);
 
-    if(!state.terminal&&epoch===state.verifyEpoch){
-      if(d.confirmations!=null&&d.required!=null){
-        status(t("confirmations").replace("{a}",String(d.confirmations)).replace("{b}",String(d.required)),"info",true);
-      }else{
-        status(t("sent"),"info",true);
-      }
-      waitNote(true);
-      if(d.reason==="transaction_not_found_or_not_mined")state.notFoundPolls++;
-      else state.notFoundPolls=0;
-      if(state.notFoundPolls>=22)status(pf("submittedNotVisible"),"info",false);
-    }
+    // Immediately check the database in case the background watcher was fast.
+    setTimeout(()=>void pollTrackedDb(epoch),220);
   }catch(_){
-    if(!state.terminal&&epoch===state.verifyEpoch)waitNote(true);
+    // Registration itself can be retried when the page regains focus.
+    // Do not mark the payment failed because of a temporary browser/network error.
+    if(!state.terminal&&epoch===state.verifyEpoch){
+      state.serverRegistered=false;
+      waitNote(true);
+    }
   }finally{
     state.verifyInFlight=false;
   }
-
-  if(!state.terminal&&epoch===state.verifyEpoch){
-    state.polls++;
-    scheduleVerifier(epoch,state.polls<30?1200:2000);
-  }
 }
-
 function beginPaymentTracking(amount,from,txHash,network=state.network){
   const normalizedNetwork=String(network||state.network||"BEP20").toUpperCase();
   const normalizedTx=normalizeTrackedTx(normalizedNetwork,txHash);
@@ -32373,7 +32360,7 @@ function beginPaymentTracking(amount,from,txHash,network=state.network){
      normalizeTrackedTx(normalizedNetwork,state.activeTxHash)===normalizedTx){
     const epoch=state.verifyEpoch;
     void pollTrackedDb(epoch);
-    if(!state.verifyInFlight)void runVerifierCycle(epoch);
+    if(!state.serverRegistered&&!state.verifyInFlight)void registerPaymentWithServer(epoch);
     return;
   }
 
@@ -32392,6 +32379,7 @@ function beginPaymentTracking(amount,from,txHash,network=state.network){
   state.polls=0;
   state.notFoundPolls=0;
   state.busy=true;
+  state.serverRegistered=false;
 
   savePendingPayment({
     amount:Number(amount),from:String(from),txHash:normalizedTx,network:normalizedNetwork
@@ -32400,9 +32388,11 @@ function beginPaymentTracking(amount,from,txHash,network=state.network){
   status(t("sent"),"info",true);
   waitNote(true);
 
+  // Browser only registers the TX once. From then on the independent
+  // server watcher verifies/finalizes it even if this browser is suspended.
   startTrackedRealtime(epoch);
   startTrackedDbPoll(epoch);
-  void runVerifierCycle(epoch);
+  void registerPaymentWithServer(epoch);
 }
 
 async function verifyLoop(amount,from,txHash,isPoll=false){
@@ -32540,7 +32530,7 @@ window.togglePaymentDetails=function(){
       setTimeout(()=>void resumePendingPayment(),120);
     }else{
       stopTrackingLoops();
-      state.terminal=false;
+      state.terminal=false;state.serverRegistered=false;
       state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
       setBusy(false);status("");waitNote(false);
     }
@@ -32638,21 +32628,37 @@ document.getElementById("deposit-amount")?.addEventListener("input",()=>{
   const v=money();
   if(state.terminal&&v>0){
     stopTrackingLoops();
-    state.terminal=false;
+    state.terminal=false;state.serverRegistered=false;
     state.activeTxHash="";state.activeNetwork="";state.activeAmount=0;state.activeFrom="";
     render();
   }
   const el=document.getElementById("iwpAmount");
   if(el)el.textContent=v>0?"$"+v.toFixed(2):"—";
 });
-window.addEventListener("focus",()=>setTimeout(()=>void resumePendingPayment(),70));
-window.addEventListener("pageshow",()=>setTimeout(()=>void resumePendingPayment(),90));
-window.addEventListener("online",()=>setTimeout(()=>void resumePendingPayment(),90));
+window.addEventListener("focus",()=>{
+  setTimeout(()=>void resumePendingPayment(),60);
+  const epoch=state.verifyEpoch;
+  setTimeout(()=>void pollTrackedDb(epoch),110);
+  if(!state.serverRegistered&&!state.verifyInFlight)setTimeout(()=>void registerPaymentWithServer(epoch),180);
+});
+window.addEventListener("pageshow",()=>{
+  setTimeout(()=>void resumePendingPayment(),70);
+  const epoch=state.verifyEpoch;
+  setTimeout(()=>void pollTrackedDb(epoch),120);
+});
+window.addEventListener("online",()=>{
+  setTimeout(()=>void resumePendingPayment(),70);
+  const epoch=state.verifyEpoch;
+  if(!state.serverRegistered&&!state.verifyInFlight)setTimeout(()=>void registerPaymentWithServer(epoch),170);
+});
 document.addEventListener("visibilitychange",()=>{
   if(!document.hidden){
     setTimeout(()=>void resumePendingPayment(),70);
     const epoch=state.verifyEpoch;
     setTimeout(()=>void pollTrackedDb(epoch),100);
+    if(!state.serverRegistered&&!state.verifyInFlight){
+      setTimeout(()=>void registerPaymentWithServer(epoch),180);
+    }
   }
 });
 applyLabels();discoverEvm();discoverTron();
