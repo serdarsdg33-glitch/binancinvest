@@ -225,8 +225,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="binancinvest">
-<link rel="manifest" href="/binancinvest-manifest-v5.webmanifest?v=20260824-1131">
-<link rel="apple-touch-icon" sizes="180x180" href="/binancinvest-apple-touch-v37.png?v=20260824-1131">
+<meta name="application-name" content="binancinvest">
+<link rel="manifest" href="/binancinvest-manifest-v6.webmanifest?v=20260905-1">
+<link rel="icon" type="image/png" sizes="192x192" href="/binancinvest-icon-192.png?v=20260905-1">
+<link rel="icon" type="image/png" sizes="512x512" href="/binancinvest-icon-512.png?v=20260905-1">
+<link rel="apple-touch-icon" sizes="180x180" href="/binancinvest-apple-touch-180.png?v=20260905-1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>binancinvest</title>
@@ -6018,7 +6021,7 @@ html.native-app .live-withdrawals-video {
 </style>
 
 <meta name="application-name" content="binancinvest">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/binancinvest-icon-32.png?v=20260905-1">
 
 <style id="platform-stat-layout-final-v2">
 /* فقط بخش Platform Statistics */
@@ -14237,6 +14240,8 @@ html[dir="rtl"] .bsc-home-card{direction:rtl;text-align:right}
 .bsc-home-card-image{position:relative;aspect-ratio:16/9;overflow:hidden;background:rgba(67,56,29,.45)}
 .bsc-home-card-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(39,37,29,.62) 100%),linear-gradient(110deg,rgba(240,185,11,.1),transparent 46%);pointer-events:none}
 .bsc-home-card-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease,filter .5s ease}
+.bsc-home-image-title{display:none;position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);padding:7px 14px;border:1px solid rgba(255,218,102,.72);border-radius:999px;background:linear-gradient(135deg,rgba(5,8,12,.88),rgba(18,16,10,.78));color:#ffe58a;font-size:13px;font-weight:950;line-height:1.2;letter-spacing:.15px;text-align:center;white-space:nowrap;text-shadow:0 2px 9px rgba(0,0,0,.88),0 0 12px rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,244,190,.17),0 7px 20px rgba(0,0,0,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:none}
+html.web-android .bsc-home-image-title,html.apk-live-shell .bsc-home-image-title{display:block}
 .bsc-home-card:hover img{transform:scale(1.035);filter:saturate(1.06)}
 .bsc-home-card-body{position:relative;display:block;margin-top:-1px;padding:16px 17px 17px;border-top:1px solid rgba(255,226,125,.18);background:linear-gradient(145deg,rgba(76,68,46,.7),rgba(30,36,39,.88));backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
 .bsc-home-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -14887,7 +14892,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
   </div>
   <div class="bsc-home-track" id="bscHomeTrack" role="region" aria-label="BSC trading bot packages" tabindex="0">
     <button class="bsc-home-card" type="button" onclick="openBscBotCard('SPOT')" aria-label="BSC Spot Bot">
-      <span class="bsc-home-card-image"><img src="bsc-spot.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-image"><img src="bsc-spot.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"><span class="bsc-home-image-title">BSC Spot Bot</span></span>
       <span class="bsc-home-card-body">
         <span class="bsc-home-card-top"><h3>BSC Spot Bot</h3><b class="bsc-home-price">$99</b></span>
         <p data-bsc="spotDesc">Automated Spot trading with trend filters, position sizing, stop loss, take profit and trailing protection.</p>
@@ -14895,7 +14900,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       </span>
     </button>
     <button class="bsc-home-card" type="button" onclick="openBscBotCard('FUTURES')" aria-label="BSC Futures Bot">
-      <span class="bsc-home-card-image"><img src="bsc-futures.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-image"><img src="bsc-futures.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"><span class="bsc-home-image-title">BSC Futures Bot</span></span>
       <span class="bsc-home-card-body">
         <span class="bsc-home-card-top"><h3>BSC Futures Bot</h3><b class="bsc-home-price">$129</b></span>
         <p data-bsc="futuresDesc">Automated Long & Short trading with leverage controls, isolated-margin support and strict position-risk limits.</p>
@@ -14903,7 +14908,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
       </span>
     </button>
     <button class="bsc-home-card" type="button" onclick="openBscBotCard('UNIVERSAL')" aria-label="BSC Universal Bot">
-      <span class="bsc-home-card-image"><img src="bsc-universal.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"></span>
+      <span class="bsc-home-card-image"><img src="bsc-universal.webp" alt="" width="1200" height="675" loading="lazy" decoding="async"><span class="bsc-home-image-title">BSC Universal Bot</span></span>
       <span class="bsc-home-card-body">
         <span class="bsc-home-card-top"><h3>BSC Universal Bot</h3><b class="bsc-home-price">$179</b></span>
         <p data-bsc="universalDesc">Complete package with Spot + Futures, Windows software, mobile monitoring/control and multilingual setup guides.</p>
@@ -26461,7 +26466,11 @@ async function deleteAllClosedSupportTickets() {
 
   function syncInstallPageLinks(lang) {
     const iphoneUrl = installPageUrl("install-iphone.html", lang);
-    const webUrl = installPageUrl("install-web.html", lang);
+    const webUrlObject = new URL("/", window.location.origin);
+    webUrlObject.searchParams.set("lang", lang);
+    webUrlObject.searchParams.set("install", "webapp");
+    webUrlObject.hash = "downloadAppSection";
+    const webUrl = webUrlObject.href;
 
     if (iphoneProfileBannerBtn) iphoneProfileBannerBtn.href = iphoneUrl;
     if (iphoneProfileChoiceBtn) iphoneProfileChoiceBtn.href = iphoneUrl;
