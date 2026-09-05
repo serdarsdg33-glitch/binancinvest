@@ -14612,9 +14612,10 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 <style id="academy-home-store-v1">
 /* BinancInvest Trading Academy — exact 16:9 artwork with live HTML copy */
 .academy-home-showcase{margin:22px 0 28px}
-.academy-promo-track{direction:ltr;display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(240,185,11,.48) rgba(255,255,255,.045);padding:1px 1px 10px;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
+.academy-section-title{margin:0 0 14px;color:#fff;font-size:clamp(20px,2.2vw,30px);font-weight:950;line-height:1.3;letter-spacing:-.02em;text-align:start}.academy-section-title::after{content:"";display:block;width:58px;height:3px;margin-top:8px;border-radius:999px;background:linear-gradient(90deg,#f0b90b,#ffe58a);box-shadow:0 0 14px rgba(240,185,11,.28)}
+.academy-promo-track{direction:ltr!important;display:flex;gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:0;scrollbar-width:thin;scrollbar-color:rgba(240,185,11,.48) rgba(255,255,255,.045);padding:1px 0 10px;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .academy-promo-track::-webkit-scrollbar{height:6px}.academy-promo-track::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:999px}.academy-promo-track::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#9e6d00,#f0b90b,#ffe58a);border-radius:999px}
-.academy-promo-card{container-type:inline-size;position:relative;isolation:isolate;flex:0 0 100%;width:100%;height:auto;min-height:0;aspect-ratio:16/9;overflow:hidden;scroll-snap-align:start;background:#05070b;border:1px solid rgba(240,185,11,.38);border-radius:clamp(12px,1.55vw,24px);box-shadow:0 24px 65px rgba(0,0,0,.52);transform:translateZ(0)}
+.academy-promo-card{container-type:inline-size;position:relative;isolation:isolate;flex:0 0 100%;width:100%;height:auto;min-height:0;aspect-ratio:16/9;overflow:hidden;scroll-snap-align:center;scroll-snap-stop:always;background:#05070b;border:1px solid rgba(240,185,11,.38);border-radius:clamp(12px,1.55vw,24px);box-shadow:0 24px 65px rgba(0,0,0,.52);transform:translateZ(0)}
 .academy-promo-media{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#05070b;pointer-events:none}
 .academy-ad-copy{position:absolute;z-index:2;inset:0 auto 0 0;width:51%;padding:3.6% 3.7% 3.1%;color:#fff;display:flex;flex-direction:column;text-align:left;direction:ltr;text-shadow:0 .18cqw .65cqw rgba(0,0,0,.98)}
 .academy-promo-card[dir="rtl"] .academy-ad-copy{text-align:right;direction:rtl}
@@ -14825,8 +14826,9 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 </div>
 <div class="hero"><div class="eyebrow" data-t="eyebrowText">PREMIUM DIGITAL ASSET PLATFORM</div><h1 data-t="hero">Build your future with intelligent investing.</h1><p data-t="heroDesc">Explore digital assets, investment plans and portfolio tools in one premium interface.</p><div class="actions"><button class="btn gold" onclick="page('invest', document.querySelector('[data-page=invest]'))" data-t="exploreInvest">Explore Investments</button><button class="btn" onclick="page('markets', document.querySelector('[data-page=markets]'))" data-t="exploreMarkets">Explore Markets</button></div><svg class="hero-glass-lightning" viewBox="0 0 300 430" preserveAspectRatio="xMaxYMin meet" aria-hidden="true"><defs><linearGradient id="heroGlassBolt" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".98"/><stop offset=".42" stop-color="#dff5ff" stop-opacity=".88"/><stop offset=".76" stop-color="#fff0b0" stop-opacity=".66"/><stop offset="1" stop-color="#f0b90b" stop-opacity=".16"/></linearGradient><filter id="heroBoltGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path class="lightning-core" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-shine" d="M299 1 L269 52 L278 84 L228 128 L239 163 L184 211 L195 248 L139 307 L150 347 L101 426"/><path class="lightning-branch" d="M228 128 L191 104 L162 66"/><path class="lightning-branch" d="M239 163 L273 143 L297 110"/><path class="lightning-branch" d="M184 211 L146 191 L111 151"/><path class="lightning-branch" d="M195 248 L233 236 L266 202"/><path class="lightning-branch" d="M139 307 L104 286 L74 251"/></svg><div class="orb"></div></div>
 
-<section class="academy-home-showcase" aria-label="Trading Academy">
-  <div class="academy-promo-track" id="academyPromoTrack" role="region" aria-label="Trading Academy offers" tabindex="0">
+<section class="academy-home-showcase" aria-labelledby="academyHomeTitle">
+  <h2 class="academy-section-title" id="academyHomeTitle" data-academy="sectionTitle">Trading Academy</h2>
+  <div class="academy-promo-track" id="academyPromoTrack" dir="ltr" role="region" aria-label="Trading Academy offers" tabindex="0">
     <article class="academy-promo-card academy-ad-course" data-academy-slide="0">
       <img class="academy-promo-media" src="academy-course-showcase.jpeg" alt="" width="1536" height="864" loading="eager" decoding="async">
       <div class="academy-ad-copy">
@@ -33504,7 +33506,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   };
   const EXTRA={
     en:{valueLine:"Knowledge Builds Wealth",courseTagline:"Trade · Learn · Grow · Together",certificateTagline:"Learn · Trade · Grow · Certify",allLevels:"Suitable for all levels"},
-    fa:{valueLine:"دانش، ثروت می‌سازد",courseTitle:"دوره جامع آموزش ترید",courseSubtitle:"آموزش کامل از صفر تا پیشرفته | اسپات، فیوچرز، تحلیل تکنیکال و مدیریت ریسک",courseCertificate:"با خرید این دوره یک سرتیفیکیت معتبر دریافت خواهید کرد",courseTagline:"معامله · یادگیری · رشد · باهم",certificateTitle:"سرتیفیکات معتبر پایان دوره",certificateSubtitle:"پس از خرید و تکمیل دوره، گواهی معتبر BinancInvest دریافت می‌کنید",certificateTagline:"یادگیری · معامله · رشد · گواهی",allLevels:"مناسب همه سطوح"},
+    fa:{sectionTitle:"دوره آموزش ترید",valueLine:"دانش، ثروت می‌سازد",courseTitle:"دوره جامع آموزش ترید",courseSubtitle:"آموزش کامل از صفر تا پیشرفته | اسپات، فیوچرز، تحلیل تکنیکال و مدیریت ریسک",courseCertificate:"با خرید این دوره یک سرتیفیکیت معتبر دریافت خواهید کرد",courseTagline:"معامله · یادگیری · رشد · باهم",certificateTitle:"سرتیفیکات معتبر پایان دوره",certificateSubtitle:"پس از خرید و تکمیل دوره، گواهی معتبر BinancInvest دریافت می‌کنید",certificateTagline:"یادگیری · معامله · رشد · گواهی",allLevels:"مناسب همه سطوح"},
     az:{valueLine:"Bilik sərvət yaradır",courseTagline:"Ticarət · Öyrən · İnkişaf · Birlikdə",certificateTagline:"Öyrən · Ticarət · İnkişaf · Sertifikat",allLevels:"Bütün səviyyələrə uyğun"},
     tr:{valueLine:"Bilgi zenginlik yaratır",courseTagline:"İşlem · Öğren · Büyü · Birlikte",certificateTagline:"Öğren · İşlem · Büyü · Sertifika",allLevels:"Tüm seviyelere uygun"},
     ru:{valueLine:"Знания создают капитал",courseTagline:"Торгуй · Учись · Расти · Вместе",certificateTagline:"Учись · Торгуй · Расти · Сертификат",allLevels:"Для всех уровней"},
@@ -33518,6 +33520,15 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   const state={owned:false,base:0,network:"BEP20",poll:null,polls:0,busy:false};
   function lang(){const value=String(localStorage.getItem("bi_lang")||"en").toLowerCase();return COPY[value]?value:"en"}
   function tr(key){return COPY[lang()][key]||COPY.en[key]||key}
+  function academyCenteredLeft(track,card){
+    const trackRect=track.getBoundingClientRect(),cardRect=card.getBoundingClientRect();
+    return Math.max(0,track.scrollLeft+(cardRect.left-trackRect.left)-(track.clientWidth-card.offsetWidth)/2);
+  }
+  function academyMoveTo(index,smooth){
+    const track=$("academyPromoTrack"),card=track&&track.querySelector('[data-academy-slide="'+index+'"]');
+    if(!track||!card)return;
+    track.scrollTo({left:academyCenteredLeft(track,card),behavior:smooth?"smooth":"auto"});
+  }
   function setStatus(message,type){
     const box=$("academyPaymentStatus");
     if(!box)return;
@@ -33531,6 +33542,12 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     });
     const rtl=lang()==="fa"||lang()==="ar";
     document.querySelectorAll(".academy-promo-card").forEach(function(card){card.setAttribute("dir",rtl?"rtl":"ltr");card.setAttribute("lang",lang())});
+    const track=$("academyPromoTrack");
+    if(track){
+      track.setAttribute("dir","ltr");
+      const active=Array.from(document.querySelectorAll(".academy-promo-dot")).findIndex(function(dot){return dot.classList.contains("active")});
+      requestAnimationFrame(function(){academyMoveTo(active<0?0:active,false)});
+    }
     updateOwnedButtons();
   }
   function updateOwnedButtons(){
@@ -33680,15 +33697,14 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     }catch(error){if(typeof toast==="function")toast(error.message||tr("server"))}
   };
   window.academyScrollSlide=function(index){
-    const track=$("academyPromoTrack"),card=track&&track.querySelector('[data-academy-slide="'+index+'"]');
-    if(!track||!card)return;
-    track.scrollTo({left:card.offsetLeft-track.offsetLeft,behavior:"smooth"});
+    academyMoveTo(index,true);
   };
   function syncDots(){
     const track=$("academyPromoTrack");if(!track)return;
     const cards=Array.from(track.querySelectorAll("[data-academy-slide]"));
     let selected=0,best=Infinity;
-    cards.forEach(function(card,index){const distance=Math.abs(card.offsetLeft-track.offsetLeft-track.scrollLeft);if(distance<best){best=distance;selected=index}});
+    const trackCenter=track.getBoundingClientRect().left+track.clientWidth/2;
+    cards.forEach(function(card,index){const rect=card.getBoundingClientRect(),distance=Math.abs(rect.left+rect.width/2-trackCenter);if(distance<best){best=distance;selected=index}});
     document.querySelectorAll(".academy-promo-dot").forEach(function(dot,index){dot.classList.toggle("active",index===selected)});
   }
   const track=$("academyPromoTrack");
