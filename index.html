@@ -14240,7 +14240,7 @@ html[dir="rtl"] .bsc-home-card{direction:rtl;text-align:right}
 .bsc-home-card-image{position:relative;aspect-ratio:16/9;overflow:hidden;background:rgba(67,56,29,.45)}
 .bsc-home-card-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 58%,rgba(39,37,29,.62) 100%),linear-gradient(110deg,rgba(240,185,11,.1),transparent 46%);pointer-events:none}
 .bsc-home-card-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease,filter .5s ease}
-.bsc-home-image-title{display:none;position:absolute;z-index:3;top:12px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);padding:7px 14px;border:1px solid rgba(255,218,102,.72);border-radius:999px;background:linear-gradient(135deg,rgba(5,8,12,.88),rgba(18,16,10,.78));color:#ffe58a;font-size:13px;font-weight:950;line-height:1.2;letter-spacing:.15px;text-align:center;white-space:nowrap;text-shadow:0 2px 9px rgba(0,0,0,.88),0 0 12px rgba(240,185,11,.25);box-shadow:inset 0 1px 0 rgba(255,244,190,.17),0 7px 20px rgba(0,0,0,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:none}
+.bsc-home-image-title{display:none;position:absolute;z-index:3;right:auto;bottom:12px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);padding:7px 14px;border:1px solid rgba(255,218,102,.74);border-radius:999px;background:rgba(5,8,12,.16);color:#ffe58a;font-size:13px;font-weight:950;line-height:1.2;letter-spacing:.15px;text-align:center;white-space:nowrap;text-shadow:0 2px 9px rgba(0,0,0,.98),0 0 12px rgba(240,185,11,.34);box-shadow:inset 0 1px 0 rgba(255,244,190,.12),0 5px 16px rgba(0,0,0,.22);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:none}
 html.web-android .bsc-home-image-title,html.apk-live-shell .bsc-home-image-title{display:block}
 .bsc-home-card:hover img{transform:scale(1.035);filter:saturate(1.06)}
 .bsc-home-card-body{position:relative;display:block;margin-top:-1px;padding:16px 17px 17px;border-top:1px solid rgba(255,226,125,.18);background:linear-gradient(145deg,rgba(76,68,46,.7),rgba(30,36,39,.88));backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
@@ -14444,6 +14444,12 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 .iwp-summary{display:grid;gap:8px;margin-bottom:12px}
 .iwp-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 11px;border:1px solid rgba(255,255,255,.065);border-radius:10px;background:rgba(255,255,255,.025)}
 .iwp-row span{color:#8794a4;font-size:10px}.iwp-row b{min-width:0;color:#f5f7fa;font-size:11px;text-align:end}
+.iwp-history-actions{display:flex;gap:9px;margin-top:10px;flex-wrap:wrap}
+.iwp-history-actions .iwp-wallet-btn{flex:1 1 170px;margin-top:0!important}
+.iwp-history-delete{flex:0 1 130px;min-height:44px;padding:9px 14px;border:1px solid rgba(255,101,112,.5);border-radius:10px;background:linear-gradient(135deg,rgba(111,24,35,.58),rgba(34,14,19,.82));color:#ffd9dc;font:inherit;font-size:11px;font-weight:900;cursor:pointer;transition:border-color .2s,background .2s,transform .15s}
+.iwp-history-delete:hover{border-color:rgba(255,124,133,.85);background:linear-gradient(135deg,rgba(145,31,44,.7),rgba(47,16,23,.9))}
+.iwp-history-delete:active{transform:scale(.985)}
+.iwp-history-delete:disabled{opacity:.55;cursor:wait}
 .iwp-address{direction:ltr;unicode-bidi:embed;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px!important;color:#6ee7b7!important}
 .iwp-wallets{display:none;margin:10px 0;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:#0c1219}
 .iwp-wallets.show{display:block}
@@ -14460,7 +14466,7 @@ html[dir="rtl"] .bsc4-monthly-badge{margin-left:0;margin-right:8px}
 .iwp-status.show{display:block}.iwp-status.info{border:1px solid rgba(82,126,255,.28);background:rgba(82,126,255,.08);color:#bcd4ff}.iwp-status.ok{border:1px solid rgba(22,199,132,.28);background:rgba(22,199,132,.08);color:#a7f3d0}.iwp-status.err{border:1px solid rgba(234,57,67,.27);background:rgba(234,57,67,.08);color:#fecaca}
 .iwp-spin{display:inline-block;width:13px;height:13px;margin-inline-end:7px;border:2px solid rgba(255,255,255,.23);border-top-color:currentColor;border-radius:50%;vertical-align:-2px;animation:iwpSpin .8s linear infinite}
 @keyframes iwpSpin{to{transform:rotate(360deg)}}
-@media(max-width:520px){.iwp-networks{grid-template-columns:1fr}.iwp-row{flex-direction:column}.iwp-row b{text-align:start}}
+@media(max-width:520px){.iwp-networks{grid-template-columns:1fr}.iwp-row{flex-direction:column}.iwp-row b{text-align:start}.iwp-history-actions{display:grid;grid-template-columns:1fr}.iwp-history-actions .iwp-wallet-btn,.iwp-history-delete{width:100%;min-height:48px}}
 </style>
 
 
@@ -32038,16 +32044,16 @@ function clearPendingPayment(){try{
 }catch(_){}}
 const IWP_HISTORY_KEY="bi_iwp_payment_history_v16";
 const HISTORY_COPY={
- en:["Previous wallet payments","Start a separate new payment","New payments do not replace or repay these transfers.","Check status","Confirmed","Not completed","Waiting for verification","Payment reference needs recovery"],
- fa:["پرداخت‌های قبلی کیف پول","شروع یک پرداخت جدید و جداگانه","پرداخت جدید جایگزین یا تکرار این انتقال‌ها نیست.","بررسی وضعیت","تأیید شده","تکمیل نشده","در انتظار بررسی","نیازمند بازیابی مرجع پرداخت"],
- az:["Əvvəlki cüzdan ödənişləri","Ayrıca yeni ödəniş başlat","Yeni ödəniş bu köçürmələri əvəz etmir və təkrarlamır.","Statusu yoxla","Təsdiqləndi","Tamamlanmayıb","Yoxlanılır","Ödəniş istinadı bərpa edilməlidir"],
- tr:["Önceki cüzdan ödemeleri","Ayrı bir yeni ödeme başlat","Yeni ödeme bu transferleri değiştirmez veya tekrarlamaz.","Durumu kontrol et","Onaylandı","Tamamlanmadı","Doğrulama bekleniyor","Ödeme referansı kurtarılmalı"],
- ru:["Предыдущие платежи","Начать отдельный новый платёж","Новый платёж не заменяет и не повторяет эти переводы.","Проверить статус","Подтверждено","Не завершено","Ожидает проверки","Нужно восстановить данные платежа"],
- ar:["مدفوعات المحفظة السابقة","بدء دفعة جديدة منفصلة","الدفعة الجديدة لا تستبدل هذه التحويلات ولا تكررها.","فحص الحالة","مؤكد","غير مكتمل","بانتظار التحقق","يلزم استعادة مرجع الدفع"],
- zh:["之前的钱包付款","开始另一笔新付款","新付款不会替代或重复这些转账。","查看状态","已确认","未完成","等待验证","需要恢复付款信息"],
- es:["Pagos anteriores","Iniciar un pago nuevo separado","El nuevo pago no sustituye ni repite estas transferencias.","Consultar estado","Confirmado","No completado","Pendiente de verificación","Es necesario recuperar la referencia"],
- fr:["Paiements précédents","Commencer un nouveau paiement distinct","Le nouveau paiement ne remplace ni ne répète ces transferts.","Vérifier le statut","Confirmé","Non terminé","Vérification en attente","Référence du paiement à récupérer"],
- de:["Frühere Wallet-Zahlungen","Separate neue Zahlung starten","Neue Zahlungen ersetzen oder wiederholen diese Überweisungen nicht.","Status prüfen","Bestätigt","Nicht abgeschlossen","Wartet auf Prüfung","Zahlungsreferenz muss wiederhergestellt werden"]
+ en:["Previous wallet payments","Start a separate new payment","New payments do not replace or repay these transfers.","Check status","Confirmed","Not completed","Waiting for verification","Payment reference needs recovery","Delete","Remove this payment from your transaction list? Its financial record will remain securely stored.","Removed from transaction list.","This payment could not be removed."],
+ fa:["پرداخت‌های قبلی کیف پول","شروع یک پرداخت جدید و جداگانه","پرداخت جدید جایگزین یا تکرار این انتقال‌ها نیست.","بررسی وضعیت","تأیید شده","تکمیل نشده","در انتظار بررسی","نیازمند بازیابی مرجع پرداخت","حذف","این پرداخت از فهرست تراکنش‌های شما حذف شود؟ سابقه مالی آن به‌صورت امن نگهداری می‌شود.","از فهرست تراکنش‌ها حذف شد.","حذف این پرداخت انجام نشد."],
+ az:["Əvvəlki cüzdan ödənişləri","Ayrıca yeni ödəniş başlat","Yeni ödəniş bu köçürmələri əvəz etmir və təkrarlamır.","Statusu yoxla","Təsdiqləndi","Tamamlanmayıb","Yoxlanılır","Ödəniş istinadı bərpa edilməlidir","Sil","Bu ödəniş əməliyyat siyahınızdan silinsin? Maliyyə qeydi təhlükəsiz saxlanılacaq.","Əməliyyat siyahısından silindi.","Bu ödənişi silmək mümkün olmadı."],
+ tr:["Önceki cüzdan ödemeleri","Ayrı bir yeni ödeme başlat","Yeni ödeme bu transferleri değiştirmez veya tekrarlamaz.","Durumu kontrol et","Onaylandı","Tamamlanmadı","Doğrulama bekleniyor","Ödeme referansı kurtarılmalı","Sil","Bu ödeme işlem listenizden kaldırılsın mı? Finansal kayıt güvenli biçimde saklanacaktır.","İşlem listesinden kaldırıldı.","Bu ödeme kaldırılamadı."],
+ ru:["Предыдущие платежи","Начать отдельный новый платёж","Новый платёж не заменяет и не повторяет эти переводы.","Проверить статус","Подтверждено","Не завершено","Ожидает проверки","Нужно восстановить данные платежа","Удалить","Удалить этот платёж из списка операций? Финансовая запись будет безопасно сохранена.","Удалено из списка операций.","Не удалось удалить этот платёж."],
+ ar:["مدفوعات المحفظة السابقة","بدء دفعة جديدة منفصلة","الدفعة الجديدة لا تستبدل هذه التحويلات ولا تكررها.","فحص الحالة","مؤكد","غير مكتمل","بانتظار التحقق","يلزم استعادة مرجع الدفع","حذف","هل تريد إزالة هذه الدفعة من قائمة معاملاتك؟ سيبقى السجل المالي محفوظًا بأمان.","تمت الإزالة من قائمة المعاملات.","تعذرت إزالة هذه الدفعة."],
+ zh:["之前的钱包付款","开始另一笔新付款","新付款不会替代或重复这些转账。","查看状态","已确认","未完成","等待验证","需要恢复付款信息","删除","要从交易列表中移除此付款吗？财务记录仍会安全保存。","已从交易列表中移除。","无法移除此付款。"],
+ es:["Pagos anteriores","Iniciar un pago nuevo separado","El nuevo pago no sustituye ni repite estas transferencias.","Consultar estado","Confirmado","No completado","Pendiente de verificación","Es necesario recuperar la referencia","Eliminar","¿Quitar este pago de tu lista de transacciones? El registro financiero permanecerá guardado de forma segura.","Eliminado de la lista de transacciones.","No se pudo eliminar este pago."],
+ fr:["Paiements précédents","Commencer un nouveau paiement distinct","Le nouveau paiement ne remplace ni ne répète ces transferts.","Vérifier le statut","Confirmé","Non terminé","Vérification en attente","Référence du paiement à récupérer","Supprimer","Retirer ce paiement de votre liste de transactions ? Le dossier financier restera conservé en toute sécurité.","Retiré de la liste des transactions.","Impossible de retirer ce paiement."],
+ de:["Frühere Wallet-Zahlungen","Separate neue Zahlung starten","Neue Zahlungen ersetzen oder wiederholen diese Überweisungen nicht.","Status prüfen","Bestätigt","Nicht abgeschlossen","Wartet auf Prüfung","Zahlungsreferenz muss wiederhergestellt werden","Löschen","Diese Zahlung aus Ihrer Transaktionsliste entfernen? Der Finanzdatensatz bleibt sicher gespeichert.","Aus der Transaktionsliste entfernt.","Diese Zahlung konnte nicht entfernt werden."]
 };
 function historyText(index){return (HISTORY_COPY[lang()]||HISTORY_COPY.en)[index]}
 function savedPayments(){try{const a=JSON.parse(localStorage.getItem(IWP_HISTORY_KEY)||"[]");return Array.isArray(a)?a:[]}catch(_){return []}}
@@ -32073,6 +32079,7 @@ function startSeparatePayment(){
 let historyGeneration=0;
 let historyOwner="";
 const historyChecks=new Set();
+const historyDeletes=new Set();
 function clearPaymentHistory(){
   historyGeneration++;historyOwner="";
   const host=document.getElementById("iwpHistory");
@@ -32086,8 +32093,9 @@ async function loadPaymentHistory(){
   const generation=++historyGeneration;
   try{
     const {data,error}=await supabaseClient.from("financial_requests")
-      .select("id,user_id,amount,network,status,verification_status,verification_reason,tx_hash,created_at")
+      .select("id,user_id,amount,network,status,verification_status,verification_reason,tx_hash,created_at,user_hidden_at")
       .eq("user_id",owner).eq("request_type","deposit").eq("user_note","Instant wallet payment")
+      .is("user_hidden_at",null)
       .order("created_at",{ascending:false}).limit(30);
     if(error||owner!==currentUser?.id||generation!==historyGeneration||host!==document.getElementById("iwpHistory"))return;
     const rows=data||[];
@@ -32095,11 +32103,15 @@ async function loadPaymentHistory(){
     host.innerHTML=rows.length?`<h3>${esc(historyText(0))}</h3><p class="iwp-helper">${esc(historyText(2))}</p>`+rows.map(r=>{
       const approved=r.status==="approved"&&r.verification_status==="verified";
       const label=approved?4:r.status==="rejected"?5:r.verification_reason==="payment_reference_missing"?7:6;
-      return `<div class="iwp-row" style="display:block;margin-top:10px;overflow-wrap:anywhere"><b dir="ltr">$${Number(r.amount).toFixed(2)} · ${esc(r.network)}</b><p>${esc(historyText(label))}</p><small dir="ltr">${esc(r.id)}</small>${r.status==="pending"?`<button class="iwp-wallet-btn" type="button" data-history-check="${esc(r.id)}" style="margin-top:10px">${esc(historyText(3))}</button>`:""}</div>`;
+      return `<div class="iwp-row" style="display:block;margin-top:10px;overflow-wrap:anywhere"><b dir="ltr">$${Number(r.amount).toFixed(2)} · ${esc(r.network)}</b><p>${esc(historyText(label))}</p><small dir="ltr">${esc(r.id)}</small><div class="iwp-history-actions">${r.status==="pending"?`<button class="iwp-wallet-btn" type="button" data-history-check="${esc(r.id)}">${esc(historyText(3))}</button>`:""}<button class="iwp-history-delete" type="button" data-history-delete="${esc(r.id)}">${esc(historyText(8))}</button></div></div>`;
     }).join(""):"";
     host.querySelectorAll("[data-history-check]").forEach(b=>{
       b.disabled=historyChecks.has(owner+":"+b.dataset.historyCheck);
       b.addEventListener("click",()=>void recheckSavedPayment(b.dataset.historyCheck));
+    });
+    host.querySelectorAll("[data-history-delete]").forEach(b=>{
+      b.disabled=historyDeletes.has(owner+":"+b.dataset.historyDelete);
+      b.addEventListener("click",()=>void hideWalletPaymentFromHistory(b.dataset.historyDelete));
     });
   }catch(_){}
 }
@@ -32126,6 +32138,30 @@ async function recheckSavedPayment(id){
   }catch(_){
     // Keep the payment and the new draft intact on a temporary network failure.
   }finally{historyChecks.delete(key);if(owner===currentUser?.id)void loadPaymentHistory()}
+}
+async function hideWalletPaymentFromHistory(id){
+  const owner=currentUser?.id,key=owner+":"+id;
+  if(!owner||!id||historyDeletes.has(key))return;
+  if(!window.confirm(historyText(9)))return;
+  historyDeletes.add(key);void loadPaymentHistory();
+  try{
+    const {data,error}=await supabaseClient.from("financial_requests")
+      .update({user_hidden_at:new Date().toISOString()})
+      .eq("id",id).eq("user_id",owner)
+      .eq("request_type","deposit").eq("user_note","Instant wallet payment")
+      .is("user_hidden_at",null).select("id").maybeSingle();
+    if(error||!data||owner!==currentUser?.id)throw error||new Error(historyText(11));
+    try{
+      const kept=savedPayments().filter(x=>!(x.userId===owner&&String(x.requestId)===String(id)));
+      localStorage.setItem(IWP_HISTORY_KEY,JSON.stringify(kept));
+    }catch(_){}
+    if(typeof toast==="function")toast(historyText(10),"success");
+  }catch(_){
+    if(owner===currentUser?.id&&typeof toast==="function")toast(historyText(11),"error");
+  }finally{
+    historyDeletes.delete(key);
+    if(owner===currentUser?.id)void loadPaymentHistory();
+  }
 }
 const RECOVERY_COPY={
   en:{retry:"Recheck this payment",delayed:"Confirmation is taking longer than expected. Your payment reference is saved. Do not pay again; you can recheck this payment.",review:"This payment needs review by the support team. Keep this payment reference and do not pay again.",unavailable:"The verification service is temporarily unavailable. Your payment reference is saved; do not pay again."},
