@@ -20433,12 +20433,14 @@ async function submitAuth() {
 
       const mfaComplete = await ensureTwoFactorForCurrentSession({purpose:"login"});
       if (mfaComplete) {
-        await loadAuthenticatedUser(data.user);
-        closeAuth();
-        await showAuthSuccessPopup(
-          tr("welcomeBack"),
-          tr("signedInSuccessfully")
-        );
+        const loadedUser = await loadAuthenticatedUser(data.user);
+        if (loadedUser) {
+          closeAuth();
+          await showAuthSuccessPopup(
+            tr("welcomeBack"),
+            tr("signedInSuccessfully")
+          );
+        }
       } else {
         closeAuth();
       }
@@ -20547,6 +20549,68 @@ async function submitAuth() {
 
 let authenticatedUserLoadPromise = null;
 let authenticatedUserLoadId = null;
+let forcedAccountSignOutInFlight = false;
+let accountStatusCheckInFlight = false;
+
+async function forceSuspendedAccountSignOut() {
+  if (forcedAccountSignOutInFlight) return null;
+  forcedAccountSignOutInFlight = true;
+
+  try {
+    currentUser = null;
+    currentTotpFactor = null;
+    pendingTotpFactor = null;
+    twofaChallengeOpen = false;
+    document.getElementById("twofaChallengeModal")?.classList.remove("open");
+    document.getElementById("twofaSetupModal")?.classList.remove("open");
+
+    try {
+      await supabaseClient.auth.signOut({ scope: "local" });
+    } catch (error) {
+      console.warn("Suspended account session cleanup skipped:", error);
+    }
+
+    updateHeaderAuthUI();
+    updatePortfolio();
+    if (typeof updateSupportAuthUI === "function") updateSupportAuthUI();
+    if (typeof closeAuth === "function") closeAuth();
+    toast(tr("accountSuspended"), "error");
+    return null;
+  } finally {
+    forcedAccountSignOutInFlight = false;
+  }
+}
+
+async function enforceCurrentAccountStatus() {
+  if (!currentUser?.id || accountStatusCheckInFlight || document.hidden) return;
+  accountStatusCheckInFlight = true;
+
+  try {
+    const checkedUserId = currentUser.id;
+    const { data: profile, error } = await supabaseClient
+      .from("profiles")
+      .select("account_status")
+      .eq("id", checkedUserId)
+      .maybeSingle();
+
+    if (error) {
+      console.warn("Account access check temporarily unavailable:", error);
+      return;
+    }
+
+    if (currentUser?.id === checkedUserId && String(profile?.account_status || "active").toLowerCase() === "suspended") {
+      await forceSuspendedAccountSignOut();
+    }
+  } finally {
+    accountStatusCheckInFlight = false;
+  }
+}
+
+window.setInterval(() => void enforceCurrentAccountStatus(), 15000);
+window.addEventListener("focus", () => void enforceCurrentAccountStatus());
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) void enforceCurrentAccountStatus();
+});
 
 function buildAuthenticatedUserFallback(authUser, previousUser = null) {
   const metadata = authUser?.user_metadata || {};
@@ -20652,6 +20716,10 @@ async function loadAuthenticatedUser(authUser, options = {}) {
       if (error) {
         console.warn("Profile temporarily unavailable; session preserved:", error);
       } else if (profile) {
+        if (String(profile.account_status || "active").toLowerCase() === "suspended") {
+          return await forceSuspendedAccountSignOut();
+        }
+
         currentUser = {
           ...currentUser,
           ...profile,
@@ -23921,6 +23989,37 @@ LANGUAGE_CATALOG.forEach(([code])=>{
   T[code]={...T.en,...(T[code]||{}),...buildLocalizedSiteText(code),...(COMPLETE_SITE_TEXT[code]||{})};
 });
 
+const ACCOUNT_ACCESS_TRANSLATIONS = {
+  en:"This account has been suspended. Please contact support.",
+  de:"Dieses Konto wurde gesperrt. Bitte wenden Sie sich an den Support.",
+  it:"Questo account è stato sospeso. Contatta l’assistenza.",
+  ru:"Эта учетная запись заблокирована. Обратитесь в службу поддержки.",
+  ja:"このアカウントは停止されています。サポートにお問い合わせください。",
+  tr:"Bu hesap askıya alındı. Lütfen destek ekibiyle iletişime geçin.",
+  zh:"此账户已被暂停。请联系支持团队。",
+  nl:"Dit account is opgeschort. Neem contact op met de ondersteuning.",
+  fr:"Ce compte a été suspendu. Veuillez contacter l’assistance.",
+  ko:"이 계정은 정지되었습니다. 지원팀에 문의하세요.",
+  fa:"این حساب مسدود شده است. لطفاً با پشتیبانی تماس بگیرید.",
+  ar:"تم تعليق هذا الحساب. يرجى التواصل مع الدعم.",
+  az:"Bu hesab dayandırılıb. Zəhmət olmasa dəstək xidməti ilə əlaqə saxlayın.",
+  el:"Αυτός ο λογαριασμός έχει ανασταλεί. Επικοινωνήστε με την υποστήριξη.",
+  hi:"यह खाता निलंबित कर दिया गया है। कृपया सहायता टीम से संपर्क करें।",
+  id:"Akun ini telah ditangguhkan. Silakan hubungi dukungan.",
+  ms:"Akaun ini telah digantung. Sila hubungi sokongan.",
+  pl:"To konto zostało zawieszone. Skontaktuj się z pomocą techniczną.",
+  pt:"Esta conta foi suspensa. Entre em contato com o suporte.",
+  ro:"Acest cont a fost suspendat. Contactați echipa de asistență.",
+  es:"Esta cuenta ha sido suspendida. Ponte en contacto con soporte.",
+  th:"บัญชีนี้ถูกระงับ โปรดติดต่อฝ่ายสนับสนุน",
+  uk:"Цей обліковий запис призупинено. Зверніться до служби підтримки.",
+  ur:"یہ اکاؤنٹ معطل کر دیا گیا ہے۔ براہ کرم سپورٹ سے رابطہ کریں۔",
+  vi:"Tài khoản này đã bị đình chỉ. Vui lòng liên hệ bộ phận hỗ trợ."
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  T[code].accountSuspended=ACCOUNT_ACCESS_TRANSLATIONS[code]||ACCOUNT_ACCESS_TRANSLATIONS.en;
+});
+
 const REFERRAL_LEVEL_TRANSLATIONS = {
   en:{inviteFriendsEarn:"Invite friends and earn across every level",personalReferralDesc:"Build your referral network and earn from every qualifying level.",referralRewardsBalance:"Total referral rewards in Base Plan",referralLevelOne:"Level 1 · Your invites",referralLevelTwo:"Level 2 · Your friends' invites",referralLevelThreePlus:"Level 3+ · Friends of friends",referralLevelOneExplain:"People you invite directly; you receive $10 after their qualifying investment.",referralLevelTwoExplain:"People invited by your friends; you receive $2 after their qualifying investment.",referralLevelThreeExplain:"Friends of friends and every deeper level; you receive $1 after each qualifying investment.",referralQualificationNote:"You earn rewards in all these cases, but rewards are credited only when the invited users invest. You can view and review the complete referral chain in the Rewards section near the bottom of the site.",referralPayments:"reward payments",referralBalanceNotice:"All referral rewards are added to your Base Plan and included in your withdrawable balance."},
   fa:{inviteFriendsEarn:"دوستانتان را دعوت کنید و از تمام سطح‌ها پاداش بگیرید",personalReferralDesc:"شبکه دعوت خود را بسازید و از تمام سطح‌های واجد شرایط پاداش دریافت کنید.",referralRewardsBalance:"کل پاداش دعوت افزوده‌شده به پلن پایه",referralLevelOne:"سطح اول · دعوت‌های شما",referralLevelTwo:"سطح دوم · دعوت دوستان شما",referralLevelThreePlus:"سطح سوم به بعد · دعوت دوست‌های دوستان شما",referralLevelOneExplain:"افرادی که خودتان مستقیم دعوت می‌کنید؛ پس از سرمایه‌گذاری واجد شرایط آن‌ها ۱۰ دلار دریافت می‌کنید.",referralLevelTwoExplain:"افرادی که دوستان دعوت‌شده شما معرفی می‌کنند؛ پس از سرمایه‌گذاری واجد شرایط آن‌ها ۲ دلار دریافت می‌کنید.",referralLevelThreeExplain:"دوست‌های دوستان شما و تمام سطح‌های بعدی؛ پس از هر سرمایه‌گذاری واجد شرایط ۱ دلار دریافت می‌کنید.",referralQualificationNote:"در همه این شرایط شما پاداش خواهید گرفت؛ اما پاداش‌ها فقط در صورت سرمایه‌گذاری دعوت‌شده‌ها به حساب شما واریز خواهند شد. شما می‌توانید زنجیره دعوت‌ها را به‌طور کامل در بخش «جایزه» در قسمت پایین سایت ببینید و بررسی کنید.",referralPayments:"پرداخت پاداش",referralBalanceNotice:"تمام پاداش‌های دعوت به پلن پایه شما افزوده می‌شوند و در موجودی قابل برداشت قرار می‌گیرند."},
@@ -24177,6 +24276,7 @@ function tr(key,replacements={}){
 function localizedBackendError(error, fallbackKey){
   const message=String(error?.message||"").toLowerCase();
   if(typeof isNetworkOrTimeoutError==="function"&&isNetworkOrTimeoutError(error)) return networkTimeoutMessage();
+  if(message.includes("banned")||message.includes("suspended")) return tr("accountSuspended");
   if(message.includes("invalid login credentials")) return tr("invalidCredentials");
   if(message.includes("email not confirmed")) return tr("emailNotConfirmed");
   if(message.includes("already registered")||message.includes("already exists")) return tr("accountAlreadyExists");
