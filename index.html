@@ -33961,17 +33961,23 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
 
   const PURPOSE="deposit";
   const ROUTES={
-    bnb_usdt_bep20:{routeKey:"usdt_bep20",asset:"USDT",chain:"BNB Smart Chain",network:"BEP20",unit:"USDT",stable:true,label:"USDT (BEP20)"},
-    bnb:{routeKey:"bnb_bep20",asset:"BNB",chain:"BNB Smart Chain",network:"BEP20",unit:"BNB",stable:false,label:"BNB (BEP20)"},
-    eth_usdt_erc20:{routeKey:"usdt_erc20",asset:"USDT",chain:"Ethereum",network:"ERC20",unit:"USDT",stable:true,label:"USDT (ERC20)"},
-    eth:{routeKey:"eth_erc20",asset:"ETH",chain:"Ethereum",network:"ERC20",unit:"ETH",stable:false,label:"Ethereum (ETH)"}
+    trx_usdt_trc20:{routeKey:"usdt_trc20",asset:"USDT",chain:"TRON",network:"TRC20",unit:"USDT",stable:true,label:"USDT (TRC20)",family:"TRON"},
+    bnb_usdt_bep20:{routeKey:"usdt_bep20",asset:"USDT",chain:"BNB Smart Chain",network:"BEP20",unit:"USDT",stable:true,label:"USDT (BEP20)",family:"EVM"},
+    eth_usdt_erc20:{routeKey:"usdt_erc20",asset:"USDT",chain:"Ethereum",network:"ERC20",unit:"USDT",stable:true,label:"USDT (ERC20)",family:"EVM"},
+    trx:{routeKey:"trx_tron",asset:"TRX",chain:"TRON",network:"TRON",unit:"TRX",stable:false,label:"TRON (TRX)",family:"TRON"},
+    bnb:{routeKey:"bnb_bep20",asset:"BNB",chain:"BNB Smart Chain",network:"BEP20",unit:"BNB",stable:false,label:"BNB (BEP20)",family:"EVM"},
+    eth:{routeKey:"eth_erc20",asset:"ETH",chain:"Ethereum",network:"ERC20",unit:"ETH",stable:false,label:"Ethereum (ETH)",family:"EVM"},
+    btc:{routeKey:"btc_mainnet",asset:"BTC",chain:"Bitcoin",network:"BTC",unit:"BTC",stable:false,label:"Bitcoin (BTC)",family:"BITCOIN"}
   };
   const OPTION_BY_ROUTE=Object.fromEntries(Object.entries(ROUTES).map(([k,v])=>[v.routeKey,k]));
   const OPTION_META={
+    trx_usdt_trc20:{text:"USDT (TRC20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
     bnb_usdt_bep20:{text:"USDT (BEP20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
-    bnb:{text:"BNB (BEP20)",logo:"https://cryptologos.cc/logos/bnb-bnb-logo.svg"},
     eth_usdt_erc20:{text:"USDT (ERC20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
-    eth:{text:"Ethereum (ETH)",logo:"https://cryptologos.cc/logos/ethereum-eth-logo.svg"}
+    trx:{text:"TRON (TRX)",logo:"https://cryptologos.cc/logos/tron-trx-logo.svg"},
+    bnb:{text:"BNB (BEP20)",logo:"https://cryptologos.cc/logos/bnb-bnb-logo.svg"},
+    eth:{text:"Ethereum (ETH)",logo:"https://cryptologos.cc/logos/ethereum-eth-logo.svg"},
+    btc:{text:"Bitcoin (BTC)",logo:"https://cryptologos.cc/logos/bitcoin-btc-logo.svg"}
   };
   const state={payment:null,timer:null,loading:false,restoring:false,lastUserId:"",generateReference:null};
   const originalToggle=window.togglePaymentDetails;
@@ -34014,7 +34020,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     const note=message||(active?(expired?c("expired"):readyText(r,p)):c("intro"));
     el.innerHTML=`<div class="rbp-shell">
       <div class="rbp-head"><div><div class="rbp-title">${c("title")}</div><div class="rbp-sub">${r?`${r.label} · ${r.chain}`:"EVM"}</div></div><span class="rbp-badge">${c("badge")}</span></div>
-      ${active?`<div class="rbp-address-card"><div class="rbp-address-label"><span>${c("title")}</span><span>${r?.network||"EVM"}</span></div><div class="rbp-address" id="rbpAddress">${p.deposit_address}</div><div class="rbp-grid"><div class="rbp-metric"><span>${c("network")}</span><strong>${r?.chain||p.network} (${r?.network||""})</strong></div><div class="rbp-metric"><span>${r?.stable?c("amount"):c("credit")}</span><strong>${requestedDisplay(r,p)}</strong></div><div class="rbp-metric"><span>${c("expires")}</span><strong id="rbpCountdown">${timeText()}</strong></div><div class="rbp-metric"><span>Payment ID</span><strong style="font-size:9px;word-break:break-all">${p.payment_id||p.id||"—"}</strong></div></div><div class="rbp-actions"><button class="rbp-btn primary" type="button" onclick="biCopyRandomEvmAddress()">${c("copy")}</button><button class="rbp-btn" type="button" onclick="biCancelRandomEvmAddress()">${c("cancel")}</button></div></div>`:`<div class="rbp-actions"><button id="rbpGenerate" class="rbp-btn primary" type="button" onclick="biGenerateRandomEvmAddress()" ${state.loading?"disabled":""}>${state.loading?c("loading"):c("generate")}</button></div>`}
+      ${active?`<div class="rbp-address-card"><div class="rbp-address-label"><span>${c("title")}</span><span>${r?.network||"Crypto"}</span></div><div class="rbp-address" id="rbpAddress">${p.deposit_address}</div><div class="rbp-grid"><div class="rbp-metric"><span>${c("network")}</span><strong>${r?.chain||p.network} (${r?.network||""})</strong></div><div class="rbp-metric"><span>${r?.stable?c("amount"):c("credit")}</span><strong>${requestedDisplay(r,p)}</strong></div><div class="rbp-metric"><span>${c("expires")}</span><strong id="rbpCountdown">${timeText()}</strong></div><div class="rbp-metric"><span>Payment ID</span><strong style="font-size:9px;word-break:break-all">${p.payment_id||p.id||"—"}</strong></div></div><div class="rbp-actions"><button class="rbp-btn primary" type="button" onclick="biCopyRandomEvmAddress()">${c("copy")}</button><button class="rbp-btn" type="button" onclick="biCancelRandomEvmAddress()">${c("cancel")}</button></div></div>`:`<div class="rbp-actions"><button id="rbpGenerate" class="rbp-btn primary" type="button" onclick="biGenerateRandomEvmAddress()" ${state.loading?"disabled":""}>${state.loading?c("loading"):c("generate")}</button></div>`}
       <div class="rbp-note ${kind==="error"?"rbp-error":kind==="ok"?"rbp-ok":""}">${note}</div>
     </div>`;
     clearTimer();
@@ -34109,7 +34115,10 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     const receiptCopy=typeof depositReceiptCopy==="function"?depositReceiptCopy():{required:"TXID or receipt required",uploadFailed:"Receipt upload failed"};
     const submitButton=document.getElementById("deposit-submit-button"),submitText=submitButton?.textContent||"";
     if(!txHash&&!receiptFile){if(typeof showFieldError==="function")showFieldError("tx-ref",receiptCopy.required);if(typeof setDepositReceiptError==="function")setDepositReceiptError(receiptCopy.required);return}
-    if(txHash&&!/^0x[0-9a-fA-F]{64}$/.test(txHash)){if(typeof showFieldError==="function")showFieldError("tx-ref","Invalid EVM transaction hash");return}
+    if(txHash){
+      const validTx=r.family==="EVM"?/^0x[0-9a-fA-F]{64}$/.test(txHash):/^[0-9a-fA-F]{64}$/.test(txHash);
+      if(!validTx){if(typeof showFieldError==="function")showFieldError("tx-ref",r.family==="EVM"?"Invalid EVM transaction hash":"Invalid transaction hash for selected network");return}
+    }
 
     let proofPath=null;
     if(submitButton){submitButton.disabled=true;submitButton.textContent=typeof tr==="function"?tr("saving"):"Saving…"}
