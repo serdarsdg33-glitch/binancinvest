@@ -33955,122 +33955,151 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
 #payment-info-box .rbp-ok{color:#8ee2bd;border-left-color:#16c784;background:rgba(22,199,132,.07)}
 @media(max-width:520px){#payment-info-box .rbp-grid{grid-template-columns:1fr}#payment-info-box .rbp-head{align-items:flex-start;flex-direction:column}}
 </style>
-<script id="random-bsc-address-pool-v1">
+<script id="random-evm-address-pool-v2">
 (function(){
   "use strict";
 
   const PURPOSE="deposit";
-  const BSC_OPTION="bnb_usdt_bep20";
+  const ROUTES={
+    bnb_usdt_bep20:{routeKey:"usdt_bep20",asset:"USDT",chain:"BNB Smart Chain",network:"BEP20",unit:"USDT",stable:true,label:"USDT (BEP20)"},
+    bnb:{routeKey:"bnb_bep20",asset:"BNB",chain:"BNB Smart Chain",network:"BEP20",unit:"BNB",stable:false,label:"BNB (BEP20)"},
+    eth_usdt_erc20:{routeKey:"usdt_erc20",asset:"USDT",chain:"Ethereum",network:"ERC20",unit:"USDT",stable:true,label:"USDT (ERC20)"},
+    eth:{routeKey:"eth_erc20",asset:"ETH",chain:"Ethereum",network:"ERC20",unit:"ETH",stable:false,label:"Ethereum (ETH)"}
+  };
+  const OPTION_BY_ROUTE=Object.fromEntries(Object.entries(ROUTES).map(([k,v])=>[v.routeKey,k]));
+  const OPTION_META={
+    bnb_usdt_bep20:{text:"USDT (BEP20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
+    bnb:{text:"BNB (BEP20)",logo:"https://cryptologos.cc/logos/bnb-bnb-logo.svg"},
+    eth_usdt_erc20:{text:"USDT (ERC20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
+    eth:{text:"Ethereum (ETH)",logo:"https://cryptologos.cc/logos/ethereum-eth-logo.svg"}
+  };
   const state={payment:null,timer:null,loading:false,restoring:false,lastUserId:""};
   const originalToggle=window.togglePaymentDetails;
   const originalSubmit=window.submitDepositRequest;
 
   const COPY={
-    en:{title:"Dedicated BSC payment address",badge:"RANDOM ADDRESS",intro:"For USDT (BEP20), a secure address from the site pool is reserved for this payment only.",generate:"Generate payment address",loading:"Reserving address…",copy:"Copy address",copied:"Copied",cancel:"Cancel reservation",network:"Network",amount:"Exact amount",expires:"Reserved for",expired:"Reservation time ended. If you already paid, submit your TXID/receipt. Otherwise create a new payment address.",ready:"Send only USDT on BNB Smart Chain (BEP20) to this address. Do not use another network.",needAmount:"Enter the deposit amount first.",login:"Sign in to generate a payment address.",activeOther:"You already have an active BSC payment. Its amount has been restored below.",noAddress:"Generate a payment address before sending USDT.",server:"Payment address service is temporarily unavailable.",cancelled:"Reservation cancelled. You can generate a new address.",submitMismatch:"The amount must match the active payment reservation.",submitted:"Payment submitted for administrator review.",poolBusy:"All payment addresses are temporarily reserved. Please try again later.",minute:"min",second:"sec"},
-    fa:{title:"آدرس اختصاصی پرداخت BSC",badge:"آدرس رندوم",intro:"برای USDT روی BEP20، یک آدرس امن از استخر سایت فقط برای همین پرداخت رزرو می‌شود.",generate:"ساخت آدرس پرداخت",loading:"در حال رزرو آدرس…",copy:"کپی آدرس",copied:"کپی شد",cancel:"لغو رزرو",network:"شبکه",amount:"مبلغ دقیق",expires:"زمان رزرو",expired:"زمان رزرو تمام شده است. اگر قبلاً پرداخت کرده‌اید TXID یا رسید را ثبت کنید؛ در غیر این صورت آدرس جدید بسازید.",ready:"فقط USDT روی شبکه BNB Smart Chain (BEP20) به این آدرس ارسال کنید. از شبکه دیگری استفاده نکنید.",needAmount:"ابتدا مبلغ واریز را وارد کنید.",login:"برای ساخت آدرس پرداخت وارد حساب شوید.",activeOther:"یک پرداخت BSC فعال دارید؛ مبلغ همان پرداخت در کادر قرار گرفت.",noAddress:"قبل از ارسال USDT، آدرس پرداخت بسازید.",server:"سرویس آدرس پرداخت موقتاً در دسترس نیست.",cancelled:"رزرو لغو شد؛ می‌توانید آدرس جدید بسازید.",submitMismatch:"مبلغ باید با رزرو فعال پرداخت یکسان باشد.",submitted:"پرداخت برای بررسی ادمین ثبت شد.",poolBusy:"در حال حاضر همه آدرس‌های پرداخت رزرو هستند. کمی بعد دوباره امتحان کنید.",minute:"دقیقه",second:"ثانیه"},
-    az:{title:"Xüsusi BSC ödəniş ünvanı",badge:"TƏSADÜFİ ÜNVAN",intro:"USDT (BEP20) üçün sayt hovuzundan bu ödənişə xüsusi təhlükəsiz ünvan ayrılır.",generate:"Ödəniş ünvanı yarat",loading:"Ünvan ayrılır…",copy:"Ünvanı kopyala",copied:"Kopyalandı",cancel:"Rezervi ləğv et",network:"Şəbəkə",amount:"Dəqiq məbləğ",expires:"Rezerv vaxtı",expired:"Rezerv vaxtı bitib. Artıq ödəmisinizsə TXID/qəbzi göndərin, əks halda yeni ünvan yaradın.",ready:"Bu ünvana yalnız BNB Smart Chain (BEP20) üzərindən USDT göndərin.",needAmount:"Əvvəlcə depozit məbləğini daxil edin.",login:"Ödəniş ünvanı üçün daxil olun.",activeOther:"Aktiv BSC ödənişiniz var; onun məbləği bərpa edildi.",noAddress:"USDT göndərməzdən əvvəl ödəniş ünvanı yaradın.",server:"Ödəniş ünvanı xidməti müvəqqəti əlçatan deyil.",cancelled:"Rezerv ləğv edildi.",submitMismatch:"Məbləğ aktiv rezervlə eyni olmalıdır.",submitted:"Ödəniş administrator yoxlamasına göndərildi.",poolBusy:"Hazırda bütün ödəniş ünvanları rezerv edilib. Bir az sonra yenidən yoxlayın.",minute:"dəq",second:"san"},
-    tr:{title:"Özel BSC ödeme adresi",badge:"RASTGELE ADRES",intro:"USDT (BEP20) için site havuzundan yalnızca bu ödemeye özel güvenli bir adres ayrılır.",generate:"Ödeme adresi oluştur",loading:"Adres ayrılıyor…",copy:"Adresi kopyala",copied:"Kopyalandı",cancel:"Rezervasyonu iptal et",network:"Ağ",amount:"Kesin tutar",expires:"Rezerv süresi",expired:"Rezerv süresi doldu. Ödeme yaptıysanız TXID/makbuzu gönderin; yapmadıysanız yeni adres oluşturun.",ready:"Bu adrese yalnızca BNB Smart Chain (BEP20) üzerinden USDT gönderin.",needAmount:"Önce yatırma tutarını girin.",login:"Ödeme adresi oluşturmak için giriş yapın.",activeOther:"Aktif bir BSC ödemeniz var; tutarı geri yüklendi.",noAddress:"USDT göndermeden önce ödeme adresi oluşturun.",server:"Ödeme adresi servisi geçici olarak kullanılamıyor.",cancelled:"Rezervasyon iptal edildi.",submitMismatch:"Tutar aktif rezervasyonla aynı olmalıdır.",submitted:"Ödeme yönetici incelemesine gönderildi.",poolBusy:"Tüm ödeme adresleri şu anda rezerve. Lütfen biraz sonra tekrar deneyin.",minute:"dk",second:"sn"},
-    ru:{title:"Персональный адрес BSC",badge:"СЛУЧАЙНЫЙ АДРЕС",intro:"Для USDT (BEP20) безопасный адрес из пула сайта резервируется только для этого платежа.",generate:"Создать адрес оплаты",loading:"Резервируем адрес…",copy:"Копировать адрес",copied:"Скопировано",cancel:"Отменить резерв",network:"Сеть",amount:"Точная сумма",expires:"Резерв",expired:"Время резерва истекло. Если вы уже оплатили, отправьте TXID/квитанцию; иначе создайте новый адрес.",ready:"Отправляйте на этот адрес только USDT в сети BNB Smart Chain (BEP20).",needAmount:"Сначала введите сумму депозита.",login:"Войдите, чтобы создать адрес оплаты.",activeOther:"У вас уже есть активный BSC-платёж; его сумма восстановлена.",noAddress:"Создайте адрес оплаты до отправки USDT.",server:"Сервис адресов временно недоступен.",cancelled:"Резерв отменён.",submitMismatch:"Сумма должна совпадать с активным резервом.",submitted:"Платёж отправлен на проверку администратору.",poolBusy:"Все платежные адреса временно зарезервированы. Попробуйте позже.",minute:"мин",second:"сек"},
-    ar:{title:"عنوان دفع BSC مخصص",badge:"عنوان عشوائي",intro:"لـ USDT على BEP20 يتم حجز عنوان آمن من مجموعة الموقع لهذه الدفعة فقط.",generate:"إنشاء عنوان الدفع",loading:"جارٍ حجز العنوان…",copy:"نسخ العنوان",copied:"تم النسخ",cancel:"إلغاء الحجز",network:"الشبكة",amount:"المبلغ الدقيق",expires:"مدة الحجز",expired:"انتهت مدة الحجز. إذا دفعت بالفعل فأرسل TXID/الإيصال، وإلا أنشئ عنوانًا جديدًا.",ready:"أرسل USDT فقط عبر BNB Smart Chain (BEP20) إلى هذا العنوان.",needAmount:"أدخل مبلغ الإيداع أولاً.",login:"سجّل الدخول لإنشاء عنوان الدفع.",activeOther:"لديك دفعة BSC نشطة وتمت استعادة مبلغها.",noAddress:"أنشئ عنوان الدفع قبل إرسال USDT.",server:"خدمة عناوين الدفع غير متاحة مؤقتًا.",cancelled:"تم إلغاء الحجز.",submitMismatch:"يجب أن يطابق المبلغ الحجز النشط.",submitted:"تم إرسال الدفع لمراجعة المسؤول.",poolBusy:"جميع عناوين الدفع محجوزة مؤقتًا. حاول لاحقًا.",minute:"د",second:"ث"},
-    zh:{title:"专属 BSC 支付地址",badge:"随机地址",intro:"USDT (BEP20) 将从网站地址池中为本次付款单独分配一个安全地址。",generate:"生成支付地址",loading:"正在分配地址…",copy:"复制地址",copied:"已复制",cancel:"取消预留",network:"网络",amount:"准确金额",expires:"预留时间",expired:"预留时间已结束。若已付款，请提交 TXID/收据；否则生成新地址。",ready:"仅通过 BNB Smart Chain (BEP20) 向此地址发送 USDT。",needAmount:"请先输入充值金额。",login:"请登录后生成支付地址。",activeOther:"您已有一个有效的 BSC 付款，金额已恢复。",noAddress:"发送 USDT 前请先生成支付地址。",server:"支付地址服务暂时不可用。",cancelled:"预留已取消。",submitMismatch:"金额必须与当前预留一致。",submitted:"付款已提交管理员审核。",poolBusy:"所有支付地址暂时都已预留，请稍后重试。",minute:"分",second:"秒"},
-    es:{title:"Dirección BSC exclusiva",badge:"DIRECCIÓN ALEATORIA",intro:"Para USDT (BEP20), se reserva una dirección segura del pool del sitio solo para este pago.",generate:"Generar dirección de pago",loading:"Reservando dirección…",copy:"Copiar dirección",copied:"Copiado",cancel:"Cancelar reserva",network:"Red",amount:"Importe exacto",expires:"Reserva",expired:"La reserva terminó. Si ya pagaste, envía el TXID/recibo; de lo contrario genera una nueva dirección.",ready:"Envía solo USDT por BNB Smart Chain (BEP20) a esta dirección.",needAmount:"Introduce primero el importe.",login:"Inicia sesión para generar una dirección.",activeOther:"Ya tienes un pago BSC activo; se restauró su importe.",noAddress:"Genera una dirección antes de enviar USDT.",server:"El servicio de direcciones no está disponible temporalmente.",cancelled:"Reserva cancelada.",submitMismatch:"El importe debe coincidir con la reserva activa.",submitted:"Pago enviado a revisión del administrador.",poolBusy:"Todas las direcciones están reservadas temporalmente. Inténtalo más tarde.",minute:"min",second:"s"},
-    fr:{title:"Adresse BSC dédiée",badge:"ADRESSE ALÉATOIRE",intro:"Pour USDT (BEP20), une adresse sécurisée du pool du site est réservée uniquement à ce paiement.",generate:"Générer l’adresse de paiement",loading:"Réservation de l’adresse…",copy:"Copier l’adresse",copied:"Copié",cancel:"Annuler la réservation",network:"Réseau",amount:"Montant exact",expires:"Réservation",expired:"La réservation est terminée. Si vous avez déjà payé, envoyez le TXID/reçu; sinon générez une nouvelle adresse.",ready:"Envoyez uniquement de l’USDT via BNB Smart Chain (BEP20) à cette adresse.",needAmount:"Saisissez d’abord le montant du dépôt.",login:"Connectez-vous pour générer une adresse.",activeOther:"Un paiement BSC actif existe déjà; son montant a été restauré.",noAddress:"Générez une adresse avant d’envoyer l’USDT.",server:"Le service d’adresses est temporairement indisponible.",cancelled:"Réservation annulée.",submitMismatch:"Le montant doit correspondre à la réservation active.",submitted:"Paiement envoyé pour examen administrateur.",poolBusy:"Toutes les adresses sont temporairement réservées. Réessayez plus tard.",minute:"min",second:"s"},
-    de:{title:"Eigene BSC-Zahlungsadresse",badge:"ZUFALLSADRESSE",intro:"Für USDT (BEP20) wird eine sichere Adresse aus dem Website-Pool nur für diese Zahlung reserviert.",generate:"Zahlungsadresse erzeugen",loading:"Adresse wird reserviert…",copy:"Adresse kopieren",copied:"Kopiert",cancel:"Reservierung stornieren",network:"Netzwerk",amount:"Exakter Betrag",expires:"Reserviert für",expired:"Die Reservierungszeit ist abgelaufen. Wenn Sie bereits bezahlt haben, senden Sie TXID/Beleg; sonst erzeugen Sie eine neue Adresse.",ready:"Senden Sie nur USDT über BNB Smart Chain (BEP20) an diese Adresse.",needAmount:"Geben Sie zuerst den Einzahlungsbetrag ein.",login:"Melden Sie sich an, um eine Zahlungsadresse zu erzeugen.",activeOther:"Es gibt bereits eine aktive BSC-Zahlung; deren Betrag wurde wiederhergestellt.",noAddress:"Erzeugen Sie vor dem Senden von USDT eine Zahlungsadresse.",server:"Der Zahlungsadressdienst ist vorübergehend nicht verfügbar.",cancelled:"Reservierung storniert.",submitMismatch:"Der Betrag muss der aktiven Reservierung entsprechen.",submitted:"Zahlung zur Administratorprüfung gesendet.",poolBusy:"Alle Zahlungsadressen sind vorübergehend reserviert. Bitte später erneut versuchen.",minute:"Min",second:"Sek"}
+    en:{title:"Dedicated payment address",badge:"RANDOM ADDRESS",intro:"A secure address from your payment pool is reserved only for this payment.",generate:"Generate payment address",loading:"Reserving address…",copy:"Copy address",copied:"Copied",cancel:"Cancel reservation",network:"Network",amount:"Payment",expires:"Reserved for",expired:"Reservation time ended. If you already paid, submit your TXID/receipt. Otherwise create a new payment address.",needAmount:"Enter the deposit amount first.",login:"Sign in to generate a payment address.",activeOther:"You already have an active payment. The active payment has been restored.",noAddress:"Generate a payment address before sending funds.",server:"Payment address service is temporarily unavailable.",cancelled:"Reservation cancelled.",submitMismatch:"The amount must match the active payment reservation.",submitted:"Payment submitted for administrator review.",poolBusy:"All payment addresses are temporarily reserved. Please try again later.",minute:"min",second:"sec",stableReady:"Send exactly {amount} {asset} on {network} to this address.",nativeReady:"This reservation requests ${amount} USD credit. Send the corresponding value in {asset} on {network}; the administrator will review the TXID/receipt before approval.",credit:"Requested credit"},
+    fa:{title:"آدرس اختصاصی پرداخت",badge:"آدرس رندوم",intro:"یک آدرس امن از استخر پرداخت فقط برای همین پرداخت رزرو می‌شود.",generate:"ساخت آدرس پرداخت",loading:"در حال رزرو آدرس…",copy:"کپی آدرس",copied:"کپی شد",cancel:"لغو رزرو",network:"شبکه",amount:"پرداخت",expires:"زمان رزرو",expired:"زمان رزرو تمام شده است. اگر پرداخت کرده‌اید TXID یا رسید را ثبت کنید؛ در غیر این صورت آدرس جدید بسازید.",needAmount:"ابتدا مبلغ واریز را وارد کنید.",login:"برای ساخت آدرس پرداخت وارد حساب شوید.",activeOther:"یک پرداخت فعال دارید؛ همان پرداخت بازیابی شد.",noAddress:"قبل از ارسال وجه، آدرس پرداخت بسازید.",server:"سرویس آدرس پرداخت موقتاً در دسترس نیست.",cancelled:"رزرو لغو شد.",submitMismatch:"مبلغ باید با رزرو فعال یکسان باشد.",submitted:"پرداخت برای بررسی ادمین ثبت شد.",poolBusy:"همه آدرس‌های پرداخت فعلاً رزرو هستند. کمی بعد دوباره امتحان کنید.",minute:"دقیقه",second:"ثانیه",stableReady:"دقیقاً {amount} {asset} را روی شبکه {network} به این آدرس ارسال کنید.",nativeReady:"این رزرو برای شارژ ${amount} دلاری است. معادل آن را با {asset} روی شبکه {network} ارسال کنید؛ ادمین TXID یا رسید را قبل از تأیید بررسی می‌کند.",credit:"اعتبار درخواستی"},
+    az:{title:"Xüsusi ödəniş ünvanı",badge:"TƏSADÜFİ ÜNVAN",intro:"Ödəniş hovuzundan yalnız bu ödəniş üçün təhlükəsiz ünvan ayrılır.",generate:"Ödəniş ünvanı yarat",loading:"Ünvan ayrılır…",copy:"Ünvanı kopyala",copied:"Kopyalandı",cancel:"Rezervi ləğv et",network:"Şəbəkə",amount:"Ödəniş",expires:"Rezerv",expired:"Rezerv vaxtı bitib. Ödəmisinizsə TXID/qəbzi göndərin, əks halda yeni ünvan yaradın.",needAmount:"Əvvəlcə depozit məbləğini daxil edin.",login:"Ödəniş ünvanı üçün daxil olun.",activeOther:"Aktiv ödənişiniz var və bərpa edildi.",noAddress:"Vəsait göndərməzdən əvvəl ödəniş ünvanı yaradın.",server:"Ödəniş ünvanı xidməti müvəqqəti əlçatan deyil.",cancelled:"Rezerv ləğv edildi.",submitMismatch:"Məbləğ aktiv rezervlə eyni olmalıdır.",submitted:"Ödəniş administrator yoxlamasına göndərildi.",poolBusy:"Bütün ünvanlar müvəqqəti rezerv edilib.",minute:"dəq",second:"san",stableReady:"{network} üzərindən dəqiq {amount} {asset} göndərin.",nativeReady:"Bu rezerv ${amount} USD kredit üçündür. {network} üzərindən uyğun {asset} dəyərini göndərin; administrator TXID/qəbzi yoxlayacaq.",credit:"Tələb olunan kredit"},
+    tr:{title:"Özel ödeme adresi",badge:"RASTGELE ADRES",intro:"Ödeme havuzundan yalnızca bu ödeme için güvenli bir adres ayrılır.",generate:"Ödeme adresi oluştur",loading:"Adres ayrılıyor…",copy:"Adresi kopyala",copied:"Kopyalandı",cancel:"Rezervasyonu iptal et",network:"Ağ",amount:"Ödeme",expires:"Rezerv",expired:"Rezerv süresi doldu. Ödeme yaptıysanız TXID/makbuzu gönderin, aksi halde yeni adres oluşturun.",needAmount:"Önce yatırma tutarını girin.",login:"Ödeme adresi için giriş yapın.",activeOther:"Aktif ödemeniz var ve geri yüklendi.",noAddress:"Para göndermeden önce ödeme adresi oluşturun.",server:"Ödeme adresi servisi geçici olarak kullanılamıyor.",cancelled:"Rezervasyon iptal edildi.",submitMismatch:"Tutar aktif rezervasyonla aynı olmalıdır.",submitted:"Ödeme yönetici incelemesine gönderildi.",poolBusy:"Tüm adresler geçici olarak rezerve.",minute:"dk",second:"sn",stableReady:"{network} üzerinden tam {amount} {asset} gönderin.",nativeReady:"Bu rezerv ${amount} USD kredi içindir. {network} üzerinden karşılık gelen {asset} değerini gönderin; yönetici TXID/makbuzu inceleyecektir.",credit:"Talep edilen kredi"},
+    ru:{title:"Персональный адрес оплаты",badge:"СЛУЧАЙНЫЙ АДРЕС",intro:"Безопасный адрес из пула резервируется только для этого платежа.",generate:"Создать адрес оплаты",loading:"Резервируем адрес…",copy:"Копировать адрес",copied:"Скопировано",cancel:"Отменить резерв",network:"Сеть",amount:"Платеж",expires:"Резерв",expired:"Время резерва истекло. Если уже оплатили, отправьте TXID/квитанцию; иначе создайте новый адрес.",needAmount:"Сначала введите сумму депозита.",login:"Войдите для создания адреса.",activeOther:"Активный платеж восстановлен.",noAddress:"Создайте адрес перед отправкой средств.",server:"Сервис временно недоступен.",cancelled:"Резерв отменен.",submitMismatch:"Сумма должна совпадать с резервом.",submitted:"Платеж отправлен администратору.",poolBusy:"Все адреса временно зарезервированы.",minute:"мин",second:"сек",stableReady:"Отправьте точно {amount} {asset} по сети {network}.",nativeReady:"Резерв предназначен для зачисления ${amount} USD. Отправьте эквивалент в {asset} по сети {network}; администратор проверит TXID/квитанцию.",credit:"Запрошенное зачисление"},
+    ar:{title:"عنوان دفع مخصص",badge:"عنوان عشوائي",intro:"يتم حجز عنوان آمن من مجموعة الدفع لهذه العملية فقط.",generate:"إنشاء عنوان الدفع",loading:"جارٍ حجز العنوان…",copy:"نسخ العنوان",copied:"تم النسخ",cancel:"إلغاء الحجز",network:"الشبكة",amount:"الدفع",expires:"مدة الحجز",expired:"انتهى وقت الحجز. إذا دفعت فأرسل TXID/الإيصال، وإلا أنشئ عنوانًا جديدًا.",needAmount:"أدخل مبلغ الإيداع أولاً.",login:"سجّل الدخول لإنشاء العنوان.",activeOther:"تمت استعادة دفعتك النشطة.",noAddress:"أنشئ عنوانًا قبل إرسال الأموال.",server:"خدمة العناوين غير متاحة مؤقتًا.",cancelled:"تم إلغاء الحجز.",submitMismatch:"يجب أن يطابق المبلغ الحجز النشط.",submitted:"تم إرسال الدفع لمراجعة المسؤول.",poolBusy:"كل العناوين محجوزة مؤقتًا.",minute:"د",second:"ث",stableReady:"أرسل بالضبط {amount} {asset} عبر {network}.",nativeReady:"هذا الحجز لإضافة رصيد بقيمة ${amount} USD. أرسل القيمة المقابلة بعملة {asset} عبر {network} وسيقوم المسؤول بمراجعة TXID/الإيصال.",credit:"الرصيد المطلوب"},
+    zh:{title:"专属支付地址",badge:"随机地址",intro:"将从支付地址池中为本次付款单独预留一个安全地址。",generate:"生成支付地址",loading:"正在分配地址…",copy:"复制地址",copied:"已复制",cancel:"取消预留",network:"网络",amount:"付款",expires:"预留时间",expired:"预留已结束。若已付款请提交 TXID/收据，否则生成新地址。",needAmount:"请先输入充值金额。",login:"请登录后生成地址。",activeOther:"已恢复你的有效付款。",noAddress:"发送资金前请先生成地址。",server:"地址服务暂不可用。",cancelled:"预留已取消。",submitMismatch:"金额必须与当前预留一致。",submitted:"付款已提交管理员审核。",poolBusy:"所有地址暂时均已预留。",minute:"分",second:"秒",stableReady:"请通过 {network} 准确发送 {amount} {asset}。",nativeReady:"此预留用于充值 ${amount} USD。请通过 {network} 发送等值的 {asset}，管理员会核对 TXID/收据。",credit:"申请充值"},
+    es:{title:"Dirección de pago exclusiva",badge:"DIRECCIÓN ALEATORIA",intro:"Se reserva una dirección segura del pool solo para este pago.",generate:"Generar dirección",loading:"Reservando dirección…",copy:"Copiar dirección",copied:"Copiado",cancel:"Cancelar reserva",network:"Red",amount:"Pago",expires:"Reserva",expired:"La reserva terminó. Si ya pagaste, envía TXID/recibo; si no, genera otra dirección.",needAmount:"Introduce primero el importe.",login:"Inicia sesión para generar una dirección.",activeOther:"Se restauró tu pago activo.",noAddress:"Genera una dirección antes de enviar fondos.",server:"El servicio no está disponible temporalmente.",cancelled:"Reserva cancelada.",submitMismatch:"El importe debe coincidir con la reserva.",submitted:"Pago enviado a revisión del administrador.",poolBusy:"Todas las direcciones están reservadas temporalmente.",minute:"min",second:"s",stableReady:"Envía exactamente {amount} {asset} por {network}.",nativeReady:"Esta reserva solicita un crédito de ${amount} USD. Envía el valor equivalente en {asset} por {network}; el administrador revisará TXID/recibo.",credit:"Crédito solicitado"},
+    fr:{title:"Adresse de paiement dédiée",badge:"ADRESSE ALÉATOIRE",intro:"Une adresse sécurisée du pool est réservée uniquement à ce paiement.",generate:"Générer l’adresse",loading:"Réservation…",copy:"Copier l’adresse",copied:"Copié",cancel:"Annuler la réservation",network:"Réseau",amount:"Paiement",expires:"Réservation",expired:"La réservation est terminée. Si vous avez payé, envoyez TXID/reçu; sinon générez une nouvelle adresse.",needAmount:"Saisissez d’abord le montant.",login:"Connectez-vous pour générer une adresse.",activeOther:"Votre paiement actif a été restauré.",noAddress:"Générez une adresse avant d’envoyer des fonds.",server:"Service temporairement indisponible.",cancelled:"Réservation annulée.",submitMismatch:"Le montant doit correspondre à la réservation.",submitted:"Paiement envoyé pour examen administrateur.",poolBusy:"Toutes les adresses sont temporairement réservées.",minute:"min",second:"s",stableReady:"Envoyez exactement {amount} {asset} via {network}.",nativeReady:"Cette réservation demande un crédit de ${amount} USD. Envoyez la valeur équivalente en {asset} via {network}; l’administrateur vérifiera le TXID/reçu.",credit:"Crédit demandé"},
+    de:{title:"Eigene Zahlungsadresse",badge:"ZUFALLSADRESSE",intro:"Eine sichere Adresse aus dem Pool wird nur für diese Zahlung reserviert.",generate:"Zahlungsadresse erzeugen",loading:"Adresse wird reserviert…",copy:"Adresse kopieren",copied:"Kopiert",cancel:"Reservierung stornieren",network:"Netzwerk",amount:"Zahlung",expires:"Reserviert für",expired:"Reservierung abgelaufen. Falls bereits bezahlt, TXID/Beleg senden; sonst neue Adresse erzeugen.",needAmount:"Zuerst Einzahlungsbetrag eingeben.",login:"Zum Erzeugen einer Adresse anmelden.",activeOther:"Aktive Zahlung wurde wiederhergestellt.",noAddress:"Vor dem Senden eine Adresse erzeugen.",server:"Adressdienst vorübergehend nicht verfügbar.",cancelled:"Reservierung storniert.",submitMismatch:"Betrag muss der aktiven Reservierung entsprechen.",submitted:"Zahlung zur Admin-Prüfung gesendet.",poolBusy:"Alle Adressen sind vorübergehend reserviert.",minute:"Min",second:"Sek",stableReady:"Senden Sie exakt {amount} {asset} über {network}.",nativeReady:"Diese Reservierung fordert ${amount} USD Guthaben an. Senden Sie den entsprechenden Wert in {asset} über {network}; der Administrator prüft TXID/Beleg.",credit:"Angefordertes Guthaben"}
   };
 
   function lang(){const l=String(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase();return COPY[l]?l:"en"}
   function c(k){return COPY[lang()][k]||COPY.en[k]||k}
+  function fill(s,data){return String(s||"").replace(/\{(\w+)\}/g,(_,k)=>String(data[k]??""))}
   function box(){return document.getElementById("payment-info-box")}
   function amount(){const n=Number(document.getElementById("deposit-amount")?.value||0);return Number.isFinite(n)&&n>0?Math.round(n*100)/100:0}
-  function isRandomBsc(){return document.getElementById("payment-method")?.value==="wallet"&&document.getElementById("crypto-currency")?.value===BSC_OPTION}
+  function selectedOption(){return document.getElementById("crypto-currency")?.value||""}
+  function route(){return ROUTES[selectedOption()]||null}
+  function isRandomEvm(){return document.getElementById("payment-method")?.value==="wallet"&&!!route()}
   function row(data){return Array.isArray(data)?data[0]:data}
   function clearTimer(){if(state.timer){clearInterval(state.timer);state.timer=null}}
   function remaining(){if(!state.payment?.expires_at)return 0;return Math.max(0,Date.parse(state.payment.expires_at)-Date.now())}
   function timeText(){const ms=remaining();if(ms<=0)return "0 "+c("second");const total=Math.ceil(ms/1000),m=Math.floor(total/60),s=total%60;return m>0?m+" "+c("minute")+" · "+s+" "+c("second"):s+" "+c("second")}
+  function paymentRoute(){const key=state.payment?.route_key||route()?.routeKey;return Object.values(ROUTES).find(r=>r.routeKey===key)||route()}
+  function requestedDisplay(r,p){return r?.stable?`${Number(p.amount).toFixed(2)} ${r.unit}`:`$${Number(p.amount).toFixed(2)} USD`}
+  function readyText(r,p){if(!r)return c("intro");return fill(r.stable?c("stableReady"):c("nativeReady"),{amount:Number(p.amount).toFixed(2),asset:r.unit,network:`${r.chain} (${r.network})`})}
 
   function render(message="",kind=""){
-    const el=box();if(!el||!isRandomBsc())return;
+    const el=box();if(!el||!isRandomEvm())return;
     el.classList.add("deposit-wallet-info");
-    const p=state.payment;
-    const active=!!(p&&p.deposit_address);
-    const expired=active&&remaining()<=0;
-    const note=message||(active?(expired?c("expired"):c("ready")):c("intro"));
+    const p=state.payment,r=paymentRoute();
+    const active=!!(p&&p.deposit_address),expired=active&&remaining()<=0;
+    const note=message||(active?(expired?c("expired"):readyText(r,p)):c("intro"));
     el.innerHTML=`<div class="rbp-shell">
-      <div class="rbp-head"><div><div class="rbp-title">${c("title")}</div><div class="rbp-sub">USDT · BNB Smart Chain (BEP20)</div></div><span class="rbp-badge">${c("badge")}</span></div>
-      ${active?`<div class="rbp-address-card"><div class="rbp-address-label"><span>${c("title")}</span><span>BEP20</span></div><div class="rbp-address" id="rbpAddress">${p.deposit_address}</div><div class="rbp-grid"><div class="rbp-metric"><span>${c("network")}</span><strong>BNB Smart Chain</strong></div><div class="rbp-metric"><span>${c("amount")}</span><strong>${Number(p.amount).toFixed(2)} USDT</strong></div><div class="rbp-metric"><span>${c("expires")}</span><strong id="rbpCountdown">${timeText()}</strong></div><div class="rbp-metric"><span>Payment ID</span><strong style="font-size:9px;word-break:break-all">${p.payment_id||p.id||"—"}</strong></div></div><div class="rbp-actions"><button class="rbp-btn primary" type="button" onclick="biCopyRandomBscAddress()">${c("copy")}</button><button class="rbp-btn" type="button" onclick="biCancelRandomBscAddress()">${c("cancel")}</button></div></div>`:`<div class="rbp-actions"><button id="rbpGenerate" class="rbp-btn primary" type="button" onclick="biGenerateRandomBscAddress()" ${state.loading?"disabled":""}>${state.loading?c("loading"):c("generate")}</button></div>`}
+      <div class="rbp-head"><div><div class="rbp-title">${c("title")}</div><div class="rbp-sub">${r?`${r.label} · ${r.chain}`:"EVM"}</div></div><span class="rbp-badge">${c("badge")}</span></div>
+      ${active?`<div class="rbp-address-card"><div class="rbp-address-label"><span>${c("title")}</span><span>${r?.network||"EVM"}</span></div><div class="rbp-address" id="rbpAddress">${p.deposit_address}</div><div class="rbp-grid"><div class="rbp-metric"><span>${c("network")}</span><strong>${r?.chain||p.network} (${r?.network||""})</strong></div><div class="rbp-metric"><span>${r?.stable?c("amount"):c("credit")}</span><strong>${requestedDisplay(r,p)}</strong></div><div class="rbp-metric"><span>${c("expires")}</span><strong id="rbpCountdown">${timeText()}</strong></div><div class="rbp-metric"><span>Payment ID</span><strong style="font-size:9px;word-break:break-all">${p.payment_id||p.id||"—"}</strong></div></div><div class="rbp-actions"><button class="rbp-btn primary" type="button" onclick="biCopyRandomEvmAddress()">${c("copy")}</button><button class="rbp-btn" type="button" onclick="biCancelRandomEvmAddress()">${c("cancel")}</button></div></div>`:`<div class="rbp-actions"><button id="rbpGenerate" class="rbp-btn primary" type="button" onclick="biGenerateRandomEvmAddress()" ${state.loading?"disabled":""}>${state.loading?c("loading"):c("generate")}</button></div>`}
       <div class="rbp-note ${kind==="error"?"rbp-error":kind==="ok"?"rbp-ok":""}">${note}</div>
     </div>`;
     clearTimer();
     if(active&&!expired){state.timer=setInterval(()=>{const cd=document.getElementById("rbpCountdown");if(cd)cd.textContent=timeText();if(remaining()<=0){clearTimer();render()}},1000)}
   }
 
-  async function activeFromServer(){
+  function switchUiToRoute(routeKey){
+    const opt=OPTION_BY_ROUTE[routeKey],m=OPTION_META[opt];
+    if(!opt||!m)return false;
+    const input=document.getElementById("crypto-currency"),label=document.getElementById("depositSelectedText");
+    if(input)input.value=opt;
+    if(label)label.innerHTML=`<img src="${m.logo}" alt=""> ${m.text}`;
+    return true;
+  }
+
+  async function activeFromServer(preferredRouteKey=""){
     if(!currentUser?.id||state.restoring)return null;
     state.restoring=true;
     try{
-      const {data,error}=await supabaseClient.from("crypto_payments")
-        .select("id,amount,asset,network,deposit_address,expires_at,status,created_at")
-        .eq("user_id",currentUser.id).eq("purpose",PURPOSE).eq("status","waiting")
-        .order("created_at",{ascending:false}).limit(1).maybeSingle();
+      let q=supabaseClient.from("crypto_payments").select("id,amount,asset,network,route_key,deposit_address,expires_at,status,created_at").eq("user_id",currentUser.id).eq("purpose",PURPOSE).eq("status","waiting").order("created_at",{ascending:false}).limit(1);
+      if(preferredRouteKey)q=q.eq("route_key",preferredRouteKey);
+      const {data,error}=await q.maybeSingle();
       if(error)throw error;
       if(data){state.payment={...data,payment_id:data.id};return state.payment}
       return null;
     }catch(_){return null}finally{state.restoring=false}
   }
 
-  window.biGenerateRandomBscAddress=async function(){
+  async function anyActiveFromServer(){
+    if(!currentUser?.id)return null;
+    try{
+      const {data,error}=await supabaseClient.from("crypto_payments").select("id,amount,asset,network,route_key,deposit_address,expires_at,status,created_at").eq("user_id",currentUser.id).eq("purpose",PURPOSE).eq("status","waiting").order("created_at",{ascending:false}).limit(1).maybeSingle();
+      if(error)throw error;
+      if(data){state.payment={...data,payment_id:data.id};return state.payment}
+    }catch(_){ }
+    return null;
+  }
+
+  window.biGenerateRandomEvmAddress=async function(){
     if(state.loading)return;
+    const r=route();if(!r)return;
     if(!currentUser?.id){if(typeof openAuth==="function")openAuth("login");render(c("login"),"error");return}
     const a=amount();if(!a){render(c("needAmount"),"error");document.getElementById("deposit-amount")?.focus();return}
     state.loading=true;render();
     try{
-      const {data,error}=await supabaseClient.rpc("create_crypto_payment",{p_amount:a,p_purpose:PURPOSE,p_reference_id:null});
+      const {data,error}=await supabaseClient.rpc("create_crypto_payment_route",{p_amount:a,p_route_key:r.routeKey,p_purpose:PURPOSE,p_reference_id:null});
       if(error)throw error;
       const p=row(data);if(!p?.payment_id||!p?.deposit_address)throw new Error(c("server"));
-      state.payment=p;
-      render();
+      state.payment=p;render();
     }catch(error){
       const message=String(error?.message||"");
-      const active=await activeFromServer();
-      if(active){const input=document.getElementById("deposit-amount");if(input)input.value=String(Number(active.amount));render(c("activeOther"),"error");return}
-      render(/No payment address/i.test(message)?c("poolBusy"):c("server"),"error");
+      const active=await anyActiveFromServer();
+      if(active){switchUiToRoute(active.route_key);const input=document.getElementById("deposit-amount");if(input)input.value=String(Number(active.amount));render(c("activeOther"),"error");return}
+      render(/No payment address/i.test(message)?c("poolBusy"):message||c("server"),"error");
     }finally{state.loading=false;if(!state.payment)render()}
   };
 
-  window.biCopyRandomBscAddress=async function(){
+  window.biCopyRandomEvmAddress=async function(){
     const address=state.payment?.deposit_address;if(!address)return;
     try{await navigator.clipboard.writeText(address);render(c("copied"),"ok")}catch(_){if(typeof toast==="function")toast(address)}
   };
 
-  window.biCancelRandomBscAddress=async function(){
+  window.biCancelRandomEvmAddress=async function(){
     const id=state.payment?.payment_id||state.payment?.id;if(!id){state.payment=null;render();return}
-    try{
-      const {error}=await supabaseClient.rpc("cancel_crypto_payment",{p_payment_id:id});
-      if(error)throw error;
-      state.payment=null;clearTimer();render(c("cancelled"),"ok");
-    }catch(_){render(c("server"),"error")}
+    try{const {error}=await supabaseClient.rpc("cancel_crypto_payment",{p_payment_id:id});if(error)throw error;state.payment=null;clearTimer();render(c("cancelled"),"ok")}catch(_){render(c("server"),"error")}
   };
 
-  async function ensurePaymentForSubmit(){
-    if(state.payment)return state.payment;
-    const p=await activeFromServer();if(p)return p;
-    return null;
-  }
+  async function ensurePaymentForSubmit(){if(state.payment)return state.payment;return await activeFromServer(route()?.routeKey||"")}
 
   window.togglePaymentDetails=function(){
     if(typeof originalToggle==="function")originalToggle.apply(this,arguments);
-    if(isRandomBsc()){
+    if(isRandomEvm()){
+      const r=route();
+      if(state.payment&&state.payment.route_key!==r.routeKey)state.payment=null;
       render();
-      if(currentUser?.id&&!state.payment){activeFromServer().then(p=>{if(!isRandomBsc()||!p)return;const input=document.getElementById("deposit-amount");if(input&&!amount())input.value=String(Number(p.amount));render()})}
+      if(currentUser?.id&&!state.payment){activeFromServer(r.routeKey).then(p=>{if(!isRandomEvm()||!p)return;const input=document.getElementById("deposit-amount");if(input&&!amount())input.value=String(Number(p.amount));render()})}
     }else{clearTimer()}
   };
 
   window.submitDepositRequest=async function(){
-    if(!isRandomBsc())return typeof originalSubmit==="function"?originalSubmit.apply(this,arguments):undefined;
+    if(!isRandomEvm())return typeof originalSubmit==="function"?originalSubmit.apply(this,arguments):undefined;
     if(!currentUser?.id){if(typeof openAuth==="function")openAuth("login");return}
-    const a=amount();if(!a){render(c("needAmount"),"error");return}
-    const p=await ensurePaymentForSubmit();
-    if(!p){render(c("noAddress"),"error");return}
+    const r=route(),a=amount();if(!r||!a){render(c("needAmount"),"error");return}
+    const p=await ensurePaymentForSubmit();if(!p){render(c("noAddress"),"error");return}
+    if(p.route_key!==r.routeKey){switchUiToRoute(p.route_key);render(c("activeOther"),"error");return}
     if(Math.abs(Number(p.amount)-a)>0.0000001){const input=document.getElementById("deposit-amount");if(input)input.value=String(Number(p.amount));render(c("submitMismatch"),"error");return}
 
     const txHash=document.getElementById("tx-ref")?.value.trim()||"";
@@ -34078,16 +34107,12 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     const receiptCopy=typeof depositReceiptCopy==="function"?depositReceiptCopy():{required:"TXID or receipt required",uploadFailed:"Receipt upload failed"};
     const submitButton=document.getElementById("deposit-submit-button"),submitText=submitButton?.textContent||"";
     if(!txHash&&!receiptFile){if(typeof showFieldError==="function")showFieldError("tx-ref",receiptCopy.required);if(typeof setDepositReceiptError==="function")setDepositReceiptError(receiptCopy.required);return}
-    if(txHash&&!/^0x[0-9a-fA-F]{64}$/.test(txHash)){if(typeof showFieldError==="function")showFieldError("tx-ref","Invalid BSC transaction hash");return}
+    if(txHash&&!/^0x[0-9a-fA-F]{64}$/.test(txHash)){if(typeof showFieldError==="function")showFieldError("tx-ref","Invalid EVM transaction hash");return}
 
     let proofPath=null;
     if(submitButton){submitButton.disabled=true;submitButton.textContent=typeof tr==="function"?tr("saving"):"Saving…"}
     try{
-      if(receiptFile){
-        proofPath=`${currentUser.id}/${crypto.randomUUID()}.${depositReceiptExtension(receiptFile)}`;
-        const {error:uploadError}=await supabaseClient.storage.from(DEPOSIT_RECEIPT_BUCKET).upload(proofPath,receiptFile,{contentType:receiptFile.type,cacheControl:"0",upsert:false});
-        if(uploadError){if(typeof setDepositReceiptError==="function")setDepositReceiptError(receiptCopy.uploadFailed);return}
-      }
+      if(receiptFile){proofPath=`${currentUser.id}/${crypto.randomUUID()}.${depositReceiptExtension(receiptFile)}`;const {error:uploadError}=await supabaseClient.storage.from(DEPOSIT_RECEIPT_BUCKET).upload(proofPath,receiptFile,{contentType:receiptFile.type,cacheControl:"0",upsert:false});if(uploadError){if(typeof setDepositReceiptError==="function")setDepositReceiptError(receiptCopy.uploadFailed);return}}
       const {data,error}=await supabaseClient.rpc("submit_random_address_deposit",{p_payment_id:p.payment_id||p.id,p_tx_hash:txHash||null,p_proof_path:proofPath});
       if(error)throw error;
       state.payment=null;clearTimer();
@@ -34096,15 +34121,13 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
       if(typeof loadTransactions==="function")await loadTransactions();
       if(typeof showTransactionSuccessModal==="function")showTransactionSuccessModal("deposit");else if(typeof toast==="function")toast(c("submitted"),"success");
       render(c("submitted"),"ok");
-    }catch(error){
-      const msg=String(error?.message||c("server"));
-      if(/already been used/i.test(msg)){if(typeof showFieldError==="function")showFieldError("tx-ref",msg)}else render(msg||c("server"),"error");
-    }finally{if(submitButton){submitButton.disabled=false;submitButton.textContent=submitText||(typeof tr==="function"?tr("depSubmitBtn"):"Submit Deposit Request")}}
+    }catch(error){const msg=String(error?.message||c("server"));if(/already been used/i.test(msg)){if(typeof showFieldError==="function")showFieldError("tx-ref",msg)}else render(msg||c("server"),"error")}
+    finally{if(submitButton){submitButton.disabled=false;submitButton.textContent=submitText||(typeof tr==="function"?tr("depSubmitBtn"):"Submit Deposit Request")}}
   };
 
-  document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(isRandomBsc()&&state.payment&&Math.abs(amount()-Number(state.payment.amount))>0.0000001)render(c("submitMismatch"),"error")});
-  setInterval(()=>{const uid=currentUser?.id||"";if(uid!==state.lastUserId){state.lastUserId=uid;state.payment=null;clearTimer();if(isRandomBsc())window.togglePaymentDetails()}},1200);
-  setTimeout(()=>{if(isRandomBsc())window.togglePaymentDetails()},300);
+  document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(isRandomEvm()&&state.payment&&Math.abs(amount()-Number(state.payment.amount))>0.0000001)render(c("submitMismatch"),"error")});
+  setInterval(()=>{const uid=currentUser?.id||"";if(uid!==state.lastUserId){state.lastUserId=uid;state.payment=null;clearTimer();if(isRandomEvm())window.togglePaymentDetails()}},1200);
+  setTimeout(()=>{if(isRandomEvm())window.togglePaymentDetails()},300);
 })();
 </script>
 
