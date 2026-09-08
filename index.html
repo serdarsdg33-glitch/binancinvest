@@ -33973,7 +33973,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     eth_usdt_erc20:{text:"USDT (ERC20)",logo:"https://cryptologos.cc/logos/tether-usdt-logo.svg"},
     eth:{text:"Ethereum (ETH)",logo:"https://cryptologos.cc/logos/ethereum-eth-logo.svg"}
   };
-  const state={payment:null,timer:null,loading:false,restoring:false,lastUserId:""};
+  const state={payment:null,timer:null,loading:false,restoring:false,lastUserId:"",generateReference:null};
   const originalToggle=window.togglePaymentDetails;
   const originalSubmit=window.submitDepositRequest;
 
@@ -34060,14 +34060,16 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     const a=amount();if(!a){render(c("needAmount"),"error");document.getElementById("deposit-amount")?.focus();return}
     state.loading=true;render();
     try{
-      const {data,error}=await supabaseClient.rpc("create_crypto_payment_route",{p_amount:a,p_route_key:r.routeKey,p_purpose:PURPOSE,p_reference_id:null});
+      const requestReference=state.generateReference||crypto.randomUUID();
+      state.generateReference=requestReference;
+      const {data,error}=await supabaseClient.rpc("create_crypto_payment_route",{p_amount:a,p_route_key:r.routeKey,p_purpose:PURPOSE,p_reference_id:requestReference});
       if(error)throw error;
       const p=row(data);if(!p?.payment_id||!p?.deposit_address)throw new Error(c("server"));
-      state.payment=p;render();
+      state.payment=p;state.generateReference=null;render();
     }catch(error){
       const message=String(error?.message||"");
       const active=await anyActiveFromServer();
-      if(active){switchUiToRoute(active.route_key);const input=document.getElementById("deposit-amount");if(input)input.value=String(Number(active.amount));render(c("activeOther"),"error");return}
+      if(active){state.generateReference=null;switchUiToRoute(active.route_key);const input=document.getElementById("deposit-amount");if(input)input.value=String(Number(active.amount));render(c("activeOther"),"error");return}
       render(/No payment address/i.test(message)?c("poolBusy"):message||c("server"),"error");
     }finally{state.loading=false;if(!state.payment)render()}
   };
@@ -34079,7 +34081,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
 
   window.biCancelRandomEvmAddress=async function(){
     const id=state.payment?.payment_id||state.payment?.id;if(!id){state.payment=null;render();return}
-    try{const {error}=await supabaseClient.rpc("cancel_crypto_payment",{p_payment_id:id});if(error)throw error;state.payment=null;clearTimer();render(c("cancelled"),"ok")}catch(_){render(c("server"),"error")}
+    try{const {error}=await supabaseClient.rpc("cancel_crypto_payment",{p_payment_id:id});if(error)throw error;state.payment=null;state.generateReference=null;clearTimer();render(c("cancelled"),"ok")}catch(_){render(c("server"),"error")}
   };
 
   async function ensurePaymentForSubmit(){if(state.payment)return state.payment;return await activeFromServer(route()?.routeKey||"")}
@@ -34115,7 +34117,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
       if(receiptFile){proofPath=`${currentUser.id}/${crypto.randomUUID()}.${depositReceiptExtension(receiptFile)}`;const {error:uploadError}=await supabaseClient.storage.from(DEPOSIT_RECEIPT_BUCKET).upload(proofPath,receiptFile,{contentType:receiptFile.type,cacheControl:"0",upsert:false});if(uploadError){if(typeof setDepositReceiptError==="function")setDepositReceiptError(receiptCopy.uploadFailed);return}}
       const {data,error}=await supabaseClient.rpc("submit_random_address_deposit",{p_payment_id:p.payment_id||p.id,p_tx_hash:txHash||null,p_proof_path:proofPath});
       if(error)throw error;
-      state.payment=null;clearTimer();
+      state.payment=null;state.generateReference=null;clearTimer();
       const amountInput=document.getElementById("deposit-amount"),txInput=document.getElementById("tx-ref");if(amountInput)amountInput.value="";if(txInput)txInput.value="";
       if(typeof window.resetDepositReceipt==="function")window.resetDepositReceipt();
       if(typeof loadTransactions==="function")await loadTransactions();
@@ -34126,7 +34128,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   };
 
   document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(isRandomEvm()&&state.payment&&Math.abs(amount()-Number(state.payment.amount))>0.0000001)render(c("submitMismatch"),"error")});
-  setInterval(()=>{const uid=currentUser?.id||"";if(uid!==state.lastUserId){state.lastUserId=uid;state.payment=null;clearTimer();if(isRandomEvm())window.togglePaymentDetails()}},1200);
+  setInterval(()=>{const uid=currentUser?.id||"";if(uid!==state.lastUserId){state.lastUserId=uid;state.payment=null;state.generateReference=null;clearTimer();if(isRandomEvm())window.togglePaymentDetails()}},1200);
   setTimeout(()=>{if(isRandomEvm())window.togglePaymentDetails()},300);
 })();
 </script>
