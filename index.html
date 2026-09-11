@@ -14661,6 +14661,37 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
 .academy-payment-modal .bscp-title{max-width:330px}.academy-payment-modal .academy-checkout-code{color:#ffe58a;font-size:10px;font-weight:900;letter-spacing:1.6px}.academy-payment-modal .academy-success-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:16px}.academy-payment-modal .academy-success-actions .bscp-primary,.academy-payment-modal .academy-success-actions .bscp-secondary{width:auto;min-width:150px}
 @media(max-width:480px){.academy-home-showcase{width:100vw;margin-left:calc(50% - 50vw);padding:0 8px}.academy-promo-track{gap:8px}.academy-promo-card{border-radius:10px}}
 </style>
+
+<style id="funds-access-v1">
+/* Dedicated Deposit & Withdrawal page. The live finance workspace is shared
+   with Portfolio, so both entry points always use the same fields and logic. */
+.funds-view{padding-bottom:8px}
+.funds-hero{position:relative;isolation:isolate;min-height:clamp(270px,42vw,455px);margin-bottom:18px;overflow:hidden;border:1px solid rgba(240,185,11,.38);border-radius:25px;background:#05070a;box-shadow:0 24px 68px rgba(0,0,0,.48)}
+.funds-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+.funds-hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,5,8,.93) 0%,rgba(3,5,8,.66) 43%,rgba(3,5,8,.18) 78%),linear-gradient(0deg,rgba(3,5,8,.62),transparent 52%);pointer-events:none}
+.funds-hero-copy{position:relative;z-index:2;width:min(590px,64%);min-height:inherit;display:flex;flex-direction:column;justify-content:center;padding:clamp(25px,5vw,58px);text-align:start}
+.funds-hero-kicker{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin-bottom:12px;padding:7px 11px;color:#ffe58a;font-size:11px;font-weight:900;letter-spacing:1.6px;border:1px solid rgba(240,185,11,.37);border-radius:999px;background:rgba(3,6,9,.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.funds-hero h1{margin:0;color:#fff;font-size:clamp(31px,5vw,61px);font-weight:950;line-height:1.04;letter-spacing:-1.8px;text-shadow:0 3px 22px #000}.funds-hero h1 .funds-amp{color:#f4c542}
+html[dir="rtl"] .funds-hero h1{letter-spacing:normal}
+.funds-hero p{max-width:520px;margin:16px 0 0;color:#e2e7ed;font-size:clamp(12px,1.5vw,16px);font-weight:650;line-height:1.8;text-shadow:0 2px 12px #000}
+.funds-action-track{direction:ltr!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(240,185,11,.55) rgba(255,255,255,.05);overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.funds-action-track::-webkit-scrollbar{height:6px}.funds-action-track::-webkit-scrollbar-track{background:rgba(255,255,255,.045);border-radius:999px}.funds-action-track::-webkit-scrollbar-thumb{background:linear-gradient(90deg,#a87500,#f0b90b,#ffe58a);border-radius:999px}
+.funds-action-card{position:relative;isolation:isolate;min-height:clamp(245px,34vw,370px);overflow:hidden;padding:0;color:#fff;text-align:start;border:1px solid rgba(240,185,11,.32);border-radius:21px;background:#06090d;box-shadow:0 18px 48px rgba(0,0,0,.4);scroll-snap-align:center;cursor:pointer}
+.funds-action-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;transition:transform .35s ease}
+.funds-action-card::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(3,5,8,.96) 0%,rgba(3,5,8,.56) 39%,rgba(3,5,8,.06) 76%);pointer-events:none}
+.funds-action-copy{position:absolute;z-index:2;inset:auto 0 0;padding:20px 21px;direction:var(--page-dir,ltr)}
+html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
+.funds-action-copy h2{margin:0 0 7px;color:#fff;font-size:clamp(21px,2.6vw,29px);font-weight:950}.funds-action-copy p{margin:0 0 14px;color:#cdd5df;font-size:12px;line-height:1.65}
+.funds-action-cta{display:inline-flex;align-items:center;justify-content:center;min-height:39px;padding:8px 16px;color:#171100;font-size:12px;font-weight:950;border:1px solid #ffe58a;border-radius:10px;background:linear-gradient(180deg,#fff0a0,#e6a815);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 8px 21px rgba(240,185,11,.18)}
+.funds-action-card:hover>img{transform:scale(1.025)}
+#fundsSharedMount{min-height:1px}
+#funds .portfolio-finance-scene{margin-top:0}
+#funds .portfolio-finance-scene::before{border-radius:22px}
+#funds .portfolio-grid{scroll-margin-top:18px}
+#funds .portfolio-grid>.card{scroll-margin-top:18px}
+@media(max-width:700px){.funds-hero{min-height:360px;border-radius:18px}.funds-hero>img{object-position:58% center}.funds-hero::after{background:linear-gradient(0deg,rgba(3,5,8,.95) 0%,rgba(3,5,8,.53) 58%,rgba(3,5,8,.18) 100%)}.funds-hero-copy{width:100%;justify-content:flex-end;padding:24px 20px}.funds-hero h1{font-size:36px}.funds-hero p{font-size:12px}.funds-action-track{display:flex;gap:10px;margin-inline-end:-12px;padding:0 12px 10px 0}.funds-action-card{flex:0 0 min(83vw,355px);min-height:310px;border-radius:17px}.funds-action-copy{padding:17px}.funds-action-card:hover>img{transform:none}}
+@media(prefers-reduced-motion:reduce){.funds-action-card>img{transition:none}}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -14708,6 +14739,10 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
   <button data-page="invest" onclick="page('invest',this)" data-t="invest">Invest</button>
 
   <button data-page="portfolio" onclick="page('portfolio',this)" data-t="portfolio">Portfolio</button>
+
+  <button data-page="funds" onclick="page('funds',this)">
+    <span data-t="deposit">Deposit</span><span aria-hidden="true"> / </span><span data-t="withdraw">Withdraw</span>
+  </button>
 
   <button data-page="transactions" onclick="page('transactions',this)" data-t="transactions">Transactions</button>
 
@@ -14847,6 +14882,39 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
     <div class="bsc4-note" data-bsc4="licenseNote">Your License Key stays the same after renewal. Each successful payment adds 30 days to the current expiry date.</div>
   </div>
 
+</section>
+
+
+<section id="funds" class="view funds-view" aria-labelledby="fundsPageTitle">
+  <div class="funds-hero">
+    <img src="funds-header.webp" alt="" width="1439" height="810" loading="eager" decoding="async" aria-hidden="true">
+    <div class="funds-hero-copy">
+      <span class="funds-hero-kicker" data-t="portfolio">Portfolio</span>
+      <h1 id="fundsPageTitle"><span data-t="deposit">Deposit</span> <span class="funds-amp" aria-hidden="true">&amp;</span> <span data-t="withdraw">Withdraw</span></h1>
+      <p data-funds-copy="notice">After depositing, go to My Portfolio.</p>
+    </div>
+  </div>
+
+  <div class="funds-action-track" role="region" aria-label="Deposit and withdrawal shortcuts" tabindex="0">
+    <button class="funds-action-card" type="button" onclick="focusSharedFinance('deposit')">
+      <img src="funds-deposit.webp" alt="" width="960" height="640" loading="eager" decoding="async">
+      <span class="funds-action-copy">
+        <h2 data-t="deposit">Deposit</h2>
+        <p data-t="depositDesc">Add balance securely via wallet or gateway.</p>
+        <span class="funds-action-cta" data-t="add">Add Balance</span>
+      </span>
+    </button>
+    <button class="funds-action-card" type="button" onclick="focusSharedFinance('withdraw')">
+      <img src="funds-withdraw.webp" alt="" width="960" height="640" loading="eager" decoding="async">
+      <span class="funds-action-copy">
+        <h2 data-t="withdraw">Withdraw</h2>
+        <p data-t="withdrawDesc">Request withdrawal instantly.</p>
+        <span class="funds-action-cta" data-t="request">Request Withdrawal</span>
+      </span>
+    </button>
+  </div>
+
+  <div id="fundsSharedMount"></div>
 </section>
 
 
@@ -15779,7 +15847,8 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
 
 </div>
 
-<div class="portfolio-finance-scene">
+<div id="portfolioFinanceMount" aria-hidden="true"></div>
+<div id="sharedFinanceScene" class="portfolio-finance-scene">
 
   <div id="portfolioFinanceGuest" class="portfolio-finance-guest">
     <div class="portfolio-finance-guest-icon">🔒</div>
@@ -19508,6 +19577,8 @@ function page(id, button) {
 
   target.classList.add("active");
 
+  syncSharedFinanceScene(id);
+
   document.querySelectorAll(".nav button").forEach(navButton => {
     navButton.classList.remove("active");
   });
@@ -19516,7 +19587,7 @@ function page(id, button) {
     button.classList.add("active");
   }
 
-  if (id === "portfolio") {
+  if (id === "portfolio" || id === "funds") {
     updatePortfolio();
     loadReferralDashboard();
     calculatePortfolioVipLock();
@@ -19541,6 +19612,44 @@ function page(id, button) {
   }
 
   window.scrollTo(0, 0);
+}
+
+function syncSharedFinanceScene(pageId) {
+  const scene = document.getElementById("sharedFinanceScene");
+  const fundsMount = document.getElementById("fundsSharedMount");
+  const portfolioMount = document.getElementById("portfolioFinanceMount");
+  if (!scene || !fundsMount || !portfolioMount) return;
+
+  if (pageId === "funds") {
+    if (scene.parentElement !== fundsMount) fundsMount.appendChild(scene);
+    return;
+  }
+
+  if (pageId === "portfolio" && scene.previousElementSibling !== portfolioMount) {
+    portfolioMount.insertAdjacentElement("afterend", scene);
+  }
+}
+
+function focusSharedFinance(kind) {
+  if (!currentUser?.id) {
+    openAuth("login");
+    return;
+  }
+
+  const nav = document.querySelector('[data-page="funds"]');
+  if (!document.getElementById("funds")?.classList.contains("active")) page("funds", nav);
+
+  window.setTimeout(() => {
+    const anchor = kind === "withdraw"
+      ? document.getElementById("withdrawAmount")
+      : document.getElementById("deposit-amount");
+    const card = anchor?.closest(".card") || anchor;
+    card?.scrollIntoView({
+      behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? "auto" : "smooth",
+      block: "start"
+    });
+    window.setTimeout(() => anchor?.focus({preventScroll:true}), 420);
+  }, 120);
 }
 
 function openAuth(mode = "login") {
@@ -34157,6 +34266,49 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   document.getElementById("deposit-amount")?.addEventListener("input",()=>{if(isRandomEvm()&&state.payment&&Math.abs(amount()-Number(state.payment.amount))>0.0000001)render(c("submitMismatch"),"error")});
   setInterval(()=>{const uid=currentUser?.id||"";if(uid!==state.lastUserId){state.lastUserId=uid;state.payment=null;state.generateReference=null;clearTimer();if(isRandomEvm())window.togglePaymentDetails()}},1200);
   setTimeout(()=>{if(isRandomEvm())window.togglePaymentDetails()},300);
+})();
+</script>
+
+<script id="funds-i18n-v1">
+(function(){
+  const FUNDS_NOTICE={
+    en:"After depositing, go to My Portfolio.",
+    de:"Gehen Sie nach der Einzahlung zum Bereich „Mein Portfolio“.",
+    it:"Dopo il deposito, vai alla sezione Il mio portafoglio.",
+    ru:"После пополнения перейдите в раздел «Мой портфель».",
+    ja:"入金後、「マイポートフォリオ」セクションに移動してください。",
+    tr:"Para yatırdıktan sonra Portföyüm bölümüne gidin.",
+    zh:"充值后，请前往“我的投资组合”部分。",
+    nl:"Ga na de storting naar Mijn portefeuille.",
+    fr:"Après le dépôt, accédez à la section Mon portefeuille.",
+    ko:"입금 후 내 포트폴리오 섹션으로 이동하세요.",
+    fa:"پس از واریز به بخش سبد من مراجعه کنید.",
+    ar:"بعد الإيداع، انتقل إلى قسم محفظتي.",
+    az:"Depozitdən sonra Portfelim bölməsinə keçin.",
+    el:"Μετά την κατάθεση, μεταβείτε στην ενότητα Το χαρτοφυλάκιό μου.",
+    hi:"जमा करने के बाद, मेरा पोर्टफोलियो अनुभाग पर जाएँ।",
+    id:"Setelah melakukan deposit, buka bagian Portofolio Saya.",
+    ms:"Selepas membuat deposit, pergi ke bahagian Portfolio Saya.",
+    pl:"Po dokonaniu wpłaty przejdź do sekcji Mój portfel.",
+    pt:"Após o depósito, aceda à secção O meu portefólio.",
+    ro:"După depunere, accesați secțiunea Portofoliul meu.",
+    es:"Después de depositar, ve a la sección Mi cartera.",
+    uk:"Після поповнення перейдіть до розділу «Мій портфель».",
+    ur:"جمع کرانے کے بعد، میرا پورٹ فولیو سیکشن میں جائیں۔",
+    vi:"Sau khi nạp tiền, hãy chuyển đến mục Danh mục của tôi.",
+    th:"หลังจากฝากเงินแล้ว ให้ไปที่ส่วนพอร์ตโฟลิโอของฉัน"
+  };
+  function fundsLanguage(){
+    return String(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase().split("-")[0];
+  }
+  function applyFundsCopy(){
+    const text=FUNDS_NOTICE[fundsLanguage()]||FUNDS_NOTICE.en;
+    document.querySelectorAll('[data-funds-copy="notice"]').forEach(function(element){element.textContent=text});
+  }
+  new MutationObserver(applyFundsCopy).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+  document.addEventListener("DOMContentLoaded",applyFundsCopy,{once:true});
+  window.addEventListener("storage",applyFundsCopy);
+  setTimeout(applyFundsCopy,0);
 })();
 </script>
 
