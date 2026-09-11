@@ -34011,11 +34011,29 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   function paymentRoute(){const key=state.payment?.route_key||route()?.routeKey;return Object.values(ROUTES).find(r=>r.routeKey===key)||route()}
   function requestedDisplay(r,p){return r?.stable?`${Number(p.amount).toFixed(2)} ${r.unit}`:`$${Number(p.amount).toFixed(2)} USD`}
   function readyText(r,p){if(!r)return c("intro");return fill(r.stable?c("stableReady"):c("nativeReady"),{amount:Number(p.amount).toFixed(2),asset:r.unit,network:`${r.chain} (${r.network})`})}
+  const EXACT_EVM_TXID_COPY={
+    en:"For USDT on BEP20/ERC20, TXID is optional. If you do not enter it, upload the receipt and the system will detect the payment from the assigned address on-chain.",
+    fa:"برای USDT روی BEP20/ERC20 واردکردن TXID اختیاری است. اگر TXID را وارد نکنید، تصویر فیش را ارسال کنید تا سیستم پرداخت را از روی آدرس اختصاصی روی بلاکچین پیدا و بررسی کند.",
+    az:"BEP20/ERC20 USDT üçün TXID məcburi deyil. TXID daxil etməsəniz, qəbz şəklini göndərin; sistem ödənişi ayrılmış ünvandan blockchain-də özü tapıb yoxlayacaq.",
+    tr:"BEP20/ERC20 USDT için TXID isteğe bağlıdır. TXID girmezseniz makbuz görselini yükleyin; sistem ödemeyi ayrılan adresten zincir üzerinde otomatik bulup doğrular.",
+    ru:"Для USDT в BEP20/ERC20 TXID необязателен. Если вы его не вводите, загрузите квитанцию — система сама найдёт платеж по выделенному адресу в блокчейне.",
+    ar:"بالنسبة إلى USDT على BEP20/ERC20، إدخال TXID اختياري. إذا لم تدخله، ارفع صورة الإيصال وسيبحث النظام عن الدفع تلقائياً عبر العنوان المخصص على البلوكشين.",
+    zh:"USDT 的 BEP20/ERC20 入金可选填 TXID。若不填写，请上传收据，系统会根据分配的专属地址自动在链上查找并验证付款。",
+    es:"Para USDT en BEP20/ERC20, el TXID es opcional. Si no lo introduces, sube el recibo y el sistema detectará el pago automáticamente en la dirección asignada.",
+    fr:"Pour l’USDT sur BEP20/ERC20, le TXID est facultatif. Si vous ne le saisissez pas, téléversez le reçu et le système détectera automatiquement le paiement sur l’adresse attribuée.",
+    de:"Für USDT über BEP20/ERC20 ist die TXID optional. Wenn Sie keine TXID eingeben, laden Sie den Beleg hoch; das System erkennt die Zahlung automatisch über die zugewiesene Adresse."
+  };
+  function updateReceiptRequirement(r){
+    const el=document.querySelector('[data-deposit-receipt-copy="requirement"]');
+    if(!el)return;
+    if(typeof depositReceiptCopy==="function") el.textContent=depositReceiptCopy().requirement;
+  }
 
   function render(message="",kind=""){
     const el=box();if(!el||!isRandomEvm())return;
     el.classList.add("deposit-wallet-info");
     const p=state.payment,r=paymentRoute();
+    updateReceiptRequirement(r);
     const active=!!(p&&p.deposit_address),expired=active&&remaining()<=0;
     const note=message||(active?(expired?c("expired"):readyText(r,p)):c("intro"));
     el.innerHTML=`<div class="rbp-shell">
