@@ -14668,7 +14668,7 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
 .funds-view{padding-bottom:8px}
 .funds-hero{position:relative;isolation:isolate;min-height:clamp(270px,42vw,455px);margin-bottom:18px;overflow:hidden;border:1px solid rgba(240,185,11,.38);border-radius:25px;background:#05070a;box-shadow:0 24px 68px rgba(0,0,0,.48)}
 .funds-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
-.funds-hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,5,8,.93) 0%,rgba(3,5,8,.66) 43%,rgba(3,5,8,.18) 78%),linear-gradient(0deg,rgba(3,5,8,.62),transparent 52%);pointer-events:none}
+.funds-hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(3,5,8,.64) 0%,rgba(3,5,8,.35) 43%,rgba(3,5,8,.07) 78%),linear-gradient(0deg,rgba(3,5,8,.38),transparent 52%);pointer-events:none}
 .funds-hero-copy{position:relative;z-index:2;width:min(590px,64%);min-height:inherit;display:flex;flex-direction:column;justify-content:center;padding:clamp(25px,5vw,58px);text-align:start}
 .funds-hero-kicker{display:inline-flex;align-items:center;width:max-content;max-width:100%;margin-bottom:12px;padding:7px 11px;color:#ffe58a;font-size:11px;font-weight:900;letter-spacing:1.6px;border:1px solid rgba(240,185,11,.37);border-radius:999px;background:rgba(3,6,9,.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .funds-hero h1{margin:0;color:#fff;font-size:clamp(31px,5vw,61px);font-weight:950;line-height:1.04;letter-spacing:-1.8px;text-shadow:0 3px 22px #000}.funds-hero h1 .funds-amp{color:#f4c542}
@@ -14689,7 +14689,10 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
 #funds .portfolio-finance-scene::before{border-radius:22px}
 #funds .portfolio-grid{scroll-margin-top:18px}
 #funds .portfolio-grid>.card{scroll-margin-top:18px}
-@media(max-width:700px){.funds-hero{min-height:360px;border-radius:18px}.funds-hero>img{object-position:58% center}.funds-hero::after{background:linear-gradient(0deg,rgba(3,5,8,.95) 0%,rgba(3,5,8,.53) 58%,rgba(3,5,8,.18) 100%)}.funds-hero-copy{width:100%;justify-content:flex-end;padding:24px 20px}.funds-hero h1{font-size:36px}.funds-hero p{font-size:12px}.funds-action-track{display:flex;gap:10px;margin-inline-end:-12px;padding:0 12px 10px 0}.funds-action-card{flex:0 0 min(83vw,355px);min-height:310px;border-radius:17px}.funds-action-copy{padding:17px}.funds-action-card:hover>img{transform:none}}
+#funds #portfolioGrid>.card.form{background:linear-gradient(145deg,rgba(9,15,22,.38),rgba(3,7,11,.22))!important;border-color:rgba(255,229,138,.24)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 34px rgba(0,0,0,.22)!important;backdrop-filter:blur(2.5px) saturate(1.08);-webkit-backdrop-filter:blur(2.5px) saturate(1.08)}
+#funds #portfolioGrid>.card.form input,#funds #portfolioGrid>.card.form select,#funds #portfolioGrid>.card.form textarea,#funds #portfolioGrid>.card.form .custom-select-trigger,#funds #portfolioGrid>.card.form .withdrawal-level-card,#funds #portfolioGrid>.card.form #payment-info-box,#funds #portfolioGrid>.card.form .deposit-receipt-upload{background:rgba(4,9,15,.34)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}
+#funds #portfolioGrid>.card.form .custom-options{background:rgba(7,12,18,.93)!important}
+@media(max-width:700px){.funds-hero{min-height:360px;border-radius:18px}.funds-hero>img{object-position:58% center}.funds-hero::after{background:linear-gradient(0deg,rgba(3,5,8,.68) 0%,rgba(3,5,8,.28) 58%,rgba(3,5,8,.06) 100%)}.funds-hero-copy{width:100%;justify-content:flex-end;padding:24px 20px}.funds-hero h1{font-size:36px}.funds-hero p{font-size:12px}.funds-action-track{display:flex;gap:10px;margin-inline-end:-12px;padding:0 12px 10px 0}.funds-action-card{flex:0 0 min(83vw,355px);min-height:310px;border-radius:17px}.funds-action-copy{padding:17px}.funds-action-card:hover>img{transform:none}}
 @media(prefers-reduced-motion:reduce){.funds-action-card>img{transition:none}}
 </style>
 </head>
@@ -14889,7 +14892,6 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   <div class="funds-hero">
     <img src="funds-header.webp" alt="" width="1439" height="810" loading="eager" decoding="async" aria-hidden="true">
     <div class="funds-hero-copy">
-      <span class="funds-hero-kicker" data-t="portfolio">Portfolio</span>
       <h1 id="fundsPageTitle"><span data-t="deposit">Deposit</span> <span class="funds-amp" aria-hidden="true">&amp;</span> <span data-t="withdraw">Withdraw</span></h1>
       <p data-funds-copy="notice">After depositing, go to My Portfolio.</p>
     </div>
