@@ -14689,9 +14689,6 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
 #funds .portfolio-finance-scene::before{border-radius:22px}
 #funds .portfolio-grid{scroll-margin-top:18px}
 #funds .portfolio-grid>.card{scroll-margin-top:18px}
-#funds #portfolioGrid>.card.form{background:linear-gradient(145deg,rgba(9,15,22,.38),rgba(3,7,11,.22))!important;border-color:rgba(255,229,138,.24)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 34px rgba(0,0,0,.22)!important;backdrop-filter:blur(2.5px) saturate(1.08);-webkit-backdrop-filter:blur(2.5px) saturate(1.08)}
-#funds #portfolioGrid>.card.form input,#funds #portfolioGrid>.card.form select,#funds #portfolioGrid>.card.form textarea,#funds #portfolioGrid>.card.form .custom-select-trigger,#funds #portfolioGrid>.card.form .withdrawal-level-card,#funds #portfolioGrid>.card.form #payment-info-box,#funds #portfolioGrid>.card.form .deposit-receipt-upload{background:rgba(4,9,15,.34)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}
-#funds #portfolioGrid>.card.form .custom-options{background:rgba(7,12,18,.93)!important}
 @media(max-width:700px){.funds-hero{min-height:360px;border-radius:18px}.funds-hero>img{object-position:58% center}.funds-hero::after{background:linear-gradient(0deg,rgba(3,5,8,.68) 0%,rgba(3,5,8,.28) 58%,rgba(3,5,8,.06) 100%)}.funds-hero-copy{width:100%;justify-content:flex-end;padding:24px 20px}.funds-hero h1{font-size:36px}.funds-hero p{font-size:12px}.funds-action-track{display:flex;gap:10px;margin-inline-end:-12px;padding:0 12px 10px 0}.funds-action-card{flex:0 0 min(83vw,355px);min-height:310px;border-radius:17px}.funds-action-copy{padding:17px}.funds-action-card:hover>img{transform:none}}
 @media(prefers-reduced-motion:reduce){.funds-action-card>img{transition:none}}
 </style>
@@ -34270,6 +34267,109 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   setTimeout(()=>{if(isRandomEvm())window.togglePaymentDetails()},300);
 })();
 </script>
+
+<style id="funds-shared-finance-parity-v2">
+/* The finance workspace is physically moved between Portfolio and Funds.
+   Mirror the Portfolio-only presentation here so both entry points are identical. */
+#funds #sharedFinanceScene *,
+#funds #sharedFinanceScene *::before,
+#funds #sharedFinanceScene *::after{box-sizing:border-box}
+#funds #sharedFinanceScene .portfolio-grid>.card,
+#funds #sharedFinanceScene .portfolio-finance-guest{
+  background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(255,255,255,.004))!important;
+  border-color:rgba(255,220,100,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 -1px 0 rgba(255,255,255,.025),0 8px 22px rgba(0,0,0,.12)!important;
+  backdrop-filter:blur(5px) saturate(112%)!important;
+  -webkit-backdrop-filter:blur(5px) saturate(112%)!important
+}
+#funds #sharedFinanceScene .portfolio-grid *{text-shadow:0 2px 5px rgba(0,0,0,.95),0 0 4px rgba(0,0,0,.72)}
+#funds #sharedFinanceScene input,
+#funds #sharedFinanceScene select,
+#funds #sharedFinanceScene .custom-select-trigger,
+#funds #sharedFinanceScene .custom-options{
+  background:rgba(5,9,14,.22)!important;
+  border-color:rgba(255,229,138,.21)!important;
+  backdrop-filter:blur(4px) saturate(108%)!important;
+  -webkit-backdrop-filter:blur(4px) saturate(108%)!important
+}
+
+#funds #sharedFinanceScene .withdrawal-level-card{
+  margin:0 0 16px;padding:13px;border:1px solid rgba(240,185,11,.24);
+  border-radius:15px;background:linear-gradient(145deg,rgba(12,17,23,.38),rgba(5,9,13,.24));
+  -webkit-backdrop-filter:blur(7px) saturate(1.05);backdrop-filter:blur(7px) saturate(1.05);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 8px 24px rgba(0,0,0,.16)
+}
+#funds #sharedFinanceScene .withdrawal-level-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07)}
+#funds #sharedFinanceScene .withdrawal-level-kicker{display:block;margin-bottom:3px;color:rgba(190,200,212,.62);font-size:9.5px;font-weight:600}
+#funds #sharedFinanceScene #withdrawalLevelName{display:block;color:#f5f7fa;font-size:17px;line-height:1.2;font-weight:850}
+#funds #sharedFinanceScene .withdrawal-level-percent{flex:0 0 auto;min-width:58px;padding:7px 10px;border:1px solid rgba(240,185,11,.30);border-radius:999px;background:rgba(240,185,11,.055);color:#f2c94f;text-align:center;font-size:13px;font-weight:850;font-variant-numeric:tabular-nums}
+#funds #sharedFinanceScene .withdrawal-level-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+#funds #sharedFinanceScene .withdrawal-level-grid>div{min-width:0;padding:8px 9px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(0,0,0,.10)}
+#funds #sharedFinanceScene .withdrawal-level-grid span{display:block;margin-bottom:4px;color:rgba(190,200,212,.56);font-size:8.8px;line-height:1.35;font-weight:550}
+#funds #sharedFinanceScene .withdrawal-level-grid b{display:block;color:#f6f8fb;font-size:12px;line-height:1.35;font-weight:750;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+#funds #sharedFinanceScene .withdrawal-level-grid b.green{color:#29db9b}
+#funds #sharedFinanceScene .withdrawal-level-grid .withdrawal-available{grid-column:1/-1;border-color:rgba(41,219,155,.24);background:linear-gradient(135deg,rgba(41,219,155,.075),rgba(0,0,0,.10))}
+#funds #sharedFinanceScene .withdrawal-level-grid .withdrawal-available b{color:#29db9b;font-size:14px}
+#funds #sharedFinanceScene .withdrawal-level-note{margin-top:9px;color:rgba(190,200,212,.52);font-size:8.8px;line-height:1.5}
+html[dir="ltr"] #funds #sharedFinanceScene .withdrawal-level-card{text-align:left}
+html[dir="rtl"] #funds #sharedFinanceScene .withdrawal-level-card{text-align:right}
+
+#funds #sharedFinanceScene #depositCryptoCustomSelect .custom-select-trigger{
+  min-height:56px;padding:13px 15px!important;background:rgba(5,9,14,.58)!important;
+  border-color:rgba(255,225,117,.34)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px rgba(0,0,0,.18)!important;
+  backdrop-filter:blur(10px) saturate(118%)!important;-webkit-backdrop-filter:blur(10px) saturate(118%)!important
+}
+#funds #sharedFinanceScene #depositCustomOptions{
+  top:calc(100% + 6px);padding:7px;max-height:min(450px,58dvh);overflow:hidden auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;touch-action:pan-y;background:rgba(5,9,14,.88)!important;
+  border:1px solid rgba(255,225,117,.42)!important;border-radius:14px!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.08)!important;
+  backdrop-filter:blur(22px) saturate(130%)!important;-webkit-backdrop-filter:blur(22px) saturate(130%)!important;isolation:isolate
+}
+#funds #sharedFinanceScene #depositCustomOptions .deposit-option-group-title{min-height:34px;margin:3px 2px 5px;padding:7px 10px;display:flex;align-items:center;color:#7df0bf;border:1px solid rgba(43,212,146,.2);border-radius:9px;background:linear-gradient(135deg,rgba(7,77,54,.34),rgba(4,22,17,.44));font-size:10px;font-weight:950;letter-spacing:.04em;line-height:1.35;pointer-events:none}
+#funds #sharedFinanceScene #depositCustomOptions .deposit-option-group-title.deposit-option-group-main{margin-top:9px;color:#ffe483;border-color:rgba(240,185,11,.25);background:linear-gradient(135deg,rgba(83,61,7,.32),rgba(27,21,6,.42))}
+#funds #sharedFinanceScene #depositCustomOptions .custom-option{min-height:48px;margin:2px 0;padding:11px 12px;border:1px solid transparent;border-radius:10px;color:#fff!important;background:rgba(255,255,255,.035)!important;text-shadow:0 2px 7px rgba(0,0,0,.95)!important}
+#funds #sharedFinanceScene #depositCustomOptions .custom-option:hover,
+#funds #sharedFinanceScene #depositCustomOptions .custom-option:active{background:rgba(240,185,11,.14)!important;border-color:rgba(255,225,117,.22)!important}
+
+#funds #sharedFinanceScene #withdrawCryptoCustomSelect{z-index:170}
+#funds #sharedFinanceScene #withdrawCryptoCustomSelect .custom-select-trigger{min-height:58px;padding:14px 15px!important;color:#fff!important;background:linear-gradient(145deg,rgba(4,8,13,.7),rgba(26,20,7,.52))!important;border:1px solid rgba(255,225,117,.38)!important;border-radius:13px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 9px 24px rgba(0,0,0,.24)!important;backdrop-filter:blur(13px) saturate(122%)!important;-webkit-backdrop-filter:blur(13px) saturate(122%)!important}
+#funds #sharedFinanceScene #withdrawCustomOptions{top:calc(100% + 7px);bottom:auto;height:min(360px,var(--withdraw-menu-available,52dvh));max-height:none;padding:7px 7px 18px;overflow-x:hidden;overflow-y:scroll;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-gutter:stable;background:rgba(4,8,13,.91)!important;border:1px solid rgba(255,225,117,.46)!important;border-radius:15px!important;box-shadow:0 22px 56px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08)!important;backdrop-filter:blur(26px) saturate(138%)!important;-webkit-backdrop-filter:blur(26px) saturate(138%)!important;isolation:isolate;z-index:190}
+#funds #sharedFinanceScene #withdrawCustomOptions.open-up{top:auto!important;bottom:calc(100% + 7px)!important}
+#funds #sharedFinanceScene #withdrawCustomOptions .custom-option{min-height:52px;margin:2px 0;padding:12px 13px;border:1px solid rgba(255,255,255,.035);border-radius:11px;color:#fff!important;background:rgba(255,255,255,.045)!important;font-weight:730;line-height:1.45;text-shadow:0 2px 8px rgba(0,0,0,.98)!important}
+#funds #sharedFinanceScene #withdrawCustomOptions .custom-option:hover,
+#funds #sharedFinanceScene #withdrawCustomOptions .custom-option:active{color:#fff4c7!important;background:linear-gradient(135deg,rgba(240,185,11,.2),rgba(255,255,255,.06))!important;border-color:rgba(255,225,117,.3)!important}
+#funds #sharedFinanceScene #withdrawCustomOptions .custom-option img{width:25px;height:25px;flex:0 0 25px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.48))}
+
+#funds #sharedFinanceScene .payment-method-trigger{width:100%;min-height:56px;padding:13px 15px!important;border:1px solid rgba(255,225,117,.34)!important;border-radius:13px!important;color:#f5f7fa!important;background:linear-gradient(145deg,rgba(7,11,16,.68),rgba(29,22,7,.44))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px rgba(0,0,0,.2)!important;backdrop-filter:blur(12px) saturate(120%)!important;-webkit-backdrop-filter:blur(12px) saturate(120%)!important;font-weight:760;text-align:start;touch-action:manipulation}
+#funds #sharedFinanceScene .payment-method-chevron{flex:0 0 auto;margin-inline-start:12px;color:#ffe477;font-size:11px;transition:transform .18s ease}
+#funds #sharedFinanceScene #paymentMethodTrigger[aria-expanded="true"] .payment-method-chevron{transform:rotate(180deg)}
+#funds #sharedFinanceScene #paymentMethodCustomOptions{top:calc(100% + 7px);padding:7px;overflow:hidden;border:1px solid rgba(255,225,117,.44)!important;border-radius:15px!important;background:rgba(5,8,13,.9)!important;box-shadow:0 22px 54px rgba(0,0,0,.66),inset 0 1px 0 rgba(255,255,255,.08)!important;backdrop-filter:blur(24px) saturate(135%)!important;-webkit-backdrop-filter:blur(24px) saturate(135%)!important;z-index:180}
+#funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option{width:100%;min-height:54px;margin:2px 0;padding:12px 13px;border:1px solid transparent;border-radius:11px;display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;gap:10px;color:#f3f6fa!important;background:rgba(255,255,255,.035)!important;text-align:start;font:inherit;line-height:1.55;cursor:pointer;touch-action:manipulation}
+#funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option:hover,
+#funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option:active,
+#funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option.selected{border-color:rgba(255,225,117,.28)!important;background:linear-gradient(135deg,rgba(240,185,11,.17),rgba(255,255,255,.045))!important}
+#funds #sharedFinanceScene .payment-method-option-mark{color:transparent;font-size:15px;font-weight:950;text-align:center}
+#funds #sharedFinanceScene .payment-method-option.selected .payment-method-option-mark{color:#ffe477}
+html[dir="rtl"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option{direction:rtl;text-align:right}
+html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option{direction:ltr;text-align:left}
+
+#funds #sharedFinanceScene #payment-info-box.deposit-wallet-info{min-height:178px;padding:23px!important;display:flex;flex-direction:column;justify-content:center;gap:10px;font-size:14px!important;line-height:1.75;word-break:normal!important;background:linear-gradient(145deg,rgba(8,12,17,.68),rgba(18,13,5,.46))!important;border:1px dashed rgba(240,185,11,.62)!important;border-radius:17px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 34px rgba(0,0,0,.24)!important;backdrop-filter:blur(12px) saturate(116%)!important;-webkit-backdrop-filter:blur(12px) saturate(116%)!important}
+#funds #sharedFinanceScene #payment-info-box.deposit-wallet-info>br{display:none}
+#funds #sharedFinanceScene #payment-info-box.deposit-wallet-info>b{font-size:15px;line-height:1.55}
+#funds #sharedFinanceScene #payment-info-box.deposit-wallet-info>small{display:block;color:#b6bdc8!important;font-size:12px;line-height:1.8}
+#funds #sharedFinanceScene .deposit-receipt-field{margin:-3px 0 20px;padding:14px;border:1px solid rgba(255,225,117,.28);border-radius:15px;background:linear-gradient(145deg,rgba(4,9,14,.62),rgba(36,27,7,.34));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 25px rgba(0,0,0,.2);backdrop-filter:blur(12px) saturate(118%);-webkit-backdrop-filter:blur(12px) saturate(118%)}
+
+@media(max-width:600px){
+  #funds #sharedFinanceScene #depositCustomOptions{max-height:54dvh;padding-bottom:14px}
+  #funds #sharedFinanceScene #depositCustomOptions .deposit-option-group-title{position:sticky;top:0;z-index:2;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  #funds #sharedFinanceScene #withdrawCustomOptions{height:min(370px,var(--withdraw-menu-available,48dvh));padding:6px 6px calc(18px + env(safe-area-inset-bottom,0px))}
+  #funds #sharedFinanceScene #withdrawCustomOptions .custom-option{min-height:50px;padding:11px 10px;font-size:13px}
+  #funds #sharedFinanceScene #paymentMethodCustomOptions{position:absolute!important;max-height:none!important}
+  #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-method-option{min-height:58px;font-size:13px}
+  #funds #sharedFinanceScene #payment-info-box.deposit-wallet-info{min-height:205px;padding:18px!important}
+}
+</style>
 
 <script id="funds-i18n-v1">
 (function(){
