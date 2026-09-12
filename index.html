@@ -14713,8 +14713,8 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   .bi-cardbuy-provider b{display:block;font-size:13px;line-height:1.25;color:#f7f9fb;white-space:nowrap}.bi-cardbuy-provider small{display:block;max-width:100%;font-size:9.5px;color:#9ca7b5;line-height:1.45;overflow-wrap:anywhere}
   .bi-provider-logo{box-sizing:border-box;width:104px;height:52px;padding:8px 10px;border-radius:13px;display:grid;place-items:center;flex:0 0 auto;direction:ltr;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 7px 18px rgba(0,0,0,.20)}
   .bi-provider-logo svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,0,0,.28))}
-  .bi-provider-logo.bi-logo-binance{background:linear-gradient(145deg,rgba(240,185,11,.15),rgba(240,185,11,.035));border-color:rgba(240,185,11,.26)}
-  .bi-provider-logo.bi-logo-binance svg{width:36px;height:36px}
+  .bi-provider-logo.bi-logo-binance{background:linear-gradient(145deg,rgba(22,29,41,.96),rgba(12,17,26,.88));border-color:rgba(240,185,11,.28)}
+  .bi-provider-logo.bi-logo-binance svg{width:92px;height:24px;filter:none}
   .bi-provider-logo.bi-logo-bybit{background:linear-gradient(145deg,rgba(247,166,0,.13),rgba(255,255,255,.025));border-color:rgba(247,166,0,.23)}
   .bi-provider-logo.bi-logo-bybit svg{width:88px;height:28px}
   .bi-provider-logo.bi-logo-mercuryo{background:linear-gradient(145deg,rgba(21,230,162,.12),rgba(255,255,255,.025));border-color:rgba(21,230,162,.22)}
@@ -14726,7 +14726,7 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   .bi-cardbuy-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:13px}.bi-cardbuy-continue{width:100%;border:0;border-radius:11px;padding:11px 12px;background:linear-gradient(90deg,#f0b90b,#ffd966);color:#111;font-weight:850;font-size:12px;cursor:pointer}.bi-cardbuy-continue:active{transform:translateY(1px)}
   .bi-cardbuy-disclaimer{font-size:9px;color:#778393;line-height:1.45;margin:10px 2px 0;text-align:center}
   html[dir="rtl"] .bi-cardbuy-head,html[dir="rtl"] .bi-cardbuy-step{direction:rtl;text-align:right}
-  @media(max-width:600px){.bi-cardbuy-providers{grid-template-columns:1fr;gap:10px}.bi-cardbuy-provider{min-height:88px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:start;padding:12px 14px;gap:14px}.bi-cardbuy-provider::after{inset:auto 16px 0}.bi-provider-logo{width:100px;height:58px;padding:9px 10px}.bi-provider-logo.bi-logo-binance svg{width:38px;height:38px}.bi-provider-logo.bi-logo-bybit svg{width:84px;height:27px}.bi-provider-logo.bi-logo-mercuryo svg{width:86px;height:27px}.bi-provider-copy{width:auto;flex:1;align-items:flex-start;gap:5px}.bi-cardbuy-provider b{font-size:13.5px}.bi-cardbuy-provider small{font-size:10px}.bi-cardbuy{padding:14px}}
+  @media(max-width:600px){.bi-cardbuy-providers{grid-template-columns:1fr;gap:10px}.bi-cardbuy-provider{min-height:88px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:start;padding:12px 14px;gap:14px}.bi-cardbuy-provider::after{inset:auto 16px 0}.bi-provider-logo{width:100px;height:58px;padding:9px 10px}.bi-provider-logo.bi-logo-binance svg{width:90px;height:24px;filter:none}.bi-provider-logo.bi-logo-bybit svg{width:84px;height:27px}.bi-provider-logo.bi-logo-mercuryo svg{width:86px;height:27px}.bi-provider-copy{width:auto;flex:1;align-items:flex-start;gap:5px}.bi-cardbuy-provider b{font-size:13.5px}.bi-cardbuy-provider small{font-size:10px}.bi-cardbuy{padding:14px}}
 
   .bi-provider-guide{position:fixed;inset:0;z-index:10080;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.74);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
   .bi-provider-guide.show{display:flex}.bi-provider-guide-card{position:relative;width:min(100%,470px);max-height:min(88vh,720px);overflow:auto;padding:20px;border:1px solid rgba(240,185,11,.48);border-radius:22px;background:linear-gradient(145deg,rgba(18,24,34,.98),rgba(7,11,17,.97));box-shadow:0 28px 80px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.07);color:#fff}
@@ -34856,8 +34856,11 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
       <div class="bi-cardbuy-providers">
         <a class="bi-cardbuy-provider" href="${PROVIDERS.binance}" target="_blank" rel="noopener noreferrer" onclick="return window.biCardBuyOpenProvider(event,'binance')">
           <span class="bi-provider-logo bi-logo-binance" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2.7 15.2 5.9 12 9.1 8.8 5.9 12 2.7Zm6.1 6.1 3.2 3.2-3.2 3.2-3.2-3.2 3.2-3.2ZM5.9 8.8 9.1 12l-3.2 3.2L2.7 12l3.2-3.2Zm6.1 6.1 3.2 3.2-3.2 3.2-3.2-3.2 3.2-3.2Zm0-4.5 1.3 1.3-1.3 1.3-1.3-1.3 1.3-1.3Z" fill="#F0B90B"/>
+            <svg viewBox="0 0 142 32" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#F0B90B">
+                <path d="M18 0 27 9l-5.4 5.4-3.6-3.6-3.6 3.6L9 9l9-9ZM5.4 12.6 9 16.2l-3.6 3.6L9 23.4 5.4 27 0 21.6l5.4-5.4L0 10.8l5.4-5.4L9 9l-3.6 3.6ZM30.6 12.6 36 18l-5.4 5.4-3.6-3.6-3.6 3.6-5.4-5.4 5.4-5.4 3.6 3.6 3.6-3.6ZM18 21.6l3.6-3.6L27 23.4 18 32l-9-8.6 5.4-5.4 3.6 3.6Z"/>
+                <text x="48" y="22" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#F0B90B">Binance</text>
+              </g>
             </svg>
           </span>
           <span class="bi-provider-copy"><b>${escHtml(t.binance)}</b><small>${escHtml(t.binanceSub)}</small></span>
