@@ -24792,6 +24792,46 @@ LANGUAGE_CATALOG.forEach(([code])=>{
   Object.assign(d,DYNAMIC_TEXT_EN,generated,code==="fa"?DYNAMIC_TEXT_FA:{});
 });
 
+/* Financial request statuses must never reuse generic interface words such as
+   "Active" or "Clear history". These labels reflect the administrator review
+   state stored in financial_requests. */
+const FINANCIAL_STATUS_TRANSLATIONS={
+  en:["Pending approval","Approved","Rejected","Cancelled"],
+  de:["Ausstehende Genehmigung","Genehmigt","Abgelehnt","Storniert"],
+  it:["In attesa di approvazione","Approvato","Rifiutato","Annullato"],
+  ru:["Ожидает подтверждения","Подтверждено","Отклонено","Отменено"],
+  ja:["承認待ち","承認済み","却下済み","キャンセル済み"],
+  tr:["Onay bekliyor","Onaylandı","Reddedildi","İptal edildi"],
+  zh:["等待批准","已批准","已拒绝","已取消"],
+  nl:["Wacht op goedkeuring","Goedgekeurd","Afgewezen","Geannuleerd"],
+  fr:["En attente d’approbation","Approuvé","Rejeté","Annulé"],
+  ko:["승인 대기 중","승인됨","거부됨","취소됨"],
+  fa:["در انتظار تأیید","تأیید شده","رد شده","لغو شده"],
+  ar:["بانتظار الموافقة","تمت الموافقة","مرفوض","ملغي"],
+  az:["Təsdiq gözləyir","Təsdiqləndi","Rədd edildi","Ləğv edildi"],
+  el:["Αναμονή έγκρισης","Εγκρίθηκε","Απορρίφθηκε","Ακυρώθηκε"],
+  hi:["स्वीकृति की प्रतीक्षा में","स्वीकृत","अस्वीकृत","रद्द"],
+  id:["Menunggu persetujuan","Disetujui","Ditolak","Dibatalkan"],
+  ms:["Menunggu kelulusan","Diluluskan","Ditolak","Dibatalkan"],
+  pl:["Oczekuje na zatwierdzenie","Zatwierdzono","Odrzucono","Anulowano"],
+  pt:["Aguardando aprovação","Aprovado","Rejeitado","Cancelado"],
+  ro:["În așteptarea aprobării","Aprobat","Respins","Anulat"],
+  es:["Pendiente de aprobación","Aprobado","Rechazado","Cancelado"],
+  th:["รอการอนุมัติ","อนุมัติแล้ว","ถูกปฏิเสธ","ยกเลิกแล้ว"],
+  uk:["Очікує підтвердження","Підтверджено","Відхилено","Скасовано"],
+  ur:["منظوری کا منتظر","منظور شدہ","مسترد","منسوخ"],
+  vi:["Đang chờ phê duyệt","Đã phê duyệt","Đã từ chối","Đã hủy"]
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  const copy=FINANCIAL_STATUS_TRANSLATIONS[code]||FINANCIAL_STATUS_TRANSLATIONS.en;
+  Object.assign(T[code],{
+    pendingStatus:copy[0],
+    approvedStatus:copy[1],
+    rejectedStatus:copy[2],
+    cancelledStatus:copy[3]
+  });
+});
+
 /* Older packs did not contain every original key.  Replace those inherited
    English values with an equivalent value already authored in that language. */
 const BASE_LOCAL_FALLBACKS={
@@ -25796,17 +25836,32 @@ window.loadTransactions = async function () {
   `;
 
   visibleData.forEach(item => {
-    const status = String(item.status || "pending");
-    const statusKey={approved:"approvedStatus",rejected:"rejectedStatus",pending:"pendingStatus",completed:"completedStatus",active:"activeStatus"}[status.toLowerCase()]||"pendingStatus";
+    const rawStatus = String(item.status || "pending").trim().toLowerCase();
+    /* The database uses pending / approved / rejected / cancelled. Treat old
+       legacy values safely: Active is still awaiting an administrator, while
+       Completed represents an already approved request. */
+    const status = rawStatus === "approved" || rawStatus === "completed"
+      ? "approved"
+      : rawStatus === "rejected"
+        ? "rejected"
+        : rawStatus === "cancelled"
+          ? "cancelled"
+          : "pending";
+    const statusKey={
+      approved:"approvedStatus",
+      rejected:"rejectedStatus",
+      cancelled:"cancelledStatus",
+      pending:"pendingStatus"
+    }[status];
     const typeKey=String(item.request_type||"").toLowerCase()==="withdrawal"
       ? "withdrawalType"
       : "depositType";
     const color =
       status === "approved"
         ? "green"
-        : status === "rejected"
+        : status === "rejected" || status === "cancelled"
           ? "red"
-          : "";
+          : "gold";
 
     html += `
       <tr>
