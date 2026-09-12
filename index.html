@@ -14699,23 +14699,27 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   .bi-cardbuy-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}.bi-cardbuy-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgba(240,185,11,.12);border:1px solid rgba(240,185,11,.30);flex:0 0 auto}.bi-cardbuy-icon svg{width:23px;height:23px;fill:none;stroke:#f0b90b;stroke-width:1.8}
   .bi-cardbuy-head h3{margin:0 0 5px;font-size:17px;color:#fff}.bi-cardbuy-head p{margin:0;color:#aeb7c3;line-height:1.55;font-size:12px}
   .bi-cardbuy-amount{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);margin:13px 0}.bi-cardbuy-amount span{color:#8f9aaa;font-size:11px}.bi-cardbuy-amount strong{color:#f0b90b;font-size:15px;direction:ltr}
-  .bi-cardbuy-providers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-  .bi-cardbuy-provider{min-height:84px;text-decoration:none!important;border-radius:14px;padding:12px 10px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.030),rgba(255,255,255,.015));backdrop-filter:blur(9px) saturate(1.08);-webkit-backdrop-filter:blur(9px) saturate(1.08);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;transition:.18s ease;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 8px 18px rgba(0,0,0,.14)}
+  .bi-cardbuy-providers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .bi-cardbuy-provider{min-width:0;min-height:128px;overflow:hidden;text-decoration:none!important;border-radius:16px;padding:14px 12px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(23,30,42,.78),rgba(12,17,25,.58));backdrop-filter:blur(12px) saturate(1.12);-webkit-backdrop-filter:blur(12px) saturate(1.12);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;transition:.18s ease;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 10px 24px rgba(0,0,0,.18);position:relative}
+  .bi-cardbuy-provider::after{content:"";position:absolute;inset:auto 14px 0;height:1px;background:linear-gradient(90deg,transparent,rgba(240,185,11,.65),transparent);opacity:.55}
   .bi-cardbuy-provider:hover{transform:translateY(-2px);border-color:rgba(240,185,11,.55);background:linear-gradient(145deg,rgba(240,185,11,.10),rgba(255,255,255,.02));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 22px rgba(0,0,0,.18)}
-  .bi-cardbuy-provider b{font-size:13px}.bi-cardbuy-provider small{font-size:9.5px;color:#9ca7b5;line-height:1.3}
-  .bi-provider-logo{width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto}
-  .bi-provider-logo svg{width:100%;height:100%;display:block}
-  .bi-provider-logo.bi-logo-binance svg{width:28px;height:28px}
-  .bi-provider-logo.bi-logo-bybit svg{width:88px;height:24px}
-  .bi-provider-logo.bi-logo-mercuryo svg{width:92px;height:24px}
-  .bi-provider-copy{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bi-cardbuy-provider b{display:block;font-size:13px;line-height:1.25;color:#f7f9fb;white-space:nowrap}.bi-cardbuy-provider small{display:block;max-width:100%;font-size:9.5px;color:#9ca7b5;line-height:1.45;overflow-wrap:anywhere}
+  .bi-provider-logo{box-sizing:border-box;width:104px;height:52px;padding:8px 10px;border-radius:13px;display:grid;place-items:center;flex:0 0 auto;direction:ltr;overflow:hidden;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 7px 18px rgba(0,0,0,.20)}
+  .bi-provider-logo svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,0,0,.28))}
+  .bi-provider-logo.bi-logo-binance{background:linear-gradient(145deg,rgba(240,185,11,.15),rgba(240,185,11,.035));border-color:rgba(240,185,11,.26)}
+  .bi-provider-logo.bi-logo-binance svg{width:36px;height:36px}
+  .bi-provider-logo.bi-logo-bybit{background:linear-gradient(145deg,rgba(247,166,0,.13),rgba(255,255,255,.025));border-color:rgba(247,166,0,.23)}
+  .bi-provider-logo.bi-logo-bybit svg{width:88px;height:28px}
+  .bi-provider-logo.bi-logo-mercuryo{background:linear-gradient(145deg,rgba(21,230,162,.12),rgba(255,255,255,.025));border-color:rgba(21,230,162,.22)}
+  .bi-provider-logo.bi-logo-mercuryo svg{width:90px;height:28px}
+  .bi-provider-copy{min-width:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:4px}
   .bi-cardbuy-steps{margin:14px 0 0;display:grid;gap:7px}.bi-cardbuy-step{display:flex;gap:8px;align-items:flex-start;font-size:11px;color:#c3cbd4;line-height:1.5}.bi-cardbuy-step i{font-style:normal;flex:0 0 20px;height:20px;border-radius:50%;display:grid;place-items:center;background:rgba(240,185,11,.12);color:#f0b90b;font-weight:800;font-size:10px}
   .bi-cardbuy-note{margin-top:12px;padding:10px 11px;border-radius:11px;border:1px solid rgba(240,185,11,.18);background:rgba(240,185,11,.055);font-size:10.5px;line-height:1.5;color:#d2d8df}.bi-cardbuy-note strong{color:#f0b90b}
   .bi-cardbuy-status{display:none;margin-top:11px;padding:9px 10px;border-radius:10px;background:rgba(14,203,129,.08);border:1px solid rgba(14,203,129,.20);color:#b9e8d6;font-size:10.5px;line-height:1.45}.bi-cardbuy-status.show{display:block}
   .bi-cardbuy-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:13px}.bi-cardbuy-continue{width:100%;border:0;border-radius:11px;padding:11px 12px;background:linear-gradient(90deg,#f0b90b,#ffd966);color:#111;font-weight:850;font-size:12px;cursor:pointer}.bi-cardbuy-continue:active{transform:translateY(1px)}
   .bi-cardbuy-disclaimer{font-size:9px;color:#778393;line-height:1.45;margin:10px 2px 0;text-align:center}
   html[dir="rtl"] .bi-cardbuy-head,html[dir="rtl"] .bi-cardbuy-step{direction:rtl;text-align:right}
-  @media(max-width:600px){.bi-cardbuy-providers{grid-template-columns:1fr}.bi-cardbuy-provider{min-height:68px;flex-direction:row;justify-content:flex-start;text-align:start;padding:11px 13px}.bi-provider-copy{align-items:flex-start}.bi-provider-logo.bi-logo-bybit svg,.bi-provider-logo.bi-logo-mercuryo svg{width:78px;height:22px}.bi-cardbuy{padding:14px}}
+  @media(max-width:600px){.bi-cardbuy-providers{grid-template-columns:1fr;gap:10px}.bi-cardbuy-provider{min-height:88px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:start;padding:12px 14px;gap:14px}.bi-cardbuy-provider::after{inset:auto 16px 0}.bi-provider-logo{width:100px;height:58px;padding:9px 10px}.bi-provider-logo.bi-logo-binance svg{width:38px;height:38px}.bi-provider-logo.bi-logo-bybit svg{width:84px;height:27px}.bi-provider-logo.bi-logo-mercuryo svg{width:86px;height:27px}.bi-provider-copy{width:auto;flex:1;align-items:flex-start;gap:5px}.bi-cardbuy-provider b{font-size:13.5px}.bi-cardbuy-provider small{font-size:10px}.bi-cardbuy{padding:14px}}
 </style>
 
 </head>
