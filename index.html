@@ -14657,6 +14657,13 @@ html[dir="rtl"] .iwp-delete-confirm-box{direction:rtl}
 .academy-ad-certificate h3{margin-top:8.8%;font-size:clamp(11px,3.35cqw,51px)}.academy-ad-certificate .academy-ad-subtitle{font-size:clamp(6px,1.05cqw,16px)}.academy-ad-certificate .academy-ad-features{grid-template-columns:repeat(3,1fr);margin-top:3.8%;height:13%}.academy-ad-certificate .academy-ad-actions{margin-top:4%}
 .academy-promo-card[lang="en"].academy-ad-certificate h3,.academy-promo-card[lang="es"].academy-ad-certificate h3,.academy-promo-card[lang="fr"].academy-ad-certificate h3,.academy-promo-card[lang="de"].academy-ad-certificate h3,.academy-promo-card[lang="ru"].academy-ad-certificate h3{font-size:clamp(9px,2.45cqw,37px)}
 .academy-promo-card[lang="de"].academy-ad-course h3,.academy-promo-card[lang="fr"].academy-ad-course h3,.academy-promo-card[lang="es"].academy-ad-course h3,.academy-promo-card[lang="ru"].academy-ad-course h3{font-size:clamp(10px,3.05cqw,46px)}
+/* Keep translated download labels fully inside the artwork button. */
+.academy-ad-cta[data-academy-download]{width:21.8cqw;max-width:100%;min-width:0;text-align:center;line-height:1.08;overflow:hidden}
+.academy-promo-card[lang="en"] .academy-ad-cta[data-academy-download],
+.academy-promo-card[lang="es"] .academy-ad-cta[data-academy-download],
+.academy-promo-card[lang="fr"] .academy-ad-cta[data-academy-download],
+.academy-promo-card[lang="de"] .academy-ad-cta[data-academy-download],
+.academy-promo-card[lang="ru"] .academy-ad-cta[data-academy-download]{font-size:clamp(6px,1.27cqw,19px);letter-spacing:-.025em}
 .academy-promo-nav{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}.academy-promo-dot{width:10px;height:10px;padding:0;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);border-radius:999px;transition:width .2s ease,background .2s ease,border-color .2s ease}.academy-promo-dot.active{width:31px;background:linear-gradient(90deg,#d99b00,#ffe58a);border-color:#ffe58a}
 .academy-payment-modal .bscp-title{max-width:330px}.academy-payment-modal .academy-checkout-code{color:#ffe58a;font-size:10px;font-weight:900;letter-spacing:1.6px}.academy-payment-modal .academy-success-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:16px}.academy-payment-modal .academy-success-actions .bscp-primary,.academy-payment-modal .academy-success-actions .bscp-secondary{width:auto;min-width:150px}
 @media(max-width:480px){.academy-home-showcase{width:100vw;margin-left:calc(50% - 50vw);padding:0 8px}.academy-promo-track{gap:8px}.academy-promo-card{border-radius:10px}}
@@ -14720,6 +14727,18 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   .bi-cardbuy-disclaimer{font-size:9px;color:#778393;line-height:1.45;margin:10px 2px 0;text-align:center}
   html[dir="rtl"] .bi-cardbuy-head,html[dir="rtl"] .bi-cardbuy-step{direction:rtl;text-align:right}
   @media(max-width:600px){.bi-cardbuy-providers{grid-template-columns:1fr;gap:10px}.bi-cardbuy-provider{min-height:88px;flex-direction:row;justify-content:flex-start;align-items:center;text-align:start;padding:12px 14px;gap:14px}.bi-cardbuy-provider::after{inset:auto 16px 0}.bi-provider-logo{width:100px;height:58px;padding:9px 10px}.bi-provider-logo.bi-logo-binance svg{width:38px;height:38px}.bi-provider-logo.bi-logo-bybit svg{width:84px;height:27px}.bi-provider-logo.bi-logo-mercuryo svg{width:86px;height:27px}.bi-provider-copy{width:auto;flex:1;align-items:flex-start;gap:5px}.bi-cardbuy-provider b{font-size:13.5px}.bi-cardbuy-provider small{font-size:10px}.bi-cardbuy{padding:14px}}
+
+  .bi-provider-guide{position:fixed;inset:0;z-index:10080;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.74);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+  .bi-provider-guide.show{display:flex}.bi-provider-guide-card{position:relative;width:min(100%,470px);max-height:min(88vh,720px);overflow:auto;padding:20px;border:1px solid rgba(240,185,11,.48);border-radius:22px;background:linear-gradient(145deg,rgba(18,24,34,.98),rgba(7,11,17,.97));box-shadow:0 28px 80px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.07);color:#fff}
+  .bi-provider-guide-close{position:absolute;top:12px;inset-inline-end:12px;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:rgba(255,255,255,.045);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+  .bi-provider-guide-brand{display:flex;align-items:center;gap:10px;padding-inline-end:42px}.bi-provider-guide-mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(240,185,11,.38);border-radius:13px;background:rgba(240,185,11,.10);color:#f0b90b;font-weight:950}.bi-provider-guide-brand h3{margin:0;color:#fff;font-size:18px}.bi-provider-guide-brand small{display:block;margin-top:3px;color:#9ba6b4;font-size:11px}
+  .bi-provider-guide-tip{margin:15px 0 12px;padding:12px 13px;border-inline-start:3px solid #f0b90b;border-radius:11px;background:rgba(240,185,11,.075);color:#f1f3f5;font-size:12px;line-height:1.75}
+  .bi-provider-guide-grid{display:grid;gap:8px}.bi-provider-guide-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 11px;border:1px solid rgba(255,255,255,.075);border-radius:11px;background:rgba(255,255,255,.035)}.bi-provider-guide-row span{display:block;color:#919cab;font-size:10px;margin-bottom:3px}.bi-provider-guide-row strong{display:block;color:#fff;font-size:13px;direction:ltr;word-break:break-all}.bi-provider-guide-row.amount strong{color:#ffe16b;font-size:18px}.bi-provider-copy-btn{min-width:92px;min-height:36px;padding:7px 10px;border:1px solid rgba(240,185,11,.35);border-radius:9px;background:rgba(240,185,11,.09);color:#ffe16b;font-size:10px;font-weight:850;cursor:pointer}
+  .bi-provider-guide-fee{margin:11px 1px 0;color:#aeb7c3;font-size:10.5px;line-height:1.65}.bi-provider-guide-error{display:none;margin-top:11px;padding:10px 11px;border:1px solid rgba(234,57,67,.38);border-radius:10px;background:rgba(234,57,67,.09);color:#ff9ca2;font-size:11px;line-height:1.55}.bi-provider-guide-error.show{display:block}
+  .bi-provider-guide-actions{display:grid;grid-template-columns:1fr auto;gap:9px;margin-top:15px}.bi-provider-guide-open,.bi-provider-guide-cancel{min-height:44px;padding:10px 14px;border-radius:11px;font-weight:900;cursor:pointer}.bi-provider-guide-open{border:1px solid #ffe58a;background:linear-gradient(180deg,#fff0a0,#e6a815);color:#171100}.bi-provider-guide-open:disabled{opacity:.52;cursor:not-allowed}.bi-provider-guide-cancel{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);color:#d5dae0}
+  .bi-provider-guide-loading{display:flex;align-items:center;gap:9px;margin:13px 0;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.035);color:#cbd2da;font-size:11px}.bi-provider-guide-spinner{width:17px;height:17px;border:2px solid rgba(240,185,11,.22);border-top-color:#f0b90b;border-radius:50%;animation:biGuideSpin .75s linear infinite}@keyframes biGuideSpin{to{transform:rotate(360deg)}}
+  html[dir="rtl"] .bi-provider-guide-card{text-align:right;direction:rtl}html[dir="rtl"] .bi-provider-guide-brand,html[dir="rtl"] .bi-provider-guide-actions{direction:rtl}
+  @media(max-width:520px){.bi-provider-guide{padding:12px}.bi-provider-guide-card{padding:17px;border-radius:18px}.bi-provider-guide-row{grid-template-columns:minmax(0,1fr) 86px}.bi-provider-guide-actions{grid-template-columns:1fr}.bi-provider-guide-cancel{order:2}}
 </style>
 
 <style id="payment-method-real-brand-icons-v1">
@@ -34481,6 +34500,10 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     try{await navigator.clipboard.writeText(address);render(c("copied"),"ok")}catch(_){if(typeof toast==="function")toast(address)}
   };
 
+  window.biGetRandomEvmPayment=function(){
+    return state.payment?{...state.payment}:null;
+  };
+
   window.biCancelRandomEvmAddress=async function(){
     const id=state.payment?.payment_id||state.payment?.id;if(!id){state.payment=null;render();return}
     try{const {error}=await supabaseClient.rpc("cancel_crypto_payment",{p_payment_id:id});if(error)throw error;state.payment=null;state.generateReference=null;clearTimer();render(c("cancelled"),"ok")}catch(_){render(c("server"),"error")}
@@ -34722,11 +34745,95 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
     ur:{option:"4. کارڈ سے USDT خریدیں (ویب)",title:"کارڈ سے USDT خریدیں",intro:"معاون ویب سروس پر USDT خریدیں، پھر واپس آکر اپنے مخصوص BinancInvest پتے پر بھیجیں۔",amount:"ڈپازٹ رقم",binance:"Binance Web",binanceSub:"کارڈ خرید · ایپ کی ضرورت نہیں",bybit:"Bybit Web",bybitSub:"One-Click Buy · ایپ کی ضرورت نہیں",mercuryo:"Mercuryo Web",mercuryoSub:"براؤزر آن ریمپ · والیٹ ایڈریس مانگا جا سکتا ہے",s1:"اوپر پہلے ڈپازٹ رقم درج کریں۔",s2:"کسی فراہم کنندہ کو کھولیں اور کارڈ سے کافی USDT خریدیں۔ فراہم کنندہ اپنی شناختی تصدیق طلب کر سکتا ہے۔",s3:"BinancInvest پر واپس آئیں اور جاری رکھیں؛ USDT (BEP20) اور آپ کا مخصوص رینڈم ادائیگی پتہ تیار ہوگا۔",feeTitle:"اہم:",fee:"نکلواتے وقت یقینی بنائیں کہ BinancInvest کو پہنچنے والی رقم ڈپازٹ کے بالکل برابر ہو۔ تصدیق سے پہلے نکلوائی/نیٹ ورک فیس چیک کریں۔",continue:"میں نے USDT خرید لیا — ڈپازٹ جاری رکھیں",opened:"فراہم کنندہ نئی ٹیب میں کھل گیا ہے۔ USDT خریدنے کے بعد واپس آکر جاری رکھیں۔",needAmount:"پہلے ڈپازٹ رقم درج کریں۔",external:"کارڈ ادائیگی تیسرے فریق کی سروس پر ہوتی ہے۔ BinancInvest آپ کے کارڈ کی تفصیلات یا اس سروس کے KYC دستاویزات جمع نہیں کرتا۔"},
     vi:{option:"4. Mua USDT bằng thẻ (Web)",title:"Mua USDT bằng thẻ",intro:"Hãy mua USDT trên dịch vụ web được hỗ trợ, sau đó quay lại và gửi vào địa chỉ BinancInvest riêng của bạn.",amount:"Số tiền nạp",binance:"Binance Web",binanceSub:"Mua bằng thẻ · không cần app",bybit:"Bybit Web",bybitSub:"One-Click Buy · không cần app",mercuryo:"Mercuryo Web",mercuryoSub:"On-ramp trên trình duyệt · có thể cần địa chỉ ví",s1:"Trước tiên hãy nhập số tiền nạp ở trên.",s2:"Mở một nhà cung cấp và mua đủ USDT bằng thẻ. Nhà cung cấp có thể yêu cầu xác minh danh tính riêng của họ.",s3:"Quay lại BinancInvest và tiếp tục; chúng tôi sẽ chuẩn bị USDT (BEP20) cùng địa chỉ thanh toán ngẫu nhiên dành riêng cho bạn.",feeTitle:"Quan trọng:",fee:"Khi rút, hãy đảm bảo số tiền đến BinancInvest đúng bằng số tiền nạp. Kiểm tra phí rút/mạng trước khi xác nhận.",continue:"Đã mua USDT — tiếp tục nạp",opened:"Nhà cung cấp đã mở trong tab mới. Sau khi mua USDT, hãy quay lại và tiếp tục.",needAmount:"Hãy nhập số tiền nạp trước.",external:"Thanh toán bằng thẻ diễn ra trên dịch vụ bên thứ ba. BinancInvest không thu thập thông tin thẻ hoặc tài liệu KYC của nhà cung cấp."}
   };
+  const GUIDE={
+    en:{title:"Before opening the provider",copied:"Deposit amount copied",receive:"Amount to receive",asset:"Asset",network:"Network",address:"Dedicated payment address",copyAmount:"Copy amount",copyAddress:"Copy address",copyDone:"Copied ✓",open:"Open",cancel:"Cancel",loading:"Preparing your dedicated BEP20 address…",fee:"Paste the amount into Receive, not Spend. Card charges can be higher because provider and network fees are added separately.",binanceTip:"In Receive, change BTC to USDT, then paste the copied amount. After buying, return to BinancInvest and continue the deposit.",bybitTip:"Keep USDT selected and paste the copied amount as the amount to receive. After buying, return to BinancInvest and continue the deposit.",mercuryoTip:"Choose Buy, USDT and BNB Smart Chain (BEP20). Paste the amount into Receive and the dedicated address into the wallet-address field.",addressError:"The dedicated address could not be prepared. Sign in and try again; do not send funds without an active address."},
+    fa:{title:"قبل از ورود به سرویس پرداخت",copied:"مبلغ واریز کپی شد",receive:"مقدار دریافتی",asset:"ارز",network:"شبکه",address:"آدرس اختصاصی پرداخت",copyAmount:"کپی مبلغ",copyAddress:"کپی آدرس",copyDone:"کپی شد ✓",open:"ورود به",cancel:"انصراف",loading:"در حال آماده‌سازی آدرس اختصاصی BEP20…",fee:"مبلغ را در کادر Receive وارد کنید، نه Spend. مبلغ کارت ممکن است به‌دلیل کارمزد سرویس و شبکه بیشتر باشد.",binanceTip:"در قسمت Receive، ارز BTC را به USDT تغییر دهید و سپس مبلغ کپی‌شده را جای‌گذاری کنید. بعد از خرید به BinancInvest برگردید و ادامه پرداخت را بزنید.",bybitTip:"ارز USDT را انتخاب نگه دارید و مبلغ کپی‌شده را به‌عنوان مقدار دریافتی وارد کنید. بعد از خرید به BinancInvest برگردید و ادامه پرداخت را بزنید.",mercuryoTip:"گزینه Buy، ارز USDT و شبکه BNB Smart Chain (BEP20) را انتخاب کنید. مبلغ را در Receive و آدرس اختصاصی را در کادر آدرس کیف پول جای‌گذاری کنید.",addressError:"آدرس اختصاصی آماده نشد. وارد حساب شوید و دوباره تلاش کنید؛ بدون آدرس فعال هیچ مبلغی ارسال نکنید."},
+    az:{title:"Ödəniş xidmətinə keçməzdən əvvəl",copied:"Depozit məbləği kopyalandı",receive:"Alınacaq məbləğ",asset:"Valyuta",network:"Şəbəkə",address:"Xüsusi ödəniş ünvanı",copyAmount:"Məbləği kopyala",copyAddress:"Ünvanı kopyala",copyDone:"Kopyalandı ✓",open:"Aç",cancel:"Ləğv et",loading:"Xüsusi BEP20 ünvanı hazırlanır…",fee:"Məbləği Spend deyil, Receive sahəsinə yazın. Xidmət və şəbəkə haqqına görə kartdan daha çox tutula bilər.",binanceTip:"Receive bölməsində BTC-ni USDT ilə dəyişin və kopyalanmış məbləği əlavə edin. Alışdan sonra BinancInvest-ə qayıdın.",bybitTip:"USDT-ni seçili saxlayın və kopyalanmış məbləği alınacaq məbləğ kimi daxil edin. Sonra BinancInvest-ə qayıdın.",mercuryoTip:"Buy, USDT və BNB Smart Chain (BEP20) seçin. Məbləği Receive sahəsinə, xüsusi ünvanı wallet ünvanına əlavə edin.",addressError:"Xüsusi ünvan hazırlanmadı. Daxil olun və yenidən sınayın; aktiv ünvan olmadan vəsait göndərməyin."},
+    tr:{title:"Ödeme hizmetini açmadan önce",copied:"Yatırma tutarı kopyalandı",receive:"Alınacak miktar",asset:"Varlık",network:"Ağ",address:"Özel ödeme adresi",copyAmount:"Tutarı kopyala",copyAddress:"Adresi kopyala",copyDone:"Kopyalandı ✓",open:"Aç",cancel:"İptal",loading:"Özel BEP20 adresiniz hazırlanıyor…",fee:"Tutarı Spend yerine Receive alanına yapıştırın. Hizmet ve ağ ücretleri nedeniyle karttan daha fazla çekilebilir.",binanceTip:"Receive alanında BTC'yi USDT olarak değiştirin ve kopyalanan tutarı yapıştırın. Satın aldıktan sonra BinancInvest'e dönün.",bybitTip:"USDT seçili kalsın ve kopyalanan tutarı alınacak miktar olarak girin. Satın aldıktan sonra BinancInvest'e dönün.",mercuryoTip:"Buy, USDT ve BNB Smart Chain (BEP20) seçin. Tutarı Receive alanına, özel adresi cüzdan adresi alanına yapıştırın.",addressError:"Özel adres hazırlanamadı. Giriş yapıp tekrar deneyin; aktif adres olmadan para göndermeyin."},
+    ru:{title:"Перед переходом к оплате",copied:"Сумма депозита скопирована",receive:"Сумма к получению",asset:"Актив",network:"Сеть",address:"Выделенный адрес оплаты",copyAmount:"Копировать сумму",copyAddress:"Копировать адрес",copyDone:"Скопировано ✓",open:"Открыть",cancel:"Отмена",loading:"Подготавливается адрес BEP20…",fee:"Вставьте сумму в Receive, а не Spend. С карты может списаться больше из-за комиссий сервиса и сети.",binanceTip:"В поле Receive замените BTC на USDT и вставьте сумму. После покупки вернитесь в BinancInvest.",bybitTip:"Оставьте USDT и вставьте сумму как количество к получению. После покупки вернитесь в BinancInvest.",mercuryoTip:"Выберите Buy, USDT и BNB Smart Chain (BEP20). Вставьте сумму в Receive, а выделенный адрес — в поле кошелька.",addressError:"Не удалось подготовить адрес. Войдите и повторите; не отправляйте средства без активного адреса."},
+    ar:{title:"قبل فتح خدمة الدفع",copied:"تم نسخ مبلغ الإيداع",receive:"المبلغ المطلوب استلامه",asset:"العملة",network:"الشبكة",address:"عنوان الدفع المخصص",copyAmount:"نسخ المبلغ",copyAddress:"نسخ العنوان",copyDone:"تم النسخ ✓",open:"فتح",cancel:"إلغاء",loading:"جار تجهيز عنوان BEP20 المخصص…",fee:"ألصق المبلغ في Receive وليس Spend. قد تكون تكلفة البطاقة أعلى بسبب رسوم الخدمة والشبكة.",binanceTip:"في Receive غيّر BTC إلى USDT ثم ألصق المبلغ. بعد الشراء ارجع إلى BinancInvest.",bybitTip:"أبقِ USDT محدداً وألصق المبلغ كقيمة الاستلام. بعد الشراء ارجع إلى BinancInvest.",mercuryoTip:"اختر Buy وUSDT وشبكة BNB Smart Chain (BEP20). ألصق المبلغ في Receive والعنوان المخصص في حقل المحفظة.",addressError:"تعذر تجهيز العنوان المخصص. سجّل الدخول وحاول مجدداً، ولا ترسل أموالاً دون عنوان نشط."},
+    zh:{title:"打开支付服务前",copied:"充值金额已复制",receive:"应收金额",asset:"币种",network:"网络",address:"专属付款地址",copyAmount:"复制金额",copyAddress:"复制地址",copyDone:"已复制 ✓",open:"打开",cancel:"取消",loading:"正在准备专属 BEP20 地址…",fee:"请把金额粘贴到 Receive，而不是 Spend。由于服务费和网络费，银行卡扣款可能更高。",binanceTip:"在 Receive 中将 BTC 改为 USDT，然后粘贴金额。购买后返回 BinancInvest。",bybitTip:"保持 USDT 选中，并将金额作为应收数量粘贴。购买后返回 BinancInvest。",mercuryoTip:"选择 Buy、USDT 和 BNB Smart Chain (BEP20)。把金额粘贴到 Receive，把专属地址粘贴到钱包地址栏。",addressError:"无法准备专属地址。请登录后重试；没有有效地址时请勿付款。"},
+    es:{title:"Antes de abrir el proveedor",copied:"Importe del depósito copiado",receive:"Cantidad a recibir",asset:"Activo",network:"Red",address:"Dirección de pago dedicada",copyAmount:"Copiar importe",copyAddress:"Copiar dirección",copyDone:"Copiado ✓",open:"Abrir",cancel:"Cancelar",loading:"Preparando tu dirección BEP20…",fee:"Pega el importe en Receive, no en Spend. El cargo de la tarjeta puede ser mayor por las comisiones.",binanceTip:"En Receive cambia BTC por USDT y pega el importe. Después de comprar, vuelve a BinancInvest.",bybitTip:"Mantén USDT seleccionado y pega el importe como cantidad a recibir. Después vuelve a BinancInvest.",mercuryoTip:"Selecciona Buy, USDT y BNB Smart Chain (BEP20). Pega el importe en Receive y la dirección dedicada en el campo de wallet.",addressError:"No se pudo preparar la dirección. Inicia sesión e inténtalo de nuevo; no envíes fondos sin una dirección activa."},
+    fr:{title:"Avant d’ouvrir le fournisseur",copied:"Montant du dépôt copié",receive:"Montant à recevoir",asset:"Actif",network:"Réseau",address:"Adresse de paiement dédiée",copyAmount:"Copier le montant",copyAddress:"Copier l’adresse",copyDone:"Copié ✓",open:"Ouvrir",cancel:"Annuler",loading:"Préparation de votre adresse BEP20…",fee:"Collez le montant dans Receive, pas dans Spend. Le débit de la carte peut être supérieur à cause des frais.",binanceTip:"Dans Receive, remplacez BTC par USDT puis collez le montant. Après l’achat, revenez sur BinancInvest.",bybitTip:"Gardez USDT sélectionné et collez le montant à recevoir. Après l’achat, revenez sur BinancInvest.",mercuryoTip:"Choisissez Buy, USDT et BNB Smart Chain (BEP20). Collez le montant dans Receive et l’adresse dédiée dans le champ wallet.",addressError:"Impossible de préparer l’adresse. Connectez-vous et réessayez; n’envoyez rien sans adresse active."},
+    de:{title:"Vor dem Öffnen des Anbieters",copied:"Einzahlungsbetrag kopiert",receive:"Zu erhaltender Betrag",asset:"Währung",network:"Netzwerk",address:"Eigene Zahlungsadresse",copyAmount:"Betrag kopieren",copyAddress:"Adresse kopieren",copyDone:"Kopiert ✓",open:"Öffnen",cancel:"Abbrechen",loading:"Ihre BEP20-Adresse wird vorbereitet…",fee:"Fügen Sie den Betrag in Receive ein, nicht in Spend. Wegen Gebühren kann die Kartenbelastung höher sein.",binanceTip:"Ändern Sie in Receive BTC zu USDT und fügen Sie den Betrag ein. Kehren Sie danach zu BinancInvest zurück.",bybitTip:"Lassen Sie USDT ausgewählt und fügen Sie den Empfangsbetrag ein. Kehren Sie danach zu BinancInvest zurück.",mercuryoTip:"Wählen Sie Buy, USDT und BNB Smart Chain (BEP20). Fügen Sie den Betrag in Receive und die Adresse ins Wallet-Feld ein.",addressError:"Die Adresse konnte nicht vorbereitet werden. Melden Sie sich an und versuchen Sie es erneut; senden Sie nichts ohne aktive Adresse."}
+  };
   function lang(){const l=(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase().split("-")[0];return COPY[l]?l:"en"}
   function c(){return COPY[lang()]||COPY.en}
+  function g(){return GUIDE[lang()]||GUIDE.en}
   function amount(){return Number(document.getElementById("deposit-amount")?.value||0)}
   function money(){const a=amount();return Number.isFinite(a)&&a>0?`$${a.toLocaleString(undefined,{maximumFractionDigits:2})}`:"—"}
   function escHtml(v){return String(v??"").replace(/[&<>\"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#39;"}[m]))}
+  const guideState={provider:"",amount:0,address:""};
+  function rawAmount(value){return String(Math.round(Number(value)*100)/100)}
+  function providerName(name){const t=c();return name==="binance"?t.binance:name==="bybit"?t.bybit:t.mercuryo}
+  function guideTip(name){const t=g();return name==="binance"?t.binanceTip:name==="bybit"?t.bybitTip:t.mercuryoTip}
+  async function copyGuideValue(value,button){
+    if(!value)return false;
+    let ok=false;
+    try{await navigator.clipboard.writeText(String(value));ok=true}catch(_){
+      try{const input=document.createElement("textarea");input.value=String(value);input.style.position="fixed";input.style.opacity="0";document.body.appendChild(input);input.select();ok=document.execCommand("copy");input.remove()}catch(__){ }
+    }
+    if(button&&ok){const old=button.textContent;button.textContent=g().copyDone;setTimeout(()=>{if(button.isConnected)button.textContent=old},1300)}
+    return ok;
+  }
+  function guideElement(){
+    let el=document.getElementById("biProviderGuide");
+    if(el)return el;
+    el=document.createElement("div");el.id="biProviderGuide";el.className="bi-provider-guide";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");
+    el.addEventListener("click",event=>{if(event.target===el)window.biCloseProviderGuide()});
+    document.body.appendChild(el);return el;
+  }
+  function showProviderGuide(name,a,address="",loading=false,error=""){
+    const t=g(),el=guideElement(),provider=providerName(name),needsAddress=name==="mercuryo";
+    guideState.provider=name;guideState.amount=Number(a);guideState.address=address||"";
+    el.setAttribute("dir",lang()==="fa"||lang()==="ar"?"rtl":"ltr");
+    el.innerHTML=`<div class="bi-provider-guide-card">
+      <button class="bi-provider-guide-close" type="button" onclick="biCloseProviderGuide()" aria-label="${escHtml(t.cancel)}">×</button>
+      <div class="bi-provider-guide-brand"><div class="bi-provider-guide-mark">₮</div><div><h3>${escHtml(t.title)}</h3><small>${escHtml(t.copied)}</small></div></div>
+      <div class="bi-provider-guide-tip">${escHtml(guideTip(name))}</div>
+      ${loading?`<div class="bi-provider-guide-loading"><i class="bi-provider-guide-spinner"></i><span>${escHtml(t.loading)}</span></div>`:""}
+      <div class="bi-provider-guide-grid">
+        <div class="bi-provider-guide-row amount"><div><span>${escHtml(t.receive)}</span><strong>${escHtml(rawAmount(a))} USDT</strong></div><button class="bi-provider-copy-btn" type="button" onclick="biCopyProviderGuide('amount',this)">${escHtml(t.copyAmount)}</button></div>
+        <div class="bi-provider-guide-row"><div><span>${escHtml(t.asset)}</span><strong>USDT</strong></div><div aria-hidden="true">₮</div></div>
+        <div class="bi-provider-guide-row"><div><span>${escHtml(t.network)}</span><strong>BNB Smart Chain (BEP20)</strong></div><div aria-hidden="true">BSC</div></div>
+        ${needsAddress&&address?`<div class="bi-provider-guide-row"><div><span>${escHtml(t.address)}</span><strong>${escHtml(address)}</strong></div><button class="bi-provider-copy-btn" type="button" onclick="biCopyProviderGuide('address',this)">${escHtml(t.copyAddress)}</button></div>`:""}
+      </div>
+      <div class="bi-provider-guide-fee">${escHtml(t.fee)}</div>
+      <div class="bi-provider-guide-error${error?" show":""}">${escHtml(error)}</div>
+      <div class="bi-provider-guide-actions"><button class="bi-provider-guide-open" type="button" onclick="biConfirmProviderOpen()" ${loading||(needsAddress&&!address)||error?"disabled":""}>${escHtml(t.open)} ${escHtml(provider)}</button><button class="bi-provider-guide-cancel" type="button" onclick="biCloseProviderGuide()">${escHtml(t.cancel)}</button></div>
+    </div>`;
+    el.classList.add("show");document.body.style.overflow="hidden";
+  }
+  window.biCloseProviderGuide=function(){const el=document.getElementById("biProviderGuide");if(el)el.classList.remove("show");document.body.style.overflow=""};
+  window.biCopyProviderGuide=function(kind,button){const value=kind==="address"?guideState.address:rawAmount(guideState.amount);return copyGuideValue(value,button)};
+  window.biConfirmProviderOpen=function(){
+    const name=guideState.provider,url=PROVIDERS[name];if(!url)return;
+    copyGuideValue(rawAmount(guideState.amount));
+    try{localStorage.setItem("bi_cardbuy_draft",JSON.stringify({amount:guideState.amount,provider:name,address:guideState.address||null,at:Date.now()}))}catch(_){ }
+    const opened=window.open("about:blank","_blank");
+    if(opened){opened.opener=null;opened.location.href=url}
+    const status=document.getElementById("biCardBuyStatus");if(status){status.textContent=c().opened;status.classList.add("show")}
+    window.biCloseProviderGuide();
+    if(!opened)window.location.assign(url);
+  };
+  async function prepareMercuryoGuide(a){
+    showProviderGuide("mercuryo",a,"",true,"");
+    try{
+      if(typeof currentUser==="undefined"||!currentUser?.id){window.biCloseProviderGuide();if(typeof openAuth==="function")openAuth("login");return}
+      window.selectPaymentMethod("wallet");
+      if(document.getElementById("payment-method")?.value!=="wallet")throw new Error(g().addressError);
+      if(typeof window.selectDepositCrypto==="function")window.selectDepositCrypto("bnb_usdt_bep20","USDT (BEP20)","https://cryptologos.cc/logos/tether-usdt-logo.svg");
+      else if(typeof selectDepositCrypto==="function")selectDepositCrypto("bnb_usdt_bep20","USDT (BEP20)","https://cryptologos.cc/logos/tether-usdt-logo.svg");
+      await new Promise(resolve=>setTimeout(resolve,160));
+      if(typeof window.biGenerateRandomEvmAddress!=="function")throw new Error(g().addressError);
+      await window.biGenerateRandomEvmAddress();
+      const payment=typeof window.biGetRandomEvmPayment==="function"?window.biGetRandomEvmPayment():null;
+      if(!payment?.deposit_address||payment.route_key!=="usdt_bep20")throw new Error(g().addressError);
+      const reservedAmount=Number(payment.amount)||a;
+      copyGuideValue(rawAmount(reservedAmount));
+      showProviderGuide("mercuryo",reservedAmount,payment.deposit_address,false,"");
+    }catch(error){showProviderGuide("mercuryo",a,"",false,String(error?.message||g().addressError))}
+  }
   function updateOptionLabel(){
     const t=c();
     document.querySelectorAll('[data-cardbuy-copy="option"]').forEach(n=>n.textContent=t.option);
@@ -34782,10 +34889,12 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
   }
   window.biCardBuyOpenProvider=function(event,name){
     const a=amount(),t=c();
-    if(!Number.isFinite(a)||a<=0){event?.preventDefault?.();const input=document.getElementById("deposit-amount");input?.focus();if(typeof showFieldError==="function")showFieldError("deposit-amount",t.needAmount);return false}
+    event?.preventDefault?.();
+    if(!Number.isFinite(a)||a<=0){const input=document.getElementById("deposit-amount");input?.focus();if(typeof showFieldError==="function")showFieldError("deposit-amount",t.needAmount);return false}
+    copyGuideValue(rawAmount(a));
     try{localStorage.setItem("bi_cardbuy_draft",JSON.stringify({amount:a,provider:name,at:Date.now()}))}catch(_){ }
-    setTimeout(()=>{const el=document.getElementById("biCardBuyStatus");if(el){el.textContent=t.opened;el.classList.add("show")}},40);
-    return true;
+    if(name==="mercuryo")prepareMercuryoGuide(a);else showProviderGuide(name,a,"",false,"");
+    return false;
   };
   window.biCardBuyContinue=async function(){
     const a=amount(),t=c();
