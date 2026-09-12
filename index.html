@@ -34936,5 +34936,121 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
 })();
 </script>
 
+<style id="bi-cardbuy-provider-minimums-v1-style">
+  .bi-cardbuy-min-badge{display:inline-flex;align-items:center;justify-content:center;min-height:24px;margin-top:3px;padding:4px 9px;border:1px solid rgba(240,185,11,.30);border-radius:999px;background:rgba(240,185,11,.09);color:#ffe16b;font-size:9.5px;font-weight:850;line-height:1.2;direction:ltr;white-space:nowrap}
+  .bi-cardbuy-min-state{display:block;min-height:14px;color:#8e9aa8;font-size:9px;line-height:1.35}
+  .bi-cardbuy-provider.bi-min-ready{border-color:rgba(14,203,129,.34)}
+  .bi-cardbuy-provider.bi-min-ready .bi-cardbuy-min-state{color:#79dcb8}
+  .bi-cardbuy-provider.bi-min-unavailable{border-color:rgba(255,184,61,.40);background:linear-gradient(145deg,rgba(70,47,14,.30),rgba(12,17,25,.58));cursor:not-allowed}
+  .bi-cardbuy-provider.bi-min-unavailable .bi-cardbuy-min-badge{border-color:rgba(255,184,61,.46);background:rgba(255,184,61,.12);color:#ffd382}
+  .bi-cardbuy-provider.bi-min-unavailable .bi-cardbuy-min-state{color:#ffbf64}
+  .bi-cardbuy-minimum-notice{margin-top:12px;padding:11px 12px;border:1px solid rgba(240,185,11,.24);border-radius:12px;background:linear-gradient(145deg,rgba(240,185,11,.085),rgba(255,255,255,.025));color:#cdd4dc;font-size:10.5px;line-height:1.7}
+  .bi-cardbuy-minimum-notice strong{display:block;margin-bottom:3px;color:#ffe16b;font-size:11px}
+  .bi-cardbuy-minimum-values{display:flex;flex-wrap:wrap;gap:6px 12px;direction:ltr;color:#f3f5f7;font-weight:750}
+  .bi-cardbuy-minimum-vary{display:block;margin-top:4px;color:#929daa;font-size:9.5px}
+  .bi-cardbuy-min-alert{display:none;margin-top:10px;padding:10px 11px;border:1px solid rgba(255,184,61,.42);border-radius:11px;background:rgba(255,144,32,.10);color:#ffd08a;font-size:10.5px;font-weight:750;line-height:1.55}
+  .bi-cardbuy-min-alert.show{display:block;animation:biMinAlertIn .2s ease-out}
+  @keyframes biMinAlertIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+  .bi-provider-guide-minimum{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-3px 0 12px;padding:9px 11px;border:1px solid rgba(240,185,11,.25);border-radius:10px;background:rgba(240,185,11,.065);color:#c8d0d9;font-size:10.5px}
+  .bi-provider-guide-minimum strong{color:#ffe16b;font-size:13px;direction:ltr}
+  html[dir="rtl"] .bi-cardbuy-minimum-notice,html[dir="rtl"] .bi-cardbuy-min-alert{text-align:right;direction:rtl}
+  @media(max-width:600px){.bi-cardbuy-min-badge{font-size:9px}.bi-cardbuy-min-state{font-size:9.5px}.bi-cardbuy-minimum-values{gap:5px 10px}.bi-cardbuy-provider.bi-min-unavailable{opacity:.82}}
+</style>
+
+<script id="bi-cardbuy-provider-minimums-v1">
+(function(){
+  "use strict";
+  if(window.__biCardBuyMinimumsV1)return;
+  window.__biCardBuyMinimumsV1=true;
+
+  // Provider guardrails in USD. Keep these values here so they are easy to update.
+  const MINIMUMS={binance:10,bybit:10,mercuryo:23};
+  const PROVIDER_LABELS={binance:"Binance",bybit:"Bybit",mercuryo:"Mercuryo"};
+  const TEXT={
+    en:{minimum:"Minimum",ready:"Available for this amount",low:"Minimum for {provider} is {minimum}. Increase the amount by at least {difference}.",title:"Minimum card-purchase amount",vary:"Limits can vary by country, currency and card. Check the provider page before paying.",guide:"Minimum accepted amount"},
+    fa:{minimum:"حداقل مبلغ",ready:"برای این مبلغ قابل استفاده است",low:"حداقل مبلغ {provider} برابر {minimum} است. مبلغ را حداقل {difference} افزایش دهید.",title:"حداقل خرید با کارت در هر سرویس",vary:"حداقل نهایی ممکن است با کشور، ارز و نوع کارت تغییر کند؛ قبل از پرداخت عدد داخل سایت سرویس را بررسی کنید.",guide:"حداقل مبلغ قابل قبول"},
+    ar:{minimum:"الحد الأدنى",ready:"متاح لهذا المبلغ",low:"الحد الأدنى لدى {provider} هو {minimum}. زد المبلغ بمقدار {difference} على الأقل.",title:"الحد الأدنى للشراء بالبطاقة",vary:"قد يختلف الحد حسب البلد والعملة والبطاقة. تحقق في صفحة المزود قبل الدفع.",guide:"الحد الأدنى المقبول"},
+    de:{minimum:"Minimum",ready:"Für diesen Betrag verfügbar",low:"Das Minimum bei {provider} ist {minimum}. Erhöhen Sie um mindestens {difference}.",title:"Mindestbetrag für Kartenkäufe",vary:"Limits können je nach Land, Währung und Karte variieren. Vor der Zahlung beim Anbieter prüfen.",guide:"Akzeptierter Mindestbetrag"},
+    fr:{minimum:"Minimum",ready:"Disponible pour ce montant",low:"Le minimum de {provider} est {minimum}. Augmentez d’au moins {difference}.",title:"Minimum d’achat par carte",vary:"Les limites peuvent varier selon le pays, la devise et la carte. Vérifiez avant de payer.",guide:"Montant minimum accepté"},
+    es:{minimum:"Mínimo",ready:"Disponible para este importe",low:"El mínimo de {provider} es {minimum}. Aumenta al menos {difference}.",title:"Compra mínima con tarjeta",vary:"Los límites pueden variar por país, moneda y tarjeta. Compruébalos antes de pagar.",guide:"Importe mínimo aceptado"},
+    ru:{minimum:"Минимум",ready:"Доступно для этой суммы",low:"Минимум для {provider}: {minimum}. Увеличьте сумму минимум на {difference}.",title:"Минимальная покупка картой",vary:"Лимиты зависят от страны, валюты и карты. Проверьте их перед оплатой.",guide:"Минимально допустимая сумма"},
+    tr:{minimum:"Minimum",ready:"Bu tutar için kullanılabilir",low:"{provider} için minimum {minimum}. Tutarı en az {difference} artırın.",title:"Kartla satın alma alt limiti",vary:"Limitler ülke, para birimi ve karta göre değişebilir. Ödemeden önce kontrol edin.",guide:"Kabul edilen minimum"},
+    zh:{minimum:"最低金额",ready:"此金额可用",low:"{provider} 的最低金额为 {minimum}。请至少增加 {difference}。",title:"各服务银行卡最低购买额",vary:"限额可能因国家、币种和银行卡而异，付款前请在服务商页面确认。",guide:"可接受的最低金额"},
+    ja:{minimum:"最低額",ready:"この金額で利用可能",low:"{provider} の最低額は {minimum} です。少なくとも {difference} 増やしてください。",title:"カード購入の最低額",vary:"国・通貨・カードにより変わる場合があります。支払い前に確認してください。",guide:"受付可能な最低額"},
+    ko:{minimum:"최소 금액",ready:"이 금액으로 이용 가능",low:"{provider} 최소 금액은 {minimum}입니다. 최소 {difference} 늘려 주세요.",title:"카드 구매 최소 금액",vary:"국가, 통화, 카드에 따라 달라질 수 있습니다. 결제 전에 확인하세요.",guide:"허용 최소 금액"},
+    it:{minimum:"Minimo",ready:"Disponibile per questo importo",low:"Il minimo per {provider} è {minimum}. Aumenta di almeno {difference}.",title:"Acquisto minimo con carta",vary:"I limiti possono variare per paese, valuta e carta. Verifica prima del pagamento.",guide:"Importo minimo accettato"},
+    az:{minimum:"Minimum",ready:"Bu məbləğ üçün uyğundur",low:"{provider} üçün minimum {minimum}-dır. Məbləği ən azı {difference} artırın.",title:"Kartla alış üçün minimum",vary:"Limit ölkə, valyuta və karta görə dəyişə bilər. Ödənişdən əvvəl yoxlayın.",guide:"Qəbul edilən minimum"},
+    nl:{minimum:"Minimum",ready:"Beschikbaar voor dit bedrag",low:"Het minimum voor {provider} is {minimum}. Verhoog met minstens {difference}.",title:"Minimale kaartaankoop",vary:"Limieten kunnen variëren per land, valuta en kaart. Controleer vóór betaling.",guide:"Geaccepteerd minimum"},
+    pt:{minimum:"Mínimo",ready:"Disponível para este valor",low:"O mínimo da {provider} é {minimum}. Aumente pelo menos {difference}.",title:"Compra mínima com cartão",vary:"Os limites variam por país, moeda e cartão. Verifique antes de pagar.",guide:"Valor mínimo aceite"},
+    pl:{minimum:"Minimum",ready:"Dostępne dla tej kwoty",low:"Minimum dla {provider} to {minimum}. Zwiększ o co najmniej {difference}.",title:"Minimalny zakup kartą",vary:"Limity mogą zależeć od kraju, waluty i karty. Sprawdź przed płatnością.",guide:"Akceptowane minimum"},
+    ro:{minimum:"Minim",ready:"Disponibil pentru această sumă",low:"Minimul pentru {provider} este {minimum}. Mărește cu cel puțin {difference}.",title:"Achiziție minimă cu cardul",vary:"Limitele pot varia după țară, valută și card. Verifică înainte de plată.",guide:"Suma minimă acceptată"},
+    uk:{minimum:"Мінімум",ready:"Доступно для цієї суми",low:"Мінімум для {provider}: {minimum}. Збільште суму щонайменше на {difference}.",title:"Мінімальна купівля карткою",vary:"Ліміти залежать від країни, валюти й картки. Перевірте перед оплатою.",guide:"Мінімально допустима сума"},
+    id:{minimum:"Minimum",ready:"Tersedia untuk jumlah ini",low:"Minimum {provider} adalah {minimum}. Tambahkan setidaknya {difference}.",title:"Minimum pembelian dengan kartu",vary:"Batas dapat berbeda menurut negara, mata uang, dan kartu. Periksa sebelum membayar.",guide:"Jumlah minimum yang diterima"},
+    ms:{minimum:"Minimum",ready:"Tersedia untuk jumlah ini",low:"Minimum {provider} ialah {minimum}. Tambah sekurang-kurangnya {difference}.",title:"Minimum pembelian dengan kad",vary:"Had mungkin berbeza mengikut negara, mata wang dan kad. Semak sebelum membayar.",guide:"Jumlah minimum diterima"},
+    vi:{minimum:"Tối thiểu",ready:"Có thể dùng với số tiền này",low:"Mức tối thiểu của {provider} là {minimum}. Hãy tăng ít nhất {difference}.",title:"Mức mua tối thiểu bằng thẻ",vary:"Hạn mức có thể khác theo quốc gia, tiền tệ và thẻ. Hãy kiểm tra trước khi trả.",guide:"Số tiền tối thiểu được chấp nhận"},
+    th:{minimum:"ขั้นต่ำ",ready:"ใช้ได้กับจำนวนนี้",low:"ขั้นต่ำของ {provider} คือ {minimum} โปรดเพิ่มอย่างน้อย {difference}",title:"ยอดซื้อขั้นต่ำด้วยบัตร",vary:"วงเงินอาจต่างกันตามประเทศ สกุลเงิน และบัตร โปรดตรวจสอบก่อนชำระเงิน",guide:"จำนวนขั้นต่ำที่รับ"},
+    hi:{minimum:"न्यूनतम",ready:"यह राशि स्वीकार्य है",low:"{provider} की न्यूनतम राशि {minimum} है। कम से कम {difference} बढ़ाएँ।",title:"कार्ड खरीद की न्यूनतम राशि",vary:"देश, मुद्रा और कार्ड के अनुसार सीमा बदल सकती है। भुगतान से पहले जाँचें।",guide:"स्वीकृत न्यूनतम राशि"},
+    ur:{minimum:"کم از کم",ready:"یہ رقم قابل قبول ہے",low:"{provider} کی کم از کم رقم {minimum} ہے۔ کم از کم {difference} بڑھائیں۔",title:"کارڈ خرید کی کم از کم رقم",vary:"ملک، کرنسی اور کارڈ کے لحاظ سے حد بدل سکتی ہے۔ ادائیگی سے پہلے چیک کریں۔",guide:"قابل قبول کم از کم رقم"}
+  };
+
+  function language(){return (localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase().split("-")[0]}
+  function words(){return TEXT[language()]||TEXT.en}
+  function amount(){return Number(document.getElementById("deposit-amount")?.value||0)}
+  function usd(value){const n=Number(value)||0;return "$"+n.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}
+  function template(value,data){return String(value).replace(/\{(\w+)\}/g,function(_,key){return data[key]??""})}
+  function setText(element,value){if(element&&element.textContent!==value)element.textContent=value}
+  function setHTML(element,value){if(element&&element.innerHTML!==value)element.innerHTML=value}
+  function providerFromCard(card){const href=(card.getAttribute("href")||"").toLowerCase();return href.includes("binance")?"binance":href.includes("bybit")?"bybit":href.includes("mercuryo")?"mercuryo":""}
+  function showMinimumError(name,value){
+    const t=words(),minimum=MINIMUMS[name],difference=Math.max(0,minimum-value);
+    const message=template(t.low,{provider:PROVIDER_LABELS[name],minimum:usd(minimum),difference:usd(difference)});
+    const root=document.querySelector("#payment-info-box.card-buy-mode .bi-cardbuy");
+    if(root){let alert=root.querySelector(".bi-cardbuy-min-alert");if(!alert){alert=document.createElement("div");alert.className="bi-cardbuy-min-alert";const providers=root.querySelector(".bi-cardbuy-providers");providers?.insertAdjacentElement("afterend",alert)}alert.textContent=message;alert.classList.add("show")}
+    const input=document.getElementById("deposit-amount");input?.focus();
+    if(typeof showFieldError==="function")showFieldError("deposit-amount",message);
+  }
+  function enhanceGuide(){
+    const guide=document.querySelector("#biProviderGuide.show .bi-provider-guide-card");
+    if(!guide||!activeProvider)return;
+    let row=guide.querySelector(".bi-provider-guide-minimum");
+    if(!row){row=document.createElement("div");row.className="bi-provider-guide-minimum";guide.querySelector(".bi-provider-guide-tip")?.insertAdjacentElement("afterend",row)}
+    if(row)setHTML(row,"<span>"+words().guide+"</span><strong>"+usd(MINIMUMS[activeProvider])+"</strong>");
+  }
+  function enhanceCards(){
+    const root=document.querySelector("#payment-info-box.card-buy-mode .bi-cardbuy");
+    if(!root)return;
+    const value=amount(),t=words();
+    root.querySelectorAll(".bi-cardbuy-provider").forEach(function(card){
+      const name=providerFromCard(card);if(!name)return;
+      const minimum=MINIMUMS[name],copy=card.querySelector(".bi-provider-copy");if(!copy)return;
+      let badge=copy.querySelector(".bi-cardbuy-min-badge");if(!badge){badge=document.createElement("span");badge.className="bi-cardbuy-min-badge";copy.appendChild(badge)}
+      setText(badge,t.minimum+" "+usd(minimum));
+      let state=copy.querySelector(".bi-cardbuy-min-state");if(!state){state=document.createElement("span");state.className="bi-cardbuy-min-state";copy.appendChild(state)}
+      const hasAmount=Number.isFinite(value)&&value>0,ready=hasAmount&&value>=minimum,low=hasAmount&&value<minimum;
+      card.classList.toggle("bi-min-ready",ready);card.classList.toggle("bi-min-unavailable",low);card.setAttribute("aria-disabled",String(low));
+      setText(state,ready?t.ready:low?template(t.low,{provider:PROVIDER_LABELS[name],minimum:usd(minimum),difference:usd(minimum-value)}):"");
+    });
+    let notice=root.querySelector(".bi-cardbuy-minimum-notice");
+    if(!notice){notice=document.createElement("div");notice.className="bi-cardbuy-minimum-notice";root.querySelector(".bi-cardbuy-providers")?.insertAdjacentElement("afterend",notice)}
+    if(notice)setHTML(notice,"<strong>"+t.title+"</strong><span class=\"bi-cardbuy-minimum-values\"><span>Binance "+usd(MINIMUMS.binance)+"</span><span>Bybit "+usd(MINIMUMS.bybit)+"</span><span>Mercuryo "+usd(MINIMUMS.mercuryo)+"</span></span><span class=\"bi-cardbuy-minimum-vary\">"+t.vary+"</span>");
+  }
+
+  let activeProvider="";
+  const originalOpen=window.biCardBuyOpenProvider;
+  window.biCardBuyOpenProvider=function(event,name){
+    const value=amount(),minimum=MINIMUMS[name];
+    if(Number.isFinite(value)&&value>0&&minimum&&value<minimum){event?.preventDefault?.();showMinimumError(name,value);return false}
+    activeProvider=name;
+    return typeof originalOpen==="function"?originalOpen.apply(this,arguments):false;
+  };
+  document.getElementById("deposit-amount")?.addEventListener("input",function(){document.querySelector(".bi-cardbuy-min-alert")?.classList.remove("show");setTimeout(enhanceCards,0)});
+  new MutationObserver(function(){enhanceCards();enhanceGuide()}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["class"]});
+  let lastLanguage=language();
+  setInterval(function(){const current=language();if(current!==lastLanguage){lastLanguage=current;enhanceCards();enhanceGuide()}},700);
+  enhanceCards();
+  window.biCardBuyMinimums=Object.freeze({...MINIMUMS});
+})();
+</script>
+
 </body>
 </html>
