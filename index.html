@@ -16501,6 +16501,23 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
 
 </section>
 
+<style id="transaction-status-text-colors-v1">
+#transactions .transaction-request-status{
+  display:inline;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-weight:850;
+  white-space:nowrap;
+}
+#transactions .transaction-request-status-pending{color:#57a8ff!important}
+#transactions .transaction-request-status-approved{color:#16c784!important}
+#transactions .transaction-request-status-rejected,
+#transactions .transaction-request-status-cancelled{color:#f2485b!important}
+</style>
+
 <section id="transactions" class="view"><div class="title"><h2 data-t="transactions">Transactions</h2><button class="btn clear-history-btn" type="button" onclick="clearTx()" data-t="clear">Clear history</button></div><div class="card" id="txList"></div><section id="iwpHistory" class="card" hidden style="margin-top:20px;border:1px solid rgba(240,190,60,.3);padding:20px"></section></section>
 
 <section id="rewards" class="view">
@@ -25856,12 +25873,7 @@ window.loadTransactions = async function () {
     const typeKey=String(item.request_type||"").toLowerCase()==="withdrawal"
       ? "withdrawalType"
       : "depositType";
-    const color =
-      status === "approved"
-        ? "green"
-        : status === "rejected" || status === "cancelled"
-          ? "red"
-          : "gold";
+    const statusClass = `transaction-request-status transaction-request-status-${status}`;
 
     html += `
       <tr>
@@ -25884,7 +25896,7 @@ window.loadTransactions = async function () {
         </td>
 
         <td>
-          <span class="${color}">
+          <span class="${statusClass}">
             ${safeFinancialText(tr(statusKey))}
           </span>
         </td>
