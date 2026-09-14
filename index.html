@@ -755,6 +755,66 @@ html[dir="rtl"] .plan > .tag {
   left: 11px !important;
 }
 /* Support Ticket System */
+.support-language-notice {
+  margin: 0 0 16px;
+  padding: 15px 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #dfe5ee;
+  border: 1px solid rgba(240,185,11,.34);
+  border-radius: 16px;
+  background: linear-gradient(145deg,rgba(20,24,29,.72),rgba(5,9,14,.58));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08),0 12px 28px rgba(0,0,0,.2);
+  backdrop-filter: blur(10px) saturate(1.12);
+  -webkit-backdrop-filter: blur(10px) saturate(1.12);
+}
+
+.support-language-notice-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  color: #171207;
+  border: 1px solid rgba(255,236,157,.8);
+  border-radius: 13px;
+  background: linear-gradient(145deg,#ffe477,#d99c00);
+  box-shadow: 0 7px 18px rgba(240,185,11,.18),inset 0 1px 0 rgba(255,255,255,.65);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.support-language-notice p {
+  margin: 0;
+  max-width: 1080px;
+  color: #e1e6ee;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+@media (max-width: 600px) {
+  .support-language-notice {
+    padding: 13px 14px;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .support-language-notice-icon {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    border-radius: 11px;
+    font-size: 15px;
+  }
+
+  .support-language-notice p {
+    font-size: 11px;
+    line-height: 1.85;
+  }
+}
+
 .support-layout {
   display: grid;
   grid-template-columns: 340px 1fr;
@@ -16691,6 +16751,11 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
     </button>
   </div>
 
+  <div id="supportLanguageNotice" class="support-language-notice" role="note">
+    <span class="support-language-notice-icon" aria-hidden="true">文</span>
+    <p id="supportLanguageNoticeText">For better support, describe your issue in your preferred language or the language selected on the website. Your request will automatically be routed to a support team for that language. Our multilingual support team is available to assist users worldwide.</p>
+  </div>
+
   <div id="supportGuestNotice" class="card support-empty">
     <span data-t="supportGuestNotice">Please sign in to create and manage your support tickets.</span>
   </div>
@@ -18975,6 +19040,34 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway ausgewählt.</b> Bitte nutzen 
 withdrawWalletLabel:"Ziel-Wallet-Adresse:", withdrawCryptoLabel:"Währung & Netzwerk auswählen:", withdrawAmountLabel:"Betrag (USD):"
 }
 };
+const SUPPORT_LANGUAGE_NOTICE = {
+  en: "For better support, describe your issue in your preferred language or the language selected on the website. Your request will automatically be routed to a support team for that language. Our multilingual support team is available to assist users worldwide.",
+  fa: "برای دریافت پشتیبانی بهتر، مشکل خود را به زبان دلخواهتان یا زبان انتخاب‌شده سایت مطرح کنید. درخواست شما به‌صورت خودکار به تیم پشتیبانی همان زبان ارجاع داده می‌شود. تیم پشتیبانی چندزبانه ما آماده پاسخ‌گویی به کاربران سراسر جهان است.",
+  az: "Daha yaxşı dəstək almaq üçün probleminizi üstünlük verdiyiniz dildə və ya saytda seçdiyiniz dildə yazın. Sorğunuz avtomatik olaraq həmin dil üzrə dəstək komandasına yönləndiriləcək. Çoxdilli dəstək komandamız dünyanın hər yerindən olan istifadəçilərə kömək etməyə hazırdır.",
+  tr: "Daha iyi destek alabilmek için sorununuzu tercih ettiğiniz dilde veya sitede seçili olan dilde açıklayın. Talebiniz otomatik olarak ilgili dilde hizmet veren destek ekibine yönlendirilecektir. Çok dilli destek ekibimiz dünya genelindeki kullanıcılara yardımcı olmaya hazırdır.",
+  ru: "Чтобы получить более качественную поддержку, опишите проблему на удобном вам языке или на языке, выбранном на сайте. Ваш запрос будет автоматически направлен в службу поддержки соответствующего языка. Наша многоязычная команда готова помочь пользователям по всему миру.",
+  ar: "للحصول على دعم أفضل، اشرح مشكلتك بلغتك المفضلة أو باللغة المختارة في الموقع. سيتم توجيه طلبك تلقائيًا إلى فريق الدعم المختص بتلك اللغة. فريق الدعم متعدد اللغات لدينا مستعد لمساعدة المستخدمين في جميع أنحاء العالم.",
+  zh: "为了获得更好的支持，请使用您偏好的语言或网站当前选择的语言描述问题。您的请求将自动转交给相应语言的支持团队。我们的多语言支持团队可为全球用户提供帮助。",
+  es: "Para recibir una mejor asistencia, describe tu problema en el idioma que prefieras o en el idioma seleccionado en el sitio. Tu solicitud se dirigirá automáticamente al equipo de soporte correspondiente. Nuestro equipo multilingüe está disponible para ayudar a usuarios de todo el mundo.",
+  fr: "Pour bénéficier d’une meilleure assistance, décrivez votre problème dans la langue de votre choix ou dans celle sélectionnée sur le site. Votre demande sera automatiquement dirigée vers l’équipe d’assistance correspondante. Notre équipe multilingue est disponible pour aider les utilisateurs du monde entier.",
+  de: "Beschreiben Sie Ihr Anliegen für eine bessere Unterstützung in Ihrer bevorzugten Sprache oder in der auf der Website ausgewählten Sprache. Ihre Anfrage wird automatisch an das zuständige Sprach-Supportteam weitergeleitet. Unser mehrsprachiges Supportteam unterstützt Nutzer weltweit.",
+  it: "Per ricevere un’assistenza migliore, descrivi il problema nella lingua che preferisci o in quella selezionata sul sito. La richiesta verrà indirizzata automaticamente al team di supporto della lingua corrispondente. Il nostro team multilingue è disponibile per assistere gli utenti di tutto il mondo.",
+  ja: "より適切なサポートを受けるため、ご希望の言語またはサイトで選択している言語で問題をご説明ください。お問い合わせは、その言語に対応するサポートチームへ自動的に振り分けられます。多言語サポートチームが世界中のユーザーをサポートします。",
+  nl: "Beschrijf uw probleem voor betere ondersteuning in uw voorkeurstaal of in de taal die op de website is geselecteerd. Uw verzoek wordt automatisch doorgestuurd naar het ondersteuningsteam voor die taal. Ons meertalige team staat klaar voor gebruikers wereldwijd.",
+  ko: "더 나은 지원을 받으려면 선호하는 언어나 사이트에서 선택한 언어로 문제를 설명해 주세요. 요청은 해당 언어 지원팀으로 자동 전달됩니다. 다국어 지원팀이 전 세계 사용자를 도와드립니다.",
+  el: "Για καλύτερη υποστήριξη, περιγράψτε το πρόβλημά σας στη γλώσσα που προτιμάτε ή στη γλώσσα που έχετε επιλέξει στον ιστότοπο. Το αίτημά σας θα προωθηθεί αυτόματα στην αντίστοιχη ομάδα υποστήριξης. Η πολύγλωσση ομάδα μας εξυπηρετεί χρήστες σε όλο τον κόσμο.",
+  hi: "बेहतर सहायता के लिए अपनी समस्या अपनी पसंदीदा भाषा या वेबसाइट पर चुनी गई भाषा में लिखें। आपका अनुरोध स्वचालित रूप से उसी भाषा की सहायता टीम को भेज दिया जाएगा। हमारी बहुभाषी सहायता टीम दुनिया भर के उपयोगकर्ताओं की मदद के लिए उपलब्ध है।",
+  id: "Untuk mendapatkan dukungan yang lebih baik, jelaskan masalah Anda dalam bahasa pilihan atau bahasa yang dipilih di situs. Permintaan Anda akan otomatis diteruskan ke tim dukungan untuk bahasa tersebut. Tim dukungan multibahasa kami siap membantu pengguna di seluruh dunia.",
+  ms: "Untuk mendapatkan sokongan yang lebih baik, terangkan masalah anda dalam bahasa pilihan atau bahasa yang dipilih di laman ini. Permintaan anda akan dihantar secara automatik kepada pasukan sokongan bagi bahasa tersebut. Pasukan sokongan berbilang bahasa kami sedia membantu pengguna di seluruh dunia.",
+  pl: "Aby uzyskać lepszą pomoc, opisz problem w preferowanym języku lub w języku wybranym na stronie. Twoje zgłoszenie zostanie automatycznie przekazane do odpowiedniego zespołu językowego. Nasz wielojęzyczny zespół pomocy obsługuje użytkowników na całym świecie.",
+  pt: "Para receber um atendimento melhor, descreva o problema no idioma de sua preferência ou no idioma selecionado no site. Sua solicitação será encaminhada automaticamente à equipe de suporte correspondente. Nossa equipe multilíngue está disponível para ajudar usuários do mundo todo.",
+  ro: "Pentru asistență mai bună, descrieți problema în limba preferată sau în limba selectată pe site. Solicitarea va fi direcționată automat către echipa de suport pentru limba respectivă. Echipa noastră multilingvă este disponibilă pentru utilizatori din întreaga lume.",
+  th: "เพื่อให้ได้รับการช่วยเหลือที่ดียิ่งขึ้น โปรดอธิบายปัญหาด้วยภาษาที่คุณต้องการหรือภาษาที่เลือกไว้บนเว็บไซต์ คำขอของคุณจะถูกส่งไปยังทีมสนับสนุนภาษานั้นโดยอัตโนมัติ ทีมสนับสนุนหลายภาษาของเราพร้อมช่วยเหลือผู้ใช้ทั่วโลก",
+  uk: "Щоб отримати кращу підтримку, опишіть проблему зручною для вас мовою або мовою, вибраною на сайті. Ваш запит буде автоматично передано відповідній мовній команді підтримки. Наша багатомовна команда допомагає користувачам у всьому світі.",
+  ur: "بہتر معاونت کے لیے اپنا مسئلہ اپنی پسندیدہ زبان یا ویب سائٹ پر منتخب زبان میں بیان کریں۔ آپ کی درخواست خودکار طور پر اسی زبان کی معاونتی ٹیم کو بھیج دی جائے گی۔ ہماری کثیر لسانی معاونتی ٹیم دنیا بھر کے صارفین کی مدد کے لیے دستیاب ہے۔",
+  vi: "Để được hỗ trợ tốt hơn, hãy mô tả vấn đề bằng ngôn ngữ bạn muốn hoặc ngôn ngữ đang chọn trên trang web. Yêu cầu sẽ tự động được chuyển đến nhóm hỗ trợ phù hợp với ngôn ngữ đó. Đội ngũ hỗ trợ đa ngôn ngữ của chúng tôi sẵn sàng hỗ trợ người dùng trên toàn thế giới."
+};
+
 const SUPPORT_I18N = {
   en: {
     support: "Support",
@@ -19295,9 +19388,8 @@ function getSupportLanguageCode() {
 }
 
 function applySupportLanguage() {
-  const s = SUPPORT_I18N[
-    localStorage.getItem("bi_lang") || "en"
-  ] || SUPPORT_I18N.en;
+  const activeLanguage = getSupportLanguageCode();
+  const s = SUPPORT_I18N[activeLanguage] || SUPPORT_I18N.en;
 
   const setText = (selector, value) => {
     const element = document.querySelector(selector);
@@ -19306,6 +19398,7 @@ function applySupportLanguage() {
 
   setText('[data-page="support"] [data-support-label]', s.support);
   setText('#support .title h2', s.title);
+  setText('#supportLanguageNoticeText', SUPPORT_LANGUAGE_NOTICE[activeLanguage] || SUPPORT_LANGUAGE_NOTICE.en);
   setText('#supportGuestNotice', s.guest);
   setText('.support-compose h2', s.newTicket);
   setText('label[for="ticketSubject"]', s.subject);
