@@ -15143,6 +15143,67 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   }
 </style>
 
+<style id="referral-wallet-split-v1">
+#portfolio .referral-wallet-split{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+  padding:12px;
+  border:1px solid rgba(240,185,11,.34);
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(14,19,25,.78),rgba(5,9,13,.64));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 30px rgba(0,0,0,.2);
+}
+#portfolio .referral-wallet-split-title{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  color:#ffe58a;
+  font-size:14px;
+  font-weight:850;
+}
+#portfolio .referral-wallet-split-title small{
+  color:rgba(210,219,229,.62);
+  font-size:10px;
+  font-weight:600;
+}
+#portfolio .referral-wallet-mini{
+  min-width:0;
+  padding:13px 14px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:15px;
+  background:rgba(3,8,12,.5);
+}
+#portfolio .referral-wallet-mini span{
+  display:block;
+  margin-bottom:7px;
+  color:rgba(213,221,231,.66);
+  font-size:11px;
+  line-height:1.45;
+}
+#portfolio .referral-wallet-mini b{
+  display:block;
+  overflow:hidden;
+  color:#20d39b;
+  font-size:clamp(18px,4vw,27px);
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  direction:ltr;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+@media(max-width:600px){
+  #portfolio .referral-wallet-split{gap:8px;padding:9px;border-radius:16px}
+  #portfolio .referral-wallet-split-title{font-size:12px}
+  #portfolio .referral-wallet-split-title small{font-size:8px}
+  #portfolio .referral-wallet-mini{padding:10px;border-radius:12px}
+  #portfolio .referral-wallet-mini span{font-size:9px}
+  #portfolio .referral-wallet-mini b{font-size:clamp(16px,5vw,21px)}
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -16099,6 +16160,20 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
       <span data-t="portfolioIntroSubtitle">Manage your investments with clarity and control</span>
     </div>
     <div class="cards"><div class="card stat"><span class="muted" data-t="totalBalance">Total Balance</span><b id="balance">$0.00</b></div><div class="card stat"><span class="muted" data-t="invested">Invested</span><b id="invested">$0.00</b></div><div class="card stat"><span class="muted" data-t="profitTotal">Total profit</span><b class="green" id="profitTotal">$0.00</b></div><div class="card stat"><span class="muted" data-t="level">Account level</span><b id="level">Flexible · 1.5% Daily</b></div></div>
+    <div class="referral-wallet-split" aria-live="polite">
+      <div class="referral-wallet-split-title">
+        <span id="referralWalletTitle">Referral rewards</span>
+        <small id="referralWalletTierNote">Not included in withdrawal level</small>
+      </div>
+      <div class="referral-wallet-mini">
+        <span id="referralPrincipalLabel">Referral reward amount</span>
+        <b id="portfolioReferralPrincipalBalance">$0.00</b>
+      </div>
+      <div class="referral-wallet-mini">
+        <span id="referralProfitLabel">Referral reward profit</span>
+        <b id="portfolioReferralProfitBalance">$0.00</b>
+      </div>
+    </div>
     <div id="flexCalculationCheck" class="flex-calculation-check" hidden>
       <button
         id="flexCalculationCheckToggle"
@@ -16182,7 +16257,7 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
       </article>
     </div>
 
-    <p class="referral-level-note" data-t="referralBalanceNotice">All referral rewards are added to your Base Plan and included in your withdrawable balance.</p>
+    <p class="referral-level-note" data-t="referralBalanceNotice">Referral rewards and their profit are tracked separately from real Base Plan capital, but remain included in your total withdrawable balance.</p>
   </div>
   </div>
 
@@ -24805,6 +24880,22 @@ LANGUAGE_CATALOG.forEach(([code])=>{
   d.personalReferralDesc=originalReferralIntro;
 });
 
+const REFERRAL_SEPARATION_TRANSLATIONS = {
+  en:{referralRewardsBalance:"Total referral rewards",referralBalanceNotice:"Referral rewards and their profit are tracked separately from real Base Plan capital, but remain included in your total withdrawable balance."},
+  fa:{referralRewardsBalance:"کل پاداش‌های دعوت",referralBalanceNotice:"مبلغ پاداش دعوت و سود آن جدا از سرمایه واقعی پلن پایه محاسبه می‌شوند، اما هر دو در موجودی کل قابل برداشت شما قرار دارند."},
+  az:{referralRewardsBalance:"Ümumi dəvət mükafatları",referralBalanceNotice:"Dəvət mükafatları və gəlirləri real Əsas Plan kapitalından ayrı hesablanır, lakin ümumi çıxarıla bilən balansınıza daxildir."},
+  tr:{referralRewardsBalance:"Toplam davet ödülleri",referralBalanceNotice:"Davet ödülleri ve kazançları gerçek Ana Plan sermayesinden ayrı hesaplanır; ancak toplam çekilebilir bakiyenize dahildir."},
+  ru:{referralRewardsBalance:"Всего реферальных наград",referralBalanceNotice:"Реферальные награды и прибыль по ним учитываются отдельно от реального капитала базового плана, но входят в общий доступный баланс."},
+  ar:{referralRewardsBalance:"إجمالي مكافآت الدعوة",referralBalanceNotice:"تُحسب مكافآت الدعوة وأرباحها بشكل منفصل عن رأس المال الحقيقي للخطة الأساسية، لكنها تبقى ضمن إجمالي رصيدك القابل للسحب."},
+  zh:{referralRewardsBalance:"邀请奖励总额",referralBalanceNotice:"邀请奖励及其收益与基础计划的真实本金分开计算，但仍计入总可提现余额。"},
+  es:{referralRewardsBalance:"Total de recompensas por invitación",referralBalanceNotice:"Las recompensas y sus ganancias se calculan por separado del capital real del plan base, pero siguen incluidas en el saldo total retirable."},
+  fr:{referralRewardsBalance:"Total des récompenses de parrainage",referralBalanceNotice:"Les récompenses et leurs bénéfices sont calculés séparément du capital réel du plan de base, mais restent inclus dans le solde total retirable."},
+  de:{referralRewardsBalance:"Empfehlungsprämien insgesamt",referralBalanceNotice:"Empfehlungsprämien und deren Gewinn werden getrennt vom realen Kapital des Basisplans berechnet, bleiben aber im gesamten auszahlbaren Guthaben enthalten."}
+};
+LANGUAGE_CATALOG.forEach(([code])=>{
+  Object.assign(T[code]||T.en, REFERRAL_SEPARATION_TRANSLATIONS[code]||REFERRAL_SEPARATION_TRANSLATIONS.en);
+});
+
 const REFERRAL_HISTORY_TRANSLATIONS = {
   en:{referralActivityDesc:"View every referral across all levels, including the inviter, full chain path, registration, qualifying investment and reward.",allReferralLevels:"All levels",directInvites:"Level 1 · Your invites",friendsInvites:"Level 2 · Your friends' invites",extendedReferralNetwork:"Level 3+ · Friends of friends",networkMembers:"All network members",rewardedMembers:"Rewarded members",networkLevel:"Level {level}",invitedBy:"Invited by",referralPath:"Referral path",you:"You",qualifyingInvestment:"Qualifying investment",rewardPending:"Reward pending",rewardPaidStatus:"Reward paid",noReferralLevelActivity:"No referrals at this level."},
   fa:{referralActivityDesc:"تمام دعوت‌ها را در همه سطح‌ها همراه با معرف، مسیر کامل زنجیره، زمان ثبت‌نام، سرمایه‌گذاری واجد شرایط و جزئیات پاداش ببینید.",allReferralLevels:"همه سطح‌ها",directInvites:"سطح اول · دعوت‌های شما",friendsInvites:"سطح دوم · دعوت دوستان شما",extendedReferralNetwork:"سطح سوم به بعد · دوست‌های دوستان",networkMembers:"تمام اعضای زنجیره",rewardedMembers:"اعضای پاداش‌گرفته",networkLevel:"سطح {level}",invitedBy:"دعوت‌شده توسط",referralPath:"مسیر دعوت",you:"شما",qualifyingInvestment:"سرمایه‌گذاری واجد شرایط",rewardPending:"پاداش در انتظار سرمایه‌گذاری",rewardPaidStatus:"پاداش پرداخت شد",noReferralLevelActivity:"در این سطح هنوز دعوتی وجود ندارد."},
@@ -28237,6 +28328,22 @@ document.addEventListener("DOMContentLoaded", function() {
         item &&
         item.status === "active" &&
         isFlexible(item) &&
+        String(item.activation_source || "") !== "referral_reward" &&
+        (
+          Number(item.principal || 0) > 0 ||
+          Number(item.realized_profit || 0) > 0
+        )
+      );
+    });
+  }
+
+  function activeReferralFlexibleRows() {
+    return (currentInvestments || []).filter(function (item) {
+      return (
+        item &&
+        item.status === "active" &&
+        isFlexible(item) &&
+        String(item.activation_source || "") === "referral_reward" &&
         (
           Number(item.principal || 0) > 0 ||
           Number(item.realized_profit || 0) > 0
@@ -28260,6 +28367,18 @@ document.addEventListener("DOMContentLoaded", function() {
   function rawFlexiblePrincipal() {
     return activeFlexibleRows().reduce(function (total, item) {
       return total + Math.max(0, Number(item.principal || 0));
+    }, 0);
+  }
+
+  function referralFlexiblePrincipal() {
+    return activeReferralFlexibleRows().reduce(function (total, item) {
+      return total + Math.max(0, Number(item.principal || 0));
+    }, 0);
+  }
+
+  function referralFlexibleProfit() {
+    return activeReferralFlexibleRows().reduce(function (total, item) {
+      return total + flexibleProfit(item);
     }, 0);
   }
 
@@ -29181,14 +29300,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   window.getMainAvailableBalance = function () {
     /*
-     * Single-balance model:
-     * - real account balance = FLEX_DAILY principal
-     * - withdrawable total = FLEX principal + FLEX accrued profit
-     * The legacy profiles.balance wallet is intentionally excluded.
+     * Segregated balance model:
+     * - the withdrawal tier uses only real Base Plan principal
+     * - referral principal and its profit stay in separate ledgers
+     * - all four amounts remain part of the withdrawable total
      */
     return (
       flexiblePrincipal() +
-      flexibleLiveProfit()
+      flexibleLiveProfit() +
+      referralFlexiblePrincipal() +
+      referralFlexibleProfit()
     );
   };
 
@@ -29214,6 +29335,7 @@ document.addEventListener("DOMContentLoaded", function() {
      * plan's rate, label or profit calculation.
      */
     var flexInvestments = activeFlexibleRows();
+    var referralInvestments = activeReferralFlexibleRows();
 
     var investedPrincipal = flexiblePrincipal();
 
@@ -29224,12 +29346,21 @@ document.addEventListener("DOMContentLoaded", function() {
     var liveProfit =
       stableFlexibleLiveProfit();
 
+    var referralPrincipal =
+      referralFlexiblePrincipal();
+
+    var referralProfit =
+      referralFlexibleProfit();
+
     return {
       regularInvestments:flexInvestments,
+      referralInvestments:referralInvestments,
       investedPrincipal:investedPrincipal,
       bankedProfit:0,
       liveProfit:liveProfit,
       totalProfit:liveProfit,
+      referralPrincipal:referralPrincipal,
+      referralProfit:referralProfit,
       freeBalance:0,
 
       /*
@@ -29239,7 +29370,9 @@ document.addEventListener("DOMContentLoaded", function() {
        */
       totalBalance:
         investedPrincipal +
-        liveProfit
+        liveProfit +
+        referralPrincipal +
+        referralProfit
     };
   };
 
@@ -29258,8 +29391,42 @@ document.addEventListener("DOMContentLoaded", function() {
     var levelElement =
       document.getElementById("level");
 
+    var referralPrincipalElement =
+      document.getElementById("portfolioReferralPrincipalBalance");
+
+    var referralProfitElement =
+      document.getElementById("portfolioReferralProfitBalance");
+
     var snapshot =
       window.getMainPortfolioSnapshot();
+
+    var referralWalletLabels = {
+      en:["Referral rewards","Not included in withdrawal level","Referral reward amount","Referral reward profit"],
+      fa:["پاداش دعوت‌ها","در سطح برداشت محاسبه نمی‌شود","مبلغ پاداش دعوت","سود پاداش دعوت"],
+      az:["Dəvət mükafatları","Çıxarış səviyyəsinə daxil deyil","Dəvət mükafatı məbləği","Dəvət mükafatı gəliri"],
+      tr:["Davet ödülleri","Çekim seviyesine dahil değildir","Davet ödülü tutarı","Davet ödülü kazancı"],
+      ru:["Реферальные награды","Не влияет на уровень вывода","Сумма наград","Прибыль с наград"],
+      ar:["مكافآت الدعوة","لا تدخل في مستوى السحب","مبلغ مكافآت الدعوة","ربح مكافآت الدعوة"],
+      zh:["邀请奖励","不计入提现等级","邀请奖励金额","邀请奖励收益"],
+      es:["Recompensas por invitación","No cuenta para el nivel de retiro","Importe de recompensas","Ganancia de recompensas"],
+      fr:["Récompenses de parrainage","Non inclus dans le niveau de retrait","Montant des récompenses","Bénéfice des récompenses"],
+      de:["Empfehlungsprämien","Zählt nicht zur Auszahlungsstufe","Prämienbetrag","Prämiengewinn"]
+    };
+    var referralLabels = referralWalletLabels[language()] || referralWalletLabels.en;
+    var referralTitle = document.getElementById("referralWalletTitle");
+    var referralTierNote = document.getElementById("referralWalletTierNote");
+    var referralPrincipalLabel = document.getElementById("referralPrincipalLabel");
+    var referralProfitLabel = document.getElementById("referralProfitLabel");
+    if (referralTitle) referralTitle.textContent = referralLabels[0];
+    if (referralTierNote) referralTierNote.textContent = referralLabels[1];
+    if (referralPrincipalLabel) referralPrincipalLabel.textContent = referralLabels[2];
+    if (referralProfitLabel) referralProfitLabel.textContent = referralLabels[3];
+    if (referralPrincipalElement) {
+      referralPrincipalElement.textContent = formatPortfolioMoney(snapshot.referralPrincipal);
+    }
+    if (referralProfitElement) {
+      referralProfitElement.textContent = formatPortfolioMoney(snapshot.referralProfit, true);
+    }
 
     /*
      * The main four-card summary is permanently reserved for the
@@ -30578,6 +30745,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return item &&
           item.status === "active" &&
           String(item.plan_name || "") === "FLEX_DAILY" &&
+          String(item.activation_source || "") !== "referral_reward" &&
           Number(item.principal || 0) > 0;
       });
     }catch(_){
@@ -31087,7 +31255,8 @@ document.addEventListener("DOMContentLoaded", function() {
       return (currentInvestments||[]).reduce(function(sum,item){
         if(
           String(item && item.status || "")==="active" &&
-          String(item && item.plan_name || "")==="FLEX_DAILY"
+          String(item && item.plan_name || "")==="FLEX_DAILY" &&
+          String(item && item.activation_source || "")!=="referral_reward"
         ){
           return sum+Math.max(0,Number(item.principal||0));
         }
