@@ -19282,6 +19282,18 @@ function getSupportText(key) {
   return SUPPORT_I18N[lang]?.[key] || SUPPORT_I18N.en[key] || key;
 }
 
+function getSupportLanguageCode() {
+  const supported = new Set([
+    "en", "de", "it", "ru", "ja", "tr", "zh", "nl", "fr", "ko",
+    "fa", "ar", "az", "el", "hi", "id", "ms", "pl", "pt", "ro",
+    "es", "th", "uk", "ur", "vi"
+  ]);
+  const value = String(
+    localStorage.getItem("bi_lang") || document.documentElement.lang || "en"
+  ).toLowerCase().split("-")[0];
+  return supported.has(value) ? value : "en";
+}
+
 function applySupportLanguage() {
   const s = SUPPORT_I18N[
     localStorage.getItem("bi_lang") || "en"
@@ -26142,6 +26154,22 @@ async function requestAiSupportReply(ticketId) {
     return;
   }
 
+  /* A deterministic withdrawal-delay reply may already have been inserted by
+     the database trigger. Do not add a second AI answer to the same message. */
+  const { data: latestMessages, error: latestMessageError } = await supabaseClient
+    .from("support_messages")
+    .select("id,is_ai,sender_role,created_at")
+    .eq("ticket_id", ticketId)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (latestMessageError) {
+    console.error("Latest support message check error:", latestMessageError);
+  } else if (latestMessages?.[0]?.is_ai === true) {
+    hideAiTyping();
+    return;
+  }
+
   supportAiRequestsInFlight.add(ticketId);
   showAiTyping(ticketId);
 
@@ -26244,7 +26272,8 @@ window.createSupportTicket = async function () {
         user_id: currentUser.id,
         subject,
         category,
-        status: "open"
+        status: "open",
+        language_code: getSupportLanguageCode()
       })
       .select()
       .single();
@@ -26428,6 +26457,14 @@ window.sendSupportReply = async function () {
       await openSupportTicket(activeSupportTicketId);
       return;
     }
+
+    const { error: languageError } = await supabaseClient
+      .from("support_tickets")
+      .update({ language_code: getSupportLanguageCode() })
+      .eq("id", activeSupportTicketId)
+      .eq("user_id", currentUser.id);
+
+    if (languageError) throw languageError;
 
     const { error: messageError } = await supabaseClient
       .from("support_messages")
