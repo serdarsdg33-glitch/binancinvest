@@ -12115,6 +12115,54 @@ html[dir="ltr"] #portfolio .withdrawal-level-card{text-align:left}
 html[dir="rtl"] #portfolio .withdrawal-level-card{text-align:right}
 </style>
 
+<style id="withdrawal-tier-guide-v1-style">
+#withdrawalLevelCard .withdrawal-level-head{cursor:pointer}
+#withdrawalLevelCard .withdrawal-level-head:focus-visible{
+  outline:2px solid rgba(240,185,11,.72);outline-offset:4px;border-radius:8px
+}
+#withdrawalLevelCard .withdrawal-tier-hint{
+  display:block;margin-top:4px;color:rgba(242,201,79,.78);font-size:8.5px;font-weight:650
+}
+#withdrawalLevelCard .withdrawal-tier-guide{
+  margin-top:11px;padding:11px;border:1px solid rgba(240,185,11,.24);border-radius:13px;
+  background:linear-gradient(145deg,rgba(29,23,7,.34),rgba(3,8,12,.34));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)
+}
+#withdrawalLevelCard .withdrawal-tier-guide[hidden]{display:none!important}
+#withdrawalLevelCard .withdrawal-tier-guide-title{
+  margin:0 0 9px;color:#f5f7fa;font-size:11px;line-height:1.4;font-weight:850
+}
+#withdrawalLevelCard .withdrawal-tier-list{display:grid;gap:6px}
+#withdrawalLevelCard .withdrawal-tier-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;
+  padding:9px 10px;border:1px solid rgba(255,255,255,.075);border-radius:10px;
+  background:rgba(0,0,0,.13)
+}
+#withdrawalLevelCard .withdrawal-tier-row.current{
+  border-color:rgba(41,219,155,.42);background:linear-gradient(135deg,rgba(41,219,155,.13),rgba(0,0,0,.13));
+  box-shadow:inset 0 0 0 1px rgba(41,219,155,.06)
+}
+#withdrawalLevelCard .withdrawal-tier-name-line{display:flex;align-items:center;gap:7px;min-width:0}
+#withdrawalLevelCard .withdrawal-tier-name{color:#f4f7fa;font-size:10px;font-weight:850}
+#withdrawalLevelCard .withdrawal-tier-current{
+  display:none;padding:2px 6px;border-radius:999px;color:#76edc0;background:rgba(41,219,155,.13);
+  font-size:7.5px;font-weight:800;white-space:nowrap
+}
+#withdrawalLevelCard .withdrawal-tier-row.current .withdrawal-tier-current{display:inline-block}
+#withdrawalLevelCard .withdrawal-tier-range{display:block;margin-top:3px;color:rgba(190,200,212,.58);font-size:8px;line-height:1.4}
+#withdrawalLevelCard .withdrawal-tier-rate{
+  color:#f2c94f;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate
+}
+#withdrawalLevelCard .withdrawal-tier-row.current .withdrawal-tier-rate{color:#29db9b}
+#withdrawalLevelCard .withdrawal-tier-guide-note{
+  margin:9px 0 0;color:rgba(190,200,212,.55);font-size:8px;line-height:1.55
+}
+@media (max-width:430px){
+  #withdrawalLevelCard .withdrawal-tier-row{padding:8px 9px}
+  #withdrawalLevelCard .withdrawal-tier-guide{padding:9px}
+}
+</style>
+
 
 <script id="pwa-install-readiness-v37-14">
 (function(){
@@ -16534,6 +16582,7 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
           <div>
             <span class="withdrawal-level-kicker" data-t="withdrawalLevel">Withdrawal level</span>
             <strong id="withdrawalLevelName">—</strong>
+            <span id="withdrawalTierHint" class="withdrawal-tier-hint">View all levels</span>
           </div>
           <div id="withdrawalLevelPercent" class="withdrawal-level-percent">—</div>
         </div>
@@ -16564,6 +16613,41 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
         <div class="withdrawal-level-note" data-t="withdrawalLevelAutoNote">
           Your withdrawal level updates automatically as your current capital changes.
         </div>
+
+        <section id="withdrawalTierGuide" class="withdrawal-tier-guide" hidden>
+          <h3 id="withdrawalTierGuideTitle" class="withdrawal-tier-guide-title">Withdrawal levels and limits</h3>
+          <div class="withdrawal-tier-list">
+            <div class="withdrawal-tier-row" data-tier-code="BASE">
+              <div>
+                <div class="withdrawal-tier-name-line"><span id="withdrawalGuideBaseName" class="withdrawal-tier-name">Basic</span><span class="withdrawal-tier-current">Current level</span></div>
+                <span id="withdrawalGuideBaseRange" class="withdrawal-tier-range">Base Plan capital above $0 up to $100</span>
+              </div>
+              <strong class="withdrawal-tier-rate">20%</strong>
+            </div>
+            <div class="withdrawal-tier-row" data-tier-code="GROWTH">
+              <div>
+                <div class="withdrawal-tier-name-line"><span id="withdrawalGuideGrowthName" class="withdrawal-tier-name">Growth</span><span class="withdrawal-tier-current">Current level</span></div>
+                <span id="withdrawalGuideGrowthRange" class="withdrawal-tier-range">Above $100 up to $1,000</span>
+              </div>
+              <strong class="withdrawal-tier-rate">25%</strong>
+            </div>
+            <div class="withdrawal-tier-row" data-tier-code="PREMIUM">
+              <div>
+                <div class="withdrawal-tier-name-line"><span id="withdrawalGuidePremiumName" class="withdrawal-tier-name">Premium</span><span class="withdrawal-tier-current">Current level</span></div>
+                <span id="withdrawalGuidePremiumRange" class="withdrawal-tier-range">Above $1,000 up to $10,000</span>
+              </div>
+              <strong class="withdrawal-tier-rate">30%</strong>
+            </div>
+            <div class="withdrawal-tier-row" data-tier-code="VIP">
+              <div>
+                <div class="withdrawal-tier-name-line"><span id="withdrawalGuideVipName" class="withdrawal-tier-name">VIP</span><span class="withdrawal-tier-current">Current level</span></div>
+                <span id="withdrawalGuideVipRange" class="withdrawal-tier-range">Above $10,000</span>
+              </div>
+              <strong class="withdrawal-tier-rate">40%</strong>
+            </div>
+          </div>
+          <p id="withdrawalTierGuideNote" class="withdrawal-tier-guide-note">The level is calculated only from real Base Plan capital. Referral rewards and their profit do not affect it.</p>
+        </section>
       </div>
 
       <div id="withdrawalKycGate" class="withdrawal-kyc-gate" hidden role="alert" aria-live="assertive">
@@ -31271,6 +31355,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var card=document.getElementById("withdrawalLevelCard");
     if(!card) return;
 
+    var tierCode=String(data && data.tier_code || "BASE").toUpperCase();
+    card.dataset.tierCode=tierCode;
+    card.querySelectorAll(".withdrawal-tier-row").forEach(function(row){
+      row.classList.toggle("current",row.dataset.tierCode===tierCode);
+    });
+
     if(!currentUser || !currentUser.id){
       put("withdrawalLevelName","—");
       put("withdrawalLevelPercent","—");
@@ -31462,6 +31552,78 @@ document.addEventListener("DOMContentLoaded", function() {
   }else{
     start();
   }
+})();
+</script>
+
+<script id="withdrawal-tier-guide-v1">
+(function(){
+  var COPY={
+    en:{hint:"View all levels",title:"Withdrawal levels and limits",current:"Current level",names:["Basic","Growth","Premium","VIP"],ranges:["Base Plan capital above $0 up to $100","Above $100 up to $1,000","Above $1,000 up to $10,000","Above $10,000"],note:"The level is calculated only from real Base Plan capital. Referral rewards and their profit do not affect it."},
+    fa:{hint:"مشاهده همه سطح‌ها",title:"سطح‌ها و سقف برداشت",current:"سطح فعلی",names:["پایه","رشد","پرمیوم","وی‌آی‌پی"],ranges:["سرمایه واقعی پلن پایه: بیشتر از ۰ تا ۱۰۰ دلار","بیشتر از ۱۰۰ تا ۱٬۰۰۰ دلار","بیشتر از ۱٬۰۰۰ تا ۱۰٬۰۰۰ دلار","بیشتر از ۱۰٬۰۰۰ دلار"],note:"سطح فقط بر اساس سرمایه واقعی پلن پایه محاسبه می‌شود؛ پاداش دعوت و سود آن در تعیین سطح اثر ندارند."},
+    az:{hint:"Bütün səviyyələrə bax",title:"Çıxarış səviyyələri və limitləri",current:"Cari səviyyə",names:["Baza","İnkişaf","Premium","VIP"],ranges:["Baza Plan kapitalı: $0-dan çox, $100-dək","$100-dan çox, $1,000-dək","$1,000-dan çox, $10,000-dək","$10,000-dan çox"],note:"Səviyyə yalnız real Baza Plan kapitalına əsasən hesablanır. Dəvət mükafatları və onların gəliri səviyyəyə təsir etmir."},
+    tr:{hint:"Tüm seviyeleri gör",title:"Çekim seviyeleri ve limitleri",current:"Mevcut seviye",names:["Temel","Büyüme","Premium","VIP"],ranges:["Temel Plan sermayesi: $0 üzeri–$100","$100 üzeri–$1.000","$1.000 üzeri–$10.000","$10.000 üzeri"],note:"Seviye yalnızca gerçek Temel Plan sermayesine göre hesaplanır. Davet ödülleri ve kazançları seviyeyi etkilemez."},
+    ru:{hint:"Посмотреть все уровни",title:"Уровни и лимиты вывода",current:"Текущий уровень",names:["Базовый","Рост","Премиум","VIP"],ranges:["Капитал базового плана: свыше $0 до $100","Свыше $100 до $1 000","Свыше $1 000 до $10 000","Свыше $10 000"],note:"Уровень зависит только от реального капитала базового плана. Реферальные награды и доход по ним не учитываются."},
+    ar:{hint:"عرض جميع المستويات",title:"مستويات وحدود السحب",current:"المستوى الحالي",names:["الأساسي","النمو","المميز","VIP"],ranges:["رأس مال الخطة الأساسية: أكثر من 0$ حتى 100$","أكثر من 100$ حتى 1,000$","أكثر من 1,000$ حتى 10,000$","أكثر من 10,000$"],note:"يُحسب المستوى من رأس المال الحقيقي للخطة الأساسية فقط، ولا تؤثر مكافآت الإحالة وأرباحها في تحديده."},
+    zh:{hint:"查看全部等级",title:"提现等级与限额",current:"当前等级",names:["基础","成长","高级","VIP"],ranges:["基础计划本金：高于 $0，最高 $100","高于 $100，最高 $1,000","高于 $1,000，最高 $10,000","高于 $10,000"],note:"等级仅按基础计划的实际本金计算；邀请奖励及其收益不影响等级。"},
+    es:{hint:"Ver todos los niveles",title:"Niveles y límites de retiro",current:"Nivel actual",names:["Básico","Crecimiento","Premium","VIP"],ranges:["Capital del Plan Base: más de $0 hasta $100","Más de $100 hasta $1.000","Más de $1.000 hasta $10.000","Más de $10.000"],note:"El nivel se calcula solo con el capital real del Plan Base. Las recompensas por invitación y sus ganancias no influyen."},
+    fr:{hint:"Voir tous les niveaux",title:"Niveaux et plafonds de retrait",current:"Niveau actuel",names:["Base","Croissance","Premium","VIP"],ranges:["Capital du plan de base : plus de 0 $ jusqu’à 100 $","Plus de 100 $ jusqu’à 1 000 $","Plus de 1 000 $ jusqu’à 10 000 $","Plus de 10 000 $"],note:"Le niveau dépend uniquement du capital réel du plan de base. Les récompenses de parrainage et leurs gains ne sont pas pris en compte."},
+    de:{hint:"Alle Stufen anzeigen",title:"Auszahlungsstufen und Limits",current:"Aktuelle Stufe",names:["Basis","Wachstum","Premium","VIP"],ranges:["Basistarif-Kapital: über $0 bis $100","Über $100 bis $1.000","Über $1.000 bis $10.000","Über $10.000"],note:"Die Stufe wird nur anhand des realen Kapitals im Basistarif berechnet. Empfehlungsprämien und deren Erträge haben keinen Einfluss."}
+  };
+
+  function lang(){
+    var value=String(localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase().split("-")[0];
+    return COPY[value]?value:"en";
+  }
+
+  function setText(id,value){var el=document.getElementById(id);if(el)el.textContent=value;}
+
+  function paint(){
+    var c=COPY[lang()]||COPY.en;
+    setText("withdrawalTierHint",c.hint);
+    setText("withdrawalTierGuideTitle",c.title);
+    setText("withdrawalGuideBaseName",c.names[0]);
+    setText("withdrawalGuideGrowthName",c.names[1]);
+    setText("withdrawalGuidePremiumName",c.names[2]);
+    setText("withdrawalGuideVipName",c.names[3]);
+    setText("withdrawalGuideBaseRange",c.ranges[0]);
+    setText("withdrawalGuideGrowthRange",c.ranges[1]);
+    setText("withdrawalGuidePremiumRange",c.ranges[2]);
+    setText("withdrawalGuideVipRange",c.ranges[3]);
+    setText("withdrawalTierGuideNote",c.note);
+    document.querySelectorAll("#withdrawalTierGuide .withdrawal-tier-current").forEach(function(el){el.textContent=c.current;});
+  }
+
+  function start(){
+    var head=document.querySelector("#withdrawalLevelCard .withdrawal-level-head");
+    var guide=document.getElementById("withdrawalTierGuide");
+    if(!head||!guide)return;
+
+    head.setAttribute("role","button");
+    head.setAttribute("tabindex","0");
+    head.setAttribute("aria-expanded","false");
+    head.setAttribute("aria-controls","withdrawalTierGuide");
+
+    function toggle(){
+      var open=head.getAttribute("aria-expanded")!=="true";
+      head.setAttribute("aria-expanded",open?"true":"false");
+      guide.hidden=!open;
+      paint();
+    }
+
+    head.addEventListener("click",toggle);
+    head.addEventListener("keydown",function(event){
+      if(event.key==="Enter"||event.key===" "){
+        event.preventDefault();
+        toggle();
+      }
+    });
+
+    new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+    paint();
+  }
+
+  window.paintWithdrawalTierGuide=paint;
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});else start();
 })();
 </script>
 
