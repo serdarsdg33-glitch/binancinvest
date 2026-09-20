@@ -15252,6 +15252,137 @@ html[dir="rtl"] .funds-action-copy{direction:rtl;text-align:right}
   #portfolio .referral-wallet-mini b{font-size:clamp(16px,5vw,21px)}
 }
 </style>
+<style id="multilingual-plan-card-overflow-fix-v1">
+/*
+ * Keep translated plan copy inside its card. Several languages (especially
+ * Russian and German) need more vertical room than the original English UI.
+ * The card is therefore allowed to grow and always reserves a safe action
+ * area for the absolutely positioned button.
+ */
+#homePlans > .plan,
+#plans > .plan {
+  height: auto !important;
+  padding-bottom: 92px !important;
+  overflow: hidden !important;
+}
+
+#homePlans > .plan h3,
+#plans > .plan h3,
+#homePlans > .plan li,
+#plans > .plan li,
+#homePlans > .plan .flex-fixed-plan-notice,
+#plans > .plan .flex-fixed-plan-notice,
+#homePlans > .plan .btn,
+#plans > .plan .btn {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+
+#homePlans > .plan ul,
+#plans > .plan ul {
+  margin-bottom: 14px;
+}
+
+html body #homePlans > .plan .flex-fixed-plan-notice,
+html body #plans > .plan .flex-fixed-plan-notice {
+  transform: none !important;
+  margin: 12px 0 0 !important;
+}
+
+#homePlans > .plan .btn,
+#plans > .plan .btn {
+  min-height: 50px;
+  height: auto !important;
+  padding: 10px 14px !important;
+  white-space: normal !important;
+  line-height: 1.35 !important;
+}
+
+/* Long Latin/Cyrillic translations use the available dark text area. */
+html[lang="ru"] #homePlans > .plan h3,
+html[lang="ru"] #plans > .plan h3,
+html[lang="ru"] #homePlans > .plan .apy,
+html[lang="ru"] #plans > .plan .apy,
+html[lang="ru"] #homePlans > .plan ul,
+html[lang="ru"] #plans > .plan ul,
+html[lang="de"] #homePlans > .plan h3,
+html[lang="de"] #plans > .plan h3,
+html[lang="de"] #homePlans > .plan .apy,
+html[lang="de"] #plans > .plan .apy,
+html[lang="de"] #homePlans > .plan ul,
+html[lang="de"] #plans > .plan ul,
+html[lang="fr"] #homePlans > .plan h3,
+html[lang="fr"] #plans > .plan h3,
+html[lang="fr"] #homePlans > .plan .apy,
+html[lang="fr"] #plans > .plan .apy,
+html[lang="fr"] #homePlans > .plan ul,
+html[lang="fr"] #plans > .plan ul,
+html[lang="tr"] #homePlans > .plan h3,
+html[lang="tr"] #plans > .plan h3,
+html[lang="tr"] #homePlans > .plan .apy,
+html[lang="tr"] #plans > .plan .apy,
+html[lang="tr"] #homePlans > .plan ul,
+html[lang="tr"] #plans > .plan ul {
+  max-width: 82% !important;
+}
+
+@media (max-width: 600px) {
+  #homePlans > .plan,
+  #plans > .plan {
+    min-height: 390px !important;
+    padding-bottom: 88px !important;
+  }
+
+  #homePlans > .plan h3,
+  #plans > .plan h3 {
+    line-height: 1.25;
+  }
+
+  #homePlans > .plan ul,
+  #plans > .plan ul {
+    line-height: 1.65;
+  }
+
+  html[lang="ru"] #homePlans > .plan h3,
+  html[lang="ru"] #plans > .plan h3,
+  html[lang="ru"] #homePlans > .plan .apy,
+  html[lang="ru"] #plans > .plan .apy,
+  html[lang="ru"] #homePlans > .plan ul,
+  html[lang="ru"] #plans > .plan ul,
+  html[lang="de"] #homePlans > .plan h3,
+  html[lang="de"] #plans > .plan h3,
+  html[lang="de"] #homePlans > .plan .apy,
+  html[lang="de"] #plans > .plan .apy,
+  html[lang="de"] #homePlans > .plan ul,
+  html[lang="de"] #plans > .plan ul,
+  html[lang="fr"] #homePlans > .plan h3,
+  html[lang="fr"] #plans > .plan h3,
+  html[lang="fr"] #homePlans > .plan .apy,
+  html[lang="fr"] #plans > .plan .apy,
+  html[lang="fr"] #homePlans > .plan ul,
+  html[lang="fr"] #plans > .plan ul,
+  html[lang="tr"] #homePlans > .plan h3,
+  html[lang="tr"] #plans > .plan h3,
+  html[lang="tr"] #homePlans > .plan .apy,
+  html[lang="tr"] #plans > .plan .apy,
+  html[lang="tr"] #homePlans > .plan ul,
+  html[lang="tr"] #plans > .plan ul {
+    max-width: 88% !important;
+  }
+
+  html[lang="ru"] #homePlans > .plan li,
+  html[lang="ru"] #plans > .plan li,
+  html[lang="de"] #homePlans > .plan li,
+  html[lang="de"] #plans > .plan li,
+  html[lang="fr"] #homePlans > .plan li,
+  html[lang="fr"] #plans > .plan li,
+  html[lang="tr"] #homePlans > .plan li,
+  html[lang="tr"] #plans > .plan li {
+    font-size: 12.5px;
+  }
+}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
