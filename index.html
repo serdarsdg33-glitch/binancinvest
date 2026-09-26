@@ -18167,6 +18167,58 @@ Transactions section.
   </div>
 </div>
 <script>
+/*
+ * Number and money formatting must follow the language selected inside the
+ * website, never the phone/browser locale.  In particular, an English UI on
+ * a Persian phone must render "$4.15", not "$۴٫۱۵".
+ */
+const BI_NUMBER_LOCALES = Object.freeze({
+  en:"en-US", fa:"fa-IR", az:"az-Latn-AZ", tr:"tr-TR", ru:"ru-RU",
+  ar:"ar", zh:"zh-CN", es:"es-ES", fr:"fr-FR", de:"de-DE",
+  it:"it-IT", pt:"pt-BR", nl:"nl-NL", pl:"pl-PL", uk:"uk-UA",
+  ro:"ro-RO", id:"id-ID", ms:"ms-MY", hi:"hi-IN", ur:"ur-PK",
+  ja:"ja-JP", ko:"ko-KR", vi:"vi-VN", th:"th-TH", el:"el-GR"
+});
+
+function getSiteLanguageCode(){
+  let language="en";
+  try{
+    language=String(
+      localStorage.getItem("bi_lang") ||
+      document.documentElement.lang ||
+      "en"
+    ).toLowerCase().split("-")[0];
+  }catch(_){
+    language="en";
+  }
+  return Object.prototype.hasOwnProperty.call(BI_NUMBER_LOCALES,language)
+    ? language
+    : "en";
+}
+
+function getSiteNumberLocale(){
+  return BI_NUMBER_LOCALES[getSiteLanguageCode()] || "en-US";
+}
+
+function formatSiteNumber(value,options={}){
+  let number=Number(value);
+  if(!Number.isFinite(number)) number=0;
+  try{
+    return new Intl.NumberFormat(getSiteNumberLocale(),options).format(number);
+  }catch(_){
+    return new Intl.NumberFormat("en-US",options).format(number);
+  }
+}
+
+function formatSiteUsd(value,options={}){
+  return "$" + formatSiteNumber(value,options);
+}
+
+window.getSiteLanguageCode=getSiteLanguageCode;
+window.getSiteNumberLocale=getSiteNumberLocale;
+window.formatSiteNumber=formatSiteNumber;
+window.formatSiteUsd=formatSiteUsd;
+
 // اتصال به Supabase
 const SUPABASE_URL = "https://zpwxvngrowhqquwpovuf.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3h2bmdyb3docXF1d3BvdnVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjU3OTgsImV4cCI6MjEwMjMwMTc5OH0.Mri2kecKEUZTN3z_IqxR8_J8FYDeTj3SJtBfQcq_6X8";
@@ -20123,7 +20175,7 @@ async function submitDepositRequest() {
             amount: Number(amount),
             status: 'pending',
             gateway_ref: paymentDetailsInfo,
-            date: new Date().toLocaleString()
+            date: new Date().toLocaleString(getSiteNumberLocale())
         }
     ]);
 
@@ -20201,7 +20253,7 @@ function addLiveWithdrawal() {
     ];
 
   const amount =
-    (Math.random() * 990 + 10).toFixed(2);
+    formatSiteNumber(Math.random() * 990 + 10,{minimumFractionDigits:2,maximumFractionDigits:2});
 
   const initial = name.charAt(0);
 
@@ -20267,8 +20319,8 @@ let currentInvestorsCount = parseInt(localStorage.getItem("bi_platform_investors
 
 function displayCounters() {
     let uEl = document.getElementById("statUsersVal"), iEl = document.getElementById("statInvestorsVal");
-    if(uEl) uEl.textContent = currentUsersCount.toLocaleString();
-    if(iEl) iEl.textContent = currentInvestorsCount.toLocaleString();
+    if(uEl) uEl.textContent = formatSiteNumber(currentUsersCount,{maximumFractionDigits:0});
+    if(iEl) iEl.textContent = formatSiteNumber(currentInvestorsCount,{maximumFractionDigits:0});
 }
 displayCounters();
 
@@ -21957,7 +22009,7 @@ async function saveTx(type, amount, status){
     type: type,
     amount: amount,
     status: status,
-    date: new Date().toLocaleString()
+    date: new Date().toLocaleString(getSiteNumberLocale())
   }]);
 }
 const VIP_LOCK_RATE = 5.5;
@@ -22404,8 +22456,8 @@ function openPlanSelectionModal(index) {
   document.getElementById(
     "selectedPlanRange"
   ).textContent =
-    `${tr("allowedAmount")}: $${minimum.toLocaleString()} – ` +
-    `$${maximum.toLocaleString()}`;
+    `${tr("allowedAmount")}: ${formatSiteUsd(minimum)} – ` +
+    `${formatSiteUsd(maximum)}`;
 
   const amountInput =
     document.getElementById("selectedPlanAmount");
@@ -22483,8 +22535,8 @@ function continueSelectedPlan() {
     amount > maximum
   ) {
     errorBox.textContent = tr("wholeAmountRange",{
-      min:`$${Math.ceil(minimum)}`,
-      max:`$${maximum.toLocaleString()}`
+      min:formatSiteUsd(Math.ceil(minimum)),
+      max:formatSiteUsd(maximum)
     });
 
     errorBox.classList.add("show");
@@ -22532,8 +22584,8 @@ async function invest(i) {
   const enteredAmount = prompt(
     tr("investmentPrompt",{
       plan:localizedPlanName,
-      min:`$${minimum}`,
-      max:`$${maximum.toLocaleString()}`
+      min:formatSiteUsd(minimum),
+      max:formatSiteUsd(maximum)
     }),
     minimum
   );
@@ -22548,8 +22600,8 @@ async function invest(i) {
     amount > maximum
   ) {
     toast(tr("amountBetween",{
-      min:`$${minimum}`,
-      max:`$${maximum.toLocaleString()}`
+      min:formatSiteUsd(minimum),
+      max:formatSiteUsd(maximum)
     }));
     return;
   }
@@ -22649,14 +22701,10 @@ async function investCustom() {
 
 function formatPortfolioMoney(value, live = false) {
   const amount = Number(value || 0);
-
-  return "$" + amount.toLocaleString(
-    undefined,
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: live ? 6 : 2
-    }
-  );
+  return formatSiteUsd(amount,{
+    minimumFractionDigits:2,
+    maximumFractionDigits:live ? 6 : 2
+  });
 }
 
 function calculateInvestmentProfit(investment) {
@@ -22939,12 +22987,12 @@ function renderVipPortfolioContracts() {
     const startedText =
       Number.isNaN(startedDate.getTime())
         ? "—"
-        : startedDate.toLocaleString();
+        : startedDate.toLocaleString(getSiteNumberLocale());
 
     const endingText =
       Number.isNaN(endingDate.getTime())
         ? "—"
-        : endingDate.toLocaleString();
+        : endingDate.toLocaleString(getSiteNumberLocale());
 
     return `
       <tr>
@@ -23214,10 +23262,11 @@ function renderCoins() {
   for(let i=0; i<8; i++) {
     let c = coins[i];
     let d = demo[c[2]] || [0,0,0,0];
-    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
-    let change = d[1].toFixed(2);
-    let colorClass = change >= 0 ? "green" : "red";
-    let sign = change >= 0 ? "+" : "";
+    let price = formatSiteNumber(d[0], {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let changeValue = Number(d[1] || 0);
+    let change = formatSiteNumber(changeValue,{minimumFractionDigits:2,maximumFractionDigits:2});
+    let colorClass = changeValue >= 0 ? "green" : "red";
+    let sign = changeValue >= 0 ? "+" : "";
     let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
     
     topCoins.innerHTML += `
@@ -23241,12 +23290,13 @@ function renderTable() {
   coins.forEach(c => {
     if(!c[0].toLowerCase().includes(q) && !c[1].toLowerCase().includes(q)) return;
     let d = demo[c[2]] || [0,0,0,0];
-    let price = d[0].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6});
-    let change = d[1].toFixed(2);
-    let cap = (d[2]/1e9).toFixed(2);
-    let vol = (d[3]/1e9).toFixed(2);
-    let colorClass = change >= 0 ? "green" : "red";
-    let sign = change >= 0 ? "+" : "";
+    let price = formatSiteNumber(d[0], {minimumFractionDigits: 2, maximumFractionDigits: 6});
+    let changeValue = Number(d[1] || 0);
+    let change = formatSiteNumber(changeValue,{minimumFractionDigits:2,maximumFractionDigits:2});
+    let cap = formatSiteNumber(d[2]/1e9,{minimumFractionDigits:2,maximumFractionDigits:2});
+    let vol = formatSiteNumber(d[3]/1e9,{minimumFractionDigits:2,maximumFractionDigits:2});
+    let colorClass = changeValue >= 0 ? "green" : "red";
+    let sign = changeValue >= 0 ? "+" : "";
     let isStar = stars.includes(c[0]);
     let iconUrl = `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color/${c[2]}.svg`;
     
@@ -23288,10 +23338,10 @@ function renderPlans(){
         <h3>${name}</h3>
         <div class="apy">${p[3]}% <span style="font-size:14px;color:var(--muted)">/ ${uDict.daily}</span></div>
         <ul>
-          <li>${uDict.amount}: $${p[1]} - $${p[2].toLocaleString()}</li>
+          <li>${uDict.amount}: ${formatSiteUsd(p[1])} - ${formatSiteUsd(p[2])}</li>
           <li>${uDict.term}: ${p[4]} ${uDict.days}</li>
           <li class="plan-profit">${uDict.dailyProfit}: ~${p[3]}%</li>
-<li class="plan-profit">${uDict.monthlyProfit}: ~${(p[3] * 30).toFixed(1)}%</li>
+<li class="plan-profit">${uDict.monthlyProfit}: ~${formatSiteNumber(p[3] * 30,{minimumFractionDigits:1,maximumFractionDigits:1})}%</li>
         </ul>
         <button class="btn gold" onclick="openPlanSelectionModal(${i})">${uDict.investNow}</button>
       </div>
@@ -23356,8 +23406,8 @@ function calc(){
   let a = Number(rawAmount);
   let total = a * (1 + (p[3]/100)*p[4]);
   let profit = total - a;
-  document.getElementById("calcResult").textContent = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  document.getElementById("calcProfit").textContent = "+$" + profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " " + tr("totalProfitText");
+  document.getElementById("calcResult").textContent = formatSiteUsd(total, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.getElementById("calcProfit").textContent = "+" + formatSiteUsd(profit, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " " + tr("totalProfitText");
 }
 
 function calcCustom() {
@@ -23461,7 +23511,7 @@ async function loadTransactions(){
   let html = `<div class="tablebox"><table class="table"><thead><tr><th>${tr("dateHeader")}</th><th>${tr("typeHeader")}</th><th>${tr("amountHeader")}</th><th>${tr("statusHeader")}</th></tr></thead><tbody>`;
   data.forEach(tx => {
     let color = tx.status === 'Completed' || tx.status === 'Active' ? 'green' : 'gold';
-    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>$${tx.amount.toFixed(2)}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
+    html += `<tr><td>${tx.date}</td><td>${tx.type} ${tx.gateway_ref ? '<br><small class="muted">'+tx.gateway_ref+'</small>' : ''}</td><td>${formatSiteUsd(tx.amount,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td><span class="${color}">${tx.status}</span></td></tr>`;
   });
   html += `</tbody></table></div>`;
   tList.innerHTML = html;
@@ -23755,7 +23805,7 @@ function formatReferralDate(value) {
   const date = new Date(value);
   return Number.isNaN(date.getTime())
     ? "—"
-    : date.toLocaleString(localStorage.getItem("bi_lang")||undefined);
+    : date.toLocaleString(getSiteNumberLocale());
 }
 
 function getReferralStatusPresentation(status) {
@@ -24787,7 +24837,7 @@ function formatSupportDate(value) {
       minute: "2-digit"
     }).format(date);
   } catch (_) {
-    return date.toLocaleString();
+    return date.toLocaleString(getSiteNumberLocale());
   }
 }
 function openOnlineSupport() {
@@ -25601,9 +25651,7 @@ function updateProfitCounter() {
     elapsedSeconds * INCREMENT_PER_SECOND;
 
   counterElement.textContent =
-    "$" +
-    currentProfit.toLocaleString("en-US") +
-    "+";
+    formatSiteUsd(currentProfit,{maximumFractionDigits:0}) + "+";
 }
 
 updateProfitCounter();
@@ -26104,6 +26152,10 @@ window.withdraw = async function () {
   return;
 }
 
+/* Keep the submitted value on the same two-decimal money unit as Postgres. */
+const normalizedWithdrawalAmount =
+  Math.round((amount + Number.EPSILON) * 100) / 100;
+
 /* Read the same fresh limit that the visible withdrawal card uses. */
 if (typeof window.refreshWithdrawalLimitCard === "function") {
   try {
@@ -26127,30 +26179,24 @@ if (
   return;
 }
 
-const remaining24h =
-  typeof window.getWithdrawalRemaining24h === "function"
-    ? window.getWithdrawalRemaining24h()
-    : null;
-
-if (
-  remaining24h !== null &&
-  amount > remaining24h + 0.00000001
-) {
-  showWithdrawalError(
-    tr("withdrawalDailyLimitExceeded", {
-      amount: formatPortfolioMoney(remaining24h)
-    }),
-    "withdrawalLevel"
-  );
-  return;
-}
+/*
+ * The browser's cached withdrawal-limit snapshot is informative only.
+ * The database function is the single authority for the live 24-hour limit;
+ * this prevents a stale or fractional client value from rejecting a valid
+ * two-decimal amount before it reaches the server.
+ */
 
 const availableBalance =
   getMainAvailableBalance();
 
-if (amount > availableBalance) {
+const withdrawalAmountCents =
+  Math.round(normalizedWithdrawalAmount * 100);
+const availableBalanceCents =
+  Math.floor((Math.max(0, Number(availableBalance) || 0) + 0.000000001) * 100);
+
+if (withdrawalAmountCents > availableBalanceCents) {
   showWithdrawalError(tr("smallerWithdrawalAmount", {
-    amount: formatPortfolioMoney(availableBalance)
+    amount: formatPortfolioMoney(availableBalanceCents / 100)
   }));
   return;
 }
@@ -26161,7 +26207,7 @@ if (amount > availableBalance) {
   const { error } = await supabaseClient.rpc(
     "request_withdrawal",
     {
-      p_amount: amount,
+      p_amount: normalizedWithdrawalAmount,
       p_asset: selected.asset,
       p_network: selected.network,
       p_wallet_address: walletAddress,
@@ -26204,13 +26250,13 @@ if (amount > availableBalance) {
         ? window.getWithdrawalRemaining24h()
         : 0;
 
+    const remainingCents = Math.floor(
+      (Math.max(0, Number(remaining) || 0) + 0.000000001) * 100
+    );
+
     showWithdrawalError(
       tr("withdrawalDailyLimitExceeded", {
-        amount: formatPortfolioMoney(
-          Number.isFinite(Number(remaining))
-            ? Number(remaining)
-            : 0
-        )
+        amount: formatPortfolioMoney(remainingCents / 100)
       }),
       "withdrawalLevel"
     );
@@ -26342,7 +26388,7 @@ window.loadTransactions = async function () {
     html += `
       <tr>
         <td>${safeFinancialText(
-          new Date(item.created_at).toLocaleString()
+          new Date(item.created_at).toLocaleString(getSiteNumberLocale())
         )}</td>
 
         <td>${safeFinancialText(tr(typeKey))}</td>
@@ -26356,7 +26402,7 @@ window.loadTransactions = async function () {
         </td>
 
         <td>
-          $${Number(item.amount || 0).toFixed(2)}
+          ${formatSiteUsd(Number(item.amount || 0),{minimumFractionDigits:2,maximumFractionDigits:2})}
         </td>
 
         <td>
@@ -28173,7 +28219,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const diffMinutes = Math.floor((now - startDate) / (1000 * 60 * 5)); 
             const currentTotal = baseTotalUsers + diffMinutes;
             
-            totalUsersElement.innerText = currentTotal.toLocaleString('en-US');
+            totalUsersElement.innerText = formatSiteNumber(currentTotal,{maximumFractionDigits:0});
         }
         
         updateTotalUsers();
@@ -28204,7 +28250,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         function renderOnlineUsers() {
             onlineUsersElement.innerText =
-                Math.round(currentOnlineUsers).toLocaleString("en-US");
+                formatSiteNumber(Math.round(currentOnlineUsers),{maximumFractionDigits:0});
         }
 
         function updateOnlineUsers() {
@@ -29212,7 +29258,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var planName = localizedActivatedPlanName(planCode);
     var amountText = typeof formatPortfolioMoney === "function"
       ? formatPortfolioMoney(amount)
-      : "$" + Number(amount || 0).toFixed(2);
+      : formatSiteUsd(Number(amount || 0),{minimumFractionDigits:2,maximumFractionDigits:2});
 
     var copy = {
       fa:["سرمایه‌گذاری با موفقیت فعال شد", planName + " با مبلغ " + amountText + " فعال شد و به سبد شما اضافه شد."],
@@ -29564,7 +29610,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var amount = Number(input && input.value);
     if (!Number.isFinite(amount) || amount < selectedPlan[1] || amount > selectedPlan[2]) {
       if (errorBox) {
-        errorBox.textContent = tr("wholeAmountRange", {min:"$" + selectedPlan[1], max:"$" + selectedPlan[2].toLocaleString()});
+        errorBox.textContent = tr("wholeAmountRange", {min:formatSiteUsd(selectedPlan[1]), max:formatSiteUsd(selectedPlan[2])});
         errorBox.classList.add("show");
       }
       return;
@@ -30600,7 +30646,7 @@ document.addEventListener("DOMContentLoaded", function() {
               '</div>',
 
               '<div class="selected-plan-summary-badge">',
-                rate.toFixed(1),
+                formatSiteNumber(rate,{minimumFractionDigits:1,maximumFractionDigits:1}),
                 '% / ',
                 escapeHtml(
                   language() === "fa"
@@ -30630,7 +30676,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   escapeHtml(rateLabel),
                 '</span>',
                 '<strong>',
-                  rate.toFixed(1),
+                  formatSiteNumber(rate,{minimumFractionDigits:1,maximumFractionDigits:1}),
                   '%',
                 '</strong>',
               '</div>',
@@ -31082,7 +31128,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function money8(value){
     var n = Number(value || 0);
     if (!Number.isFinite(n)) n = 0;
-    return "$" + n.toFixed(8);
+    return formatSiteUsd(n,{minimumFractionDigits:8,maximumFractionDigits:8});
   }
 
   window.toggleFlexCalculationCheck = function(){
@@ -31147,7 +31193,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var values = {
       flexCheckPrincipal: money8(principal),
-      flexCheckRate: FLEX_RATE_V22.toFixed(4) + "%",
+      flexCheckRate: formatSiteNumber(FLEX_RATE_V22,{minimumFractionDigits:4,maximumFractionDigits:4}) + "%",
       flexCheckSecond: money8(perSecond),
       flexCheckMinute: money8(perMinute),
       flexCheckHour: money8(perHour),
@@ -31230,7 +31276,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function customMoney(value){
     var n = Number(value || 0);
     if (!Number.isFinite(n)) n = 0;
-    return "$" + n.toLocaleString(undefined,{
+    return formatSiteUsd(n,{
       minimumFractionDigits:2,
       maximumFractionDigits:2
     });
@@ -31303,19 +31349,19 @@ document.addEventListener("DOMContentLoaded", function() {
       "customSummaryAmount",
       amountRaw !== "" && Number.isFinite(amount)
         ? customMoney(amount)
-        : "$0.00"
+        : formatSiteUsd(0,{minimumFractionDigits:2,maximumFractionDigits:2})
     );
 
     setText(
       "customSummaryTerm",
       validTerm
-        ? term.toLocaleString() + " " + tr("daysShort")
+        ? formatSiteNumber(term,{maximumFractionDigits:0}) + " " + tr("daysShort")
         : "—"
     );
 
     setText(
       "customSummaryRate",
-      tier ? rate.toFixed(1) + "%" : "—"
+      tier ? formatSiteNumber(rate,{minimumFractionDigits:1,maximumFractionDigits:1}) + "%" : "—"
     );
 
     setText(
@@ -31676,7 +31722,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     put(
       "withdrawalLevelPercent",
-      percent>0 ? percent.toFixed(0)+"%" : "—"
+      percent>0 ? formatSiteNumber(percent,{maximumFractionDigits:0})+"%" : "—"
     );
 
     put(
@@ -31808,7 +31854,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var v=Number(withdrawalLimitState.remaining_24h);
-    return Number.isFinite(v)?Math.max(0,v):null;
+    return Number.isFinite(v)
+      ? Math.floor((Math.max(0,v)+0.000000001)*100)/100
+      : null;
   };
 
   window.getWithdrawalCapitalBase=function(){
@@ -33312,7 +33360,7 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
     try{
       const d=await invoke({action:"summary"});
       state.basePrincipal=Number(d.base_principal||0);
-      $("bscpBaseBalance").textContent=`$${state.basePrincipal.toFixed(2)}`;
+      $("bscpBaseBalance").textContent=formatSiteUsd(state.basePrincipal,{minimumFractionDigits:2,maximumFractionDigits:2});
       const paid=(d.purchases||[]).find(p=>p.status==="paid"&&(p.product_code===state.code||p.product_code==="UNIVERSAL"));
       if(paid){success(true);return}
       const enough=state.basePrincipal+1e-8>=state.price;
@@ -33332,8 +33380,8 @@ html[dir="ltr"] #portfolio #paymentMethodCustomOptions .payment-method-option{di
     state.price=Number(price)||0;
     state.method="base"; state.network="BEP20"; state.pollCount=0; stopPoll();
     $("bscPaymentTitle").textContent=state.name;
-    $("bscPaymentPrice").textContent=`$${state.price}`;
-    $("bscpExactAmount").textContent=`${state.price} USDT`;
+    $("bscPaymentPrice").textContent=formatSiteUsd(state.price,{maximumFractionDigits:2});
+    $("bscpExactAmount").textContent=`${formatSiteNumber(state.price,{maximumFractionDigits:2})} USDT`;
     $("bscpTxid").value="";
     $("bscpCheckoutBody").style.display="";
     $("bscpSuccess").classList.remove("show");
@@ -33434,7 +33482,7 @@ const C={
 };
 function L(){const x=(localStorage.getItem("bi_lang")||"en").toLowerCase();return C[x]?x:"en"}
 function T(k){return C[L()][k]||C.en[k]||k}
-function dateText(v){try{return new Date(v).toLocaleString(L()==="fa"?"fa-IR":undefined,{year:"numeric",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return String(v||"—")}}
+function dateText(v){try{return new Date(v).toLocaleString(getSiteNumberLocale(),{year:"numeric",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return String(v||"—")}}
 function apply(){document.querySelectorAll("[data-bsc4]").forEach(e=>{const k=e.dataset.bsc4;if(T(k))e.textContent=T(k)})}
 async function fn(name,body){
  try{
@@ -33461,7 +33509,7 @@ function stopPoll(){if(S.poll){clearTimeout(S.poll);S.poll=null}}
 async function summary(){
  const d=await fn("bsc-bot-purchase",{action:"summary"});
  S.base=Number(d.base_principal||0);S.subscription=(d.subscriptions||[]).find(x=>x.product_code===S.code)||null;
- if($("bscpBaseBalance"))$("bscpBaseBalance").textContent=`$${S.base.toFixed(2)}`;
+ if($("bscpBaseBalance"))$("bscpBaseBalance").textContent=formatSiteUsd(S.base,{minimumFractionDigits:2,maximumFractionDigits:2});
  const enough=S.base+1e-8>=S.price;if($("bscpPayBaseBtn"))$("bscpPayBaseBtn").disabled=!enough;
  if(S.subscription?.status==="active")mStatus(T("activeUntil").replace("{date}",dateText(S.subscription.current_period_end)),"info");
  else mStatus(enough?T("baseReady"):T("insufficient"),enough?"info":"error");
@@ -33479,7 +33527,7 @@ window.bscSafeBuy=function(code,price){
  if(!currentUser){if(typeof openAuth==="function")openAuth("login");if(typeof toast==="function")toast(T("login"));return}
  const names={SPOT:"BSC Spot Bot",FUTURES:"BSC Futures Bot",UNIVERSAL:"BSC Universal Bot"};
  S.code=String(code||"").toUpperCase();S.name=names[S.code]||"BSC Bot";S.price=Number(price)||0;S.network="BEP20";S.polls=0;stopPoll();
- $("bscPaymentTitle").textContent=S.name;$("bscPaymentPrice").textContent=`$${S.price} · 30 DAYS`;$("bscpExactAmount").textContent=`${S.price} USDT`;
+ $("bscPaymentTitle").textContent=S.name;$("bscPaymentPrice").textContent=`${formatSiteUsd(S.price,{maximumFractionDigits:2})} · ${formatSiteNumber(30,{maximumFractionDigits:0})} DAYS`;$("bscpExactAmount").textContent=`${formatSiteNumber(S.price,{maximumFractionDigits:2})} USDT`;
  $("bscpTxid").value="";$("bscpCheckoutBody").style.display="";$("bscpSuccess").classList.remove("show");$("bscpRetryBtn").style.display="none";$("bscpWalletAddress").textContent="0x7a858984dAE29B02d148f254eCa04aeB6c51f8fD";
  $("bscpBaseMethod").classList.add("active");$("bscpDirectMethod").classList.remove("active");$("bscpBaseSection").classList.add("active");$("bscpDirectSection").classList.remove("active");
  $("bscPaymentModal").classList.add("open");document.body.classList.add("bscp-lock");summary().catch(e=>mStatus(e.message||T("server"),"error"));
@@ -33665,7 +33713,7 @@ async function loadPaymentHistory(){
     host.innerHTML=rows.length?`<h3>${esc(historyText(0))}</h3><p class="iwp-helper">${esc(historyText(2))}</p>`+rows.map(r=>{
       const approved=r.status==="approved"&&r.verification_status==="verified";
       const label=approved?4:r.status==="rejected"?5:r.verification_reason==="payment_reference_missing"?7:6;
-      return `<div class="iwp-row" style="display:block;margin-top:10px;overflow-wrap:anywhere"><b dir="ltr">$${Number(r.amount).toFixed(2)} · ${esc(r.network)}</b><p>${esc(historyText(label))}</p><small dir="ltr">${esc(r.id)}</small><div class="iwp-history-actions">${r.status==="pending"?`<button class="iwp-wallet-btn" type="button" data-history-check="${esc(r.id)}">${esc(historyText(3))}</button>`:""}<button class="iwp-history-delete" type="button" data-history-delete="${esc(r.id)}">${esc(historyText(8))}</button></div></div>`;
+      return `<div class="iwp-row" style="display:block;margin-top:10px;overflow-wrap:anywhere"><b dir="ltr">${formatSiteUsd(Number(r.amount),{minimumFractionDigits:2,maximumFractionDigits:2})} · ${esc(r.network)}</b><p>${esc(historyText(label))}</p><small dir="ltr">${esc(r.id)}</small><div class="iwp-history-actions">${r.status==="pending"?`<button class="iwp-wallet-btn" type="button" data-history-check="${esc(r.id)}">${esc(historyText(3))}</button>`:""}<button class="iwp-history-delete" type="button" data-history-delete="${esc(r.id)}">${esc(historyText(8))}</button></div></div>`;
     }).join(""):"";
     host.querySelectorAll("[data-history-check]").forEach(b=>{
       b.disabled=historyChecks.has(owner+":"+b.dataset.historyCheck);
@@ -33893,7 +33941,7 @@ function render(){
       <button type="button" class="iwp-network ${state.network==="TRC20"?"active":""}" data-iwp-net="TRC20">${iwpNetworkIcons("TRC20")}<span class="iwp-network-copy"><b>USDT (TRC20)</b><span>${esc(t("tron"))}</span></span></button>
     </div>
     <div class="iwp-summary">
-      <div class="iwp-row"><span>${esc(t("amount"))}</span><b id="iwpAmount">${a>0?"$"+a.toFixed(2):"—"}</b></div>
+      <div class="iwp-row"><span>${esc(t("amount"))}</span><b id="iwpAmount">${a>0?formatSiteUsd(a,{minimumFractionDigits:2,maximumFractionDigits:2}):"—"}</b></div>
       <div class="iwp-row"><span>${esc(t("network"))}</span><b id="iwpNetwork">${esc(n.label)}</b></div>
       <div class="iwp-row"><span>${esc(t("destination"))}</span><b class="iwp-address">${esc(n.receiver)}</b></div>
     </div>
@@ -34190,7 +34238,7 @@ async function finishSuccess(data,amount,epoch=null){
   waitNote(false);
   const retry=document.getElementById("iwpRecheck");if(retry)retry.hidden=true;
 
-  const credited=Number(data?.credited_amount||data?.amount||amount||0).toFixed(2);
+  const credited=formatSiteNumber(Number(data?.credited_amount||data?.amount||amount||0),{minimumFractionDigits:2,maximumFractionDigits:2});
   status(t("success").replace("{amount}",credited),"ok");
   markConfirmed();
 
@@ -34733,7 +34781,7 @@ document.getElementById("deposit-amount")?.addEventListener("input",()=>{
     render();
   }
   const el=document.getElementById("iwpAmount");
-  if(el)el.textContent=v>0?"$"+v.toFixed(2):"—";
+  if(el)el.textContent=v>0?formatSiteUsd(v,{minimumFractionDigits:2,maximumFractionDigits:2}):"—";
 });
 window.addEventListener("focus",()=>{
   setTimeout(()=>void resumePendingPayment(),60);
@@ -35249,7 +35297,7 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
     state.owned=!!data.owned;
     state.base=Number(data.base_principal||0);
     updateOwnedButtons();
-    if($("academyBaseBalance"))$("academyBaseBalance").textContent="$"+state.base.toFixed(2);
+    if($("academyBaseBalance"))$("academyBaseBalance").textContent=formatSiteUsd(state.base,{minimumFractionDigits:2,maximumFractionDigits:2});
     setBusy(false);
     if(showStatus)setStatus(state.owned?tr("owned"):(state.base+1e-8>=PRICE?tr("baseReady"):tr("insufficient")),state.owned||state.base+1e-8>=PRICE?"info":"error");
     return data;
@@ -35452,8 +35500,8 @@ let prev=lang();setInterval(()=>{const x=lang();if(x!==prev){prev=x;applyLabels(
   function remaining(){if(!state.payment?.expires_at)return 0;return Math.max(0,Date.parse(state.payment.expires_at)-Date.now())}
   function timeText(){const ms=remaining();if(ms<=0)return "0 "+c("second");const total=Math.ceil(ms/1000),m=Math.floor(total/60),s=total%60;return m>0?m+" "+c("minute")+" · "+s+" "+c("second"):s+" "+c("second")}
   function paymentRoute(){const key=state.payment?.route_key||route()?.routeKey;return Object.values(ROUTES).find(r=>r.routeKey===key)||route()}
-  function requestedDisplay(r,p){return r?.stable?`${Number(p.amount).toFixed(2)} ${r.unit}`:`$${Number(p.amount).toFixed(2)} USD`}
-  function readyText(r,p){if(!r)return c("intro");return fill(r.stable?c("stableReady"):c("nativeReady"),{amount:Number(p.amount).toFixed(2),asset:r.unit,network:`${r.chain} (${r.network})`})}
+  function requestedDisplay(r,p){const amountText=formatSiteNumber(Number(p.amount),{minimumFractionDigits:2,maximumFractionDigits:2});return r?.stable?`${amountText} ${r.unit}`:`$${amountText} USD`}
+  function readyText(r,p){if(!r)return c("intro");return fill(r.stable?c("stableReady"):c("nativeReady"),{amount:formatSiteNumber(Number(p.amount),{minimumFractionDigits:2,maximumFractionDigits:2}),asset:r.unit,network:`${r.chain} (${r.network})`})}
   const EXACT_EVM_TXID_COPY={
     en:"For USDT on BEP20/ERC20, TXID is optional. If you do not enter it, upload the receipt and the system will detect the payment from the assigned address on-chain.",
     fa:"برای USDT روی BEP20/ERC20 واردکردن TXID اختیاری است. اگر TXID را وارد نکنید، تصویر فیش را ارسال کنید تا سیستم پرداخت را از روی آدرس اختصاصی روی بلاکچین پیدا و بررسی کند.",
@@ -35807,7 +35855,7 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
   function c(){return COPY[lang()]||COPY.en}
   function g(){return GUIDE[lang()]||GUIDE.en}
   function amount(){return Number(document.getElementById("deposit-amount")?.value||0)}
-  function money(){const a=amount();return Number.isFinite(a)&&a>0?`$${a.toLocaleString(undefined,{maximumFractionDigits:2})}`:"—"}
+  function money(){const a=amount();return Number.isFinite(a)&&a>0?formatSiteUsd(a,{maximumFractionDigits:2}):"—"}
   function escHtml(v){return String(v??"").replace(/[&<>\"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#39;"}[m]))}
   const guideState={provider:"",amount:0,address:""};
   function rawAmount(value){return String(Math.round(Number(value)*100)/100)}
@@ -36065,7 +36113,7 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
   function language(){return (localStorage.getItem("bi_lang")||document.documentElement.lang||"en").toLowerCase().split("-")[0]}
   function words(){return TEXT[language()]||TEXT.en}
   function amount(){return Number(document.getElementById("deposit-amount")?.value||0)}
-  function usd(value){const n=Number(value)||0;return "$"+n.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}
+  function usd(value){const n=Number(value)||0;return formatSiteUsd(n,{minimumFractionDigits:0,maximumFractionDigits:2})}
   function template(value,data){return String(value).replace(/\{(\w+)\}/g,function(_,key){return data[key]??""})}
   function setText(element,value){if(element&&element.textContent!==value)element.textContent=value}
   function setHTML(element,value){if(element&&element.innerHTML!==value)element.innerHTML=value}
