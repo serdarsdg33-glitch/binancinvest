@@ -413,5 +413,41 @@
     setCopy();setTimeout(load,1400);
   })();
   </script>
+  <style>
+    .msg-attachment{margin-top:9px;display:grid;gap:6px}.msg-attachment a{display:block;text-decoration:none;color:inherit}.msg-attachment img{width:min(100%,520px);max-height:440px;display:block;object-fit:contain;background:#eef3f7;border:1px solid #d8e2eb;border-radius:12px;cursor:zoom-in}.msg-attachment-meta{display:flex;justify-content:space-between;gap:8px;color:#6f7f91;font-size:8px}.msg-attachment-error{padding:8px;color:#a83543;background:#fff1f3;border:1px solid #f1c8cf;border-radius:9px;font-size:9px}
+  </style>
+  <script>
+  /* Display private customer screenshots inside administrator support chat. */
+  const ADMIN_SUPPORT_ATTACHMENT_BUCKET='support-attachments';
+  const adminAttachmentCopy=()=>lang==='fa'?{open:'مشاهده تصویر کامل',error:'تصویر پیوست‌شده بارگذاری نشد.',image:'تصویر پیوست‌شده'}:{open:'Open full image',error:'The attached image could not be loaded.',image:'Attached image'};
+  const adminAttachmentSize=bytes=>bytes<1048576?`${Math.max(1,Math.round(bytes/1024))} KB`:`${(bytes/1048576).toFixed(1)} MB`;
+  async function appendAdminSupportAttachment(messageElement,message){
+    if(!message.attachment_path)return;
+    const copy=adminAttachmentCopy(),wrap=document.createElement('div');wrap.className='msg-attachment';
+    try{
+      const{data,error}=await db.storage.from(ADMIN_SUPPORT_ATTACHMENT_BUCKET).createSignedUrl(message.attachment_path,1800);
+      if(error||!data?.signedUrl)throw error||new Error('Signed URL unavailable');
+      const link=document.createElement('a');link.href=data.signedUrl;link.target='_blank';link.rel='noopener noreferrer';link.title=copy.open;
+      const image=document.createElement('img');image.src=data.signedUrl;image.alt=message.attachment_name||copy.image;image.loading='lazy';image.decoding='async';link.appendChild(image);
+      const meta=document.createElement('div');meta.className='msg-attachment-meta';
+      const name=document.createElement('span');name.textContent=message.attachment_name||copy.image;
+      const size=document.createElement('span');size.textContent=message.attachment_size?adminAttachmentSize(Number(message.attachment_size)):copy.open;
+      meta.append(name,size);wrap.append(link,meta);
+    }catch(error){console.error('Support attachment',error);const failed=document.createElement('div');failed.className='msg-attachment-error';failed.textContent=copy.error;wrap.appendChild(failed)}
+    const small=messageElement.querySelector('small');messageElement.insertBefore(wrap,small||null);
+  }
+  window.openTicket=async id=>{
+    selectedTicket=tickets.find(t=>String(t.id)===String(id));if(!selectedTicket)return;
+    renderTickets();$('#chatEmpty').classList.add('hidden');$('#chatHead').classList.remove('hidden');$('#messages').classList.remove('hidden');
+    const isClosed=selectedTicket.status==='closed';$('#composer').classList.toggle('hidden',isClosed);
+    $('#chatHead').innerHTML=`<div><b>${esc(selectedTicket.subject||'—')}</b><span>${esc(profileOf(selectedTicket.user_id)?.email||'—')}</span></div><div class="actions"><span class="badge ${esc(selectedTicket.status||'open')}">${statusLabel(selectedTicket.status||'open')}</span>${isClosed?'':`<button class="btn ghost sm" onclick="closeSelectedTicket()">${lang==='fa'?'بستن تیکت':'Close ticket'}</button>`}</div>`;
+    await db.rpc('mark_ticket_read_by_admin',{p_ticket_id:id});
+    const{data,error}=await db.from('support_messages').select('id,ticket_id,sender_id,body,sender_role,created_at,is_ai,attachment_path,attachment_name,attachment_mime,attachment_size').eq('ticket_id',id).order('created_at');if(error)return fail(error);
+    const host=$('#messages'),fragment=document.createDocumentFragment(),attachmentTasks=[];
+    (data||[]).forEach(m=>{const supportSide=m.sender_role==='admin'||m.is_ai===true,label=m.is_ai===true?(lang==='fa'?'پاسخ خودکار':'Automatic reply'):m.sender_role,element=document.createElement('div');element.className=`msg ${supportSide?'admin':''}`;const body=document.createElement('div');body.textContent=m.body||'';const small=document.createElement('small');small.textContent=`${label} · ${date(m.created_at)}`;element.append(body,small);fragment.appendChild(element);if(m.attachment_path)attachmentTasks.push(()=>appendAdminSupportAttachment(element,m))});
+    if(!(data||[]).length){const empty=document.createElement('div');empty.className='empty';empty.textContent=lang==='fa'?'هنوز پیامی وجود ندارد':'No messages yet';fragment.appendChild(empty)}
+    host.replaceChildren(fragment);await Promise.allSettled(attachmentTasks.map(task=>task()));host.scrollTop=host.scrollHeight;selectedTicket.admin_unread=0;renderOverview();renderOverviewTickets();
+  };
+  </script>
 </body>
 </html>

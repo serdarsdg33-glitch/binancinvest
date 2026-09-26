@@ -17083,6 +17083,16 @@ html[lang="tr"] #plans > .plan ul {
             placeholder="Write your message..."
           ></textarea>
 
+          <div class="support-attachment-picker" data-support-attachment-kind="ticket">
+            <input id="ticketAttachmentInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+            <button class="support-attachment-button" type="button" onclick="selectSupportAttachment('ticket')">
+              <span aria-hidden="true">📎</span>
+              <span id="ticketAttachmentButtonText">Add screenshot</span>
+            </button>
+            <span id="ticketAttachmentHint" class="support-attachment-hint">JPG, PNG or WebP — maximum 8 MB</span>
+            <div id="ticketAttachmentPreview" class="support-attachment-preview" hidden></div>
+          </div>
+
           <button
             id="createTicketBtn"
             class="btn gold"
@@ -17144,6 +17154,16 @@ html[lang="tr"] #plans > .plan ul {
               maxlength="4000"
               placeholder="Write your reply..."
             ></textarea>
+
+            <div class="support-attachment-picker" data-support-attachment-kind="reply">
+              <input id="replyAttachmentInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+              <button class="support-attachment-button" type="button" onclick="selectSupportAttachment('reply')">
+                <span aria-hidden="true">📎</span>
+                <span id="replyAttachmentButtonText">Add screenshot</span>
+              </button>
+              <span id="replyAttachmentHint" class="support-attachment-hint">JPG, PNG or WebP — maximum 8 MB</span>
+              <div id="replyAttachmentPreview" class="support-attachment-preview" hidden></div>
+            </div>
 
             <button
               id="sendSupportReplyBtn"
@@ -36161,6 +36181,222 @@ html[dir="ltr"] #funds #sharedFinanceScene #paymentMethodCustomOptions .payment-
   #rewards .referral-history-legend{grid-template-columns:1fr}
 }
 </style>
+
+<style>
+/* Private support screenshots */
+.support-attachment-picker{margin-top:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.support-attachment-button{min-height:40px;padding:8px 13px;display:inline-flex;align-items:center;justify-content:center;gap:7px;color:#ffe89a;background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.38);border-radius:10px;font:inherit;font-size:12px;font-weight:850;cursor:pointer}
+.support-attachment-button:hover,.support-attachment-button:focus-visible{background:rgba(240,185,11,.15);border-color:rgba(240,185,11,.7);outline:none}
+.support-attachment-hint{color:var(--muted);font-size:10px;line-height:1.45}
+.support-attachment-preview{width:100%;padding:10px;display:grid;grid-template-columns:68px minmax(0,1fr) auto;align-items:center;gap:10px;background:rgba(7,12,18,.8);border:1px solid rgba(240,185,11,.24);border-radius:12px}
+.support-attachment-preview[hidden]{display:none!important}
+.support-attachment-preview img{width:68px;height:68px;display:block;object-fit:cover;border-radius:9px;border:1px solid rgba(255,255,255,.13)}
+.support-attachment-preview-info{min-width:0;display:flex;flex-direction:column;gap:4px}
+.support-attachment-preview-info b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.support-attachment-preview-info span{color:var(--muted);font-size:10px}
+.support-attachment-remove{width:34px;height:34px;display:grid;place-items:center;color:#ffb8be;background:rgba(234,57,67,.1);border:1px solid rgba(234,57,67,.35);border-radius:9px;cursor:pointer}
+.support-message-attachment{margin-top:9px;display:grid;gap:7px}
+.support-message-attachment a{display:block;color:inherit;text-decoration:none}
+.support-message-attachment img{width:min(100%,460px);max-height:420px;display:block;object-fit:contain;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);border-radius:12px;cursor:zoom-in}
+.support-message-attachment-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:inherit;font-size:10px;opacity:.82}
+.support-message-attachment-error{padding:9px;color:#ffd0d4;background:rgba(234,57,67,.1);border:1px solid rgba(234,57,67,.3);border-radius:9px;font-size:11px}
+@media(max-width:600px){.support-attachment-preview{grid-template-columns:56px minmax(0,1fr) auto}.support-attachment-preview img{width:56px;height:56px}.support-message-attachment img{max-height:58vh}}
+</style>
+
+<script>
+/* Support screenshot upload: private bucket, one image per message. */
+const SUPPORT_ATTACHMENT_BUCKET="support-attachments";
+const SUPPORT_ATTACHMENT_MAX_BYTES=8*1024*1024;
+const SUPPORT_ATTACHMENT_TYPES=new Set(["image/jpeg","image/png","image/webp"]);
+const supportAttachmentState={ticket:null,reply:null};
+const supportAttachmentPreviewUrls={ticket:null,reply:null};
+
+const SUPPORT_ATTACHMENT_COPY={
+ en:["Add screenshot","JPG, PNG or WebP — maximum 8 MB","Remove image","Only JPG, PNG and WebP images are accepted.","The image must be smaller than 8 MB.","The image could not be uploaded. Please try again.","Screenshot attached","Open full image","Uploading image…","Screenshot attached for support review"],
+ fa:["افزودن عکس یا اسکرین‌شات","JPG، PNG یا WebP — حداکثر ۸ مگابایت","حذف تصویر","فقط تصاویر JPG، PNG و WebP پذیرفته می‌شوند.","حجم تصویر باید کمتر از ۸ مگابایت باشد.","تصویر ارسال نشد؛ دوباره تلاش کنید.","اسکرین‌شات پیوست‌شده","مشاهده تصویر کامل","در حال ارسال تصویر…","اسکرین‌شات برای بررسی پشتیبانی پیوست شد"],
+ az:["Şəkil və ya ekran görüntüsü əlavə et","JPG, PNG və ya WebP — maksimum 8 MB","Şəkli sil","Yalnız JPG, PNG və WebP şəkilləri qəbul edilir.","Şəklin həcmi 8 MB-dan az olmalıdır.","Şəkil yüklənmədi. Yenidən cəhd edin.","Ekran görüntüsü əlavə edildi","Tam şəkli aç","Şəkil yüklənir…","Dəstək baxışı üçün ekran görüntüsü əlavə edildi"],
+ tr:["Fotoğraf veya ekran görüntüsü ekle","JPG, PNG veya WebP — en fazla 8 MB","Görseli kaldır","Yalnızca JPG, PNG ve WebP görselleri kabul edilir.","Görsel 8 MB'dan küçük olmalıdır.","Görsel yüklenemedi. Lütfen tekrar deneyin.","Ekran görüntüsü eklendi","Tam görseli aç","Görsel yükleniyor…","Destek incelemesi için ekran görüntüsü eklendi"],
+ ru:["Добавить фото или скриншот","JPG, PNG или WebP — до 8 МБ","Удалить изображение","Принимаются только изображения JPG, PNG и WebP.","Размер изображения должен быть меньше 8 МБ.","Не удалось загрузить изображение. Повторите попытку.","Скриншот прикреплён","Открыть полное изображение","Загрузка изображения…","Скриншот прикреплён для проверки службой поддержки"],
+ ar:["إضافة صورة أو لقطة شاشة","JPG أو PNG أو WebP — بحد أقصى 8 ميغابايت","إزالة الصورة","يُسمح فقط بصور JPG وPNG وWebP.","يجب أن يكون حجم الصورة أقل من 8 ميغابايت.","تعذر رفع الصورة. يرجى المحاولة مرة أخرى.","تم إرفاق لقطة الشاشة","فتح الصورة كاملة","جارٍ رفع الصورة…","تم إرفاق لقطة شاشة لمراجعة فريق الدعم"],
+ zh:["添加图片或截图","JPG、PNG 或 WebP — 最大 8 MB","移除图片","仅支持 JPG、PNG 和 WebP 图片。","图片必须小于 8 MB。","图片上传失败，请重试。","已附加截图","打开完整图片","正在上传图片…","已附加截图供客服审核"],
+ es:["Añadir foto o captura","JPG, PNG o WebP — máximo 8 MB","Quitar imagen","Solo se aceptan imágenes JPG, PNG y WebP.","La imagen debe pesar menos de 8 MB.","No se pudo subir la imagen. Inténtalo de nuevo.","Captura adjunta","Abrir imagen completa","Subiendo imagen…","Captura adjunta para revisión de soporte"],
+ fr:["Ajouter une photo ou capture","JPG, PNG ou WebP — 8 Mo maximum","Supprimer l’image","Seules les images JPG, PNG et WebP sont acceptées.","L’image doit faire moins de 8 Mo.","Impossible d’envoyer l’image. Réessayez.","Capture jointe","Ouvrir l’image complète","Envoi de l’image…","Capture jointe pour examen par le support"],
+ de:["Foto oder Screenshot hinzufügen","JPG, PNG oder WebP — maximal 8 MB","Bild entfernen","Nur JPG-, PNG- und WebP-Bilder werden akzeptiert.","Das Bild muss kleiner als 8 MB sein.","Das Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.","Screenshot angehängt","Vollbild öffnen","Bild wird hochgeladen…","Screenshot zur Supportprüfung angehängt"],
+ it:["Aggiungi foto o screenshot","JPG, PNG o WebP — massimo 8 MB","Rimuovi immagine","Sono accettate solo immagini JPG, PNG e WebP.","L’immagine deve essere inferiore a 8 MB.","Impossibile caricare l’immagine. Riprova.","Screenshot allegato","Apri immagine completa","Caricamento immagine…","Screenshot allegato per la verifica del supporto"],
+ ja:["画像またはスクリーンショットを追加","JPG・PNG・WebP（最大8MB）","画像を削除","JPG、PNG、WebP画像のみ使用できます。","画像は8MB未満にしてください。","画像をアップロードできませんでした。もう一度お試しください。","スクリーンショット添付済み","画像全体を開く","画像をアップロード中…","サポート確認用のスクリーンショットを添付しました"],
+ nl:["Foto of schermafbeelding toevoegen","JPG, PNG of WebP — maximaal 8 MB","Afbeelding verwijderen","Alleen JPG-, PNG- en WebP-afbeeldingen zijn toegestaan.","De afbeelding moet kleiner zijn dan 8 MB.","De afbeelding kon niet worden geüpload. Probeer opnieuw.","Schermafbeelding bijgevoegd","Volledige afbeelding openen","Afbeelding uploaden…","Schermafbeelding bijgevoegd voor controle door support"],
+ ko:["사진 또는 스크린샷 추가","JPG, PNG 또는 WebP — 최대 8MB","이미지 삭제","JPG, PNG, WebP 이미지만 허용됩니다.","이미지는 8MB보다 작아야 합니다.","이미지를 업로드하지 못했습니다. 다시 시도해 주세요.","스크린샷 첨부됨","전체 이미지 열기","이미지 업로드 중…","지원팀 검토용 스크린샷이 첨부되었습니다"],
+ el:["Προσθήκη φωτογραφίας ή στιγμιότυπου","JPG, PNG ή WebP — έως 8 MB","Αφαίρεση εικόνας","Γίνονται δεκτές μόνο εικόνες JPG, PNG και WebP.","Η εικόνα πρέπει να είναι μικρότερη από 8 MB.","Η εικόνα δεν μεταφορτώθηκε. Δοκιμάστε ξανά.","Επισυνάφθηκε στιγμιότυπο","Άνοιγμα πλήρους εικόνας","Μεταφόρτωση εικόνας…","Επισυνάφθηκε στιγμιότυπο για έλεγχο υποστήριξης"],
+ hi:["फ़ोटो या स्क्रीनशॉट जोड़ें","JPG, PNG या WebP — अधिकतम 8 MB","चित्र हटाएँ","केवल JPG, PNG और WebP चित्र स्वीकार किए जाते हैं।","चित्र 8 MB से छोटा होना चाहिए।","चित्र अपलोड नहीं हुआ। कृपया फिर प्रयास करें।","स्क्रीनशॉट संलग्न","पूरा चित्र खोलें","चित्र अपलोड हो रहा है…","सहायता समीक्षा के लिए स्क्रीनशॉट संलग्न किया गया"],
+ id:["Tambahkan foto atau tangkapan layar","JPG, PNG, atau WebP — maksimum 8 MB","Hapus gambar","Hanya gambar JPG, PNG, dan WebP yang diterima.","Ukuran gambar harus kurang dari 8 MB.","Gambar gagal diunggah. Silakan coba lagi.","Tangkapan layar terlampir","Buka gambar penuh","Mengunggah gambar…","Tangkapan layar dilampirkan untuk ditinjau tim dukungan"],
+ ms:["Tambah foto atau tangkapan skrin","JPG, PNG atau WebP — maksimum 8 MB","Buang imej","Hanya imej JPG, PNG dan WebP diterima.","Saiz imej mestilah kurang daripada 8 MB.","Imej gagal dimuat naik. Sila cuba lagi.","Tangkapan skrin dilampirkan","Buka imej penuh","Memuat naik imej…","Tangkapan skrin dilampirkan untuk semakan sokongan"],
+ pl:["Dodaj zdjęcie lub zrzut ekranu","JPG, PNG lub WebP — maksymalnie 8 MB","Usuń obraz","Akceptowane są tylko obrazy JPG, PNG i WebP.","Obraz musi mieć mniej niż 8 MB.","Nie udało się przesłać obrazu. Spróbuj ponownie.","Dołączono zrzut ekranu","Otwórz pełny obraz","Przesyłanie obrazu…","Dołączono zrzut ekranu do weryfikacji przez pomoc"],
+ pt:["Adicionar foto ou captura de tela","JPG, PNG ou WebP — máximo de 8 MB","Remover imagem","Somente imagens JPG, PNG e WebP são aceitas.","A imagem deve ter menos de 8 MB.","Não foi possível enviar a imagem. Tente novamente.","Captura anexada","Abrir imagem completa","Enviando imagem…","Captura anexada para análise do suporte"],
+ ro:["Adaugă fotografie sau captură","JPG, PNG sau WebP — maximum 8 MB","Elimină imaginea","Sunt acceptate doar imagini JPG, PNG și WebP.","Imaginea trebuie să fie mai mică de 8 MB.","Imaginea nu a putut fi încărcată. Încercați din nou.","Captură atașată","Deschide imaginea completă","Se încarcă imaginea…","Captură atașată pentru verificarea suportului"],
+ th:["เพิ่มรูปภาพหรือภาพหน้าจอ","JPG, PNG หรือ WebP — สูงสุด 8 MB","ลบรูปภาพ","รองรับเฉพาะรูปภาพ JPG, PNG และ WebP","รูปภาพต้องมีขนาดไม่เกิน 8 MB","อัปโหลดรูปภาพไม่สำเร็จ โปรดลองอีกครั้ง","แนบภาพหน้าจอแล้ว","เปิดรูปภาพเต็ม","กำลังอัปโหลดรูปภาพ…","แนบภาพหน้าจอเพื่อให้ทีมสนับสนุนตรวจสอบแล้ว"],
+ uk:["Додати фото або знімок екрана","JPG, PNG або WebP — до 8 МБ","Видалити зображення","Приймаються лише зображення JPG, PNG та WebP.","Зображення має бути менше 8 МБ.","Не вдалося завантажити зображення. Спробуйте ще раз.","Знімок екрана додано","Відкрити повне зображення","Завантаження зображення…","Знімок екрана додано для перевірки підтримкою"],
+ ur:["تصویر یا اسکرین شاٹ شامل کریں","JPG، PNG یا WebP — زیادہ سے زیادہ 8 MB","تصویر ہٹائیں","صرف JPG، PNG اور WebP تصاویر قبول کی جاتی ہیں۔","تصویر 8 MB سے کم ہونی چاہیے۔","تصویر اپ لوڈ نہیں ہو سکی۔ دوبارہ کوشش کریں۔","اسکرین شاٹ منسلک ہے","مکمل تصویر کھولیں","تصویر اپ لوڈ ہو رہی ہے…","معاونتی جائزے کے لیے اسکرین شاٹ منسلک کیا گیا"],
+ vi:["Thêm ảnh hoặc ảnh chụp màn hình","JPG, PNG hoặc WebP — tối đa 8 MB","Xóa ảnh","Chỉ chấp nhận ảnh JPG, PNG và WebP.","Ảnh phải nhỏ hơn 8 MB.","Không thể tải ảnh lên. Vui lòng thử lại.","Đã đính kèm ảnh chụp màn hình","Mở ảnh đầy đủ","Đang tải ảnh lên…","Đã đính kèm ảnh chụp màn hình để bộ phận hỗ trợ xem xét"]
+};
+const SUPPORT_ATTACHMENT_KEYS={add:0,hint:1,remove:2,invalid:3,tooLarge:4,failed:5,attached:6,open:7,uploading:8,imageOnly:9};
+
+function getSupportAttachmentText(key){
+ const lang=typeof getSupportLanguageCode==="function"?getSupportLanguageCode():(localStorage.getItem("bi_lang")||"en");
+ const row=SUPPORT_ATTACHMENT_COPY[lang]||SUPPORT_ATTACHMENT_COPY.en;
+ return row[SUPPORT_ATTACHMENT_KEYS[key]]||SUPPORT_ATTACHMENT_COPY.en[SUPPORT_ATTACHMENT_KEYS[key]]||key;
+}
+
+function supportAttachmentInput(kind){return document.getElementById(kind==="ticket"?"ticketAttachmentInput":"replyAttachmentInput")}
+function supportAttachmentPreview(kind){return document.getElementById(kind==="ticket"?"ticketAttachmentPreview":"replyAttachmentPreview")}
+function formatSupportAttachmentSize(bytes){return bytes<1048576?`${Math.max(1,Math.round(bytes/1024))} KB`:`${(bytes/1048576).toFixed(1)} MB`}
+
+window.selectSupportAttachment=function(kind){supportAttachmentInput(kind)?.click()};
+window.clearSupportAttachment=function(kind){
+ const input=supportAttachmentInput(kind),preview=supportAttachmentPreview(kind);
+ if(supportAttachmentPreviewUrls[kind]) URL.revokeObjectURL(supportAttachmentPreviewUrls[kind]);
+ supportAttachmentPreviewUrls[kind]=null;supportAttachmentState[kind]=null;
+ if(input) input.value="";
+ if(preview){preview.hidden=true;preview.replaceChildren()}
+};
+
+function renderSupportAttachmentPreview(kind,file){
+ const preview=supportAttachmentPreview(kind);if(!preview)return;
+ if(supportAttachmentPreviewUrls[kind]) URL.revokeObjectURL(supportAttachmentPreviewUrls[kind]);
+ const url=URL.createObjectURL(file);supportAttachmentPreviewUrls[kind]=url;
+ const img=document.createElement("img");img.src=url;img.alt=file.name;
+ const info=document.createElement("div");info.className="support-attachment-preview-info";
+ const name=document.createElement("b");name.textContent=file.name;
+ const size=document.createElement("span");size.textContent=formatSupportAttachmentSize(file.size);
+ info.append(name,size);
+ const remove=document.createElement("button");remove.type="button";remove.className="support-attachment-remove";remove.textContent="×";remove.title=getSupportAttachmentText("remove");remove.setAttribute("aria-label",getSupportAttachmentText("remove"));remove.addEventListener("click",()=>clearSupportAttachment(kind));
+ preview.replaceChildren(img,info,remove);preview.hidden=false;
+}
+
+function validateSupportAttachment(file){
+ if(!SUPPORT_ATTACHMENT_TYPES.has(String(file?.type||"").toLowerCase()))throw new Error(getSupportAttachmentText("invalid"));
+ if(file.size>SUPPORT_ATTACHMENT_MAX_BYTES)throw new Error(getSupportAttachmentText("tooLarge"));
+}
+
+function bindSupportAttachmentInput(kind){
+ const input=supportAttachmentInput(kind);if(!input||input.dataset.bound==="1")return;
+ input.dataset.bound="1";
+ input.addEventListener("change",()=>{
+  const file=input.files?.[0];if(!file)return clearSupportAttachment(kind);
+  try{validateSupportAttachment(file);supportAttachmentState[kind]=file;renderSupportAttachmentPreview(kind,file)}catch(error){clearSupportAttachment(kind);toast(error.message||getSupportAttachmentText("invalid"))}
+ });
+}
+
+function applySupportAttachmentLanguage(){
+ const ticketText=document.getElementById("ticketAttachmentButtonText"),replyText=document.getElementById("replyAttachmentButtonText");
+ const ticketHint=document.getElementById("ticketAttachmentHint"),replyHint=document.getElementById("replyAttachmentHint");
+ if(ticketText)ticketText.textContent=getSupportAttachmentText("add");if(replyText)replyText.textContent=getSupportAttachmentText("add");
+ if(ticketHint)ticketHint.textContent=getSupportAttachmentText("hint");if(replyHint)replyHint.textContent=getSupportAttachmentText("hint");
+ ["ticket","reply"].forEach(kind=>{const remove=supportAttachmentPreview(kind)?.querySelector(".support-attachment-remove");if(remove){remove.title=getSupportAttachmentText("remove");remove.setAttribute("aria-label",getSupportAttachmentText("remove"))}});
+}
+
+async function uploadSupportAttachment(file,ticketId){
+ validateSupportAttachment(file);
+ const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[file.type];
+ const unique=globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(16).slice(2)}`;
+ const path=`${currentUser.id}/${ticketId}/${unique}.${ext}`;
+ const{error}=await supabaseClient.storage.from(SUPPORT_ATTACHMENT_BUCKET).upload(path,file,{cacheControl:"3600",contentType:file.type,upsert:false});
+ if(error)throw error;
+ return{attachment_path:path,attachment_name:String(file.name||`screenshot.${ext}`).slice(0,180),attachment_mime:file.type,attachment_size:file.size};
+}
+
+async function removeUploadedSupportAttachment(path){
+ if(!path)return;try{await supabaseClient.storage.from(SUPPORT_ATTACHMENT_BUCKET).remove([path])}catch(error){console.warn("Support attachment cleanup",error)}
+}
+
+async function appendSupportMessageAttachment(element,item){
+ if(!item.attachment_path)return;
+ const wrap=document.createElement("div");wrap.className="support-message-attachment";
+ try{
+  const{data,error}=await supabaseClient.storage.from(SUPPORT_ATTACHMENT_BUCKET).createSignedUrl(item.attachment_path,1800);
+  if(error||!data?.signedUrl)throw error||new Error("Signed URL unavailable");
+  const link=document.createElement("a");link.href=data.signedUrl;link.target="_blank";link.rel="noopener noreferrer";link.title=getSupportAttachmentText("open");
+  const img=document.createElement("img");img.src=data.signedUrl;img.alt=item.attachment_name||getSupportAttachmentText("attached");img.loading="lazy";img.decoding="async";
+  link.appendChild(img);
+  const meta=document.createElement("div");meta.className="support-message-attachment-meta";
+  const label=document.createElement("span");label.textContent=item.attachment_name||getSupportAttachmentText("attached");
+  const size=document.createElement("span");size.textContent=item.attachment_size?formatSupportAttachmentSize(Number(item.attachment_size)):getSupportAttachmentText("open");
+  meta.append(label,size);wrap.append(link,meta);
+ }catch(error){const failed=document.createElement("div");failed.className="support-message-attachment-error";failed.textContent=getSupportAttachmentText("failed");wrap.appendChild(failed)}
+ const time=element.querySelector(".support-message-time");element.insertBefore(wrap,time||null);
+}
+
+const supportBaseApplyLanguage=applySupportLanguage;
+applySupportLanguage=function(){supportBaseApplyLanguage();applySupportAttachmentLanguage()};
+
+window.createSupportTicket=async function(){
+ if(!currentUser?.id){openAuth("login");return}
+ const subjectInput=document.getElementById("ticketSubject"),categoryInput=document.getElementById("ticketCategory"),messageInput=document.getElementById("ticketMessage"),button=document.getElementById("createTicketBtn");
+ const subject=subjectInput.value.trim(),category=categoryInput.value,typedBody=messageInput.value.trim(),file=supportAttachmentState.ticket;
+ if(subject.length<3||(!typedBody&&!file)){toast(tr("writeMessage"));return}
+ button.disabled=true;button.textContent=file?getSupportAttachmentText("uploading"):tr("sending");
+ let createdTicketId=null,attachment=null,messageCreated=false;
+ try{
+  const{data:ticket,error:ticketError}=await supabaseClient.from("support_tickets").insert({user_id:currentUser.id,subject,category,status:"open",language_code:getSupportLanguageCode()}).select().single();
+  if(ticketError)throw ticketError;createdTicketId=ticket.id;
+  if(file)attachment=await uploadSupportAttachment(file,ticket.id);
+  const body=typedBody||getSupportAttachmentText("imageOnly");
+  const{error:messageError}=await supabaseClient.from("support_messages").insert({ticket_id:ticket.id,sender_id:currentUser.id,sender_role:"user",body,is_ai:false,...(attachment||{})});
+  if(messageError)throw messageError;messageCreated=true;
+  subjectInput.value="";messageInput.value="";categoryInput.value="general";clearSupportAttachment("ticket");
+  toast(tr("ticketSubmitted"),"success");await loadSupportTickets();await openSupportTicket(ticket.id);
+  if(!file)void requestAiSupportReply(ticket.id);
+ }catch(error){
+  console.error("Ticket error:",error);
+  if(!messageCreated&&attachment?.attachment_path)await removeUploadedSupportAttachment(attachment.attachment_path);
+  if(!messageCreated&&createdTicketId)await supabaseClient.from("support_tickets").delete().eq("id",createdTicketId).eq("user_id",currentUser.id);
+  toast(localizedBackendError(error,"supportRequestFailed"));
+ }finally{button.disabled=false;button.textContent=getSupportText("submit")}
+};
+
+window.sendSupportReply=async function(){
+ if(!currentUser?.id||!activeSupportTicketId){toast(tr("selectTicket"));return}
+ const input=document.getElementById("supportReply"),button=document.getElementById("sendSupportReplyBtn"),typedBody=input.value.trim(),file=supportAttachmentState.reply;
+ if(!typedBody&&!file){toast(tr("writeReply"));return}
+ button.disabled=true;button.textContent=file?getSupportAttachmentText("uploading"):tr("sending");
+ let attachment=null,messageCreated=false;
+ try{
+  const{data:ticket,error:ticketError}=await supabaseClient.from("support_tickets").select("id,status").eq("id",activeSupportTicketId).eq("user_id",currentUser.id).single();
+  if(ticketError)throw ticketError;if(ticket.status==="closed"){toast(tr("ticketIsClosed"));await openSupportTicket(activeSupportTicketId);return}
+  const{error:languageError}=await supabaseClient.from("support_tickets").update({language_code:getSupportLanguageCode()}).eq("id",activeSupportTicketId).eq("user_id",currentUser.id);if(languageError)throw languageError;
+  if(file)attachment=await uploadSupportAttachment(file,activeSupportTicketId);
+  const body=typedBody||getSupportAttachmentText("imageOnly");
+  const{error:messageError}=await supabaseClient.from("support_messages").insert({ticket_id:activeSupportTicketId,sender_id:currentUser.id,sender_role:"user",body,is_ai:false,...(attachment||{})});
+  if(messageError)throw messageError;messageCreated=true;
+  const{error:ticketUpdateError}=await supabaseClient.from("support_tickets").update({status:"open",updated_at:new Date().toISOString(),user_unread:0}).eq("id",activeSupportTicketId).eq("user_id",currentUser.id);if(ticketUpdateError)throw ticketUpdateError;
+  const ticketId=activeSupportTicketId;input.value="";clearSupportAttachment("reply");await window.loadSupportMessages(ticketId);await loadSupportTickets();
+  if(!file&&!(await ticketHasRelevantSupportReply(ticketId)))void requestAiSupportReply(ticketId);
+ }catch(error){console.error("Support reply error:",error);if(!messageCreated&&attachment?.attachment_path)await removeUploadedSupportAttachment(attachment.attachment_path);toast(localizedBackendError(error,"supportRequestFailed"))}
+ finally{button.disabled=false;button.textContent=getSupportText("sendReply")}
+};
+
+window.loadSupportMessages=async function(ticketId,options={}){
+ const box=document.getElementById("supportMessages");if(!box||!ticketId)return[];
+ const requestSequence=++supportMessageRenderSequence,isDifferentTicket=supportLastRenderedTicketId!==ticketId,hasRenderedMessages=Boolean(box.querySelector(".support-message")),wasNearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<90;
+ if(!options.silent&&isDifferentTicket&&!hasRenderedMessages){const loading=document.createElement("div");loading.className="support-empty";loading.textContent=getSupportText("loadingConversation");box.replaceChildren(loading)}
+ const{data,error}=await supabaseClient.from("support_messages").select("id,ticket_id,sender_id,body,sender_role,created_at,is_ai,attachment_path,attachment_name,attachment_mime,attachment_size").eq("ticket_id",ticketId).order("created_at",{ascending:true});
+ if(requestSequence!==supportMessageRenderSequence||activeSupportTicketId!==ticketId)return[];
+ if(error){console.error("Load support messages error:",error);if(!hasRenderedMessages){const failure=document.createElement("div");failure.className="support-empty";failure.textContent=tr("conversationLoadError");box.replaceChildren(failure)}return[]}
+ const rows=data||[],signature=JSON.stringify([getSupportLanguageCode(),ticketId,...rows.map(item=>[item.id,item.sender_role,item.is_ai,item.created_at,item.body,item.attachment_path,item.attachment_size])]);
+ if(signature===supportPerformanceState.messageSignatures.get(ticketId)){if(supportAiRequestsInFlight.has(ticketId)&&!box.querySelector("#supportAiTyping"))showAiTyping(ticketId);return rows}
+ if(!rows.length){const empty=document.createElement("div");empty.className="support-empty";empty.textContent=tr("noMessages");box.replaceChildren(empty);supportPerformanceState.messageSignatures.set(ticketId,signature);supportLastRenderedTicketId=ticketId;return rows}
+ const fragment=document.createDocumentFragment(),attachmentTasks=[];
+ rows.forEach(item=>{const element=document.createElement("div"),rawRole=String(item.sender_role||"").toLowerCase(),isAi=item.is_ai===true||["ai","assistant","bot"].includes(rawRole),isUser=!isAi&&rawRole==="user",roleClass=isAi?"ai":(isUser?"user":"admin");element.className=`support-message ${roleClass}`;element.dataset.messageId=String(item.id||"");const author=document.createElement("span");author.className="support-message-author";author.textContent=isAi?getAiSupportLabel():getSupportAuthorLabel(isUser?"user":"admin");const text=document.createElement("div");text.className="support-message-body";text.textContent=isAi?normalizeAiSupportMessage(item.body):(item.body||"");if(isAi)element.classList.add("ai-support-message");const time=document.createElement("span");time.className="support-message-time";time.textContent=formatSupportDate(item.created_at);element.append(author,text,time);fragment.appendChild(element);if(item.attachment_path)attachmentTasks.push(()=>appendSupportMessageAttachment(element,item))});
+ box.replaceChildren(fragment);supportPerformanceState.messageSignatures.set(ticketId,signature);supportLastRenderedTicketId=ticketId;await Promise.allSettled(attachmentTasks.map(task=>task()));
+ if(supportAiRequestsInFlight.has(ticketId))showAiTyping(ticketId);if(isDifferentTicket||wasNearBottom)requestAnimationFrame(()=>{box.scrollTop=box.scrollHeight});return rows;
+};
+
+const supportBaseOpenTicket=openSupportTicket;
+openSupportTicket=async function(ticketId,options={}){if(activeSupportTicketId&&String(activeSupportTicketId)!==String(ticketId))clearSupportAttachment("reply");return supportBaseOpenTicket(ticketId,options)};
+window.openSupportTicket=openSupportTicket;
+
+function initializeSupportAttachments(){bindSupportAttachmentInput("ticket");bindSupportAttachmentInput("reply");applySupportAttachmentLanguage()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initializeSupportAttachments,{once:true});else initializeSupportAttachments();
+</script>
 
 </body>
 </html>
