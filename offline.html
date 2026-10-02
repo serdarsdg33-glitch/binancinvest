@@ -1,17 +1,66 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0e11">
-<title>binancinvest</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#05070b;color:#f4f7fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-main{min-height:100vh;display:grid;place-items:center;padding:24px}
-.card{width:min(420px,100%);padding:28px 22px;text-align:center;background:#0d1218;border:1px solid rgba(240,185,11,.28);border-radius:20px}
-h1{margin:0 0 10px;color:#f0b90b}p{margin:0;color:#aab4c0;line-height:1.7}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070a0f">
+  <title>BinancInvest — Reconnecting</title>
+  <style>
+    :root{color-scheme:dark}
+    *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0}
+    body{display:grid;place-items:center;padding:22px;color:#eef2f7;background:#05070b;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+    .card{width:min(560px,100%);padding:42px 28px;text-align:center;border:1px solid rgba(213,170,46,.32);border-radius:24px;background:linear-gradient(145deg,#0d1119,#080b10);box-shadow:0 24px 70px rgba(0,0,0,.38)}
+    h1{margin:0;color:#f5bf32;font-size:clamp(32px,8vw,52px);letter-spacing:-.04em}
+    p{margin:20px auto 0;max-width:430px;color:#b9c2d0;font-size:16px;line-height:1.8}
+    .state{display:inline-flex;align-items:center;gap:9px;margin-top:22px;color:#e9c15a;font-size:13px;font-weight:700}
+    .state:before{content:"";width:9px;height:9px;border-radius:50%;background:#e9b62f;box-shadow:0 0 0 5px rgba(233,182,47,.12);animation:pulse 1.2s ease-in-out infinite}
+    button{width:100%;min-height:50px;margin-top:26px;border:1px solid rgba(255,211,92,.48);border-radius:14px;color:#141008;background:linear-gradient(180deg,#ffdc72,#e9ad20);font:800 15px inherit;cursor:pointer}
+    small{display:block;margin-top:15px;color:#707b8c;line-height:1.6}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.78)}}
+  </style>
 </head>
-<body><main><div class="card"><h1>binancinvest</h1><p>An internet connection is required to load the latest version.</p></div></main></body>
+<body>
+  <main class="card">
+    <h1>binancinvest</h1>
+    <p>The connection was interrupted. We are automatically reconnecting to the latest version.</p>
+    <div id="state" class="state">Checking connection…</div>
+    <button id="retry" type="button">Try again now</button>
+    <small>This page will refresh automatically when the website becomes available.</small>
+  </main>
+  <script>
+    (() => {
+      const state = document.getElementById("state");
+      const retry = document.getElementById("retry");
+      let checking = false;
+
+      async function reconnect() {
+        if (checking) return;
+        checking = true;
+        retry.disabled = true;
+        state.textContent = "Checking connection…";
+
+        try {
+          const response = await fetch(`/?pwa-recover=${Date.now()}`, {
+            cache: "no-store",
+            headers: { "X-BinancInvest-Recovery": "1" }
+          });
+
+          if (!response.ok) throw new Error(String(response.status));
+          state.textContent = "Connected — opening the website…";
+          location.replace(`/?pwa-recovered=${Date.now()}`);
+        } catch (_) {
+          state.textContent = "Still offline — retrying automatically";
+          checking = false;
+          retry.disabled = false;
+        }
+      }
+
+      retry.addEventListener("click", reconnect);
+      window.addEventListener("online", reconnect);
+      setInterval(reconnect, 5000);
+      reconnect();
+    })();
+  </script>
+</body>
 </html>
