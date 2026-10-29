@@ -15944,12 +15944,7 @@ html[lang="tr"] #plans > .plan ul {
         >
 
         <!-- Left button drawn inside the banner: iPhone installed profile -->
-        <a
-          id="iphoneProfileBtn"
-          class="install-banner-action"
-          href="install-iphone.html"
-          aria-label="Install binancinvest profile on iPhone"
-        ></a>
+        <a aria-label='Install binancinvest profile on iPhone' class='install-banner-action' href='/install-iphone' id='iphoneProfileBtn'></a>
 
         <!-- Right button drawn inside the banner: Android APK -->
         <a
@@ -15974,25 +15969,11 @@ html[lang="tr"] #plans > .plan ul {
         </div>
 
         <div class="install-choice-actions">
-          <a
-            id="iphoneProfileChoiceBtn"
-            class="install-choice-btn install-choice-primary"
-            href="install-iphone.html"
-            aria-controls="iphoneGuidePanel"
-            aria-expanded="false"
-            onclick="return prepareInstallChoice(event,'iphone')"
-          >
+          <a aria-controls='iphoneGuidePanel' aria-expanded='false' class='install-choice-btn install-choice-primary' href='/install-iphone' id='iphoneProfileChoiceBtn' onclick='return prepareInstallChoice(event,\'iphone\')'>
             Install iPhone Profile
           </a>
 
-          <a
-            id="iphoneWebChoiceBtn"
-            class="install-choice-btn install-choice-secondary"
-            href="install-web.html"
-            aria-controls="iphoneGuidePanel"
-            aria-expanded="false"
-            onclick="return prepareInstallChoice(event,'iphone')"
-          >
+          <a aria-controls='iphoneGuidePanel' aria-expanded='false' class='install-choice-btn install-choice-secondary' href='/install-web' id='iphoneWebChoiceBtn' onclick='return prepareInstallChoice(event,\'iphone\')'>
             Add iPhone Web App
           </a>
         </div>
@@ -16027,14 +16008,7 @@ html[lang="tr"] #plans > .plan ul {
             Download Android APK
           </a>
 
-          <a
-            id="androidWebChoiceBtn"
-            class="install-choice-btn install-choice-secondary"
-            href="install-web.html"
-            aria-controls="androidGuidePanel"
-            aria-expanded="false"
-            onclick="return prepareInstallChoice(event,'android')"
-          >
+          <a aria-controls='androidGuidePanel' aria-expanded='false' class='install-choice-btn install-choice-secondary' href='/install-web' id='androidWebChoiceBtn' onclick='return prepareInstallChoice(event,\'android\')'>
             Add Android Web App
           </a>
         </div>
@@ -16092,7 +16066,7 @@ html[lang="tr"] #plans > .plan ul {
           <div class="site-footer-column">
             <h3 data-t="companyHelp">Company & Help</h3>
             <div class="site-footer-links">
-              <a class="site-footer-link" href="about.html" data-t="aboutUs">About Us</a>
+              <a class='site-footer-link' data-t='aboutUs' href='/about'>About Us</a>
               <button class="site-footer-link" type="button" onclick="page('rewards',document.querySelector('[data-page=rewards]'))" data-t="referralRewards">Referral Rewards</button>
               <button class="site-footer-link" type="button" onclick="page('support',document.querySelector('[data-page=support]'))" data-t="helpSupport">Help & Support</button>
               <a class="site-footer-link" href="mailto:support@binancinvest.com" data-t="contactUs">Contact Us</a>
@@ -16102,10 +16076,10 @@ html[lang="tr"] #plans > .plan ul {
           <div class="site-footer-column">
             <h3 data-t="legal">Legal</h3>
             <div class="site-footer-links">
-              <a class="site-footer-link" href="terms.html" data-t="termsConditions">Terms & Conditions</a>
-              <a class="site-footer-link" href="privacy.html" data-t="privacyPolicy">Privacy Policy</a>
+              <a class='site-footer-link' data-t='termsConditions' href='/terms'>Terms & Conditions</a>
+              <a class='site-footer-link' data-t='privacyPolicy' href='/privacy'>Privacy Policy</a>
               <button class="site-footer-link" type="button" onclick="page('profile',document.querySelector('[data-page=profile]'))" data-t="accountSecurity">Account Security</button>
-              <a class="site-footer-link" href="terms.html#risk" data-t="riskDisclosure">Risk Disclosure</a>
+              <a class='site-footer-link' data-t='riskDisclosure' href='/terms#risk'>Risk Disclosure</a>
             </div>
           </div>
         </div>
@@ -16113,9 +16087,9 @@ html[lang="tr"] #plans > .plan ul {
         <div class="site-footer-bottom">
           <span data-t="footerRights">© 2026 Binance Invest. All rights reserved.</span>
           <div class="site-footer-legal">
-            <a href="terms.html" data-t="terms">Terms</a>
-            <a href="privacy.html" data-t="privacy">Privacy</a>
-            <a href="about.html" data-t="about">About</a>
+            <a data-t='terms' href='/terms'>Terms</a>
+            <a data-t='privacy' href='/privacy'>Privacy</a>
+            <a data-t='about' href='/about'>About</a>
           </div>
         </div>
       </div>
@@ -26018,6 +25992,115 @@ window.submitDepositRequest = async function () {
     if(submitButton){submitButton.disabled=false;submitButton.textContent=submitButtonText||tr("depSubmitBtn")}
   }
 };
+const WITHDRAWAL_MONTHLY_COPY = {
+  "en": [
+    "Withdrawal limit reached",
+    "You have reached your limit of 10 withdrawal transactions in the last 30 days."
+  ],
+  "fa": [
+    "سقف تعداد برداشت تکمیل شده",
+    "لیمیت ۱۰ تراکنش برداشت‌های شما در ماه اخیر پر شده است."
+  ],
+  "az": [
+    "Çıxarış limitinə çatılıb",
+    "Son 30 gün ərzində 10 çıxarış əməliyyatı limitinizə çatmısınız."
+  ],
+  "tr": [
+    "Para çekme sınırına ulaşıldı",
+    "Son 30 gün içindeki 10 para çekme işlemi sınırınıza ulaştınız."
+  ],
+  "ru": [
+    "Достигнут лимит выводов",
+    "Вы достигли лимита в 10 операций вывода за последние 30 дней."
+  ],
+  "ar": [
+    "تم بلوغ حد عمليات السحب",
+    "لقد بلغت الحد الأقصى البالغ 10 عمليات سحب خلال آخر 30 يومًا."
+  ],
+  "zh": [
+    "已达到提现次数上限",
+    "您已达到过去30天内10笔提现交易的上限。"
+  ],
+  "es": [
+    "Límite de retiros alcanzado",
+    "Has alcanzado el límite de 10 operaciones de retiro en los últimos 30 días."
+  ],
+  "fr": [
+    "Limite de retraits atteinte",
+    "Vous avez atteint la limite de 10 opérations de retrait au cours des 30 derniers jours."
+  ],
+  "de": [
+    "Auszahlungslimit erreicht",
+    "Sie haben das Limit von 10 Auszahlungen in den letzten 30 Tagen erreicht."
+  ],
+  "it": [
+    "Limite di prelievi raggiunto",
+    "Hai raggiunto il limite di 10 operazioni di prelievo negli ultimi 30 giorni."
+  ],
+  "ja": [
+    "出金回数の上限に達しました",
+    "過去30日間の出金取引の上限である10回に達しました。"
+  ],
+  "nl": [
+    "Opnamelimiet bereikt",
+    "U hebt de limiet van 10 opnametransacties in de afgelopen 30 dagen bereikt."
+  ],
+  "ko": [
+    "출금 횟수 한도 도달",
+    "최근 30일 동안 출금 거래 10회 한도에 도달했습니다."
+  ],
+  "el": [
+    "Συμπληρώθηκε το όριο αναλήψεων",
+    "Έχετε φτάσει το όριο των 10 συναλλαγών ανάληψης τις τελευταίες 30 ημέρες."
+  ],
+  "hi": [
+    "निकासी सीमा पूरी हो गई",
+    "आपने पिछले 30 दिनों में 10 निकासी लेनदेन की सीमा पूरी कर ली है।"
+  ],
+  "id": [
+    "Batas penarikan tercapai",
+    "Anda telah mencapai batas 10 transaksi penarikan dalam 30 hari terakhir."
+  ],
+  "ms": [
+    "Had pengeluaran dicapai",
+    "Anda telah mencapai had 10 transaksi pengeluaran dalam 30 hari yang lalu."
+  ],
+  "pl": [
+    "Osiągnięto limit wypłat",
+    "Osiągnięto limit 10 transakcji wypłaty w ciągu ostatnich 30 dni."
+  ],
+  "pt": [
+    "Limite de levantamentos atingido",
+    "Atingiu o limite de 10 operações de levantamento nos últimos 30 dias."
+  ],
+  "ro": [
+    "Limita de retrageri a fost atinsă",
+    "Ați atins limita de 10 tranzacții de retragere în ultimele 30 de zile."
+  ],
+  "th": [
+    "ถึงขีดจำกัดจำนวนการถอนแล้ว",
+    "คุณถอนเงินครบขีดจำกัด 10 รายการในช่วง 30 วันที่ผ่านมาแล้ว"
+  ],
+  "uk": [
+    "Досягнуто ліміту виведень",
+    "Ви досягли ліміту в 10 операцій виведення за останні 30 днів."
+  ],
+  "ur": [
+    "رقم نکلوانے کی حد پوری ہو گئی",
+    "آپ گزشتہ 30 دنوں میں رقم نکلوانے کی 10 ٹرانزیکشنز کی حد پوری کر چکے ہیں۔"
+  ],
+  "vi": [
+    "Đã đạt giới hạn rút tiền",
+    "Bạn đã đạt giới hạn 10 giao dịch rút tiền trong 30 ngày qua."
+  ]
+};
+Object.entries(WITHDRAWAL_MONTHLY_COPY).forEach(([code, copy]) => {
+  if (T[code]) Object.assign(T[code], {
+    withdrawalMonthlyLimitTitle: copy[0],
+    withdrawalMonthlyLimitReached: copy[1]
+  });
+});
+
 function showWithdrawalError(message, titleKey = "insufficientBalance") {
   const box =
     document.getElementById("withdrawalError");
@@ -26036,8 +26119,13 @@ function showWithdrawalError(message, titleKey = "insufficientBalance") {
     return;
   }
 
+  messageElement.removeAttribute("data-t");
+  if (titleKey === "withdrawalMonthlyLimitTitle") {
+    messageElement.setAttribute("data-t", "withdrawalMonthlyLimitReached");
+  }
   messageElement.textContent = message;
   if (titleElement) {
+    titleElement.setAttribute("data-t", titleKey);
     titleElement.textContent = tr(titleKey);
   }
   box.classList.add("show");
@@ -26227,6 +26315,14 @@ if (withdrawalAmountCents > availableBalanceCents) {
   if (errorMessage.includes("KYC_APPROVAL_REQUIRED")) {
     withdrawalKycStatus="required";
     paintWithdrawalKycGate(true);
+  } else if (
+    String(error.details || "").includes("WITHDRAWAL_MONTHLY_COUNT_LIMIT") ||
+    errorMessage.includes("لیمیت ۱۰ تراکنش برداشت")
+  ) {
+    showWithdrawalError(
+      tr("withdrawalMonthlyLimitReached"),
+      "withdrawalMonthlyLimitTitle"
+    );
   } else if (
     errorMessage.toLowerCase().includes(
       "minimum base plan capital"
