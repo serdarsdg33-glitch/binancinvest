@@ -16706,11 +16706,11 @@ html[lang="tr"] #plans > .plan ul {
             <b id="withdrawalUsed24h">$0.00</b>
           </div>
           <div>
-            <span data-t="withdrawalRemaining24h">Remaining limit</span>
+            <span data-t="withdrawalRemaining24h">Available to withdraw now</span>
             <b id="withdrawalRemaining24h" class="green">$0.00</b>
           </div>
           <div class="withdrawal-available">
-            <span data-t="withdrawalAvailableBalance">Withdrawable total balance</span>
+            <span data-t="withdrawalAvailableBalance">Total Base Plan and reward balance</span>
             <b id="withdrawalAvailableBalance">$0.00</b>
           </div>
         </div>
@@ -19119,7 +19119,7 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 });
 const T={
 en:{
-withdrawalLevel:"Withdrawal level",withdrawalCapitalBase:"Base Plan capital",withdrawalDailyLimit:"24-hour limit",withdrawalUsed24h:"Used in last 24h",withdrawalRemaining24h:"Remaining limit",withdrawalAvailableBalance:"Withdrawable total balance",withdrawalLevelAutoNote:"Your percentage is determined by real Base Plan capital and applied to your total withdrawable balance. At least $10 in Base Plan capital is required.",withdrawalBaseMinimumRequired:"At least $10 in real Base Plan capital is required before you can withdraw.",withdrawalTierBase:"Basic",withdrawalTierGrowth:"Growth",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Your remaining 24-hour withdrawal limit is {amount}.",
+withdrawalLevel:"Withdrawal level",withdrawalCapitalBase:"Base Plan capital",withdrawalDailyLimit:"24-hour limit",withdrawalUsed24h:"Used in last 24h",withdrawalRemaining24h:"Available to withdraw now",withdrawalAvailableBalance:"Total Base Plan and reward balance",withdrawalLevelAutoNote:"The daily limit is calculated from real Base Plan principal only. Profit and referral rewards do not increase this limit. The required reserve and the limit of 10 requests in 30 days also apply.",withdrawalBaseMinimumRequired:"At least $10 in real Base Plan capital is required before you can withdraw.",withdrawalTierBase:"Basic",withdrawalTierGrowth:"Growth",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Your remaining 24-hour withdrawal limit is {amount}.",
 portfolioBannerSlogan1:"Your path to growth starts here",portfolioBannerSlogan2:"Build your future with a clearer vision",
 portfolioBannerSlogan:'Grow with us. Build your future.',
 portfolioIntroTitle:'Manage your capital, profits and contracts',portfolioIntroSubtitle:'Manage your investments with clarity and control',flexCheckToggle:'Check flexible plan calculation',flexCheckBasis:'Calculation basis: FLEX_DAILY only at 1.5% daily',flexCheckPrincipalLabel:'Current principal',flexCheckRateLabel:'Daily rate',flexCheckSecondLabel:'Profit per second',flexCheckMinuteLabel:'Profit per minute',flexCheckHourLabel:'Profit per hour',flexCheckDayLabel:'Profit per day',flexCheckPreservedLabel:'Preserved previous profit',flexCheckLiveLabel:'Current flexible plan profit',flexCheckNote:'Growth / Starter / Premium / VIP profits are not included in this calculation rate.',
@@ -19145,7 +19145,7 @@ paymentioMsg:"<b>Payment.io / NowPayments Gateway selected.</b> Please use the s
 withdrawWalletLabel:"Destination Wallet Address:", withdrawCryptoLabel:"Select Currency & Network:", withdrawAmountLabel:"Amount (USD):"
 },
 fa:{
-withdrawalLevel:"سطح برداشت",withdrawalCapitalBase:"سرمایه پلن پایه",withdrawalDailyLimit:"سقف برداشت ۲۴ ساعته",withdrawalUsed24h:"برداشت استفاده‌شده در ۲۴ ساعت",withdrawalRemaining24h:"سقف باقی‌مانده",withdrawalAvailableBalance:"موجودی کل قابل برداشت",withdrawalLevelAutoNote:"درصد برداشت از سرمایه واقعی پلن پایه تعیین و روی موجودی کل قابل برداشت اعمال می‌شود. حداقل ۱۰ دلار سرمایه پلن پایه الزامی است.",withdrawalBaseMinimumRequired:"برای برداشت، سرمایه واقعی پلن پایه شما باید حداقل ۱۰ دلار باشد.",withdrawalTierBase:"پایه",withdrawalTierGrowth:"رشد",withdrawalTierPremium:"پرمیوم",withdrawalTierVip:"وی‌آی‌پی",withdrawalDailyLimitExceeded:"سقف باقی‌مانده برداشت شما در ۲۴ ساعت {amount} است.",
+withdrawalLevel:"سطح برداشت",withdrawalCapitalBase:"سرمایه پلن پایه",withdrawalDailyLimit:"سقف برداشت ۲۴ ساعته",withdrawalUsed24h:"برداشت استفاده‌شده در ۲۴ ساعت",withdrawalRemaining24h:"قابل برداشت اکنون",withdrawalAvailableBalance:"مجموع موجودی پایه و پاداش‌ها",withdrawalLevelAutoNote:"سقف روزانه فقط از اصل سرمایه واقعی پلن پایه محاسبه می‌شود. سود و پاداش معرفی سقف را افزایش نمی‌دهند. موجودی الزامی و محدودیت ۱۰ درخواست در ۳۰ روز نیز اعمال می‌شود.",withdrawalBaseMinimumRequired:"برای برداشت، سرمایه واقعی پلن پایه شما باید حداقل ۱۰ دلار باشد.",withdrawalTierBase:"پایه",withdrawalTierGrowth:"رشد",withdrawalTierPremium:"پرمیوم",withdrawalTierVip:"وی‌آی‌پی",withdrawalDailyLimitExceeded:"سقف باقی‌مانده برداشت شما در ۲۴ ساعت {amount} است.",
 portfolioBannerSlogan1:"مسیر رشد شما از اینجا آغاز می‌شود",portfolioBannerSlogan2:"با دیدی روشن‌تر آینده خود را بسازید",
 portfolioBannerSlogan:'با ما رشد کنید، آینده خود را بسازید',
 portfolioIntroTitle:'مرکز مدیریت سرمایه، سود و قراردادهای شما',portfolioIntroSubtitle:'سرمایه خود را با شفافیت و کنترل بیشتر مدیریت کنید',flexCheckToggle:'بررسی محاسبه پلن پایه',flexCheckBasis:'مبنای محاسبه: فقط FLEX_DAILY با نرخ روزانه ۱.۵٪',flexCheckPrincipalLabel:'اصل سرمایه فعلی',flexCheckRateLabel:'نرخ روزانه',flexCheckSecondLabel:'سود هر ثانیه',flexCheckMinuteLabel:'سود هر دقیقه',flexCheckHourLabel:'سود هر ساعت',flexCheckDayLabel:'سود هر روز',flexCheckPreservedLabel:'سود قبلی حفظ\u200cشده',flexCheckLiveLabel:'سود فعلی پلن پایه',flexCheckNote:'سود Growth / Starter / Premium / VIP در سرعت محاسبه پلن پایه وارد نمی\u200cشود.',
@@ -19171,7 +19171,7 @@ paymentioMsg:"درگاه پرداخت <b>Payment.io / NowPayments</b> انتخا
 withdrawWalletLabel:"آدرس ولت مقصد:", withdrawCryptoLabel:"انتخاب نوع ارز و شبکه برداشت:", withdrawAmountLabel:"مبلغ برداشت (دلار / USD):"
 },
 az:{
-withdrawalLevel:"Çıxarış səviyyəsi",withdrawalCapitalBase:"Baza plan kapitalı",withdrawalDailyLimit:"24 saatlıq limit",withdrawalUsed24h:"Son 24 saatda istifadə edilib",withdrawalRemaining24h:"Qalan limit",withdrawalAvailableBalance:"Çıxarıla bilən ümumi balans",withdrawalLevelAutoNote:"Faiz real Baza Plan kapitalına görə müəyyən edilir və ümumi çıxarıla bilən balansa tətbiq olunur. Ən azı $10 Baza Plan kapitalı tələb olunur.",withdrawalBaseMinimumRequired:"Çıxarış üçün real Baza Plan kapitalınız ən azı $10 olmalıdır.",withdrawalTierBase:"Baza",withdrawalTierGrowth:"Artım",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Qalan 24 saatlıq çıxarış limitiniz {amount}-dır.",
+withdrawalLevel:"Çıxarış səviyyəsi",withdrawalCapitalBase:"Baza plan kapitalı",withdrawalDailyLimit:"24 saatlıq limit",withdrawalUsed24h:"Son 24 saatda istifadə edilib",withdrawalRemaining24h:"İndi çıxarıla bilən məbləğ",withdrawalAvailableBalance:"Baza plan və mükafat balansı",withdrawalLevelAutoNote:"Gündəlik limit yalnız real Baza Plan əsas kapitalından hesablanır. Mənfəət və dəvət mükafatları limiti artırmır. Saxlanmalı balans və 30 gündə 10 sorğu limiti də tətbiq olunur.",withdrawalBaseMinimumRequired:"Çıxarış üçün real Baza Plan kapitalınız ən azı $10 olmalıdır.",withdrawalTierBase:"Baza",withdrawalTierGrowth:"Artım",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Qalan 24 saatlıq çıxarış limitiniz {amount}-dır.",
 portfolioBannerSlogan1:"İnkişaf yolunuz buradan başlayır",portfolioBannerSlogan2:"Daha aydın baxışla gələcəyinizi qurun",
 portfolioBannerSlogan:'Bizimlə böyüyün, gələcəyinizi qurun',
 portfolioIntroTitle:'Kapitalınızı, mənfəətinizi və müqavilələrinizi idarə edin',portfolioIntroSubtitle:'İnvestisiyalarınızı aydınlıq və nəzarətlə idarə edin',flexCheckToggle:'Əsas plan hesablamasını yoxla',flexCheckBasis:'Hesablama əsası: yalnız FLEX_DAILY, gündəlik 1.5%',flexCheckPrincipalLabel:'Cari əsas kapital',flexCheckRateLabel:'Gündəlik faiz',flexCheckSecondLabel:'Saniyəlik mənfəət',flexCheckMinuteLabel:'Dəqiqəlik mənfəət',flexCheckHourLabel:'Saatlıq mənfəət',flexCheckDayLabel:'Gündəlik mənfəət',flexCheckPreservedLabel:'Qorunan əvvəlki mənfəət',flexCheckLiveLabel:'Cari əsas plan mənfəəti',flexCheckNote:'Growth / Starter / Premium / VIP mənfəətləri əsas planın bu hesablama sürətinə daxil edilmir.',
@@ -19197,7 +19197,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Zəhmət olmasa aşağı
 withdrawWalletLabel:"Təyinat Cüzdan Ünvanı:", withdrawCryptoLabel:"Valyuta və Şəbəkəni Seçin:", withdrawAmountLabel:"Məbləğ (USD):"
 },
 tr:{
-withdrawalLevel:"Çekim seviyesi",withdrawalCapitalBase:"Temel plan sermayesi",withdrawalDailyLimit:"24 saatlik limit",withdrawalUsed24h:"Son 24 saatte kullanıldı",withdrawalRemaining24h:"Kalan limit",withdrawalAvailableBalance:"Çekilebilir toplam bakiye",withdrawalLevelAutoNote:"Oran gerçek Temel Plan sermayesine göre belirlenir ve toplam çekilebilir bakiyeye uygulanır. En az $10 Temel Plan sermayesi gerekir.",withdrawalBaseMinimumRequired:"Çekim yapabilmek için gerçek Temel Plan sermayeniz en az $10 olmalıdır.",withdrawalTierBase:"Temel",withdrawalTierGrowth:"Büyüme",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Kalan 24 saatlik çekim limitiniz {amount}.",
+withdrawalLevel:"Çekim seviyesi",withdrawalCapitalBase:"Temel plan sermayesi",withdrawalDailyLimit:"24 saatlik limit",withdrawalUsed24h:"Son 24 saatte kullanıldı",withdrawalRemaining24h:"Şimdi çekilebilir tutar",withdrawalAvailableBalance:"Temel plan ve ödül bakiyesi",withdrawalLevelAutoNote:"Günlük limit yalnızca gerçek Temel Plan anaparasından hesaplanır. Kâr ve davet ödülleri limiti artırmaz. Zorunlu bakiye ve 30 günde 10 talep sınırı da uygulanır.",withdrawalBaseMinimumRequired:"Çekim yapabilmek için gerçek Temel Plan sermayeniz en az $10 olmalıdır.",withdrawalTierBase:"Temel",withdrawalTierGrowth:"Büyüme",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Kalan 24 saatlik çekim limitiniz {amount}.",
 portfolioBannerSlogan1:"Büyüme yolculuğunuz burada başlıyor",portfolioBannerSlogan2:"Daha net bir vizyonla geleceğinizi inşa edin",
 portfolioBannerSlogan:'Bizimle büyüyün, geleceğinizi inşa edin',
 portfolioIntroTitle:'Sermayenizi, kârınızı ve sözleşmelerinizi yönetin',portfolioIntroSubtitle:'Yatırımlarınızı şeffaflık ve kontrolle yönetin',flexCheckToggle:'Esnek plan hesaplamasını kontrol et',flexCheckBasis:'Hesaplama temeli: yalnızca FLEX_DAILY, günlük %1,5',flexCheckPrincipalLabel:'Mevcut anapara',flexCheckRateLabel:'Günlük oran',flexCheckSecondLabel:'Saniyelik kâr',flexCheckMinuteLabel:'Dakikalık kâr',flexCheckHourLabel:'Saatlik kâr',flexCheckDayLabel:'Günlük kâr',flexCheckPreservedLabel:'Korunan önceki kâr',flexCheckLiveLabel:'Mevcut esnek plan kârı',flexCheckNote:'Growth / Starter / Premium / VIP kârları bu esnek plan hesaplama hızına dahil edilmez.',
@@ -19222,7 +19222,7 @@ paymentioMsg:"<b>Payment.io / NowPayments</b> seçildi. Lütfen aşağıdaki gü
 withdrawWalletLabel:"Hedef Cüzdan Adresi:", withdrawCryptoLabel:"Para Birimi ve Ağ Seçin:", withdrawAmountLabel:"Miktar (USD):"
 },
 ru:{
-withdrawalLevel:"Уровень вывода",withdrawalCapitalBase:"Капитал базового плана",withdrawalDailyLimit:"Лимит на 24 часа",withdrawalUsed24h:"Использовано за 24 часа",withdrawalRemaining24h:"Оставшийся лимит",withdrawalAvailableBalance:"Доступный для вывода общий баланс",withdrawalLevelAutoNote:"Процент определяется реальным капиталом базового плана и применяется к общему доступному балансу. Требуется минимум $10 в базовом плане.",withdrawalBaseMinimumRequired:"Для вывода реальный капитал базового плана должен составлять не менее $10.",withdrawalTierBase:"Базовый",withdrawalTierGrowth:"Рост",withdrawalTierPremium:"Премиум",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ваш оставшийся лимит вывода на 24 часа: {amount}.",
+withdrawalLevel:"Уровень вывода",withdrawalCapitalBase:"Капитал базового плана",withdrawalDailyLimit:"Лимит на 24 часа",withdrawalUsed24h:"Использовано за 24 часа",withdrawalRemaining24h:"Доступно к выводу сейчас",withdrawalAvailableBalance:"Баланс базового плана и наград",withdrawalLevelAutoNote:"Суточный лимит рассчитывается только от реального основного капитала базового плана. Прибыль и реферальные награды не увеличивают лимит. Также действуют обязательный резерв и 10 заявок за 30 дней.",withdrawalBaseMinimumRequired:"Для вывода реальный капитал базового плана должен составлять не менее $10.",withdrawalTierBase:"Базовый",withdrawalTierGrowth:"Рост",withdrawalTierPremium:"Премиум",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ваш оставшийся лимит вывода на 24 часа: {amount}.",
 portfolioBannerSlogan1:"Ваш путь к росту начинается здесь",portfolioBannerSlogan2:"Создавайте своё будущее с более ясным взглядом",
 portfolioBannerSlogan:'Растите вместе с нами. Создавайте своё будущее.',
 portfolioIntroTitle:'Управляйте капиталом, прибылью и договорами',portfolioIntroSubtitle:'Управляйте инвестициями прозрачно и под контролем',flexCheckToggle:'Проверить расчёт гибкого плана',flexCheckBasis:'Основа расчёта: только FLEX_DAILY, 1,5% в день',flexCheckPrincipalLabel:'Текущий основной капитал',flexCheckRateLabel:'Дневная ставка',flexCheckSecondLabel:'Прибыль в секунду',flexCheckMinuteLabel:'Прибыль в минуту',flexCheckHourLabel:'Прибыль в час',flexCheckDayLabel:'Прибыль в день',flexCheckPreservedLabel:'Сохранённая предыдущая прибыль',flexCheckLiveLabel:'Текущая прибыль гибкого плана',flexCheckNote:'Прибыль Growth / Starter / Premium / VIP не входит в скорость расчёта гибкого плана.',
@@ -19247,7 +19247,7 @@ paymentioMsg:"<b>Выбран шлюз Payment.io / NowPayments.</b> Испол�
 withdrawWalletLabel:"Адрес кошелька назначения:", withdrawCryptoLabel:"Выберите валюту и сеть:", withdrawAmountLabel:"Сумма (USD):"
 },
 ar:{
-withdrawalLevel:"مستوى السحب",withdrawalCapitalBase:"رأس مال الخطة الأساسية",withdrawalDailyLimit:"حد السحب خلال 24 ساعة",withdrawalUsed24h:"المستخدم خلال آخر 24 ساعة",withdrawalRemaining24h:"الحد المتبقي",withdrawalAvailableBalance:"إجمالي الرصيد القابل للسحب",withdrawalLevelAutoNote:"تُحدد النسبة من رأس المال الحقيقي للخطة الأساسية وتُطبق على إجمالي الرصيد القابل للسحب. يلزم حد أدنى قدره 10$ في الخطة الأساسية.",withdrawalBaseMinimumRequired:"يجب أن يبلغ رأس المال الحقيقي للخطة الأساسية 10$ على الأقل قبل السحب.",withdrawalTierBase:"أساسي",withdrawalTierGrowth:"نمو",withdrawalTierPremium:"بريميوم",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"حد السحب المتبقي خلال 24 ساعة هو {amount}.",
+withdrawalLevel:"مستوى السحب",withdrawalCapitalBase:"رأس مال الخطة الأساسية",withdrawalDailyLimit:"حد السحب خلال 24 ساعة",withdrawalUsed24h:"المستخدم خلال آخر 24 ساعة",withdrawalRemaining24h:"المتاح للسحب الآن",withdrawalAvailableBalance:"رصيد الخطة الأساسية والمكافآت",withdrawalLevelAutoNote:"يُحسب الحد اليومي من أصل رأس المال الحقيقي للخطة الأساسية فقط. الأرباح ومكافآت الإحالة لا ترفع الحد. ويُطبق الرصيد الإلزامي وحد 10 طلبات خلال 30 يوماً.",withdrawalBaseMinimumRequired:"يجب أن يبلغ رأس المال الحقيقي للخطة الأساسية 10$ على الأقل قبل السحب.",withdrawalTierBase:"أساسي",withdrawalTierGrowth:"نمو",withdrawalTierPremium:"بريميوم",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"حد السحب المتبقي خلال 24 ساعة هو {amount}.",
 portfolioBannerSlogan1:"طريق نموك يبدأ من هنا",portfolioBannerSlogan2:"ابنِ مستقبلك برؤية أكثر وضوحاً",
 portfolioBannerSlogan:'انمُ معنا وابنِ مستقبلك',
 portfolioIntroTitle:'إدارة رأس المال والأرباح والعقود',portfolioIntroSubtitle:'أدر استثماراتك بوضوح وتحكم أكبر',flexCheckToggle:'مراجعة حساب الخطة المرنة',flexCheckBasis:'أساس الحساب: FLEX_DAILY فقط بنسبة 1.5% يومياً',flexCheckPrincipalLabel:'رأس المال الحالي',flexCheckRateLabel:'النسبة اليومية',flexCheckSecondLabel:'الربح لكل ثانية',flexCheckMinuteLabel:'الربح لكل دقيقة',flexCheckHourLabel:'الربح لكل ساعة',flexCheckDayLabel:'الربح لكل يوم',flexCheckPreservedLabel:'الربح السابق المحفوظ',flexCheckLiveLabel:'الربح الحالي للخطة المرنة',flexCheckNote:'أرباح Growth / Starter / Premium / VIP غير مشمولة في سرعة حساب الخطة المرنة.',
@@ -19273,7 +19273,7 @@ paymentioMsg:"<b>تم اختيار بوابة Payment.io / NowPayments.</b> ير
 withdrawWalletLabel:"عنوان محفظة الوجهة:", withdrawCryptoLabel:"اختر العملة والشبكة:", withdrawAmountLabel:"المبلغ (دولار):"
 },
 zh:{
-withdrawalLevel:"提现等级",withdrawalCapitalBase:"基础计划本金",withdrawalDailyLimit:"24小时限额",withdrawalUsed24h:"过去24小时已使用",withdrawalRemaining24h:"剩余额度",withdrawalAvailableBalance:"可提现总余额",withdrawalLevelAutoNote:"提现比例由基础计划实际本金决定，并应用于总可提现余额。基础计划本金至少需要 $10。",withdrawalBaseMinimumRequired:"提现前，基础计划实际本金必须至少为 $10。",withdrawalTierBase:"基础",withdrawalTierGrowth:"成长",withdrawalTierPremium:"高级",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"您剩余的24小时提现额度为 {amount}。",
+withdrawalLevel:"提现等级",withdrawalCapitalBase:"基础计划本金",withdrawalDailyLimit:"24小时限额",withdrawalUsed24h:"过去24小时已使用",withdrawalRemaining24h:"当前可提现金额",withdrawalAvailableBalance:"基础计划及奖励总余额",withdrawalLevelAutoNote:"每日限额仅按基础计划实际本金计算，利润和推荐奖励不会提高限额。同时适用必留余额及30天内最多10次申请的限制。",withdrawalBaseMinimumRequired:"提现前，基础计划实际本金必须至少为 $10。",withdrawalTierBase:"基础",withdrawalTierGrowth:"成长",withdrawalTierPremium:"高级",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"您剩余的24小时提现额度为 {amount}。",
 portfolioBannerSlogan1:"您的成长之路从这里开始",portfolioBannerSlogan2:"以更清晰的视野创造未来",
 portfolioBannerSlogan:'与我们共同成长，创造你的未来',
 portfolioIntroTitle:'管理您的本金、收益和合约',portfolioIntroSubtitle:'更清晰、更可控地管理您的投资',flexCheckToggle:'检查灵活计划计算',flexCheckBasis:'计算基础：仅 FLEX_DAILY，每日 1.5%',flexCheckPrincipalLabel:'当前本金',flexCheckRateLabel:'每日收益率',flexCheckSecondLabel:'每秒收益',flexCheckMinuteLabel:'每分钟收益',flexCheckHourLabel:'每小时收益',flexCheckDayLabel:'每日收益',flexCheckPreservedLabel:'已保留的历史收益',flexCheckLiveLabel:'当前灵活计划收益',flexCheckNote:'Growth / Starter / Premium / VIP 的收益不会计入灵活计划的此计算速度。',
@@ -19299,7 +19299,7 @@ paymentioMsg:"<b>已选择 Payment.io / NowPayments 网关。</b> 请使用下�
 withdrawWalletLabel:"目标钱包地址：", withdrawCryptoLabel:"选择币种与网络：", withdrawAmountLabel:"金额 (美元)："
 },
 es:{
-withdrawalLevel:"Nivel de retiro",withdrawalCapitalBase:"Capital del plan base",withdrawalDailyLimit:"Límite de 24 horas",withdrawalUsed24h:"Usado en las últimas 24 h",withdrawalRemaining24h:"Límite restante",withdrawalAvailableBalance:"Saldo total retirable",withdrawalLevelAutoNote:"El porcentaje se determina por el capital real del Plan Base y se aplica al saldo total retirable. Se requieren al menos $10 en el Plan Base.",withdrawalBaseMinimumRequired:"Para retirar, el capital real del Plan Base debe ser de al menos $10.",withdrawalTierBase:"Básico",withdrawalTierGrowth:"Crecimiento",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Tu límite de retiro restante para 24 horas es {amount}.",
+withdrawalLevel:"Nivel de retiro",withdrawalCapitalBase:"Capital del plan base",withdrawalDailyLimit:"Límite de 24 horas",withdrawalUsed24h:"Usado en las últimas 24 h",withdrawalRemaining24h:"Disponible para retirar ahora",withdrawalAvailableBalance:"Saldo del plan base y recompensas",withdrawalLevelAutoNote:"El límite diario se calcula solo sobre el capital real del Plan Base. Los beneficios y premios por referidos no lo aumentan. También se aplican la reserva obligatoria y 10 solicitudes en 30 días.",withdrawalBaseMinimumRequired:"Para retirar, el capital real del Plan Base debe ser de al menos $10.",withdrawalTierBase:"Básico",withdrawalTierGrowth:"Crecimiento",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Tu límite de retiro restante para 24 horas es {amount}.",
 portfolioBannerSlogan1:"Tu camino hacia el crecimiento comienza aquí",portfolioBannerSlogan2:"Construye tu futuro con una visión más clara",
 portfolioBannerSlogan:'Crece con nosotros. Construye tu futuro.',
 portfolioIntroTitle:'Gestiona tu capital, beneficios y contratos',portfolioIntroSubtitle:'Gestiona tus inversiones con claridad y control',flexCheckToggle:'Comprobar cálculo del plan flexible',flexCheckBasis:'Base de cálculo: solo FLEX_DAILY al 1,5% diario',flexCheckPrincipalLabel:'Capital actual',flexCheckRateLabel:'Tasa diaria',flexCheckSecondLabel:'Beneficio por segundo',flexCheckMinuteLabel:'Beneficio por minuto',flexCheckHourLabel:'Beneficio por hora',flexCheckDayLabel:'Beneficio por día',flexCheckPreservedLabel:'Beneficio anterior conservado',flexCheckLiveLabel:'Beneficio actual del plan flexible',flexCheckNote:'Los beneficios de Growth / Starter / Premium / VIP no se incluyen en esta velocidad de cálculo.',
@@ -19325,7 +19325,7 @@ paymentioMsg:"<b>Pasarela Payment.io / NowPayments seleccionada.</b> Utilice el 
 withdrawWalletLabel:"Dirección de billetera de destino:", withdrawCryptoLabel:"Seleccionar moneda y red:", withdrawAmountLabel:"Cantidad (USD):"
 },
 fr:{
-withdrawalLevel:"Niveau de retrait",withdrawalCapitalBase:"Capital du plan de base",withdrawalDailyLimit:"Limite sur 24 h",withdrawalUsed24h:"Utilisé sur les dernières 24 h",withdrawalRemaining24h:"Limite restante",withdrawalAvailableBalance:"Solde total retirable",withdrawalLevelAutoNote:"Le pourcentage dépend du capital réel du plan de base et s’applique au solde total retirable. Un minimum de 10 $ dans le plan de base est requis.",withdrawalBaseMinimumRequired:"Le capital réel du plan de base doit être d’au moins 10 $ avant un retrait.",withdrawalTierBase:"Base",withdrawalTierGrowth:"Croissance",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Votre limite de retrait restante sur 24 h est de {amount}.",
+withdrawalLevel:"Niveau de retrait",withdrawalCapitalBase:"Capital du plan de base",withdrawalDailyLimit:"Limite sur 24 h",withdrawalUsed24h:"Utilisé sur les dernières 24 h",withdrawalRemaining24h:"Disponible au retrait maintenant",withdrawalAvailableBalance:"Solde du plan de base et récompenses",withdrawalLevelAutoNote:"Le plafond quotidien est calculé uniquement sur le capital réel du plan de base. Les bénéfices et primes de parrainage ne l’augmentent pas. La réserve obligatoire et 10 demandes sur 30 jours s’appliquent aussi.",withdrawalBaseMinimumRequired:"Le capital réel du plan de base doit être d’au moins 10 $ avant un retrait.",withdrawalTierBase:"Base",withdrawalTierGrowth:"Croissance",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Votre limite de retrait restante sur 24 h est de {amount}.",
 portfolioBannerSlogan1:"Votre chemin vers la croissance commence ici",portfolioBannerSlogan2:"Construisez votre avenir avec une vision plus claire",
 portfolioBannerSlogan:'Grandissez avec nous. Construisez votre avenir.',
 portfolioIntroTitle:'Gérez votre capital, vos profits et vos contrats',portfolioIntroSubtitle:'Gérez vos investissements avec clarté et contrôle',flexCheckToggle:'Vérifier le calcul du plan flexible',flexCheckBasis:'Base de calcul : FLEX_DAILY uniquement à 1,5 % par jour',flexCheckPrincipalLabel:'Capital actuel',flexCheckRateLabel:'Taux journalier',flexCheckSecondLabel:'Profit par seconde',flexCheckMinuteLabel:'Profit par minute',flexCheckHourLabel:'Profit par heure',flexCheckDayLabel:'Profit par jour',flexCheckPreservedLabel:'Profit précédent conservé',flexCheckLiveLabel:'Profit actuel du plan flexible',flexCheckNote:'Les profits Growth / Starter / Premium / VIP ne sont pas inclus dans cette vitesse de calcul.',
@@ -19351,7 +19351,7 @@ paymentioMsg:"<b>Passerelle Payment.io / NowPayments sélectionnée.</b> Veuille
 withdrawWalletLabel:"Adresse du portefeuille de destination :", withdrawCryptoLabel:"Sélectionner la devise et le réseau :", withdrawAmountLabel:"Montant (USD) :"
 },
 de:{
-withdrawalLevel:"Auszahlungsstufe",withdrawalCapitalBase:"Kapital des Basisplans",withdrawalDailyLimit:"24-Stunden-Limit",withdrawalUsed24h:"In den letzten 24 Std. genutzt",withdrawalRemaining24h:"Verbleibendes Limit",withdrawalAvailableBalance:"Auszahlbares Gesamtguthaben",withdrawalLevelAutoNote:"Der Prozentsatz richtet sich nach dem realen Basistarif-Kapital und wird auf das gesamte auszahlbare Guthaben angewendet. Mindestens $10 Basistarif-Kapital sind erforderlich.",withdrawalBaseMinimumRequired:"Vor einer Auszahlung muss das reale Basistarif-Kapital mindestens $10 betragen.",withdrawalTierBase:"Basis",withdrawalTierGrowth:"Wachstum",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ihr verbleibendes 24-Stunden-Auszahlungslimit beträgt {amount}.",
+withdrawalLevel:"Auszahlungsstufe",withdrawalCapitalBase:"Kapital des Basisplans",withdrawalDailyLimit:"24-Stunden-Limit",withdrawalUsed24h:"In den letzten 24 Std. genutzt",withdrawalRemaining24h:"Jetzt auszahlbarer Betrag",withdrawalAvailableBalance:"Basisplan- und Prämienguthaben",withdrawalLevelAutoNote:"Das Tageslimit wird nur aus dem tatsächlichen Basisplan-Kapital berechnet. Gewinne und Empfehlungsprämien erhöhen es nicht. Pflichtreserve und höchstens 10 Anträge in 30 Tagen gelten ebenfalls.",withdrawalBaseMinimumRequired:"Vor einer Auszahlung muss das reale Basistarif-Kapital mindestens $10 betragen.",withdrawalTierBase:"Basis",withdrawalTierGrowth:"Wachstum",withdrawalTierPremium:"Premium",withdrawalTierVip:"VIP",withdrawalDailyLimitExceeded:"Ihr verbleibendes 24-Stunden-Auszahlungslimit beträgt {amount}.",
 portfolioBannerSlogan1:"Ihr Weg zum Wachstum beginnt hier",portfolioBannerSlogan2:"Gestalten Sie Ihre Zukunft mit klarerem Blick",
 portfolioBannerSlogan:'Wachsen Sie mit uns. Gestalten Sie Ihre Zukunft.',
 portfolioIntroTitle:'Verwalten Sie Kapital, Gewinne und Verträge',portfolioIntroSubtitle:'Verwalten Sie Ihre Investitionen transparent und kontrolliert',flexCheckToggle:'Berechnung des flexiblen Plans prüfen',flexCheckBasis:'Berechnungsbasis: nur FLEX_DAILY mit 1,5 % täglich',flexCheckPrincipalLabel:'Aktuelles Kapital',flexCheckRateLabel:'Tagesrate',flexCheckSecondLabel:'Gewinn pro Sekunde',flexCheckMinuteLabel:'Gewinn pro Minute',flexCheckHourLabel:'Gewinn pro Stunde',flexCheckDayLabel:'Gewinn pro Tag',flexCheckPreservedLabel:'Erhaltener bisheriger Gewinn',flexCheckLiveLabel:'Aktueller Gewinn des flexiblen Plans',flexCheckNote:'Gewinne aus Growth / Starter / Premium / VIP werden nicht in diese Berechnungsgeschwindigkeit einbezogen.',
@@ -26101,7 +26101,7 @@ Object.entries(WITHDRAWAL_MONTHLY_COPY).forEach(([code, copy]) => {
   });
 });
 
-function showWithdrawalError(message, titleKey = "insufficientBalance") {
+function showWithdrawalError(message, titleKey = "withdraw") {
   const box =
     document.getElementById("withdrawalError");
 
@@ -26251,44 +26251,32 @@ if (typeof window.refreshWithdrawalLimitCard === "function") {
   } catch (_) {}
 }
 
-const withdrawalCapitalBase =
-  typeof window.getWithdrawalCapitalBase === "function"
-    ? window.getWithdrawalCapitalBase()
-    : null;
-
-if (
-  withdrawalCapitalBase !== null &&
-  Number(withdrawalCapitalBase) < 10 - 0.00000001
-) {
-  showWithdrawalError(
-    tr("withdrawalBaseMinimumRequired"),
-    "withdrawalLevel"
-  );
+const withdrawalState = typeof window.getWithdrawalValidationState === "function"
+  ? window.getWithdrawalValidationState() : null;
+if (!withdrawalState) {
+  showWithdrawalError(window.getWithdrawalSnapshotUnavailableMessage(), "withdraw");
   return;
 }
-
-/*
- * The browser's cached withdrawal-limit snapshot is informative only.
- * The database function is the single authority for the live 24-hour limit;
- * this prevents a stale or fractional client value from rejecting a valid
- * two-decimal amount before it reaches the server.
- */
-
-const availableBalance =
-  getMainAvailableBalance();
-
-const withdrawalAmountCents =
-  Math.round(normalizedWithdrawalAmount * 100);
-const availableBalanceCents =
-  Math.floor((Math.max(0, Number(availableBalance) || 0) + 0.000000001) * 100);
-
-if (withdrawalAmountCents > availableBalanceCents) {
-  showWithdrawalError(tr("smallerWithdrawalAmount", {
-    amount: formatPortfolioMoney(availableBalanceCents / 100)
-  }));
+if (withdrawalState.monthly_withdrawal_limit_reached === true) {
+  showWithdrawalError(tr("withdrawalMonthlyLimitReached"), "withdrawalMonthlyLimitTitle");
   return;
 }
-
+if (withdrawalState.withdrawal_eligible !== true) {
+  showWithdrawalError(tr("withdrawalBaseMinimumRequired"), "withdrawalLevel");
+  return;
+}
+const availableBalance = Math.max(0, Number(withdrawalState.available_balance) || 0);
+const withdrawalAmountCents = Math.round(normalizedWithdrawalAmount * 100);
+const maximumWithdrawalCents = Math.round(withdrawalState.maximum_withdrawable_now * 100);
+if (withdrawalAmountCents > maximumWithdrawalCents) {
+  const reserve = Math.max(0, Number(withdrawalState.minimum_remaining_balance) || 0);
+  const afterReserveCents = Math.floor((Math.max(0, availableBalance - reserve) + 1e-9) * 100);
+  const message = withdrawalAmountCents > afterReserveCents
+    ? window.getWithdrawalReserveMessage(reserve)
+    : tr("withdrawalDailyLimitExceeded", {amount: formatPortfolioMoney(maximumWithdrawalCents / 100)});
+  showWithdrawalError(message, "withdrawalLevel");
+  return;
+}
 
   const selected = parseWithdrawalAsset(cryptoValue);
 
@@ -26324,18 +26312,14 @@ if (withdrawalAmountCents > availableBalanceCents) {
       "withdrawalMonthlyLimitTitle"
     );
   } else if (
-    errorMessage.toLowerCase().includes(
-      "minimum base plan capital"
-    )
+    (errorMessage.toLowerCase().includes("minimum base plan capital") || errorMessage.includes("حداقل ۱۰ دلار سرمایه پلن پایه"))
   ) {
     showWithdrawalError(
       tr("withdrawalBaseMinimumRequired"),
       "withdrawalLevel"
     );
   } else if (
-    errorMessage.toLowerCase().includes(
-      "daily withdrawal limit exceeded"
-    )
+    (errorMessage.toLowerCase().includes("daily withdrawal limit exceeded") || errorMessage.includes("سقف برداشت ۲۴ ساعته"))
   ) {
     try {
       await window.refreshWithdrawalLimitCard();
@@ -26357,14 +26341,11 @@ if (withdrawalAmountCents > availableBalanceCents) {
       "withdrawalLevel"
     );
   } else if (
-    errorMessage.toLowerCase().includes(
-      "insufficient available balance"
-    )
+    (errorMessage.toLowerCase().includes("insufficient available balance") || errorMessage.includes("موجودی قابل برداشت کافی نیست"))
   ) {
     showWithdrawalError(
-      errorMessage ||
       tr("smallerWithdrawalAmount", {
-        amount: formatPortfolioMoney(getMainAvailableBalance())
+        amount: formatPortfolioMoney(window.getWithdrawalRemaining24h() || 0)
       })
     );
   } else {
@@ -31710,327 +31691,111 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-<script id="withdrawal-level-v37-13">
+<script id="withdrawal-level-server-v1">
 (function(){
-  var withdrawalLimitState = null;
-  var withdrawalLimitRefreshTimer = null;
-  var withdrawalLimitRequestRunning = false;
-
-  function tierKey(code){
-    switch(String(code || "").toUpperCase()){
-      case "GROWTH": return "withdrawalTierGrowth";
-      case "PREMIUM": return "withdrawalTierPremium";
-      case "VIP": return "withdrawalTierVip";
-      default: return "withdrawalTierBase";
-    }
-  }
-
-  function put(id,value){
-    var el=document.getElementById(id);
-    if(el) el.textContent=value;
-  }
-
-  function tierFromCapital(capital){
-    var amount=Math.max(0,Number(capital||0));
-
-    if(amount>10000){
-      return {tier_code:"VIP",withdrawal_percent:40};
-    }
-
-    if(amount>1000){
-      return {tier_code:"PREMIUM",withdrawal_percent:30};
-    }
-
-    if(amount>100){
-      return {tier_code:"GROWTH",withdrawal_percent:25};
-    }
-
-    if(amount>0){
-      return {tier_code:"BASE",withdrawal_percent:20};
-    }
-
-    return {tier_code:"BASE",withdrawal_percent:0};
-  }
-
-  function getLocalFlexPrincipal(){
-    if(typeof window.getFlexibleAvailablePrincipal==="function"){
-      var reconciled=Number(window.getFlexibleAvailablePrincipal()||0);
-      if(Number.isFinite(reconciled)) return Math.max(0,reconciled);
-    }
-
-    try{
-      return (currentInvestments||[]).reduce(function(sum,item){
-        if(
-          String(item && item.status || "")==="active" &&
-          String(item && item.plan_name || "")==="FLEX_DAILY" &&
-          String(item && item.activation_source || "")!=="referral_reward"
-        ){
-          return sum+Math.max(0,Number(item.principal||0));
-        }
-        return sum;
-      },0);
-    }catch(_){
-      return 0;
-    }
-  }
-
-  function getLocalWithdrawableTotal(){
-    if(typeof window.getMainAvailableBalance==="function"){
-      var total=Number(window.getMainAvailableBalance()||0);
-      if(Number.isFinite(total)) return Math.max(0,total);
-    }
-    return 0;
-  }
-
-  function floorMoney(value){
-    var amount=Math.max(0,Number(value||0));
-    return Math.floor((amount+0.000000001)*100)/100;
-  }
-
-  function render(data){
-    var card=document.getElementById("withdrawalLevelCard");
-    if(!card) return;
-
-    var tierCode=String(data && data.tier_code || "BASE").toUpperCase();
-    card.dataset.tierCode=tierCode;
-    card.dataset.withdrawalEligible=String(Boolean(data && data.withdrawal_eligible));
-    card.querySelectorAll(".withdrawal-tier-row").forEach(function(row){
-      row.classList.toggle("current",row.dataset.tierCode===tierCode);
-    });
-
-    if(!currentUser || !currentUser.id){
-      put("withdrawalLevelName","—");
-      put("withdrawalLevelPercent","—");
-      put("withdrawalCapitalBase","$0.00");
-      put("withdrawalDailyLimit","$0.00");
-      put("withdrawalUsed24h","$0.00");
-      put("withdrawalRemaining24h","$0.00");
-      put("withdrawalAvailableBalance","$0.00");
-      return;
-    }
-
-    var percent=Number(data && data.withdrawal_percent || 0);
-
-    put(
-      "withdrawalLevelName",
-      tr(tierKey(data && data.tier_code))
-    );
-
-    put(
-      "withdrawalLevelPercent",
-      percent>0 ? formatSiteNumber(percent,{maximumFractionDigits:0})+"%" : "—"
-    );
-
-    put(
-      "withdrawalCapitalBase",
-      formatPortfolioMoney(Number(data && data.capital_base || 0))
-    );
-
-    put(
-      "withdrawalDailyLimit",
-      formatPortfolioMoney(Number(data && data.daily_limit || 0))
-    );
-
-    put(
-      "withdrawalUsed24h",
-      formatPortfolioMoney(Number(data && data.used_24h || 0))
-    );
-
-    put(
-      "withdrawalRemaining24h",
-      formatPortfolioMoney(Number(data && data.remaining_24h || 0))
-    );
-
-    put(
-      "withdrawalAvailableBalance",
-      formatPortfolioMoney(
-        Number.isFinite(Number(data && data.available_balance))
-          ? Number(data.available_balance)
-          : (
-              typeof window.getMainAvailableBalance === "function"
-                ? Number(window.getMainAvailableBalance() || 0)
-                : 0
-            ),
-        true
-      )
-    );
-  }
-
-  /*
-   * V37.13 — instant render:
-   * As soon as currentInvestments contains the fresh FLEX_DAILY row,
-   * show the capital/level/limit locally with no network wait.
-   * The server RPC follows immediately to confirm used/remaining 24h values.
-   */
-  window.renderWithdrawalLimitFromCurrentInvestments=function(){
-    if(!currentUser || !currentUser.id){
-      render(null);
-      return;
-    }
-
-    var capital=getLocalFlexPrincipal();
-    var tier=tierFromCapital(capital);
-    var available=getLocalWithdrawableTotal();
-    var eligible=capital>=10;
-    var used=Math.max(
-      0,
-      Number(withdrawalLimitState && withdrawalLimitState.used_24h || 0)
-    );
-    var daily=eligible
-      ? floorMoney(available*tier.withdrawal_percent/100)
-      : 0;
-    var remaining=Math.max(0,daily-used);
-
-    var localData={
-      tier_code:tier.tier_code,
-      withdrawal_percent:tier.withdrawal_percent,
-      capital_base:capital,
-      minimum_base_required:10,
-      withdrawal_eligible:eligible,
-      limit_calculation_base:available,
-      daily_limit:daily,
-      used_24h:used,
-      remaining_24h:remaining,
-      available_balance:available
-    };
-
-    render(localData);
+  var state=null, owner=null, loadedAt=0, inFlight=null, flightOwner=null;
+  var COPY={
+    en:['Available to withdraw now','Total Base Plan and reward balance','The daily limit is a percentage of real Base Plan principal only. Available withdrawals also depend on the remaining 24-hour limit, the required reserve and the 10-request limit over 30 days.','Withdrawal limits could not be refreshed. Please try again.','At least {amount} must remain in your account.'],
+    fa:['قابل برداشت اکنون','مجموع موجودی پایه و پاداش‌ها','سقف روزانه فقط درصدی از اصل سرمایه واقعی پلن پایه است. مبلغ قابل برداشت به سقف باقی‌مانده ۲۴ ساعته، موجودی الزامی و حداکثر ۱۰ درخواست در ۳۰ روز نیز بستگی دارد.','محدودیت‌های برداشت به‌روز نشد. دوباره تلاش کنید.','حداقل {amount} باید در حساب باقی بماند.'],
+    az:['İndi çıxarıla bilən məbləğ','Baza plan və mükafat balansı','Gündəlik limit yalnız real Baza Plan əsas kapitalından hesablanır. Çıxarış qalan 24 saatlıq limitə, saxlanmalı balansa və 30 gündə 10 sorğu limitinə də bağlıdır.','Çıxarış limitləri yenilənmədi. Yenidən cəhd edin.','Hesabda ən azı {amount} qalmalıdır.'],
+    tr:['Şimdi çekilebilir tutar','Temel plan ve ödül bakiyesi','Günlük limit yalnızca gerçek Temel Plan anaparası üzerinden hesaplanır. Çekim tutarı kalan 24 saatlik limite, korunması gereken bakiyeye ve 30 günde 10 talep sınırına da bağlıdır.','Çekim limitleri yenilenemedi. Tekrar deneyin.','Hesapta en az {amount} kalmalıdır.'],
+    ru:['Доступно к выводу сейчас','Баланс базового плана и наград','Суточный лимит считается только от реального основного капитала базового плана. Вывод также ограничен остатком лимита за 24 часа, обязательным резервом и 10 заявками за 30 дней.','Не удалось обновить лимиты вывода. Повторите попытку.','На счёте должно остаться не менее {amount}.'],
+    ar:['المتاح للسحب الآن','رصيد الخطة الأساسية والمكافآت','يُحسب الحد اليومي من أصل رأس المال الحقيقي للخطة الأساسية فقط. يعتمد السحب أيضاً على المتبقي خلال 24 ساعة والرصيد الإلزامي وحد 10 طلبات خلال 30 يوماً.','تعذر تحديث حدود السحب. حاول مجدداً.','يجب إبقاء {amount} على الأقل في الحساب.'],
+    zh:['当前可提现金额','基础计划及奖励总余额','每日限额仅按基础计划实际本金计算。提现还受24小时剩余额度、必留余额及30天内最多10次申请的限制。','无法刷新提现限额，请重试。','账户至少须保留 {amount}。'],
+    es:['Disponible para retirar ahora','Saldo del plan base y recompensas','El límite diario se calcula solo sobre el capital real del Plan Base. También se aplican el límite restante de 24 horas, la reserva obligatoria y un máximo de 10 solicitudes en 30 días.','No se pudieron actualizar los límites. Inténtalo de nuevo.','Deben quedar al menos {amount} en la cuenta.'],
+    fr:['Disponible au retrait maintenant','Solde du plan de base et récompenses','Le plafond quotidien dépend uniquement du capital réel du plan de base. Le retrait dépend aussi du plafond restant sur 24 h, de la réserve obligatoire et de 10 demandes maximum sur 30 jours.','Impossible d’actualiser les limites. Réessayez.','Au moins {amount} doivent rester sur le compte.'],
+    de:['Jetzt auszahlbarer Betrag','Basisplan- und Prämienguthaben','Das Tageslimit wird nur aus dem tatsächlichen Basisplan-Kapital berechnet. Außerdem gelten das verbleibende 24-Stunden-Limit, die Pflichtreserve und höchstens 10 Anträge in 30 Tagen.','Die Auszahlungslimits konnten nicht aktualisiert werden. Bitte erneut versuchen.','Mindestens {amount} müssen auf dem Konto verbleiben.']
   };
-
-  window.refreshWithdrawalLimitCard=async function(){
-    if(!currentUser || !currentUser.id){
-      withdrawalLimitState=null;
-      render(null);
-      return;
+  function lang(){return String(localStorage.getItem('bi_lang')||document.documentElement.lang||'en').split('-')[0];}
+  function copy(){return COPY[lang()]||COPY.en;}
+  function put(id,value){var el=document.getElementById(id);if(el)el.textContent=value;}
+  function number(v){return Math.max(0,Number(v)||0);}
+  function floorMoney(v){return Math.floor((number(v)+1e-9)*100)/100;}
+  function fresh(){return state&&currentUser&&owner===currentUser.id&&Date.now()-loadedAt<30000;}
+  function maximum(s){
+    if(!s||s.withdrawal_eligible!==true||s.monthly_withdrawal_limit_reached===true)return 0;
+    var daily=Math.max(0,number(s.daily_limit)-number(s.used_24h));
+    var afterReserve=Math.max(0,number(s.available_balance)-number(s.minimum_remaining_balance));
+    return floorMoney(Math.min(daily,afterReserve,number(s.remaining_24h)));
+  }
+  function render(){
+    var card=document.getElementById('withdrawalLevelCard');if(!card)return;
+    var c=copy();
+    var remainingLabel=card.querySelector('[data-t="withdrawalRemaining24h"]');
+    var totalLabel=card.querySelector('[data-t="withdrawalAvailableBalance"]');
+    var note=card.querySelector('[data-t="withdrawalLevelAutoNote"]');
+    if(remainingLabel)remainingLabel.textContent=c[0];
+    if(totalLabel)totalLabel.textContent=c[1];
+    if(note)note.textContent=c[2];
+    var notice=document.getElementById('withdrawalPolicyNotice');
+    if(!notice){notice=document.createElement('p');notice.id='withdrawalPolicyNotice';notice.className='withdrawal-level-note';notice.setAttribute('role','status');card.appendChild(notice);}
+    if(!fresh()){
+      ['withdrawalLevelName','withdrawalLevelPercent','withdrawalCapitalBase','withdrawalDailyLimit','withdrawalUsed24h','withdrawalRemaining24h','withdrawalAvailableBalance'].forEach(function(id){put(id,'—');});
+      notice.textContent=currentUser&&currentUser.id?c[3]:'';
+      card.dataset.withdrawalEligible='false';return;
     }
-
-    /* Never leave the card waiting for the RPC before showing FLEX capital. */
-    window.renderWithdrawalLimitFromCurrentInvestments();
-
-    if(withdrawalLimitRequestRunning){
-      return;
-    }
-
-    withdrawalLimitRequestRunning=true;
-
-    try{
-      var r=await supabaseClient.rpc("get_my_withdrawal_limit");
-
-      if(r && r.error){
-        throw r.error;
-      }
-
-      withdrawalLimitState=r ? r.data : null;
-      render(withdrawalLimitState);
-    }catch(err){
-      console.error("Withdrawal limit load error:",err);
-
-      /*
-       * Keep the already-rendered local FLEX amount visible if the
-       * network is temporarily slow. Do not replace it with zero.
-       */
-      window.renderWithdrawalLimitFromCurrentInvestments();
-    }finally{
-      withdrawalLimitRequestRunning=false;
-    }
-  };
-
-  window.getWithdrawalRemaining24h=function(){
-    if(!withdrawalLimitState){
-      /*
-       * Before the first RPC finishes, calculate the safe local ceiling
-       * from FLEX principal. The server still enforces the exact limit.
-       */
-      var capital=getLocalFlexPrincipal();
-      var tier=tierFromCapital(capital);
-      if(capital<10) return 0;
-      return floorMoney(
-        getLocalWithdrawableTotal()*tier.withdrawal_percent/100
-      );
-    }
-
-    var v=Number(withdrawalLimitState.remaining_24h);
-    return Number.isFinite(v)
-      ? Math.floor((Math.max(0,v)+0.000000001)*100)/100
-      : null;
-  };
-
-  window.getWithdrawalCapitalBase=function(){
-    var serverValue=Number(
-      withdrawalLimitState && withdrawalLimitState.capital_base
-    );
-    return Number.isFinite(serverValue)
-      ? Math.max(0,serverValue)
-      : getLocalFlexPrincipal();
-  };
-
-  function start(){
-    try{
-      window.renderWithdrawalLimitFromCurrentInvestments();
-      void window.refreshWithdrawalLimitCard();
-    }catch(_){}
-
-    if(withdrawalLimitRefreshTimer){
-      clearInterval(withdrawalLimitRefreshTimer);
-    }
-
-    /*
-     * Old version waited 30 seconds. V37.13 checks every 2 seconds,
-     * only while the tab is visible. Initial/current FLEX amount is
-     * still rendered instantly from currentInvestments.
-     */
-    withdrawalLimitRefreshTimer=setInterval(function(){
-      if(document.hidden){
-        return;
-      }
-
-      if(
-        document.documentElement.classList.contains("web-android") &&
-        !document.getElementById("portfolio")?.classList.contains("active")
-      ){
-        return;
-      }
-
+    var s=state,code=String(s.tier_code||'BASE').toUpperCase();
+    var keys={BASE:'withdrawalTierBase',GROWTH:'withdrawalTierGrowth',PREMIUM:'withdrawalTierPremium',VIP:'withdrawalTierVip'};
+    card.dataset.tierCode=code;card.dataset.withdrawalEligible=String(s.withdrawal_eligible===true);
+    card.querySelectorAll('.withdrawal-tier-row').forEach(function(row){row.classList.toggle('current',row.dataset.tierCode===code);});
+    put('withdrawalLevelName',tr(keys[code]||keys.BASE));
+    put('withdrawalLevelPercent',formatSiteNumber(number(s.withdrawal_percent),{maximumFractionDigits:0})+'%');
+    put('withdrawalCapitalBase',formatPortfolioMoney(number(s.capital_base)));
+    put('withdrawalDailyLimit',formatPortfolioMoney(floorMoney(s.daily_limit)));
+    put('withdrawalUsed24h',formatPortfolioMoney(floorMoney(s.used_24h)));
+    put('withdrawalRemaining24h',formatPortfolioMoney(maximum(s)));
+    put('withdrawalAvailableBalance',formatPortfolioMoney(floorMoney(s.available_balance)));
+    if(s.monthly_withdrawal_limit_reached===true)notice.textContent=tr('withdrawalMonthlyLimitReached');
+    else if(s.withdrawal_eligible!==true)notice.textContent=tr('withdrawalBaseMinimumRequired');
+    else notice.textContent=c[4].replace('{amount}',formatPortfolioMoney(number(s.minimum_remaining_balance)));
+    var guide=document.getElementById('withdrawalTierGuideNote');if(guide)guide.textContent=c[2];
+  }
+  window.renderWithdrawalLimitFromCurrentInvestments=render;
+  window.refreshWithdrawalLimitCard=function(){
+    var userId=currentUser&&currentUser.id;
+    if(!userId){state=null;owner=null;loadedAt=0;render();return Promise.resolve(null);}
+    if(inFlight&&flightOwner===userId)return inFlight;
+    if(owner!==userId){state=null;loadedAt=0;owner=userId;}
+    render();flightOwner=userId;
+    var run=(async function(){
       try{
-        void window.refreshWithdrawalLimitCard();
-      }catch(_){}
-    },
-    document.documentElement.classList.contains("web-android")
-      ? 8000
-      : 2000
-    );
-  }
-
-  document.addEventListener("visibilitychange",function(){
-    if(!document.hidden){
-      try{
-        window.renderWithdrawalLimitFromCurrentInvestments();
-        void window.refreshWithdrawalLimitCard();
-      }catch(_){}
-    }
-  });
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",start,{once:true});
-  }else{
-    start();
-  }
+        var r=await supabaseClient.rpc('get_my_withdrawal_limit');
+        if(r.error||!r.data)throw new Error('withdrawal_snapshot_unavailable');
+        if(!currentUser||currentUser.id!==userId)return null;
+        state=r.data;owner=userId;loadedAt=Date.now();render();return state;
+      }catch(err){
+        if(currentUser&&currentUser.id===userId){state=null;loadedAt=0;render();}
+        return null;
+      }
+    })();
+    inFlight=run;run.finally(function(){if(inFlight===run){inFlight=null;flightOwner=null;}});return run;
+  };
+  window.getWithdrawalValidationState=function(){return fresh()?Object.assign({},state,{maximum_withdrawable_now:maximum(state)}):null;};
+  window.getWithdrawalRemaining24h=function(){return fresh()?maximum(state):null;};
+  window.getWithdrawalCapitalBase=function(){return fresh()?number(state.capital_base):null;};
+  window.getWithdrawalSnapshotUnavailableMessage=function(){return copy()[3];};
+  window.getWithdrawalReserveMessage=function(value){return copy()[4].replace('{amount}',formatPortfolioMoney(number(value)));};
+  function start(){render();void window.refreshWithdrawalLimitCard();setInterval(function(){if(!document.hidden)void window.refreshWithdrawalLimitCard();},document.documentElement.classList.contains('web-android')?8000:2000);}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)void window.refreshWithdrawalLimitCard();});
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
+
 </script>
 
 <script id="withdrawal-tier-guide-v1">
 (function(){
   var COPY={
-    en:{hint:"View all levels",title:"Withdrawal levels and limits",current:"Current level",names:["Basic","Growth","Premium","VIP"],ranges:["Base Plan capital above $0 up to $100","Above $100 up to $1,000","Above $1,000 up to $10,000","Above $10,000"],note:"The percentage is determined only by real Base Plan capital and is applied to total withdrawable balance. A minimum $10 Base Plan capital is required."},
-    fa:{hint:"مشاهده همه سطح‌ها",title:"سطح‌ها و سقف برداشت",current:"سطح فعلی",names:["پایه","رشد","پرمیوم","وی‌آی‌پی"],ranges:["سرمایه واقعی پلن پایه: بیشتر از ۰ تا ۱۰۰ دلار","بیشتر از ۱۰۰ تا ۱٬۰۰۰ دلار","بیشتر از ۱٬۰۰۰ تا ۱۰٬۰۰۰ دلار","بیشتر از ۱۰٬۰۰۰ دلار"],note:"درصد فقط از سرمایه واقعی پلن پایه تعیین و روی موجودی کل قابل برداشت اعمال می‌شود. حداقل ۱۰ دلار سرمایه پلن پایه الزامی است."},
-    az:{hint:"Bütün səviyyələrə bax",title:"Çıxarış səviyyələri və limitləri",current:"Cari səviyyə",names:["Baza","İnkişaf","Premium","VIP"],ranges:["Baza Plan kapitalı: $0-dan çox, $100-dək","$100-dan çox, $1,000-dək","$1,000-dan çox, $10,000-dək","$10,000-dan çox"],note:"Faiz yalnız real Baza Plan kapitalına görə müəyyən edilir və ümumi çıxarıla bilən balansa tətbiq olunur. Minimum $10 Baza Plan kapitalı tələb olunur."},
-    tr:{hint:"Tüm seviyeleri gör",title:"Çekim seviyeleri ve limitleri",current:"Mevcut seviye",names:["Temel","Büyüme","Premium","VIP"],ranges:["Temel Plan sermayesi: $0 üzeri–$100","$100 üzeri–$1.000","$1.000 üzeri–$10.000","$10.000 üzeri"],note:"Oran yalnızca gerçek Temel Plan sermayesine göre belirlenir ve toplam çekilebilir bakiyeye uygulanır. Minimum $10 Temel Plan sermayesi gerekir."},
-    ru:{hint:"Посмотреть все уровни",title:"Уровни и лимиты вывода",current:"Текущий уровень",names:["Базовый","Рост","Премиум","VIP"],ranges:["Капитал базового плана: свыше $0 до $100","Свыше $100 до $1 000","Свыше $1 000 до $10 000","Свыше $10 000"],note:"Процент определяется только реальным капиталом базового плана и применяется к общему доступному балансу. Минимум — $10 в базовом плане."},
-    ar:{hint:"عرض جميع المستويات",title:"مستويات وحدود السحب",current:"المستوى الحالي",names:["الأساسي","النمو","المميز","VIP"],ranges:["رأس مال الخطة الأساسية: أكثر من 0$ حتى 100$","أكثر من 100$ حتى 1,000$","أكثر من 1,000$ حتى 10,000$","أكثر من 10,000$"],note:"تُحدد النسبة من رأس المال الحقيقي للخطة الأساسية فقط وتُطبق على إجمالي الرصيد القابل للسحب. الحد الأدنى المطلوب هو 10$."},
-    zh:{hint:"查看全部等级",title:"提现等级与限额",current:"当前等级",names:["基础","成长","高级","VIP"],ranges:["基础计划本金：高于 $0，最高 $100","高于 $100，最高 $1,000","高于 $1,000，最高 $10,000","高于 $10,000"],note:"比例仅由基础计划实际本金决定，并应用于总可提现余额；基础计划本金至少需要 $10。"},
-    es:{hint:"Ver todos los niveles",title:"Niveles y límites de retiro",current:"Nivel actual",names:["Básico","Crecimiento","Premium","VIP"],ranges:["Capital del Plan Base: más de $0 hasta $100","Más de $100 hasta $1.000","Más de $1.000 hasta $10.000","Más de $10.000"],note:"El porcentaje se determina solo por el capital real del Plan Base y se aplica al saldo total retirable. Se requiere un mínimo de $10."},
-    fr:{hint:"Voir tous les niveaux",title:"Niveaux et plafonds de retrait",current:"Niveau actuel",names:["Base","Croissance","Premium","VIP"],ranges:["Capital du plan de base : plus de 0 $ jusqu’à 100 $","Plus de 100 $ jusqu’à 1 000 $","Plus de 1 000 $ jusqu’à 10 000 $","Plus de 10 000 $"],note:"Le pourcentage dépend uniquement du capital réel du plan de base et s’applique au solde total retirable. Un minimum de 10 $ est requis."},
-    de:{hint:"Alle Stufen anzeigen",title:"Auszahlungsstufen und Limits",current:"Aktuelle Stufe",names:["Basis","Wachstum","Premium","VIP"],ranges:["Basistarif-Kapital: über $0 bis $100","Über $100 bis $1.000","Über $1.000 bis $10.000","Über $10.000"],note:"Der Prozentsatz richtet sich nur nach dem realen Basistarif-Kapital und gilt für das gesamte auszahlbare Guthaben. Mindestens $10 sind erforderlich."}
+    en:{hint:"View all levels",title:"Withdrawal levels and limits",current:"Current level",names:["Basic","Growth","Premium","VIP"],ranges:["Base Plan capital above $0 up to $100","Above $100 up to $1,000","Above $1,000 up to $10,000","Above $10,000"],note:"The daily limit is calculated from real Base Plan principal only. Profit and referral rewards do not increase this limit. The required reserve and the limit of 10 requests in 30 days also apply."},
+    fa:{hint:"مشاهده همه سطح‌ها",title:"سطح‌ها و سقف برداشت",current:"سطح فعلی",names:["پایه","رشد","پرمیوم","وی‌آی‌پی"],ranges:["سرمایه واقعی پلن پایه: بیشتر از ۰ تا ۱۰۰ دلار","بیشتر از ۱۰۰ تا ۱٬۰۰۰ دلار","بیشتر از ۱٬۰۰۰ تا ۱۰٬۰۰۰ دلار","بیشتر از ۱۰٬۰۰۰ دلار"],note:"سقف روزانه فقط از اصل سرمایه واقعی پلن پایه محاسبه می‌شود. سود و پاداش معرفی سقف را افزایش نمی‌دهند. موجودی الزامی و محدودیت ۱۰ درخواست در ۳۰ روز نیز اعمال می‌شود."},
+    az:{hint:"Bütün səviyyələrə bax",title:"Çıxarış səviyyələri və limitləri",current:"Cari səviyyə",names:["Baza","İnkişaf","Premium","VIP"],ranges:["Baza Plan kapitalı: $0-dan çox, $100-dək","$100-dan çox, $1,000-dək","$1,000-dan çox, $10,000-dək","$10,000-dan çox"],note:"Gündəlik limit yalnız real Baza Plan əsas kapitalından hesablanır. Mənfəət və dəvət mükafatları limiti artırmır. Saxlanmalı balans və 30 gündə 10 sorğu limiti də tətbiq olunur."},
+    tr:{hint:"Tüm seviyeleri gör",title:"Çekim seviyeleri ve limitleri",current:"Mevcut seviye",names:["Temel","Büyüme","Premium","VIP"],ranges:["Temel Plan sermayesi: $0 üzeri–$100","$100 üzeri–$1.000","$1.000 üzeri–$10.000","$10.000 üzeri"],note:"Günlük limit yalnızca gerçek Temel Plan anaparasından hesaplanır. Kâr ve davet ödülleri limiti artırmaz. Zorunlu bakiye ve 30 günde 10 talep sınırı da uygulanır."},
+    ru:{hint:"Посмотреть все уровни",title:"Уровни и лимиты вывода",current:"Текущий уровень",names:["Базовый","Рост","Премиум","VIP"],ranges:["Капитал базового плана: свыше $0 до $100","Свыше $100 до $1 000","Свыше $1 000 до $10 000","Свыше $10 000"],note:"Суточный лимит рассчитывается только от реального основного капитала базового плана. Прибыль и реферальные награды не увеличивают лимит. Также действуют обязательный резерв и 10 заявок за 30 дней."},
+    ar:{hint:"عرض جميع المستويات",title:"مستويات وحدود السحب",current:"المستوى الحالي",names:["الأساسي","النمو","المميز","VIP"],ranges:["رأس مال الخطة الأساسية: أكثر من 0$ حتى 100$","أكثر من 100$ حتى 1,000$","أكثر من 1,000$ حتى 10,000$","أكثر من 10,000$"],note:"يُحسب الحد اليومي من أصل رأس المال الحقيقي للخطة الأساسية فقط. الأرباح ومكافآت الإحالة لا ترفع الحد. ويُطبق الرصيد الإلزامي وحد 10 طلبات خلال 30 يوماً."},
+    zh:{hint:"查看全部等级",title:"提现等级与限额",current:"当前等级",names:["基础","成长","高级","VIP"],ranges:["基础计划本金：高于 $0，最高 $100","高于 $100，最高 $1,000","高于 $1,000，最高 $10,000","高于 $10,000"],note:"每日限额仅按基础计划实际本金计算，利润和推荐奖励不会提高限额。同时适用必留余额及30天内最多10次申请的限制。"},
+    es:{hint:"Ver todos los niveles",title:"Niveles y límites de retiro",current:"Nivel actual",names:["Básico","Crecimiento","Premium","VIP"],ranges:["Capital del Plan Base: más de $0 hasta $100","Más de $100 hasta $1.000","Más de $1.000 hasta $10.000","Más de $10.000"],note:"El límite diario se calcula solo sobre el capital real del Plan Base. Los beneficios y premios por referidos no lo aumentan. También se aplican la reserva obligatoria y 10 solicitudes en 30 días."},
+    fr:{hint:"Voir tous les niveaux",title:"Niveaux et plafonds de retrait",current:"Niveau actuel",names:["Base","Croissance","Premium","VIP"],ranges:["Capital du plan de base : plus de 0 $ jusqu’à 100 $","Plus de 100 $ jusqu’à 1 000 $","Plus de 1 000 $ jusqu’à 10 000 $","Plus de 10 000 $"],note:"Le plafond quotidien est calculé uniquement sur le capital réel du plan de base. Les bénéfices et primes de parrainage ne l’augmentent pas. La réserve obligatoire et 10 demandes sur 30 jours s’appliquent aussi."},
+    de:{hint:"Alle Stufen anzeigen",title:"Auszahlungsstufen und Limits",current:"Aktuelle Stufe",names:["Basis","Wachstum","Premium","VIP"],ranges:["Basistarif-Kapital: über $0 bis $100","Über $100 bis $1.000","Über $1.000 bis $10.000","Über $10.000"],note:"Das Tageslimit wird nur aus dem tatsächlichen Basisplan-Kapital berechnet. Gewinne und Empfehlungsprämien erhöhen es nicht. Pflichtreserve und höchstens 10 Anträge in 30 Tagen gelten ebenfalls."}
   };
 
   function lang(){
