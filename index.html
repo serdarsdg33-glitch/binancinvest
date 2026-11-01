@@ -15383,6 +15383,70 @@ html[lang="tr"] #plans > .plan ul {
   }
 }
 </style>
+<style id="site-announcements-style-v1">
+/* Campaign announcements: fully scoped, no external assets or libraries. */
+#siteAnnouncementsNav{display:inline-flex!important;align-items:center;justify-content:center;gap:9px;position:relative;flex-shrink:0}
+#siteAnnouncementsNav svg{width:21px;height:21px;flex:none}
+.sa-badge{min-width:19px;height:19px;display:inline-grid;place-items:center;border-radius:20px;background:#f0b90b;color:#181100;font-size:11px;font-weight:800;padding:0 5px}
+.sa-badge[hidden]{display:none!important}
+#siteAnnouncements{padding-block:16px 42px;color:var(--text,#f4f5f6)}
+.sa-section-head{display:flex;align-items:center;gap:15px;margin-bottom:26px}
+.sa-icon{display:grid;place-items:center;width:51px;height:51px;flex:none;border:1px solid #d5ae5355;border-radius:16px;background:linear-gradient(135deg,#f0b90b20,#f0b90b05);color:#e4bd66}
+.sa-icon svg{width:25px;height:25px}
+.sa-section-head h1{font-size:clamp(23px,4vw,32px);margin:0 0 7px;letter-spacing:-.5px}
+.sa-section-head p{color:#aab1bd;margin:0;line-height:1.7}
+.sa-notice{position:relative;overflow:hidden;display:grid;grid-template-columns:170px 1fr;gap:28px;background:linear-gradient(115deg,#211e14,#10151c 60%);border:1px solid #d5ae5340;border-radius:22px;padding:30px;box-shadow:0 18px 45px #0002}
+.sa-notice-art{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #eac15e30;border-radius:18px;background:radial-gradient(ellipse at 50% 30%,#b8881830,transparent 75%);color:#f5d68d;min-height:180px;padding:12px;text-align:center}
+.sa-notice-art strong{font-size:56px;letter-spacing:-3px;line-height:1.1}
+.sa-notice-art span{margin-top:12px;font-size:13px}
+.sa-notice h2{font-size:24px;margin:12px 0;color:#fff;line-height:1.4}
+.sa-notice p{max-width:800px;color:#c5cbd3;font-size:15px;line-height:1.9;margin:10px 0 14px}
+.sa-status{display:inline-flex;align-items:center;gap:7px;border:1px solid #d1b06044;background:#d1b0600c;color:#ebcf8e;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.sa-status::before{content:'';width:6px;height:6px;background:currentColor;border-radius:50%}
+.sa-status[data-state="expired"]{color:#b3b9c1;border-color:#b3b9c133}
+.sa-deadline{font-size:12px!important;color:#aeb5bf!important;line-height:1.7!important}
+.sa-deadline time{unicode-bidi:isolate}
+.sa-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;border-radius:11px;border:1px solid #f0b90b55;background:linear-gradient(115deg,#f4ce70,#e7b240);color:#201805;font-weight:750;padding:12px 19px;line-height:1.4;transition:filter .15s}
+.sa-button:hover{filter:brightness(1.08)}
+.sa-button:disabled{opacity:.5;cursor:default;filter:none}
+.sa-secondary{color:#c6ccd5;background:transparent;border:1px solid #ffffff22}
+.sa-button:focus-visible,.sa-close:focus-visible{outline:2px solid #f9d573;outline-offset:4px}
+#saCampaignDialog{width:min(900px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:0;overflow:auto;border:1px solid #dfbc6755;border-radius:26px;background:#0d1219;color:#fff;box-shadow:0 40px 120px #0009;overscroll-behavior:contain}
+#saCampaignDialog::backdrop{background:rgba(2,5,9,.78);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+#saCampaignDialog[open]{animation:sa-enter .22s ease-out}
+html.sa-modal-open{overflow:hidden}
+.sa-popup-grid{display:grid;grid-template-columns:.8fr 1.2fr;min-height:510px}
+.sa-popup-art{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:45px 24px;background:radial-gradient(ellipse at 40% 44%,#9b70184d,transparent 69%),linear-gradient(150deg,#242017,#12140f);border-inline-end:1px solid #e5be6230}
+.sa-popup-art::before,.sa-popup-art::after{content:'';position:absolute;z-index:-1;border:1px solid #dfba5b24;border-radius:50%;width:290px;height:290px;transform:rotateX(35deg) rotate(-25deg)}
+.sa-popup-art::after{width:225px;height:225px;transform:rotateX(35deg) rotate(25deg)}
+.sa-gift{width:62px;height:62px;display:grid;place-items:center;color:#f8db96;border:1px solid #f6d28055;border-radius:17px;background:linear-gradient(130deg,#f0b90b15,#f0b90b05);box-shadow:0 8px 30px #0002;margin-bottom:25px}
+.sa-gift svg{width:33px;height:33px}
+.sa-rate{font-size:clamp(84px,12vw,126px);line-height:1;letter-spacing:-7px;font-weight:850;color:#f7d88e;text-shadow:0 6px 35px #f0b90b20;direction:ltr}
+.sa-rate small{font-size:.48em;letter-spacing:-2px}
+.sa-rate-caption{font-size:17px;color:#e0c88d;margin-top:17px}
+.sa-popup-content{padding:42px 34px 30px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.sa-close{position:absolute;inset-inline-end:14px;top:14px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;border:1px solid #ffffff21;color:#d2d5da;background:#10151c;z-index:2}
+.sa-close svg{width:16px;height:16px}
+.sa-kicker{color:#dfc280;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin:0 0 13px;padding-inline-end:15px}
+.sa-popup-content h2{font-size:clamp(25px,4vw,34px);line-height:1.25;letter-spacing:-.7px;margin:0 0 15px;max-width:430px}
+.sa-copy{font-size:15px;color:#c5cbd3;line-height:1.9;margin:0 0 20px;overflow-wrap:anywhere}
+.sa-range{padding:12px 14px;border:1px solid #d8b55e30;border-radius:12px;background:#d8b55e07;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.sa-range span{font-size:12px;color:#9fa8b6}
+.sa-range strong{color:#f3d695;font-size:15px;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.sa-countdown-caption{color:#abb3c1;font-size:12px;margin-bottom:8px}
+.sa-clock{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;direction:ltr;margin-bottom:13px}
+.sa-clock-unit{background:#ffffff04;border:1px solid #ffffff13;border-radius:10px;text-align:center;padding:11px 3px 9px}
+.sa-clock-unit strong{display:block;font-size:24px;font-weight:650;font-variant-numeric:tabular-nums;color:#eef0f4}
+.sa-clock-unit span{display:block;color:#929dad;font-size:10px;margin-top:4px;overflow-wrap:anywhere}
+.sa-popup-content .sa-deadline{margin:0 0 21px}
+.sa-popup-actions{display:grid;grid-template-columns:1fr;gap:10px}
+.sa-popup-actions .sa-secondary{min-height:36px;padding:5px 12px;font-size:12px;border-color:transparent}
+@keyframes sa-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:640px){#saCampaignDialog{width:calc(100% - 24px);max-height:calc(100dvh - 24px);border-radius:20px}.sa-popup-grid{grid-template-columns:1fr;min-height:0}.sa-popup-art{padding:22px 20px 19px;border-inline-end:0;border-bottom:1px solid #e5be6230;min-height:155px}.sa-popup-art::before{width:205px;height:205px}.sa-popup-art::after{width:155px;height:155px}.sa-gift{position:absolute;inset-inline-start:24px;top:53px;width:42px;height:42px;margin:0;border-radius:12px}.sa-gift svg{width:25px;height:25px}.sa-rate{font-size:76px;letter-spacing:-5px}.sa-rate-caption{font-size:13px;margin-top:8px}.sa-popup-content{padding:22px}.sa-popup-content h2{font-size:25px;margin-bottom:11px}.sa-kicker{margin-bottom:10px;font-size:10px}.sa-copy{font-size:13px;line-height:1.8;margin-bottom:14px}.sa-range{margin-bottom:14px;padding:10px}.sa-range strong{font-size:13px}.sa-clock-unit{padding:7px 3px}.sa-clock-unit strong{font-size:21px}.sa-popup-content .sa-deadline{font-size:10px!important;margin-bottom:14px}.sa-notice{grid-template-columns:1fr;padding:22px;gap:20px}.sa-notice-art{min-height:105px;flex-direction:row;gap:18px}.sa-notice-art strong{font-size:48px}.sa-notice-art span{margin:0}.sa-notice h2{font-size:22px}}
+@media(max-height:700px) and (max-width:640px){.sa-popup-art{min-height:110px;padding:12px}.sa-rate{font-size:56px}.sa-gift{top:32px}.sa-popup-content{padding:18px}.sa-copy{margin-bottom:10px}.sa-range{margin-bottom:10px}.sa-clock{margin-bottom:8px}.sa-popup-content h2{font-size:23px}.sa-popup-content .sa-deadline{margin-bottom:10px}}
+@media(prefers-reduced-motion:reduce){#saCampaignDialog[open]{animation:none}.sa-button{transition:none}}
+
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -15424,6 +15488,8 @@ html[lang="tr"] #plans > .plan ul {
 <div class="wrap">
 <nav class="nav">
   <button class="active" data-page="home" onclick="page('home',this)" data-t="overview">Overview</button>
+  <button id="siteAnnouncementsNav" data-page="siteAnnouncements" type="button" onclick="page('siteAnnouncements',this)" aria-controls="siteAnnouncements"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="saNavLabel">Notifications</span><span id="saUnreadBadge" class="sa-badge" hidden></span></button>
+
 
   <button data-page="markets" onclick="page('markets',this)" data-t="markets">Markets</button>
 
@@ -15463,6 +15529,11 @@ html[lang="tr"] #plans > .plan ul {
 </nav>
 
 
+
+<section id="siteAnnouncements" class="view" aria-labelledby="saPageTitle">
+  <div class="sa-section-head"><div class="sa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></div><div><h1 id="saPageTitle">Notifications</h1><p id="saPageSubtitle">Offers and announcements</p></div></div>
+  <div id="saAnnouncementsList"></div>
+</section>
 <section id="bots" class="view bsc-store-view">
   <div class="bsc2-hero">
     <div class="bsc2-kicker" data-bsc="kicker">BSC AUTOMATED TRADING</div>
@@ -36307,5 +36378,203 @@ function initializeSupportAttachments(){bindSupportAttachmentInput("ticket");bin
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initializeSupportAttachments,{once:true});else initializeSupportAttachments();
 </script>
 
+
+<dialog id="saCampaignDialog" aria-labelledby="saDialogTitle" aria-describedby="saDialogBody">
+  <button id="saCloseButton" class="sa-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+  <div class="sa-popup-grid">
+    <div class="sa-popup-art"><div class="sa-gift"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h18v4H3zM5 12v9h14v-9M12 8v13"/><path d="M12 8H8a3 3 0 1 1 3-3l1 3Zm0 0h4a3 3 0 1 0-3-3l-1 3Z"/></svg></div><div id="saRate" class="sa-rate">10%</div><div id="saBonusLabel" class="sa-rate-caption"></div></div>
+    <div class="sa-popup-content">
+      <p id="saKicker" class="sa-kicker"></p><h2 id="saDialogTitle"></h2><p id="saDialogBody" class="sa-copy"></p>
+      <div class="sa-range"><span id="saRangeLabel"></span><strong id="saRangeAmount"></strong></div>
+      <div id="saCountdownCaption" class="sa-countdown-caption"></div>
+      <div class="sa-clock" role="timer" aria-live="off">
+        <div class="sa-clock-unit"><strong id="saCountdays">00</strong><span id="saUnitdays"></span></div>
+        <div class="sa-clock-unit"><strong id="saCounthours">00</strong><span id="saUnithours"></span></div>
+        <div class="sa-clock-unit"><strong id="saCountminutes">00</strong><span id="saUnitminutes"></span></div>
+        <div class="sa-clock-unit"><strong id="saCountseconds">00</strong><span id="saUnitseconds"></span></div>
+      </div>
+      <p class="sa-deadline"><span id="saDeadlineLabel"></span><time id="saDeadlineTime"></time></p>
+      <div class="sa-popup-actions"><button id="saInvestButton" class="sa-button" type="button"></button><button id="saDismissButton" class="sa-button sa-secondary" type="button"></button></div>
+    </div>
+  </div>
+</dialog>
+
+<script id="siteAnnouncementsConfig" type="application/json">[{"id": "investment-bonus-nov2026-v1", "enabled": true, "startsAt": "2026-11-01T10:31:00Z", "endsAt": "2026-11-06T10:31:00Z", "minimum": 1000, "maximum": 10000, "bonusPercent": 10}]</script>
+<script id="site-announcements-v1">
+(() => {
+  'use strict';
+  // Announcement display only. Bonus credits remain an administrator operation.
+  // Fixed timestamps are shared by every visitor; never derive the end from a visit.
+  const campaigns = JSON.parse(document.getElementById('siteAnnouncementsConfig').textContent);
+  const keys = ['nav','subtitle','kicker','title','body','bonus','range','remaining','days','hours','minutes','seconds','deadline','cta','dismiss','details','active','expired','ended'];
+  const rows = {
+    en:['Notifications','Offers and announcements','FIVE-DAY SPECIAL','10% investment bonus','Invest between {min} and {max} during the next five days and receive a bonus of 10% of your investment.','Investment bonus','Investment amount','Time remaining','Days','Hours','Minutes','Seconds','Offer ends','View investment plans','Close','View offer','Active offer','Offer ended','This offer has ended.'],
+    fa:['اعلان‌ها','پیشنهادها و اطلاعیه‌ها','پیشنهاد ویژهٔ پنج‌روزه','۱۰٪ بونوس سرمایه‌گذاری','تا ۵ روز آینده، با سرمایه‌گذاری از {min} تا {max}، معادل ۱۰٪ مبلغ سرمایه‌گذاری خود بونوس بگیرید.','بونوس سرمایه‌گذاری','مبلغ سرمایه‌گذاری','زمان باقی‌مانده','روز','ساعت','دقیقه','ثانیه','پایان پیشنهاد','مشاهدهٔ طرح‌های سرمایه‌گذاری','بستن','مشاهدهٔ پیشنهاد','پیشنهاد فعال','پیشنهاد پایان یافته','مهلت این پیشنهاد به پایان رسیده است.'],
+    ar:['الإشعارات','العروض والإعلانات','عرض خاص لمدة خمسة أيام','مكافأة استثمار بنسبة ١٠٪','استثمر من {min} إلى {max} خلال الأيام الخمسة القادمة واحصل على مكافأة تعادل ١٠٪ من مبلغ استثمارك.','مكافأة الاستثمار','مبلغ الاستثمار','الوقت المتبقي','أيام','ساعات','دقائق','ثوانٍ','ينتهي العرض','عرض خطط الاستثمار','إغلاق','عرض التفاصيل','عرض سارٍ','انتهى العرض','انتهت مدة هذا العرض.'],
+    az:['Bildirişlər','Təkliflər və elanlar','BEŞ GÜNLÜK XÜSUSİ TƏKLİF','10% investisiya bonusu','Növbəti beş gün ərzində {min}–{max} məbləğində investisiya edin və investisiyanızın 10%-i qədər bonus alın.','İnvestisiya bonusu','İnvestisiya məbləği','Qalan vaxt','Gün','Saat','Dəqiqə','Saniyə','Təklifin son tarixi','İnvestisiya planlarına bax','Bağla','Təklifə bax','Aktiv təklif','Təklif bitib','Bu təklifin müddəti bitib.'],
+    de:['Benachrichtigungen','Angebote und Mitteilungen','FÜNF-TAGE-AKTION','10 % Investitionsbonus','Investieren Sie in den nächsten fünf Tagen zwischen {min} und {max} und erhalten Sie 10 % Ihres Investitionsbetrags als Bonus.','Investitionsbonus','Investitionsbetrag','Verbleibende Zeit','Tage','Stunden','Minuten','Sekunden','Angebotsende','Investitionspläne ansehen','Schließen','Angebot ansehen','Aktives Angebot','Angebot beendet','Dieses Angebot ist beendet.'],
+    it:['Notifiche','Offerte e annunci','OFFERTA DI CINQUE GIORNI','Bonus di investimento del 10%','Investi tra {min} e {max} nei prossimi cinque giorni e ricevi un bonus pari al 10% del tuo investimento.','Bonus di investimento','Importo investito','Tempo rimanente','Giorni','Ore','Minuti','Secondi','Scadenza offerta','Vedi i piani di investimento','Chiudi','Vedi offerta','Offerta attiva','Offerta terminata','Questa offerta è terminata.'],
+    ru:['Уведомления','Предложения и объявления','АКЦИЯ НА ПЯТЬ ДНЕЙ','Бонус 10% к инвестиции','Инвестируйте от {min} до {max} в течение следующих пяти дней и получите бонус в размере 10% от суммы инвестиции.','Инвестиционный бонус','Сумма инвестиции','Осталось времени','Дни','Часы','Минуты','Секунды','Окончание акции','Посмотреть инвестиционные планы','Закрыть','Посмотреть предложение','Активное предложение','Акция завершена','Срок действия этого предложения истёк.'],
+    ja:['お知らせ','特典・お知らせ','5日間限定キャンペーン','投資額の10%ボーナス','今後5日間に{min}から{max}を投資すると、投資額の10%のボーナスを受け取れます。','投資ボーナス','投資金額','残り時間','日','時間','分','秒','キャンペーン終了','投資プランを見る','閉じる','特典を見る','開催中','終了しました','このキャンペーンは終了しました。'],
+    tr:['Bildirimler','Teklifler ve duyurular','BEŞ GÜNLÜK ÖZEL TEKLİF','%10 yatırım bonusu','Önümüzdeki beş gün içinde {min} ile {max} arasında yatırım yapın ve yatırımınızın %10’u kadar bonus alın.','Yatırım bonusu','Yatırım tutarı','Kalan süre','Gün','Saat','Dakika','Saniye','Teklifin bitişi','Yatırım planlarını görüntüle','Kapat','Teklifi görüntüle','Aktif teklif','Teklif sona erdi','Bu teklifin süresi doldu.'],
+    zh:['通知','优惠与公告','五天限时活动','10%投资奖励','在接下来的五天内投资{min}至{max}，即可获得投资金额10%的奖励。','投资奖励','投资金额','剩余时间','天','小时','分钟','秒','活动截止','查看投资计划','关闭','查看优惠','进行中','活动已结束','本次活动已结束。'],
+    nl:['Meldingen','Aanbiedingen en aankondigingen','VIJFDAAGSE ACTIE','10% investeringsbonus','Investeer de komende vijf dagen tussen {min} en {max} en ontvang een bonus van 10% van uw investering.','Investeringsbonus','Investeringsbedrag','Resterende tijd','Dagen','Uren','Minuten','Seconden','Aanbieding eindigt','Investeringsplannen bekijken','Sluiten','Aanbieding bekijken','Actieve aanbieding','Aanbieding afgelopen','Deze aanbieding is afgelopen.'],
+    fr:['Notifications','Offres et annonces','OFFRE SPÉCIALE DE CINQ JOURS','Bonus de 10 % sur votre investissement','Investissez entre {min} et {max} au cours des cinq prochains jours et recevez un bonus de 10 % du montant investi.','Bonus d’investissement','Montant investi','Temps restant','Jours','Heures','Minutes','Secondes','Fin de l’offre','Voir les plans d’investissement','Fermer','Voir l’offre','Offre active','Offre terminée','Cette offre est terminée.'],
+    ko:['알림','혜택 및 공지','5일 한정 특별 혜택','투자금의 10% 보너스','앞으로 5일 동안 {min}~{max}를 투자하고 투자금의 10%를 보너스로 받으세요.','투자 보너스','투자 금액','남은 시간','일','시간','분','초','혜택 종료','투자 플랜 보기','닫기','혜택 보기','진행 중','혜택 종료','이 혜택은 종료되었습니다.'],
+    el:['Ειδοποιήσεις','Προσφορές και ανακοινώσεις','ΕΙΔΙΚΗ ΠΡΟΣΦΟΡΑ ΠΕΝΤΕ ΗΜΕΡΩΝ','Μπόνους επένδυσης 10%','Επενδύστε από {min} έως {max} μέσα στις επόμενες πέντε ημέρες και λάβετε μπόνους 10% του ποσού της επένδυσής σας.','Μπόνους επένδυσης','Ποσό επένδυσης','Χρόνος που απομένει','Ημέρες','Ώρες','Λεπτά','Δευτερόλεπτα','Λήξη προσφοράς','Δείτε τα επενδυτικά πλάνα','Κλείσιμο','Δείτε την προσφορά','Ενεργή προσφορά','Η προσφορά έληξε','Αυτή η προσφορά έχει λήξει.'],
+    hi:['सूचनाएँ','ऑफ़र और घोषणाएँ','पाँच दिन का विशेष ऑफ़र','निवेश पर 10% बोनस','अगले पाँच दिनों में {min} से {max} तक निवेश करें और अपने निवेश की 10% राशि बोनस के रूप में पाएँ।','निवेश बोनस','निवेश राशि','शेष समय','दिन','घंटे','मिनट','सेकंड','ऑफ़र की समाप्ति','निवेश योजनाएँ देखें','बंद करें','ऑफ़र देखें','सक्रिय ऑफ़र','ऑफ़र समाप्त','यह ऑफ़र समाप्त हो गया है।'],
+    id:['Notifikasi','Penawaran dan pengumuman','PROMO KHUSUS LIMA HARI','Bonus investasi 10%','Investasikan {min} hingga {max} dalam lima hari ke depan dan dapatkan bonus sebesar 10% dari investasi Anda.','Bonus investasi','Jumlah investasi','Waktu tersisa','Hari','Jam','Menit','Detik','Penawaran berakhir','Lihat rencana investasi','Tutup','Lihat penawaran','Penawaran aktif','Penawaran berakhir','Penawaran ini telah berakhir.'],
+    ms:['Pemberitahuan','Tawaran dan pengumuman','TAWARAN KHAS LIMA HARI','Bonus pelaburan 10%','Laburkan antara {min} hingga {max} dalam lima hari akan datang dan terima bonus sebanyak 10% daripada pelaburan anda.','Bonus pelaburan','Jumlah pelaburan','Masa berbaki','Hari','Jam','Minit','Saat','Tawaran tamat','Lihat pelan pelaburan','Tutup','Lihat tawaran','Tawaran aktif','Tawaran tamat','Tawaran ini telah tamat.'],
+    pl:['Powiadomienia','Oferty i ogłoszenia','OFERTA SPECJALNA NA PIĘĆ DNI','10% bonusu inwestycyjnego','Zainwestuj od {min} do {max} w ciągu najbliższych pięciu dni i otrzymaj bonus w wysokości 10% swojej inwestycji.','Bonus inwestycyjny','Kwota inwestycji','Pozostały czas','Dni','Godziny','Minuty','Sekundy','Koniec oferty','Zobacz plany inwestycyjne','Zamknij','Zobacz ofertę','Aktywna oferta','Oferta zakończona','Ta oferta już się zakończyła.'],
+    pt:['Notificações','Ofertas e anúncios','OFERTA ESPECIAL DE CINCO DIAS','Bónus de investimento de 10%','Invista entre {min} e {max} nos próximos cinco dias e receba um bónus de 10% do valor investido.','Bónus de investimento','Valor do investimento','Tempo restante','Dias','Horas','Minutos','Segundos','Fim da oferta','Ver planos de investimento','Fechar','Ver oferta','Oferta ativa','Oferta terminada','Esta oferta terminou.'],
+    ro:['Notificări','Oferte și anunțuri','OFERTĂ SPECIALĂ DE CINCI ZILE','Bonus de investiție de 10%','Investește între {min} și {max} în următoarele cinci zile și primește un bonus de 10% din valoarea investiției.','Bonus de investiție','Suma investită','Timp rămas','Zile','Ore','Minute','Secunde','Oferta se încheie','Vezi planurile de investiții','Închide','Vezi oferta','Ofertă activă','Ofertă încheiată','Această ofertă s-a încheiat.'],
+    es:['Notificaciones','Ofertas y anuncios','OFERTA ESPECIAL DE CINCO DÍAS','Bono de inversión del 10%','Invierte entre {min} y {max} durante los próximos cinco días y recibe un bono del 10% de tu inversión.','Bono de inversión','Importe de inversión','Tiempo restante','Días','Horas','Minutos','Segundos','Fin de la oferta','Ver planes de inversión','Cerrar','Ver oferta','Oferta activa','Oferta finalizada','Esta oferta ha finalizado.'],
+    th:['การแจ้งเตือน','ข้อเสนอและประกาศ','ข้อเสนอพิเศษห้าวัน','โบนัสการลงทุน 10%','ลงทุนตั้งแต่ {min} ถึง {max} ภายในห้าวันข้างหน้า และรับโบนัส 10% ของเงินลงทุนของคุณ','โบนัสการลงทุน','จำนวนเงินลงทุน','เวลาที่เหลือ','วัน','ชั่วโมง','นาที','วินาที','สิ้นสุดข้อเสนอ','ดูแผนการลงทุน','ปิด','ดูข้อเสนอ','ข้อเสนอที่ใช้งานอยู่','ข้อเสนอสิ้นสุดแล้ว','ข้อเสนอนี้สิ้นสุดแล้ว'],
+    uk:['Сповіщення','Пропозиції та оголошення','СПЕЦІАЛЬНА ПРОПОЗИЦІЯ НА П’ЯТЬ ДНІВ','Бонус 10% до інвестиції','Інвестуйте від {min} до {max} протягом наступних п’яти днів та отримайте бонус у розмірі 10% від суми інвестиції.','Інвестиційний бонус','Сума інвестиції','Залишилося часу','Дні','Години','Хвилини','Секунди','Завершення пропозиції','Переглянути інвестиційні плани','Закрити','Переглянути пропозицію','Активна пропозиція','Пропозицію завершено','Термін цієї пропозиції минув.'],
+    ur:['اطلاعات','پیشکشیں اور اعلانات','پانچ دن کی خصوصی پیشکش','سرمایہ کاری پر ۱۰٪ بونس','اگلے پانچ دنوں میں {min} سے {max} تک سرمایہ کاری کریں اور اپنی سرمایہ کاری کی رقم کا ۱۰٪ بونس حاصل کریں۔','سرمایہ کاری بونس','سرمایہ کاری کی رقم','باقی وقت','دن','گھنٹے','منٹ','سیکنڈ','پیشکش کا اختتام','سرمایہ کاری کے منصوبے دیکھیں','بند کریں','پیشکش دیکھیں','فعال پیشکش','پیشکش ختم','اس پیشکش کی مدت ختم ہو چکی ہے۔'],
+    vi:['Thông báo','Ưu đãi và thông báo','ƯU ĐÃI ĐẶC BIỆT NĂM NGÀY','Thưởng 10% giá trị đầu tư','Đầu tư từ {min} đến {max} trong năm ngày tới và nhận khoản thưởng bằng 10% giá trị đầu tư của bạn.','Thưởng đầu tư','Số tiền đầu tư','Thời gian còn lại','Ngày','Giờ','Phút','Giây','Ưu đãi kết thúc','Xem các gói đầu tư','Đóng','Xem ưu đãi','Ưu đãi đang áp dụng','Ưu đãi đã kết thúc','Ưu đãi này đã kết thúc.']
+  };
+  const copy = Object.fromEntries(Object.entries(rows).map(([lang,row]) => [lang,Object.fromEntries(keys.map((key,i) => [key,row[i]]))]));
+  const $ = id => document.getElementById(id);
+  const dialog = $('saCampaignDialog');
+  const list = $('saAnnouncementsList');
+  const nav = $('siteAnnouncementsNav');
+  const badge = $('saUnreadBadge');
+  let selected = null;
+  let previousFocus = null;
+  let previousPhase = '';
+  let autoOpened = false;
+  const memory = new Set();
+  const language = () => {
+    const value = document.documentElement.lang || 'en';
+    return Object.hasOwn(copy,value) ? value : 'en';
+  };
+  const text = () => copy[language()];
+  const seenKey = campaign => 'bi_announcement_read:' + campaign.id;
+  function isRead(campaign) {
+    try { return memory.has(campaign.id) || localStorage.getItem(seenKey(campaign)) === '1'; }
+    catch { return memory.has(campaign.id); }
+  }
+  function markRead(campaign) {
+    memory.add(campaign.id);
+    try { localStorage.setItem(seenKey(campaign),'1'); } catch { /* Private browsing still works. */ }
+    updateBadge();
+  }
+  const active = campaign => Date.now() >= Date.parse(campaign.startsAt) && Date.now() < Date.parse(campaign.endsAt);
+  const published = () => campaigns.filter(c => c.enabled && Date.now() >= Date.parse(c.startsAt));
+  const money = value => new Intl.NumberFormat(language(),{style:'currency',currency:'USD',maximumFractionDigits:0}).format(value);
+  const numeral = value => new Intl.NumberFormat(language(),{minimumIntegerDigits:2,useGrouping:false}).format(value);
+  const percent = value => new Intl.NumberFormat(language(),{style:'percent',maximumFractionDigits:0}).format(value / 100);
+  const deadline = campaign => new Intl.DateTimeFormat(language(),{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Baku'}).format(new Date(campaign.endsAt)) + ' (UTC+04:00)';
+  const body = campaign => text().body.replace('{min}',money(campaign.minimum)).replace('{max}',money(campaign.maximum));
+  function element(tag,className,value) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (value !== undefined) node.textContent = value;
+    return node;
+  }
+  function updateBadge() {
+    const count = published().filter(c => active(c) && !isRead(c)).length;
+    badge.textContent = new Intl.NumberFormat(language()).format(count);
+    badge.hidden = count === 0;
+    nav.setAttribute('aria-label',text().nav + (count ? ' (' + badge.textContent + ')' : ''));
+  }
+  function renderList() {
+    $('saNavLabel').textContent = text().nav;
+    $('saPageTitle').textContent = text().nav;
+    $('saPageSubtitle').textContent = text().subtitle;
+    const fragment = document.createDocumentFragment();
+    published().forEach(campaign => {
+      const current = active(campaign);
+      const card = element('article','sa-notice');
+      const art = element('div','sa-notice-art');
+      art.append(element('strong','',percent(campaign.bonusPercent)),element('span','',text().bonus));
+      const content = element('div','sa-notice-content');
+      const status = element('span','sa-status',current ? text().active : text().expired);
+      status.dataset.state = current ? 'active' : 'expired';
+      const title = element('h2','',text().title);
+      const description = element('p','',current ? body(campaign) : text().ended);
+      const date = element('p','sa-deadline',text().deadline + ': ');
+      const time = element('time','',deadline(campaign)); time.dateTime = campaign.endsAt; date.append(time);
+      const button = element('button','sa-button sa-secondary',text().details); button.type = 'button';
+      button.addEventListener('click',() => openCampaign(campaign));
+      content.append(status,title,description,date,button);card.append(art,content);fragment.append(card);
+    });
+    list.replaceChildren(fragment);
+    updateBadge();
+  }
+  function renderDialog() {
+    if (!selected) return;
+    const current = active(selected);
+    dialog.lang = language(); dialog.dir = ['fa','ar','ur'].includes(language()) ? 'rtl' : 'ltr';
+    $('saRate').textContent = percent(selected.bonusPercent);
+    $('saBonusLabel').textContent = text().bonus;
+    $('saKicker').textContent = current ? text().kicker : text().expired;
+    $('saDialogTitle').textContent = text().title;
+    $('saDialogBody').textContent = current ? body(selected) : text().ended;
+    $('saRangeLabel').textContent = text().range;
+    $('saRangeAmount').textContent = money(selected.minimum) + ' – ' + money(selected.maximum);
+    $('saCountdownCaption').textContent = current ? text().remaining : text().expired;
+    ['days','hours','minutes','seconds'].forEach(key => $('saUnit'+key).textContent = text()[key]);
+    $('saDeadlineLabel').textContent = text().deadline + ': ';
+    $('saDeadlineTime').textContent = deadline(selected);$('saDeadlineTime').dateTime = selected.endsAt;
+    $('saInvestButton').textContent = current ? text().cta : text().expired;
+    $('saInvestButton').disabled = !current;
+    $('saDismissButton').textContent = text().dismiss;
+    $('saCloseButton').setAttribute('aria-label',text().dismiss);
+    updateClock();
+  }
+  function updateClock() {
+    if (!selected) return;
+    let remaining = Math.max(0,Math.ceil((Date.parse(selected.endsAt) - Date.now()) / 1000));
+    const values = [Math.floor(remaining/86400),Math.floor(remaining/3600)%24,Math.floor(remaining/60)%60,remaining%60];
+    ['days','hours','minutes','seconds'].forEach((key,i) => $('saCount'+key).textContent = numeral(values[i]));
+  }
+  function openCampaign(campaign) {
+    if (!campaign || !campaign.enabled) return;
+    selected = campaign; previousFocus = document.activeElement; renderDialog();
+    if (typeof dialog.showModal !== 'function') { page('siteAnnouncements',nav); return; }
+    if (!dialog.open) dialog.showModal();
+    document.documentElement.classList.add('sa-modal-open');
+    markRead(campaign);
+    $('saCloseButton').focus({preventScroll:true});
+  }
+  function closeCampaign() { if (dialog.open) dialog.close(); }
+  dialog.addEventListener('close',() => {
+    document.documentElement.classList.remove('sa-modal-open');
+    if (previousFocus?.isConnected) previousFocus.focus({preventScroll:true});
+  });
+  $('saCloseButton').addEventListener('click',closeCampaign);
+  $('saDismissButton').addEventListener('click',closeCampaign);
+  dialog.addEventListener('click',event => { if (event.target === dialog) { const r=dialog.getBoundingClientRect(); if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeCampaign(); } });
+  $('saInvestButton').addEventListener('click',() => {
+    if (!selected || !active(selected)) { renderDialog(); return; }
+    closeCampaign();
+    page('invest',document.querySelector('.nav [data-page="invest"]'));
+  });
+  nav.addEventListener('click',() => { published().forEach(markRead); renderList(); });
+  function refresh() { renderList(); renderDialog(); }
+  new MutationObserver(refresh).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  window.addEventListener('storage',event => { if(event.key?.startsWith('bi_announcement_read:'))updateBadge(); });
+  document.addEventListener('visibilitychange',() => { if(!document.hidden)tick(); });
+  function tick() {
+    const phase = campaigns.map(c=>[c.id,c.enabled,Date.now()<Date.parse(c.startsAt)?'scheduled':active(c)?'active':'expired'].join(':')).join('|');
+    if (phase !== previousPhase) { previousPhase=phase;refresh(); }
+    else if (dialog.open) updateClock();
+  }
+  function maybeAutoOpen(attempt=0) {
+    if (autoOpened) return;
+    const campaign = published().find(c => active(c) && !isRead(c));
+    if (!campaign) return;
+    const blocking = [...document.querySelectorAll('[role="dialog"],.modal,.language-modal')].some(node => node !== dialog && getComputedStyle(node).display !== 'none' && getComputedStyle(node).visibility !== 'hidden' && node.getClientRects().length);
+    if (document.hidden || blocking) { if(attempt<60)setTimeout(()=>maybeAutoOpen(attempt+1),2000);return; }
+    autoOpened=true;openCampaign(campaign);
+  }
+  tick();
+  setInterval(tick,1000);
+  setTimeout(maybeAutoOpen,1800);
+})();
+
+</script>
 </body>
 </html>
