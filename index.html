@@ -15452,6 +15452,20 @@ html.sa-modal-open{overflow:hidden}
 #saCampaignDialog[data-kind="notice"] .sa-copy{white-space:pre-line}
 #saAnnouncementsList .sa-notice-content p{white-space:pre-line}
 </style>
+
+<style id="compact-contract-history-style">
+#compactContractHistory{margin:16px 0;padding:14px;border:1px solid #e6b93944;border-radius:14px;background:#10130fc9}
+#compactContractHistory[hidden]{display:none!important}
+#compactContractHistory h3{font-size:16px;margin:0 0 10px;color:#eac866}
+.compact-contract-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.compact-contract-card{min-width:0;padding:12px;border:1px solid #ffffff20;border-radius:10px;background:#090d10}
+.compact-contract-card>div{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px}
+.compact-contract-card time,.compact-contract-card small{font-size:11px;color:#aeb7bf}
+.compact-contract-state{font-size:12px;color:#44dba3;margin:7px 0}
+.compact-contract-amount{font-size:13px;line-height:1.7;margin:0;overflow-wrap:anywhere}
+.compact-contract-amount strong{color:#44dba3}
+@media(max-width:640px){.compact-contract-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body data-investment-model="flex-v6-37-8">
 <header>
@@ -22813,10 +22827,16 @@ async function loadInvestments() {
     return;
   }
 
+  try {
+    const settlement = await supabaseClient.rpc("settle_my_mature_contracts");
+    if (settlement.error) console.warn("Maturity refresh:", settlement.error);
+    else if (Number(settlement.data) > 0) await refreshSecureAccount();
+  } catch (error) { console.warn("Maturity refresh delayed:", error); }
+
   const { data, error } = await supabaseClient
     .from("investments")
     .select(
-      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at,realized_profit,user_confirmed,activation_source,source_request_id"
+      "id,plan_name,principal,daily_rate,term_days,status,started_at,ends_at,profit_started_at,realized_profit,user_confirmed,activation_source,source_request_id,settled_at,settlement_rate,settlement_type,return_flex_investment_id,returned_to_flex_at"
     )
     .eq("user_id", currentUser.id)
     .order("created_at", {
@@ -22909,10 +22929,7 @@ function renderVipPortfolioContracts() {
 
   const vipContracts = currentInvestments.filter(contract =>
     String(contract.plan_name || "") === "VIP_LOCK" &&
-    (
-      contract.status === "active" ||
-      contract.status === "completed"
-    )
+    contract.status === "active" && new Date(contract.ends_at).getTime() > Date.now()
   );
 
   const activeContracts = vipContracts.filter(contract => {
@@ -30232,6 +30249,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (
       !item ||
       !active(item) ||
+      (item.ends_at && new Date(item.ends_at).getTime() <= Date.now()) ||
       !isConfirmedRegularPlan(item)
     ) {
       return;
@@ -30628,6 +30646,38 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 
+
+  const maturityHistoryCopy = {"en": ["Contract history", "Transferred to base plan", "Awaiting automatic settlement"], "fa": ["سوابق قراردادها", "به پلن پایه منتقل شد", "در انتظار تسویهٔ خودکار"], "az": ["Müqavilə tarixçəsi", "Baza planına köçürüldü", "Avtomatik hesablaşma gözlənilir"], "ar": ["سجل العقود", "تم التحويل إلى الخطة الأساسية", "بانتظار التسوية التلقائية"], "ru": ["История договоров", "Переведено в базовый план", "Ожидается автоматический расчёт"], "tr": ["Sözleşme geçmişi", "Temel plana aktarıldı", "Otomatik ödeme işlemi bekleniyor"], "zh": ["合同记录", "已转入基础计划", "等待自动结算"], "es": ["Historial de contratos", "Transferido al plan base", "Pendiente de liquidación automática"], "fr": ["Historique des contrats", "Transféré au plan de base", "En attente du règlement automatique"], "de": ["Vertragsverlauf", "In den Basisplan übertragen", "Automatische Abrechnung ausstehend"], "it": ["Storico contratti", "Trasferito al piano base", "In attesa della liquidazione automatica"], "ja": ["契約履歴", "基本プランに移行済み", "自動精算待ち"], "nl": ["Contractgeschiedenis", "Overgezet naar het basisplan", "Wacht op automatische afwikkeling"], "ko": ["계약 내역", "기본 플랜으로 이전됨", "자동 정산 대기 중"], "el": ["Ιστορικό συμβολαίων", "Μεταφέρθηκε στο βασικό πλάνο", "Αναμονή αυτόματης εκκαθάρισης"], "hi": ["अनुबंध इतिहास", "मूल योजना में स्थानांतरित", "स्वचालित निपटान की प्रतीक्षा"], "id": ["Riwayat kontrak", "Dipindahkan ke paket dasar", "Menunggu penyelesaian otomatis"], "ms": ["Sejarah kontrak", "Dipindahkan ke pelan asas", "Menunggu penyelesaian automatik"], "pl": ["Historia umów", "Przeniesiono do planu podstawowego", "Oczekiwanie na automatyczne rozliczenie"], "pt": ["Histórico de contratos", "Transferido para o plano base", "A aguardar liquidação automática"], "ro": ["Istoricul contractelor", "Transferat în planul de bază", "În așteptarea decontării automate"], "th": ["ประวัติสัญญา", "โอนไปยังแผนพื้นฐานแล้ว", "รอการชำระบัญชีอัตโนมัติ"], "uk": ["Історія договорів", "Переведено до базового плану", "Очікується автоматичний розрахунок"], "ur": ["معاہدوں کی تاریخ", "بنیادی پلان میں منتقل ہوگیا", "خودکار تصفیے کا انتظار"], "vi": ["Lịch sử hợp đồng", "Đã chuyển sang gói cơ bản", "Đang chờ tất toán tự động"]};
+  let maturityHistorySignature = '';
+  function renderCompactContractHistory() {
+    const parent = document.getElementById('selectedPlanSummaryZone');
+    if (!parent) return;
+    let box = document.getElementById('compactContractHistory');
+    if (!box) { box = document.createElement('section'); box.id='compactContractHistory'; parent.after(box); }
+    const items = (currentUser?.id ? currentInvestments || [] : []).filter(i =>
+      ['Starter','Growth','Premium','VIP_LOCK'].includes(i.plan_name) &&
+      ((i.status === 'completed' && i.settlement_type === 'maturity_to_flexible') ||
+       (i.status === 'active' && i.ends_at && new Date(i.ends_at).getTime() <= Date.now()))
+    ).sort((a,b)=>new Date(b.ends_at)-new Date(a.ends_at));
+    const signature = language()+'|'+JSON.stringify(items)+'|'+(currentUser?.id || '');
+    if (signature === maturityHistorySignature) return;
+    maturityHistorySignature=signature;
+    box.hidden=!items.length;
+    if (!items.length) { box.replaceChildren(); return; }
+    const words=maturityHistoryCopy[language()] || maturityHistoryCopy.en;
+    box.innerHTML='<h3>'+escapeHtml(words[0])+'</h3><div class="compact-contract-grid">'+items.map(i=>{
+      const settled=i.status==='completed';
+      const profit=settled ? Number(i.realized_profit || 0) : contractEndProfit(i);
+      const amount=Number(i.principal || 0)+profit;
+      const date=new Date(i.ends_at).toLocaleDateString(getSiteNumberLocale());
+      return '<article class="compact-contract-card" data-contract-id="'+escapeHtml(i.id)+'">'+
+        '<div><strong>'+escapeHtml(selectedPlanName(i))+'</strong><time datetime="'+escapeHtml(i.ends_at)+'">'+escapeHtml(date)+'</time></div>'+
+        '<p class="compact-contract-state">'+escapeHtml(words[settled?1:2])+'</p>'+
+        '<p class="compact-contract-amount" dir="ltr">'+formatPortfolioMoney(Number(i.principal || 0),true)+' + '+formatPortfolioMoney(profit,true)+' = <strong>'+formatPortfolioMoney(amount,true)+'</strong></p>'+
+        '<small>'+escapeHtml(text('contractEndBreakdown'))+'</small></article>';
+    }).join('')+'</div>';
+  }
+
   function renderSelectedPlanSummaryCards() {
     var zone =
       ensureSelectedPlanSummaryZone();
@@ -30645,6 +30695,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .filter(function (item) {
           return (
             active(item) &&
+            (!item.ends_at || new Date(item.ends_at).getTime() > Date.now()) &&
             isConfirmedRegularPlan(item)
           );
         })
@@ -30941,6 +30992,20 @@ document.addEventListener("DOMContentLoaded", function() {
     normalizeSelectedPlanPanelLayout();
   }
 
+
+  let maturityRefreshBusy=false;
+  let maturityRefreshLastAttempt=0;
+  async function refreshDueMaturity() {
+    if (document.hidden || !currentUser?.id || maturityRefreshBusy || Date.now()-maturityRefreshLastAttempt<15000) return;
+    if (!(currentInvestments || []).some(i=>i.status==='active' && ['Starter','Growth','Premium','VIP_LOCK'].includes(i.plan_name) && i.ends_at && new Date(i.ends_at).getTime()<=Date.now())) return;
+    maturityRefreshBusy=true; maturityRefreshLastAttempt=Date.now();
+    try { await refreshSecureAccount(); await updatePortfolio(); }
+    catch(e) { console.warn('Maturity refresh delayed:',e); }
+    finally { maturityRefreshBusy=false; }
+  }
+  setInterval(refreshDueMaturity,15000);
+  document.addEventListener('visibilitychange',refreshDueMaturity);
+
   var originalRenderPortfolioLive =
     window.renderPortfolioLive;
 
@@ -30961,7 +31026,7 @@ document.addEventListener("DOMContentLoaded", function() {
      * Separate compact cards: explicitly confirmed
      * Starter / Growth / Premium contracts.
      */
-    if (repaintStructure) renderSelectedPlanSummaryCards();
+    if (repaintStructure) { renderSelectedPlanSummaryCards(); renderCompactContractHistory(); }
 
     /*
      * Lower FLEX card + list stays in place.
