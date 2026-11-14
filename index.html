@@ -37098,7 +37098,45 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   const list = $('saAnnouncementsList');
   const nav = $('siteAnnouncementsNav');
   const badge = $('saUnreadBadge');
+  let privateOwner = '';
+  let privateNotices = [];
+  let privateFetchAt = 0;
+  let privateLoading = false;
   let selected = null;
+  const signedInId = () => typeof currentUser !== 'undefined' ? currentUser?.id || '' : '';
+  const privateLabels = {
+    fa:['پیام اختصاصی','تاریخ پیام','مشاهده پیام'], en:['Personal message','Message date','View message'],
+    az:['Şəxsi mesaj','Mesaj tarixi','Mesaja bax'], tr:['Özel mesaj','Mesaj tarihi','Mesajı görüntüle'],
+    ru:['Личное сообщение','Дата сообщения','Открыть сообщение'], ar:['رسالة خاصة','تاريخ الرسالة','عرض الرسالة'],
+    zh:['私人消息','消息日期','查看消息'], es:['Mensaje personal','Fecha del mensaje','Ver mensaje'],
+    fr:['Message personnel','Date du message','Voir le message'], de:['Persönliche Nachricht','Nachrichtendatum','Nachricht ansehen']
+  };
+  async function loadPrivateNotices() {
+    const owner = signedInId();
+    if (owner !== privateOwner) {
+      privateOwner = owner;
+      privateNotices = [];
+      privateFetchAt = 0;
+      if (selected?.privateOwner) { closeCampaign(); selected = null; }
+      refresh();
+    }
+    if (!owner || privateLoading || Date.now() - privateFetchAt < 30000) return;
+    privateLoading = true;
+    privateFetchAt = Date.now();
+    try {
+      const {data,error} = await supabaseClient.from('user_announcements')
+        .select('id,title,body,created_at,read_at').eq('user_id',owner).order('created_at',{ascending:false});
+      if (error) throw error;
+      if (signedInId() !== owner || privateOwner !== owner) return;
+      privateNotices = (data || []).map(row => ({
+        id:row.id, enabled:true, kind:'notice', privateOwner:owner, readAt:row.read_at,
+        startsAt:row.created_at, effectiveAt:row.created_at, title:row.title, body:row.body
+      }));
+      refresh();
+      maybeAutoOpen();
+    } catch (error) { console.error('Personal announcements could not be loaded',error); }
+    finally { privateLoading = false; }
+  }
   let previousFocus = null;
   let previousPhase = '';
   let autoOpened = false;
@@ -37110,21 +37148,40 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   const text = () => copy[language()];
   const seenKey = campaign => 'bi_announcement_read:' + campaign.id;
   function isRead(campaign) {
+    if (campaign.privateOwner) return !!campaign.readAt || memory.has(campaign.id);
     try { return memory.has(campaign.id) || localStorage.getItem(seenKey(campaign)) === '1'; }
     catch { return memory.has(campaign.id); }
   }
   function markRead(campaign) {
+    if (campaign.privateOwner) {
+      if (campaign.privateOwner !== signedInId()) return;
+      const readAt = new Date().toISOString();
+      memory.add(campaign.id);
+      campaign.readAt = readAt;
+      void supabaseClient.from('user_announcements').update({read_at:readAt})
+        .eq('id',campaign.id).eq('user_id',campaign.privateOwner).then(({error}) => {
+          if (error) console.error('Personal announcement read status could not be saved',error);
+        });
+      updateBadge();
+      return;
+    }
     memory.add(campaign.id);
     try { localStorage.setItem(seenKey(campaign),'1'); } catch { /* Private browsing still works. */ }
     updateBadge();
   }
   const active = campaign => Date.now() >= Date.parse(campaign.startsAt) && (!campaign.endsAt || Date.now() < Date.parse(campaign.endsAt));
-  const published = () => campaigns.filter(c => c.enabled && Date.now() >= Date.parse(c.startsAt));
+  const published = () => [...privateNotices.filter(c => c.privateOwner === signedInId()),...campaigns].filter(c => c.enabled && Date.now() >= Date.parse(c.startsAt));
   const money = value => new Intl.NumberFormat(language(),{style:'currency',currency:'USD',maximumFractionDigits:0}).format(value);
   const numeral = value => new Intl.NumberFormat(language(),{minimumIntegerDigits:2,useGrouping:false}).format(value);
   const percent = value => new Intl.NumberFormat(language(),{style:'percent',maximumFractionDigits:0}).format(value / 100);
   const deadline = campaign => new Intl.DateTimeFormat(language(),{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Baku'}).format(new Date(campaign.endsAt)) + ' (UTC+04:00)';
-  const campaignText = (campaign,key) => campaign.localized?.[language()]?.[key] ?? text()[key];
+  const campaignText = (campaign,key) => {
+    if (campaign.privateOwner) {
+      const labels = privateLabels[language()] || privateLabels.en;
+      return ({title:campaign.title,body:campaign.body,kicker:labels[0],dateLabel:labels[1],details:labels[2]})[key] ?? text()[key];
+    }
+    return campaign.localized?.[language()]?.[key] ?? text()[key];
+  };
   const body = campaign => campaignText(campaign,'body').replace('{min}',money(campaign.minimum)).replace('{max}',money(campaign.maximum));
   function element(tag,className,value) {
     const node = document.createElement(tag);
@@ -37147,7 +37204,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
       const current = active(campaign);
       const card = element('article','sa-notice');
       const art = element('div','sa-notice-art');
-      art.append(element('strong','',campaign.kind === 'notice' ? '2027' : percent(campaign.bonusPercent)),element('span','',campaign.kind === 'notice' ? campaignText(campaign,'dateLabel') : text().bonus));
+      art.append(element('strong','',campaign.privateOwner ? '✉' : campaign.kind === 'notice' ? '2027' : percent(campaign.bonusPercent)),element('span','',campaign.kind === 'notice' ? campaignText(campaign,'dateLabel') : text().bonus));
       const content = element('div','sa-notice-content');
       const status = element('span','sa-status',campaign.kind === 'notice' ? campaignText(campaign,'kicker') : current ? text().active : text().expired);
       status.dataset.state = current ? 'active' : 'expired';
@@ -37172,7 +37229,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     for (const selector of ['.sa-range','.sa-countdown-caption','.sa-clock','.sa-gift']) dialog.querySelector(selector).hidden = informational;
     $('saInvestButton').hidden = informational;
     if (informational) {
-      $('saRate').textContent = '2027';
+      $('saRate').textContent = selected.privateOwner ? '✉' : '2027';
       $('saBonusLabel').textContent = campaignText(selected,'dateLabel');
       $('saKicker').textContent = campaignText(selected,'kicker');
       $('saDialogTitle').textContent = campaignText(selected,'title');
@@ -37208,7 +37265,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
     ['days','hours','minutes','seconds'].forEach((key,i) => $('saCount'+key).textContent = numeral(values[i]));
   }
   function openCampaign(campaign) {
-    if (!campaign || !campaign.enabled) return;
+    if (!campaign || !campaign.enabled || (campaign.privateOwner && campaign.privateOwner !== signedInId())) return;
     selected = campaign; previousFocus = document.activeElement; renderDialog();
     if (typeof dialog.showModal !== 'function') { page('siteAnnouncements',nav); return; }
     if (!dialog.open) dialog.showModal();
@@ -37235,16 +37292,16 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   window.addEventListener('storage',event => { if(event.key?.startsWith('bi_announcement_read:'))updateBadge(); });
   document.addEventListener('visibilitychange',() => { if(!document.hidden)tick(); });
   function tick() {
+    void loadPrivateNotices();
     const phase = campaigns.map(c=>[c.id,c.enabled,Date.now()<Date.parse(c.startsAt)?'scheduled':active(c)?'active':'expired'].join(':')).join('|');
     if (phase !== previousPhase) { previousPhase=phase;refresh(); }
     else if (dialog.open) updateClock();
   }
   function maybeAutoOpen(attempt=0) {
-    if (autoOpened) return;
-    const campaign = published().find(c => active(c) && !isRead(c));
+    const campaign = published().find(c => active(c) && !isRead(c) && (c.privateOwner || !autoOpened));
     if (!campaign) return;
     const blocking = [...document.querySelectorAll('[role="dialog"],.modal,.language-modal')].some(node => node !== dialog && getComputedStyle(node).display !== 'none' && getComputedStyle(node).visibility !== 'hidden' && node.getClientRects().length);
-    if (document.hidden || blocking) { if(attempt<60)setTimeout(()=>maybeAutoOpen(attempt+1),2000);return; }
+    if (document.hidden || dialog.open || blocking) { if(attempt<60)setTimeout(()=>maybeAutoOpen(attempt+1),2000);return; }
     autoOpened=true;openCampaign(campaign);
   }
   tick();
