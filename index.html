@@ -26468,6 +26468,22 @@ if (withdrawalAmountCents > maximumWithdrawalCents) {
 
 const TRANSACTION_HISTORY_CUTOFF_PREFIX = "bi_transaction_history_cutoff_";
 
+const WITHDRAWAL_HISTORY_COPY = {"en":["Requests in the last 30 days","Request slots remaining","Next request slot (UTC)","Counted withdrawal history","Request time (UTC)","Amount","Status","The limit uses a rolling 30-day period, not the calendar month. Pending and approved requests count. Each request leaves the count after 30 days.","Hiding transaction history does not reset withdrawal limits.","Some earlier transactions are hidden on this device.","Show all transaction history","Hide displayed history"],"fa":["درخواست‌ها در ۳۰ روز گذشته","سهمیهٔ درخواست باقی‌مانده","زمان سهمیهٔ بعدی (UTC)","سوابق برداشت محاسبه‌شده در سهمیه","زمان درخواست (UTC)","مبلغ","وضعیت","محدودیت بر اساس ۳۰ روز گذشته است، نه ماه تقویمی. درخواست‌های در انتظار و تأییدشده شمرده می‌شوند. هر درخواست پس از ۳۰ روز از شمارش خارج می‌شود.","پنهان‌کردن تاریخچه، محدودیت برداشت را بازنشانی نمی‌کند.","بعضی تراکنش‌های قدیمی در این دستگاه پنهان شده‌اند.","نمایش همهٔ سوابق تراکنش‌ها","پنهان‌کردن سوابق نمایشی"],"az":["Son 30 gündə sorğular","Qalan sorğu sayı","Növbəti sorğu vaxtı (UTC)","Limitə daxil olan çıxarışlar","Sorğu vaxtı (UTC)","Məbləğ","Status","Limit təqvim ayına deyil, son 30 günə aiddir. Gözləyən və təsdiqlənmiş sorğular sayılır. Hər sorğu 30 gündən sonra hesabdan çıxır.","Tarixçəni gizlətmək çıxarış limitini sıfırlamır.","Bu cihazda bəzi əvvəlki əməliyyatlar gizlədilib.","Bütün əməliyyat tarixçəsini göstər","Görünən tarixçəni gizlət"],"tr":["Son 30 gündeki talepler","Kalan talep hakkı","Sonraki talep zamanı (UTC)","Limite dahil çekim geçmişi","Talep zamanı (UTC)","Tutar","Durum","Limit takvim ayına göre değil, geriye dönük 30 güne göre hesaplanır. Bekleyen ve onaylanan talepler sayılır. Her talep 30 gün sonra sayımdan çıkar.","Geçmişi gizlemek para çekme limitini sıfırlamaz.","Bu cihazda bazı eski işlemler gizlenmiş.","Tüm işlem geçmişini göster","Görünen geçmişi gizle"],"ru":["Заявки за последние 30 дней","Осталось заявок","Следующая заявка (UTC)","Выводы, учтённые в лимите","Время заявки (UTC)","Сумма","Статус","Учитываются последние 30 дней, а не календарный месяц. Ожидающие и одобренные заявки входят в лимит. Каждая заявка перестаёт учитываться через 30 дней.","Скрытие истории не сбрасывает лимиты вывода.","Некоторые предыдущие операции скрыты на этом устройстве.","Показать всю историю операций","Скрыть отображаемую историю"],"ar":["الطلبات خلال آخر 30 يوماً","عدد الطلبات المتبقية","موعد الطلب التالي (UTC)","طلبات السحب المحتسبة في الحد","وقت الطلب (UTC)","المبلغ","الحالة","يُحسب الحد خلال آخر 30 يوماً، وليس الشهر التقويمي. تُحتسب الطلبات المعلقة والمعتمدة، ويخرج كل طلب من الحساب بعد 30 يوماً.","إخفاء السجل لا يعيد تعيين حدود السحب.","بعض المعاملات السابقة مخفية على هذا الجهاز.","عرض سجل المعاملات كاملاً","إخفاء السجل المعروض"],"zh":["过去30天申请次数","剩余申请次数","下次申请时间（UTC）","计入限额的提现记录","申请时间（UTC）","金额","状态","限额按过去30天滚动计算，并非自然月。待处理及已批准申请均计入限额，每笔申请在30天后不再计入。","隐藏交易记录不会重置提现限额。","此设备隐藏了部分较早的交易。","显示全部交易记录","隐藏当前记录"],"es":["Solicitudes en los últimos 30 días","Solicitudes restantes","Próximo cupo (UTC)","Retiros incluidos en el límite","Fecha de solicitud (UTC)","Importe","Estado","El límite usa los últimos 30 días, no el mes calendario. Cuentan las solicitudes pendientes y aprobadas. Cada solicitud deja de contar después de 30 días.","Ocultar el historial no reinicia los límites de retiro.","Algunas transacciones anteriores están ocultas en este dispositivo.","Mostrar todo el historial","Ocultar historial mostrado"],"fr":["Demandes sur les 30 derniers jours","Demandes restantes","Prochain créneau (UTC)","Retraits comptabilisés dans le plafond","Date de demande (UTC)","Montant","Statut","Le plafond couvre les 30 derniers jours, et non le mois civil. Les demandes en attente et approuvées comptent. Chaque demande sort du calcul après 30 jours.","Masquer l’historique ne réinitialise pas les plafonds de retrait.","Certaines anciennes transactions sont masquées sur cet appareil.","Afficher tout l’historique","Masquer l’historique affiché"],"de":["Anträge in den letzten 30 Tagen","Verbleibende Anträge","Nächster Antrag (UTC)","Im Limit berücksichtigte Auszahlungen","Antragszeit (UTC)","Betrag","Status","Das Limit gilt für die letzten 30 Tage, nicht den Kalendermonat. Ausstehende und genehmigte Anträge zählen. Jeder Antrag fällt nach 30 Tagen aus der Zählung.","Das Ausblenden des Verlaufs setzt Auszahlungslimits nicht zurück.","Einige frühere Transaktionen sind auf diesem Gerät ausgeblendet.","Gesamten Verlauf anzeigen","Angezeigten Verlauf ausblenden"]};
+function withdrawalHistoryCopy(){
+  const language=String(localStorage.getItem('bi_lang')||document.documentElement.lang||'en').split('-')[0];
+  return WITHDRAWAL_HISTORY_COPY[language]||WITHDRAWAL_HISTORY_COPY.en;
+}
+function transactionHistoryVisibilityNotice(cutoff){
+  const c=withdrawalHistoryCopy();
+  return `<div class="withdrawal-history-visibility" role="status"><p>${safeFinancialText(c[8])}</p>${cutoff>0?`<p>${safeFinancialText(c[9])}</p><button class="btn" type="button" onclick="restoreTxHistory()">${safeFinancialText(c[10])}</button>`:''}</div>`;
+}
+window.restoreTxHistory=async function(){
+  if(!currentUser?.id)return;
+  localStorage.removeItem(TRANSACTION_HISTORY_CUTOFF_PREFIX+currentUser.id);
+  await loadTransactions();
+};
+
+
 function getTransactionHistoryCutoff() {
   if (!currentUser?.id) return 0;
   return Number(
@@ -26507,6 +26523,7 @@ window.loadTransactions = async function () {
   recheckPendingDepositVerifications(data || []);
 
   const cutoff = getTransactionHistoryCutoff();
+  const historyNotice = transactionHistoryVisibilityNotice(cutoff);
   const visibleData = (data || []).filter(item => {
     const createdAt = new Date(item.created_at).getTime();
     return !Number.isFinite(createdAt) || createdAt > cutoff;
@@ -26514,11 +26531,11 @@ window.loadTransactions = async function () {
 
   if (!visibleData.length) {
     list.innerHTML =
-      `<div class="muted" style="padding:20px;text-align:center;">${tr("noTransactions")}</div>`;
+      `${historyNotice}<div class="muted" style="padding:20px;text-align:center;">${tr("noTransactions")}</div>`;
     return;
   }
 
-  let html = `
+  let html = `${historyNotice}
     <div class="tablebox">
       <table class="table">
         <thead>
@@ -31833,6 +31850,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+
+<style id="withdrawal-history-clarity-v1">
+.withdrawal-count-details,.withdrawal-history-visibility{margin-top:12px;padding:12px;border:1px solid rgba(240,185,11,.22);border-radius:12px;background:rgba(240,185,11,.035);font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.withdrawal-count-details p,.withdrawal-history-visibility p{margin:5px 0}.withdrawal-count-facts{display:flex;flex-wrap:wrap;gap:8px 22px}.withdrawal-count-facts strong{color:var(--gold,#f0b90b)}
+.withdrawal-count-details summary{cursor:pointer;padding:8px 0;font-weight:700}.withdrawal-count-table{overflow-x:auto}.withdrawal-count-table table{width:100%;border-collapse:collapse;min-width:330px}.withdrawal-count-table th,.withdrawal-count-table td{padding:7px;text-align:start;border-bottom:1px solid rgba(255,255,255,.08)}.withdrawal-count-table time{white-space:nowrap;direction:ltr;display:inline-block}.withdrawal-count-next{direction:ltr;unicode-bidi:embed;display:inline-block}
+</style>
+
 <script id="withdrawal-level-server-v1">
 (function(){
   var state=null, owner=null, loadedAt=0, inFlight=null, flightOwner=null;
@@ -31860,6 +31884,37 @@ document.addEventListener("DOMContentLoaded", function() {
     var afterReserve=Math.max(0,number(s.available_balance)-number(s.minimum_remaining_balance));
     return floorMoney(Math.min(daily,afterReserve,number(s.remaining_24h)));
   }
+
+  function utc(value){var d=new Date(value);return Number.isFinite(d.getTime())?d.toISOString().slice(0,19).replace('T',' '):'—';}
+  function historyPanel(s){
+    var card=document.getElementById('withdrawalLevelCard');if(!card)return;
+    var panel=document.getElementById('withdrawalRollingHistory');
+    if(!panel){
+      panel=document.createElement('section');panel.id='withdrawalRollingHistory';panel.className='withdrawal-count-details';
+      panel.innerHTML='<div class="withdrawal-count-facts"><span id="withdrawalRollingCount"></span><span id="withdrawalRollingRemaining"></span></div><p id="withdrawalRollingNext"></p><p id="withdrawalRollingExplanation"></p><details id="withdrawalRollingDetails"><summary id="withdrawalRollingSummary"></summary><div class="withdrawal-count-table" id="withdrawalRollingRows"></div></details>';
+      card.appendChild(panel);
+    }
+    panel.hidden=!s;if(!s){panel.dataset.historySignature='';return;}
+    var c=withdrawalHistoryCopy(),rows=Array.isArray(s.withdrawal_requests_30d)?s.withdrawal_requests_30d:[];
+    var count=Math.floor(number(s.withdrawals_30d)),limit=Math.floor(number(s.monthly_withdrawal_limit));
+    put('withdrawalRollingCount',c[0]+': '+formatSiteNumber(count)+' / '+formatSiteNumber(limit));
+    put('withdrawalRollingRemaining',c[1]+': '+formatSiteNumber(number(s.monthly_withdrawals_remaining)));
+    put('withdrawalRollingExplanation',c[7]);
+    var next=document.getElementById('withdrawalRollingNext');
+    next.hidden=!s.monthly_withdrawal_next_available_at;
+    if(!next.hidden)next.textContent=c[2]+': '+utc(s.monthly_withdrawal_next_available_at);
+    put('withdrawalRollingSummary',c[3]+' ('+formatSiteNumber(count)+')');
+    var details=document.getElementById('withdrawalRollingDetails');details.hidden=!rows.length;
+    var signature=JSON.stringify([lang(),rows]);
+    if(panel.dataset.historySignature!==signature){
+      var escape=typeof safeFinancialText==='function'?safeFinancialText:function(v){return String(v).replace(/[&<>"']/g,function(x){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x];});};
+      var html='<table><thead><tr>'+[c[4],c[5],c[6]].map(function(t){return '<th>'+escape(t)+'</th>';}).join('')+'</tr></thead><tbody>';
+      rows.forEach(function(r){html+='<tr><td><time>'+utc(r.created_at)+'</time></td><td>'+escape(formatPortfolioMoney(number(r.amount)))+'</td><td>'+escape(tr(r.status==='approved'?'approvedStatus':'pendingStatus'))+'</td></tr>';});
+      document.getElementById('withdrawalRollingRows').innerHTML=html+'</tbody></table>';
+      panel.dataset.historySignature=signature;
+    }
+  }
+
   function render(){
     var card=document.getElementById('withdrawalLevelCard');if(!card)return;
     var c=copy();
@@ -31874,8 +31929,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if(!fresh()){
       ['withdrawalLevelName','withdrawalLevelPercent','withdrawalCapitalBase','withdrawalDailyLimit','withdrawalUsed24h','withdrawalRemaining24h','withdrawalAvailableBalance'].forEach(function(id){put(id,'—');});
       notice.textContent=currentUser&&currentUser.id?c[3]:'';
-      card.dataset.withdrawalEligible='false';return;
+      card.dataset.withdrawalEligible='false';historyPanel(null);return;
     }
+    historyPanel(state);
     var s=state,code=String(s.tier_code||'BASE').toUpperCase();
     var keys={BASE:'withdrawalTierBase',GROWTH:'withdrawalTierGrowth',PREMIUM:'withdrawalTierPremium',VIP:'withdrawalTierVip'};
     card.dataset.tierCode=code;card.dataset.withdrawalEligible=String(s.withdrawal_eligible===true);
@@ -31887,7 +31943,7 @@ document.addEventListener("DOMContentLoaded", function() {
     put('withdrawalUsed24h',formatPortfolioMoney(floorMoney(s.used_24h)));
     put('withdrawalRemaining24h',formatPortfolioMoney(maximum(s)));
     put('withdrawalAvailableBalance',formatPortfolioMoney(floorMoney(s.available_balance)));
-    if(s.monthly_withdrawal_limit_reached===true)notice.textContent=tr('withdrawalMonthlyLimitReached');
+    if(s.monthly_withdrawal_limit_reached===true)notice.textContent=tr('withdrawalMonthlyLimitReached')+(s.monthly_withdrawal_next_available_at?' '+withdrawalHistoryCopy()[2]+': '+utc(s.monthly_withdrawal_next_available_at):'');
     else if(s.withdrawal_eligible!==true)notice.textContent=tr('withdrawalBaseMinimumRequired');
     else notice.textContent=c[4].replace('{amount}',formatPortfolioMoney(number(s.minimum_remaining_balance)));
     var guide=document.getElementById('withdrawalTierGuideNote');if(guide)guide.textContent=c[2];
@@ -37165,6 +37221,13 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   setTimeout(maybeAutoOpen,1800);
 })();
 
+</script>
+<script id="transaction-history-visibility-label-v1">
+(function(){
+  function refresh(){var b=document.querySelector('#transactions .clear-history-btn');if(b){b.removeAttribute('data-t');b.textContent=withdrawalHistoryCopy()[11];}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refresh,{once:true});else refresh();
+  new MutationObserver(function(){refresh();if(currentUser?.id&&document.getElementById('transactions')?.classList.contains('active'))void loadTransactions();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
 </script>
 </body>
 </html>
